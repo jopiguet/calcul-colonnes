@@ -3,6 +3,8 @@
 This guide is for the adults setting the app up for children or students. It
 describes every screen, every setting and the keyboard shortcuts.
 
+- [Signing in](#signing-in)
+- [Account page](#account-page)
 - [Players](#players)
 - [Column arithmetic](#column-arithmetic)
 - [Printable worksheet](#printable-worksheet)
@@ -12,12 +14,53 @@ describes every screen, every setting and the keyboard shortcuts.
 - [Language](#language)
 - [What is stored where](#what-is-stored-where)
 
+## Signing in
+
+The app opens on **Connexion / Iniciar sesión / Sign in**.
+
+- **Create an account:** *Pas encore de compte ? Créer un compte*. Name, email and a password of at least 10 characters. A short sentence is easier to remember than a complicated word.
+- **Sign in:** with the account's email, or with a player's username, and the password.
+- **With a provider:** *Continuer avec Google* (or Microsoft, GitHub…) when the server offers it. The first time, it creates an account.
+- **Stay signed in:** a browser stays signed in for 30 days after its last use.
+
+**An account and its players.** The account belongs to an adult. It holds the
+players: the account sees all of them and their results, and manages them.
+A child can also get a sign-in of their own (see below): they then see only
+their own exercises and results, and cannot switch to another player.
+
+If the app was used before sign-in existed, the **first account created**
+receives all existing players and their results.
+
+**An email already used.** Signing in with a provider whose email already has
+an account here is refused. Sign in to that account first, then link the
+provider from the Account page. This prevents someone from entering an account
+just by using the same email elsewhere.
+
+## Account page
+
+The ⚙️ button at the top opens the Account page (not shown in a player's own
+session).
+
+- **Ways to sign in:** the password and linked providers, with the date of last use.
+  - **Link Google / GitHub…** adds a provider: then either the password or the provider signs in.
+  - **Remove** takes one away. The last one cannot be removed.
+- **Change password** (or **Add a password** for an account created through a provider). Changing it signs out every other device.
+- **Players' own sign-in**, for each player:
+  - **Username and password:** the child signs in with the username, for example `lea.m`. Saving again replaces them and signs the child out.
+  - **Link a provider:** for an older child with their own Google or Microsoft account.
+  - **Remove:** their sign-in stops working at once.
+- **Devices:**
+  - **Sign out other devices:** for a lost phone or a shared computer.
+  - **Sign out:** this device only.
+
+In a player's own session, the 🚪 button at the top signs out.
+
 ## Players
 
-The app opens on **Qui joue ? / ¿Quién juega? / Who's playing?**.
+After signing in, the app shows **Qui joue ? / ¿Quién juega? / Who's playing?**.
 
 - **Choose a player:** click their name.
-- **Add a player:** type a first name (20 characters at most) and press *Ajouter*. Names must be unique, ignoring case.
+- **Add a player:** type a first name (20 characters at most) and press *Ajouter*. Names must be unique within the account, ignoring case.
 - **Remembered:** the browser remembers the last player, so the app reopens on their work.
 - **Switch player:** click the 👤 name chip at the top left.
 
@@ -193,13 +236,15 @@ by clicking a player's name on the Scores screen. It shows:
 
 ## Scores
 
-**🏆 Scores** lists every player:
+**🏆 Scores** lists every player of the account (in a player's own session,
+only that player):
 
 - **Column arithmetic:** results today, in total, and the success rate.
 - **QCM:** a second table for players who took tests, with the number of tests, right answers and success rate.
 
 Clicking a name opens that player's progress page. The 🗑️ button deletes a
 player and **all** their results, after confirmation; this cannot be undone.
+It is not available in a player's own session.
 
 ## Language
 
@@ -215,8 +260,9 @@ of these three, French otherwise; the choice is then remembered.
 
 | Where | What |
 |---|---|
-| The server's database | Players, every checked arithmetic answer, every finished test and each of its answers |
+| The server's database | Accounts and their ways to sign in (passwords only as hashes), sessions, players, every checked arithmetic answer, every finished test and each of its answers |
+| The browser (cookie) | The session, unreadable by the page's scripts |
 | The browser (`localStorage`) | Language, operation and test settings, last player |
 
-Clearing the browser's site data resets the settings, not the results.
-Results are shared by every browser that uses the same server.
+Clearing the browser's site data signs out and resets the settings, not the
+results. An account's results are the same in every browser where it signs in.

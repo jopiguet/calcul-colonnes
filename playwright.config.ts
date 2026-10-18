@@ -8,6 +8,7 @@ import { defineConfig } from "@playwright/test";
  * SQLite or Neon — is never touched: variables set here win over `.env`.
  */
 const PORT = 8799;
+const MOCK_PORT = 8798;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -23,11 +24,38 @@ export default defineConfig({
     locale: "fr-FR",
     trace: "retain-on-failure",
   },
-  webServer: {
-    command: "npm run build && npx tsx tests/e2e/server.ts",
-    url: `http://localhost:${PORT}/api/health`,
-    reuseExistingServer: false,
-    timeout: 180_000,
-    env: { PORT: String(PORT), SQLITE_PATH: "test-results/e2e.sqlite", DATABASE_URL: "" },
-  },
+  webServer: [
+    {
+      // Stands in for Google, Microsoft and GitHub (tests/e2e/mock-oidc.ts).
+      command: "npx tsx tests/e2e/mock-oidc.ts",
+      url: `http://localhost:${MOCK_PORT}/.well-known/openid-configuration`,
+      reuseExistingServer: false,
+      env: { MOCK_OIDC_PORT: String(MOCK_PORT) },
+    },
+    {
+      command: "npm run build && npx tsx tests/e2e/server.ts",
+      url: `http://localhost:${PORT}/api/health`,
+      reuseExistingServer: false,
+      timeout: 180_000,
+      env: {
+        PORT: String(PORT),
+        SQLITE_PATH: "test-results/e2e.sqlite",
+        DATABASE_URL: "",
+        PUBLIC_URL: `http://localhost:${PORT}`,
+        COOKIE_SECURE: "false",
+        REGISTRATION: "open",
+        // Every test signs up from the same address.
+        AUTH_ATTEMPTS_PER_ADDRESS: "10000",
+        // Only the mock provider: real ones from a developer's .env are switched off.
+        GOOGLE_CLIENT_ID: "",
+        MICROSOFT_CLIENT_ID: "",
+        GITHUB_CLIENT_ID: "",
+        OIDC_ISSUER: `http://localhost:${MOCK_PORT}`,
+        OIDC_CLIENT_ID: "test-client",
+        OIDC_CLIENT_SECRET: "test-secret",
+        OIDC_NAME: "Mock ID",
+        OIDC_ID: "mock",
+      },
+    },
+  ],
 });

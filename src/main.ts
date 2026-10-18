@@ -14,7 +14,9 @@ import {
   saveUserId,
   type Settings,
 } from "./settings";
-import { DuplicateNameError, store, type User } from "./store";
+import { accountView, signInView, takeRedirectMessage } from "./auth";
+import { at, errorText } from "./auth-i18n";
+import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { quizView } from "./quiz";
 import { qt } from "./quiz-i18n";
@@ -23,9 +25,12 @@ import { progressView } from "./progress";
 const NAME_LENGTH = 20;
 
 type Phase = "answering" | "checked" | "finished";
-type View = "play" | "players" | "scores" | "progress";
+type View = "play" | "players" | "scores" | "progress" | "account";
 
 interface State {
+  /** Who is signed in; null until known. */
+  auth: AuthState | null;
+  options: AuthOptions | null;
   view: View;
   user: User | null;
   settings: Settings;
@@ -39,6 +44,8 @@ const settings = loadSettings();
 setLang(settings.lang);
 
 const state: State = {
+  auth: null,
+  options: null,
   view: "players",
   user: null,
   settings,
@@ -64,9 +71,35 @@ function updateSettings(change: Partial<Settings>): void {
 
 // ------------------------------------------------------------------ rendering
 
+/** A player signed in on their own login: they see only themselves. */
+const playerSession = (): boolean => Boolean(state.auth?.player);
+
+/** One-time message after a provider sign-in (?auth=… in the address). */
+let notice: { ok: boolean; text: string } | null = null;
+
 async function render(): Promise<void> {
+  if (!state.auth?.authenticated) {
+    app.replaceChildren(
+      topBar(),
+      signInView(state.options ?? { providers: [], registration: true, publicUrl: location.origin }, () => void enter(true), notice),
+    );
+    notice = null;
+    return;
+  }
   try {
-    if (!state.user || state.view === "players") {
+    if (state.view === "account" && !playerSession()) {
+      app.replaceChildren(
+        topBar(),
+        await accountView({
+          state: state.auth,
+          options: state.options ?? { providers: [], registration: false, publicUrl: location.origin },
+          players: await store.listUsers(),
+          onBack: () => show(state.user ? "play" : "players"),
+          onSignedOut: () => signedOut(),
+          rerender: () => void render(),
+        }),
+      );
+    } else if (!state.user || state.view === "players") {
       app.replaceChildren(topBar(), await playersView());
     } else if (state.view === "scores") {
       app.replaceChildren(topBar(), await scoresView());
@@ -94,9 +127,26 @@ async function render(): Promise<void> {
         printBar(),
       );
     }
-  } catch {
+  } catch (error) {
+    if (error instanceof SignedOutError) return signedOut();
     app.replaceChildren(topBar(), offlineView(() => void render()));
   }
+  if (notice) {
+    const banner = el("p", `auth-message ${notice.ok ? "ok" : "error"} banner`, notice.text);
+    banner.setAttribute("role", "status");
+    app.insertBefore(banner, app.children[1] ?? null);
+    notice = null;
+  }
+}
+
+/** Back to the sign-in screen (signed out here, or the session ended). */
+function signedOut(): void {
+  state.auth = { authenticated: false };
+  state.user = null;
+  state.score = 0;
+  state.questions = 0;
+  state.view = "players";
+  void render();
 }
 
 // Whose progress page is shown, and where its Back button leads.
@@ -146,9 +196,29 @@ function topBar(): HTMLElement {
 
   const left = el("div", "chips");
   if (state.user && state.view === "play") {
-    const player = button("ghost chip", `👤 ${state.user.name}`, () => show("players"));
-    player.setAttribute("aria-label", t("changePlayer", { name: state.user.name }));
-    left.append(player, button("ghost chip", `🏆 ${t("scores")}`, () => show("scores")));
+    if (playerSession()) {
+      // A player's own session: no switching, and a way to sign out.
+      const who = el("span", "chip-label", `👤 ${state.user.name}`);
+      who.title = at("playerSession");
+      left.append(who, button("ghost chip", `🏆 ${t("scores")}`, () => show("scores")));
+      const out = button("ghost chip icon-chip", "🚪", async () => {
+        await auth.logout().catch(() => undefined);
+        signedOut();
+      });
+      out.setAttribute("aria-label", at("signOut"));
+      out.title = at("signOut");
+      left.append(out);
+    } else {
+      const player = button("ghost chip", `👤 ${state.user.name}`, () => show("players"));
+      player.setAttribute("aria-label", t("changePlayer", { name: state.user.name }));
+      left.append(player, button("ghost chip", `🏆 ${t("scores")}`, () => show("scores")));
+    }
+  }
+  if (state.auth?.authenticated && !playerSession() && state.view !== "account") {
+    const account = button("ghost chip icon-chip", "⚙️", () => show("account"));
+    account.setAttribute("aria-label", at("account"));
+    account.title = at("account");
+    left.append(account);
   }
 
   const language = el("select", "language");
@@ -475,7 +545,7 @@ async function scoresView(): Promise<HTMLElement> {
     });
     remove.setAttribute("aria-label", t("deletePlayer", { name: user.name }));
     const cell = el("td");
-    cell.append(remove);
+    if (!playerSession()) cell.append(remove);
     row.append(cell);
     table.append(row);
   }
@@ -518,16 +588,44 @@ function offlineView(retry: () => void): HTMLElement {
   return wrap;
 }
 
-async function start(): Promise<void> {
+/** After signing in (or on load with a session): pick the player and show the app. */
+async function enter(justSignedIn = false): Promise<void> {
   try {
+    state.auth = await auth.session();
+    if (!state.auth.authenticated) {
+      // The sign-in succeeded but no cookie came back: the browser dropped it
+      // (Secure cookie over http, or another address than PUBLIC_URL).
+      if (justSignedIn) notice = { ok: false, text: errorText("cookie_refused", { url: state.options?.publicUrl ?? location.origin }) };
+      return void render();
+    }
     const users = await store.listUsers();
-    const savedId = loadUserId();
-    state.user = users.find((user) => user.id === savedId) ?? null;
-    state.view = state.user ? "play" : "players";
+    if (state.auth.player) {
+      // A player's own login: that player, nobody else.
+      state.user = users.find((user) => user.id === state.auth?.player?.id) ?? null;
+      state.view = "play";
+    } else {
+      const savedId = loadUserId();
+      state.user = users.find((user) => user.id === savedId) ?? null;
+      state.view = state.user ? "play" : "players";
+    }
+    state.score = 0;
+    state.questions = 0;
     await render();
-  } catch {
+  } catch (error) {
+    if (error instanceof SignedOutError) return signedOut();
     app.replaceChildren(topBar(), offlineView(() => void start()));
   }
+}
+
+async function start(): Promise<void> {
+  try {
+    state.options = await auth.options();
+  } catch {
+    app.replaceChildren(topBar(), offlineView(() => void start()));
+    return;
+  }
+  notice = takeRedirectMessage(state.options);
+  await enter();
 }
 
 void start();

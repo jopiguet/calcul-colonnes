@@ -3,7 +3,7 @@
 A web app for practising arithmetic the way it is written on paper, and for
 multiple-choice tests in secondary-school and first-year university
 mathematics. French, Spanish and English interface; one server, one small database,
-no account system.
+sign-in by password or Google, Microsoft, GitHub and other OpenID providers.
 
 <p>
   <img src="docs/images/columns-addition.png" width="200" alt="Addition in columns with a carry">
@@ -49,8 +49,10 @@ cp .env.example .env
 npm run dev
 ```
 
-Open <http://localhost:5173>. The API runs on port 8787. The SQLite database is
-created in `./data/` on first start.
+Open <http://localhost:5173> and create your account. The API runs on port
+8787. The SQLite database is created in `./data/` on first start. To try a
+sign-in provider in development, set `PUBLIC_URL=http://localhost:5173` so the
+provider returns through Vite.
 
 For production, one process serves both the built app and the API:
 
@@ -79,6 +81,10 @@ Settings are read from `.env` (see `.env.example`):
 | `DATABASE_URL` | *(empty)* | PostgreSQL connection string. When set, the server uses PostgreSQL instead of SQLite. |
 | `SQLITE_PATH` | `./data/calcul-colonnes.sqlite` | SQLite file, used when `DATABASE_URL` is empty |
 | `PORT` | `8787` | Port of the server |
+| `PUBLIC_URL` | `http://localhost:$PORT` | Address of the app as typed in the browser; `https://` makes cookies `Secure` |
+| `REGISTRATION` | `open` | `closed` allows only the first account |
+| `SESSION_DAYS`, `COOKIE_SECURE`, `TRUST_PROXY` | | See [Deployment › HTTPS and sign-in](docs/deployment.md#https-and-sign-in) |
+| `GOOGLE_*`, `MICROSOFT_*`, `GITHUB_*`, `OIDC_*` | *(empty)* | Sign-in providers, see [Authentication](docs/authentication.md#providers-1) |
 
 ## Documentation
 
@@ -87,6 +93,7 @@ Settings are read from `.env` (see `.env.example`):
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
 | [Question generators](docs/question-generators.md) | The 39 kinds of question, how a generator works, adding one, verification, versioning |
+| [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |
 | [Database](docs/database.md) | Schema, migrations, SQLite and PostgreSQL |
 | [API](docs/api.md) | Every endpoint with request and response examples |
 | [Deployment](docs/deployment.md) | Production setup, Neon, backups, security |
@@ -106,9 +113,10 @@ docs/           documentation
 
 A file-by-file description is in [Development](docs/development.md#code-layout).
 
-## Important limitation
+## Sign-in
 
-There is **no authentication**: anyone who can reach the server can read,
-create and delete players and their results. Run it on a home network or
-behind an authenticating reverse proxy, never openly on the internet. See
-[Deployment › Security](docs/deployment.md#security).
+Accounts belong to adults and own the players; a child can also get a sign-in
+of their own and then sees only their own work. Sign-in by email and
+password, and by Google, Microsoft, GitHub or any OpenID Connect provider once
+configured. Sessions are server-side, in an `HttpOnly` cookie. Serve it over
+HTTPS when it leaves `localhost`. See [Authentication](docs/authentication.md).

@@ -1,5 +1,32 @@
 # Changelog
 
+## 4.0.1
+
+- **Fixed:** sign-in and sign-up were refused (`403 cross_site`) through the development server on port 5173. The Vite proxy rewrote the `Host` header; it now keeps it.
+- A sign-in refused for coming from another address now says so, with the expected address, instead of a generic error.
+- When the browser drops the session cookie after a successful sign-in (an `https` `PUBLIC_URL` opened over `http`), the app says so instead of showing the sign-in screen again.
+- `GET /api/auth/options` includes `publicUrl`.
+
+## 4.0.0
+
+**Sign-in is now required.** After upgrading, create your account first: the
+first account receives every existing player and their results.
+
+- **Accounts and players:** an account (parent, teacher) owns players and sees all their results. A player can also get a sign-in of their own, by username and password or by a provider, and then sees only their own work.
+- **Email and password**, hashed with scrypt.
+- **Google, Microsoft, GitHub and any OpenID Connect provider**, each on when configured. Authorization code with PKCE and `state`. A provider is never linked to an existing account just because the email matches.
+- **Account page:** ways to sign in with link and remove, password change, players' own sign-in, sign out other devices.
+- **Cookie sessions:** random tokens stored as SHA-256, `HttpOnly`, `SameSite=Lax`, `Secure` and `__Host-` with HTTPS, 30 days after last use.
+- **Protection:** cross-site requests that change data are refused; sign-in attempts are rate limited per address and per identifier.
+- **Prepared:** passkeys and email links fit the new `credentials` table without a migration; see [Authentication](docs/authentication.md#adding-passkeys-and-email-links).
+- Player names are unique per account.
+- Database migration `006`: `accounts`, `credentials`, `sessions`, `auth_flows`; `account_id` on `users`.
+- API: `/api/auth/*`; every data route needs a session (`401`) and is limited to the session's players.
+- `npm run db:copy-to-postgres` also copies accounts and sign-in methods.
+- New settings: `PUBLIC_URL`, `COOKIE_SECURE`, `SESSION_DAYS`, `REGISTRATION`, `TRUST_PROXY`, `AUTH_ATTEMPTS_PER_ADDRESS`, and the provider settings.
+- Browser tests: 30, with a mock OpenID provider.
+- Fixed a test that failed when a quiz drew a sine, which Spanish renders as *sen*.
+
 ## 3.2.0
 
 - **Mistakes tracked:** every wrong option is labelled with the typical mistake it stands for (36 types). The mistake is named in the corrections, recorded with the answer, and the progress page lists each player's most frequent mistakes.

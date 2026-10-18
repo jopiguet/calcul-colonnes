@@ -10,8 +10,13 @@ import {
   type Topic,
 } from "../shared/quiz/index.ts";
 import type { NewAttempt, NewQuizResult } from "../shared/types.ts";
+import type { AuthConfig } from "./auth/config.ts";
+import { loadSession, originCheck, requireAccount, requireSession, type AppEnv } from "./auth/middleware.ts";
+import type { Provider } from "./auth/providers.ts";
+import { authRoutes } from "./auth/routes.ts";
+import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
-import { Repository } from "./repository.ts";
+import { Repository, type Scope } from "./repository.ts";
 
 const NAME_LENGTH = 20;
 const LIMIT = 1_000_000; // generous bound on the numbers the app can send
@@ -64,66 +69,81 @@ function parseQuiz(body: unknown): ValidQuiz | null {
   };
 }
 
-export function createApp(db: Database): Hono {
+export function createApp(db: Database, authConfig: AuthConfig, providers: Map<string, Provider>): Hono<AppEnv> {
   const repository = new Repository(db);
-  const api = new Hono();
+  const store = new AuthStore(db);
+  const api = new Hono<AppEnv>();
 
+  api.use("*", originCheck(authConfig));
+  api.use("*", loadSession(store, authConfig));
   api.get("/health", (c) => c.json({ ok: true, database: db.dialect }));
+  api.route("/auth", authRoutes(store, authConfig, providers));
 
-  api.get("/users", async (c) => c.json(await repository.listUsers()));
+  // Everything below needs a session, and sees only what the session may see.
+  const data = new Hono<AppEnv>();
+  data.use("*", requireSession);
+  const scope = (c: { get(key: "session"): AppEnv["Variables"]["session"] }): Scope => {
+    const session = c.get("session")!;
+    return { accountId: session.accountId, playerId: session.playerId };
+  };
 
-  api.post("/users", async (c) => {
+  data.get("/users", async (c) => c.json(await repository.listUsers(scope(c))));
+
+  data.post("/users", requireAccount, async (c) => {
     const body: unknown = await c.req.json().catch(() => null);
     const raw = (body as { name?: unknown } | null)?.name;
     const name = typeof raw === "string" ? raw.trim().replace(/\s+/g, " ") : "";
     if (name === "" || name.length > NAME_LENGTH) return c.json({ error: "invalid name" }, 400);
-    const user = await repository.addUser(name);
+    const user = await repository.addUser(name, scope(c).accountId);
     return user ? c.json(user, 201) : c.json({ error: "name already used" }, 409);
   });
 
-  api.delete("/users/:id", async (c) => {
+  data.delete("/users/:id", requireAccount, async (c) => {
     const id = Number(c.req.param("id"));
     if (!isInt(id, 1, Number.MAX_SAFE_INTEGER)) return c.json({ error: "invalid id" }, 400);
+    if (!(await repository.getUser(id, scope(c)))) return c.json({ error: "unknown user" }, 404);
     await repository.deleteUser(id);
     return c.body(null, 204);
   });
 
-  api.post("/attempts", async (c) => {
+  data.post("/attempts", async (c) => {
     const attempt = parseAttempt(await c.req.json().catch(() => null));
     if (!attempt) return c.json({ error: "invalid attempt" }, 400);
-    if (!(await repository.getUser(attempt.userId))) return c.json({ error: "unknown user" }, 404);
+    if (!(await repository.getUser(attempt.userId, scope(c)))) return c.json({ error: "unknown user" }, 404);
     return c.json(await repository.addAttempt(attempt), 201);
   });
 
-  api.get("/users/:id/profile", async (c) => {
+  data.get("/users/:id/profile", async (c) => {
     const id = Number(c.req.param("id"));
     if (!isInt(id, 1, Number.MAX_SAFE_INTEGER)) return c.json({ error: "invalid id" }, 400);
     const since = Number(c.req.query("since") ?? 0);
     if (!Number.isFinite(since) || since < 0) return c.json({ error: "invalid since" }, 400);
-    const user = await repository.getUser(id);
+    const user = await repository.getUser(id, scope(c));
     if (!user) return c.json({ error: "unknown user" }, 404);
     return c.json(await repository.profile(user, Math.trunc(since)));
   });
 
-  api.post("/quizzes", async (c) => {
+  data.post("/quizzes", async (c) => {
     const quiz = parseQuiz(await c.req.json().catch(() => null));
     if (!quiz) return c.json({ error: "invalid quiz" }, 400);
-    if (!(await repository.getUser(quiz.userId))) return c.json({ error: "unknown user" }, 404);
+    if (!(await repository.getUser(quiz.userId, scope(c)))) return c.json({ error: "unknown user" }, 404);
     return c.json(await repository.addQuiz(quiz), 201);
   });
 
-  api.get("/stats", async (c) => {
+  data.get("/stats", async (c) => {
     const since = Number(c.req.query("since") ?? 0);
     if (!Number.isFinite(since) || since < 0) return c.json({ error: "invalid since" }, 400);
-    return c.json(await repository.stats(Math.trunc(since)));
+    return c.json(await repository.stats(Math.trunc(since), scope(c)));
   });
+
+  api.route("/", data);
 
   api.onError((error, c) => {
     console.error(`${c.req.method} ${c.req.path}:`, error.message);
     return c.json({ error: "database error" }, 500);
   });
 
-  const app = new Hono();
+  const app = new Hono<AppEnv>();
   app.route("/api", api);
   return app;
 }

@@ -10,11 +10,44 @@ export function uniqueName(base: string): string {
   return `${base}${counter}${Date.now() % 1000}`.slice(0, 20);
 }
 
-/** Opens the app and creates a player; ends on the column arithmetic screen. */
+export const PASSWORD = "correct horse battery";
+
+/** An email address unique within the run. */
+export function uniqueEmail(base = "parent"): string {
+  counter += 1;
+  return `${base}.${counter}.${Date.now()}@example.test`.toLowerCase();
+}
+
+/** Opens the app signed out and creates an account; ends on "Who's playing?". */
+export async function signUp(page: Page, email = uniqueEmail(), password = PASSWORD): Promise<string> {
+  await page.goto("/");
+  await page.locator(".auth").waitFor();
+  await page.click("button.switch");
+  await page.fill("input[name=name]", "Parent");
+  await page.fill("input[name=email]", email);
+  await page.fill("input[name=password]", password);
+  await page.click(".auth-form button[type=submit]");
+  await page.locator(".new-player input").waitFor();
+  return email;
+}
+
+/** Signs in on the sign-in screen with an email or a username. */
+export async function signIn(page: Page, identifier: string, password = PASSWORD): Promise<void> {
+  await page.goto("/");
+  await page.locator(".auth").waitFor();
+  await page.fill("input[name=identifier]", identifier);
+  await page.fill("input[name=password]", password);
+  await page.click(".auth-form button[type=submit]");
+  await page.locator(".auth").waitFor({ state: "detached" });
+}
+
+/**
+ * Signs up a fresh account (each test has its own browser context, so it starts
+ * signed out) and creates a player; ends on the column arithmetic screen.
+ */
 export async function newPlayer(page: Page, base: string): Promise<string> {
   const name = uniqueName(base);
-  await page.goto("/");
-  await page.locator(".new-player input").waitFor();
+  await signUp(page);
   await page.fill(".new-player input", name);
   await page.keyboard.press("Enter");
   await page.locator(".board").waitFor();

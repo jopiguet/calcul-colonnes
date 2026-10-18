@@ -2,6 +2,9 @@ import { existsSync } from "node:fs";
 import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { createApp } from "./app.ts";
+import { authConfigFromEnv } from "./auth/config.ts";
+import { providersFromEnv } from "./auth/providers.ts";
+import { AuthStore } from "./auth/store.ts";
 import { openDatabase } from "./db/index.ts";
 import { migrate } from "./db/migrate.ts";
 import { Repository } from "./repository.ts";
@@ -18,7 +21,19 @@ if (rebuilt > 0) console.log(`answers rebuilt from their seed for ${rebuilt} ear
 const labelled = await new Repository(db).backfillMistakes();
 if (labelled > 0) console.log(`mistakes labelled for ${labelled} earlier test(s)`);
 
-const app = createApp(db);
+const port = Number(process.env.PORT) || 8787;
+const authConfig = authConfigFromEnv(process.env, port);
+const providers = providersFromEnv(process.env);
+console.log(
+  `sign-in: email and password${[...providers.values()].map((p) => `, ${p.name}`).join("")}` +
+    ` · ${authConfig.publicUrl.origin}${authConfig.secureCookies ? " (secure cookies)" : ""}` +
+    ` · registration ${authConfig.registration}`,
+);
+const store = new AuthStore(db);
+await store.deleteExpired();
+setInterval(() => void store.deleteExpired().catch(() => undefined), 60 * 60 * 1000).unref();
+
+const app = createApp(db, authConfig, providers);
 
 // In production the same process serves the built app (npm run build → dist/).
 if (existsSync("dist/index.html")) {
@@ -27,7 +42,6 @@ if (existsSync("dist/index.html")) {
   console.log("dist/ not found: API only (use `npm run dev`, or `npm run build` first)");
 }
 
-const port = Number(process.env.PORT) || 8787;
 const server = serve({ fetch: app.fetch, port }, () => {
   console.log(`listening on http://localhost:${port}`);
 });

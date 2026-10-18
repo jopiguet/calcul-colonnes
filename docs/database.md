@@ -1,6 +1,6 @@
 # Database
 
-The server stores players and results in **SQLite** by default, or in
+The server stores accounts, players and results in **SQLite** by default, or in
 **PostgreSQL** (Neon or any other) when `DATABASE_URL` is set. The schema and
 the queries are the same on both.
 
@@ -15,6 +15,10 @@ the queries are the same on both.
 
 ```mermaid
 erDiagram
+  accounts ||--o{ users : "owns"
+  accounts ||--o{ credentials : "ways to sign in"
+  users |o--o{ credentials : "player's own"
+  accounts ||--o{ sessions : ""
   users ||--o{ attempts : "column arithmetic"
   users ||--o{ quiz_results : "tests"
   users ||--o{ quiz_answers : ""
@@ -23,7 +27,8 @@ erDiagram
 
 All timestamps are **epoch milliseconds** (`BIGINT`), and booleans are `0`/`1`
 (`SMALLINT`), so both engines have exactly the same columns and values.
-Deleting a user deletes all their rows (`ON DELETE CASCADE`). SQLite enforces
+Deleting a user deletes all their rows (`ON DELETE CASCADE`), and deleting
+an account deletes its players, methods and sessions. SQLite enforces
 this because the server enables `PRAGMA foreign_keys`.
 
 ### `users`
@@ -32,8 +37,53 @@ this because the server enables `PRAGMA foreign_keys`.
 |---|---|---|
 | `id` | integer | primary key |
 | `name` | text | as typed, trimmed, 20 characters at most |
-| `name_key` | text, unique | lower-cased name; prevents "Léa" and "léa" |
+| `name_key` | text, unique | `<account id>:<lower-cased name>`; prevents "Léa" and "léa" in one account, allows them in two |
 | `created_at` | bigint | |
+| `account_id` | integer, nullable | owning account; `NULL` only for players created before version 4, until the first account claims them |
+
+### `accounts`
+
+| Column | Type | |
+|---|---|---|
+| `id` | integer | primary key |
+| `email` | text, unique, nullable | lower-cased; `NULL` for an account created through a provider that gave no verified email |
+| `name` | text | |
+| `created_at` | bigint | |
+
+### `credentials`
+
+One row per way to sign in. See [Authentication](authentication.md#model).
+
+| Column | Type | |
+|---|---|---|
+| `id` | integer | primary key |
+| `account_id` | integer | owning account |
+| `player_id` | integer, nullable | set for a player's own sign-in |
+| `type` | text | `password`, `oauth`; `passkey` and `email_link` reserved |
+| `provider` | text | `google`, `github`…; `''` for a password |
+| `subject` | text | email or username for a password; the provider's user id for `oauth` |
+| `secret` | text, nullable | password hash (`scrypt$…`) |
+| `label` | text, nullable | what the Account page shows |
+| `created_at`, `last_used_at` | bigint | |
+
+`(type, provider, subject)` is unique: one email, username or provider
+identity signs in to one place only.
+
+### `sessions`
+
+| Column | Type | |
+|---|---|---|
+| `id` | text | primary key: SHA-256 of the cookie's token, hex. The token itself is never stored. |
+| `account_id` | integer | |
+| `player_id` | integer, nullable | set for a player's own session |
+| `created_at`, `last_seen_at`, `expires_at` | bigint | |
+| `user_agent` | text, nullable | first 200 characters |
+
+### `auth_flows`
+
+Provider sign-ins in progress: `state` (primary key), `provider`, the PKCE
+`verifier`, `intent` (`login`, `link`, `link-player`), `account_id`,
+`player_id`, `created_at`. Each row is deleted when used, and after 10 minutes.
 
 ### `attempts`
 
@@ -113,6 +163,7 @@ start, in order, each in its own transaction together with its row in
 | `003_quiz_results` | `quiz_results` |
 | `004_quiz_answers` | `quiz_answers`; `focus` and `version` on `quiz_results` |
 | `005_mistakes` | `mistake` on `quiz_answers` (common SQL, one file) |
+| `006_accounts` | `accounts`, `credentials`, `sessions`, `auth_flows`; `account_id` on `users` |
 
 **File names.**
 
@@ -121,7 +172,7 @@ start, in order, each in its own transaction together with its row in
 
 **Adding a migration.**
 
-1. Create `005_name.sql`, or the pair of `005_name.sqlite.sql` and `005_name.postgres.sql`.
+1. Create `007_name.sql`, or the pair of `007_name.sqlite.sql` and `007_name.postgres.sql`.
 2. Restart the server.
 3. Never edit a migration that has already been applied somewhere: add a new one.
 
@@ -165,7 +216,8 @@ database: PostgreSQL (ep-example-123456.eu-central-1.aws.neon.tech/calcul)
    ```sh
    npm run db:copy-to-postgres
    ```
-   This applies the migrations on both sides and copies `users`, `attempts`, `quiz_results` and `quiz_answers` in one transaction, keeping the ids. It then moves the identity sequences past the copied ids. It refuses to run if the target already has players.
+   This applies the migrations on both sides and copies `accounts`, `users`, `credentials`, `attempts`, `quiz_results` and `quiz_answers` in one transaction, keeping the ids. It then moves the identity sequences past the copied ids. It refuses to run if the target already has accounts or players.
+   Sessions are not copied: everyone signs in again once.
 4. **Start the server:** `npm start`. The log should show `database: PostgreSQL (…)`.
 
 To go back to SQLite, empty `DATABASE_URL`. Data written to PostgreSQL in the

@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { answerOf, board, check, focused, newPlayer, setOperations, statsOf, typeAnswer } from "./helpers";
 
-test("additions and subtractions are written from the units, and graded by the server", async ({ page, request }) => {
+test("additions and subtractions are written from the units, and graded by the server", async ({ page }) => {
+  const request = page.request;
   const name = await newPlayer(page, "Add");
   let right = 0;
   for (let i = 0; i < 12; i++) {

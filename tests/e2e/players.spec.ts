@@ -29,7 +29,8 @@ test("names are required and unique, ignoring case", async ({ page }) => {
   await expect(page.locator(".message")).toHaveText("Ce prénom existe déjà");
 });
 
-test("deleting a player removes all their results", async ({ page, request }) => {
+test("deleting a player removes all their results", async ({ page }) => {
+  const request = page.request;
   const name = await newPlayer(page, "Del");
   await typeAnswer(page, await board(page));
   await check(page);

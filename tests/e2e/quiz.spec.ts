@@ -7,7 +7,8 @@ test.beforeEach(async ({ page }) => {
   await expect(page.locator("text=QCM de mathématiques")).toBeVisible();
 });
 
-test("a test is graded the same by the browser, the server and an independent rebuild", async ({ page, request }) => {
+test("a test is graded the same by the browser, the server and an independent rebuild", async ({ page }) => {
+  const request = page.request;
   await page.click("text=Université");
   for (const topic of ["Dérivées", "Trigonométrie", "Exponentielles et logarithmes"]) await page.click(`.topic >> text=${topic}`);
   await page.click("text=Commencer le test");
@@ -42,13 +43,15 @@ test("a test survives a change of language", async ({ page }) => {
   await page.click("text=Commencer le test");
   await page.locator(".choice").nth(1).click();
   await page.keyboard.press("ArrowRight");
-  const formula = await page.locator(".math.display").first().innerText();
+  // The LaTeX source, not the rendered text: Spanish renders \sin as "sen".
+  const formula = await page.locator(".math.display annotation").first().textContent();
+  expect(formula).toMatch(/\S/);
   await page.selectOption(".language", "es");
   await expect(page.locator(".quiz-count")).toHaveText("Pregunta 2 / 10");
   await page.keyboard.press("ArrowLeft");
   await expect(page.locator(".choice.on .letter")).toHaveText("B");
   await page.keyboard.press("ArrowRight");
-  expect(await page.locator(".math.display").first().innerText()).toBe(formula);
+  expect(await page.locator(".math.display annotation").first().textContent()).toBe(formula);
   await page.selectOption(".language", "fr");
 });
 
@@ -66,7 +69,8 @@ test("blank answers count as wrong, and the same test can be replayed", async ({
   expect(await page.locator(".math.display").first().innerText()).toBe(first);
 });
 
-test("giving up does not save the test", async ({ page, request }) => {
+test("giving up does not save the test", async ({ page }) => {
+  const request = page.request;
   await page.click("text=Commencer le test");
   await page.locator(".choices").waitFor();
   page.once("dialog", (dialog) => void dialog.accept());

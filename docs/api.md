@@ -3,7 +3,9 @@
 JSON over HTTP, under `/api`. Bodies are JSON (`Content-Type: application/json`);
 timestamps are epoch milliseconds. Shared types are in `shared/types.ts`.
 
-There is **no authentication**: see [Deployment › Security](deployment.md#security).
+Every route except `/api/health` and `/api/auth/*` needs a session cookie;
+see [Authentication](authentication.md). Requests that change data must come
+from the app's own origin.
 
 | Method | Path | |
 |---|---|---|
@@ -16,6 +18,20 @@ There is **no authentication**: see [Deployment › Security](deployment.md#secu
 | `POST` | [`/api/quizzes`](#post-apiquizzes) | Record a finished test |
 | `GET` | [`/api/stats`](#get-apistats) | Totals of every player |
 
+The [authentication routes](#authentication) are under `/api/auth`.
+
+## Scope
+
+What a session sees:
+
+| Session | Players visible | Restrictions |
+|---|---|---|
+| Account | All players of the account | — |
+| Player (their own sign-in) | That player only | `POST /api/users`, `DELETE /api/users/:id` and the account routes of `/api/auth` answer `403 account_only` |
+
+A player outside the scope answers `404 unknown user`, like one that does not
+exist.
+
 ## Errors
 
 Errors are `{"error": "<reason>"}` with:
@@ -23,6 +39,8 @@ Errors are `{"error": "<reason>"}` with:
 | Status | When |
 |---|---|
 | `400` | Invalid input: `invalid name`, `invalid id`, `invalid attempt`, `invalid quiz`, `invalid since` |
+| `401` | `not_signed_in`: no valid session |
+| `403` | `account_only`: a player's own session on an account route. `cross_site`: change requested from another site |
 | `404` | `unknown user` |
 | `409` | `name already used` |
 | `500` | `database error` (details in the server log) |
@@ -196,3 +214,122 @@ Every player, sorted by right arithmetic answers, then by name:
 
 `total`, `correct` and `today*` count column-arithmetic answers; `quiz*`
 count tests, right answers and questions.
+
+## Authentication
+
+Under `/api/auth`. Errors are `{"error": "<code>"}`; the codes are listed at
+the end of this section. Redirects from provider sign-in carry them as
+`?auth_error=<code>`.
+
+| Method | Path | Session | |
+|---|---|---|---|
+| `GET` | `/api/auth/session` | any | Who is signed in |
+| `GET` | `/api/auth/options` | none | Providers configured, registration open |
+| `POST` | `/api/auth/register` | none | Create an account with a password |
+| `POST` | `/api/auth/login` | none | Sign in with email or username and password |
+| `POST` | `/api/auth/logout` | any | End this session |
+| `POST` | `/api/auth/logout-all` | account | End every other session of the account |
+| `POST` | `/api/auth/password` | account | Change or add the account password |
+| `GET` | `/api/auth/methods` | account | Ways to sign in, of the account and its players |
+| `DELETE` | `/api/auth/methods/:id` | account | Remove one |
+| `POST` | `/api/auth/players/:id/password` | account | Give a player a username and password |
+| `GET` | `/api/auth/oauth/:provider/start` | depends on intent | Start a provider sign-in (browser navigation) |
+| `GET` | `/api/auth/oauth/:provider/callback` | — | Return from the provider (browser navigation) |
+
+### `GET /api/auth/session`
+
+```json
+{
+  "authenticated": true,
+  "account": { "id": 1, "name": "Joachim", "email": "joachim@example.ch" },
+  "player": null
+}
+```
+
+`player` is `{ "id": 3, "name": "Léa" }` for a player's own session. Signed
+out: `{ "authenticated": false }`.
+
+### `GET /api/auth/options`
+
+```json
+{ "providers": [{ "id": "google", "name": "Google" }], "registration": true, "publicUrl": "https://calcul.example.ch" }
+```
+
+`registration` is always `true` while no account exists.
+
+### `POST /api/auth/register`
+
+```json
+{ "name": "Joachim", "email": "joachim@example.ch", "password": "a long enough phrase" }
+```
+
+`201` with the session state, and the session cookie. The very first account
+receives the players created before version 4. Errors: `invalid_name`,
+`invalid_email`, `password_too_short`, `password_too_long`, `email_in_use`
+(409), `registration_closed` (403), `too_many_attempts` (429).
+
+### `POST /api/auth/login`
+
+```json
+{ "identifier": "joachim@example.ch", "password": "a long enough phrase" }
+```
+
+`identifier` is an account email (any case) or a player's username. `200`
+`{"ok": true}` with the session cookie; then `GET /api/auth/session`. Errors: `invalid_credentials` (401),
+`too_many_attempts` (429).
+
+### `POST /api/auth/logout`, `POST /api/auth/logout-all`
+
+`204`. `logout` clears the cookie. `logout-all` keeps the current session.
+
+### `POST /api/auth/password`
+
+```json
+{ "current": "old phrase", "password": "new phrase", "email": "only@if.missing" }
+```
+
+- **`current`:** required when the account already has a password (`401 wrong_password` otherwise).
+- **`email`:** needed when adding a first password to an account created through a provider without an email.
+
+Other sessions of the account are ended. `204`.
+
+### `GET /api/auth/methods`
+
+```json
+[
+  { "id": 1, "type": "password", "provider": "", "label": "joachim@example.ch", "playerId": null, "createdAt": 1792337327408, "lastUsedAt": 1792337400000 },
+  { "id": 4, "type": "oauth", "provider": "google", "label": "joachim@gmail.com", "playerId": null, "createdAt": 1792337500000, "lastUsedAt": null },
+  { "id": 5, "type": "password", "provider": "", "label": "lea.m", "playerId": 3, "createdAt": 1792337600000, "lastUsedAt": null }
+]
+```
+
+### `DELETE /api/auth/methods/:id`
+
+`204`. Removing a player's method also ends that player's sessions. Errors:
+`unknown_method` (404), `last_method` (409) for the account's only method.
+
+### `POST /api/auth/players/:id/password`
+
+```json
+{ "username": "lea.m", "password": "a long enough phrase" }
+```
+
+Replaces the player's previous username and password, if any, and ends their
+sessions. `201` with the new method, as in `GET /api/auth/methods`. Errors: `invalid_username`, `username_taken` (409),
+`unknown_player` (404), and the password errors.
+
+### Provider sign-in
+
+The browser navigates to:
+
+```
+/api/auth/oauth/<provider>/start?intent=login
+/api/auth/oauth/<provider>/start?intent=link                (account session)
+/api/auth/oauth/<provider>/start?intent=link-player&player=3 (account session)
+```
+
+The flow ends with a redirect to `/?auth=signed_in`, `signed_up` or `linked`,
+or `/?auth_error=<code>`: `cancelled`, `invalid_state`, `provider_failed`,
+`provider_unavailable`, `unknown_provider`, `email_in_use`, `already_linked`,
+`registration_closed`, `not_signed_in`, `unknown_player`. See
+[Authentication › Providers](authentication.md#providers-1).

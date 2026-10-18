@@ -37,7 +37,9 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `worksheet.ts` | The A4 PDF worksheet, written by hand (no library) |
 | `quiz.ts` | Multiple-choice screens: settings, question, results; review focus |
 | `progress.ts` | Progress page of a player |
-| `store.ts` | API calls |
+| `store.ts` | API calls; `auth` calls; `SignedOutError` when the session has ended |
+| `auth.ts` | Sign-in screen and Account page |
+| `auth-i18n.ts` | Their texts and the sign-in error messages |
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
 | `i18n.ts` | Interface texts (arithmetic part), current language, column names |
 | `quiz-i18n.ts` | Texts of tests and progress, names of the kinds of question, prompts and explanations |
@@ -56,7 +58,8 @@ folder to start from scratch. To develop against PostgreSQL, set
 | File | Role |
 |---|---|
 | `index.ts` | Startup: `.env`, database, migrations, backfill, HTTP server, static files |
-| `app.ts` | Routes and input validation |
+| `app.ts` | Middleware order, data routes and input validation |
+| `auth/` | Sign-in: settings, passwords, sessions, providers, routes. See [Authentication](authentication.md#code). |
 | `repository.ts` | Every SQL query; grading of attempts and tests; progress |
 | `db/index.ts` | `Database` interface; choice of engine from the environment |
 | `db/sqlite.ts`, `db/postgres.ts` | The two implementations |
@@ -81,6 +84,7 @@ three before building.
 - **Determinism in `shared/quiz/`:** no `Math.random`, `Date` or other source of variation; only the `rng` passed in. See [versioning](question-generators.md#versioning) before changing anything that affects what a seed produces.
 - **The server decides correctness;** the browser only displays.
 - **Every user-visible string goes through a dictionary,** in both languages. Generated questions contain LaTeX and keys only.
+- **Every data query takes a `Scope`** (account, and player for a player's own session). A new route reads it with `scope(c)`, never from the request body.
 - **SQL in the common dialect**, written once in `repository.ts`; read numbers through `Number()` (PostgreSQL returns some as strings).
 - **Schema changes only through a new migration file.**
 - **Storage in the browser** is wrapped in `try/catch`: private browsing must not break the app.
@@ -115,7 +119,7 @@ Two automated checks:
 | Command | What it covers | Time |
 |---|---|---|
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
-| `npm run test:e2e` | The whole app in a browser: 21 tests | about a minute |
+| `npm run test:e2e` | The whole app in a browser: 30 tests | about a minute |
 
 ### Browser tests
 
@@ -127,25 +131,30 @@ npx playwright show-trace test-results/<test>/trace.zip   # after a failure
 ```
 
 Playwright builds the app and starts its own server on port 8799, with a
-fresh SQLite file in `test-results/` (`tests/e2e/server.ts`). The variables
-set in `playwright.config.ts` take precedence over `.env`, so a development
-database, SQLite or Neon, is never touched. Tests run one after the other
-against that shared server; each creates its own players.
+fresh SQLite file in `test-results/` (`tests/e2e/server.ts`), and a mock
+OpenID provider on port 8798 (`tests/e2e/mock-oidc.ts`). The variables set in
+`playwright.config.ts` take precedence over `.env`, so a development
+database, SQLite or Neon, is never touched, and real providers configured in
+`.env` are switched off. Tests run one after the other against that shared
+server; each signs up its own account.
 
 | File | Covers |
 |---|---|
+| `auth.spec.ts` | Sign-up, sign-in, sign-out; cookie attributes; 401 without a session; cross-site refusal; isolation between accounts; rate limit; provider sign-up and sign-in, email takeover refused, cancel; linking a provider and the last method; players' own sign-in by username and by provider; signing out other devices |
 | `players.spec.ts` | Creating, remembering, switching and deleting players; duplicate names; cascade delete |
 | `arithmetic.spec.ts` | Units-first typing and server grading, carries, refused answers, two-digit multiplication lines, division with remainder, remembered settings, the PDF worksheet |
 | `quiz.spec.ts` | A test graded identically by the browser, the server and an independent rebuild from its seed; keyboard; language change mid-test; blanks; replay; giving up |
 | `progress.spec.ts` | Mistakes coming back in the next test; progress page against the API; mistake recorded for each wrong answer and shown |
-| `languages.spec.ts` | Every screen in French, Spanish and English with no missing text; language of a first visit |
+| `languages.spec.ts` | Every screen in French, Spanish and English with no missing text; language of the sign-in screen on a first visit |
 
 `helpers.ts` holds the shared steps. `rebuild()` regenerates a submitted test
 with `shared/quiz` directly, so the tests check the server's grading against
 an independent computation rather than against itself.
 
-Each test should create its own player (`newPlayer`) and assert on that
-player only, so tests stay independent of their order.
+Each test should create its own account and player (`newPlayer` signs up a
+fresh account first) and assert on them only, so tests stay independent of
+their order. Use `page.request` for API calls: it carries the page's session
+cookie, the `request` fixture does not.
 
 ## Before a release
 

@@ -6,6 +6,7 @@ single port, with either a local SQLite file or a PostgreSQL database.
 - [Requirements](#requirements)
 - [Production build](#production-build)
 - [Running as a service](#running-as-a-service)
+- [HTTPS and sign-in](#https-and-sign-in)
 - [Behind a reverse proxy](#behind-a-reverse-proxy)
 - [Security](#security)
 - [Updating](#updating)
@@ -31,10 +32,12 @@ separate server build. At startup it:
 
 1. Applies migrations.
 2. Rebuilds missing test answers.
-3. Logs the database used and the port.
+3. Purges expired sessions, then again every hour.
+4. Logs the database used, the ways to sign in and the port.
 
 ```
 database: SQLite (/srv/calcul-colonnes/data/calcul-colonnes.sqlite)
+sign-in: email and password, Google, GitHub · https://calcul.example.ch · registration closed
 listening on http://localhost:8787
 ```
 
@@ -68,28 +71,61 @@ journalctl -u calcul-colonnes -f
 The `.env` file is read from the working directory. The server stops cleanly
 on `SIGTERM`, closing the database.
 
+## HTTPS and sign-in
+
+On anything but `localhost`, serve the app over **HTTPS**: passwords and the
+session cookie must not travel in clear, and providers refuse `http://`
+redirect URIs other than `localhost`.
+
+Set in `.env`:
+
+| Variable | Default | |
+|---|---|---|
+| `PUBLIC_URL` | `http://localhost:$PORT` | The address people type, e.g. `https://calcul.example.ch`. With `https://`, cookies become `Secure` with the `__Host-` prefix. |
+| `COOKIE_SECURE` | from `PUBLIC_URL` | Force `true` or `false` |
+| `SESSION_DAYS` | `30` | Session lifetime after last use |
+| `REGISTRATION` | `open` | `closed`: only the first account can be created |
+| `TRUST_PROXY` | `false` | `true` behind a reverse proxy, for rate limiting by client address |
+| `AUTH_ATTEMPTS_PER_ADDRESS` | `100` | Sign-in attempts per address in 15 minutes |
+| `GOOGLE_*`, `MICROSOFT_*`, `GITHUB_*`, `OIDC_*` | *(empty)* | Providers, see [Authentication › Providers](authentication.md#providers-1) |
+
+For a family server: create your account, then set `REGISTRATION=closed` and
+restart. Give the children a username from the Account page.
+
 ## Behind a reverse proxy
 
 The app uses relative paths (`/api/…`), so it expects to be served at the root
-of a host name, not under a sub-path. Example with Caddy, including the
-password protection recommended below:
+of a host name, not under a sub-path. Caddy obtains and renews the HTTPS
+certificate by itself:
 
 ```caddy
-calcul.example.home {
-    basicauth {
-        # caddy hash-password --plaintext '…'
-        famille $2a$14$CHANGE_ME
-    }
+calcul.example.ch {
     reverse_proxy localhost:8787
 }
 ```
 
+With nginx, pass the host and the client address:
+
+```nginx
+location / {
+    proxy_pass http://127.0.0.1:8787;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+Then `PUBLIC_URL=https://calcul.example.ch` and `TRUST_PROXY=true`. Keep the
+Node port closed to the outside: only the proxy should reach it, otherwise a
+client could send its own `X-Forwarded-For`.
+
 ## Security
 
-The app was built for a family or a classroom on a trusted network.
-
-- **No authentication or roles.** Anyone who reaches the server can list players, read their results and **delete** them. Do not expose the port to the internet. Keep it on a home network, or put it behind a reverse proxy with authentication (above), a VPN or an access-controlled tunnel.
-- **Grading cannot be forged from the browser:** the server recomputes every mark. A determined user with network access can still post fabricated answers through the API, since there is no authentication.
+- **Sign-in required** for everything except the sign-in screen and `/api/health`. Each account sees only its own players; a player's own session sees only that player. Details: [Authentication](authentication.md).
+- **Passwords** are hashed with scrypt; sessions are random tokens stored only as SHA-256; cookies are `HttpOnly` and `SameSite=Lax`, and `Secure` with HTTPS.
+- **Cross-site requests** that change data are refused, and sign-in attempts are rate limited. Rate limits are kept in memory, so run a single server process.
+- **Open registration:** with `REGISTRATION=open`, anyone who reaches the server can create an account. Their account is empty and sees nothing of others, but close registration if the server is public and meant for one family or class.
+- **Grading cannot be forged from the browser:** the server recomputes every mark. A signed-in user can still post fabricated answers for their own players through the API.
 - **Personal data:** the database holds first names and learning results of children. Keep backups as private as the database. Deleting a player from the Scores screen removes all their rows.
 - **No external requests:** the app loads no third-party scripts, fonts or analytics; KaTeX is bundled.
 - **The browser** keeps only settings and the last player's id in `localStorage`.
@@ -106,6 +142,7 @@ sudo systemctl restart calcul-colonnes
 Migrations run by themselves at the next start. Then:
 
 - **Before upgrading:** back up the database ([Database › Backups](database.md#backups)).
+- **From 3.x to 4.x:** sign-in becomes required. Open the app right after the upgrade and create your account: the first account receives all existing players. See [Authentication › Upgrading](authentication.md#upgrading-from-3x).
 - **After upgrading:** reload the open pages, because a browser still running the previous build is refused when it submits a test from another generator version, and shows *Résultat non enregistré*.
 
 ## Troubleshooting
@@ -115,6 +152,10 @@ Migrations run by themselves at the next start. Then:
 | The app shows **Serveur injoignable** | The server is not running or not reachable from this device. Check `npm start`, the port and the firewall. |
 | *Résultat non enregistré* after a test | Server unreachable, or the page runs an older build than the server. Reload the page. |
 | `DATABASE_URL must start with postgresql://` | Malformed `DATABASE_URL`; empty it to use SQLite. |
+| Signed out after every reload | `PUBLIC_URL` is `https://` but the page was opened over `http://` (a local IP, say): browsers drop `Secure` cookies there. Open the HTTPS address. |
+| Sign-in refused with `cross_site` | `PUBLIC_URL` differs from the address in the browser (another host name, `www.`, a port). |
+| A provider says *redirect_uri mismatch* | The URI registered with the provider must be exactly `<PUBLIC_URL>/api/auth/oauth/<id>/callback`. |
+| *Trop de tentatives* for everyone | Behind a proxy without `TRUST_PROXY=true`, all visitors share one address. |
 | `npm install` fails on `better-sqlite3` | No prebuilt binary for this platform; install `python3`, `make` and `g++`, then retry. |
 | `EADDRINUSE` | Another process uses the port; change `PORT` or stop it. |
 | First request slow on Neon | The Neon compute was suspended and is waking up; subsequent requests are fast. |

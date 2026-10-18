@@ -12,14 +12,18 @@ flowchart LR
     UI --> LS
   end
   subgraph Server["Node server (server/)"]
+    AUTH["auth/ — sessions,<br/>passwords, providers"]
     API["Hono JSON API<br/>/api/*"]
+    API --> AUTH --> DB
     SQs["shared/quiz — same generators"]
     REPO["repository.ts<br/>SQL"]
     DB["db/ — SQLite or PostgreSQL"]
     API --> SQs
     API --> REPO --> DB
   end
-  UI -- "fetch /api" --> API
+  UI -- "fetch /api + session cookie" --> API
+  UI -. "sign-in redirect" .-> IDP["Google, Microsoft,<br/>GitHub, OpenID"]
+  IDP -. "callback" .-> AUTH
   DB --> F[("SQLite file")]
   DB --> N[("Neon PostgreSQL")]
 ```
@@ -30,7 +34,7 @@ Three parts, in one repository and one npm package:
 |---|---|---|
 | `src/` | browser | Every screen, keyboard handling, the arithmetic boards, the PDF worksheet, browser settings |
 | `shared/` | both | Types shared over the API, and the whole multiple-choice engine: generators, test assembly, progress rules |
-| `server/` | Node | JSON API, grading, database access and migrations, maintenance scripts |
+| `server/` | Node | JSON API, sign-in and sessions, grading, database access and migrations, maintenance scripts |
 
 In production a single Node process serves the built app (`dist/`) and the
 API on one port. In development Vite serves the app on port 5173 and proxies
@@ -48,6 +52,15 @@ stored is the server's own verdict:
 
 A modified browser therefore cannot record a result that is not the actual
 answer given.
+
+### Sessions in cookies, scope from the session
+
+Sign-in is server-side sessions in an `HttpOnly` cookie, not tokens kept by
+the page: the page's scripts never see a credential, signing out is
+immediate, and there is nothing to refresh. Every data route takes the
+account and, for a player's own session, the player from the session, and
+filters every query by them (`Scope` in `server/repository.ts`). Players
+another session may not see answer `404`. See [Authentication](authentication.md).
 
 ### A test is a seed
 
@@ -139,7 +152,12 @@ sequenceDiagram
 2. Opens the database chosen by `DATABASE_URL` / `SQLITE_PATH`.
 3. Applies pending migrations (`server/db/migrate.ts`), each in a transaction.
 4. Rebuilds `quiz_answers` for any test saved without them (`backfillQuizAnswers`), regenerating each from its seed with its own generator version.
-5. Serves `/api`, and `dist/` if it exists.
+5. Reads the sign-in settings and providers, purges expired sessions (then hourly).
+6. Serves `/api`, and `dist/` if it exists.
+
+Each request passes through, in order: the origin check (changes from other
+sites refused), session loading from the cookie, then either `/api/auth/*` or
+the data routes, which require a session.
 
 ## Browser state
 
@@ -147,7 +165,8 @@ sequenceDiagram
 
 | Field | Meaning |
 |---|---|
-| `view` | `play`, `players`, `scores` or `progress` |
+| `auth`, `options` | Who is signed in (`GET /api/auth/session`), providers offered |
+| `view` | `play`, `players`, `scores`, `progress` or `account` |
 | `user` | Current player |
 | `settings` | Loaded from and saved to `localStorage` (`src/settings.ts`) |
 | `exercise`, `phase`, `score`, `questions` | Current arithmetic exercise and the sitting's score |
@@ -167,10 +186,11 @@ See [Development › Adding a language](development.md#adding-a-language).
 
 | Package | Where | Why |
 |---|---|---|
-| `hono`, `@hono/node-server` | server | HTTP routing and static files |
+| `hono`, `@hono/node-server` | server | HTTP routing, cookies and static files |
 | `better-sqlite3` | server | SQLite (native module) |
 | `pg` | server | PostgreSQL / Neon |
 | `katex` | browser, check script | Formula rendering |
+| — | server | Sign-in uses Node's `crypto` (scrypt, SHA-256, random tokens) and `fetch` for providers: no auth library |
 | `tsx` | server | Runs the TypeScript server without a build step |
 | `vite`, `typescript`, `concurrently` | development | Build, type checking, dev servers |
 | `@playwright/test` | development | Browser tests |

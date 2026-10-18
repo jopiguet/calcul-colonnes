@@ -1,6 +1,15 @@
-import type { NewAttempt, NewQuizResult, Profile, User, UserStats } from "../shared/types";
+import type {
+  AuthOptions,
+  AuthState,
+  NewAttempt,
+  NewQuizResult,
+  Profile,
+  SignInMethod,
+  User,
+  UserStats,
+} from "../shared/types";
 
-export type { NewAttempt, NewQuizResult, Profile, User, UserStats };
+export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, Profile, SignInMethod, User, UserStats };
 
 /**
  * Players and scores live in the server's database (SQLite, or PostgreSQL on
@@ -9,20 +18,58 @@ export type { NewAttempt, NewQuizResult, Profile, User, UserStats };
 
 export class DuplicateNameError extends Error {}
 
+/** An error answered by the API, with its code ("invalid_credentials", "email_in_use"…). */
+export class ApiError extends Error {
+  constructor(
+    readonly status: number,
+    readonly code: string,
+  ) {
+    super(code);
+  }
+}
+
+/** The session ended (expired, signed out elsewhere): the app goes back to the sign-in screen. */
+export class SignedOutError extends Error {}
+
 async function call<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`/api${path}`, {
     ...init,
+    credentials: "same-origin",
     headers: init?.body ? { "Content-Type": "application/json" } : undefined,
   });
-  if (response.status === 409) throw new DuplicateNameError();
-  if (!response.ok) throw new Error(`${init?.method ?? "GET"} ${path}: HTTP ${response.status}`);
-  return (response.status === 204 ? undefined : await response.json()) as T;
+  if (response.ok) return (response.status === 204 ? undefined : await response.json()) as T;
+  const code = String(((await response.json().catch(() => ({}))) as { error?: unknown }).error ?? response.status);
+  if (response.status === 401 && code === "not_signed_in") throw new SignedOutError();
+  if (response.status === 409 && path === "/users") throw new DuplicateNameError();
+  throw new ApiError(response.status, code);
 }
+
+const post = <T>(path: string, body: unknown = {}): Promise<T> =>
+  call<T>(path, { method: "POST", body: JSON.stringify(body) });
 
 function startOfToday(): number {
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 }
+
+export const auth = {
+  session: (): Promise<AuthState> => call("/auth/session"),
+  options: (): Promise<AuthOptions> => call("/auth/options"),
+  register: (name: string, email: string, password: string): Promise<AuthState> =>
+    post("/auth/register", { name, email, password }),
+  login: (identifier: string, password: string): Promise<void> => post("/auth/login", { identifier, password }),
+  logout: (): Promise<void> => post("/auth/logout"),
+  logoutOthers: (): Promise<void> => post("/auth/logout-all"),
+  methods: (): Promise<SignInMethod[]> => call("/auth/methods"),
+  removeMethod: (id: number): Promise<void> => call(`/auth/methods/${id}`, { method: "DELETE" }),
+  setPassword: (password: string, current?: string, email?: string): Promise<void> =>
+    post("/auth/password", { password, current, email }),
+  setPlayerPassword: (playerId: number, username: string, password: string): Promise<SignInMethod> =>
+    post(`/auth/players/${playerId}/password`, { username, password }),
+  /** Full-page navigation to the provider (OAuth). */
+  providerUrl: (provider: string, intent: "login" | "link" | "link-player", player?: number): string =>
+    `/api/auth/oauth/${encodeURIComponent(provider)}/start?intent=${intent}${player ? `&player=${player}` : ""}`,
+};
 
 export const store = {
   listUsers: (): Promise<User[]> => call("/users"),

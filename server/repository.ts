@@ -28,7 +28,14 @@ const toUser = (row: Row): User => ({
   createdAt: Number(row.created_at),
 });
 
-export const nameKey = (name: string): string => name.toLocaleLowerCase("fr");
+/** Unique per account: "<account id>:<lower-cased name>". */
+export const nameKey = (accountId: number, name: string): string => `${accountId}:${name.toLocaleLowerCase("fr")}`;
+
+/** What a session may see: the account's players, or one player (a child's own login). */
+export interface Scope {
+  accountId: number;
+  playerId: number | null;
+}
 
 /** Symbols stored in the database (plain ASCII). */
 const STORED: Record<Operator, string> = { "+": "+", "−": "-", "×": "*", "÷": "/" };
@@ -57,23 +64,31 @@ function mistakeOf(q: Question, given: number): string | null {
 export class Repository {
   constructor(private readonly db: Database) {}
 
-  async listUsers(): Promise<User[]> {
-    const rows = await this.db.query("SELECT id, name, created_at FROM users");
+  async listUsers(scope: Scope): Promise<User[]> {
+    const rows = await this.db.query(
+      "SELECT id, name, created_at FROM users WHERE account_id = $1 AND (CAST($2 AS BIGINT) = 0 OR id = CAST($2 AS BIGINT))",
+      [scope.accountId, scope.playerId ?? 0],
+    );
     return rows.map(toUser).sort((a, b) => a.name.localeCompare(b.name, "fr"));
   }
 
-  async getUser(id: number): Promise<User | null> {
-    const rows = await this.db.query("SELECT id, name, created_at FROM users WHERE id = $1", [id]);
+  /** The player, if this session may see it. */
+  async getUser(id: number, scope: Scope): Promise<User | null> {
+    if (scope.playerId !== null && scope.playerId !== id) return null;
+    const rows = await this.db.query("SELECT id, name, created_at FROM users WHERE id = $1 AND account_id = $2", [
+      id,
+      scope.accountId,
+    ]);
     return rows[0] ? toUser(rows[0]) : null;
   }
 
-  /** Null when a player with the same name (ignoring case) already exists. */
-  async addUser(name: string): Promise<User | null> {
+  /** Null when the account already has a player with the same name (ignoring case). */
+  async addUser(name: string, accountId: number): Promise<User | null> {
     const rows = await this.db.query(
-      `INSERT INTO users (name, name_key, created_at) VALUES ($1, $2, $3)
+      `INSERT INTO users (name, name_key, created_at, account_id) VALUES ($1, $2, $3, $4)
        ON CONFLICT (name_key) DO NOTHING
        RETURNING id, name, created_at`,
-      [name, nameKey(name), Date.now()],
+      [name, nameKey(accountId, name), Date.now(), accountId],
     );
     return rows[0] ? toUser(rows[0]) : null;
   }
@@ -318,7 +333,7 @@ export class Repository {
   }
 
   /** `since`: start of "today" in the player's time zone, in epoch milliseconds. */
-  async stats(since: number): Promise<UserStats[]> {
+  async stats(since: number, scope: Scope): Promise<UserStats[]> {
     const rows = await this.db.query(
       `SELECT u.id, u.name, u.created_at,
               COUNT(a.id)                                                  AS total,
@@ -327,8 +342,9 @@ export class Repository {
               COALESCE(SUM(CASE WHEN a.at >= $1 THEN a.correct ELSE 0 END), 0) AS today_correct
          FROM users u
          LEFT JOIN attempts a ON a.user_id = u.id
+        WHERE u.account_id = $2 AND (CAST($3 AS BIGINT) = 0 OR u.id = CAST($3 AS BIGINT))
         GROUP BY u.id, u.name, u.created_at`,
-      [since],
+      [since, scope.accountId, scope.playerId ?? 0],
     );
     // Separate query: joining both tables at once would multiply the rows.
     const quizRows = await this.db.query(

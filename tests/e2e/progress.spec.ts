@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { newPlayer, profileOf, rebuild, takeQuiz } from "./helpers";
 
-test("mistakes come back in the next test until they are fixed", async ({ page, request }) => {
+test("mistakes come back in the next test until they are fixed", async ({ page }) => {
+  const request = page.request;
   const name = await newPlayer(page, "Rev");
   await page.click("text=📐 QCM");
   for (const topic of ["Intégrales", "Trigonométrie", "Limites", "Exponentielles et logarithmes"]) {
@@ -41,7 +42,8 @@ test("mistakes come back in the next test until they are fixed", async ({ page, 
   }
 });
 
-test("the mistake behind each wrong answer is recorded and shown", async ({ page, request }) => {
+test("the mistake behind each wrong answer is recorded and shown", async ({ page }) => {
+  const request = page.request;
   const name = await newPlayer(page, "Mis");
   await page.click("text=📐 QCM");
   await page.click("text=Commencer le test");

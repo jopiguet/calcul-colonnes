@@ -1,6 +1,8 @@
 /**
- * One-off upgrade: copies players and attempts from the local SQLite file into
- * the PostgreSQL database named by DATABASE_URL (Neon), keeping the ids.
+ * One-off upgrade: copies accounts, sign-in methods, players and results from
+ * the local SQLite file into the PostgreSQL database named by DATABASE_URL
+ * (Neon), keeping the ids. Sessions and sign-ins in progress are not copied:
+ * everyone signs in again after the switch.
  *
  *   npm run db:copy-to-postgres
  *
@@ -25,9 +27,11 @@ try {
   await migrate(source);
   await migrate(target);
 
-  const existing = await target.query("SELECT COUNT(*) AS n FROM users");
-  if (Number(existing[0]?.n) > 0) throw new Error("The PostgreSQL database already has players");
+  const existing = await target.query("SELECT (SELECT COUNT(*) FROM users) + (SELECT COUNT(*) FROM accounts) AS n");
+  if (Number(existing[0]?.n) > 0) throw new Error("The PostgreSQL database already has accounts or players");
 
+  const accounts = await source.query("SELECT * FROM accounts ORDER BY id");
+  const credentials = await source.query("SELECT * FROM credentials ORDER BY id");
   const users = await source.query("SELECT * FROM users ORDER BY id");
   const attempts = await source.query("SELECT * FROM attempts ORDER BY id");
   const quizzes = await source.query("SELECT * FROM quiz_results ORDER BY id");
@@ -55,7 +59,13 @@ try {
   try {
     await target.exec(
       "BEGIN;\n" +
-        insert("users", ["id", "name", "name_key", "created_at"], users) +
+        insert("accounts", ["id", "email", "name", "created_at"], accounts) +
+        insert("users", ["id", "name", "name_key", "created_at", "account_id"], users) +
+        insert(
+          "credentials",
+          ["id", "account_id", "player_id", "type", "provider", "subject", "secret", "label", "created_at", "last_used_at"],
+          credentials,
+        ) +
         insert(
           "attempts",
           [
@@ -82,6 +92,8 @@ try {
           ["id", "quiz_id", "user_id", "at", "position", "skill", "topic", "given", "correct", "review", "mistake"],
           quizAnswers,
         ) +
+        bump("accounts") +
+        bump("credentials") +
         bump("users") +
         bump("attempts") +
         bump("quiz_results") +
@@ -93,7 +105,7 @@ try {
     throw error;
   }
   console.log(
-    `copied ${users.length} players, ${attempts.length} attempts and ${quizzes.length} tests to ${target.label}`,
+    `copied ${accounts.length} accounts, ${credentials.length} sign-in methods, ${users.length} players, ${attempts.length} attempts and ${quizzes.length} tests to ${target.label}`,
   );
 } finally {
   await source.close();

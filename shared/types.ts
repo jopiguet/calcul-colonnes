@@ -86,3 +86,35 @@ export interface Profile {
   mistakes: MistakeProgress[];
   operators: OperatorProgress[];
 }
+
+// ------------------------------------------------------------- authentication
+
+/** Who is signed in. A player session (own login of a child) is limited to that player. */
+export interface AuthState {
+  authenticated: boolean;
+  account?: { id: number; name: string; email: string | null };
+  player?: { id: number; name: string } | null;
+}
+
+/** How one can sign in on this server. */
+export interface AuthOptions {
+  providers: { id: string; name: string }[];
+  /** New accounts may be created (always true while there is no account yet). */
+  registration: boolean;
+  /** PUBLIC_URL: the address the app expects to be opened at. */
+  publicUrl: string;
+}
+
+/** A way to sign in, attached to the account or to one of its players. */
+export interface SignInMethod {
+  id: number;
+  type: "password" | "oauth" | "passkey" | "email_link";
+  /** Provider id for "oauth" ("google", "github"…); empty otherwise. */
+  provider: string;
+  /** Email or username for a password, name or email at the provider. */
+  label: string | null;
+  /** Set for a player's own login. */
+  playerId: number | null;
+  createdAt: number;
+  lastUsedAt: number | null;
+}
