@@ -52,14 +52,42 @@ body {
   color: var(--muted);
 }
 
-.level input {
-  width: 6.5rem;
-  font: inherit;
+.level {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.level-value {
+  min-width: 3.2rem;
+  text-align: center;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+button.step {
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  font-size: 1.2rem;
   color: var(--ink);
   background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 0.5rem;
-  padding: 0.3rem 0.5rem;
+}
+
+button.chip {
+  padding: 0.4rem 0.9rem;
+  color: var(--ink);
+  background: var(--paper);
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .score {
@@ -227,4 +255,667 @@ button.ghost {
 button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
   outline-offset: 2px;
+}
+
+.print {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.players {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+button.player {
+  color: var(--ink);
+  font-size: 1.1rem;
+}
+
+.new-player {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.new-player input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  padding: 0.7rem 0.9rem;
+}
+
+.scores {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.scores th {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: right;
+  padding: 0.3rem 0.4rem;
+}
+
+.scores td {
+  text-align: right;
+  padding: 0.5rem 0.4rem;
+  border-top: 1px solid var(--line);
+}
+
+.scores th:first-child,
+.scores td.name {
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.scores tr.current td.name {
+  font-weight: 700;
+}
+
+button.icon {
+  padding: 0.25rem 0.45rem;
+  border-color: transparent;
+}
+
+.note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--warn);
+  text-align: center;
+}
+
+.note:empty {
+  display: none;
+}
+
+/* ---- top bar, operations, language ---- */
+
+.chips {
+  display: flex;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.language {
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  padding: 0.4rem 0.6rem;
+}
+
+.controls .bar {
+  flex-wrap: wrap;
+  row-gap: 0.6rem;
+}
+
+.operations {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.operation {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.operation input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- Euclidean division ---- */
+
+.division {
+  --cell: min(4rem, calc((100vw - 7rem) / (var(--columns) + 1)));
+  display: grid;
+  gap: 0.35rem;
+  align-items: center;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: calc(var(--cell) * 0.62);
+  font-variant-numeric: tabular-nums;
+}
+
+.division .cell {
+  width: var(--cell);
+  height: var(--cell);
+}
+
+.vbar {
+  align-self: stretch;
+  justify-self: start;
+  width: 0;
+  border-left: 3px solid var(--ink);
+}
+
+.hbar {
+  align-self: stretch;
+  border-bottom: 3px solid var(--ink);
+}
+
+.remainder-label {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  color: var(--muted);
+  padding-right: 0.3rem;
+}
+
+/* Working lines and partial products: the child's working, not checked. */
+.box.scratch {
+  border-style: dashed;
+}
+
+.box.partial {
+  border-color: color-mix(in srgb, var(--line) 70%, var(--accent));
+}
+
+.rule.thin {
+  height: 1.5px;
+  background: var(--muted);
+}
+
+.chips .chip:last-child {
+  flex-shrink: 0;
+  max-width: none;
+}
+
+.chips .chip:first-child {
+  min-width: 0;
+  max-width: none;
+}
+
+/* ---- mode tabs and segmented choices ---- */
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.tabs {
+  margin-bottom: 1rem;
+}
+
+.tabs .segment {
+  flex: 1;
+}
+
+button.segment {
+  color: var(--ink);
+  background: var(--paper);
+  border-color: var(--line);
+  padding: 0.55rem 0.9rem;
+}
+
+button.segment.on {
+  color: var(--paper);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.field-label {
+  width: 100%;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.count .field-label {
+  width: auto;
+  margin: 0 0.4rem 0 0;
+}
+
+.subtitle {
+  margin: 0.5rem 0 0;
+  font-size: 1.1rem;
+  align-self: flex-start;
+}
+
+/* ---- multiple-choice tests ---- */
+
+.quiz-setup,
+.quiz,
+.quiz-result {
+  align-items: stretch;
+}
+
+.quiz-setup .title,
+.quiz-result .title {
+  text-align: center;
+}
+
+.topics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.topic {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  cursor: pointer;
+}
+
+.topic input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.quiz:focus {
+  outline: none;
+}
+
+.quiz-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.quiz-count {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.quiz-topic {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+  margin-top: -0.6rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+
+.quiz-prompt {
+  margin: 0;
+  font-weight: 600;
+}
+
+.math.display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  font-size: 1.15rem;
+}
+
+.math.display .katex-display {
+  margin: 0.2rem 0;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+button.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0.5rem 0.9rem;
+  text-align: left;
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  overflow-x: auto;
+}
+
+button.choice.on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--paper));
+}
+
+.letter {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  border: 1.5px solid var(--line);
+}
+
+.choice.on .letter {
+  color: var(--paper);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.quiz .actions {
+  justify-content: space-between;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+button.small {
+  align-self: center;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.big-score {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.percent,
+.status {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.actions.wrap {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.review {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.review-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--good);
+  border-radius: 0.7rem;
+}
+
+.review-item.bad {
+  border-left-color: var(--bad);
+}
+
+.review-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.review-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.review-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.review-line.given .review-label {
+  color: var(--bad);
+}
+
+.review-line.right .review-label {
+  color: var(--good);
+}
+
+.explanation {
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--accent) 6%, var(--paper));
+  font-size: 0.9rem;
+}
+
+.explanation p {
+  margin: 0;
+}
+
+.explanation .math.display {
+  font-size: 0.95rem;
+}
+
+button.choice .math {
+  padding: 0.2rem 0;
+}
+
+/* ---- progress ---- */
+
+button.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: inherit;
+  color: var(--accent);
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge.is-review {
+  color: var(--bad);
+  background: color-mix(in srgb, var(--bad) 12%, var(--paper));
+}
+
+.badge.is-learning {
+  color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 12%, var(--paper));
+}
+
+.badge.is-mastered {
+  color: var(--good);
+  background: color-mix(in srgb, var(--good) 12%, var(--paper));
+}
+
+.progress-page {
+  align-items: stretch;
+}
+
+.progress-page .title {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.progress-page > button.primary {
+  align-self: center;
+}
+
+.status-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.topic-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.skills {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.skill {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem 0.8rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--warn);
+  border-radius: 0.6rem;
+}
+
+.skill.is-review {
+  border-left-color: var(--bad);
+}
+
+.skill.is-mastered {
+  border-left-color: var(--good);
+}
+
+.skill-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.skill-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: auto;
+}
+
+.dots {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.dot {
+  display: grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--paper);
+}
+
+.dot.good {
+  background: var(--good);
+}
+
+.dot.bad {
+  background: var(--bad);
+}
+
+.skill-count {
+  min-width: 2.6rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+.operator-symbol {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.review-option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.review-info {
+  text-align: left;
+}
+
+.review-info:empty {
+  display: none;
 }

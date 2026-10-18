@@ -1,0 +1,103 @@
+import { LEVELS as QUIZ_LEVELS, QUIZ_COUNTS, TOPICS, type Level, type Topic } from "../shared/quiz";
+import type { Operator } from "../shared/types";
+import { isLang, type Lang } from "./i18n";
+
+/**
+ * Settings of this browser, kept in localStorage. Players and scores are not
+ * here: they are in the server's database.
+ */
+export interface Settings {
+  lang: Lang;
+  /** Maximum of the big number: top number, or dividend. */
+  maximum: number;
+  /** Maximum of the multiplier and of the divisor. */
+  smallLimit: number;
+  operators: Operator[];
+  /** Which part of the app is shown. */
+  mode: Mode;
+  quizLevel: Level;
+  quizTopics: Topic[];
+  quizCount: number;
+  /** Mix the player's recent mistakes into new tests. */
+  quizReview: boolean;
+}
+
+export type Mode = "columns" | "quiz";
+
+export const OPERATORS: Operator[] = ["+", "−", "×", "÷"];
+
+// By 10 up to 100, then by 100 up to 1000. It starts at 20 because the top number is at least 10.
+export const LEVELS: number[] = [
+  ...Array.from({ length: 9 }, (_, i) => 20 + i * 10),
+  ...Array.from({ length: 9 }, (_, i) => 200 + i * 100),
+];
+export const SMALL_LEVELS: number[] = Array.from({ length: 11 }, (_, i) => 2 + i); // 2…12
+
+const SETTINGS_KEY = "calcul-colonnes.settings";
+const LEGACY_MAXIMUM_KEY = "calcul-colonnes.maximum";
+const USER_KEY = "calcul-colonnes.user";
+
+function nearest(levels: number[], value: unknown, fallback: number): number {
+  const wanted = typeof value === "number" && Number.isFinite(value) ? value : fallback;
+  return levels.reduce((best, level) =>
+    Math.abs(level - wanted) < Math.abs(best - wanted) ? level : best,
+  );
+}
+
+function read(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null; // storage unavailable (private mode…): defaults are used
+  }
+}
+
+function write(key: string, value: string | null): void {
+  try {
+    if (value === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, value);
+  } catch {
+    // the setting just won't be remembered
+  }
+}
+
+export function loadSettings(): Settings {
+  let saved: Partial<Record<keyof Settings, unknown>> = {};
+  try {
+    const parsed: unknown = JSON.parse(read(SETTINGS_KEY) ?? "{}");
+    if (typeof parsed === "object" && parsed !== null) saved = parsed;
+  } catch {
+    // unreadable value: defaults are used
+  }
+  const legacyMaximum = Number(read(LEGACY_MAXIMUM_KEY) ?? NaN);
+  const operators = Array.isArray(saved.operators)
+    ? OPERATORS.filter((operator) => (saved.operators as unknown[]).includes(operator))
+    : [];
+  const quizTopics = Array.isArray(saved.quizTopics)
+    ? TOPICS.filter((topic) => (saved.quizTopics as unknown[]).includes(topic))
+    : [];
+  return {
+    mode: saved.mode === "quiz" ? "quiz" : "columns",
+    quizLevel: QUIZ_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
+    quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
+    quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
+    quizReview: saved.quizReview !== false,
+    lang: isLang(saved.lang) ? saved.lang : navigator.language.startsWith("es") ? "es" : "fr",
+    maximum: nearest(LEVELS, saved.maximum ?? legacyMaximum, 100),
+    smallLimit: nearest(SMALL_LEVELS, saved.smallLimit, 9),
+    operators: operators.length > 0 ? operators : ["+", "−"],
+  };
+}
+
+export function saveSettings(settings: Settings): void {
+  write(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+export function loadUserId(): number | null {
+  const saved = read(USER_KEY);
+  return saved === null ? null : Number(saved);
+}
+
+export function saveUserId(id: number | null): void {
+  write(USER_KEY, id === null ? null : String(id));
+}
