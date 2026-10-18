@@ -37,15 +37,28 @@ for (const [topic, byLevel] of Object.entries(GENERATORS) as [Topic, Record<Leve
   }
 }
 
+/**
+ * Kinds of question added or retired after version 1. Old versions must keep
+ * drawing from exactly the list they had, so a new kind gets `from: <new version>`
+ * and a kind whose behaviour changes is retired (`until`) and replaced by a new id.
+ * See docs/question-generators.md#versioning.
+ */
+const AVAILABILITY: Record<string, { from?: number; until?: number }> = {};
+
+function available(id: string, version: number): boolean {
+  const a = AVAILABILITY[id];
+  return (a?.from ?? 1) <= version && (a?.until === undefined || version < a.until);
+}
+
 export const SKILL_IDS: string[] = [...SKILLS.keys()];
 export const isSkill = (id: string): boolean => SKILLS.has(id);
 export const skillTopic = (id: string): Topic | undefined => SKILLS.get(id)?.topic;
 
 /** Kinds of question a test with this level and these topics can contain. */
-export function skillsFor(level: Level, topics: Topic[]): string[] {
+export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION): string[] {
   return SKILL_IDS.filter((id) => {
     const skill = SKILLS.get(id)!;
-    return topics.includes(skill.topic) && skill.levels.includes(level);
+    return topics.includes(skill.topic) && skill.levels.includes(level) && available(id, version);
   });
 }
 
@@ -161,7 +174,7 @@ export function generateQuiz({ seed, level, topics, count, focus = [], version =
 
   // Review questions first (only when there is something to review: without focus,
   // the random draws are exactly those of a plain test).
-  const kinds = focus.filter(isSkill);
+  const kinds = focus.filter((id) => isSkill(id) && available(id, version));
   const reviews = reviewCount(count, kinds);
   const reviewOrder = reviews > 0 ? rng.shuffle(kinds) : [];
   for (let i = 0; i < reviews; i++) {
@@ -172,7 +185,7 @@ export function generateQuiz({ seed, level, topics, count, focus = [], version =
 
   for (let i = 0; i < count - reviews; i++) {
     const topic = order[i % order.length]!;
-    const entries = Object.entries(GENERATORS[topic][level]);
+    const entries = Object.entries(GENERATORS[topic][level]).filter(([name]) => available(`${topic}.${name}`, version));
     questions.push(make(topic, false, () => {
       const [name, generator] = rng.pick(entries);
       return [`${topic}.${name}`, generator];

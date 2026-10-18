@@ -1,0 +1,121 @@
+# Deployment
+
+The app is one Node process that serves the built pages and the API on a
+single port, with either a local SQLite file or a PostgreSQL database.
+
+- [Requirements](#requirements)
+- [Production build](#production-build)
+- [Running as a service](#running-as-a-service)
+- [Behind a reverse proxy](#behind-a-reverse-proxy)
+- [Security](#security)
+- [Updating](#updating)
+- [Troubleshooting](#troubleshooting)
+
+## Requirements
+
+- **Node.js 20.12 or later**, needed for `process.loadEnvFile`; developed on Node 22.
+- **`better-sqlite3`** is a native module. `npm install` downloads a prebuilt binary for common platforms (x64 and arm64 on Linux and macOS, x64 on Windows). Elsewhere, including some 32-bit ARM boards, it compiles from source and needs `python3`, `make` and a C++ compiler. With `DATABASE_URL` set, SQLite is not opened, but the module is still installed.
+- **Disk:** the SQLite file grows by about 75 bytes per answer, indexes included, so 100,000 answers take under 10 MB.
+
+## Production build
+
+```sh
+npm ci
+cp .env.example .env      # then edit it
+npm run build             # type checks, then builds the pages into dist/
+npm start                 # serves dist/ and /api on $PORT (default 8787)
+```
+
+`npm start` runs the TypeScript server directly with `tsx`, so there is no
+separate server build. At startup it:
+
+1. Applies migrations.
+2. Rebuilds missing test answers.
+3. Logs the database used and the port.
+
+```
+database: SQLite (/srv/calcul-colonnes/data/calcul-colonnes.sqlite)
+listening on http://localhost:8787
+```
+
+Without `dist/` it serves the API only and says so.
+
+## Running as a service
+
+Example systemd unit, `/etc/systemd/system/calcul-colonnes.service`:
+
+```ini
+[Unit]
+Description=Calcul en colonnes
+After=network-online.target
+
+[Service]
+User=calcul
+WorkingDirectory=/srv/calcul-colonnes
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```sh
+sudo systemctl enable --now calcul-colonnes
+journalctl -u calcul-colonnes -f
+```
+
+The `.env` file is read from the working directory. The server stops cleanly
+on `SIGTERM`, closing the database.
+
+## Behind a reverse proxy
+
+The app uses relative paths (`/api/…`), so it expects to be served at the root
+of a host name, not under a sub-path. Example with Caddy, including the
+password protection recommended below:
+
+```caddy
+calcul.example.home {
+    basicauth {
+        # caddy hash-password --plaintext '…'
+        famille $2a$14$CHANGE_ME
+    }
+    reverse_proxy localhost:8787
+}
+```
+
+## Security
+
+The app was built for a family or a classroom on a trusted network.
+
+- **No authentication or roles.** Anyone who reaches the server can list players, read their results and **delete** them. Do not expose the port to the internet. Keep it on a home network, or put it behind a reverse proxy with authentication (above), a VPN or an access-controlled tunnel.
+- **Grading cannot be forged from the browser:** the server recomputes every mark. A determined user with network access can still post fabricated answers through the API, since there is no authentication.
+- **Personal data:** the database holds first names and learning results of children. Keep backups as private as the database. Deleting a player from the Scores screen removes all their rows.
+- **No external requests:** the app loads no third-party scripts, fonts or analytics; KaTeX is bundled.
+- **The browser** keeps only settings and the last player's id in `localStorage`.
+
+## Updating
+
+```sh
+git pull                  # or unpack the new release
+npm ci
+npm run build
+sudo systemctl restart calcul-colonnes
+```
+
+Migrations run by themselves at the next start. Then:
+
+- **Before upgrading:** back up the database ([Database › Backups](database.md#backups)).
+- **After upgrading:** reload the open pages, because a browser still running the previous build is refused when it submits a test from another generator version, and shows *Résultat non enregistré*.
+
+## Troubleshooting
+
+| Symptom | Cause and fix |
+|---|---|
+| The app shows **Serveur injoignable** | The server is not running or not reachable from this device. Check `npm start`, the port and the firewall. |
+| *Résultat non enregistré* after a test | Server unreachable, or the page runs an older build than the server. Reload the page. |
+| `DATABASE_URL must start with postgresql://` | Malformed `DATABASE_URL`; empty it to use SQLite. |
+| `npm install` fails on `better-sqlite3` | No prebuilt binary for this platform; install `python3`, `make` and `g++`, then retry. |
+| `EADDRINUSE` | Another process uses the port; change `PORT` or stop it. |
+| First request slow on Neon | The Neon compute was suspended and is waking up; subsequent requests are fast. |
+| `quiz N: answers not rebuilt` in the log | An old test could not be regenerated (e.g. edited by hand in the database). It keeps its mark, but is absent from the progress page. |
