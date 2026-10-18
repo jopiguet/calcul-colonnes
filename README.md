@@ -6,6 +6,10 @@ mathematics. French, Spanish and English interface; one server, one small databa
 sign-in by password or Google, Microsoft, GitHub and other OpenID providers.
 
 <p>
+  <img src="docs/images/landing.png" width="820" alt="Landing page: an addition being written in columns on squared paper">
+</p>
+
+<p>
   <img src="docs/images/columns-addition.png" width="200" alt="Addition in columns with a carry">
   <img src="docs/images/columns-division.png" width="200" alt="Euclidean division in the paper layout">
   <img src="docs/images/quiz-question.png" width="200" alt="A multiple-choice question">

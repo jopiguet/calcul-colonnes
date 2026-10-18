@@ -39,6 +39,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `progress.ts` | Progress page of a player |
 | `store.ts` | API calls; `auth` calls; `SignedOutError` when the session has ended |
 | `auth.ts` | Sign-in screen and Account page |
+| `landing.ts` | Landing page for first visits, with its texts in the three languages |
 | `auth-i18n.ts` | Their texts and the sign-in error messages |
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
 | `i18n.ts` | Interface texts (arithmetic part), current language, column names |
@@ -100,7 +101,7 @@ three before building.
 | Share of review questions | `REVIEW_SHARE`, `REVIEW_PER_SKILL` in `shared/quiz/index.ts`. Changes what seeds produce with a focus: [bump the version](question-generators.md#versioning). |
 | When a kind is "to review" or "mastered" | `skillStatus` in `shared/quiz/progress.ts`. Applies immediately to all history, without a version bump. |
 | A new kind of question | [Question generators › Adding a kind](question-generators.md#adding-a-kind-of-question) |
-| Colours | CSS variables at the top of `src/style.css` |
+| Colours, fonts, square size | CSS variables at the top of `src/style.css`: light theme (squared paper) and dark theme (blackboard) |
 
 ## Adding a language
 
@@ -119,7 +120,7 @@ Two automated checks:
 | Command | What it covers | Time |
 |---|---|---|
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
-| `npm run test:e2e` | The whole app in a browser: 30 tests | about a minute |
+| `npm run test:e2e` | The whole app in a browser: 33 tests | about a minute |
 
 ### Browser tests
 
@@ -141,6 +142,7 @@ server; each signs up its own account.
 | File | Covers |
 |---|---|
 | `auth.spec.ts` | Sign-up, sign-in, sign-out; cookie attributes; 401 without a session; cross-site refusal; isolation between accounts; rate limit; provider sign-up and sign-in, email takeover refused, cancel; linking a provider and the last method; players' own sign-in by username and by provider; signing out other devices |
+| `landing.spec.ts` | Landing page to sign-up and sign-in and back; translations; returning browsers open on sign-in |
 | `players.spec.ts` | Creating, remembering, switching and deleting players; duplicate names; cascade delete |
 | `arithmetic.spec.ts` | Units-first typing and server grading, carries, refused answers, two-digit multiplication lines, division with remainder, remembered settings, the PDF worksheet |
 | `quiz.spec.ts` | A test graded identically by the browser, the server and an independent rebuild from its seed; keyboard; language change mid-test; blanks; replay; giving up |

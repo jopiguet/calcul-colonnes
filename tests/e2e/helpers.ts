@@ -18,11 +18,10 @@ export function uniqueEmail(base = "parent"): string {
   return `${base}.${counter}.${Date.now()}@example.test`.toLowerCase();
 }
 
-/** Opens the app signed out and creates an account; ends on "Who's playing?". */
+/** Opens the sign-up form and creates an account; ends on "Who's playing?". */
 export async function signUp(page: Page, email = uniqueEmail(), password = PASSWORD): Promise<string> {
-  await page.goto("/");
+  await page.goto("/#sign-up");
   await page.locator(".auth").waitFor();
-  await page.click("button.switch");
   await page.fill("input[name=name]", "Parent");
   await page.fill("input[name=email]", email);
   await page.fill("input[name=password]", password);
@@ -33,7 +32,7 @@ export async function signUp(page: Page, email = uniqueEmail(), password = PASSW
 
 /** Signs in on the sign-in screen with an email or a username. */
 export async function signIn(page: Page, identifier: string, password = PASSWORD): Promise<void> {
-  await page.goto("/");
+  await page.goto("/#sign-in");
   await page.locator(".auth").waitFor();
   await page.fill("input[name=identifier]", identifier);
   await page.fill("input[name=password]", password);

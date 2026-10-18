@@ -16,7 +16,11 @@ describes every screen, every setting and the keyboard shortcuts.
 
 ## Signing in
 
-The app opens on **Connexion / Iniciar sesión / Sign in**.
+A first visit opens on a short presentation of the app, with *Créer un compte*
+and *J'ai déjà un compte*. A browser that has been signed in before opens
+directly on **Connexion / Iniciar sesión / Sign in**. Both forms have their own
+address, to bookmark or send: `/#sign-in` and `/#sign-up`; the presentation
+is at `/#about`.
 
 - **Create an account:** *Pas encore de compte ? Créer un compte*. Name, email and a password of at least 10 characters. A short sentence is easier to remember than a complicated word.
 - **Sign in:** with the account's email, or with a player's username, and the password.

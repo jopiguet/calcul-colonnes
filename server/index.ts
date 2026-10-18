@@ -42,8 +42,10 @@ if (existsSync("dist/index.html")) {
   console.log("dist/ not found: API only (use `npm run dev`, or `npm run build` first)");
 }
 
-const server = serve({ fetch: app.fetch, port }, () => {
-  console.log(`listening on http://localhost:${port}`);
+// HOST=127.0.0.1 behind a tunnel or reverse proxy: only the proxy can connect.
+const hostname = process.env.HOST?.trim() || undefined;
+const server = serve({ fetch: app.fetch, port, hostname }, () => {
+  console.log(`listening on http://${hostname ?? "localhost"}:${port}${hostname ? "" : " (all interfaces)"}`);
 });
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {

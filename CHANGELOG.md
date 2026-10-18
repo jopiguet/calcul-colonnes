@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.1.0
+
+- **Landing page** for first visits: what the app does, with a column addition written as the app teaches it (units first, then the carry), and real samples of a division, a quiz formula and a kind of question to review. French, Spanish and English. A browser that has been signed in before opens directly on the sign-in form.
+- **New look:** squared exercise-book paper in the light theme, a blackboard in the dark theme; pen blue for actions and what the child writes, red for mistakes.
+- **Atkinson Hyperlegible** fonts, bundled: unambiguous digits and letters for text, boards and quizzes.
+- Sign-in and sign-up have their own addresses (`#sign-in`, `#sign-up`), and a link back to the presentation.
+- Browser tests: 33.
+
+## 4.0.2
+
+- **`HOST`** setting: listen on `127.0.0.1` only, behind a tunnel or a local reverse proxy.
+- **Client address behind a proxy:** `CF-Connecting-IP` when present, otherwise the **last** `X-Forwarded-For` entry. The first entry, used before, could be set by the client to get around the sign-in rate limit.
+- Documentation: [Cloudflare Tunnel](docs/deployment.md#cloudflare-tunnel).
+
 ## 4.0.1
 
 - **Fixed:** sign-in and sign-up were refused (`403 cross_site`) through the development server on port 5173. The Vite proxy rewrote the `Host` header; it now keeps it.

@@ -16,6 +16,12 @@ import {
 } from "./settings";
 import { accountView, signInView, takeRedirectMessage } from "./auth";
 import { at, errorText } from "./auth-i18n";
+import { landingView } from "./landing";
+import "@fontsource/atkinson-hyperlegible-next/latin-400.css";
+import "@fontsource/atkinson-hyperlegible-next/latin-600.css";
+import "@fontsource/atkinson-hyperlegible-next/latin-800.css";
+import "@fontsource/atkinson-hyperlegible-mono/latin-400.css";
+import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { quizView } from "./quiz";
@@ -77,15 +83,56 @@ const playerSession = (): boolean => Boolean(state.auth?.player);
 /** One-time message after a provider sign-in (?auth=… in the address). */
 let notice: { ok: boolean; text: string } | null = null;
 
+/** Signed-out screens: #sign-in, #sign-up, or the landing page. */
+type Entry = "landing" | "signIn" | "signUp";
+
+/** This browser has been signed in before: skip the landing page. */
+const RETURNING_KEY = "calcul-colonnes:returning";
+function isReturning(): boolean {
+  try {
+    return localStorage.getItem(RETURNING_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+function markReturning(): void {
+  try {
+    localStorage.setItem(RETURNING_KEY, "1");
+  } catch {
+    // private browsing: the landing page shows again next time
+  }
+}
+
+function entry(): Entry {
+  if (location.hash === "#sign-up") return "signUp";
+  if (location.hash === "#about") return "landing";
+  if (location.hash === "#sign-in" || notice || isReturning()) return "signIn";
+  return "landing";
+}
+
+/** Leaves #sign-in / #sign-up out of the address once signed in. */
+function clearEntryHash(): void {
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+}
+
 async function render(): Promise<void> {
   if (!state.auth?.authenticated) {
-    app.replaceChildren(
-      topBar(),
-      signInView(state.options ?? { providers: [], registration: true, publicUrl: location.origin }, () => void enter(true), notice),
-    );
+    const options = state.options ?? { providers: [], registration: true, publicUrl: location.origin };
+    const where = entry();
+    app.classList.toggle("is-landing", where === "landing");
+    if (where === "landing") {
+      app.replaceChildren(landingView({ options, topBar: topBar() }));
+    } else {
+      const bar = topBar();
+      const brand = el("a", "brand", "Calcul en colonnes");
+      brand.href = "#about";
+      bar.firstElementChild?.append(brand);
+      app.replaceChildren(bar, signInView(options, () => void enter(true), notice, where === "signUp" ? "signUp" : "signIn"));
+    }
     notice = null;
     return;
   }
+  app.classList.remove("is-landing");
   try {
     if (state.view === "account" && !playerSession()) {
       app.replaceChildren(
@@ -598,6 +645,8 @@ async function enter(justSignedIn = false): Promise<void> {
       if (justSignedIn) notice = { ok: false, text: errorText("cookie_refused", { url: state.options?.publicUrl ?? location.origin }) };
       return void render();
     }
+    markReturning();
+    clearEntryHash();
     const users = await store.listUsers();
     if (state.auth.player) {
       // A player's own login: that player, nobody else.
@@ -627,5 +676,10 @@ async function start(): Promise<void> {
   notice = takeRedirectMessage(state.options);
   await enter();
 }
+
+// Landing page ↔ sign-in screen, and the browser's Back button between them.
+window.addEventListener("hashchange", () => {
+  if (!state.auth?.authenticated) void render();
+});
 
 void start();

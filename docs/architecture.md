@@ -167,6 +167,7 @@ the data routes, which require a session.
 |---|---|
 | `auth`, `options` | Who is signed in (`GET /api/auth/session`), providers offered |
 | `view` | `play`, `players`, `scores`, `progress` or `account` |
+| *(address hash)* | Signed out: `#about` landing page, `#sign-in`, `#sign-up`. A first visit shows the landing page; a browser signed in before opens on sign-in. |
 | `user` | Current player |
 | `settings` | Loaded from and saved to `localStorage` (`src/settings.ts`) |
 | `exercise`, `phase`, `score`, `questions` | Current arithmetic exercise and the sitting's score |
@@ -190,6 +191,7 @@ See [Development › Adding a language](development.md#adding-a-language).
 | `better-sqlite3` | server | SQLite (native module) |
 | `pg` | server | PostgreSQL / Neon |
 | `katex` | browser, check script | Formula rendering |
+| `@fontsource/atkinson-hyperlegible-next`, `-mono` | browser | Text and digits. Designed so that characters cannot be confused (0/O, 1/l/I), which suits children learning to write numbers. Bundled, so the app still makes no request to another site. |
 | — | server | Sign-in uses Node's `crypto` (scrypt, SHA-256, random tokens) and `fetch` for providers: no auth library |
 | `tsx` | server | Runs the TypeScript server without a build step |
 | `vite`, `typescript`, `concurrently` | development | Build, type checking, dev servers |

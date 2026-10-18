@@ -49,7 +49,12 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
 
   const clientAddress = (c: Context): string => {
     if (config.trustProxy) {
-      const forwarded = c.req.header("x-forwarded-for")?.split(",")[0]?.trim();
+      // Cloudflare (tunnel or proxy) gives the visitor's address on its own.
+      const cloudflare = c.req.header("cf-connecting-ip")?.trim();
+      if (cloudflare) return cloudflare;
+      // Proxies append to X-Forwarded-For: the last entry is the one our proxy
+      // added; earlier entries come from the client and can be forged.
+      const forwarded = c.req.header("x-forwarded-for")?.split(",").at(-1)?.trim();
       if (forwarded) return forwarded;
     }
     return getConnInfo(c).remote.address ?? "unknown";

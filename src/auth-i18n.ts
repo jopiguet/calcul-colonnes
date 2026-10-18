@@ -4,6 +4,7 @@ import { currentLang } from "./i18n";
 
 const fr = {
   signInTitle: "Connexion",
+  aboutApp: "Découvrir l'application",
   signUpTitle: "Créer un compte",
   identifier: "E-mail ou identifiant",
   email: "E-mail",
@@ -73,6 +74,7 @@ export type AuthKey = keyof typeof fr;
 
 const es: Record<AuthKey, string> = {
   signInTitle: "Iniciar sesión",
+  aboutApp: "Conocer la aplicación",
   signUpTitle: "Crear una cuenta",
   identifier: "Correo o usuario",
   email: "Correo electrónico",
@@ -138,6 +140,7 @@ const es: Record<AuthKey, string> = {
 
 const en: Record<AuthKey, string> = {
   signInTitle: "Sign in",
+  aboutApp: "About the app",
   signUpTitle: "Create an account",
   identifier: "Email or username",
   email: "Email",

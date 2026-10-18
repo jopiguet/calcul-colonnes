@@ -104,7 +104,7 @@ usable sessions.
   - 100 sign-in and sign-up attempts per client address in 15 minutes (`AUTH_ATTEMPTS_PER_ADDRESS`).
   - 10 failures per identifier in 15 minutes, which stops guessing one account's password from many addresses.
 
-  The response is `429 too_many_attempts`. Behind a reverse proxy, set `TRUST_PROXY=true` so the address comes from `X-Forwarded-For`, otherwise every visitor shares the proxy's address.
+  The response is `429 too_many_attempts`. Behind a reverse proxy or Cloudflare, set `TRUST_PROXY=true` so the address comes from `CF-Connecting-IP` or the last `X-Forwarded-For` entry, otherwise every visitor shares the proxy's address. Then also set `HOST=127.0.0.1`, so nobody can reach the server without going through the proxy.
 - **Data scope:** every data route reads from the session which players it may touch. Another account's player answers `404`, the same as a player that does not exist.
 
 ## Providers

@@ -15,6 +15,13 @@ async function viaMock(page: Page, who: { sub: string; email?: string; name?: st
   await page.waitForURL(/localhost:8799\//);
 }
 
+/** A fresh load of the sign-in screen (a hash change alone would not reload the app). */
+async function openSignIn(page: Page): Promise<void> {
+  await page.goto("about:blank");
+  await page.goto("/#sign-in");
+  await page.locator(".auth").waitFor();
+}
+
 const uniqueSub = (): string => `sub-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 test("an account is created, signed out and signed in again; the cookie is HttpOnly", async ({ page }) => {
@@ -109,7 +116,7 @@ test("repeated wrong passwords are slowed down", async ({ page }) => {
 test("signing up and in with a provider, and no silent takeover of an email", async ({ page, browser }) => {
   const sub = uniqueSub();
   const email = uniqueEmail("oauth");
-  await page.goto("/");
+  await openSignIn(page);
   await viaMock(page, { sub, email, name: "Provider Parent" });
   await expect(page.locator(".banner.ok")).toBeVisible();
   await expect(page.locator(".new-player input")).toBeVisible();
@@ -119,7 +126,7 @@ test("signing up and in with a provider, and no silent takeover of an email", as
 
   // Signing in again with the same provider account: the same app account.
   await page.context().clearCookies();
-  await page.goto("/");
+  await openSignIn(page);
   await viaMock(page, { sub, email });
   const again = (await (await page.request.get("/api/auth/session")).json()) as { account: { id: number } };
   expect(again.account.id).toBe(first.account.id);
@@ -127,13 +134,13 @@ test("signing up and in with a provider, and no silent takeover of an email", as
   // Someone else at the provider claiming an email that already has an account.
   const context = await browser.newContext();
   const other = await context.newPage();
-  await other.goto("/");
+  await openSignIn(other);
   await viaMock(other, { sub: uniqueSub(), email });
   await expect(other.locator(".auth .auth-message.error")).toBeVisible();
   expect((await (await other.request.get("/api/auth/session")).json()).authenticated).toBe(false);
 
   // Cancelling at the provider.
-  await other.goto("/");
+  await openSignIn(other);
   await viaMock(other, { sub: uniqueSub() }, "deny");
   await expect(other.locator(".auth .auth-message.error")).toBeVisible();
   await context.close();
@@ -161,7 +168,7 @@ test("a provider is linked to an account; the last way to sign in cannot be remo
   await page.context().clearCookies();
   const login = await page.request.post("/api/auth/login", { data: { identifier: email, password: PASSWORD } });
   expect(login.status()).toBe(401);
-  await page.goto("/");
+  await openSignIn(page);
   await viaMock(page, { sub });
   await expect(page.locator(".new-player input")).toBeVisible();
 });
@@ -217,7 +224,7 @@ test("a provider can be linked to a player", async ({ page, browser }) => {
 
   const context = await browser.newContext();
   const kid = await context.newPage();
-  await kid.goto("/");
+  await openSignIn(kid);
   await viaMock(kid, { sub });
   await kid.locator(".board").waitFor();
   await expect(kid.locator(".chip-label")).toContainText(name);

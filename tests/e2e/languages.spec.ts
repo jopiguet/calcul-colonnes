@@ -37,7 +37,7 @@ test("the browser language is used on a first visit", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US" });
   const page = await context.newPage();
   await page.goto("/");
-  await expect(page.locator(".auth h1")).toHaveText("Sign in");
+  await expect(page.locator(".hero-title")).toHaveText("Column arithmetic, the way it's written in the exercise book.");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await context.close();
 });

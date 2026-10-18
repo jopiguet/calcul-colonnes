@@ -62,8 +62,13 @@ export function takeRedirectMessage(options: AuthOptions | null): { ok: boolean;
 
 // ------------------------------------------------------------- sign-in screen
 
-export function signInView(options: AuthOptions, onSignedIn: () => void, notice: { ok: boolean; text: string } | null): HTMLElement {
-  let mode: "signIn" | "signUp" = "signIn";
+export function signInView(
+  options: AuthOptions,
+  onSignedIn: () => void,
+  notice: { ok: boolean; text: string } | null,
+  initial: "signIn" | "signUp" = "signIn",
+): HTMLElement {
+  let mode: "signIn" | "signUp" = initial === "signUp" && options.registration ? "signUp" : "signIn";
   const wrap = el("section", "sheet auth");
 
   const draw = (): void => {
@@ -113,10 +118,15 @@ export function signInView(options: AuthOptions, onSignedIn: () => void, notice:
         button("link switch", at(mode === "signIn" ? "toSignUp" : "toSignIn"), () => {
           mode = mode === "signIn" ? "signUp" : "signIn";
           notice = null;
+          // Keeps the address in step, so Back and a reload land on the same form.
+          history.replaceState(null, "", mode === "signUp" ? "#sign-up" : "#sign-in");
           draw();
         }),
       );
     }
+    const home = el("a", "back-home", at("aboutApp"));
+    home.href = "#about";
+    parts.push(home);
     wrap.replaceChildren(...parts);
     queueMicrotask(() => form.querySelector("input")?.focus());
   };

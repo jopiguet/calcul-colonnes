@@ -8,6 +8,7 @@ single port, with either a local SQLite file or a PostgreSQL database.
 - [Running as a service](#running-as-a-service)
 - [HTTPS and sign-in](#https-and-sign-in)
 - [Behind a reverse proxy](#behind-a-reverse-proxy)
+- [Cloudflare Tunnel](#cloudflare-tunnel)
 - [Security](#security)
 - [Updating](#updating)
 - [Troubleshooting](#troubleshooting)
@@ -85,7 +86,8 @@ Set in `.env`:
 | `COOKIE_SECURE` | from `PUBLIC_URL` | Force `true` or `false` |
 | `SESSION_DAYS` | `30` | Session lifetime after last use |
 | `REGISTRATION` | `open` | `closed`: only the first account can be created |
-| `TRUST_PROXY` | `false` | `true` behind a reverse proxy, for rate limiting by client address |
+| `TRUST_PROXY` | `false` | `true` behind a reverse proxy or Cloudflare, for rate limiting by client address (`CF-Connecting-IP`, else the last `X-Forwarded-For` entry) |
+| `HOST` | *(all interfaces)* | `127.0.0.1` when only a local proxy or tunnel should connect |
 | `AUTH_ATTEMPTS_PER_ADDRESS` | `100` | Sign-in attempts per address in 15 minutes |
 | `GOOGLE_*`, `MICROSOFT_*`, `GITHUB_*`, `OIDC_*` | *(empty)* | Providers, see [Authentication › Providers](authentication.md#providers-1) |
 
@@ -118,6 +120,64 @@ location / {
 Then `PUBLIC_URL=https://calcul.example.ch` and `TRUST_PROXY=true`. Keep the
 Node port closed to the outside: only the proxy should reach it, otherwise a
 client could send its own `X-Forwarded-For`.
+
+## Cloudflare Tunnel
+
+A tunnel publishes the app on an HTTPS address of your Cloudflare domain
+without opening a port on your router: `cloudflared` connects out to
+Cloudflare and forwards requests to `localhost:8787`. Cloudflare provides the
+certificate.
+
+**1. The app,** in `.env`:
+
+```ini
+PUBLIC_URL=https://calcul.example.ch
+HOST=127.0.0.1
+TRUST_PROXY=true
+REGISTRATION=closed        # after creating your account
+```
+
+- **`HOST=127.0.0.1`:** only `cloudflared`, on the same machine, can reach the server.
+- **`TRUST_PROXY=true`:** rate limits use the visitor's address from `CF-Connecting-IP`.
+
+Then `npm run build && npm start`, or the systemd unit above.
+
+**2. The tunnel,** with the `cloudflared` command line:
+
+```sh
+cloudflared tunnel login                      # once: choose the domain
+cloudflared tunnel create calcul              # prints the tunnel id, writes its credentials
+cloudflared tunnel route dns calcul calcul.example.ch
+```
+
+`~/.cloudflared/config.yml`:
+
+```yaml
+tunnel: calcul
+credentials-file: /home/<you>/.cloudflared/<tunnel-id>.json
+ingress:
+  - hostname: calcul.example.ch
+    service: http://127.0.0.1:8787
+  - service: http_status:404
+```
+
+```sh
+cloudflared tunnel run calcul                 # try it
+sudo cloudflared service install              # then as a service (copies the config to /etc/cloudflared)
+```
+
+The tunnel can also be created from the dashboard (*Zero Trust* › *Networks* ›
+*Tunnels*), with a public hostname pointing to `http://127.0.0.1:8787`.
+
+**3. Check:** open `https://calcul.example.ch`, sign in, reload: you stay
+signed in. The server log shows `sign-in: … · https://calcul.example.ch`.
+
+**Notes**
+
+- **Providers:** register `https://calcul.example.ch/api/auth/oauth/<id>/callback`.
+- **Cloudflare settings:** keep *Rocket Loader* off for this host name, since it rewrites scripts. Default caching does not cache `/api` responses, and the built files have content hashes in their names.
+- **Cloudflare Access** (optional) adds Cloudflare's own sign-in in front of the app, for example limited to your family's emails. The app's sign-in still applies behind it.
+- **Locally:** with `HOST=127.0.0.1`, other devices on your network cannot use `http://<machine>:8787`; they go through the public address. Leave `HOST` empty to allow both, but local access then uses plain `http` while cookies are `Secure`, so it will not keep sessions.
 
 ## Security
 
