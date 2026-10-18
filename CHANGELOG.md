@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.2.0
+
+- **Mistakes tracked:** every wrong option is labelled with the typical mistake it stands for (36 types). The mistake is named in the corrections, recorded with the answer, and the progress page lists each player's most frequent mistakes.
+- **Mistakes for earlier tests** are filled in at startup by regenerating them from their seed.
+- **English interface,** alongside French and Spanish; a first visit uses the browser's language when the app has it.
+- **Browser test suite** in the project: `npm run test:e2e` (Playwright, 21 tests, isolated server and database).
+- `npm run check:quiz` also checks that every wrong option carries a mistake label.
+- Database migration `005`: `mistake` on `quiz_answers`.
+- API: `mistakes` in `GET /api/users/:id/profile`.
+
 ## 3.1.0
 
 - **Mistakes tracked per player.** Every test answer is filed under its kind of question (39 kinds); each kind is *to review*, *in progress* or *mastered*.

@@ -79,7 +79,7 @@ try {
         ) +
         insert(
           "quiz_answers",
-          ["id", "quiz_id", "user_id", "at", "position", "skill", "topic", "given", "correct", "review"],
+          ["id", "quiz_id", "user_id", "at", "position", "skill", "topic", "given", "correct", "review", "mistake"],
           quizAnswers,
         ) +
         bump("users") +

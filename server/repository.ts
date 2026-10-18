@@ -10,6 +10,7 @@ import {
 } from "../shared/quiz/index.ts";
 import type {
   NewAttempt,
+  MistakeProgress,
   NewQuizResult,
   Operator,
   OperatorProgress,
@@ -45,6 +46,12 @@ export function isCorrect(attempt: NewAttempt): boolean {
     case "÷": // Euclidean division: quotient and remainder must both be right
       return given === Math.floor(top / bottom) && givenRemainder === top % bottom;
   }
+}
+
+/** The mistake behind an answer: null when right or blank. */
+function mistakeOf(q: Question, given: number): string | null {
+  if (given < 0 || given === q.correct) return null;
+  return q.options[given]?.mistake ?? null;
 }
 
 export class Repository {
@@ -138,15 +145,26 @@ export class Repository {
     answers: number[],
   ): Promise<void> {
     if (questions.length === 0) return;
-    const params: (string | number)[] = [];
+    const params: (string | number | null)[] = [];
     const values = questions.map((q, i) => {
       const given = answers[i] ?? -1;
-      params.push(quizId, userId, at, i, q.skill, q.topic, given, given === q.correct ? 1 : 0, q.review ? 1 : 0);
-      const n = params.length - 9;
-      return `(${Array.from({ length: 9 }, (_, k) => `$${n + k + 1}`).join(", ")})`;
+      params.push(
+        quizId,
+        userId,
+        at,
+        i,
+        q.skill,
+        q.topic,
+        given,
+        given === q.correct ? 1 : 0,
+        q.review ? 1 : 0,
+        mistakeOf(q, given),
+      );
+      const n = params.length - 10;
+      return `(${Array.from({ length: 10 }, (_, k) => `$${n + k + 1}`).join(", ")})`;
     });
     await this.db.query(
-      `INSERT INTO quiz_answers (quiz_id, user_id, at, position, skill, topic, given, correct, review)
+      `INSERT INTO quiz_answers (quiz_id, user_id, at, position, skill, topic, given, correct, review, mistake)
        VALUES ${values.join(", ")}`,
       params,
     );
@@ -166,15 +184,7 @@ export class Repository {
     let filled = 0;
     for (const row of rows) {
       try {
-        const focus = String(row.focus ?? "");
-        const questions = generateQuiz({
-          seed: Number(row.seed),
-          level: String(row.level) as Level,
-          topics: String(row.topics).split(",") as Topic[],
-          count: Number(row.question_count),
-          focus: focus ? focus.split(",") : [],
-          version: Number(row.version), // rebuilt exactly as the player saw it
-        });
+        const questions = this.regenerate(row); // exactly as the player saw it
         const answers = JSON.parse(String(row.answers)) as number[];
         await this.addQuizAnswers(Number(row.id), Number(row.user_id), Number(row.at), questions, answers);
         filled += 1;
@@ -183,6 +193,57 @@ export class Repository {
       }
     }
     return filled;
+  }
+
+  /**
+   * Wrong answers saved before mistakes were recorded: regenerate their test
+   * and fill the mistake. Runs at startup; does nothing once all are filled.
+   */
+  async backfillMistakes(): Promise<number> {
+    const rows = await this.db.query(
+      `SELECT r.id, r.level, r.topics, r.seed, r.question_count, r.focus, r.version
+         FROM quiz_results r
+        WHERE EXISTS (SELECT 1 FROM quiz_answers a
+                       WHERE a.quiz_id = r.id AND a.correct = 0 AND a.given >= 0 AND a.mistake IS NULL)`,
+    );
+    let filled = 0;
+    for (const row of rows) {
+      try {
+        const questions = this.regenerate(row);
+        const wrong = await this.db.query(
+          `SELECT position, given FROM quiz_answers
+            WHERE quiz_id = $1 AND correct = 0 AND given >= 0 AND mistake IS NULL`,
+          [Number(row.id)],
+        );
+        for (const answer of wrong) {
+          const q = questions[Number(answer.position)];
+          const mistake = q ? mistakeOf(q, Number(answer.given)) : null;
+          if (!mistake) continue;
+          await this.db.query(`UPDATE quiz_answers SET mistake = $1 WHERE quiz_id = $2 AND position = $3`, [
+            mistake,
+            Number(row.id),
+            Number(answer.position),
+          ]);
+        }
+        filled += 1;
+      } catch (error) {
+        console.error(`quiz ${String(row.id)}: mistakes not rebuilt (${(error as Error).message})`);
+      }
+    }
+    return filled;
+  }
+
+  /** A saved test, rebuilt from its seed exactly as the player saw it. */
+  private regenerate(row: Row): Question[] {
+    const focus = String(row.focus ?? "");
+    return generateQuiz({
+      seed: Number(row.seed),
+      level: String(row.level) as Level,
+      topics: String(row.topics).split(",") as Topic[],
+      count: Number(row.question_count),
+      focus: focus ? focus.split(",") : [],
+      version: Number(row.version ?? 1),
+    });
   }
 
   /** Progress of one player: every kind of question met in tests, and the column arithmetic. */
@@ -212,6 +273,25 @@ export class Repository {
       entry.status = skillStatus(all);
     }
 
+    const mistakeRows = await this.db.query(
+      `SELECT mistake, skill, at FROM quiz_answers
+        WHERE user_id = $1 AND mistake IS NOT NULL
+        ORDER BY at DESC, id DESC`,
+      [user.id],
+    );
+    const byMistake = new Map<string, MistakeProgress>();
+    for (const row of mistakeRows) {
+      const mistake = String(row.mistake);
+      let entry = byMistake.get(mistake);
+      if (!entry) {
+        entry = { mistake, count: 0, lastAt: Number(row.at), skills: [] };
+        byMistake.set(mistake, entry);
+      }
+      entry.count += 1;
+      if (!entry.skills.includes(String(row.skill))) entry.skills.push(String(row.skill));
+    }
+    const mistakes = [...byMistake.values()].sort((a, b) => b.count - a.count || b.lastAt - a.lastAt);
+
     const operatorRows = await this.db.query(
       `SELECT operator,
               COUNT(*)                                                       AS total,
@@ -234,7 +314,7 @@ export class Repository {
       }))
       .sort((a, b) => order.indexOf(a.operator) - order.indexOf(b.operator));
 
-    return { user, skills: [...bySkill.values()], operators };
+    return { user, skills: [...bySkill.values()], mistakes, operators };
   }
 
   /** `since`: start of "today" in the player's time zone, in epoch milliseconds. */

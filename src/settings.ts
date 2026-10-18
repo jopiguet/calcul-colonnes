@@ -61,6 +61,12 @@ function write(key: string, value: string | null): void {
   }
 }
 
+/** First visit: the browser's language if the app has it, French otherwise. */
+function browserLanguage(): Lang {
+  const code = navigator.language.slice(0, 2);
+  return isLang(code) ? code : "fr";
+}
+
 export function loadSettings(): Settings {
   let saved: Partial<Record<keyof Settings, unknown>> = {};
   try {
@@ -82,7 +88,7 @@ export function loadSettings(): Settings {
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,
-    lang: isLang(saved.lang) ? saved.lang : navigator.language.startsWith("es") ? "es" : "fr",
+    lang: isLang(saved.lang) ? saved.lang : browserLanguage(),
     maximum: nearest(LEVELS, saved.maximum ?? legacyMaximum, 100),
     smallLimit: nearest(SMALL_LEVELS, saved.smallLimit, 9),
     operators: operators.length > 0 ? operators : ["+", "−"],

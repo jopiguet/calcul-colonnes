@@ -85,6 +85,14 @@ tests and test answers.
       "status": "review"
     }
   ],
+  "mistakes": [
+    {
+      "mistake": "growthReversed",
+      "count": 2,
+      "lastAt": 1792337328999,
+      "skills": ["limits.growth"]
+    }
+  ],
   "operators": [
     { "operator": "+", "total": 12, "correct": 11, "todayTotal": 4, "todayCorrect": 4 }
   ]
@@ -94,6 +102,7 @@ tests and test answers.
 - **`skills`:** one entry per kind of question the player has met.
   - `recent` holds the latest answers, newest first, at most five.
   - `status` is `review`, `learning` or `mastered`, following the rules in `shared/quiz/progress.ts`.
+- **`mistakes`:** every mistake type the player has made in tests, most frequent first. `skills` lists the kinds of question where it occurred, most recent first.
 - **`operators`:** in the order `+ − × ÷`, only those practised. Operators use the display symbols `+ − × ÷`.
 
 ## `POST /api/attempts`

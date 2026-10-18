@@ -1,5 +1,5 @@
 import { frac, lin, numTex, sum, val, type Coef } from "./tex";
-import type { Generator, Option } from "./types";
+import { tag, type Generator, type Option } from "./types";
 
 const valueOption = (tex: string, num: number): Option => ({ tex, num });
 
@@ -13,10 +13,10 @@ const solveExp: Generator = (rng) => {
     prompt: { key: "solve", tex: `e^{${lin(a, b)}} = ${c}` },
     correct: over(sum([[1, `\\ln ${c}`], [-b, ""]]), Math.log(c) - b),
     wrong: [
-      over(sum([[1, `\\ln ${c}`], [b, ""]]), Math.log(c) + b),
-      over(numTex(c - b), c - b),
-      valueOption(sum([[frac(1, a), `\\ln ${c}`], [-b, ""]]), Math.log(c) / a - b),
-      over(`e^{${c}} ${b > 0 ? "-" : "+"} ${Math.abs(b)}`, Math.exp(c) - b),
+      tag(over(sum([[1, `\\ln ${c}`], [b, ""]]), Math.log(c) + b), "signError"),
+      tag(over(numTex(c - b), c - b), "expLogInverse"),
+      tag(valueOption(sum([[frac(1, a), `\\ln ${c}`], [-b, ""]]), Math.log(c) / a - b), "solvingError"),
+      tag(over(`e^{${c}} ${b > 0 ? "-" : "+"} ${Math.abs(b)}`, Math.exp(c) - b), "expLogInverse"),
     ],
     explanation: { key: "expLog", tex: `${lin(a, b)} = \\ln ${c}` },
     verify: { kind: "root", f: (x) => Math.exp(a * x + b) - c },
@@ -31,7 +31,7 @@ const logRules: Generator = (rng) => {
   return {
     prompt: { key: "simplify", tex: `\\ln\\left(${a}^{${n}}\\right) - \\ln\\left(${a}^{${m}}\\right)` },
     correct: L(n - m),
-    wrong: [L(frac(n, m)), L(n + m), L(1, n - m), L(n * m)],
+    wrong: [L(frac(n, m)), L(n + m), L(1, n - m), L(n * m)].map((o) => tag(o, "logRules")),
     explanation: { key: "logRules", tex: `\\ln\\left(a^{n}\\right) = n\\ln a, \\quad ${n}\\ln ${a} - ${m}\\ln ${a} = ${sum([[n - m, `\\ln ${a}`]])}` },
     verify: { kind: "value", value: Math.log(a ** n) - Math.log(a ** m) },
   };
@@ -44,10 +44,10 @@ const expOfLogs: Generator = (rng) => {
     prompt: { key: "simplify", tex: `e^{\\ln ${a} + \\ln ${b}}` },
     correct: valueOption(String(a * b), a * b),
     wrong: [
-      valueOption(String(a + b), a + b),
-      valueOption(`\\ln ${a * b}`, Math.log(a * b)),
-      valueOption(`e^{${a + b}}`, Math.exp(a + b)),
-      valueOption(`e^{${a * b}}`, Math.exp(a * b)),
+      tag(valueOption(String(a + b), a + b), "logRules"),
+      tag(valueOption(`\\ln ${a * b}`, Math.log(a * b)), "expLogInverse"),
+      tag(valueOption(`e^{${a + b}}`, Math.exp(a + b)), "expLogInverse"),
+      tag(valueOption(`e^{${a * b}}`, Math.exp(a * b)), "expLogInverse"),
     ],
     explanation: { key: "expLog", tex: `e^{\\ln ${a} + \\ln ${b}} = e^{\\ln ${a}} \\cdot e^{\\ln ${b}} = ${a} \\cdot ${b}` },
     verify: { kind: "value", value: Math.exp(Math.log(a) + Math.log(b)) },
@@ -57,12 +57,12 @@ const expOfLogs: Generator = (rng) => {
 const solveLn: Generator = (rng) => {
   const k = rng.nonZero(-3, 4);
   const wrong: Option[] = [
-    valueOption(`e^{${-k}}`, Math.exp(-k)),
-    valueOption(`10^{${k}}`, 10 ** k),
-    valueOption(numTex(k), k),
-    valueOption(`${k === 1 ? "" : k === -1 ? "-" : k}e`, k * Math.E),
+    tag(valueOption(`e^{${-k}}`, Math.exp(-k)), "signError"),
+    tag(valueOption(`10^{${k}}`, 10 ** k), "expLogInverse"),
+    tag(valueOption(numTex(k), k), "expLogInverse"),
+    tag(valueOption(`${k === 1 ? "" : k === -1 ? "-" : k}e`, k * Math.E), "expLogInverse"),
   ];
-  if (k > 0) wrong.push(valueOption(`\\ln ${k}`, Math.log(k)));
+  if (k > 0) wrong.push(tag(valueOption(`\\ln ${k}`, Math.log(k)), "expLogInverse"));
   return {
     prompt: { key: "solve", tex: `\\ln x = ${k}` },
     correct: valueOption(k === 1 ? "e" : `e^{${k}}`, Math.exp(k)),
@@ -82,10 +82,10 @@ const otherBase: Generator = (rng) => {
     prompt: { key: "solve", tex: `${b}^{x} = ${c}` },
     correct: valueOption(`\\frac{\\ln ${c}}{\\ln ${b}}`, Math.log(c) / Math.log(b)),
     wrong: [
-      valueOption(`\\frac{\\ln ${b}}{\\ln ${c}}`, Math.log(b) / Math.log(c)),
-      valueOption(`\\ln ${c} - \\ln ${b}`, Math.log(c) - Math.log(b)),
-      valueOption(`\\frac{${c}}{${b}}`, c / b),
-      valueOption(`\\ln ${c}`, Math.log(c)),
+      tag(valueOption(`\\frac{\\ln ${b}}{\\ln ${c}}`, Math.log(b) / Math.log(c)), "invertedRatio"),
+      tag(valueOption(`\\ln ${c} - \\ln ${b}`, Math.log(c) - Math.log(b)), "logRules"),
+      tag(valueOption(`\\frac{${c}}{${b}}`, c / b), "expLogInverse"),
+      tag(valueOption(`\\ln ${c}`, Math.log(c)), "logRules"),
     ],
     explanation: { key: "expLog", tex: `${b}^{x} = e^{x\\ln ${b}} = ${c} \\iff x\\ln ${b} = \\ln ${c}` },
     verify: { kind: "root", f: (x) => b ** x - c },
@@ -103,10 +103,10 @@ const quadraticInExp: Generator = (rng) => {
     prompt: { key: "solveInterval", tex: `e^{2x} - ${a + 1}e^{x} + ${a} = 0, \\quad x \\in \\mathbb{R}` },
     correct: set(`0,\\ \\ln ${a}`, [0, la]),
     wrong: [
-      set(`1,\\ ${a}`, [1, a]),
-      set(`\\ln ${a}`, [la]),
-      set(`0,\\ ${a}`, [0, a]),
-      set(`-\\ln ${a},\\ 0`, [-la, 0]),
+      tag(set(`1,\\ ${a}`, [1, a]), "substitutionError"), // values of X = eˣ given as x
+      tag(set(`\\ln ${a}`, [la]), "missingSolution"),
+      tag(set(`0,\\ ${a}`, [0, a]), "substitutionError"),
+      tag(set(`-\\ln ${a},\\ 0`, [-la, 0]), "signError"),
     ],
     explanation: { key: "substituteExp", tex: `X = e^{x}: \\ X^{2} - ${a + 1}X + ${a} = (X - 1)(X - ${a}) = 0` },
     verify: { kind: "solutions", f: (x) => Math.exp(2 * x) - (a + 1) * Math.exp(x) + a, lo: -20, hi: 20 },
@@ -119,10 +119,10 @@ const expDerivative: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = ${a}^{x}` },
     correct: { tex: `${a}^{x}\\ln ${a}`, fn: (x) => a ** x * Math.log(a) },
     wrong: [
-      { tex: `x \\cdot ${a}^{x-1}`, fn: (x) => x * a ** (x - 1) },
-      { tex: `${a}^{x}`, fn: (x) => a ** x },
-      { tex: `\\frac{${a}^{x}}{\\ln ${a}}`, fn: (x) => a ** x / Math.log(a) },
-      { tex: `${a}^{x}\\ln x`, fn: (x) => a ** x * Math.log(x) },
+      tag({ tex: `x \\cdot ${a}^{x-1}`, fn: (x) => x * a ** (x - 1) }, "powerRuleOnExponential"),
+      tag({ tex: `${a}^{x}`, fn: (x) => a ** x }, "chainRuleForgotten"),
+      tag({ tex: `\\frac{${a}^{x}}{\\ln ${a}}`, fn: (x) => a ** x / Math.log(a) }, "invertedRatio"),
+      tag({ tex: `${a}^{x}\\ln x`, fn: (x) => a ** x * Math.log(x) }, "wrongInnerFactor"),
     ],
     explanation: { key: "expLog", tex: `${a}^{x} = e^{x\\ln ${a}} \\Rightarrow (${a}^{x})' = \\ln ${a} \\cdot e^{x\\ln ${a}}` },
     verify: { kind: "derivative", f: (x) => a ** x },

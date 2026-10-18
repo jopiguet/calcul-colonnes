@@ -92,6 +92,7 @@ review of mistakes are built from.
 | `given` | integer | option chosen, `-1` = blank |
 | `correct` | smallint | |
 | `review` | smallint | 1 if the question was brought back for review |
+| `mistake` | text, null | mistake type of the wrong option chosen (`MISTAKES` in `shared/quiz/types.ts`); null when right or blank |
 
 Indexes: `(user_id, skill, at)`, `(quiz_id)`.
 
@@ -111,6 +112,7 @@ start, in order, each in its own transaction together with its row in
 | `002_multiply_divide` | `*` and `/` operators, `given_remainder` |
 | `003_quiz_results` | `quiz_results` |
 | `004_quiz_answers` | `quiz_answers`; `focus` and `version` on `quiz_results` |
+| `005_mistakes` | `mistake` on `quiz_answers` (common SQL, one file) |
 
 **File names.**
 
@@ -123,10 +125,13 @@ start, in order, each in its own transaction together with its row in
 2. Restart the server.
 3. Never edit a migration that has already been applied somewhere: add a new one.
 
-**After migration 004:** the server rebuilds `quiz_answers` for every test
-that has none (tests saved before it existed) by regenerating them from their
-seed with their own version. This runs at each start and does nothing once
-every test has its answers.
+**Rebuilt at startup.** Two steps regenerate earlier tests from their seed,
+each with its own generator version:
+
+- **Answers:** `quiz_answers` rows for tests saved before migration 004.
+- **Mistakes:** `mistake` for wrong answers saved before migration 005.
+
+Both run at each start and do nothing once everything is filled.
 
 ## SQLite and PostgreSQL
 
@@ -207,6 +212,16 @@ SELECT skill, COUNT(*) AS answers, SUM(1 - correct) AS wrong
   FROM quiz_answers
  GROUP BY skill
  ORDER BY 1.0 * SUM(1 - correct) / COUNT(*) DESC;
+```
+
+Most frequent mistakes, all players:
+
+```sql
+SELECT mistake, COUNT(*) AS times, COUNT(DISTINCT user_id) AS players
+  FROM quiz_answers
+ WHERE mistake IS NOT NULL
+ GROUP BY mistake
+ ORDER BY times DESC;
 ```
 
 Dates are epoch milliseconds: `datetime(at / 1000, 'unixepoch')` in SQLite,

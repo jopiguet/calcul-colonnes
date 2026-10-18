@@ -1,4 +1,4 @@
-/** Interface texts, in French and Spanish. Add a language by adding one dictionary. */
+/** Interface texts, in French, Spanish and English. Add a language by adding one dictionary. */
 
 const fr = {
   appTitle: "Calcul en colonnes",
@@ -120,19 +120,80 @@ const es: Record<Key, string> = {
   pdfDate: "Fecha:",
 };
 
+const en: Record<Key, string> = {
+  appTitle: "Column arithmetic",
+  language: "Language",
+  whoPlays: "Who's playing?",
+  newName: "New first name",
+  add: "Add",
+  nameRequired: "Type a first name",
+  nameTaken: "That name already exists",
+  nameFailed: "Could not save this player",
+  back: "Back",
+  scores: "Scores",
+  player: "Player",
+  changePlayer: "Player: {name}. Change player",
+  today: "Today",
+  total: "Total",
+  successRate: "Success",
+  deletePlayer: "Delete {name}",
+  confirmDelete: "Delete {name} and all their scores?",
+  deleteFailed: "Could not delete: the server cannot be reached.",
+  upTo: "Up to",
+  maximumGroup: "Largest number",
+  decreaseMaximum: "Lower the maximum",
+  increaseMaximum: "Raise the maximum",
+  smallUpTo: "× ÷ by a number up to",
+  smallGroup: "Largest multiplier and divisor",
+  decreaseSmall: "Lower the largest multiplier and divisor",
+  increaseSmall: "Raise the largest multiplier and divisor",
+  operations: "Operations",
+  addition: "Addition",
+  subtraction: "Subtraction",
+  multiplication: "Multiplication",
+  division: "Division",
+  score: "Score: {score}/{questions}",
+  check: "Check",
+  next: "Next",
+  finish: "Finish",
+  correct: "✅ Well done",
+  wrong: "❌ Not quite, the answer was {answer}",
+  wrongDivision: "❌ Not quite, the answer was {quotient}, remainder {remainder}",
+  needDigits: "😵‍💫 Write your answer in digits",
+  missingDigit: "😵‍💫 A digit is missing in your answer",
+  needRemainder: "😵‍💫 Write the remainder too (0 if there is none)",
+  unsaved: "⚠️ Answer not saved (server unreachable)",
+  finalScore: "👋 Your score is {score}/{questions}",
+  restart: "Start again",
+  worksheet: "🖨️ PDF sheet of {count} sums",
+  offlineTitle: "Server unreachable",
+  offlineText: "Players and scores are kept on the server. Check that it is running.",
+  retry: "Try again",
+  carryOf: "carry of the {column}",
+  quotient: "Quotient",
+  remainder: "Remainder",
+  digitOf: "{what}, digit {n}",
+  partialRow: "Partial product {n}, {column}",
+  workingLine: "Working line {n}, box {m}",
+  pdfName: "Name:",
+  pdfDate: "Date:",
+};
+
 /** Column names from the units upwards. */
 const columns = {
   fr: ["unités", "dizaines", "centaines", "milliers", "dizaines de milliers", "centaines de milliers"],
   es: ["unidades", "decenas", "centenas", "unidades de millar", "decenas de millar", "centenas de millar"],
+  en: ["units", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands"],
 };
 
-const dictionaries = { fr, es };
+const dictionaries = { fr, es, en };
 
 export type Lang = keyof typeof dictionaries;
 
 export const LANGUAGES: { code: Lang; label: string }[] = [
   { code: "fr", label: "Français" },
   { code: "es", label: "Español" },
+  { code: "en", label: "English" },
 ];
 
 export const isLang = (value: unknown): value is Lang =>

@@ -14,7 +14,7 @@ describes every screen, every setting and the keyboard shortcuts.
 
 ## Players
 
-The app opens on **Qui joue ? / ¿Quién juega?**.
+The app opens on **Qui joue ? / ¿Quién juega? / Who's playing?**.
 
 - **Choose a player:** click their name.
 - **Add a player:** type a first name (20 characters at most) and press *Ajouter*. Names must be unique, ignoring case.
@@ -147,7 +147,10 @@ test without saving it. Changing the language during a test keeps the test.
 ### Results
 
 The mark comes first, then each question with the answer chosen, the right
-answer and a short explanation with its formula. The buttons:
+answer and a short explanation with its formula. For a wrong answer, the
+**mistake** it stands for is named, for example *Dérivée de l'intérieur
+oubliée* (inner derivative forgotten) or *Solution oubliée* (solution missed).
+The buttons:
 
 - **Nouveau test:** a new test with the same settings.
 - **Refaire le même test:** exactly the same questions again.
@@ -185,6 +188,7 @@ The settings screen says how many kinds will be reviewed before the test starts.
 by clicking a player's name on the Scores screen. It shows:
 
 - **Each kind met in tests:** its status, its last five answers (oldest on the left) and its total.
+- **Frequent mistakes:** the six mistakes the player makes most often in tests, with how many times and in which kinds of question. A mistake keeps its count after the kind is mastered: it shows the habits to watch, not what is still to review.
 - **Column arithmetic:** today's and all-time results per operation.
 
 ## Scores
@@ -199,10 +203,13 @@ player and **all** their results, after confirmation; this cannot be undone.
 
 ## Language
 
-The dropdown at the top right switches between **Français** and **Español** on
-every screen, including the PDF worksheet and the test questions. In Spanish,
-formulas use the Spanish notation `sen` and `arcsen`. The choice is
-remembered by the browser.
+The dropdown at the top right switches between **Français**, **Español** and
+**English** on every screen, including the PDF worksheet and the test
+questions. On a first visit the app uses the browser's language if it is one
+of these three, French otherwise; the choice is then remembered.
+
+- **Spanish:** formulas use the Spanish notation `sen` and `arcsen`.
+- **English:** the column layouts stay the French and Spanish ones taught in Europe. In particular, the division is the bracket layout, not the English long-division layout.
 
 ## What is stored where
 

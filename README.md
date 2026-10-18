@@ -2,7 +2,7 @@
 
 A web app for practising arithmetic the way it is written on paper, and for
 multiple-choice tests in secondary-school and first-year university
-mathematics. French and Spanish interface; one server, one small database,
+mathematics. French, Spanish and English interface; one server, one small database,
 no account system.
 
 <p>
@@ -36,7 +36,8 @@ exponentials and logarithms, at *lycée / bachillerato* or university level.
 
 - Scores are kept per player in SQLite, or in PostgreSQL (Neon) with one setting.
 - Every test answer is filed under its kind of question. A kind answered wrong comes back in later tests until it has been answered right twice in a row.
-- A progress page shows each player's status per kind of question and per arithmetic operation.
+- Every wrong option stands for a typical mistake (36 types, such as *inner derivative forgotten* or *solution missed*). The mistake is shown in the corrections and counted per player.
+- A progress page shows each player's status per kind of question, their most frequent mistakes, and their results per arithmetic operation.
 
 ## Quick start
 
@@ -66,6 +67,7 @@ npm start          # http://localhost:8787
 | `npm run build` | Type-checks the browser and server code, then builds the app into `dist/` |
 | `npm start` | Runs the server: API, plus the built app if `dist/` exists |
 | `npm run check:quiz` | Generates thousands of tests and verifies every question (see [question generators](docs/question-generators.md#verification)) |
+| `npm run test:e2e` | Browser tests of the whole app, on a separate server and database (see [Development › Tests](docs/development.md#tests)) |
 | `npm run db:copy-to-postgres` | One-off copy of the SQLite data into the PostgreSQL database named by `DATABASE_URL` |
 
 ## Configuration
@@ -98,6 +100,7 @@ src/            browser app (TypeScript, no framework)
 shared/         code used by both browser and server
   quiz/         question generators, test assembly, progress rules
 server/         API (Hono), database access, migrations, scripts
+tests/e2e/      browser tests (Playwright)
 docs/           documentation
 ```
 

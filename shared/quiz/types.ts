@@ -48,13 +48,70 @@ export type ExplanationKey =
   | "logRules"
   | "substituteExp";
 
+/**
+ * The mistake a wrong option stands for. Recorded when a player picks it, so
+ * that the progress page can show which mistakes come back. Labels do not
+ * change what a seed produces.
+ */
+export const MISTAKES = [
+  // derivatives
+  "exponentKept", // n·xⁿ instead of n·xⁿ⁻¹
+  "coefficientMissing", // exponent not brought down as a factor
+  "constantKept", // derivative of a constant not zero
+  "termDropped", // a term forgotten
+  "chainRuleForgotten", // derivative of the inside forgotten
+  "wrongInnerFactor", // wrong factor from the inside function
+  "productRule", // (uv)′ misapplied
+  "quotientRule", // (u/v)′ misapplied
+  "logDerivative", // derivative of ln misapplied
+  "powerRuleOnExponential", // power rule applied to an exponential
+  // integrals
+  "derivedInstead", // derivative given instead of a primitive
+  "wrongPowerDivisor", // divided by n instead of n + 1, or not at all
+  "constantNotIntegrated", // constant term left out of the primitive
+  "multipliedInsteadOfDivided", // ×a instead of ÷a for f(ax)
+  "wrongFactor", // missing or extra constant factor
+  "logPrimitiveError", // primitive of 1/x not known
+  "byParts", // integration by parts unfinished or misapplied
+  "substitutionError", // change of variable misapplied
+  "boundsError", // F(b) − F(a) misapplied
+  // trigonometry
+  "sinCosSwapped",
+  "exactValueError", // wrong exact value
+  "missingSolution",
+  "wrongSymmetry", // π − x, 2π − x, π + x confused
+  "outOfRange", // value outside the interval or the principal range
+  "trigFormula", // trigonometric formula misremembered
+  "periodError",
+  // limits
+  "dominantTerms", // highest-degree terms misidentified
+  "growthReversed", // exp, powers and ln compared the wrong way
+  "indeterminateGuess", // indeterminate form taken for a value
+  "invertedRatio", // a/b instead of b/a
+  "taylorError", // expansion coefficient wrong
+  "factorisationError",
+  // exponentials and logarithms
+  "logRules", // properties of ln misapplied
+  "expLogInverse", // exp and ln composed wrongly
+  "solvingError", // equation solved in the wrong order
+  // everywhere
+  "signError",
+] as const;
+
+export type MistakeKey = (typeof MISTAKES)[number];
+
 /** An answer: its LaTeX, and what it stands for (function, number or set of numbers). */
 export interface Option {
   tex: string;
   fn?: Fn;
   num?: number;
   set?: number[];
+  /** For a wrong option: the mistake it stands for. */
+  mistake?: MistakeKey;
 }
+
+/** A wrong option labelled with its mistake. */
+export const tag = (option: Option, mistake: MistakeKey): Option => ({ ...option, mistake });
 
 /** How the correct answer is defined; used to tell options apart and by the check script. */
 export type Verify =

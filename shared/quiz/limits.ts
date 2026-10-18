@@ -1,5 +1,5 @@
 import { ePow, frac, numTex, poly, val, type Coef } from "./tex";
-import type { Generator, Option } from "./types";
+import { tag, type Generator, type Option } from "./types";
 
 const number = (c: Coef): Option => ({ tex: numTex(c), num: val(c) });
 const PLUS_INF: Option = { tex: "+\\infty", num: Infinity };
@@ -19,7 +19,16 @@ const rationalAtInfinity: Generator = (rng) => {
   return {
     prompt: { key: "limit", tex: `\\lim_{x \\to +\\infty} \\frac{${P.tex}}{${Q.tex}}` },
     correct,
-    wrong: [ZERO, number(frac(a, d)), number(frac(b, e)), PLUS_INF, MINUS_INF, number(1), number(a)],
+    wrong: [
+      tag(ZERO, "dominantTerms"),
+      tag(number(frac(a, d)), "dominantTerms"),
+      tag(number(frac(b, e)), "dominantTerms"),
+      // The opposite infinity is a sign error; any other infinity, a wrong reading of the degrees.
+      tag(PLUS_INF, correct === MINUS_INF ? "signError" : "dominantTerms"),
+      tag(MINUS_INF, correct === PLUS_INF ? "signError" : "dominantTerms"),
+      tag(number(1), "indeterminateGuess"),
+      tag(number(a), "dominantTerms"),
+    ],
     explanation: {
       key: "dominantTerms",
       tex: `\\frac{${P.tex}}{${Q.tex}} \\sim \\frac{${poly([[a, p]]).tex}}{${poly([[d, q]]).tex}}`,
@@ -34,7 +43,13 @@ const sinOverX: Generator = (rng) => {
   return {
     prompt: { key: "limit", tex: `\\lim_{x \\to 0} \\frac{\\sin(${a}x)}{${b === 1 ? "" : b}x}` },
     correct: number(frac(a, b)),
-    wrong: [number(frac(b, a)), number(1), ZERO, PLUS_INF, number(a)],
+    wrong: [
+      tag(number(frac(b, a)), "invertedRatio"),
+      tag(number(1), "wrongInnerFactor"),
+      tag(ZERO, "indeterminateGuess"),
+      tag(PLUS_INF, "indeterminateGuess"),
+      tag(number(a), "wrongInnerFactor"),
+    ],
     explanation: { key: "sinOverX", tex: `\\lim_{u \\to 0} \\frac{\\sin u}{u} = 1, \\quad \\frac{\\sin(${a}x)}{${b === 1 ? "" : b}x} = \\frac{${a}}{${b}} \\cdot \\frac{\\sin(${a}x)}{${a}x}` },
     verify: { kind: "limit", f: (x) => Math.sin(a * x) / (b * x), probe: 1e-6 },
   };
@@ -52,7 +67,13 @@ const growth: Generator = (rng) => {
   return {
     prompt: { key: "limit", tex: `\\lim_{x \\to +\\infty} ${c.tex}` },
     correct: c.limit,
-    wrong: [ZERO, PLUS_INF, number(1), number(n), MINUS_INF],
+    wrong: [
+      tag(ZERO, "growthReversed"),
+      tag(PLUS_INF, "growthReversed"),
+      tag(number(1), "indeterminateGuess"),
+      tag(number(n), "indeterminateGuess"),
+      tag(MINUS_INF, "signError"),
+    ],
     explanation: { key: "growth", tex: "\\ln x \\ll x^{n} \\ll e^{x}" },
     verify: { kind: "limit", f: c.f, probe: c.probe },
   };
@@ -64,7 +85,13 @@ const factor: Generator = (rng) => {
   return {
     prompt: { key: "limit", tex: `\\lim_{x \\to ${a}} \\frac{x^{2} - ${a * a}}{x ${minus}}` },
     correct: number(2 * a),
-    wrong: [number(a), ZERO, number(a * a), PLUS_INF, number(-2 * a)],
+    wrong: [
+      tag(number(a), "factorisationError"),
+      tag(ZERO, "indeterminateGuess"),
+      tag(number(a * a), "factorisationError"),
+      tag(PLUS_INF, "indeterminateGuess"),
+      tag(number(-2 * a), "signError"),
+    ],
     explanation: { key: "factor", tex: `\\frac{x^{2} - ${a * a}}{x ${minus}} = x ${a > 0 ? `+ ${a}` : `- ${-a}`}` },
     verify: { kind: "limit", f: (x) => (x * x - a * a) / (x - a), probe: a + 1e-7 },
   };
@@ -78,7 +105,13 @@ const expLimit: Generator = (rng) => {
   return {
     prompt: { key: "limit", tex: `\\lim_{x \\to +\\infty} \\left(1 + \\frac{${a}}{x}\\right)^{x}` },
     correct: E(a),
-    wrong: [number(1), E(1), PLUS_INF, number(a), { tex: `e^{\\frac{1}{${a}}}`, num: Math.exp(1 / a) }],
+    wrong: [
+      tag(number(1), "indeterminateGuess"), // 1^∞ taken as 1
+      tag(E(1), "wrongInnerFactor"),
+      tag(PLUS_INF, "indeterminateGuess"),
+      tag(number(a), "expLogInverse"),
+      tag({ tex: `e^{\\frac{1}{${a}}}`, num: Math.exp(1 / a) }, "invertedRatio"),
+    ],
     explanation: {
       key: "expLimit",
       tex: `\\left(1 + \\frac{${a}}{x}\\right)^{x} = e^{x\\ln\\left(1 + \\frac{${a}}{x}\\right)}, \\quad x\\ln\\left(1 + \\frac{${a}}{x}\\right) \\to ${a}`,
@@ -96,7 +129,13 @@ const rateAtZero: Generator = (rng) => {
       tex: exp ? `\\lim_{x \\to 0} \\frac{e^{${a}x} - 1}{x}` : `\\lim_{x \\to 0} \\frac{\\ln(1 + ${a}x)}{x}`,
     },
     correct: number(a),
-    wrong: [number(1), ZERO, number(frac(1, a)), PLUS_INF, number(-a)],
+    wrong: [
+      tag(number(1), "wrongInnerFactor"),
+      tag(ZERO, "indeterminateGuess"),
+      tag(number(frac(1, a)), "invertedRatio"),
+      tag(PLUS_INF, "indeterminateGuess"),
+      tag(number(-a), "signError"),
+    ],
     explanation: {
       key: "derivativeAtZero",
       tex: exp ? `(e^{${a}x})'\\big|_{x=0} = ${a}` : `(\\ln(1 + ${a}x))'\\big|_{x=0} = ${a}`,
@@ -116,7 +155,13 @@ const taylor: Generator = (rng) => {
     return {
       prompt: { key: "limit", tex: `\\lim_{x \\to 0} \\frac{1 - \\cos(${ax})}{x^{2}}` },
       correct: number(frac(a * a, 2)),
-      wrong: [number(frac(a, 2)), number(a * a), ZERO, number(frac(1, 2)), PLUS_INF],
+      wrong: [
+        tag(number(frac(a, 2)), "taylorError"),
+        tag(number(a * a), "taylorError"),
+        tag(ZERO, "indeterminateGuess"),
+        tag(number(frac(1, 2)), "wrongInnerFactor"),
+        tag(PLUS_INF, "indeterminateGuess"),
+      ],
       explanation: { key: "taylor", tex: "\\cos u = 1 - \\frac{u^{2}}{2} + o(u^{2})" },
       verify: { kind: "limit", f: (x) => (2 * Math.sin((a * x) / 2) ** 2) / (x * x), probe: 1e-5 },
     };
@@ -125,7 +170,13 @@ const taylor: Generator = (rng) => {
   return {
     prompt: { key: "limit", tex: `\\lim_{x \\to 0} \\frac{\\sin(${ax}) - ${ax}}{x^{3}}` },
     correct: number(frac(-(a ** 3), 6)),
-    wrong: [number(frac(a ** 3, 6)), ZERO, number(frac(-a, 6)), number(frac(-(a ** 3), 2)), MINUS_INF],
+    wrong: [
+      tag(number(frac(a ** 3, 6)), "signError"),
+      tag(ZERO, "indeterminateGuess"),
+      tag(number(frac(-a, 6)), "taylorError"),
+      tag(number(frac(-(a ** 3), 2)), "taylorError"),
+      tag(MINUS_INF, "indeterminateGuess"),
+    ],
     explanation: { key: "taylor", tex: "\\sin u = u - \\frac{u^{3}}{6} + o(u^{3})" },
     // probe chosen so that the cancellation in sin(ax) − ax stays far from rounding noise
     verify: { kind: "limit", f: (x) => (Math.sin(a * x) - a * x) / x ** 3, probe: 1e-3 },

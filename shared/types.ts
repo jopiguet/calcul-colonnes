@@ -62,6 +62,15 @@ export interface SkillProgress {
   status: "review" | "learning" | "mastered";
 }
 
+export interface MistakeProgress {
+  /** Mistake type, e.g. "chainRuleForgotten" (MISTAKES in shared/quiz/types.ts). */
+  mistake: string;
+  count: number;
+  lastAt: number;
+  /** Kinds of question where it was made, most recent first. */
+  skills: string[];
+}
+
 export interface OperatorProgress {
   operator: Operator;
   total: number;
@@ -73,5 +82,7 @@ export interface OperatorProgress {
 export interface Profile {
   user: User;
   skills: SkillProgress[];
+  /** Mistakes made in tests, most frequent first. */
+  mistakes: MistakeProgress[];
   operators: OperatorProgress[];
 }

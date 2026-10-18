@@ -4,6 +4,7 @@
 - [Code layout](#code-layout)
 - [Conventions](#conventions)
 - [Common changes](#common-changes)
+- [Tests](#tests)
 - [Adding a language](#adding-a-language)
 - [Before a release](#before-a-release)
 
@@ -69,10 +70,11 @@ folder to start from scratch. To develop against PostgreSQL, set
 | Config | Covers | Notes |
 |---|---|---|
 | `tsconfig.json` | `src/`, `shared/` | DOM types; bundled by Vite |
-| `tsconfig.server.json` | `server/`, `shared/`, `vite.config.ts` | Node types; `.ts` extensions in imports |
+| `tsconfig.server.json` | `server/`, `shared/`, `vite.config.ts` | Node types only; `.ts` extensions in imports |
+| `tsconfig.tests.json` | `tests/`, `shared/`, `playwright.config.ts` | Server settings plus DOM types, for code run in the page |
 
-Both are strict, with `noUncheckedIndexedAccess`. `npm run build` checks both
-before building.
+All are strict, with `noUncheckedIndexedAccess`. `npm run build` checks all
+three before building.
 
 ## Conventions
 
@@ -98,26 +100,62 @@ before building.
 
 ## Adding a language
 
+English was added this way; follow the `en` entries as a model.
+
 1. **Interface texts:** in `src/i18n.ts`, add a dictionary typed `Record<Key, string>` and register it in `dictionaries`; add its column names in `columns` and an entry in `LANGUAGES`.
-2. **Test texts:** in `src/quiz-i18n.ts`, add the dictionary (registered in `dictionaries`) and entries in `LEVEL_NAMES`, `TOPIC_NAMES`, `PROMPTS`, `EXPLANATIONS` and `SKILL_NAMES`. The `Record<Lang, …>` types make the compiler list anything missing.
-3. **Notation:** if the language writes functions differently, add KaTeX macros in `macros()` in `src/quiz.ts`, as Spanish does for *sen*.
-4. **PDF worksheet:** it uses the standard WinAnsi fonts, which cover Western European languages. Other scripts would need an embedded font.
+2. **Test texts:** in `src/quiz-i18n.ts`, add the dictionary (registered in `dictionaries`) and entries in `LEVEL_NAMES`, `TOPIC_NAMES`, `PROMPTS`, `EXPLANATIONS`, `SKILL_NAMES` and `MISTAKE_NAMES`. The `Record<Lang, …>` types make the compiler list anything missing.
+3. **Tests:** add the language to `LANGUAGES` in `tests/e2e/languages.spec.ts`.
+4. **Notation:** if the language writes functions differently, add KaTeX macros in `macros()` in `src/quiz.ts`, as Spanish does for *sen*.
+5. **PDF worksheet:** it uses the standard WinAnsi fonts, which cover Western European languages. Other scripts would need an embedded font.
+
+## Tests
+
+Two automated checks:
+
+| Command | What it covers | Time |
+|---|---|---|
+| `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
+| `npm run test:e2e` | The whole app in a browser: 21 tests | about a minute |
+
+### Browser tests
+
+```sh
+npx playwright install chromium   # once
+npm run test:e2e
+npx playwright test progress      # one file
+npx playwright show-trace test-results/<test>/trace.zip   # after a failure
+```
+
+Playwright builds the app and starts its own server on port 8799, with a
+fresh SQLite file in `test-results/` (`tests/e2e/server.ts`). The variables
+set in `playwright.config.ts` take precedence over `.env`, so a development
+database, SQLite or Neon, is never touched. Tests run one after the other
+against that shared server; each creates its own players.
+
+| File | Covers |
+|---|---|
+| `players.spec.ts` | Creating, remembering, switching and deleting players; duplicate names; cascade delete |
+| `arithmetic.spec.ts` | Units-first typing and server grading, carries, refused answers, two-digit multiplication lines, division with remainder, remembered settings, the PDF worksheet |
+| `quiz.spec.ts` | A test graded identically by the browser, the server and an independent rebuild from its seed; keyboard; language change mid-test; blanks; replay; giving up |
+| `progress.spec.ts` | Mistakes coming back in the next test; progress page against the API; mistake recorded for each wrong answer and shown |
+| `languages.spec.ts` | Every screen in French, Spanish and English with no missing text; language of a first visit |
+
+`helpers.ts` holds the shared steps. `rebuild()` regenerates a submitted test
+with `shared/quiz` directly, so the tests check the server's grading against
+an independent computation rather than against itself.
+
+Each test should create its own player (`newPlayer`) and assert on that
+player only, so tests stay independent of their order.
 
 ## Before a release
 
 ```sh
-npm run build                 # type checks both projects, builds dist/
-npm run check:quiz            # if shared/quiz/ changed
+npm run build          # type checks the three projects, builds dist/
+npm run check:quiz     # if shared/quiz/ changed
+npm run test:e2e
 ```
 
-Then, by hand, in the browser:
-
-1. **Column arithmetic:** one exercise per operation, including a two-digit multiplier and a division with a remainder.
-2. **Tests:** finish a test, reload the progress page, and start a test with review.
-3. **Language:** switch language on each screen.
-4. **Upgrade path:** start the new version once on a copy of the production database. Check that the migrations and the backfill run cleanly and that the scores are unchanged.
-
-Bump `version` in `package.json` and add an entry to `CHANGELOG.md`.
-
-There is no automated browser test suite in the repository yet; the checks
-above were run with Playwright during development.
+Then start the new version once on a **copy** of the production database.
+Check that the migrations and the backfills run cleanly and that the scores
+are unchanged. Bump `version` in `package.json` and add an entry to
+`CHANGELOG.md`.

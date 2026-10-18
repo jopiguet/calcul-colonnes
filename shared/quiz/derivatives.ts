@@ -1,5 +1,5 @@
 import { kx, lin, poly, pow, sum, type Fn } from "./tex";
-import type { Generator, Option } from "./types";
+import { tag, type Generator, type Option } from "./types";
 
 const opt = (tex: string, fn: Fn): Option => ({ tex, fn });
 const fromPoly = (p: { tex: string; fn: Fn }): Option => opt(p.tex, p.fn);
@@ -15,11 +15,11 @@ const polynomial: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = ${f.tex}` },
     correct: fromPoly(poly([[n * a, n - 1], [m * b, m - 1]])),
     wrong: [
-      fromPoly(poly([[n * a, n], [m * b, m]])), // exponent not lowered
-      fromPoly(poly([[a, n - 1], [b, m - 1]])), // exponent not brought down
-      fromPoly(poly([[n * a, n - 1], [m * b, m - 1], [c, 0]])), // constant kept
-      fromPoly(poly([[n * a, n - 1], [-m * b, m - 1]])), // sign error
-      fromPoly(poly([[n * a, n - 1]])), // second term lost
+      tag(fromPoly(poly([[n * a, n], [m * b, m]])), "exponentKept"),
+      tag(fromPoly(poly([[a, n - 1], [b, m - 1]])), "coefficientMissing"),
+      tag(fromPoly(poly([[n * a, n - 1], [m * b, m - 1], [c, 0]])), "constantKept"),
+      tag(fromPoly(poly([[n * a, n - 1], [-m * b, m - 1]])), "signError"),
+      tag(fromPoly(poly([[n * a, n - 1]])), "termDropped"),
     ],
     explanation: { key: "powerRule", tex: "(x^{n})' = n\\,x^{n-1}" },
     verify: { kind: "derivative", f: f.fn },
@@ -37,7 +37,13 @@ const trig: Generator = (rng) => {
     return {
       prompt: { key: "derivative", tex: `f(x) = ${sum([[a, sin]])}` },
       correct: C(a * b),
-      wrong: [C(a), C(-a * b), S(a * b), C(b), S(-a)],
+      wrong: [
+        tag(C(a), "chainRuleForgotten"),
+        tag(C(-a * b), "signError"),
+        tag(S(a * b), "sinCosSwapped"),
+        tag(C(b), "coefficientMissing"),
+        tag(S(-a), "sinCosSwapped"),
+      ],
       explanation: { key: "chainRule", tex: "(\\sin u)' = u'\\cos u" },
       verify: { kind: "derivative", f: (x) => a * Math.sin(b * x) },
     };
@@ -45,7 +51,13 @@ const trig: Generator = (rng) => {
   return {
     prompt: { key: "derivative", tex: `f(x) = ${sum([[a, cos]])}` },
     correct: S(-a * b),
-    wrong: [S(a * b), S(-a), C(-a * b), S(a), C(a * b)],
+    wrong: [
+      tag(S(a * b), "signError"),
+      tag(S(-a), "chainRuleForgotten"),
+      tag(C(-a * b), "sinCosSwapped"),
+      tag(S(a), "chainRuleForgotten"),
+      tag(C(a * b), "sinCosSwapped"),
+    ],
     explanation: { key: "chainRule", tex: "(\\cos u)' = -u'\\sin u" },
     verify: { kind: "derivative", f: (x) => a * Math.cos(b * x) },
   };
@@ -61,11 +73,11 @@ const exponential: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = ${e}` },
     correct: E(a),
     wrong: [
-      E(1), // chain rule forgotten
-      E(b),
-      opt(`(${lin(a, b)})${e}`, (x) => (a * x + b) * Math.exp(a * x + b)),
-      E(a, `e^{${kx(a)}}`, (x) => Math.exp(a * x)),
-      E(-a),
+      tag(E(1), "chainRuleForgotten"),
+      tag(E(b), "wrongInnerFactor"),
+      tag(opt(`(${lin(a, b)})${e}`, (x) => (a * x + b) * Math.exp(a * x + b)), "powerRuleOnExponential"),
+      tag(E(a, `e^{${kx(a)}}`, (x) => Math.exp(a * x)), "termDropped"),
+      tag(E(-a), "signError"),
     ],
     explanation: { key: "chainRule", tex: "(e^{u})' = u'\\,e^{u}" },
     verify: { kind: "derivative", f: (x) => Math.exp(a * x + b) },
@@ -80,11 +92,11 @@ const logarithm: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = \\ln(${l})` },
     correct: opt(`\\frac{${a}}{${l}}`, (x) => a / (a * x + b)),
     wrong: [
-      opt(`\\frac{1}{${l}}`, (x) => 1 / (a * x + b)),
-      opt(`\\frac{${a}}{x}`, (x) => a / x),
-      opt(`\\frac{1}{${kx(a)}}`, (x) => 1 / (a * x)),
-      opt(`-\\frac{${a}}{(${l})^{2}}`, (x) => -a / (a * x + b) ** 2),
-      opt(sum([[a, `\\ln(${l})`]]), (x) => a * Math.log(a * x + b)),
+      tag(opt(`\\frac{1}{${l}}`, (x) => 1 / (a * x + b)), "chainRuleForgotten"),
+      tag(opt(`\\frac{${a}}{x}`, (x) => a / x), "logDerivative"),
+      tag(opt(`\\frac{1}{${kx(a)}}`, (x) => 1 / (a * x)), "logDerivative"),
+      tag(opt(`-\\frac{${a}}{(${l})^{2}}`, (x) => -a / (a * x + b) ** 2), "logDerivative"),
+      tag(opt(sum([[a, `\\ln(${l})`]]), (x) => a * Math.log(a * x + b)), "logDerivative"),
     ],
     explanation: { key: "chainRule", tex: "(\\ln u)' = \\frac{u'}{u}" },
     verify: { kind: "derivative", f: (x) => Math.log(a * x + b) },
@@ -101,10 +113,10 @@ const product: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = ${pow(n)}${e}` },
     correct: withE(poly([[a, n], [n, n - 1]])),
     wrong: [
-      opt(sum([[n * a, `${pow(n - 1)}${e}`]]), (x) => n * a * x ** (n - 1) * ex(x)), // u'v'
-      opt(sum([[n, `${pow(n - 1)}${e}`]]), (x) => n * x ** (n - 1) * ex(x)),
-      opt(sum([[a, `${pow(n)}${e}`]]), (x) => a * x ** n * ex(x)),
-      withE(poly([[-a, n], [n, n - 1]])),
+      tag(opt(sum([[n * a, `${pow(n - 1)}${e}`]]), (x) => n * a * x ** (n - 1) * ex(x)), "productRule"), // u'v'
+      tag(opt(sum([[n, `${pow(n - 1)}${e}`]]), (x) => n * x ** (n - 1) * ex(x)), "productRule"),
+      tag(opt(sum([[a, `${pow(n)}${e}`]]), (x) => a * x ** n * ex(x)), "productRule"),
+      tag(withE(poly([[-a, n], [n, n - 1]])), "signError"),
     ],
     explanation: { key: "productRule", tex: "(uv)' = u'v + uv'" },
     verify: { kind: "derivative", f: (x) => x ** n * ex(x) },
@@ -120,10 +132,10 @@ const logComposite: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = \\ln(${u})` },
     correct: opt(`\\frac{2x}{${u}}`, (x) => (2 * x) / (x * x + a)),
     wrong: [
-      opt(`\\frac{1}{${u}}`, (x) => 1 / (x * x + a)),
-      opt(`\\frac{x}{${u}}`, (x) => x / (x * x + a)),
-      opt(`2x\\ln(${u})`, (x) => 2 * x * Math.log(x * x + a)),
-      opt(`\\frac{1}{2x}`, (x) => 1 / (2 * x)),
+      tag(opt(`\\frac{1}{${u}}`, (x) => 1 / (x * x + a)), "chainRuleForgotten"),
+      tag(opt(`\\frac{x}{${u}}`, (x) => x / (x * x + a)), "wrongInnerFactor"),
+      tag(opt(`2x\\ln(${u})`, (x) => 2 * x * Math.log(x * x + a)), "logDerivative"),
+      tag(opt(`\\frac{1}{2x}`, (x) => 1 / (2 * x)), "logDerivative"),
     ],
     explanation: { key: "chainRule", tex: "(\\ln u)' = \\frac{u'}{u}" },
     verify: { kind: "derivative", f: (x) => Math.log(x * x + a) },
@@ -137,10 +149,10 @@ const arctan: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = \\arctan(${a}x)` },
     correct: opt(`\\frac{${a}}{${den}}`, (x) => a / (1 + a * a * x * x)),
     wrong: [
-      opt(`\\frac{1}{${den}}`, (x) => 1 / (1 + a * a * x * x)),
-      opt(`\\frac{${a}}{1 + x^{2}}`, (x) => a / (1 + x * x)),
-      opt(`\\frac{${a}}{1 + ${a}x^{2}}`, (x) => a / (1 + a * x * x)),
-      opt(`-\\frac{${a}}{${den}}`, (x) => -a / (1 + a * a * x * x)),
+      tag(opt(`\\frac{1}{${den}}`, (x) => 1 / (1 + a * a * x * x)), "chainRuleForgotten"),
+      tag(opt(`\\frac{${a}}{1 + x^{2}}`, (x) => a / (1 + x * x)), "wrongInnerFactor"),
+      tag(opt(`\\frac{${a}}{1 + ${a}x^{2}}`, (x) => a / (1 + a * x * x)), "wrongInnerFactor"),
+      tag(opt(`-\\frac{${a}}{${den}}`, (x) => -a / (1 + a * a * x * x)), "signError"),
     ],
     explanation: { key: "chainRule", tex: "(\\arctan u)' = \\frac{u'}{1 + u^{2}}" },
     verify: { kind: "derivative", f: (x) => Math.atan(a * x) },
@@ -154,10 +166,10 @@ const powerLog: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = ${pow(n)}\\ln x` },
     correct: opt(sum([[n, `${pow(n - 1)}\\ln x`], [1, pow(n - 1)]]), (x) => n * x ** (n - 1) * ln(x) + x ** (n - 1)),
     wrong: [
-      opt(sum([[n, `${pow(n - 1)}\\ln x`]]), (x) => n * x ** (n - 1) * ln(x)),
-      opt(sum([[n, pow(n - 2)]]), (x) => n * x ** (n - 2)), // (ln x)' = 1/x applied to everything
-      opt(sum([[n, `${pow(n - 1)}\\ln x`], [-1, pow(n - 1)]]), (x) => n * x ** (n - 1) * ln(x) - x ** (n - 1)),
-      opt(`${sum([[n, pow(n - 1)]])} + \\frac{1}{x}`, (x) => n * x ** (n - 1) + 1 / x),
+      tag(opt(sum([[n, `${pow(n - 1)}\\ln x`]]), (x) => n * x ** (n - 1) * ln(x)), "productRule"),
+      tag(opt(sum([[n, pow(n - 2)]]), (x) => n * x ** (n - 2)), "logDerivative"), // (ln x)' = 1/x applied to everything
+      tag(opt(sum([[n, `${pow(n - 1)}\\ln x`], [-1, pow(n - 1)]]), (x) => n * x ** (n - 1) * ln(x) - x ** (n - 1)), "signError"),
+      tag(opt(`${sum([[n, pow(n - 1)]])} + \\frac{1}{x}`, (x) => n * x ** (n - 1) + 1 / x), "productRule"),
     ],
     explanation: { key: "productRule", tex: "(uv)' = u'v + uv'" },
     verify: { kind: "derivative", f: (x) => x ** n * ln(x) },
@@ -173,10 +185,10 @@ const quotient: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = \\frac{${e}}{x}` },
     correct: over(lin(a, -1), (x) => a * x - 1),
     wrong: [
-      over(lin(a, 1), (x) => a * x + 1),
-      over(lin(-a, 1), (x) => 1 - a * x),
-      opt(sum([[a, e]]), (x) => a * ex(x)),
-      opt(`\\frac{${sum([[a, e]])}}{x}`, (x) => (a * ex(x)) / x),
+      tag(over(lin(a, 1), (x) => a * x + 1), "quotientRule"),
+      tag(over(lin(-a, 1), (x) => 1 - a * x), "quotientRule"),
+      tag(opt(sum([[a, e]]), (x) => a * ex(x)), "quotientRule"),
+      tag(opt(`\\frac{${sum([[a, e]])}}{x}`, (x) => (a * ex(x)) / x), "quotientRule"),
     ],
     explanation: { key: "quotientRule", tex: "\\left(\\frac{u}{v}\\right)' = \\frac{u'v - uv'}{v^{2}}" },
     verify: { kind: "derivative", f: (x) => ex(x) / x },

@@ -15,6 +15,8 @@ console.log(`database: ${db.label}`);
 if (applied.length > 0) console.log(`migrations applied: ${applied.join(", ")}`);
 const rebuilt = await new Repository(db).backfillQuizAnswers();
 if (rebuilt > 0) console.log(`answers rebuilt from their seed for ${rebuilt} earlier test(s)`);
+const labelled = await new Repository(db).backfillMistakes();
+if (labelled > 0) console.log(`mistakes labelled for ${labelled} earlier test(s)`);
 
 const app = createApp(db);
 

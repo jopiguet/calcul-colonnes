@@ -157,7 +157,7 @@ re-renders such as a language change, but not a page reload.
 
 ## Internationalisation
 
-- **Interface texts:** two dictionaries in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress and the names of the 39 kinds of question. The Spanish dictionaries are typed against the French ones, so a missing translation is a compile error.
+- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 39 kinds of question and of the 36 mistake types. Every dictionary is typed against the French one, so a missing translation is a compile error.
 - **Generated questions:** the generators produce only LaTeX plus *keys* for the sentence around it (`PromptKey`, `ExplanationKey`), so they contain no language.
 - **Spanish notation:** KaTeX macros render `\sin` as *sen* and `\arcsin` as *arcsen*.
 
@@ -173,3 +173,4 @@ See [Development › Adding a language](development.md#adding-a-language).
 | `katex` | browser, check script | Formula rendering |
 | `tsx` | server | Runs the TypeScript server without a build step |
 | `vite`, `typescript`, `concurrently` | development | Build, type checking, dev servers |
+| `@playwright/test` | development | Browser tests |

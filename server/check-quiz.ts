@@ -8,7 +8,7 @@
  *   npm run check:quiz [-- seeds]
  */
 import katex from "katex";
-import { generateQuiz, LEVELS, reviewCount, skillsFor, TOPICS, type Option, type Question } from "../shared/quiz/index.ts";
+import { generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, TOPICS, type Option, type Question } from "../shared/quiz/index.ts";
 
 const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
 const near = (a: number, b: number, tol: number): boolean =>
@@ -87,6 +87,7 @@ function render(tex: string, where: string): void {
 const seeds = Number(process.argv[2] ?? 400);
 const failures: string[] = [];
 const prompts = new Map<string, number>();
+const mistakesSeen = new Map<string, number>();
 let checked = 0;
 
 for (const level of LEVELS) {
@@ -118,6 +119,10 @@ for (const level of LEVELS) {
           const right = isRight(q, o);
           if (i === q.correct && !right) throw new Error(`marked answer is wrong: ${o.tex}`);
           if (i !== q.correct && right) throw new Error(`wrong option is also right: ${o.tex}`);
+          if (i !== q.correct && !(MISTAKES as readonly string[]).includes(o.mistake ?? "")) {
+            throw new Error(`wrong option without a mistake label: ${o.tex}`);
+          }
+          if (i !== q.correct) mistakesSeen.set(o.mistake!, (mistakesSeen.get(o.mistake!) ?? 0) + 1);
         });
       } catch (error) {
         failures.push(`${where}: ${(error as Error).message}`);
@@ -127,6 +132,9 @@ for (const level of LEVELS) {
 }
 
 for (const [key, n] of [...prompts].sort()) console.log(`${key.padEnd(40)} ${n}`);
-console.log(`\n${checked} questions checked, ${failures.length} failures`);
+const unused = MISTAKES.filter((m) => !mistakesSeen.has(m));
+if (unused.length > 0) failures.push(`mistake types never shown: ${unused.join(", ")}`);
+console.log(`\n${mistakesSeen.size} of ${MISTAKES.length} mistake types shown`);
+console.log(`${checked} questions checked, ${failures.length} failures`);
 for (const f of [...new Set(failures)].slice(0, 25)) console.log("  ✗", f);
 process.exit(failures.length === 0 ? 0 : 1);

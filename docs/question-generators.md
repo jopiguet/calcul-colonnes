@@ -98,10 +98,11 @@ const polynomial: Generator = (rng) => {
     prompt: { key: "derivative", tex: `f(x) = ${f.tex}` },
     correct: fromPoly(poly([[n * a, n - 1], [m * b, m - 1]])),
     wrong: [
-      fromPoly(poly([[n * a, n], [m * b, m]])),               // exponent not lowered
-      fromPoly(poly([[a, n - 1], [b, m - 1]])),               // exponent not brought down
-      fromPoly(poly([[n * a, n - 1], [m * b, m - 1], [c, 0]])), // constant kept
-      fromPoly(poly([[n * a, n - 1], [-m * b, m - 1]])),       // sign error
+      tag(fromPoly(poly([[n * a, n], [m * b, m]])), "exponentKept"),
+      tag(fromPoly(poly([[a, n - 1], [b, m - 1]])), "coefficientMissing"),
+      tag(fromPoly(poly([[n * a, n - 1], [m * b, m - 1], [c, 0]])), "constantKept"),
+      tag(fromPoly(poly([[n * a, n - 1], [-m * b, m - 1]])), "signError"),
+      tag(fromPoly(poly([[n * a, n - 1]])), "termDropped"),
     ],
     explanation: { key: "powerRule", tex: "(x^{n})' = n\\,x^{n-1}" },
     verify: { kind: "derivative", f: f.fn },
@@ -113,7 +114,7 @@ const polynomial: Generator = (rng) => {
 |---|---|
 | `prompt` | A sentence key (translated by the app) and the LaTeX of the question |
 | `correct` | The right answer: its LaTeX, plus what it stands for, as `fn` (a function), `num` (a number, possibly ±∞) or `set` (a sorted set of numbers) |
-| `wrong` | Candidate wrong answers, ideally real mistakes. Give more than three, because duplicates are removed. |
+| `wrong` | Candidate wrong answers, each labelled with the mistake it stands for (`tag(option, mistake)`). Give more than three, because duplicates are removed. |
 | `explanation` | A sentence key and a formula shown in the corrections |
 | `verify` | What the right answer must satisfy; used to remove duplicates and by the check script |
 
@@ -129,6 +130,58 @@ const polynomial: Generator = (rng) => {
 | `value` | numbers | equals a value computed independently |
 | `root` | numbers | f(x) = 0 |
 | `solutions` | sets | exactly the roots of f on [lo, hi) |
+
+## Mistake types
+
+Every wrong option carries a mistake type from `MISTAKES` in `types.ts`. When
+a player picks it, the type is stored with the answer (`quiz_answers.mistake`).
+It is then named in the corrections and counted on the progress page.
+
+Labels do not take part in generation, so adding or correcting one never
+changes what a seed produces and needs no version bump. Answers already saved
+keep the label they were stored with.
+
+| Type | Meaning | Topics |
+|---|---|---|
+| `exponentKept` | Exponent not lowered | derivatives |
+| `coefficientMissing` | Exponent not brought down as a factor | derivatives |
+| `constantKept` | Derivative of a constant not zero | derivatives |
+| `termDropped` | Term left out | derivatives |
+| `chainRuleForgotten` | Inner derivative forgotten | derivatives, explog |
+| `wrongInnerFactor` | Wrong factor from the inner function | derivatives, explog, limits |
+| `productRule` | Product rule misapplied | derivatives |
+| `quotientRule` | Quotient rule misapplied | derivatives |
+| `logDerivative` | Derivative of ln misapplied | derivatives |
+| `powerRuleOnExponential` | Power rule applied to an exponential | derivatives, explog, integrals |
+| `derivedInstead` | Derivative instead of an antiderivative | integrals |
+| `wrongPowerDivisor` | Wrong divisor: n + 1 expected | integrals |
+| `constantNotIntegrated` | Constant term not integrated | integrals |
+| `multipliedInsteadOfDivided` | Multiplied by a instead of dividing | integrals |
+| `wrongFactor` | Constant factor missing or extra | integrals |
+| `logPrimitiveError` | Antiderivative of 1/x not known | integrals |
+| `byParts` | Integration by parts unfinished | integrals |
+| `substitutionError` | Change of variable misapplied | explog, integrals |
+| `boundsError` | F(b) − F(a) miscalculated | integrals |
+| `sinCosSwapped` | sin and cos swapped | derivatives, integrals, trigonometry |
+| `exactValueError` | Wrong exact value | trigonometry |
+| `missingSolution` | Solution missed | explog, trigonometry |
+| `wrongSymmetry` | Wrong symmetry (π − x, 2π − x, π + x) | trigonometry |
+| `outOfRange` | Value outside the interval | trigonometry |
+| `trigFormula` | Trigonometric identity misremembered | trigonometry |
+| `periodError` | Period miscalculated | trigonometry |
+| `dominantTerms` | Dominant terms misidentified | limits |
+| `growthReversed` | Growth rates compared the wrong way | limits |
+| `indeterminateGuess` | Indeterminate form taken for a value | limits |
+| `invertedRatio` | Ratio inverted | explog, limits |
+| `taylorError` | Wrong Taylor coefficient | limits |
+| `factorisationError` | Wrong factorisation | limits |
+| `logRules` | Log rule misapplied | explog |
+| `expLogInverse` | exp and ln combined wrongly | explog, limits |
+| `solvingError` | Equation solved in the wrong order | explog |
+| `signError` | Sign error | derivatives, explog, integrals, limits, trigonometry |
+
+Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
+three languages.
 
 ## How a test is assembled
 
@@ -152,12 +205,13 @@ blank.
 1. **Write the generator** in the topic's file:
    - Use only `rng` for randomness (never `Math.random`), and `tex.ts` for formatting.
    - Keep parameters in ranges where every option is defined at the sample points 0.37 to 2.6 (watch logarithms and divisions).
-2. **Register it** at the end of the `school` and/or `university` object at the bottom of the file.
-3. **Bump the version:**
+2. **Label the wrong options** with `tag(option, mistake)`, reusing a type from `MISTAKES` when one fits. A new type goes in `MISTAKES` and in `MISTAKE_NAMES` in the three languages.
+3. **Register it** at the end of the `school` and/or `university` object at the bottom of the file.
+4. **Bump the version:**
    - Increment `QUIZ_VERSION` in `index.ts` and note the change in the comment above it.
    - Declare the kind in `AVAILABILITY` with `from: <new version>`, so tests of older versions keep drawing from their original list.
-4. **Name it:** add the name in both languages in `SKILL_NAMES` (`src/quiz-i18n.ts`). If you introduce a new prompt or explanation key, add it to `PromptKey` / `ExplanationKey` in `types.ts` and to both dictionaries.
-5. **Run the checks:** `npm run check:quiz` and `npm run build`.
+5. **Name it:** add the name in the three languages in `SKILL_NAMES` (`src/quiz-i18n.ts`). If you introduce a new prompt or explanation key, add it to `PromptKey` / `ExplanationKey` in `types.ts` and to the three dictionaries.
+6. **Run the checks:** `npm run check:quiz`, `npm run build` and `npm run test:e2e`.
 
 ## Versioning
 
@@ -173,7 +227,7 @@ Each test stores its version (`quiz_results.version`), and
 | **New kind of question** | Bump `QUIZ_VERSION`; add the kind with `AVAILABILITY[id] = { from: N }` (N = new version). |
 | **Changed kind** (ranges, wrong options, wording of the LaTeX, draw order inside the generator) | Do not edit it in place. Copy it under a new id, retire the old one with `until: N`, add the new one with `from: N`, and bump `QUIZ_VERSION`. The old code stays, unused by new tests. |
 | **Change in test assembly** (`generateQuiz`, `finalize`, option comparison) | Bump `QUIZ_VERSION` and keep the old behaviour behind a `version` condition, as `close()` does for version 1. |
-| **Text only** (an explanation or a translation, a name in `SKILL_NAMES`) | No bump: seeds produce the same questions. |
+| **Text only** (an explanation or a translation, a name in `SKILL_NAMES`, a mistake label) | No bump: seeds produce the same questions. |
 
 The server refuses a test submitted with a version other than its own (a
 browser still running an old build); reloading the page fixes it.
@@ -200,7 +254,7 @@ mistakes to review. It then checks:
 
 - **Correct answer:** the marked answer is right, computed **without the generator's arithmetic**: central-difference derivative, Simpson integral, function evaluated near the limit point, root finding by sign changes on a 200,000-point grid followed by bisection.
 - **Wrong options:** none of them is also right.
-- **Options:** exactly four, with distinct LaTeX.
+- **Options:** exactly four, with distinct LaTeX; every wrong option carries a known mistake type, and every type in `MISTAKES` occurs somewhere.
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
 - **Determinism:** the same seed gives the same test twice.
 - **Review questions:** their number and kinds match the focus.

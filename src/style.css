@@ -919,3 +919,47 @@ button.link {
 .review-info:empty {
   display: none;
 }
+
+/* ---- mistakes ---- */
+
+.review-line.mistake .review-label {
+  color: var(--warn);
+}
+
+.mistakes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.mistake-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--warn);
+  border-radius: 0.6rem;
+}
+
+.mistake-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.mistake-count {
+  flex-shrink: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--warn);
+}
+
+.mistake-where {
+  font-size: 0.8rem;
+  color: var(--muted);
+}

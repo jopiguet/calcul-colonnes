@@ -16,7 +16,7 @@ import {
 } from "../shared/quiz";
 import { button, el } from "./dom";
 import { currentLang } from "./i18n";
-import { explanationText, levelName, promptText, qt, topicName } from "./quiz-i18n";
+import { explanationText, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
 import { saveSettings, type Settings } from "./settings";
 import { store, type User } from "./store";
 
@@ -345,6 +345,9 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
       item.append(
         line(qt("yourAnswer"), given < 0 ? qt("blank") : math(`\\displaystyle ${q.options[given]!.tex}`), "given"),
       );
+      // The typical mistake behind the option chosen.
+      const mistake = given >= 0 ? q.options[given]!.mistake : undefined;
+      if (mistake) item.append(line(qt("mistake"), mistakeName(mistake), "mistake"));
     }
     item.append(line(qt("rightAnswer"), math(`\\displaystyle ${q.options[q.correct]!.tex}`), "right"));
     const why = el("div", "explanation");

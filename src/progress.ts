@@ -1,7 +1,7 @@
 import { TOPICS, type SkillStatus } from "../shared/quiz";
 import type { SkillProgress } from "../shared/types";
 import { button, el } from "./dom";
-import { qt, skillName, statusName, topicName } from "./quiz-i18n";
+import { mistakeName, qt, skillName, statusName, topicName } from "./quiz-i18n";
 import { store, type User } from "./store";
 
 /**
@@ -10,6 +10,8 @@ import { store, type User } from "./store";
  */
 
 const STATUS_ORDER: SkillStatus[] = ["review", "learning", "mastered"];
+/** Most frequent mistakes listed on the page. */
+const MISTAKES_SHOWN = 6;
 
 const percent = (correct: number, total: number): string =>
   total === 0 ? "—" : `${Math.round((100 * correct) / total)} %`;
@@ -67,6 +69,22 @@ export async function progressView(user: User, onBack: () => void): Promise<HTML
       wrap.append(block);
     }
     wrap.append(el("p", "hint", qt("progressRule")));
+
+    // ---- frequent mistakes
+    wrap.append(el("h2", "subtitle", qt("frequentMistakes")));
+    if (profile.mistakes.length === 0) {
+      wrap.append(el("p", "empty", qt("noMistakes")));
+    } else {
+      const list = el("ul", "mistakes");
+      for (const m of profile.mistakes.slice(0, MISTAKES_SHOWN)) {
+        const item = el("li", "mistake-item");
+        const head = el("div", "mistake-head");
+        head.append(el("span", "mistake-name", mistakeName(m.mistake)), el("span", "mistake-count", qt("mistakeTimes", { n: m.count })));
+        item.append(head, el("span", "mistake-where", m.skills.slice(0, 3).map(skillName).join(" · ")));
+        list.append(item);
+      }
+      wrap.append(list, el("p", "hint", qt("mistakesRule")));
+    }
   }
 
   // ---- column arithmetic

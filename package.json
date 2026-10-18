@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "3.1.0",
+  "version": "3.2.0",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -10,12 +10,14 @@
     "dev": "concurrently -k -n api,web -c blue,green \"npm:dev:api\" \"npm:dev:web\"",
     "dev:api": "tsx watch server/index.ts",
     "dev:web": "vite",
-    "build": "tsc -p tsconfig.json && tsc -p tsconfig.server.json && vite build",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.server.json && tsc -p tsconfig.tests.json && vite build",
     "start": "tsx server/index.ts",
     "db:copy-to-postgres": "tsx server/copy-to-postgres.ts",
-    "check:quiz": "tsx server/check-quiz.ts"
+    "check:quiz": "tsx server/check-quiz.ts",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.0",
     "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^22.20.5",
     "@types/pg": "^8.23.1",
