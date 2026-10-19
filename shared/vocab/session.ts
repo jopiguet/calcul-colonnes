@@ -36,6 +36,8 @@ export interface BookInfo {
   kind: "translation" | "definition";
   termLang: string;
   meaningLang: string;
+  /** A word list in alphabetical order: neighbours are not related in meaning. */
+  alphabetical: boolean;
 }
 
 export type ProgressMap = Map<string, CardState>;
@@ -79,11 +81,16 @@ export function distractors(entry: SessionEntry, direction: Direction, pool: Ses
   const taken = new Set(acceptedForms(answer));
   taken.add(normalise(answer));
   const words = answer.split(" ").length;
-  const tiers = [
-    pool.filter((e) => e.sectionId === entry.sectionId && e.group === entry.group),
-    pool.filter((e) => e.sectionId === entry.sectionId),
-    pool,
-  ];
+  // In a themed book, the same section gives plausible wrong options. In an
+  // alphabetical list it gives look-alikes (abase, abash, abate): the whole
+  // book is used instead, keeping only an explicit group (prefixes with prefixes).
+  const tiers = entry.book.alphabetical
+    ? [entry.group ? pool.filter((e) => e.group === entry.group) : [], pool]
+    : [
+        pool.filter((e) => e.sectionId === entry.sectionId && e.group === entry.group),
+        pool.filter((e) => e.sectionId === entry.sectionId),
+        pool,
+      ];
   const chosen: string[] = [];
   for (const tier of tiers) {
     // Similar length first, so the answer does not stand out by its size.
@@ -115,10 +122,13 @@ export interface SessionRequest {
   size: number;
   preference: ModePreference;
   purpose: SessionPurpose;
+  /** Order of new entries: the book's, or at random. */
+  newOrder: NewOrder;
   random: () => number;
 }
 
 export type SessionPurpose = "learn" | "review" | "due";
+export type NewOrder = "book" | "random";
 
 export function buildSession(req: SessionRequest): VocabCard[] {
   const { entries, progress, now, size } = req;
@@ -150,7 +160,9 @@ export function buildSession(req: SessionRequest): VocabCard[] {
   }
   if (req.purpose === "learn") {
     for (const entry of recallReady) if (picked.length < size) picked.push({ entry, direction: "recall", box: 0 });
-    for (const entry of fresh.sort((a, b) => a.sectionId - b.sectionId || a.position - b.position).slice(0, NEW_PER_SESSION)) {
+    const ordered =
+      req.newOrder === "random" ? shuffle(fresh, req.random) : fresh.sort((a, b) => a.sectionId - b.sectionId || a.position - b.position);
+    for (const entry of ordered.slice(0, NEW_PER_SESSION)) {
       if (picked.length < size) picked.push({ entry, direction: "recognise", box: 0 });
     }
   }

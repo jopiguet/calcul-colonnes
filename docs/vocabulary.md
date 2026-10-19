@@ -86,10 +86,12 @@ other languages of the same series should work too.
 | *The Words*: a letter (A, B…) | Lesson, cut into sections of about 25 words named after their first and last word ("abase – abode") |
 | A word in bold and its definition | Entry; a definition that wraps is joined |
 | The quizzes between the words | Skipped |
-| *Word Analysis*: prefixes, roots, suffixes | One lesson, three sections. The example ("corporeal" for *corp*) is shown after each answer. "ad—also ac, af" accepts any of them. |
+| *Word Analysis*: prefixes, roots, suffixes | One lesson, three sections, each its own group (prefixes are compared with prefixes). The example ("corporeal" for *corp*) is shown after each answer. "ad—also ac, af" accepts any of them. |
 | *Idiom & Usage* (grammar, sentence-correction drills) | Not read: explanations and drills, not words to learn |
 
-27 lessons, 174 sections, 4,150 entries (3,929 words, 221 word parts).
+27 lessons, 174 sections, 4,150 entries (3,929 words, 221 word parts). The
+book is marked `alphabetical`: the letters are only a way to find a word, not
+an order to learn in.
 
 ## The file format
 
@@ -128,6 +130,7 @@ Format 2, one book per file:
 | `book.title` | Shown under the book's name ("Vocabulary 4000") |
 | `book.kind` | `translation` (meaning in another language) or `definition` (meaning explained in the same language) |
 | `book.term`, `book.meaning` | Language codes: the language studied, and the language of the meanings |
+| `book.order` | Optional. `book` (default): the order means something (Collins: by theme). `alphabetical`: a word list; new words then come at random by default, and wrong options are not taken from the alphabetical neighbours. |
 | `title`, `subtitle` | Of a lesson or a section. The subtitle is optional: the title in the other language, for example. |
 | `term`, `meaning` | As printed: alternatives with `/`, optional parts in brackets, `...` for an open end |
 | `group` | Optional heading inside the section |
@@ -176,9 +179,17 @@ section, a whole lesson or the whole book:
 
 | Session | Button | Cards |
 |---|---|---|
-| Learn | *Apprendre*, *Continuer* (section); *Apprendre la leçon* | 1. cards due, oldest first; 2. recall cards that just became available; 3. new entries in the book's order, at most 8 |
+| Learn | *Apprendre*, *Continuer* (section); *Apprendre la leçon*; *Apprendre au hasard dans tout le livre* | 1. cards due, oldest first; 2. recall cards that just became available; 3. new entries, at most 8, at random or in the book's order (*Nouveaux mots*) |
 | Review | *Réviser* (section); *Réviser la leçon*; *Réviser tout le vocabulaire* | Only cards already started, due or not: those due first, then the weakest (lowest box), then those unseen for the longest time. No new entries. |
 | Due | *Réviser maintenant* | Only the cards due, across the whole book |
+
+**New words at random or in order.** The *Nouveaux mots* setting, per book:
+*Au hasard* draws the new words at random among those not started; *Dans
+l'ordre du livre* takes them in order. The default is random for an
+alphabetical book (*Vocabulary 4000*: learning all the *a* words first makes
+no sense) and the book's order otherwise (Collins: by theme). With *Apprendre
+au hasard dans tout le livre*, a session draws its new words from the whole
+4,000-word list.
 
 The cards chosen are then shuffled together. *Due* is the daily routine, and
 the home page shows how many words are due in each book; *Review* is for going
@@ -198,7 +209,10 @@ Some answers are always multiple choice, whatever the setting:
 - **An answer of more than four words** (a whole phrase): typing it exactly would test typing more than vocabulary. That is 112 of the 3,214 Spanish entries.
 
 **Wrong options** come from the same group, then the same section, then the
-same lesson, preferring answers of similar length. They never read like the
+same lesson, preferring answers of similar length. In an alphabetical book,
+neighbouring words look alike (*abase*, *abash*, *abate*) without being related,
+so the wrong options come from the whole book instead, except within a group
+(prefixes with prefixes). They never read like the
 right answer or like each other. An entry with the same prompt is never
 offered as a wrong option: *large* is the meaning of both *macro* and *magn*,
 so neither is a wrong option for the other.

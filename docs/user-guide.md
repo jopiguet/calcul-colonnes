@@ -269,6 +269,8 @@ Each book's page works the same way.
 - **Mots à réviser:** the words of this book whose review is due, across every lesson. *Réviser maintenant* starts a session with them. This is the first thing to do each day.
 - **Réviser tout le vocabulaire:** every word already learnt, due or not, the weakest first. Useful before a test.
 - **Cartes par séance:** 15, 30 or 50.
+- **Nouveaux mots:** *Au hasard* or *Dans l'ordre du livre*. For the English word list, random is the default, so a child doesn't learn every word in *a* first.
+- **Apprendre au hasard dans tout le livre:** a learning session whose new words come from anywhere in the book.
 - **Questions:** *Mélangé* (multiple choice for new words, written answers once they are known), *Choix multiples* or *Écrit*. Mixed suits most children.
 - **Lessons:** click one to see its sections. Each section shows its number of words, how many are due, and a bar that fills as its words are learnt, then known, then mastered. 
   - *Apprendre* starts a section, *Continuer* goes on with it: words due, then up to 8 new ones.

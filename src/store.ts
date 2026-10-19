@@ -108,9 +108,10 @@ export const vocab = {
     target: { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due" },
     size: number,
     mode: "mixed" | "choice" | "written",
+    order: "book" | "random" = "book",
   ): Promise<VocabCard[]> =>
     call(
-      `/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&purpose=${target.purpose}&size=${size}&mode=${mode}`,
+      `/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&purpose=${target.purpose}&size=${size}&mode=${mode}&order=${order}`,
     ),
   /** The server grades the answer and moves the card between boxes. */
   answer: (answer: VocabAnswer): Promise<VocabAnswerResult> => post("/vocab/answers", answer),

@@ -5,7 +5,8 @@
   "title": "Test English words",
   "kind": "definition",
   "term": "en",
-  "meaning": "en"
+  "meaning": "en",
+  "order": "alphabetical"
  },
  "lessons": [
   {
@@ -97,27 +98,32 @@
       {
        "term": "macro",
        "meaning": "large",
-       "note": "macroscopic"
+       "note": "macroscopic",
+       "group": "Roots"
       },
       {
        "term": "magn",
        "meaning": "large",
-       "note": "magnify"
+       "note": "magnify",
+       "group": "Roots"
       },
       {
        "term": "bene",
        "meaning": "good",
-       "note": "benefit"
+       "note": "benefit",
+       "group": "Roots"
       },
       {
        "term": "chron",
        "meaning": "time",
-       "note": "chronology"
+       "note": "chronology",
+       "group": "Roots"
       },
       {
        "term": "mono",
        "meaning": "one",
-       "note": "monologue"
+       "note": "monologue",
+       "group": "Roots"
       }
      ]
     }

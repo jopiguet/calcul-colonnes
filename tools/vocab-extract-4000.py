@@ -188,7 +188,8 @@ def word_analysis(pdf) -> dict | None:
             names = clean(" ".join(w["text"] for w in sorted(term, key=lambda w: (round(w["top"]), w["x0"]))))
             # "ad—also ac, af, ag" → "ad / ac / af / ag"
             variants = [clean(v) for v in re.split(r"—\s*also|,", names) if clean(v)]
-            entry = {"term": " / ".join(variants), "meaning": clean(" ".join(w["text"] for w in meaning))}
+            # The group keeps prefixes with prefixes for the wrong options.
+            entry = {"term": " / ".join(variants), "meaning": clean(" ".join(w["text"] for w in meaning)), "group": sections[-1]["title"]}
             note = clean(" ".join(w["text"] for w in example))
             if note:
                 entry["note"] = note
@@ -218,6 +219,9 @@ def extract(path: str) -> dict:
             "kind": "definition",
             "term": "en",
             "meaning": "en",
+            # A word list: new words come at random by default, and wrong
+            # options are not taken from the alphabetical neighbours.
+            "order": "alphabetical",
         },
         "lessons": lessons,
     }

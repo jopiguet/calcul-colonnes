@@ -234,6 +234,7 @@ See [Vocabulary](vocabulary.md) for the method and the grading.
     "kind": "translation",
     "term": "es",
     "meaning": "en",
+    "order": "book",
     "entries": 3214,
     "lessons": [
       {
@@ -281,6 +282,7 @@ is listed; an entry counts as `new` until one of its cards has been answered.
 | `purpose` | `learn` (default): cards due, recall cards just available, new entries. `review`: cards already started, due or not, weakest first. `due`: cards due only. |
 | `size` | 1 … 60 cards |
 | `mode` | `mixed` (default), `choice` or `written` |
+| `order` | New entries: `book` (default, the book's order) or `random` |
 
 ```json
 [

@@ -18,6 +18,7 @@ import {
   sides,
   type ProgressMap,
   type SessionEntry,
+  type NewOrder,
   type SessionPurpose,
 } from "../shared/vocab/session.ts";
 import type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabProgress, VocabSectionProgress } from "../shared/types.ts";
@@ -26,7 +27,7 @@ const n = (value: unknown): number => Number(value);
 
 /** Entries with their book's kind and languages, for grading and sessions. */
 const ENTRY_COLUMNS = `e.id, e.section_id, e.position, e.term, e.meaning, e.grp, e.feminine, e.note,
-  b.kind, b.term_lang, b.meaning_lang`;
+  b.kind, b.term_lang, b.meaning_lang, b.ordering`;
 const ENTRY_JOINS = `FROM vocab_entries e
   JOIN vocab_sections s ON s.id = e.section_id
   JOIN vocab_lessons l ON l.id = s.lesson_id
@@ -46,6 +47,7 @@ function toEntry(row: Row): SessionEntry {
       kind: row.kind === "definition" ? "definition" : "translation",
       termLang: String(row.term_lang),
       meaningLang: String(row.meaning_lang),
+      alphabetical: row.ordering === "alphabetical",
     },
   };
 }
@@ -86,14 +88,14 @@ export class VocabStore {
       let bookId: number;
       if (found[0]) {
         bookId = n(found[0].id);
-        await tx.query("UPDATE vocab_books SET title = $1, kind = $2, term_lang = $3, meaning_lang = $4 WHERE id = $5", [
-          book.title, book.kind, book.term, book.meaning, bookId,
+        await tx.query("UPDATE vocab_books SET title = $1, kind = $2, term_lang = $3, meaning_lang = $4, ordering = $5 WHERE id = $6", [
+          book.title, book.kind, book.term, book.meaning, book.order ?? "book", bookId,
         ]);
       } else {
         const last = await tx.query("SELECT COALESCE(MAX(position), -1) AS p FROM vocab_books");
         const inserted = await tx.query(
-          "INSERT INTO vocab_books (slug, position, title, kind, term_lang, meaning_lang) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
-          [book.id, n(last[0]?.p) + 1, book.title, book.kind, book.term, book.meaning],
+          "INSERT INTO vocab_books (slug, position, title, kind, term_lang, meaning_lang, ordering) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
+          [book.id, n(last[0]?.p) + 1, book.title, book.kind, book.term, book.meaning, book.order ?? "book"],
         );
         bookId = n(inserted[0]!.id);
       }
@@ -195,7 +197,7 @@ export class VocabStore {
   }
 
   async books(): Promise<VocabBookInfo[]> {
-    const books = await this.db.query("SELECT id, slug, title, kind, term_lang, meaning_lang FROM vocab_books ORDER BY position");
+    const books = await this.db.query("SELECT id, slug, title, kind, term_lang, meaning_lang, ordering FROM vocab_books ORDER BY position");
     const lessons = await this.db.query("SELECT id, book_id, title, subtitle FROM vocab_lessons ORDER BY position");
     const sections = await this.db.query(
       `SELECT s.id, s.lesson_id, s.title, s.subtitle, COUNT(e.id) AS entries
@@ -222,6 +224,7 @@ export class VocabStore {
           kind: (b.kind === "definition" ? "definition" : "translation") as VocabBookInfo["kind"],
           term: String(b.term_lang),
           meaning: String(b.meaning_lang),
+          order: (b.ordering === "alphabetical" ? "alphabetical" : "book") as VocabBookInfo["order"],
           entries: own.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.entries, 0), 0),
           lessons: own,
         };
@@ -291,6 +294,7 @@ export class VocabStore {
     size: number,
     preference: ModePreference,
     now: number,
+    newOrder: NewOrder = "book",
   ) {
     // The whole book: only the entries the session can use, not all 4,000.
     const entries =
@@ -304,7 +308,14 @@ export class VocabStore {
                 `l.book_id = $1 AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $2${purpose === "due" ? " AND due_at <= $3" : ""})`,
                 purpose === "due" ? [target.id, userId, now] : [target.id, userId],
               );
-    // Wrong options come from the same lessons.
+    // Wrong options come from the same lessons; for an alphabetical list, from
+    // the whole book (neighbouring words look alike but mean unrelated things).
+    const alphabetical = [...new Set(
+      (await this.db.query(
+        `SELECT DISTINCT l.book_id FROM vocab_sections s JOIN vocab_lessons l ON l.id = s.lesson_id JOIN vocab_books b ON b.id = l.book_id
+          WHERE b.ordering = 'alphabetical' AND s.id IN (${[...new Set(entries.map((e) => e.sectionId))].map(Number).join(",") || "0"})`,
+      )).map((r) => n(r.book_id)),
+    )];
     const lessonIds = [
       ...new Set(
         (
@@ -314,7 +325,11 @@ export class VocabStore {
         ).map((r) => n(r.lesson_id)),
       ),
     ];
-    const pool = lessonIds.length ? await this.entries(`l.id IN (${lessonIds.map(Number).join(",")})`, []) : [];
+    const pool = alphabetical.length
+      ? await this.entries(`l.book_id IN (${alphabetical.join(",")}) OR l.id IN (${lessonIds.map(Number).join(",") || "0"})`, [])
+      : lessonIds.length
+        ? await this.entries(`l.id IN (${lessonIds.map(Number).join(",")})`, [])
+        : [];
     return buildSession({
       entries,
       pool,
@@ -323,6 +338,7 @@ export class VocabStore {
       size,
       preference,
       purpose,
+      newOrder,
       random: Math.random,
     });
   }
@@ -420,8 +436,10 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     const id = Number(c.req.query("id") ?? 0);
     const size = Number(c.req.query("size") ?? 20);
     const mode = (c.req.query("mode") ?? "mixed") as ModePreference;
+    const order = (c.req.query("order") ?? "book") as NewOrder;
     if (
       !isId(userId) ||
+      (order !== "book" && order !== "random") ||
       (kind !== "section" && kind !== "lesson" && kind !== "all") ||
       !isId(id) ||
       !PURPOSES.includes(purpose) ||
@@ -431,7 +449,7 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
       return c.json({ error: "invalid session" }, 400);
     }
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
-    return c.json(await store.session(userId, { kind, id }, purpose, size, mode, Date.now()));
+    return c.json(await store.session(userId, { kind, id }, purpose, size, mode, Date.now(), order));
   });
 
   routes.post("/answers", async (c) => {

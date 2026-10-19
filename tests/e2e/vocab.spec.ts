@@ -269,3 +269,43 @@ test("the English book: definitions chosen, words written, a root of the same me
   await page.locator(".home-link").click();
   await expect(page.locator("[data-activity='vocab-test-english'] .activity-status")).not.toHaveText("20 mots");
 });
+
+test("an alphabetical book: new words at random across the book by default, or in the book's order", async ({ page }) => {
+  await newPlayer(page, "Rnd");
+  await openActivity(page, "vocab-test-english");
+  await expect(page.locator(".vocab-order .segment.on")).toHaveText("Au hasard");
+
+  const firstLesson = ["brisk", "candid", "dwindle", "eager", "feeble", "gleam", "hasty", "idle"];
+  const prompts = async (): Promise<string[]> => {
+    await page.locator(".vocab-card").waitFor();
+    const seen: string[] = [];
+    // Until the summary: mistakes are asked again at the end.
+    while (!(await page.locator(".vocab-done").isVisible())) {
+      seen.push(await page.locator(".vocab-prompt").innerText());
+      await page.locator(".choice").first().click();
+      await page.locator(".vocab-verdict").waitFor();
+      await expect(page.locator(".vocab-card .actions button.primary")).toBeFocused();
+      await page.keyboard.press("Enter");
+      await page.locator(".vocab-done, .vocab-card:not(:has(.vocab-verdict))").first().waitFor();
+    }
+    return seen.slice(0, 8); // the repeats of mistakes come after
+  };
+
+  // At random: 8 of the 20 words, from the whole book (all 8 from the first lesson: 1 chance in 125,970).
+  await page.click("text=Apprendre au hasard dans tout le livre");
+  await expect(page.locator(".quiz-topic")).toHaveText("Tout le vocabulaire");
+  const random = await prompts();
+  expect(random).toHaveLength(8);
+  expect(random.some((p) => !firstLesson.includes(p))).toBe(true);
+
+  // In the book's order: the next words of the first lesson not seen yet.
+  await page.click("text=Retour aux leçons");
+  await page.click(".vocab-order >> text=Dans l'ordre du livre");
+  await expect(page.locator(".vocab-order .segment.on")).toHaveText("Dans l'ordre du livre");
+  await page.click("text=Apprendre dans tout le livre");
+  await page.locator(".vocab-card").waitFor();
+  const unseenFirst = firstLesson.filter((w) => !random.includes(w));
+  const prompt = await page.locator(".vocab-prompt").innerText();
+  // The session mixes its cards, but every new one is among the book's first unseen words.
+  expect([...unseenFirst, ...["jovial", "keen", "lofty", "meek", "nimble", "odd", "placid"]]).toContain(prompt);
+});

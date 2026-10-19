@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.1.0
+
+- **New words at random:** a *Nouveaux mots* setting per book, *Au hasard* or *Dans l'ordre du livre*. Random is the default for an alphabetical word list (*Vocabulary 4000*), the book's order for a themed book (Collins).
+- **Learn across the whole book:** *Apprendre au hasard dans tout le livre* draws a session's new words from all 4,000 words.
+- **Wrong options from the whole book** in an alphabetical list, instead of look-alike neighbours (*abase*, *abash*, *abate*); prefixes, roots and suffixes stay compared with their own kind.
+- Books have an order: `"order": "alphabetical"` in the file. Migration `009` marks the English book already imported, so no new import is needed; importing again adds the groups of the word parts.
+- API: `order=book|random` on `GET /api/vocab/session`; `order` on books.
+- Browser tests: 40.
+
 ## 5.0.0
 
 - **Home page:** after choosing a player, the activities grouped by subject, *Mathématiques* (column arithmetic, QCM) and *Langues* (one per vocabulary book), each with what is waiting: kinds of question to review, words due. Every activity has *← Accueil*; the row of tabs is gone. Each visit starts on the home page.

@@ -16,6 +16,8 @@
  *
  * kind "translation": the meaning is in another language (Spanish → English);
  * kind "definition": the meaning explains the term in the same language.
+ * order "alphabetical" (optional, default "book"): a word list whose order
+ * means nothing; new words then come at random by default.
  * Lessons and sections may have a "subtitle" (the title in the other language).
  * An entry may have "group" (heading inside the section), "note" (an example,
  * shown after the answer) and "feminine" (a feminine noun taking "el").
@@ -39,6 +41,8 @@ export interface VocabFileBook {
   kind: "translation" | "definition";
   term: string;
   meaning: string;
+  /** "book" (default): the order means something. "alphabetical": a word list. */
+  order?: "book" | "alphabetical";
 }
 
 export interface VocabFile {
@@ -74,7 +78,10 @@ function book(raw: unknown): VocabFileBook {
   if (typeof b.term !== "string" || !LANG.test(b.term) || typeof b.meaning !== "string" || !LANG.test(b.meaning)) {
     throw new Error('book: "term" and "meaning" must be language codes ("es", "en")');
   }
-  return { id, title, kind: b.kind, term: b.term, meaning: b.meaning };
+  if (b.order !== undefined && b.order !== "book" && b.order !== "alphabetical") {
+    throw new Error('book: "order" must be "book" or "alphabetical"');
+  }
+  return { id, title, kind: b.kind, term: b.term, meaning: b.meaning, order: b.order ?? "book" };
 }
 
 /** Validates a parsed vocabulary file; throws with the place of the first problem. */

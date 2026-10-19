@@ -1753,7 +1753,8 @@ a:focus-visible {
   flex-shrink: 0;
 }
 
-.vocab-size .segment {
+.vocab-size .segment,
+.vocab-order .segment {
   flex: 1;
 }
 

@@ -28,6 +28,8 @@ interface Preferences {
   size: number;
   /** Lesson unfolded on the home screen. */
   open: number | null;
+  /** Order of new words, per book id; absent: random for an alphabetical list, the book's order otherwise. */
+  order: Record<number, "book" | "random">;
 }
 
 const PREFERENCES_KEY = "calcul-colonnes.vocab";
@@ -40,9 +42,14 @@ function loadPreferences(): Preferences {
       mode: saved.mode === "choice" || saved.mode === "written" ? saved.mode : "mixed",
       size: SIZES.includes(saved.size as number) ? (saved.size as number) : SIZES[0]!,
       open: typeof saved.open === "number" ? saved.open : null,
+      order: Object.fromEntries(
+        Object.entries(typeof saved.order === "object" && saved.order ? saved.order : {}).filter(
+          ([, v]) => v === "book" || v === "random",
+        ),
+      ) as Preferences["order"],
     };
   } catch {
-    return { mode: "mixed", size: SIZES[0]!, open: null };
+    return { mode: "mixed", size: SIZES[0]!, open: null, order: {} };
   }
 }
 
@@ -85,6 +92,10 @@ export interface VocabContext {
   rerender(): void;
 }
 
+/** Order of new words for this book: the player's choice, or the book's default. */
+const newOrder = (book: VocabBookInfo): "book" | "random" =>
+  prefs.order[book.id] ?? (book.order === "alphabetical" ? "random" : "book");
+
 /** "Vocabulaire espagnol", "Vocabulaire anglais": the book's language studied. */
 export const bookTitle = (book: VocabBookInfo): string => vt("title", { lang: langName(book.term) });
 
@@ -101,7 +112,7 @@ export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
 async function start(ctx: VocabContext, target: Target): Promise<void> {
   // The whole book: the server takes the book's id.
   const query = target.kind === "all" ? { ...target, id: ctx.book.id } : target;
-  const cards = await vocab.session(ctx.user.id, query, prefs.size, prefs.mode);
+  const cards = await vocab.session(ctx.user.id, query, prefs.size, prefs.mode, newOrder(ctx.book));
   finished = null;
   const fresh: Session = {
     userId: ctx.user.id, bookId: ctx.book.id, target, cards, index: 0, retried: new Set(),
@@ -161,6 +172,13 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     due.append(el("p", "vocab-due-count quiet", vt("nothingDue")));
   }
   // Every word started, due or not: before a test, or to go further.
+  // New words from anywhere in the book: at random, or in the book's order.
+  const random = newOrder(book) === "random";
+  due.append(
+    button(mine.due > 0 || mine.started > 0 ? "ghost" : "primary", vt(random ? "learnRandom" : "learnBook"), () =>
+      void start(ctx, { kind: "all", id: 0, purpose: "learn", label: vt("allVocabulary") }),
+    ),
+  );
   if (mine.started > 0) {
     due.append(
       button(mine.due > 0 ? "ghost" : "primary", vt("reviewAll"), () =>
@@ -200,6 +218,21 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     how.append(option);
   }
   wrap.append(how, el("p", "hint left", vt("howHint")));
+
+  // Which new words come first.
+  const order = el("fieldset", "segmented vocab-order");
+  order.append(el("legend", "field-label", vt("orderTitle")));
+  for (const [value, key] of [["random", "orderRandom"], ["book", "orderBook"]] as const) {
+    const on = newOrder(book) === value;
+    const option = button(on ? "segment on" : "segment", vt(key), () => {
+      prefs.order[book.id] = value;
+      savePreferences();
+      ctx.rerender();
+    });
+    option.setAttribute("aria-pressed", String(on));
+    order.append(option);
+  }
+  wrap.append(order);
 
   // Lessons, one open at a time.
   const list = el("div", "vocab-lessons");

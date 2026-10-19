@@ -165,6 +165,8 @@ export interface VocabBookInfo {
   /** Language studied, and language of the meanings ("es", "en"). */
   term: string;
   meaning: string;
+  /** "alphabetical": a word list; new words come at random by default. */
+  order: "book" | "alphabetical";
   entries: number;
   lessons: VocabLessonInfo[];
 }

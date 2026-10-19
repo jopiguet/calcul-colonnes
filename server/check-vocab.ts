@@ -94,7 +94,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
 {
   const at = 10 * DAY;
   const words = ["uno", "dos", "tres", "cuatro", "cinco"];
-  const book = { kind: "translation" as const, termLang: "es", meaningLang: "en" };
+  const book = { kind: "translation" as const, termLang: "es", meaningLang: "en", alphabetical: false };
   const entries: SessionEntry[] = words.map((term, i) => ({
     id: i + 1, sectionId: 1, position: i, term, meaning: `w${i + 1}`, group: "", feminine: false, note: "", book,
   }));
@@ -104,20 +104,20 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
     [progressKey(3, "recognise"), { box: 4, dueAt: at + DAY, lastAt: at - DAY }], // strong, not due
   ]);
   const ids = (purpose: "learn" | "review" | "due") =>
-    buildSession({ entries, pool: entries, progress, now: at, size: 10, preference: "choice", purpose, random: () => 0.5 })
+    buildSession({ entries, pool: entries, progress, now: at, size: 10, preference: "choice", purpose, newOrder: "book", random: () => 0.5 })
       .map((c) => `${c.entryId}${c.direction === "recall" ? "r" : ""}`)
       .sort();
   expect("learn: due, recall ready (1, 3), new", ids("learn"), ["1", "1r", "3r", "4", "5"]);
   expect("review: started cards only", ids("review"), ["1", "2", "3"]);
   expect("due: due only", ids("due"), ["1"]);
-  const order = buildSession({ entries, pool: entries, progress, now: at, size: 2, preference: "choice", purpose: "review", random: () => 0.5 })
+  const order = buildSession({ entries, pool: entries, progress, now: at, size: 2, preference: "choice", purpose: "review", newOrder: "book", random: () => 0.5 })
     .map((c) => c.entryId).sort();
   expect("review, 2 cards: the due one, then the weakest", order, [1, 2]);
 }
 
 // A definition book: definitions never written; two terms with one meaning are never each other's wrong option.
 {
-  const book = { kind: "definition" as const, termLang: "en", meaningLang: "en" };
+  const book = { kind: "definition" as const, termLang: "en", meaningLang: "en", alphabetical: true };
   const make = (id: number, term: string, meaning: string): SessionEntry => ({
     id, sectionId: 1, position: id, term, meaning, group: "", feminine: false, note: "", book,
   });
@@ -129,6 +129,28 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
     if (options.includes("magn")) expect("same meaning never a wrong option", options, "without magn");
   }
   expect("recognise options: one 'large' only", distractors(roots[0]!, "recognise", roots, () => 0.3).includes("large"), false);
+}
+
+// An alphabetical list: new words at random on request; wrong options from the whole book.
+{
+  const book = { kind: "definition" as const, termLang: "en", meaningLang: "en", alphabetical: true };
+  const list: SessionEntry[] = Array.from({ length: 30 }, (_, i) => ({
+    id: i + 1, sectionId: 1 + Math.floor(i / 10), position: i % 10, term: `word${i + 1}`, meaning: `meaning number ${i + 1}`,
+    group: "", feminine: false, note: "", book,
+  }));
+  let seed = 7;
+  const random = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+  const learn = (newOrder: "book" | "random") =>
+    buildSession({ entries: list, pool: list, progress: new Map(), now: 0, size: 15, preference: "choice", purpose: "learn", newOrder, random })
+      .map((c) => c.entryId).sort((x, y) => x - y);
+  expect("book order: the first 8", learn("book"), [1, 2, 3, 4, 5, 6, 7, 8]);
+  const drawn = learn("random");
+  expect("random order: 8 new words", drawn.length, 8);
+  if (drawn.every((id) => id <= 8)) expect("random order: not the first 8", drawn, "spread over the book");
+  const fromElsewhere = new Set<string>();
+  for (let i = 0; i < 30; i++) for (const o of distractors(list[0]!, "recognise", list, random)) fromElsewhere.add(o);
+  const otherSections = [...fromElsewhere].filter((o) => Number(o.split(" ").at(-1)) > 10).length;
+  if (otherSections === 0) expect("alphabetical: wrong options from other sections", 0, "some");
 }
 
 // Every entry of a vocabulary file
