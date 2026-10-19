@@ -48,6 +48,13 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `dom.ts` | `el()` and `button()` helpers |
 | `style.css` | All styles; colours are CSS variables with a dark variant |
 
+### `public/` — copied as is into the build
+
+| File | Role |
+|---|---|
+| `manifest.webmanifest` | Name, colours and icons when the app is installed on a phone |
+| `icons/icon.svg`, `icons/maskable.svg` | The icon's sources; the PNGs are rendered from them at 32, 180, 192 and 512 px |
+
 ### `shared/` — browser and server
 
 | File | Role |

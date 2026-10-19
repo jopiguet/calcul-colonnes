@@ -68,6 +68,9 @@ h3 {
   max-width: 32rem;
   margin: 0 auto;
   padding: 1rem;
+  /* Installed on a phone: keep clear of the notch and the home bar. */
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
 .bar {
@@ -280,7 +283,7 @@ button.primary:hover {
 }
 
 button.ghost {
-  background: transparent;
+  background: var(--paper);
   color: var(--muted);
   border-color: var(--line);
 }
@@ -1423,7 +1426,8 @@ a:focus-visible {
 
 .sample-division,
 .sample-formula,
-.sample-review {
+.sample-review,
+.sample-vocab {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -1545,7 +1549,8 @@ a:focus-visible {
 
   .sample-division,
   .sample-formula,
-  .sample-review {
+  .sample-review,
+  .sample-vocab {
     justify-self: start;
     min-width: 13rem;
   }
@@ -1903,4 +1908,19 @@ button.vocab-letter {
     font-size: 0.9rem;
     line-height: 1.25;
   }
+}
+
+.sample-vocab {
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.sample-vocab-word {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.sample-vocab-answer {
+  color: var(--accent);
+  font-weight: 600;
 }

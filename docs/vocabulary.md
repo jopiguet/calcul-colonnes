@@ -1,6 +1,6 @@
 # Vocabulary
 
-The *🗣️ Vocabulaire* tab teaches Spanish vocabulary from a phrase book:
+The *💬 Vocabulaire* tab teaches Spanish vocabulary from a phrase book:
 its chapters are the lessons and its sections the sections. Words are asked
 as multiple choice and as written answers, and come back on a spaced
 repetition schedule (Leitner boxes).

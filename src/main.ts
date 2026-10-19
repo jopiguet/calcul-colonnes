@@ -126,7 +126,7 @@ async function render(): Promise<void> {
       app.replaceChildren(landingView({ options, topBar: topBar() }));
     } else {
       const bar = topBar();
-      const brand = el("a", "brand", "Calcul en colonnes");
+      const brand = el("a", "brand", "Luma");
       brand.href = "#about";
       bar.firstElementChild?.append(brand);
       app.replaceChildren(bar, signInView(options, () => void enter(true), notice, where === "signUp" ? "signUp" : "signIn"));

@@ -2,6 +2,7 @@
 
 const fr = {
   appTitle: "Calcul en colonnes",
+  pageTitle: "Luma – Mon cahier",
   language: "Langue",
   whoPlays: "Qui joue ?",
   newName: "Nouveau prénom",
@@ -63,6 +64,7 @@ export type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
   appTitle: "Cálculo en columnas",
+  pageTitle: "Luma – Mi cuaderno",
   language: "Idioma",
   whoPlays: "¿Quién juega?",
   newName: "Nuevo nombre",
@@ -122,6 +124,7 @@ const es: Record<Key, string> = {
 
 const en: Record<Key, string> = {
   appTitle: "Column arithmetic",
+  pageTitle: "Luma – My exercise book",
   language: "Language",
   whoPlays: "Who's playing?",
   newName: "New first name",
@@ -206,7 +209,7 @@ export const currentLang = (): Lang => current;
 export function setLang(lang: Lang): void {
   current = lang;
   document.documentElement.lang = lang;
-  document.title = t("appTitle");
+  document.title = t("pageTitle");
 }
 
 export function t(key: Key, values: Record<string, string | number> = {}): string {

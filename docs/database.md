@@ -225,10 +225,10 @@ database: PostgreSQL (ep-example-123456.eu-central-1.aws.neon.tech/calcul)
 
 ## Moving to Neon
 
-1. **Create the database.** In the Neon console, create an empty database and copy its connection string, which includes `sslmode=require`.
+1. **Create the database.** In the Neon console, create an empty database and copy its connection string. Replace `sslmode=require` with `sslmode=verify-full`: the `pg` driver already treats `require` as `verify-full` (it checks the certificate and the host name), but warns at startup that `require` will mean less in its next major version.
 2. **Point the server at it.** Put the string in `.env`:
    ```
-   DATABASE_URL=postgresql://user:password@ep-….neon.tech/calcul?sslmode=require
+   DATABASE_URL=postgresql://user:password@ep-….neon.tech/calcul?sslmode=verify-full
    ```
 3. **Copy the existing SQLite data** (optional):
    ```sh

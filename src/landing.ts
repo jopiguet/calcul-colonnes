@@ -17,7 +17,7 @@ const texts = {
     signUp: "Créer un compte",
     haveAccount: "J'ai déjà un compte",
     title: "Le calcul posé, comme dans le cahier.",
-    lead: "Additions, soustractions, multiplications et divisions en colonnes, écrites des unités vers la gauche avec les retenues. Et des QCM de mathématiques pour le lycée et la première année d'université.",
+    lead: "Additions, soustractions, multiplications et divisions en colonnes, écrites des unités vers la gauche avec les retenues. Des QCM de mathématiques pour le lycée et la première année d'université. Et le vocabulaire espagnol, qui revient au bon moment.",
     figure: "Une addition posée : 478 plus 356 égale 834, avec deux retenues.",
     columnsTitle: "Le calcul en colonnes",
     columnsText: "Les quatre opérations, disposées comme sur papier. On écrit les unités d'abord, la retenue au-dessus de la colonne suivante. La multiplication par deux chiffres a une ligne par produit partiel ; la division a sa potence, avec le reste.",
@@ -28,6 +28,9 @@ const texts = {
     reviewTitle: "Les erreurs reviennent jusqu'à être comprises",
     reviewText: "Un type de question raté revient dans les tests suivants, jusqu'à deux bonnes réponses d'affilée. La page de progrès montre, pour chaque enfant, ce qui est acquis, ce qui est en cours et les erreurs les plus fréquentes.",
     reviewMore: "Dérivée d'une composée : à revoir",
+    vocabTitle: "Le vocabulaire espagnol, par répétition espacée",
+    vocabText: "Les chapitres d'un livre de vocabulaire deviennent des leçons. Chaque mot revient après 10 minutes, puis 1, 3, 7, 16 et 35 jours, et repart du début après une erreur. Choix multiples quand il est nouveau, réponse écrite quand il est connu.",
+    vocabMore: "Un accent oublié est pardonné, un article faux ne l'est pas.",
     familyTitle: "Un compte pour l'adulte, un accès pour chaque enfant",
     familyText: "Le parent ou l'enseignant crée le compte et les joueurs. Chaque enfant peut recevoir son propre identifiant : il ne voit alors que ses exercices et ses résultats.",
     privacy: "Pas de publicité, pas de traceur, aucune ressource chargée depuis un autre site.",
@@ -39,7 +42,7 @@ const texts = {
     signUp: "Crear una cuenta",
     haveAccount: "Ya tengo una cuenta",
     title: "Cálculo en columnas, como en el cuaderno.",
-    lead: "Sumas, restas, multiplicaciones y divisiones en columnas, escritas de las unidades hacia la izquierda con las llevadas. Y tests de matemáticas para bachillerato y primer año de universidad.",
+    lead: "Sumas, restas, multiplicaciones y divisiones en columnas, escritas de las unidades hacia la izquierda con las llevadas. Tests de matemáticas para bachillerato y primer año de universidad. Y vocabulario de español, que vuelve en el momento justo.",
     figure: "Una suma en columnas: 478 más 356 es 834, con dos llevadas.",
     columnsTitle: "Cálculo en columnas",
     columnsText: "Las cuatro operaciones, dispuestas como en papel. Se escriben primero las unidades y la llevada encima de la columna siguiente. La multiplicación por dos cifras tiene una línea por producto parcial; la división, su galera con el resto.",
@@ -50,6 +53,9 @@ const texts = {
     reviewTitle: "Los errores vuelven hasta entenderlos",
     reviewText: "Un tipo de pregunta fallado vuelve en los tests siguientes, hasta dos respuestas correctas seguidas. La página de progreso muestra, para cada niño, lo adquirido, lo que está en curso y los errores más frecuentes.",
     reviewMore: "Derivada de una composición: por repasar",
+    vocabTitle: "Vocabulario de español, con repetición espaciada",
+    vocabText: "Los capítulos de un libro de vocabulario se convierten en lecciones. Cada palabra vuelve a los 10 minutos, luego a 1, 3, 7, 16 y 35 días, y empieza de nuevo tras un error. Opción múltiple cuando es nueva, respuesta escrita cuando ya se conoce.",
+    vocabMore: "Una tilde olvidada se perdona, un artículo equivocado no.",
     familyTitle: "Una cuenta para el adulto, un acceso para cada niño",
     familyText: "El padre, la madre o el profesor crea la cuenta y los jugadores. Cada niño puede recibir su propio usuario: entonces solo ve sus ejercicios y sus resultados.",
     privacy: "Sin publicidad, sin rastreadores, ningún recurso cargado desde otro sitio.",
@@ -61,7 +67,7 @@ const texts = {
     signUp: "Create an account",
     haveAccount: "I already have an account",
     title: "Column arithmetic, the way it's written in the exercise book.",
-    lead: "Addition, subtraction, multiplication and division in columns, written from the units leftwards, with carries. And multiple-choice maths tests for secondary school and first-year university.",
+    lead: "Addition, subtraction, multiplication and division in columns, written from the units leftwards, with carries. Multiple-choice maths tests for secondary school and first-year university. And Spanish vocabulary that comes back at the right time.",
     figure: "A column addition: 478 plus 356 equals 834, with two carries.",
     columnsTitle: "Column arithmetic",
     columnsText: "The four operations, laid out as on paper. The units are written first, and the carry above the next column. Multiplying by two digits gives one line per partial product; division has its bracket and remainder.",
@@ -72,6 +78,9 @@ const texts = {
     reviewTitle: "Mistakes come back until they're understood",
     reviewText: "A kind of question answered wrong comes back in later quizzes until it has been answered right twice in a row. The progress page shows, for each child, what is mastered, what is in progress and their most frequent mistakes.",
     reviewMore: "Derivative of a composition: to review",
+    vocabTitle: "Spanish vocabulary, with spaced repetition",
+    vocabText: "The chapters of a vocabulary book become lessons. Each word comes back after 10 minutes, then 1, 3, 7, 16 and 35 days, and starts again after a mistake. Multiple choice while it is new, a written answer once it is known.",
+    vocabMore: "A forgotten accent is forgiven, a wrong article is not.",
     familyTitle: "One account for the adult, a sign-in for each child",
     familyText: "The parent or teacher creates the account and the players. Each child can get a username of their own: they then see only their own exercises and results.",
     privacy: "No ads, no trackers, nothing loaded from another site.",
@@ -138,6 +147,18 @@ function reviewSample(): HTMLElement {
   return box;
 }
 
+/** A vocabulary card as the app shows it: the word, its box. */
+function vocabSample(): HTMLElement {
+  const box = el("div", "sample-vocab");
+  box.setAttribute("aria-hidden", "true");
+  const word = el("span", "sample-vocab-word", "la llave");
+  word.lang = "es";
+  const dots = el("span", "vocab-box");
+  for (let i = 1; i <= 6; i++) dots.append(el("span", i <= 3 ? "on" : ""));
+  box.append(word, el("span", "sample-vocab-answer", "key"), dots);
+  return box;
+}
+
 export interface LandingContext {
   options: AuthOptions;
   /** The page's top bar (language selector), shared with the app. */
@@ -149,7 +170,7 @@ export function landingView({ options, topBar }: LandingContext): HTMLElement {
 
   // Header: name of the app on the left, language and sign-in on the right.
   const head = el("header", "landing-head");
-  const brand = el("a", "brand", "Calcul en colonnes");
+  const brand = el("a", "brand", "Luma");
   brand.href = "#about";
   const signIn = el("a", "landing-signin", lt("signIn"));
   signIn.href = "#sign-in";
@@ -189,6 +210,7 @@ export function landingView({ options, topBar }: LandingContext): HTMLElement {
     feature("columnsTitle", "columnsText", "columnsMore", divisionSample()),
     feature("quizTitle", "quizText", "quizMore", formulaSample()),
     feature("reviewTitle", "reviewText", null, reviewSample()),
+    feature("vocabTitle", "vocabText", "vocabMore", vocabSample()),
   );
 
   const family = el("section", "family");

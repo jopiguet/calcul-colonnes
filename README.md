@@ -1,9 +1,13 @@
-# Calcul en colonnes
+# Luma
 
-A web app for practising arithmetic the way it is written on paper, and for
+A web app for practising arithmetic the way it is written on paper, for
 multiple-choice tests in secondary-school and first-year university
-mathematics. French, Spanish and English interface; one server, one small database,
-sign-in by password or Google, Microsoft, GitHub and other OpenID providers.
+mathematics, and for Spanish vocabulary with spaced repetition. French, Spanish
+and English interface; one server, one small database; sign-in by password or
+Google, Microsoft, GitHub and other OpenID providers; installable on a phone's
+home screen.
+
+The project and its folder keep their first name, `calcul-colonnes`.
 
 <p>
   <img src="docs/images/landing.png" width="820" alt="Landing page: an addition being written in columns on squared paper">

@@ -1,8 +1,17 @@
 # Changelog
 
+## 4.2.1
+
+- **Named Luma:** the browser tab reads *Luma – Mon cahier*, *Luma – Mi cuaderno* or *Luma – My exercise book*, and the landing and sign-in pages show *Luma*. The PDF worksheet keeps its title *Calcul en colonnes*.
+- **Installable on a phone:** web app manifest, icons (squared paper, red margin, pen-blue L; standard, maskable and Apple sizes), theme colour for light and dark, full screen without the browser's bar. Chromium reports no installability errors.
+- Secondary buttons (player, scores, account) were transparent over the squared paper; they now have a paper background.
+- The vocabulary tab's icon is 💬, readable on the selected blue tab.
+- The landing page presents the Spanish vocabulary too.
+- Content keeps clear of the notch and the home bar when installed.
+
 ## 4.2.0
 
-- **Spanish vocabulary tab** (*🗣️ Vocabulaire*), from a phrase book you own: its chapters are the lessons, its sections the sections.
+- **Spanish vocabulary tab** (*💬 Vocabulaire*), from a phrase book you own: its chapters are the lessons, its sections the sections.
 - **Spaced repetition** with Leitner boxes, per word and per direction (Spanish → meaning, meaning → Spanish): 10 minutes, then 1, 3, 7, 16 and 35 days; back to the start after a mistake, which is also asked again at the end of the session.
 - **Multiple choice and written answers:** multiple choice while a word is new, written once it is known, or either one always. Wrong options come from the same section. Phrases of more than four words stay multiple choice.
 - **Grading of written answers** (shared by browser and server): accents and one-letter slips forgiven with the spelling shown; a missing or wrong article counted wrong; the book's alternatives (`/`), optional brackets and `...` understood. Buttons for *á é í ó ú ü ñ ¿ ¡*.

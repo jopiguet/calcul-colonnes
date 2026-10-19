@@ -13,6 +13,7 @@ describes every screen, every setting and the keyboard shortcuts.
 - [Spanish vocabulary](#spanish-vocabulary)
 - [Scores](#scores)
 - [Language](#language)
+- [On a phone or tablet](#on-a-phone-or-tablet)
 - [What is stored where](#what-is-stored-where)
 
 ## Signing in
@@ -241,7 +242,7 @@ by clicking a player's name on the Scores screen. It shows:
 
 ## Spanish vocabulary
 
-Tab **🗣️ Vocabulaire**. It shows the lessons and sections of the phrase book
+Tab **💬 Vocabulaire**. It shows the lessons and sections of the phrase book
 imported on the server (see [Vocabulary › Importing a book](vocabulary.md#importing-a-book)).
 
 **The screen**
@@ -289,6 +290,18 @@ of these three, French otherwise; the choice is then remembered.
 
 - **Spanish:** formulas use the Spanish notation `sen` and `arcsen`.
 - **English:** the column layouts stay the French and Spanish ones taught in Europe. In particular, the division is the bracket layout, not the English long-division layout.
+
+## On a phone or tablet
+
+Luma can be put on the home screen and then opens like an app, full screen,
+without the browser's address bar.
+
+- **Android (Chrome):** menu ⋮ › *Install app* (or *Add to Home screen*).
+- **iPhone and iPad (Safari):** share button › *Add to Home Screen*.
+
+The icon is named *Luma*. Sign in once in the installed app: on iPhone it
+keeps its own sign-in, separate from Safari's. The app still needs the
+connection to the server; it does not work offline.
 
 ## What is stored where
 

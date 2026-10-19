@@ -23,7 +23,7 @@ async function next(page: Page): Promise<void> {
 }
 
 async function openVocab(page: Page): Promise<void> {
-  await page.click("text=🗣️ Vocabulaire");
+  await page.click("text=💬 Vocabulaire");
   await page.locator(".vocab-home").waitFor();
 }
 

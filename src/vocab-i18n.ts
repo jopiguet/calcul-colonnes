@@ -1,7 +1,7 @@
 import { currentLang, type Lang } from "./i18n";
 
 const fr = {
-  modeVocab: "🗣️ Vocabulaire",
+  modeVocab: "💬 Vocabulaire",
   title: "Vocabulaire espagnol",
   empty: "Le vocabulaire n'est pas encore importé sur ce serveur. La marche à suivre est dans docs/vocabulary.md.",
   dueNow: "{count} mots à réviser",
@@ -57,7 +57,7 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
-  modeVocab: "🗣️ Vocabulario",
+  modeVocab: "💬 Vocabulario",
   title: "Vocabulario de español",
   empty: "El vocabulario aún no se ha importado en este servidor. Los pasos están en docs/vocabulary.md.",
   dueNow: "{count} palabras por repasar",
@@ -111,7 +111,7 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
-  modeVocab: "🗣️ Vocabulary",
+  modeVocab: "💬 Vocabulary",
   title: "Spanish vocabulary",
   empty: "The vocabulary has not been imported on this server yet. The steps are in docs/vocabulary.md.",
   dueNow: "{count} words to review",

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="0" fill="#fbfcfd"/>
+  <g clip-path="url(#r)"><path d="M32 0V512M0 32H512" stroke="#d6e1ee" stroke-width="3"/><path d="M64 0V512M0 64H512" stroke="#d6e1ee" stroke-width="3"/><path d="M96 0V512M0 96H512" stroke="#d6e1ee" stroke-width="3"/><path d="M128 0V512M0 128H512" stroke="#d6e1ee" stroke-width="3"/><path d="M160 0V512M0 160H512" stroke="#d6e1ee" stroke-width="3"/><path d="M192 0V512M0 192H512" stroke="#d6e1ee" stroke-width="3"/><path d="M224 0V512M0 224H512" stroke="#d6e1ee" stroke-width="3"/><path d="M256 0V512M0 256H512" stroke="#d6e1ee" stroke-width="3"/><path d="M288 0V512M0 288H512" stroke="#d6e1ee" stroke-width="3"/><path d="M320 0V512M0 320H512" stroke="#d6e1ee" stroke-width="3"/><path d="M352 0V512M0 352H512" stroke="#d6e1ee" stroke-width="3"/><path d="M384 0V512M0 384H512" stroke="#d6e1ee" stroke-width="3"/><path d="M416 0V512M0 416H512" stroke="#d6e1ee" stroke-width="3"/><path d="M448 0V512M0 448H512" stroke="#d6e1ee" stroke-width="3"/><path d="M480 0V512M0 480H512" stroke="#d6e1ee" stroke-width="3"/></g>
+  <clipPath id="r"><rect width="512" height="512" rx="0"/></clipPath>
+  <rect x="128" y="0" width="10" height="512" fill="#cf3a32" clip-path="url(#r)"/>
+  <g transform="translate(256.0,256.0) scale(0.8) translate(-256.0,-256.0)">
+    <path d="M192 96h72v256h128v64H192z" fill="#2445c4"/>
+  </g>
+</svg>

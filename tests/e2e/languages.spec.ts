@@ -2,9 +2,9 @@ import { expect, test, type Page } from "@playwright/test";
 import { newPlayer, takeQuiz } from "./helpers";
 
 const LANGUAGES = [
-  { code: "fr", vocabTab: "🗣️ Vocabulaire", quizTab: "📐 QCM", start: "Commencer le test", progress: "📈 Mes progrès", title: "Calcul en colonnes" },
-  { code: "es", vocabTab: "🗣️ Vocabulario", quizTab: "📐 Test", start: "Empezar el test", progress: "📈 Mi progreso", title: "Cálculo en columnas" },
-  { code: "en", vocabTab: "🗣️ Vocabulary", quizTab: "📐 Quiz", start: "Start the quiz", progress: "📈 My progress", title: "Column arithmetic" },
+  { code: "fr", vocabTab: "💬 Vocabulaire", quizTab: "📐 QCM", start: "Commencer le test", progress: "📈 Mes progrès", title: "Luma – Mon cahier" },
+  { code: "es", vocabTab: "💬 Vocabulario", quizTab: "📐 Test", start: "Empezar el test", progress: "📈 Mi progreso", title: "Luma – Mi cuaderno" },
+  { code: "en", vocabTab: "💬 Vocabulary", quizTab: "📐 Quiz", start: "Start the quiz", progress: "📈 My progress", title: "Luma – My exercise book" },
 ];
 
 /** No missing translation: no placeholder or "undefined" left in the page. */
