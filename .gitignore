@@ -4,3 +4,108 @@ data
 .env
 test-results
 playwright-report
+# ─────────────────────────────────────────────────────────────────────────────
+# controller — .gitignore
+#
+# The auth/ package is SOURCE and is tracked. Secrets and per-station files are
+# ignored here; committed example files (.env.example, instruments.example.yaml)
+# are explicitly un-ignored so a fresh checkout has templates to copy.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Secrets & environment ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+.envrc
+db_credentials.json
+
+# ── Per-station instrument configuration (keep the committed example) ─────────
+config/*
+!config/instruments.example.yaml
+/instruments.yaml
+
+# ── Python bytecode & tool caches ────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.cache/
+
+# ── Packaging & build artifacts ──────────────────────────────────────────────
+build/
+dist/
+wheels/
+*.egg
+*.egg-info/
+pip-wheel-metadata/
+
+# ── Virtual environments ─────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+env3.*/
+.python-version
+
+# ── Tests & coverage ─────────────────────────────────────────────────────────
+.coverage*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# ── Databases & research data (never commit measurement data) ────────────────
+*.db
+test.db
+trast_results.db
+results/
+output_*.png
+*.npy
+*.npz
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+log.txt
+
+# ── Documentation / site build output ────────────────────────────────────────
+docs_build/
+site_build/
+site/
+docs.zip
+archive.zip
+.netlify
+
+# ── Editors & IDEs ───────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.sublime-*
+.ipynb_checkpoints/
+
+# ── Vim swap / temp files ────────────────────────────────────────────────────
+*~
+.*.sw?
+
+# ── OS cruft ─────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# ── Legacy / scratch ─────────────────────────────────────────────────────────
+old/
+Pipfile.lock
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Vendor: FLIR Spinnaker / PySpin SDK
+# Installed per-station, never vendored in git. Globbed so any SDK version is
+# covered. (The project's own docs/ IS tracked and is unaffected.)
+# ─────────────────────────────────────────────────────────────────────────────
+Examples/
+licenses/
+spinnaker-*/
+spinnaker-*.tar.gz
+spinnaker_python-*.whl
+spinnaker_python-*.tar.gz

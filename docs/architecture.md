@@ -33,7 +33,7 @@ Three parts, in one repository and one npm package:
 | Part | Runs in | Role |
 |---|---|---|
 | `src/` | browser | Every screen, keyboard handling, the arithmetic boards, the PDF worksheet, browser settings |
-| `shared/` | both | Types shared over the API, and the whole multiple-choice engine: generators, test assembly, progress rules |
+| `shared/` | both | Types shared over the API, the whole multiple-choice engine (generators, test assembly, progress rules), and the vocabulary engine (grading, Leitner boxes, sessions) |
 | `server/` | Node | JSON API, sign-in and sessions, grading, database access and migrations, maintenance scripts |
 
 In production a single Node process serves the built app (`dist/`) and the

@@ -17,6 +17,7 @@ import { authRoutes } from "./auth/routes.ts";
 import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
 import { Repository, type Scope } from "./repository.ts";
+import { VocabStore, vocabRoutes } from "./vocab.ts";
 
 const NAME_LENGTH = 20;
 const LIMIT = 1_000_000; // generous bound on the numbers the app can send
@@ -135,6 +136,8 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
     if (!Number.isFinite(since) || since < 0) return c.json({ error: "invalid since" }, 400);
     return c.json(await repository.stats(Math.trunc(since), scope(c)));
   });
+
+  data.route("/vocab", vocabRoutes(new VocabStore(db), repository, scope as (c: never) => Scope));
 
   api.route("/", data);
 

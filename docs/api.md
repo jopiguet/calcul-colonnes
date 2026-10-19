@@ -17,6 +17,10 @@ from the app's own origin.
 | `POST` | [`/api/attempts`](#post-apiattempts) | Record a column-arithmetic answer |
 | `POST` | [`/api/quizzes`](#post-apiquizzes) | Record a finished test |
 | `GET` | [`/api/stats`](#get-apistats) | Totals of every player |
+| `GET` | [`/api/vocab/lessons`](#get-apivocablessons) | Lessons and sections of the vocabulary |
+| `GET` | [`/api/vocab/progress`](#get-apivocabprogress) | One player's vocabulary progress |
+| `GET` | [`/api/vocab/session`](#get-apivocabsession) | Cards for a practice session |
+| `POST` | [`/api/vocab/answers`](#post-apivocabanswers) | Record an answer; the server grades it |
 
 The [authentication routes](#authentication) are under `/api/auth`.
 
@@ -214,6 +218,85 @@ Every player, sorted by right arithmetic answers, then by name:
 
 `total`, `correct` and `today*` count column-arithmetic answers; `quiz*`
 count tests, right answers and questions.
+
+## Vocabulary
+
+See [Vocabulary](vocabulary.md) for the method and the grading.
+
+### `GET /api/vocab/lessons`
+
+```json
+[
+  {
+    "id": 1,
+    "title": { "en": "At school", "es": "En el colegio" },
+    "sections": [{ "id": 1, "title": { "en": "The classroom", "es": "El aula" }, "entries": 12 }]
+  }
+]
+```
+
+An empty list when no vocabulary has been imported.
+
+### `GET /api/vocab/progress`
+
+| Query | |
+|---|---|
+| `userId` | The player |
+| `since` | Start of "today", epoch ms, for `today` |
+
+```json
+{
+  "sections": { "1": { "new": 4, "learning": 8, "known": 0, "mastered": 0, "due": 3 } },
+  "due": 3,
+  "today": { "answers": 9, "right": 8 }
+}
+```
+
+`due` counts cards (an entry has two: recognise and recall). Every section is
+listed; an entry counts as `new` until one of its cards has been answered.
+
+### `GET /api/vocab/session`
+
+| Query | |
+|---|---|
+| `userId` | The player |
+| `kind` | `section`, `lesson`, or `due` (every card due, no new entries) |
+| `id` | Section or lesson id; ignored for `due` |
+| `size` | 1 … 40 cards |
+| `mode` | `mixed` (default), `choice` or `written` |
+
+```json
+[
+  {
+    "entryId": 7,
+    "direction": "recognise",
+    "mode": "choice",
+    "box": 0,
+    "prompt": "la regla",
+    "group": "Things",
+    "options": ["schoolbag", "ruler", "rubber", "book"]
+  }
+]
+```
+
+`options` is present for `choice` cards only. `feminine: true` marks a
+feminine noun taking *el*, on recognise cards.
+
+### `POST /api/vocab/answers`
+
+```json
+{ "userId": 1, "entryId": 7, "direction": "recall", "mode": "written", "given": "la regla" }
+```
+
+`201`:
+
+```json
+{ "verdict": "right", "correct": true, "expected": "la regla", "feminine": false, "box": 2, "dueAt": 1792423727408 }
+```
+
+`verdict` is `right`, `accent`, `typo`, `article` or `wrong`; `correct` is
+what moves the card between boxes. A `choice` answer must equal the option as
+printed. Errors: `invalid answer` (400), `unknown user`, `unknown entry` (404).
 
 ## Authentication
 

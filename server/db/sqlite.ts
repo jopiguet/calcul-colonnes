@@ -28,6 +28,18 @@ export function openSqlite(path: string): Database {
       db.exec(sql);
     },
 
+    async transaction(work) {
+      db.exec("BEGIN");
+      try {
+        const result = await work(this);
+        db.exec("COMMIT");
+        return result;
+      } catch (error) {
+        db.exec("ROLLBACK");
+        throw error;
+      }
+    },
+
     async close(): Promise<void> {
       db.close();
     },

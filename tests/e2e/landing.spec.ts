@@ -12,7 +12,7 @@ test("a first visit shows the landing page, which leads to sign-up and sign-in",
 
   await page.goBack();
   await expect(page.locator(".landing")).toBeVisible();
-  await page.locator(".landing-signin").click();
+  await page.locator(".hero-cta a.quiet").click(); // the header link is hidden at phone width
   await expect(page.locator(".auth input[name=identifier]")).toBeVisible();
 
   await page.locator(".back-home").click();

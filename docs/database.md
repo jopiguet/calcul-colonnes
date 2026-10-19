@@ -146,6 +146,23 @@ review of mistakes are built from.
 
 Indexes: `(user_id, skill, at)`, `(quiz_id)`.
 
+### Vocabulary
+
+The imported phrase book, shared by every account, and each player's
+progress. See [Vocabulary](vocabulary.md).
+
+| Table | Rows | Key columns |
+|---|---|---|
+| `vocab_lessons` | one per lesson (chapter) | `position`, `title_en`, `title_es` |
+| `vocab_sections` | one per section | `lesson_id`, `position`, titles |
+| `vocab_entries` | one per entry | `section_id`, `position`, `en`, `es`, `grp` (heading inside the section), `feminine` |
+| `vocab_progress` | one per player, entry and direction | primary key `(user_id, entry_id, direction)`; `box` 1–6, `due_at`, `last_at`, `right_count`, `wrong_count` |
+| `vocab_answers` | one per answer | `user_id`, `entry_id`, `direction`, `mode`, `at`, `given`, `verdict`, `correct` |
+
+`direction` is `recognise` (Spanish shown) or `recall` (meaning shown).
+Deleting a player deletes their progress and answers; an import that removes
+an entry deletes its progress.
+
 ### `schema_migrations`
 
 The versions of the migrations already applied.
@@ -164,6 +181,7 @@ start, in order, each in its own transaction together with its row in
 | `004_quiz_answers` | `quiz_answers`; `focus` and `version` on `quiz_results` |
 | `005_mistakes` | `mistake` on `quiz_answers` (common SQL, one file) |
 | `006_accounts` | `accounts`, `credentials`, `sessions`, `auth_flows`; `account_id` on `users` |
+| `007_vocabulary` | `vocab_lessons`, `vocab_sections`, `vocab_entries`, `vocab_progress`, `vocab_answers` |
 
 **File names.**
 
@@ -172,7 +190,7 @@ start, in order, each in its own transaction together with its row in
 
 **Adding a migration.**
 
-1. Create `007_name.sql`, or the pair of `007_name.sqlite.sql` and `007_name.postgres.sql`.
+1. Create `008_name.sql`, or the pair of `008_name.sqlite.sql` and `008_name.postgres.sql`.
 2. Restart the server.
 3. Never edit a migration that has already been applied somewhere: add a new one.
 
@@ -216,7 +234,7 @@ database: PostgreSQL (ep-example-123456.eu-central-1.aws.neon.tech/calcul)
    ```sh
    npm run db:copy-to-postgres
    ```
-   This applies the migrations on both sides and copies `accounts`, `users`, `credentials`, `attempts`, `quiz_results` and `quiz_answers` in one transaction, keeping the ids. It then moves the identity sequences past the copied ids. It refuses to run if the target already has accounts or players.
+   This applies the migrations on both sides and copies `accounts`, `users`, `credentials`, `attempts`, `quiz_results`, `quiz_answers` and the `vocab_*` tables in one transaction, keeping the ids. It then moves the identity sequences past the copied ids. It refuses to run if the target already has accounts or players.
    Sessions are not copied: everyone signs in again once.
 4. **Start the server:** `npm start`. The log should show `database: PostgreSQL (…)`.
 

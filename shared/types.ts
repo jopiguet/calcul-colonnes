@@ -118,3 +118,69 @@ export interface SignInMethod {
   createdAt: number;
   lastUsedAt: number | null;
 }
+
+// ---------------------------------------------------------------- vocabulary
+
+/** One card of a vocabulary session (see shared/vocab/session.ts). */
+export interface VocabCard {
+  entryId: number;
+  /** recognise: Spanish shown, meaning asked; recall: meaning shown, Spanish asked. */
+  direction: "recognise" | "recall";
+  mode: "choice" | "written";
+  /** Leitner box before this answer; 0 for a card never asked. */
+  box: number;
+  prompt: string;
+  /** Heading inside the section ("Interior"), as a hint. */
+  group?: string;
+  /** Feminine noun taking "el" ("el agua"), shown with the prompt. */
+  feminine?: boolean;
+  /** Multiple choice only: four options, one right. */
+  options?: string[];
+}
+
+export interface VocabSectionInfo {
+  id: number;
+  title: { en: string; es: string };
+  entries: number;
+}
+
+export interface VocabLessonInfo {
+  id: number;
+  title: { en: string; es: string };
+  sections: VocabSectionInfo[];
+}
+
+/** Counts of entries by status, for one section. */
+export interface VocabSectionProgress {
+  new: number;
+  learning: number;
+  known: number;
+  mastered: number;
+  /** Cards whose review is due now. */
+  due: number;
+}
+
+export interface VocabProgress {
+  sections: Record<number, VocabSectionProgress>;
+  due: number;
+  /** Answers since the `since` given. */
+  today: { answers: number; right: number };
+}
+
+export interface VocabAnswer {
+  userId: number;
+  entryId: number;
+  direction: "recognise" | "recall";
+  mode: "choice" | "written";
+  given: string;
+}
+
+export interface VocabAnswerResult {
+  verdict: "right" | "accent" | "typo" | "article" | "wrong";
+  correct: boolean;
+  /** The answer as printed in the book. */
+  expected: string;
+  feminine: boolean;
+  box: number;
+  dueAt: number;
+}

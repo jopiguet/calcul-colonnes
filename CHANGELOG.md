@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.2.0
+
+- **Spanish vocabulary tab** (*🗣️ Vocabulaire*), from a phrase book you own: its chapters are the lessons, its sections the sections.
+- **Spaced repetition** with Leitner boxes, per word and per direction (Spanish → meaning, meaning → Spanish): 10 minutes, then 1, 3, 7, 16 and 35 days; back to the start after a mistake, which is also asked again at the end of the session.
+- **Multiple choice and written answers:** multiple choice while a word is new, written once it is known, or either one always. Wrong options come from the same section. Phrases of more than four words stay multiple choice.
+- **Grading of written answers** (shared by browser and server): accents and one-letter slips forgiven with the spelling shown; a missing or wrong article counted wrong; the book's alternatives (`/`), optional brackets and `...` understood. Buttons for *á é í ó ú ü ñ ¿ ¡*.
+- **`tools/vocab-extract.py`** reads a Collins *3000 words and phrases* PDF into a JSON file; **`npm run vocab:import`** imports it, keeping progress on entries that did not change; or `VOCAB_FILE` imports it once at startup. No book content is part of the project.
+- `npm run check:vocab`: 44 grading cases and the scheduling rules; with a file, every entry.
+- Database migration `007`: `vocab_lessons`, `vocab_sections`, `vocab_entries`, `vocab_progress`, `vocab_answers`. `db:copy-to-postgres` copies them.
+- API: `/api/vocab/lessons`, `/progress`, `/session`, `/answers`.
+- The database layer gains transactions on one connection.
+- Browser tests: 37, with an invented vocabulary.
+
 ## 4.1.0
 
 - **Landing page** for first visits: what the app does, with a column addition written as the app teaches it (units first, then the carry), and real samples of a division, a quiz formula and a kind of question to review. French, Spanish and English. A browser that has been signed in before opens directly on the sign-in form.

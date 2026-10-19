@@ -22,7 +22,7 @@ export interface Settings {
   quizReview: boolean;
 }
 
-export type Mode = "columns" | "quiz";
+export type Mode = "columns" | "quiz" | "vocab";
 
 export const OPERATORS: Operator[] = ["+", "−", "×", "÷"];
 
@@ -83,7 +83,7 @@ export function loadSettings(): Settings {
     ? TOPICS.filter((topic) => (saved.quizTopics as unknown[]).includes(topic))
     : [];
   return {
-    mode: saved.mode === "quiz" ? "quiz" : "columns",
+    mode: saved.mode === "quiz" || saved.mode === "vocab" ? saved.mode : "columns",
     quizLevel: QUIZ_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),

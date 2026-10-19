@@ -7,9 +7,15 @@ import type {
   SignInMethod,
   User,
   UserStats,
+  VocabAnswer,
+  VocabAnswerResult,
+  VocabCard,
+  VocabLessonInfo,
+  VocabProgress,
 } from "../shared/types";
 
 export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, Profile, SignInMethod, User, UserStats };
+export type { VocabAnswer, VocabAnswerResult, VocabCard, VocabLessonInfo, VocabProgress };
 
 /**
  * Players and scores live in the server's database (SQLite, or PostgreSQL on
@@ -85,4 +91,18 @@ export const store = {
   stats: (): Promise<UserStats[]> => call(`/stats?since=${startOfToday()}`),
   /** Progress of one player: kinds of question met in tests, column arithmetic. */
   profile: (userId: number): Promise<Profile> => call(`/users/${userId}/profile?since=${startOfToday()}`),
+};
+
+export const vocab = {
+  lessons: (): Promise<VocabLessonInfo[]> => call("/vocab/lessons"),
+  progress: (userId: number): Promise<VocabProgress> => call(`/vocab/progress?userId=${userId}&since=${startOfToday()}`),
+  session: (
+    userId: number,
+    target: { kind: "section" | "lesson" | "due"; id: number },
+    size: number,
+    mode: "mixed" | "choice" | "written",
+  ): Promise<VocabCard[]> =>
+    call(`/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&size=${size}&mode=${mode}`),
+  /** The server grades the answer and moves the card between boxes. */
+  answer: (answer: VocabAnswer): Promise<VocabAnswerResult> => post("/vocab/answers", answer),
 };

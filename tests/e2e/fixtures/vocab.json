@@ -1,0 +1,170 @@
+{
+ "format": 1,
+ "languages": [
+  "en",
+  "es"
+ ],
+ "lessons": [
+  {
+   "title": {
+    "en": "At school",
+    "es": "En el colegio"
+   },
+   "sections": [
+    {
+     "title": {
+      "en": "The classroom",
+      "es": "El aula"
+     },
+     "entries": [
+      {
+       "en": "pencil",
+       "es": "el lápiz",
+       "group": "Things"
+      },
+      {
+       "en": "rubber",
+       "es": "la goma",
+       "group": "Things"
+      },
+      {
+       "en": "exercise book",
+       "es": "el cuaderno",
+       "group": "Things"
+      },
+      {
+       "en": "ruler",
+       "es": "la regla",
+       "group": "Things"
+      },
+      {
+       "en": "schoolbag",
+       "es": "la mochila",
+       "group": "Things"
+      },
+      {
+       "en": "pencil case",
+       "es": "el estuche",
+       "group": "Things"
+      },
+      {
+       "en": "blackboard",
+       "es": "la pizarra",
+       "group": "Things"
+      },
+      {
+       "en": "chalk",
+       "es": "la tiza",
+       "group": "Things"
+      },
+      {
+       "en": "book",
+       "es": "el libro",
+       "group": "Things"
+      },
+      {
+       "en": "teacher",
+       "es": "el profesor / la profesora",
+       "group": "People"
+      },
+      {
+       "en": "pupil",
+       "es": "el alumno / la alumna",
+       "group": "People"
+      },
+      {
+       "en": "desk",
+       "es": "el pupitre",
+       "group": "People"
+      }
+     ]
+    },
+    {
+     "title": {
+      "en": "Useful phrases",
+      "es": "Frases útiles"
+     },
+     "entries": [
+      {
+       "en": "May I go to the toilet?",
+       "es": "¿Puedo ir al baño?"
+      },
+      {
+       "en": "I don't know.",
+       "es": "No lo sé."
+      },
+      {
+       "en": "I don't understand the question.",
+       "es": "No entiendo la pregunta."
+      },
+      {
+       "en": "Can you repeat that, please?",
+       "es": "¿Puede repetirlo, por favor?"
+      },
+      {
+       "en": "Good morning!",
+       "es": "¡Buenos días!"
+      },
+      {
+       "en": "See you tomorrow.",
+       "es": "Hasta mañana."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Food",
+    "es": "La comida"
+   },
+   "sections": [
+    {
+     "title": {
+      "en": "The kitchen",
+      "es": "La cocina"
+     },
+     "entries": [
+      {
+       "en": "water",
+       "es": "el agua",
+       "feminine": true
+      },
+      {
+       "en": "banana",
+       "es": "el plátano"
+      },
+      {
+       "en": "bread",
+       "es": "el pan"
+      },
+      {
+       "en": "apple",
+       "es": "la manzana"
+      },
+      {
+       "en": "cheese",
+       "es": "el queso"
+      },
+      {
+       "en": "milk",
+       "es": "la leche"
+      },
+      {
+       "en": "egg",
+       "es": "el huevo"
+      },
+      {
+       "en": "rice",
+       "es": "el arroz"
+      },
+      {
+       "en": "orange",
+       "es": "la naranja"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

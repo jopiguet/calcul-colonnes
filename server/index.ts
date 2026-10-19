@@ -8,6 +8,8 @@ import { AuthStore } from "./auth/store.ts";
 import { openDatabase } from "./db/index.ts";
 import { migrate } from "./db/migrate.ts";
 import { Repository } from "./repository.ts";
+import { importVocabFile } from "./vocab-import.ts";
+import { VocabStore } from "./vocab.ts";
 
 // Load .env explicitly, so the server never starts on silently missing settings.
 if (existsSync(".env")) process.loadEnvFile(".env");
@@ -20,6 +22,17 @@ const rebuilt = await new Repository(db).backfillQuizAnswers();
 if (rebuilt > 0) console.log(`answers rebuilt from their seed for ${rebuilt} earlier test(s)`);
 const labelled = await new Repository(db).backfillMistakes();
 if (labelled > 0) console.log(`mistakes labelled for ${labelled} earlier test(s)`);
+
+// VOCAB_FILE: imported once, into an empty vocabulary (later: npm run vocab:import).
+const vocabFile = process.env.VOCAB_FILE?.trim();
+if (vocabFile && (await new VocabStore(db).isEmpty())) {
+  if (existsSync(vocabFile)) {
+    const report = await importVocabFile(db, vocabFile);
+    console.log(`vocabulary imported from ${vocabFile}: ${report.lessons} lessons, ${report.sections} sections, ${report.entries} entries`);
+  } else {
+    console.log(`vocabulary: VOCAB_FILE ${vocabFile} not found`);
+  }
+}
 
 const port = Number(process.env.PORT) || 8787;
 const authConfig = authConfigFromEnv(process.env, port);

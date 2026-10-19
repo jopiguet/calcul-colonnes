@@ -36,6 +36,13 @@ exponentials and logarithms, at *lycée / bachillerato* or university level.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.
 - An automated check verifies tens of thousands of generated questions numerically, independently of the generators.
 
+**Spanish vocabulary** — from a phrase book you own, imported once.
+
+- Its chapters are the lessons and its sections the sections; the Collins *3000 words and phrases* layout is read automatically from the PDF.
+- Spaced repetition with Leitner boxes: each word, in each direction, comes back after 10 minutes, then 1, 3, 7, 16 and 35 days, and starts again after a mistake.
+- Multiple choice while a word is new, written answers once it is known. Accents and one-letter slips are forgiven with the spelling shown; a wrong article is not.
+- The book's own notation is understood: `el amigo / la amiga`, `Buenas tardes / noches`, `embarcar(se)`.
+
 **Players and progress**
 
 - Scores are kept per player in SQLite, or in PostgreSQL (Neon) with one setting.
@@ -74,6 +81,8 @@ npm start          # http://localhost:8787
 | `npm start` | Runs the server: API, plus the built app if `dist/` exists |
 | `npm run check:quiz` | Generates thousands of tests and verifies every question (see [question generators](docs/question-generators.md#verification)) |
 | `npm run test:e2e` | Browser tests of the whole app, on a separate server and database (see [Development › Tests](docs/development.md#tests)) |
+| `npm run vocab:import -- data/vocab.json` | Imports a vocabulary file, keeping progress on unchanged entries (see [Vocabulary](docs/vocabulary.md)) |
+| `npm run check:vocab` | Checks the vocabulary grading; with a file, every entry |
 | `npm run db:copy-to-postgres` | One-off copy of the SQLite data into the PostgreSQL database named by `DATABASE_URL` |
 
 ## Configuration
@@ -97,6 +106,7 @@ Settings are read from `.env` (see `.env.example`):
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
 | [Question generators](docs/question-generators.md) | The 39 kinds of question, how a generator works, adding one, verification, versioning |
+| [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |
 | [Database](docs/database.md) | Schema, migrations, SQLite and PostgreSQL |
 | [API](docs/api.md) | Every endpoint with request and response examples |

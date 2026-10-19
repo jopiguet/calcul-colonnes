@@ -1569,3 +1569,338 @@ a:focus-visible {
     --c: calc(var(--square) * 2.5);
   }
 }
+
+/* ---- vocabulary ---- */
+
+.vocab-home,
+.vocab-card,
+.vocab-done {
+  align-items: stretch;
+}
+
+.vocab-home > .title,
+.vocab-done > .title {
+  text-align: center;
+}
+
+.vocab-due {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 6%, var(--paper));
+}
+
+.vocab-due-count {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.vocab-due-count.quiet {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.vocab-how .segment {
+  flex: 1;
+}
+
+.vocab-lessons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vocab-lesson {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.vocab-lesson[open] {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.vocab-lesson-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5rem auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.vocab-lesson-head::-webkit-details-marker {
+  display: none;
+}
+
+.vocab-lesson-title,
+.vocab-section-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.vocab-lesson-title-es {
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.vocab-lesson-title-en,
+.vocab-section-title-en {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.vocab-section-title-es {
+  font-weight: 600;
+}
+
+.vocab-bar {
+  display: flex;
+  height: 0.4rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.vocab-bar-mastered {
+  background: var(--good);
+}
+
+.vocab-bar-known {
+  background: color-mix(in srgb, var(--good) 55%, var(--paper));
+}
+
+.vocab-bar-learning {
+  background: var(--accent);
+}
+
+.vocab-badge {
+  min-width: 1.6rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 1rem;
+  background: var(--bad);
+  color: var(--paper);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.vocab-sections {
+  margin: 0;
+  padding: 0 0.9rem;
+  list-style: none;
+}
+
+.vocab-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.vocab-section-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.vocab-section-text .vocab-bar {
+  max-width: 12rem;
+}
+
+.vocab-section-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.vocab-section-due {
+  color: var(--bad);
+  font-weight: 600;
+}
+
+.vocab-section button {
+  flex-shrink: 0;
+}
+
+button.vocab-whole {
+  margin: 0.3rem 0.9rem 0.9rem;
+}
+
+/* A card: the word to learn, large, as written in the exercise book. */
+.vocab-question {
+  text-align: center;
+  padding: 0.5rem 0 0.25rem;
+}
+
+.vocab-ask {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.vocab-prompt {
+  margin: 0.6rem 0 0.4rem;
+  font-size: clamp(1.6rem, 1.2rem + 2vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.vocab-notes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.vocab-fem {
+  color: var(--bad);
+  font-weight: 600;
+}
+
+/* Leitner box: six dots, filled up to the card's box. */
+.vocab-box {
+  display: inline-flex;
+  gap: 0.2rem;
+}
+
+.vocab-box span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+}
+
+.vocab-box span.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+button.choice.is-right {
+  border-color: var(--good);
+  background: color-mix(in srgb, var(--good) 12%, var(--paper));
+  opacity: 1;
+}
+
+button.choice.is-wrong {
+  border-color: var(--bad);
+  background: color-mix(in srgb, var(--bad) 10%, var(--paper));
+  opacity: 1;
+}
+
+.vocab-write {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.vocab-input {
+  font-size: 1.3rem !important;
+  text-align: center;
+  color: var(--accent) !important;
+}
+
+.vocab-input.is-right {
+  border-color: var(--good) !important;
+}
+
+.vocab-input.is-wrong {
+  border-color: var(--bad) !important;
+}
+
+.vocab-letters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+button.vocab-letter {
+  min-width: 2.4rem;
+  padding: 0.35rem 0.5rem;
+  font-family: var(--digits);
+  color: var(--ink);
+}
+
+.vocab-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin: 0;
+  min-height: 1.5em;
+  text-align: center;
+}
+
+.vocab-feedback.good .vocab-verdict {
+  color: var(--good);
+}
+
+.vocab-feedback.bad,
+.vocab-feedback.bad .vocab-verdict {
+  color: var(--bad);
+}
+
+.vocab-verdict {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.vocab-when {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.vocab-card .actions,
+.vocab-done .actions {
+  justify-content: center;
+}
+
+.vocab-missed {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.vocab-missed li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+}
+
+.vocab-missed-answer {
+  font-weight: 600;
+  color: var(--accent);
+  text-align: right;
+}
+
+/* Three tabs on a phone: tighter, so each label fits on two lines at most. */
+@media (max-width: 30rem) {
+  .tabs .segment {
+    padding: 0.5rem 0.35rem;
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+}

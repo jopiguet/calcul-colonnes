@@ -2,9 +2,9 @@ import { expect, test, type Page } from "@playwright/test";
 import { newPlayer, takeQuiz } from "./helpers";
 
 const LANGUAGES = [
-  { code: "fr", quizTab: "📐 QCM", start: "Commencer le test", progress: "📈 Mes progrès", title: "Calcul en colonnes" },
-  { code: "es", quizTab: "📐 Test", start: "Empezar el test", progress: "📈 Mi progreso", title: "Cálculo en columnas" },
-  { code: "en", quizTab: "📐 Quiz", start: "Start the quiz", progress: "📈 My progress", title: "Column arithmetic" },
+  { code: "fr", vocabTab: "🗣️ Vocabulaire", quizTab: "📐 QCM", start: "Commencer le test", progress: "📈 Mes progrès", title: "Calcul en colonnes" },
+  { code: "es", vocabTab: "🗣️ Vocabulario", quizTab: "📐 Test", start: "Empezar el test", progress: "📈 Mi progreso", title: "Cálculo en columnas" },
+  { code: "en", vocabTab: "🗣️ Vocabulary", quizTab: "📐 Quiz", start: "Start the quiz", progress: "📈 My progress", title: "Column arithmetic" },
 ];
 
 /** No missing translation: no placeholder or "undefined" left in the page. */
@@ -29,6 +29,18 @@ for (const lang of LANGUAGES) {
     await expectClean(page);
     await page.click(`text=${lang.progress}`);
     await page.locator(".progress-page").waitFor();
+    await expectClean(page);
+
+    await page.locator(".progress-page > button.primary").click(); // back to the player's screen
+    await page.click(`text=${lang.vocabTab}`);
+    await page.locator(".vocab-lesson summary").first().click();
+    await expectClean(page);
+    await page.locator(".vocab-section button").first().click();
+    await page.locator(".choice").first().click();
+    await page.locator(".vocab-verdict").waitFor();
+    await expectClean(page);
+    await page.locator(".vocab-card .actions button.ghost").click();
+    await page.locator(".vocab-done").waitFor();
     await expectClean(page);
   });
 }

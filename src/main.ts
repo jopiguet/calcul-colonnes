@@ -25,6 +25,8 @@ import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { quizView } from "./quiz";
+import { vocabView } from "./vocab";
+import { vt } from "./vocab-i18n";
 import { qt } from "./quiz-i18n";
 import { progressView } from "./progress";
 
@@ -153,6 +155,8 @@ async function render(): Promise<void> {
     } else if (state.view === "progress") {
       const who = progressUser ?? state.user;
       app.replaceChildren(topBar(), await progressView(who, () => show(progressBack)));
+    } else if (state.settings.mode === "vocab") {
+      app.replaceChildren(topBar(), modeTabs(), await vocabView({ user: state.user, rerender: () => void render() }));
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
       app.replaceChildren(
@@ -223,6 +227,7 @@ function modeTabs(): HTMLElement {
   for (const [mode, label] of [
     ["columns", qt("modeColumns")],
     ["quiz", qt("modeQuiz")],
+    ["vocab", vt("modeVocab")],
   ] as const) {
     const on = state.settings.mode === mode;
     const tab = button(on ? "segment on" : "segment", label, () => {

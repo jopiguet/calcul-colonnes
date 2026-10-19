@@ -21,6 +21,23 @@ export function openPostgres(databaseUrl: string): Database {
       await pool.query(sql); // no parameters → several statements in one round trip
     },
 
+    async transaction(work) {
+      const client = await pool.connect(); // BEGIN and COMMIT must use the same connection
+      try {
+        await client.query("BEGIN");
+        const result = await work({
+          query: async (sql: string, params: Param[] = []) => (await client.query(sql, params)).rows as Row[],
+        });
+        await client.query("COMMIT");
+        return result;
+      } catch (error) {
+        await client.query("ROLLBACK").catch(() => undefined);
+        throw error;
+      } finally {
+        client.release();
+      }
+    },
+
     async close(): Promise<void> {
       await pool.end();
     },

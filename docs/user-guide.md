@@ -10,6 +10,7 @@ describes every screen, every setting and the keyboard shortcuts.
 - [Printable worksheet](#printable-worksheet)
 - [Multiple-choice tests](#multiple-choice-tests)
 - [Progress and review of mistakes](#progress-and-review-of-mistakes)
+- [Spanish vocabulary](#spanish-vocabulary)
 - [Scores](#scores)
 - [Language](#language)
 - [What is stored where](#what-is-stored-where)
@@ -238,6 +239,35 @@ by clicking a player's name on the Scores screen. It shows:
 - **Frequent mistakes:** the six mistakes the player makes most often in tests, with how many times and in which kinds of question. A mistake keeps its count after the kind is mastered: it shows the habits to watch, not what is still to review.
 - **Column arithmetic:** today's and all-time results per operation.
 
+## Spanish vocabulary
+
+Tab **🗣️ Vocabulaire**. It shows the lessons and sections of the phrase book
+imported on the server (see [Vocabulary › Importing a book](vocabulary.md#importing-a-book)).
+
+**The screen**
+
+- **Mots à réviser:** the words whose review is due, across every lesson. *Réviser maintenant* starts a session with them. This is the first thing to do each day.
+- **Questions:** *Mélangé* (multiple choice for new words, written answers once they are known), *Choix multiples* or *Écrit*. Mixed suits most children.
+- **Lessons:** click one to see its sections. Each section shows its number of words, how many are due, and a bar that fills as its words are learnt, then known, then mastered. *Apprendre* starts a section, *Continuer* goes on with it, and *Toute la leçon* mixes every section of the lesson.
+
+**A session** has up to 15 cards: words due first, then up to 8 new ones.
+
+- **Two kinds of card:**
+  - Spanish shown, answer the meaning in English.
+  - English shown, answer in Spanish. This comes once the word is recognised.
+- **Multiple choice:** click an option, or press 1–4 or A–D.
+- **Written:** type the answer and press Enter. For Spanish answers, buttons under the field add *á é í ó ú ü ñ ¿ ¡*.
+  - A missing accent or a single slip in a long word is counted right, and the correct spelling is shown.
+  - A missing or wrong article (*lápiz* for *el lápiz*) is counted wrong: the gender belongs to the word.
+- **After each answer:** Enter goes on. The six dots show the word's box. A wrong answer comes back at the end of the session.
+- **The summary** lists the words to review, with their answers.
+
+**How words come back.** Each right answer puts a word in the next box and
+spaces its next review: 10 minutes, then 1, 3, 7, 16 and 35 days. A wrong
+answer sends it back to the first box. A few minutes a day is enough; a long
+session once a week is less effective. The method is described in
+[Vocabulary › The learning method](vocabulary.md#the-learning-method).
+
 ## Scores
 
 **🏆 Scores** lists every player of the account (in a player's own session,
@@ -264,7 +294,7 @@ of these three, French otherwise; the choice is then remembered.
 
 | Where | What |
 |---|---|
-| The server's database | Accounts and their ways to sign in (passwords only as hashes), sessions, players, every checked arithmetic answer, every finished test and each of its answers |
+| The server's database | Accounts and their ways to sign in (passwords only as hashes), sessions, players, every checked arithmetic answer, every finished test and each of its answers, the imported vocabulary, each player's box for every word, every vocabulary answer |
 | The browser (cookie) | The session, unreadable by the page's scripts |
 | The browser (`localStorage`) | Language, operation and test settings, last player |
 

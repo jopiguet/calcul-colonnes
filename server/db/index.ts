@@ -17,6 +17,11 @@ export interface Database {
   query(sql: string, params?: Param[]): Promise<Row[]>;
   /** Runs several statements without parameters (migrations). */
   exec(sql: string): Promise<void>;
+  /**
+   * Runs `work` in one transaction, on one connection: committed if it
+   * resolves, rolled back if it throws.
+   */
+  transaction<T>(work: (tx: Pick<Database, "query">) => Promise<T>): Promise<T>;
   close(): Promise<void>;
 }
 
