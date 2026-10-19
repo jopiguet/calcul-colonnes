@@ -13,8 +13,10 @@ export interface Settings {
   /** Maximum of the multiplier and of the divisor. */
   smallLimit: number;
   operators: Operator[];
-  /** Which part of the app is shown. */
+  /** Which part of the app is shown: the home page or an activity. */
   mode: Mode;
+  /** Vocabulary book open in the "vocab" activity (its id on the server). */
+  vocabBook: number | null;
   quizLevel: Level;
   quizTopics: Topic[];
   quizCount: number;
@@ -22,7 +24,7 @@ export interface Settings {
   quizReview: boolean;
 }
 
-export type Mode = "columns" | "quiz" | "vocab";
+export type Mode = "home" | "columns" | "quiz" | "vocab";
 
 export const OPERATORS: Operator[] = ["+", "−", "×", "÷"];
 
@@ -83,7 +85,8 @@ export function loadSettings(): Settings {
     ? TOPICS.filter((topic) => (saved.quizTopics as unknown[]).includes(topic))
     : [];
   return {
-    mode: saved.mode === "quiz" || saved.mode === "vocab" ? saved.mode : "columns",
+    mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" ? saved.mode : "home",
+    vocabBook: typeof saved.vocabBook === "number" && saved.vocabBook > 0 ? saved.vocabBook : null,
     quizLevel: QUIZ_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),

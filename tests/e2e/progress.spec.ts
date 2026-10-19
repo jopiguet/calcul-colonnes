@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
-import { newPlayer, profileOf, rebuild, takeQuiz } from "./helpers";
+import { newPlayer, profileOf, rebuild, takeQuiz, openActivity } from "./helpers";
 
 test("mistakes come back in the next test until they are fixed", async ({ page }) => {
   const request = page.request;
   const name = await newPlayer(page, "Rev");
-  await page.click("text=📐 QCM");
+  await openActivity(page, "quiz");
   for (const topic of ["Intégrales", "Trigonométrie", "Limites", "Exponentielles et logarithmes"]) {
     await page.click(`.topic >> text=${topic}`);
   }
@@ -45,7 +45,7 @@ test("mistakes come back in the next test until they are fixed", async ({ page }
 test("the mistake behind each wrong answer is recorded and shown", async ({ page }) => {
   const request = page.request;
   const name = await newPlayer(page, "Mis");
-  await page.click("text=📐 QCM");
+  await openActivity(page, "quiz");
   await page.click("text=Commencer le test");
   const { body } = await takeQuiz(page, (i) => (i + 1) % 4);
   const { questions } = rebuild(body);

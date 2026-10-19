@@ -1,6 +1,7 @@
 /**
- * Vocabulary tab: lessons and sections of the book, practice sessions with
+ * A vocabulary book: its lessons and sections, practice sessions with
  * multiple-choice and written answers, spaced repetition by Leitner boxes.
+ * One screen per book (Spanish translations, English definitions…).
  *
  * The session in progress lives here, outside the render, so a language
  * change or another re-render does not lose it.
@@ -13,11 +14,11 @@ import {
   vocab,
   type User,
   type VocabAnswerResult,
+  type VocabBookInfo,
   type VocabCard,
-  type VocabLessonInfo,
   type VocabProgress,
 } from "./store";
-import { vt, type VocabKey } from "./vocab-i18n";
+import { langName, vt, type VocabKey } from "./vocab-i18n";
 
 // ------------------------------------------------------------ preferences
 
@@ -62,6 +63,7 @@ type Target = { kind: "section" | "lesson" | "all"; id: number; purpose: "learn"
 
 interface Session {
   userId: number;
+  bookId: number;
   target: Target;
   cards: VocabCard[];
   index: number;
@@ -76,41 +78,48 @@ interface Session {
 
 let session: Session | null = null;
 let finished: Session | null = null;
-let lessonsCache: VocabLessonInfo[] | null = null;
 
 export interface VocabContext {
   user: User;
+  book: VocabBookInfo;
   rerender(): void;
 }
 
+/** "Vocabulaire espagnol", "Vocabulaire anglais": the book's language studied. */
+export const bookTitle = (book: VocabBookInfo): string => vt("title", { lang: langName(book.term) });
+
 export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
-  // Another player: their own sessions, not the previous player's.
-  if (session && session.userId !== ctx.user.id) session = null;
-  if (finished && finished.userId !== ctx.user.id) finished = null;
+  // Another player or another book: not the previous session.
+  const other = (s: Session | null) => s && (s.userId !== ctx.user.id || s.bookId !== ctx.book.id);
+  if (other(session)) session = null;
+  if (other(finished)) finished = null;
   if (session) return cardView(ctx, session);
   if (finished) return doneView(ctx, finished);
   return homeView(ctx);
 }
 
 async function start(ctx: VocabContext, target: Target): Promise<void> {
-  const cards = await vocab.session(ctx.user.id, target, prefs.size, prefs.mode);
+  // The whole book: the server takes the book's id.
+  const query = target.kind === "all" ? { ...target, id: ctx.book.id } : target;
+  const cards = await vocab.session(ctx.user.id, query, prefs.size, prefs.mode);
   finished = null;
-  if (cards.length === 0) {
-    // Nothing left to practise there: show the summary's "nothing to review".
-    finished = { userId: ctx.user.id, target, cards, index: 0, retried: new Set(), result: null, right: 0, answered: 0, missed: new Map(), saveFailed: false };
-  } else {
-    session = { userId: ctx.user.id, target, cards, index: 0, retried: new Set(), result: null, right: 0, answered: 0, missed: new Map(), saveFailed: false };
-  }
+  const fresh: Session = {
+    userId: ctx.user.id, bookId: ctx.book.id, target, cards, index: 0, retried: new Set(),
+    result: null, right: 0, answered: 0, missed: new Map(), saveFailed: false,
+  };
+  // Nothing left to practise there: the summary says so.
+  if (cards.length === 0) finished = fresh;
+  else session = fresh;
   ctx.rerender();
 }
 
 // ------------------------------------------------------------ home screen
 
-/** Lesson and section titles: Spanish first, the language being learnt. */
-function titleBlock(title: { en: string; es: string }, cls: string): HTMLElement {
+/** Lesson and section titles: in the language studied, the other below when the book has it. */
+function titleBlock(title: string, subtitle: string, cls: string): HTMLElement {
   const block = el("span", cls);
-  block.append(el("span", `${cls}-es`, title.es));
-  if (title.en.toLowerCase() !== title.es.toLowerCase()) block.append(el("span", `${cls}-en`, title.en));
+  block.append(el("span", `${cls}-es`, title));
+  if (subtitle && subtitle.toLowerCase() !== title.toLowerCase()) block.append(el("span", `${cls}-en`, subtitle));
   return block;
 }
 
@@ -129,23 +138,21 @@ function statusBar(p: { new: number; learning: number; known: number; mastered: 
 }
 
 async function homeView(ctx: VocabContext): Promise<HTMLElement> {
+  const { book } = ctx;
   const wrap = el("section", "sheet vocab-home");
-  wrap.append(el("h1", "title", vt("title")));
-
-  lessonsCache ??= await vocab.lessons();
-  const lessons = lessonsCache;
-  if (lessons.length === 0) {
-    lessonsCache = null; // look again next time: it may be imported meanwhile
-    wrap.append(el("p", "empty", vt("empty")));
-    return wrap;
-  }
+  wrap.append(
+    el("h1", "title", bookTitle(book)),
+    el("p", "vocab-source", `${book.title} · ${vt("words", { count: book.entries })}`),
+  );
+  const lessons = book.lessons;
   const progress: VocabProgress = await vocab.progress(ctx.user.id);
+  const mine = progress.books[book.id] ?? { due: 0, started: 0 };
 
   // Reviews due: the main action when there are any.
   const due = el("div", "vocab-due");
-  if (progress.due > 0) {
+  if (mine.due > 0) {
     due.append(
-      el("p", "vocab-due-count", progress.due === 1 ? vt("dueOne") : vt("dueNow", { count: progress.due })),
+      el("p", "vocab-due-count", mine.due === 1 ? vt("dueOne") : vt("dueNow", { count: mine.due })),
       button("primary", vt("reviewNow"), () =>
         void start(ctx, { kind: "all", id: 0, purpose: "due", label: vt("reviewNow") }),
       ),
@@ -154,10 +161,9 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     due.append(el("p", "vocab-due-count quiet", vt("nothingDue")));
   }
   // Every word started, due or not: before a test, or to go further.
-  const started = Object.values(progress.sections).reduce((n, p) => n + p.learning + p.known + p.mastered, 0);
-  if (started > 0) {
+  if (mine.started > 0) {
     due.append(
-      button(progress.due > 0 ? "ghost" : "primary", vt("reviewAll"), () =>
+      button(mine.due > 0 ? "ghost" : "primary", vt("reviewAll"), () =>
         void start(ctx, { kind: "all", id: 0, purpose: "review", label: vt("allVocabulary") }),
       ),
     );
@@ -213,7 +219,7 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       savePreferences();
     });
     const summary = el("summary", "vocab-lesson-head");
-    summary.append(titleBlock(lesson.title, "vocab-lesson-title"), statusBar(sum));
+    summary.append(titleBlock(lesson.title, lesson.subtitle, "vocab-lesson-title"), statusBar(sum));
     if (sum.due > 0) summary.append(el("span", "vocab-badge", String(sum.due)));
     details.append(summary);
 
@@ -222,22 +228,22 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       const p = progress.sections[section.id] ?? { new: section.entries, learning: 0, known: 0, mastered: 0, due: 0 };
       const item = el("li", "vocab-section");
       const text = el("div", "vocab-section-text");
-      text.append(titleBlock(section.title, "vocab-section-title"));
+      text.append(titleBlock(section.title, section.subtitle, "vocab-section-title"));
       const meta = el("span", "vocab-section-meta", vt("words", { count: section.entries }));
       if (p.due > 0) meta.append(" · ", el("span", "vocab-section-due", vt("sectionDue", { count: p.due })));
       text.append(meta, statusBar(p));
       const begun = p.new < section.entries;
       const buttons = el("div", "vocab-section-actions");
       const go = button(begun ? "ghost small" : "primary small", vt(begun ? "continue" : "learn"), () =>
-        void start(ctx, { kind: "section", id: section.id, purpose: "learn", label: section.title.es }),
+        void start(ctx, { kind: "section", id: section.id, purpose: "learn", label: section.title }),
       );
-      go.setAttribute("aria-label", `${vt(begun ? "continue" : "learn")} : ${section.title.es}`);
+      go.setAttribute("aria-label", `${vt(begun ? "continue" : "learn")} : ${section.title}`);
       buttons.append(go);
       if (begun) {
         const again = button("ghost small", vt("review"), () =>
-          void start(ctx, { kind: "section", id: section.id, purpose: "review", label: vt("reviewOf", { name: section.title.es }) }),
+          void start(ctx, { kind: "section", id: section.id, purpose: "review", label: vt("reviewOf", { name: section.title }) }),
         );
-        again.setAttribute("aria-label", `${vt("review")} : ${section.title.es}`);
+        again.setAttribute("aria-label", `${vt("review")} : ${section.title}`);
         buttons.append(again);
       }
       item.append(text, buttons);
@@ -246,13 +252,13 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     const whole = el("div", "vocab-whole");
     whole.append(
       button("ghost small", vt("wholeLesson"), () =>
-        void start(ctx, { kind: "lesson", id: lesson.id, purpose: "learn", label: lesson.title.es }),
+        void start(ctx, { kind: "lesson", id: lesson.id, purpose: "learn", label: lesson.title }),
       ),
     );
     if (sum.learning + sum.known + sum.mastered > 0) {
       whole.append(
         button("ghost small", vt("reviewLesson"), () =>
-          void start(ctx, { kind: "lesson", id: lesson.id, purpose: "review", label: vt("reviewOf", { name: lesson.title.es }) }),
+          void start(ctx, { kind: "lesson", id: lesson.id, purpose: "review", label: vt("reviewOf", { name: lesson.title }) }),
         ),
       );
     }
@@ -306,10 +312,11 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   wrap.append(head, bar);
 
   const recognise = card.direction === "recognise";
+  const ask = recognise ? vt("askMeaning") : card.promptLang === card.answerLang ? vt("askWord") : vt("askIn", { lang: langName(card.answerLang) });
   const question = el("div", "vocab-question");
-  question.append(el("p", "vocab-ask", vt(recognise ? "askMeaning" : "askSpanish")));
+  question.append(el("p", "vocab-ask", ask));
   const prompt = el("p", "vocab-prompt", card.prompt);
-  prompt.lang = recognise ? "es" : "en";
+  prompt.lang = card.promptLang;
   question.append(prompt);
   const notes = el("p", "vocab-notes");
   if (card.feminine) notes.append(el("span", "vocab-fem", `f · ${vt("feminine")}`));
@@ -320,7 +327,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
 
   const feedback = el("p", "vocab-feedback");
   feedback.setAttribute("role", "status");
-  const answerLang = recognise ? "en" : "es";
+  const answerLang = card.answerLang;
 
   const submit = async (given: string): Promise<void> => {
     if (s.result) return;
@@ -380,7 +387,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   } else {
     const form = el("form", "vocab-write");
     const label = el("label", "field");
-    label.append(el("span", "field-label", vt(recognise ? "writeEnglish" : "writeSpanish")));
+    label.append(el("span", "field-label", vt("answerIn", { lang: langName(answerLang) })));
     const input = el("input", "vocab-input");
     input.type = "text";
     input.lang = answerLang;
@@ -395,7 +402,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     }
     label.append(input);
     form.append(label);
-    if (!recognise && !s.result) {
+    if (answerLang === "es" && !s.result) {
       // Letters missing from most keyboards outside Spain.
       const letters = el("div", "vocab-letters");
       letters.setAttribute("aria-label", vt("accents"));
@@ -429,6 +436,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     const line = el("span", "vocab-verdict", r.verdict === "right" ? vt("right") : verdictText(r.verdict, r.expected));
     feedback.append(line);
     if (r.feminine) feedback.append(el("span", "vocab-fem", ` (f)`));
+    if (r.note) feedback.append(el("span", "vocab-note", vt("example", { note: r.note })));
     feedback.append(el("span", "vocab-when", r.correct ? whenBack(r) : vt("again")));
   }
   wrap.append(feedback);

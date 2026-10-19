@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { newPlayer, takeQuiz } from "./helpers";
+import { newPlayer, openActivity, takeQuiz } from "./helpers";
 
 const LANGUAGES = [
   { code: "fr", vocabTab: "💬 Vocabulaire", quizTab: "📐 QCM", start: "Commencer le test", progress: "📈 Mes progrès", title: "Luma – Mon cahier" },
@@ -21,7 +21,7 @@ for (const lang of LANGUAGES) {
     await expect(page).toHaveTitle(lang.title);
     await expectClean(page);
 
-    await page.click(`text=${lang.quizTab}`);
+    await openActivity(page, "quiz");
     await expectClean(page);
     await page.click(`text=${lang.start}`);
     await expectClean(page);
@@ -32,7 +32,7 @@ for (const lang of LANGUAGES) {
     await expectClean(page);
 
     await page.locator(".progress-page > button.primary").click(); // back to the player's screen
-    await page.click(`text=${lang.vocabTab}`);
+    await openActivity(page, "vocab-collins-spanish");
     await page.locator(".vocab-lesson summary").first().click();
     await expectClean(page);
     await page.locator(".vocab-section button").first().click();
@@ -41,6 +41,13 @@ for (const lang of LANGUAGES) {
     await expectClean(page);
     await page.locator(".vocab-card .actions button.ghost").click();
     await page.locator(".vocab-done").waitFor();
+    await expectClean(page);
+
+    // The home page and the English book.
+    await page.locator(".home-link").click();
+    await page.locator(".home").waitFor();
+    await expectClean(page);
+    await openActivity(page, "vocab-test-english");
     await expectClean(page);
   });
 }

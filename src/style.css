@@ -1939,3 +1939,114 @@ button.vocab-letter {
   color: var(--accent);
   font-weight: 600;
 }
+
+/* ---- home page: activities by subject ---- */
+
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.home-title {
+  margin-top: 0.5rem;
+}
+
+.activity-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* The subject, written on the squared paper like a heading in the exercise book. */
+.activity-group-title {
+  margin: 0;
+  padding-left: 0.6rem;
+  border-left: 2px solid var(--bad);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+  gap: 0.6rem;
+}
+
+button.activity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 0.25rem);
+  min-height: 7rem;
+}
+
+button.activity:hover {
+  border-color: var(--accent);
+}
+
+.activity-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.activity-text {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.activity-status {
+  margin-top: auto;
+  padding-top: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Something waiting: in the teacher's red, like "à revoir" in the lessons. */
+.activity-status.waiting {
+  color: var(--bad);
+}
+
+/* ---- activity pages: the way back home ---- */
+
+.activity-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+button.home-link {
+  flex-shrink: 0;
+}
+
+.activity-bar-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vocab-source {
+  margin: -0.6rem 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.vocab-note {
+  font-size: 0.9rem;
+  color: var(--ink);
+}

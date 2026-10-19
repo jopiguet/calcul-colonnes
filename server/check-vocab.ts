@@ -9,7 +9,7 @@ import { readFileSync } from "node:fs";
 import { acceptedForms, grade, writable, type AnswerLang, type Verdict } from "../shared/vocab/grade.ts";
 import { askMode, entryStatus, nextState, DAY, MINUTE, TOP_BOX } from "../shared/vocab/schedule.ts";
 import { parseVocabFile } from "../shared/vocab/format.ts";
-import { buildSession, progressKey, type ProgressMap, type SessionEntry } from "../shared/vocab/session.ts";
+import { buildSession, canWrite, distractors, progressKey, type ProgressMap, type SessionEntry } from "../shared/vocab/session.ts";
 
 let failures = 0;
 function expect(label: string, actual: unknown, wanted: unknown): void {
@@ -94,8 +94,9 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
 {
   const at = 10 * DAY;
   const words = ["uno", "dos", "tres", "cuatro", "cinco"];
-  const entries: SessionEntry[] = words.map((es, i) => ({
-    id: i + 1, sectionId: 1, position: i, en: `w${i + 1}`, es, group: "", feminine: false,
+  const book = { kind: "translation" as const, termLang: "es", meaningLang: "en" };
+  const entries: SessionEntry[] = words.map((term, i) => ({
+    id: i + 1, sectionId: 1, position: i, term, meaning: `w${i + 1}`, group: "", feminine: false, note: "", book,
   }));
   const progress: ProgressMap = new Map([
     [progressKey(1, "recognise"), { box: 2, dueAt: at - 1, lastAt: at - DAY }], // due
@@ -114,33 +115,51 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   expect("review, 2 cards: the due one, then the weakest", order, [1, 2]);
 }
 
+// A definition book: definitions never written; two terms with one meaning are never each other's wrong option.
+{
+  const book = { kind: "definition" as const, termLang: "en", meaningLang: "en" };
+  const make = (id: number, term: string, meaning: string): SessionEntry => ({
+    id, sectionId: 1, position: id, term, meaning, group: "", feminine: false, note: "", book,
+  });
+  const roots = [make(1, "macro", "large"), make(2, "magn", "large"), make(3, "bene", "good"), make(4, "chron", "time"), make(5, "mono", "one")];
+  expect("definition: recognise never written", canWrite(roots[0]!, "recognise"), false);
+  expect("definition: recall can be written", canWrite(roots[0]!, "recall"), true);
+  for (let i = 0; i < 20; i++) {
+    const options = distractors(roots[0]!, "recall", roots, Math.random);
+    if (options.includes("magn")) expect("same meaning never a wrong option", options, "without magn");
+  }
+  expect("recognise options: one 'large' only", distractors(roots[0]!, "recognise", roots, () => 0.3).includes("large"), false);
+}
+
 // Every entry of a vocabulary file
 const file = process.argv[2];
 if (file) {
   const vocab = parseVocabFile(JSON.parse(readFileSync(file, "utf8")));
   let entries = 0;
   let written = 0;
+  const termLang = vocab.book.term === "es" ? "es" : "en";
+  const meaningLang = vocab.book.meaning === "es" ? "es" : "en";
   for (const lesson of vocab.lessons) {
     for (const section of lesson.sections) {
       for (const entry of section.entries) {
         entries++;
-        if (acceptedForms(entry.es).length === 0 || acceptedForms(entry.en).length === 0) {
+        if (acceptedForms(entry.term).length === 0 || acceptedForms(entry.meaning).length === 0) {
           failures++;
-          console.error(`✘ nothing to accept: ${section.title.en}: ${entry.en} / ${entry.es}`);
+          console.error(`✘ nothing to accept: ${section.title}: ${entry.term} / ${entry.meaning}`);
         }
-        if (grade(entry.es, entry.es, "es") !== "right") {
+        if (grade(entry.term, entry.term, termLang) !== "right") {
           failures++;
-          console.error(`✘ own Spanish refused: ${entry.es}`);
+          console.error(`✘ own term refused: ${entry.term}`);
         }
-        if (grade(entry.en, entry.en, "en") !== "right") {
+        if (grade(entry.meaning, entry.meaning, meaningLang) !== "right") {
           failures++;
-          console.error(`✘ own English refused: ${entry.en}`);
+          console.error(`✘ own meaning refused: ${entry.meaning}`);
         }
-        if (writable(entry.es)) written++;
+        if (writable(entry.term)) written++;
       }
     }
   }
-  console.log(`${entries} entries checked; ${written} can be asked as written answers`);
+  console.log(`${vocab.book.id}: ${entries} entries checked; ${written} terms can be asked as written answers`);
 }
 
 if (failures > 0) {

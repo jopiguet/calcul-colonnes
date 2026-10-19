@@ -86,7 +86,7 @@ test("accounts do not see each other's players", async ({ page, browser }) => {
   // The same name is free in another account.
   await other.fill(".new-player input", name);
   await other.keyboard.press("Enter");
-  await other.locator(".board").waitFor();
+  await other.locator(".home").waitFor();
   const theirs = (await (await other.request.get("/api/users")).json()) as User[];
   expect(theirs).toHaveLength(1);
   expect(theirs[0]!.id).not.toBe(mine[0]!.id);
@@ -190,7 +190,7 @@ test("a player gets their own sign-in and sees only themselves", async ({ page, 
   const context = await browser.newContext();
   const kid = await context.newPage();
   await signIn(kid, username);
-  await kid.locator(".board").waitFor();
+  await kid.locator(".home").waitFor(); // a player's own sign-in opens on their home page
   await expect(kid.locator(".chip-label")).toContainText(name);
   await expect(kid.locator("button.icon-chip", { hasText: "⚙️" })).toHaveCount(0);
 
@@ -226,7 +226,7 @@ test("a provider can be linked to a player", async ({ page, browser }) => {
   const kid = await context.newPage();
   await openSignIn(kid);
   await viaMock(kid, { sub });
-  await kid.locator(".board").waitFor();
+  await kid.locator(".home").waitFor(); // a player's own sign-in opens on their home page
   await expect(kid.locator(".chip-label")).toContainText(name);
   await context.close();
 });

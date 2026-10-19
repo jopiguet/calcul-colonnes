@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.0.0
+
+- **Home page:** after choosing a player, the activities grouped by subject, *Mathématiques* (column arithmetic, QCM) and *Langues* (one per vocabulary book), each with what is waiting: kinds of question to review, words due. Every activity has *← Accueil*; the row of tabs is gone. Each visit starts on the home page.
+- **Several vocabulary books.** A book is a *translation* (Spanish → English) or a *definition* book (an English word and its English definition).
+- **English vocabulary** from *Vocabulary 4000*: `tools/vocab-extract-4000.py` reads the 3,929 words (26 letters, sections of about 25 words) and the 221 prefixes, roots and suffixes with their examples. The quizzes and the *Idiom & Usage* part are not read.
+- **Definition books:** a definition is always chosen from four, the word can be written. An example is shown after the answer when the book gives one.
+- **Same meaning, same answer:** a written answer right for another entry with the same prompt counts as right (*macro* or *magn* for "large"), and such entries are never each other's wrong option.
+- **File format 2:** one book per file, `term` and `meaning`, optional `subtitle` and `note`. Format 1 files (4.2) are still read. `VOCAB_FILE` takes several files.
+- Database migration `008`: `vocab_books`; lessons belong to a book; `term`, `meaning`, `title`, `subtitle`, `note`. The Spanish book already imported becomes `collins-spanish`, with its progress. The migration runner can now rebuild a referenced SQLite table safely.
+- **API (breaking):** `GET /api/vocab/books` replaces `/api/vocab/lessons`; sessions on a whole book are `kind=all&id=<book>`; `kind=due` is gone. Progress has per-book totals; cards carry their languages; answers carry the note.
+- Browser tests: 39, with an invented English book.
+
 ## 4.3.0
 
 - **Review at every level:** *Réviser* on a section, *Réviser la leçon* on a chapter, *Réviser tout le vocabulaire* on everything. A review takes only the words already started, due or not: those due first, then the weakest, then those unseen for the longest time.

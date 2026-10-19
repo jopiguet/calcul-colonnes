@@ -6,11 +6,12 @@ describes every screen, every setting and the keyboard shortcuts.
 - [Signing in](#signing-in)
 - [Account page](#account-page)
 - [Players](#players)
+- [Home page](#home-page)
 - [Column arithmetic](#column-arithmetic)
 - [Printable worksheet](#printable-worksheet)
 - [Multiple-choice tests](#multiple-choice-tests)
 - [Progress and review of mistakes](#progress-and-review-of-mistakes)
-- [Spanish vocabulary](#spanish-vocabulary)
+- [Vocabulary](#vocabulary)
 - [Scores](#scores)
 - [Language](#language)
 - [On a phone or tablet](#on-a-phone-or-tablet)
@@ -72,6 +73,19 @@ After signing in, the app shows **Qui joue ? / ¿Quién juega? / Who's playing?*
 
 A player can be deleted from the [Scores](#scores) screen, which also deletes
 all their results.
+
+## Home page
+
+After choosing a player, and at each visit, the app opens on the player's
+home page: **Que fait-on, Léa ?**
+
+| Group | Activities | Shows |
+|---|---|---|
+| Mathématiques | 🧮 Calcul en colonnes, 📐 QCM | For the QCM, how many kinds of question are to review |
+| Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
+
+Click an activity to open it. Every activity has *← Accueil* at the top to
+come back.
 
 ## Column arithmetic
 
@@ -240,14 +254,19 @@ by clicking a player's name on the Scores screen. It shows:
 - **Frequent mistakes:** the six mistakes the player makes most often in tests, with how many times and in which kinds of question. A mistake keeps its count after the kind is mastered: it shows the habits to watch, not what is still to review.
 - **Column arithmetic:** today's and all-time results per operation.
 
-## Spanish vocabulary
+## Vocabulary
 
-Tab **💬 Vocabulaire**. It shows the lessons and sections of the phrase book
-imported on the server (see [Vocabulary › Importing a book](vocabulary.md#importing-a-book)).
+One activity per book imported on the server (see
+[Vocabulary › Importing a book](vocabulary.md#importing-a-book)), for example:
+
+- **Vocabulaire espagnol** (Collins): Spanish words and phrases with their English meaning.
+- **Vocabulaire anglais** (*Vocabulary 4000*): demanding English words with a short English definition, plus prefixes, roots and suffixes. Here the definition is always chosen from four; the word itself can be written. After each answer about a word part, an example is shown (*corp* → *corporeal*).
+
+Each book's page works the same way.
 
 **The screen**
 
-- **Mots à réviser:** the words whose review is due, across every lesson. *Réviser maintenant* starts a session with them. This is the first thing to do each day.
+- **Mots à réviser:** the words of this book whose review is due, across every lesson. *Réviser maintenant* starts a session with them. This is the first thing to do each day.
 - **Réviser tout le vocabulaire:** every word already learnt, due or not, the weakest first. Useful before a test.
 - **Cartes par séance:** 15, 30 or 50.
 - **Questions:** *Mélangé* (multiple choice for new words, written answers once they are known), *Choix multiples* or *Écrit*. Mixed suits most children.
@@ -263,8 +282,8 @@ word answered wrong goes back to the start.
 **A session:**
 
 - **Two kinds of card:**
-  - Spanish shown, answer the meaning in English.
-  - English shown, answer in Spanish. This comes once the word is recognised.
+  - The word shown (*la llave*, *abase*): find its meaning (*key*, *degrade*).
+  - The meaning shown: give the word. This comes once the word is recognised.
 - **Multiple choice:** click an option, or press 1–4 or A–D.
 - **Written:** type the answer and press Enter. For Spanish answers, buttons under the field add *á é í ó ú ü ñ ¿ ¡*.
   - A missing accent or a single slip in a long word is counted right, and the correct spelling is shown.

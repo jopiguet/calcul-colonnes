@@ -2,8 +2,8 @@ import { currentLang, type Lang } from "./i18n";
 
 const fr = {
   modeVocab: "💬 Vocabulaire",
-  title: "Vocabulaire espagnol",
-  empty: "Le vocabulaire n'est pas encore importé sur ce serveur. La marche à suivre est dans docs/vocabulary.md.",
+  title: "Vocabulaire {lang}",
+  empty: "Aucun livre de vocabulaire n'est importé sur ce serveur. La marche à suivre est dans docs/vocabulary.md.",
   dueNow: "{count} mots à réviser",
   dueOne: "1 mot à réviser",
   nothingDue: "Rien à réviser pour le moment.",
@@ -31,9 +31,10 @@ const fr = {
   statusMastered: "acquis",
   progressLabel: "{mastered} acquis, {known} connus, {learning} en cours, {new} nouveaux",
   askMeaning: "Que veut dire ?",
-  askSpanish: "Comment dit-on en espagnol ?",
-  writeEnglish: "Réponse en anglais",
-  writeSpanish: "Réponse en espagnol",
+  askIn: "Comment dit-on en {lang} ?",
+  askWord: "Quel est le mot ?",
+  answerIn: "Réponse en {lang}",
+  example: "Exemple : {note}",
   check: "Vérifier",
   next: "Continuer",
   finish: "Terminer",
@@ -64,8 +65,8 @@ type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
   modeVocab: "💬 Vocabulario",
-  title: "Vocabulario de español",
-  empty: "El vocabulario aún no se ha importado en este servidor. Los pasos están en docs/vocabulary.md.",
+  title: "Vocabulario de {lang}",
+  empty: "No hay ningún libro de vocabulario importado en este servidor. Los pasos están en docs/vocabulary.md.",
   dueNow: "{count} palabras por repasar",
   dueOne: "1 palabra por repasar",
   nothingDue: "Nada que repasar por ahora.",
@@ -93,9 +94,10 @@ const es: Record<Key, string> = {
   statusMastered: "dominadas",
   progressLabel: "{mastered} dominadas, {known} conocidas, {learning} en curso, {new} nuevas",
   askMeaning: "¿Qué significa?",
-  askSpanish: "¿Cómo se dice en español?",
-  writeEnglish: "Respuesta en inglés",
-  writeSpanish: "Respuesta en español",
+  askIn: "¿Cómo se dice en {lang}?",
+  askWord: "¿Cuál es la palabra?",
+  answerIn: "Respuesta en {lang}",
+  example: "Ejemplo: {note}",
   check: "Comprobar",
   next: "Continuar",
   finish: "Terminar",
@@ -124,8 +126,8 @@ const es: Record<Key, string> = {
 
 const en: Record<Key, string> = {
   modeVocab: "💬 Vocabulary",
-  title: "Spanish vocabulary",
-  empty: "The vocabulary has not been imported on this server yet. The steps are in docs/vocabulary.md.",
+  title: "{lang} vocabulary",
+  empty: "No vocabulary book has been imported on this server. The steps are in docs/vocabulary.md.",
   dueNow: "{count} words to review",
   dueOne: "1 word to review",
   nothingDue: "Nothing to review right now.",
@@ -153,9 +155,10 @@ const en: Record<Key, string> = {
   statusMastered: "mastered",
   progressLabel: "{mastered} mastered, {known} known, {learning} learning, {new} new",
   askMeaning: "What does it mean?",
-  askSpanish: "How do you say it in Spanish?",
-  writeEnglish: "Answer in English",
-  writeSpanish: "Answer in Spanish",
+  askIn: "How do you say it in {lang}?",
+  askWord: "What is the word?",
+  answerIn: "Answer in {lang}",
+  example: "Example: {note}",
   check: "Check",
   next: "Continue",
   finish: "Finish",
@@ -188,4 +191,15 @@ export type VocabKey = Key;
 
 export function vt(key: Key, values: Record<string, string | number> = {}): string {
   return dictionaries[currentLang()][key].replace(/\{(\w+)\}/g, (_, name: string) => String(values[name] ?? ""));
+}
+
+/** A language's name in the interface's language, as used in "Vocabulaire {lang}". */
+const LANGUAGE_NAMES: Record<Lang, Record<string, string>> = {
+  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien" },
+  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano" },
+  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian" },
+};
+
+export function langName(code: string): string {
+  return LANGUAGE_NAMES[currentLang()][code] ?? code;
 }

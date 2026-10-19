@@ -40,13 +40,21 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `store.ts` | API calls; `auth` calls; `SignedOutError` when the session has ended |
 | `auth.ts` | Sign-in screen and Account page |
 | `landing.ts` | Landing page for first visits, with its texts in the three languages |
-| `vocab.ts`, `vocab-i18n.ts` | Vocabulary tab: lessons, cards, summary, and their texts |
+| `home.ts` | A player's home page: activities by subject, what is waiting in each; the *← Accueil* bar of activities |
+| `vocab.ts`, `vocab-i18n.ts` | A vocabulary book's page: lessons, cards, summary, and their texts |
 | `auth-i18n.ts` | Their texts and the sign-in error messages |
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
 | `i18n.ts` | Interface texts (arithmetic part), current language, column names |
 | `quiz-i18n.ts` | Texts of tests and progress, names of the kinds of question, prompts and explanations |
 | `dom.ts` | `el()` and `button()` helpers |
 | `style.css` | All styles; colours are CSS variables with a dark variant |
+
+### `tools/` — book extractors (Python, pdfplumber)
+
+| File | Role |
+|---|---|
+| `vocab-extract.py` | Collins *3000 words and phrases* PDF → vocabulary file |
+| `vocab-extract-4000.py` | *Vocabulary 4000* PDF → vocabulary file |
 
 ### `public/` — copied as is into the build
 
@@ -132,7 +140,7 @@ Two automated checks:
 |---|---|---|
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
-| `npm run test:e2e` | The whole app in a browser: 38 tests | about a minute |
+| `npm run test:e2e` | The whole app in a browser: 39 tests | about a minute |
 
 ### Browser tests
 
@@ -155,7 +163,7 @@ server; each signs up its own account.
 |---|---|
 | `auth.spec.ts` | Sign-up, sign-in, sign-out; cookie attributes; 401 without a session; cross-site refusal; isolation between accounts; rate limit; provider sign-up and sign-in, email takeover refused, cancel; linking a provider and the last method; players' own sign-in by username and by provider; signing out other devices |
 | `landing.spec.ts` | Landing page to sign-up and sign-in and back; translations; returning browsers open on sign-in |
-| `vocab.spec.ts` | Lessons from the file; a multiple-choice session with a wrong answer asked again and boxes on the server; written answers with accents, articles and the Spanish letters; scope |
+| `vocab.spec.ts` | Lessons from the file; a multiple-choice session with a wrong answer asked again and boxes on the server; written answers with accents, articles and the Spanish letters; reviews; the English definition book (definitions chosen, words written, same-meaning roots, examples); scope |
 | `players.spec.ts` | Creating, remembering, switching and deleting players; duplicate names; cascade delete |
 | `arithmetic.spec.ts` | Units-first typing and server grading, carries, refused answers, two-digit multiplication lines, division with remainder, remembered settings, the PDF worksheet |
 | `quiz.spec.ts` | A test graded identically by the browser, the server and an independent rebuild from its seed; keyboard; language change mid-test; blanks; replay; giving up |

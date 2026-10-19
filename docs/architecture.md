@@ -167,6 +167,7 @@ the data routes, which require a session.
 |---|---|
 | `auth`, `options` | Who is signed in (`GET /api/auth/session`), providers offered |
 | `view` | `play`, `players`, `scores`, `progress` or `account` |
+| `settings.mode` | Within `play`: `home` (the player's home page), `columns`, `quiz` or `vocab`; `settings.vocabBook` is the book open |
 | *(address hash)* | Signed out: `#about` landing page, `#sign-in`, `#sign-up`. A first visit shows the landing page; a browser signed in before opens on sign-in. |
 | `user` | Current player |
 | `settings` | Loaded from and saved to `localStorage` (`src/settings.ts`) |

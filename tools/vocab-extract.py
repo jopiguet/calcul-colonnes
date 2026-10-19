@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Extracts the vocabulary of a Collins "3000 words and phrases" PDF into the
-JSON format read by `npm run vocab:import` (see docs/vocabulary.md).
+JSON format read by `npm run vocab:import` (format 2, see docs/vocabulary.md).
 
     pip install pdfplumber
     python3 tools/vocab-extract.py book.pdf > data/vocab.json
@@ -243,14 +243,24 @@ def extract(path: str) -> dict:
         f"{total} entries; {orphans} unpaired blocks skipped",
         file=sys.stderr,
     )
+    # Format 2: the Spanish title first (the language studied), English as subtitle.
+    def entry(e: dict) -> dict:
+        out = {"term": e["es"], "meaning": e["en"]}
+        for key in ("group", "feminine"):
+            if key in e:
+                out[key] = e[key]
+        return out
+
     return {
-        "format": 1,
-        "languages": ["en", "es"],
+        "format": 2,
+        "book": {"id": "collins-spanish", "title": "Collins Spanish", "kind": "translation", "term": "es", "meaning": "en"},
         "lessons": [
             {
-                "title": {"en": l.title_en, "es": l.title_es},
+                "title": l.title_es,
+                "subtitle": l.title_en,
                 "sections": [
-                    {"title": {"en": s.title_en, "es": s.title_es}, "entries": s.entries} for s in l.sections
+                    {"title": s.title_es, "subtitle": s.title_en, "entries": [entry(e) for e in s.entries]}
+                    for s in l.sections
                 ],
             }
             for l in lessons

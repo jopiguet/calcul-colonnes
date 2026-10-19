@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import type { VocabProgress } from "../../shared/types.ts";
-import { newPlayer, signUp, userByName } from "./helpers";
+import { newPlayer, openActivity, signUp, userByName } from "./helpers";
 
 interface Entry { en: string; es: string }
 const fixture = JSON.parse(readFileSync("tests/e2e/fixtures/vocab.json", "utf8")) as {
@@ -22,9 +22,14 @@ async function next(page: Page): Promise<void> {
   await expect(page.locator(".vocab-verdict")).toHaveCount(0);
 }
 
+/** The Spanish test book on the server, with its lessons. */
+async function spanishBook(page: Page): Promise<{ id: number; lessons: { id: number; sections: { id: number }[] }[] }> {
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { id: number; slug: string; lessons: { id: number; sections: { id: number }[] }[] }[];
+  return books.find((b) => b.slug === "collins-spanish")!;
+}
+
 async function openVocab(page: Page): Promise<void> {
-  await page.click("text=💬 Vocabulaire");
-  await page.locator(".vocab-home").waitFor();
+  await openActivity(page, "vocab-collins-spanish");
 }
 
 async function startFirstSection(page: Page): Promise<void> {
@@ -95,7 +100,7 @@ test("written answers: accents tolerated, article required, Spanish letters", as
   // The server grades Spanish too: accents, articles.
   const user = (await (await page.request.get("/api/users")).json()) as { id: number }[];
   const userId = user[0]!.id;
-  const lessons = (await (await page.request.get("/api/vocab/lessons")).json()) as { id: number }[];
+  const lessons = (await spanishBook(page)).lessons;
   const food = lessons[1]!.id;
   const cardOf = async (lesson: number, prompt: string): Promise<number> => {
     const cards = (await (await page.request.get(`/api/vocab/session?userId=${userId}&kind=lesson&id=${lesson}&size=40&mode=choice`)).json()) as { entryId: number; prompt: string }[];
@@ -123,7 +128,7 @@ test("written answers: accents tolerated, article required, Spanish letters", as
 
   // Reviewing the food lesson, written: those two cards come back.
   await page.reload();
-  await page.locator(".vocab-home").waitFor();
+  await openVocab(page);
   const foodLesson = page.locator(".vocab-lesson").nth(1);
   if (!(await foodLesson.evaluate((d) => (d as HTMLDetailsElement).open))) await foodLesson.locator("summary").click();
   await foodLesson.locator("text=Réviser la leçon").click();
@@ -153,15 +158,16 @@ test("written answers: accents tolerated, article required, Spanish letters", as
 test("vocabulary progress belongs to the account's players only", async ({ page, browser }) => {
   const name = await newPlayer(page, "Own");
   const user = await userByName(page.request, name);
-  expect((await page.request.get(`/api/vocab/session?userId=${user.id}&kind=due&size=5`)).status()).toBe(200);
+  const book = (await spanishBook(page)).id;
+  expect((await page.request.get(`/api/vocab/session?userId=${user.id}&kind=all&id=${book}&purpose=due&size=5`)).status()).toBe(200);
   expect((await page.request.get(`/api/vocab/session?userId=${user.id}&kind=section&size=5`)).status()).toBe(400);
-  expect((await page.request.get(`/api/vocab/session?userId=${user.id}&kind=due&size=500`)).status()).toBe(400);
+  expect((await page.request.get(`/api/vocab/session?userId=${user.id}&kind=all&id=${book}&purpose=due&size=500`)).status()).toBe(400);
 
   const context = await browser.newContext();
   const other = await context.newPage();
   await signUp(other);
   expect((await other.request.get(`/api/vocab/progress?userId=${user.id}`)).status()).toBe(404);
-  expect((await other.request.get(`/api/vocab/session?userId=${user.id}&kind=due&size=5`)).status()).toBe(404);
+  expect((await other.request.get(`/api/vocab/session?userId=${user.id}&kind=all&id=${book}&purpose=due&size=5`)).status()).toBe(404);
   const answer = await other.request.post("/api/vocab/answers", {
     data: { userId: user.id, entryId: 1, direction: "recognise", mode: "choice", given: "pencil" },
   });
@@ -176,7 +182,7 @@ test("reviewing a lesson or everything brings back only words already learnt, wi
   await expect(page.locator("text=Réviser tout le vocabulaire")).toHaveCount(0); // nothing learnt yet
 
   // Three words learnt through the API: recognised once, right.
-  const lessons = (await (await page.request.get("/api/vocab/lessons")).json()) as { id: number; sections: { id: number }[] }[];
+  const lessons = (await spanishBook(page)).lessons;
   const section = lessons[0]!.sections[0]!.id;
   const cards = (await (await page.request.get(`/api/vocab/session?userId=${user.id}&kind=section&id=${section}&purpose=learn&size=3&mode=choice`)).json()) as { entryId: number; prompt: string }[];
   expect(cards).toHaveLength(3);
@@ -190,7 +196,7 @@ test("reviewing a lesson or everything brings back only words already learnt, wi
 
   for (const button of ["Réviser la leçon", "Réviser tout le vocabulaire"]) {
     await page.reload();
-    await page.locator(".vocab-home").waitFor();
+    await openVocab(page);
     if (button === "Réviser la leçon") {
       const lesson = page.locator(".vocab-lesson").first();
       if (!(await lesson.evaluate((d) => (d as HTMLDetailsElement).open))) await lesson.locator("summary").click();
@@ -211,4 +217,55 @@ test("reviewing a lesson or everything brings back only words already learnt, wi
     await expect(page.locator(".vocab-done .big-score")).toHaveText("3 justes sur 3");
     await page.click("text=Retour aux leçons");
   }
+});
+
+test("the English book: definitions chosen, words written, a root of the same meaning accepted, the example shown", async ({ page }) => {
+  const name = await newPlayer(page, "Eng");
+  const user = await userByName(page.request, name);
+  await openActivity(page, "vocab-test-english");
+  await expect(page.locator(".vocab-home h1")).toHaveText("Vocabulaire anglais");
+  await expect(page.locator(".vocab-lesson")).toHaveCount(3);
+
+  // Written answers asked for, yet a definition is always multiple choice.
+  await page.click("text=Écrit");
+  const parts = page.locator(".vocab-lesson").nth(2);
+  await parts.locator("summary").click();
+  await parts.locator(".vocab-section-actions button").first().click();
+  await page.locator(".vocab-card").waitFor();
+  await expect(page.locator(".vocab-ask")).toHaveText("Que veut dire ?");
+  await expect(page.locator(".vocab-input")).toHaveCount(0);
+  const options = await page.locator(".choice-text").allInnerTexts();
+  expect(options.filter((o) => o === "large").length).toBeLessThanOrEqual(1);
+  const prompt = await page.locator(".vocab-prompt").innerText();
+  const roots: Record<string, [string, string]> = {
+    macro: ["large", "macroscopic"], magn: ["large", "magnify"], bene: ["good", "benefit"], chron: ["time", "chronology"], mono: ["one", "monologue"],
+  };
+  const [meaning, example] = roots[prompt]!;
+  await page.keyboard.press(String(options.indexOf(meaning) + 1));
+  await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
+  await expect(page.locator(".vocab-note")).toHaveText(`Exemple : ${example}`);
+
+  // The word itself can be written; "macro" is accepted for "large → magn".
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { id: number; slug: string; lessons: { id: number }[] }[];
+  const english = books.find((b) => b.slug === "test-english")!;
+  // New in a learning session, or started above (then in a review): either way its id.
+  const lessonId = english.lessons[2]!.id;
+  const cards: { entryId: number; prompt: string }[] = [];
+  for (const purpose of ["learn", "review"]) {
+    const r = await page.request.get(`/api/vocab/session?userId=${user.id}&kind=lesson&id=${lessonId}&purpose=${purpose}&size=10&mode=written`);
+    cards.push(...((await r.json()) as { entryId: number; prompt: string }[]));
+  }
+  const magn = cards.find((c) => c.prompt === "magn")!;
+  expect(magn, "magn").toBeTruthy();
+  const post = (given: string) =>
+    page.request.post("/api/vocab/answers", { data: { userId: user.id, entryId: magn.entryId, direction: "recall", mode: "written", given } })
+      .then((r) => r.json()) as Promise<{ verdict: string; correct: boolean; expected: string; note: string }>;
+  expect(await post("magn")).toMatchObject({ verdict: "right", expected: "magn", note: "magnify" });
+  expect(await post("macro")).toMatchObject({ correct: true });
+  expect(await post("bene")).toMatchObject({ correct: false });
+  expect(await post("magm")).toMatchObject({ verdict: "wrong" }); // 4 letters: too short for a typo
+
+  // The home page counts the words due per book.
+  await page.locator(".home-link").click();
+  await expect(page.locator("[data-activity='vocab-test-english'] .activity-status")).not.toHaveText("20 mots");
 });

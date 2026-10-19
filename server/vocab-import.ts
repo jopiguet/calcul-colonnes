@@ -13,6 +13,11 @@ import { migrate } from "./db/migrate.ts";
 import { parseVocabFile } from "../shared/vocab/format.ts";
 import { VocabStore, type ImportReport } from "./vocab.ts";
 
+/** The id of the book a file holds, without importing it. */
+export function bookIdOf(path: string): string {
+  return parseVocabFile(JSON.parse(readFileSync(path, "utf8"))).book.id;
+}
+
 export async function importVocabFile(db: Database, path: string): Promise<ImportReport> {
   const file = parseVocabFile(JSON.parse(readFileSync(path, "utf8")));
   return new VocabStore(db).import(file);
@@ -30,7 +35,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     await migrate(db);
     const r = await importVocabFile(db, path);
     console.log(
-      `${db.label}: ${r.lessons} lessons, ${r.sections} sections, ${r.entries} entries ` +
+      `${db.label}, book "${r.book}": ${r.lessons} lessons, ${r.sections} sections, ${r.entries} entries ` +
         `(${r.added} new, ${r.removed} removed)`,
     );
   } finally {

@@ -8,7 +8,7 @@ import { AuthStore } from "./auth/store.ts";
 import { openDatabase } from "./db/index.ts";
 import { migrate } from "./db/migrate.ts";
 import { Repository } from "./repository.ts";
-import { importVocabFile } from "./vocab-import.ts";
+import { bookIdOf, importVocabFile } from "./vocab-import.ts";
 import { VocabStore } from "./vocab.ts";
 
 // Load .env explicitly, so the server never starts on silently missing settings.
@@ -23,14 +23,19 @@ if (rebuilt > 0) console.log(`answers rebuilt from their seed for ${rebuilt} ear
 const labelled = await new Repository(db).backfillMistakes();
 if (labelled > 0) console.log(`mistakes labelled for ${labelled} earlier test(s)`);
 
-// VOCAB_FILE: imported once, into an empty vocabulary (later: npm run vocab:import).
-const vocabFile = process.env.VOCAB_FILE?.trim();
-if (vocabFile && (await new VocabStore(db).isEmpty())) {
-  if (existsSync(vocabFile)) {
-    const report = await importVocabFile(db, vocabFile);
-    console.log(`vocabulary imported from ${vocabFile}: ${report.lessons} lessons, ${report.sections} sections, ${report.entries} entries`);
-  } else {
-    console.log(`vocabulary: VOCAB_FILE ${vocabFile} not found`);
+// VOCAB_FILE: one or more files, comma-separated. Each book not yet on the
+// server is imported at startup, once; later changes: npm run vocab:import.
+const vocabFiles = (process.env.VOCAB_FILE ?? "").split(",").map((f) => f.trim()).filter(Boolean);
+if (vocabFiles.length > 0) {
+  const present = new Set((await new VocabStore(db).books()).map((b) => b.slug));
+  for (const file of vocabFiles) {
+    if (!existsSync(file)) {
+      console.log(`vocabulary: VOCAB_FILE ${file} not found`);
+      continue;
+    }
+    if (present.has(bookIdOf(file))) continue;
+    const report = await importVocabFile(db, file);
+    console.log(`vocabulary imported from ${file}: book "${report.book}", ${report.lessons} lessons, ${report.entries} entries`);
   }
 }
 

@@ -130,6 +130,9 @@ export interface VocabCard {
   /** Leitner box before this answer; 0 for a card never asked. */
   box: number;
   prompt: string;
+  /** Languages of the prompt and of the answer ("es", "en"). */
+  promptLang: string;
+  answerLang: string;
   /** Heading inside the section ("Interior"), as a hint. */
   group?: string;
   /** Feminine noun taking "el" ("el agua"), shown with the prompt. */
@@ -140,14 +143,30 @@ export interface VocabCard {
 
 export interface VocabSectionInfo {
   id: number;
-  title: { en: string; es: string };
+  /** Title in the language studied; subtitle in the other, when the book has one. */
+  title: string;
+  subtitle: string;
   entries: number;
 }
 
 export interface VocabLessonInfo {
   id: number;
-  title: { en: string; es: string };
+  title: string;
+  subtitle: string;
   sections: VocabSectionInfo[];
+}
+
+/** A vocabulary book and its lessons. */
+export interface VocabBookInfo {
+  id: number;
+  slug: string;
+  title: string;
+  kind: "translation" | "definition";
+  /** Language studied, and language of the meanings ("es", "en"). */
+  term: string;
+  meaning: string;
+  entries: number;
+  lessons: VocabLessonInfo[];
 }
 
 /** Counts of entries by status, for one section. */
@@ -162,6 +181,8 @@ export interface VocabSectionProgress {
 
 export interface VocabProgress {
   sections: Record<number, VocabSectionProgress>;
+  /** Per book: cards due, entries started. */
+  books: Record<number, { due: number; started: number }>;
   due: number;
   /** Answers since the `since` given. */
   today: { answers: number; right: number };
@@ -181,6 +202,8 @@ export interface VocabAnswerResult {
   /** The answer as printed in the book. */
   expected: string;
   feminine: boolean;
+  /** Example or remark from the book, if any. */
+  note: string;
   box: number;
   dueAt: number;
 }

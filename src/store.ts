@@ -9,13 +9,14 @@ import type {
   UserStats,
   VocabAnswer,
   VocabAnswerResult,
+  VocabBookInfo,
   VocabCard,
   VocabLessonInfo,
   VocabProgress,
 } from "../shared/types";
 
 export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, Profile, SignInMethod, User, UserStats };
-export type { VocabAnswer, VocabAnswerResult, VocabCard, VocabLessonInfo, VocabProgress };
+export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabProgress };
 
 /**
  * Players and scores live in the server's database (SQLite, or PostgreSQL on
@@ -94,7 +95,8 @@ export const store = {
 };
 
 export const vocab = {
-  lessons: (): Promise<VocabLessonInfo[]> => call("/vocab/lessons"),
+  /** Books imported on the server, with their lessons and sections. */
+  books: (): Promise<VocabBookInfo[]> => call("/vocab/books"),
   progress: (userId: number): Promise<VocabProgress> => call(`/vocab/progress?userId=${userId}&since=${startOfToday()}`),
   /**
    * learn: due words, then new ones; review: words already started, weakest
@@ -102,6 +104,7 @@ export const vocab = {
    */
   session: (
     userId: number,
+    /** For "all", id is the book's. */
     target: { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due" },
     size: number,
     mode: "mixed" | "choice" | "written",

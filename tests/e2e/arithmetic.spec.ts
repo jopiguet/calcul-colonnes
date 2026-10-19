@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { answerOf, board, check, focused, newPlayer, setOperations, statsOf, typeAnswer } from "./helpers";
+import { answerOf, board, check, focused, newPlayer, setOperations, statsOf, typeAnswer, openActivity } from "./helpers";
 
 test("additions and subtractions are written from the units, and graded by the server", async ({ page }) => {
   const request = page.request;
@@ -89,7 +89,7 @@ test("settings are remembered", async ({ page }) => {
   await setOperations(page, ["×", "÷"]);
   for (let i = 0; i < 3; i++) await page.click("[aria-label='Augmenter le maximum']");
   await page.reload();
-  await page.locator(".board").waitFor();
+  await openActivity(page, "columns");
   await expect(page.locator(".level-value").first()).toHaveText("400");
   for (const [op, on] of [["+", false], ["−", false], ["×", true], ["÷", true]] as const) {
     await expect(page.locator(`.operation input[value='${op}']`)).toBeChecked({ checked: on });

@@ -49,8 +49,26 @@ export async function newPlayer(page: Page, base: string): Promise<string> {
   await signUp(page);
   await page.fill(".new-player input", name);
   await page.keyboard.press("Enter");
-  await page.locator(".board").waitFor();
+  await openActivity(page, "columns");
   return name;
+}
+
+/**
+ * Opens an activity from the home page (going back there first if needed):
+ * "columns", "quiz", or "vocab-<book id>".
+ */
+export async function openActivity(page: Page, activity: string): Promise<void> {
+  // The home page, or an activity with its link back home.
+  await page.locator(".home, .home-link").first().waitFor();
+  if (!(await page.locator(".home").isVisible())) {
+    await page.locator(".home-link").click();
+    await page.locator(".home").waitFor();
+  }
+  await page.locator(`[data-activity='${activity}']`).click();
+  await page
+    .locator(activity === "columns" ? ".board" : activity === "quiz" ? ".quiz-setup, .quiz" : ".vocab-home")
+    .first()
+    .waitFor();
 }
 
 export interface BoardData {

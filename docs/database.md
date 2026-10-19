@@ -153,9 +153,10 @@ progress. See [Vocabulary](vocabulary.md).
 
 | Table | Rows | Key columns |
 |---|---|---|
-| `vocab_lessons` | one per lesson (chapter) | `position`, `title_en`, `title_es` |
-| `vocab_sections` | one per section | `lesson_id`, `position`, titles |
-| `vocab_entries` | one per entry | `section_id`, `position`, `en`, `es`, `grp` (heading inside the section), `feminine` |
+| `vocab_books` | one per book | `slug` (the file's book id), `position`, `title`, `kind` (`translation` or `definition`), `term_lang`, `meaning_lang` |
+| `vocab_lessons` | one per lesson (chapter) | `book_id`, `position` (unique per book), `title`, `subtitle` |
+| `vocab_sections` | one per section | `lesson_id`, `position`, `title`, `subtitle` |
+| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example) |
 | `vocab_progress` | one per player, entry and direction | primary key `(user_id, entry_id, direction)`; `box` 1–6, `due_at`, `last_at`, `right_count`, `wrong_count` |
 | `vocab_answers` | one per answer | `user_id`, `entry_id`, `direction`, `mode`, `at`, `given`, `verdict`, `correct` |
 
@@ -182,15 +183,17 @@ start, in order, each in its own transaction together with its row in
 | `005_mistakes` | `mistake` on `quiz_answers` (common SQL, one file) |
 | `006_accounts` | `accounts`, `credentials`, `sessions`, `auth_flows`; `account_id` on `users` |
 | `007_vocabulary` | `vocab_lessons`, `vocab_sections`, `vocab_entries`, `vocab_progress`, `vocab_answers` |
+| `008_vocab_books` | `vocab_books`; lessons belong to a book; `es`/`en` become `term`/`meaning`, titles become `title`/`subtitle`; `note` on entries. A Spanish book already imported becomes the book `collins-spanish`, keeping its ids and progress. |
 
 **File names.**
 
 - `NNN_name.sql` runs on both engines.
-- `NNN_name.sqlite.sql` and `NNN_name.postgres.sql` are used when the DDL differs: identity columns, or SQLite's inability to alter a `CHECK` constraint, which forced `002` to rebuild the table.
+- `NNN_name.sqlite.sql` and `NNN_name.postgres.sql` are used when the DDL differs: identity columns, or SQLite's inability to alter a `CHECK` or `UNIQUE` constraint, which forced `002` and `008` to rebuild a table.
+- A SQLite step that rebuilds a table referenced by others starts with the line `-- sqlite: foreign keys off`. The runner then switches foreign keys off around its transaction (SQLite ignores the switch inside one), so dropping the old table does not cascade to the rows that reference it, and runs `PRAGMA foreign_key_check` before switching them on again.
 
 **Adding a migration.**
 
-1. Create `008_name.sql`, or the pair of `008_name.sqlite.sql` and `008_name.postgres.sql`.
+1. Create `009_name.sql`, or the pair of `009_name.sqlite.sql` and `009_name.postgres.sql`.
 2. Restart the server.
 3. Never edit a migration that has already been applied somewhere: add a new one.
 

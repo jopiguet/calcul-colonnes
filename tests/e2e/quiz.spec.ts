@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { newPlayer, rebuild, statsOf, takeQuiz } from "./helpers";
+import { newPlayer, rebuild, statsOf, takeQuiz, openActivity } from "./helpers";
 
 test.beforeEach(async ({ page }) => {
   await newPlayer(page, "Quiz");
-  await page.click("text=📐 QCM");
+  await openActivity(page, "quiz");
   await expect(page.locator("text=QCM de mathématiques")).toBeVisible();
 });
 

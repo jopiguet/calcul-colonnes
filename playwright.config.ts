@@ -47,7 +47,7 @@ export default defineConfig({
         // Every test signs up from the same address.
         AUTH_ATTEMPTS_PER_ADDRESS: "10000",
         // An invented vocabulary (never a book's content), imported at startup.
-        VOCAB_FILE: "tests/e2e/fixtures/vocab.json",
+        VOCAB_FILE: "tests/e2e/fixtures/vocab.json,tests/e2e/fixtures/vocab-english.json",
         // Only the mock provider: real ones from a developer's .env are switched off.
         GOOGLE_CLIENT_ID: "",
         MICROSOFT_CLIENT_ID: "",

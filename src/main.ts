@@ -25,8 +25,8 @@ import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { quizView } from "./quiz";
+import { activityBar, homeView, vocabBooks, type Activity } from "./home";
 import { vocabView } from "./vocab";
-import { vt } from "./vocab-i18n";
 import { qt } from "./quiz-i18n";
 import { progressView } from "./progress";
 
@@ -155,13 +155,22 @@ async function render(): Promise<void> {
     } else if (state.view === "progress") {
       const who = progressUser ?? state.user;
       app.replaceChildren(topBar(), await progressView(who, () => show(progressBack)));
+    } else if (state.settings.mode === "home") {
+      app.replaceChildren(topBar(), await homeView({ user: state.user, open }));
     } else if (state.settings.mode === "vocab") {
-      app.replaceChildren(topBar(), modeTabs(), await vocabView({ user: state.user, rerender: () => void render() }));
+      const books = await vocabBooks();
+      const book = books.find((b) => b.id === state.settings.vocabBook) ?? books[0];
+      if (!book) return goHome();
+      app.replaceChildren(
+        topBar(),
+        activityBar("", goHome), // the book's page has its own title
+        await vocabView({ user: state.user, book, rerender: () => void render() }),
+      );
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
       app.replaceChildren(
         topBar(),
-        modeTabs(),
+        activityBar(qt("modeQuiz"), goHome),
         quizView({
           user,
           settings: state.settings,
@@ -172,7 +181,7 @@ async function render(): Promise<void> {
     } else {
       app.replaceChildren(
         topBar(),
-        modeTabs(),
+        activityBar(qt("modeColumns"), goHome),
         controls(),
         state.phase === "finished" ? summary() : sheet(),
         printBar(),
@@ -221,25 +230,17 @@ function next(): void {
   void render();
 }
 
-/** Column arithmetic or multiple-choice tests. */
-function modeTabs(): HTMLElement {
-  const tabs = el("nav", "segmented tabs");
-  for (const [mode, label] of [
-    ["columns", qt("modeColumns")],
-    ["quiz", qt("modeQuiz")],
-    ["vocab", vt("modeVocab")],
-  ] as const) {
-    const on = state.settings.mode === mode;
-    const tab = button(on ? "segment on" : "segment", label, () => {
-      if (on) return;
-      updateSettings({ mode });
-      if (mode === "columns") next();
-      else void render();
-    });
-    tab.setAttribute("aria-pressed", String(on));
-    tabs.append(tab);
-  }
-  return tabs;
+/** Opens an activity from the home page. */
+function open(activity: Activity): void {
+  if (activity.mode === "vocab") updateSettings({ mode: "vocab", vocabBook: activity.book });
+  else updateSettings({ mode: activity.mode });
+  if (activity.mode === "columns") next();
+  else void render();
+}
+
+function goHome(): void {
+  updateSettings({ mode: "home" });
+  void render();
 }
 
 /** Player and scores on the left (while playing), language on the right (always). */
@@ -499,6 +500,8 @@ function selectUser(user: User): void {
   state.user = user;
   saveUserId(user.id);
   state.view = "play";
+  // A player chosen: their home page, with what is waiting for them.
+  updateSettings({ mode: "home" });
   next();
 }
 
@@ -664,6 +667,8 @@ async function enter(justSignedIn = false): Promise<void> {
     }
     state.score = 0;
     state.questions = 0;
+    // Every visit starts on the home page.
+    updateSettings({ mode: "home" });
     await render();
   } catch (error) {
     if (error instanceof SignedOutError) return signedOut();

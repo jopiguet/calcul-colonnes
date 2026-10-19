@@ -36,6 +36,7 @@ try {
   const attempts = await source.query("SELECT * FROM attempts ORDER BY id");
   const quizzes = await source.query("SELECT * FROM quiz_results ORDER BY id");
   const quizAnswers = await source.query("SELECT * FROM quiz_answers ORDER BY id");
+  const vocabBooks = await source.query("SELECT * FROM vocab_books ORDER BY id");
   const vocabLessons = await source.query("SELECT * FROM vocab_lessons ORDER BY id");
   const vocabSections = await source.query("SELECT * FROM vocab_sections ORDER BY id");
   const vocabEntries = await source.query("SELECT * FROM vocab_entries ORDER BY id");
@@ -97,9 +98,10 @@ try {
           ["id", "quiz_id", "user_id", "at", "position", "skill", "topic", "given", "correct", "review", "mistake"],
           quizAnswers,
         ) +
-        insert("vocab_lessons", ["id", "position", "title_en", "title_es"], vocabLessons) +
-        insert("vocab_sections", ["id", "lesson_id", "position", "title_en", "title_es"], vocabSections) +
-        insert("vocab_entries", ["id", "section_id", "position", "en", "es", "grp", "feminine"], vocabEntries) +
+        insert("vocab_books", ["id", "slug", "position", "title", "kind", "term_lang", "meaning_lang"], vocabBooks) +
+        insert("vocab_lessons", ["id", "book_id", "position", "title", "subtitle"], vocabLessons) +
+        insert("vocab_sections", ["id", "lesson_id", "position", "title", "subtitle"], vocabSections) +
+        insert("vocab_entries", ["id", "section_id", "position", "term", "meaning", "grp", "feminine", "note"], vocabEntries) +
         insert(
           "vocab_progress",
           ["user_id", "entry_id", "direction", "box", "due_at", "last_at", "right_count", "wrong_count"],
@@ -110,6 +112,7 @@ try {
           ["id", "user_id", "entry_id", "direction", "mode", "at", "given", "verdict", "correct"],
           vocabAnswers,
         ) +
+        bump("vocab_books") +
         bump("vocab_lessons") +
         bump("vocab_sections") +
         bump("vocab_entries") +

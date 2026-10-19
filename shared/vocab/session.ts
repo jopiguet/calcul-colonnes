@@ -19,18 +19,42 @@ export interface SessionEntry {
   id: number;
   sectionId: number;
   position: number;
-  en: string;
-  es: string;
+  /** The word studied ("la llave", "abase"). */
+  term: string;
+  /** Its translation or definition ("key", "degrade"). */
+  meaning: string;
   group: string;
   feminine: boolean;
+  /** Example or remark, shown after the answer ("corporeal" for "corp"). */
+  note: string;
+  book: BookInfo;
+}
+
+/** How a book is studied. */
+export interface BookInfo {
+  /** translation: meaning in another language; definition: meaning explained in the same language. */
+  kind: "translation" | "definition";
+  termLang: string;
+  meaningLang: string;
 }
 
 export type ProgressMap = Map<string, CardState>;
 export const progressKey = (entryId: number, direction: Direction): string => `${entryId}:${direction}`;
 
-/** The side shown and the side to answer. */
-export function sides(entry: SessionEntry, direction: Direction): { prompt: string; answer: string } {
-  return direction === "recognise" ? { prompt: entry.es, answer: entry.en } : { prompt: entry.en, answer: entry.es };
+/**
+ * The side shown, the side to answer and its language. Recognise: the term
+ * shown, its meaning asked. Recall: the meaning shown, the term asked.
+ */
+export function sides(entry: SessionEntry, direction: Direction): { prompt: string; answer: string; lang: string } {
+  return direction === "recognise"
+    ? { prompt: entry.term, answer: entry.meaning, lang: entry.book.meaningLang }
+    : { prompt: entry.meaning, answer: entry.term, lang: entry.book.termLang };
+}
+
+/** Can this card be answered in writing? Not a definition, nor a long phrase. */
+export function canWrite(entry: SessionEntry, direction: Direction): boolean {
+  if (direction === "recognise" && entry.book.kind === "definition") return false;
+  return writable(sides(entry, direction).answer);
 }
 
 function shuffle<T>(items: T[], random: () => number): T[] {
@@ -48,7 +72,10 @@ function shuffle<T>(items: T[], random: () => number): T[] {
  * answer or like another option.
  */
 export function distractors(entry: SessionEntry, direction: Direction, pool: SessionEntry[], random: () => number): string[] {
-  const answer = sides(entry, direction).answer;
+  const { answer, prompt } = sides(entry, direction);
+  // Another entry with the same prompt would be a second right answer
+  // ("large": macro, magn): never offered as a wrong option.
+  const samePrompt = normalise(prompt);
   const taken = new Set(acceptedForms(answer));
   taken.add(normalise(answer));
   const words = answer.split(" ").length;
@@ -67,7 +94,7 @@ export function distractors(entry: SessionEntry, direction: Direction, pool: Ses
     );
     for (const other of candidates) {
       if (chosen.length === 3) return chosen;
-      if (other.id === entry.id) continue;
+      if (other.id === entry.id || normalise(sides(other, direction).prompt) === samePrompt) continue;
       const text = sides(other, direction).answer;
       const key = normalise(text);
       if (taken.has(key) || acceptedForms(text).some((f) => taken.has(f))) continue;
@@ -130,14 +157,16 @@ export function buildSession(req: SessionRequest): VocabCard[] {
 
   // Reviews and new cards mixed, so a session does not end with all the new words.
   return shuffle(picked, req.random).map(({ entry, direction, box }) => {
-    const { prompt, answer } = sides(entry, direction);
-    const mode = askMode(box, req.preference, writable(answer));
+    const { prompt, answer, lang } = sides(entry, direction);
+    const mode = askMode(box, req.preference, canWrite(entry, direction));
     const card: VocabCard = {
       entryId: entry.id,
       direction,
       mode,
       box,
       prompt: display(prompt),
+      promptLang: direction === "recognise" ? entry.book.termLang : entry.book.meaningLang,
+      answerLang: lang,
       ...(entry.group ? { group: entry.group } : {}),
       ...(direction === "recognise" && entry.feminine ? { feminine: true } : {}),
     };

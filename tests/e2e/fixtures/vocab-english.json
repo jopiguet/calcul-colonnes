@@ -1,0 +1,127 @@
+{
+ "format": 2,
+ "book": {
+  "id": "test-english",
+  "title": "Test English words",
+  "kind": "definition",
+  "term": "en",
+  "meaning": "en"
+ },
+ "lessons": [
+  {
+   "title": "B–I",
+   "sections": [
+    {
+     "title": "brisk – idle",
+     "entries": [
+      {
+       "term": "brisk",
+       "meaning": "quick and lively"
+      },
+      {
+       "term": "candid",
+       "meaning": "frank, honest"
+      },
+      {
+       "term": "dwindle",
+       "meaning": "become smaller"
+      },
+      {
+       "term": "eager",
+       "meaning": "keen, impatient"
+      },
+      {
+       "term": "feeble",
+       "meaning": "weak"
+      },
+      {
+       "term": "gleam",
+       "meaning": "shine faintly"
+      },
+      {
+       "term": "hasty",
+       "meaning": "too quick, rushed"
+      },
+      {
+       "term": "idle",
+       "meaning": "not working"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "J–P",
+   "sections": [
+    {
+     "title": "jovial – placid",
+     "entries": [
+      {
+       "term": "jovial",
+       "meaning": "cheerful"
+      },
+      {
+       "term": "keen",
+       "meaning": "enthusiastic"
+      },
+      {
+       "term": "lofty",
+       "meaning": "very high"
+      },
+      {
+       "term": "meek",
+       "meaning": "quiet and gentle"
+      },
+      {
+       "term": "nimble",
+       "meaning": "quick in movement"
+      },
+      {
+       "term": "odd",
+       "meaning": "strange"
+      },
+      {
+       "term": "placid",
+       "meaning": "calm"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Word parts",
+   "sections": [
+    {
+     "title": "Roots",
+     "entries": [
+      {
+       "term": "macro",
+       "meaning": "large",
+       "note": "macroscopic"
+      },
+      {
+       "term": "magn",
+       "meaning": "large",
+       "note": "magnify"
+      },
+      {
+       "term": "bene",
+       "meaning": "good",
+       "note": "benefit"
+      },
+      {
+       "term": "chron",
+       "meaning": "time",
+       "note": "chronology"
+      },
+      {
+       "term": "mono",
+       "meaning": "one",
+       "note": "monologue"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

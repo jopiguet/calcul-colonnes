@@ -17,7 +17,7 @@ from the app's own origin.
 | `POST` | [`/api/attempts`](#post-apiattempts) | Record a column-arithmetic answer |
 | `POST` | [`/api/quizzes`](#post-apiquizzes) | Record a finished test |
 | `GET` | [`/api/stats`](#get-apistats) | Totals of every player |
-| `GET` | [`/api/vocab/lessons`](#get-apivocablessons) | Lessons and sections of the vocabulary |
+| `GET` | [`/api/vocab/books`](#get-apivocabbooks) | Vocabulary books, with their lessons and sections |
 | `GET` | [`/api/vocab/progress`](#get-apivocabprogress) | One player's vocabulary progress |
 | `GET` | [`/api/vocab/session`](#get-apivocabsession) | Cards for a practice session |
 | `POST` | [`/api/vocab/answers`](#post-apivocabanswers) | Record an answer; the server grades it |
@@ -223,19 +223,33 @@ count tests, right answers and questions.
 
 See [Vocabulary](vocabulary.md) for the method and the grading.
 
-### `GET /api/vocab/lessons`
+### `GET /api/vocab/books`
 
 ```json
 [
   {
     "id": 1,
-    "title": { "en": "At school", "es": "En el colegio" },
-    "sections": [{ "id": 1, "title": { "en": "The classroom", "es": "El aula" }, "entries": 12 }]
+    "slug": "collins-spanish",
+    "title": "Collins Spanish",
+    "kind": "translation",
+    "term": "es",
+    "meaning": "en",
+    "entries": 3214,
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Lo esencial",
+        "subtitle": "The essentials",
+        "sections": [{ "id": 1, "title": "Lo esencial", "subtitle": "The basics", "entries": 25 }]
+      }
+    ]
   }
 ]
 ```
 
-An empty list when no vocabulary has been imported.
+Books without entries are left out; an empty list when none has been
+imported. `kind` is `translation` or `definition`; `term` and `meaning` are the
+language studied and the language of the meanings.
 
 ### `GET /api/vocab/progress`
 
@@ -247,21 +261,23 @@ An empty list when no vocabulary has been imported.
 ```json
 {
   "sections": { "1": { "new": 4, "learning": 8, "known": 0, "mastered": 0, "due": 3 } },
+  "books": { "1": { "due": 3, "started": 8 } },
   "due": 3,
   "today": { "answers": 9, "right": 8 }
 }
 ```
 
-`due` counts cards (an entry has two: recognise and recall). Every section is
-listed; an entry counts as `new` until one of its cards has been answered.
+`due` counts cards (an entry has two: recognise and recall), in every book;
+`books` gives it per book, with the number of entries started. Every section
+is listed; an entry counts as `new` until one of its cards has been answered.
 
 ### `GET /api/vocab/session`
 
 | Query | |
 |---|---|
 | `userId` | The player |
-| `kind` | `section`, `lesson` or `all` (the whole vocabulary). `due` is still accepted: `all` with purpose `due`. |
-| `id` | Section or lesson id; ignored for `all` |
+| `kind` | `section`, `lesson` or `all` (a whole book) |
+| `id` | Section, lesson or book id |
 | `purpose` | `learn` (default): cards due, recall cards just available, new entries. `review`: cards already started, due or not, weakest first. `due`: cards due only. |
 | `size` | 1 … 60 cards |
 | `mode` | `mixed` (default), `choice` or `written` |
@@ -274,6 +290,8 @@ listed; an entry counts as `new` until one of its cards has been answered.
     "mode": "choice",
     "box": 0,
     "prompt": "la regla",
+    "promptLang": "es",
+    "answerLang": "en",
     "group": "Things",
     "options": ["schoolbag", "ruler", "rubber", "book"]
   }
@@ -281,7 +299,8 @@ listed; an entry counts as `new` until one of its cards has been answered.
 ```
 
 `options` is present for `choice` cards only. `feminine: true` marks a
-feminine noun taking *el*, on recognise cards.
+feminine noun taking *el*, on recognise cards. The recognise card of a
+definition book (word shown, definition asked) is always `choice`.
 
 ### `POST /api/vocab/answers`
 
@@ -292,12 +311,14 @@ feminine noun taking *el*, on recognise cards.
 `201`:
 
 ```json
-{ "verdict": "right", "correct": true, "expected": "la regla", "feminine": false, "box": 2, "dueAt": 1792423727408 }
+{ "verdict": "right", "correct": true, "expected": "la regla", "feminine": false, "note": "", "box": 2, "dueAt": 1792423727408 }
 ```
 
 `verdict` is `right`, `accent`, `typo`, `article` or `wrong`; `correct` is
 what moves the card between boxes. A `choice` answer must equal the option as
-printed. Errors: `invalid answer` (400), `unknown user`, `unknown entry` (404).
+printed. A `written` answer that is wrong for this entry but right for another
+entry of the book with the same prompt counts as right. `note` is the entry's
+example, if any. Errors: `invalid answer` (400), `unknown user`, `unknown entry` (404).
 
 ## Authentication
 
