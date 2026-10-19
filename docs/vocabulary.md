@@ -116,15 +116,25 @@ A wrong answer sends the card back to box 1. It is also asked again at the end
 of the same session, once. A word is *known* when both its cards are in box 4
 or above, and *mastered* when both are in box 6.
 
-**Sessions.** A session has up to 15 cards, in this order of priority:
+**Answering ahead of time.** A card answered right before its review is due
+stays in its box, with its date unchanged. This covers reviewing early and the
+repeat of a mistake in the same session: being right a few minutes after
+seeing the answer says little about memory, and practising a lot on one
+evening must not push words to 35 days. A wrong answer ahead of time still
+sends the card back to box 1, since that is real information.
 
-1. Cards due for review, oldest first.
-2. Recall cards that just became available.
-3. New entries, in the book's order, at most 8 per session.
+**Sessions.** 15, 30 or 50 cards (*Cartes par séance*). Three kinds, each on a
+section, a whole lesson or the whole vocabulary:
 
-They are then shuffled together. *Réviser maintenant* takes only the cards due,
-across every lesson. A section or a whole lesson also brings in its new
-entries.
+| Session | Button | Cards |
+|---|---|---|
+| Learn | *Apprendre*, *Continuer* (section); *Apprendre la leçon* | 1. cards due, oldest first; 2. recall cards that just became available; 3. new entries in the book's order, at most 8 |
+| Review | *Réviser* (section); *Réviser la leçon*; *Réviser tout le vocabulaire* | Only cards already started, due or not: those due first, then the weakest (lowest box), then those unseen for the longest time. No new entries. |
+| Due | *Réviser maintenant* | Only the cards due, across every lesson |
+
+The cards chosen are then shuffled together. *Due* is the daily routine;
+*Review* is for going over a chapter before a test, or over everything learnt
+so far.
 
 **Multiple choice or written.** The *Questions* setting:
 

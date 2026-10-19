@@ -1,9 +1,13 @@
 /**
  * Builds a practice session: which cards, in which order, asked how.
  *
- * 1. Cards due for review (their wait is over), oldest first.
- * 2. Recall cards that just became available (recognition reached box 2).
- * 3. New entries, in the book's order, at most NEW_PER_SESSION.
+ * learn    1. cards due for review (their wait is over), oldest first;
+ *          2. recall cards that just became available (recognition in box 2);
+ *          3. new entries, in the book's order, at most NEW_PER_SESSION.
+ * due      cards due for review only.
+ * review   cards already started, due or not: due first, then the weakest
+ *          (lowest box), then those not seen for the longest time. No new
+ *          entries. A right answer ahead of time does not move the card up.
  *
  * A wrong answer is asked again at the end of the session (by the browser).
  */
@@ -83,30 +87,41 @@ export interface SessionRequest {
   now: number;
   size: number;
   preference: ModePreference;
-  /** Only cards already started and due: no new entries. */
-  dueOnly: boolean;
+  purpose: SessionPurpose;
   random: () => number;
 }
+
+export type SessionPurpose = "learn" | "review" | "due";
 
 export function buildSession(req: SessionRequest): VocabCard[] {
   const { entries, progress, now, size } = req;
   const picked: { entry: SessionEntry; direction: Direction; box: number }[] = [];
 
   const due: { entry: SessionEntry; direction: Direction; state: CardState }[] = [];
+  const ahead: { entry: SessionEntry; direction: Direction; state: CardState }[] = [];
   const recallReady: SessionEntry[] = [];
   const fresh: SessionEntry[] = [];
   for (const entry of entries) {
     const recognise = progress.get(progressKey(entry.id, "recognise"));
     const recall = progress.get(progressKey(entry.id, "recall"));
     if (!recognise && !recall) fresh.push(entry);
-    if (recognise && recognise.dueAt <= now) due.push({ entry, direction: "recognise", state: recognise });
-    if (recall && recall.dueAt <= now) due.push({ entry, direction: "recall", state: recall });
+    for (const [direction, state] of [["recognise", recognise], ["recall", recall]] as const) {
+      if (!state) continue;
+      (state.dueAt <= now ? due : ahead).push({ entry, direction, state });
+    }
     if (recognise && !recall && recognise.box >= RECALL_AFTER) recallReady.push(entry);
   }
   due.sort((a, b) => a.state.dueAt - b.state.dueAt);
 
   for (const d of due) if (picked.length < size) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
-  if (!req.dueOnly) {
+  if (req.purpose === "review") {
+    // Weakest first, then the longest unseen; random among equals.
+    const order = shuffle(ahead, req.random).sort(
+      (a, b) => a.state.box - b.state.box || (a.state.lastAt ?? 0) - (b.state.lastAt ?? 0),
+    );
+    for (const d of order) if (picked.length < size) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
+  }
+  if (req.purpose === "learn") {
     for (const entry of recallReady) if (picked.length < size) picked.push({ entry, direction: "recall", box: 0 });
     for (const entry of fresh.sort((a, b) => a.sectionId - b.sectionId || a.position - b.position).slice(0, NEW_PER_SESSION)) {
       if (picked.length < size) picked.push({ entry, direction: "recognise", box: 0 });

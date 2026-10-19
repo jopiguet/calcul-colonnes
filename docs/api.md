@@ -260,9 +260,10 @@ listed; an entry counts as `new` until one of its cards has been answered.
 | Query | |
 |---|---|
 | `userId` | The player |
-| `kind` | `section`, `lesson`, or `due` (every card due, no new entries) |
-| `id` | Section or lesson id; ignored for `due` |
-| `size` | 1 … 40 cards |
+| `kind` | `section`, `lesson` or `all` (the whole vocabulary). `due` is still accepted: `all` with purpose `due`. |
+| `id` | Section or lesson id; ignored for `all` |
+| `purpose` | `learn` (default): cards due, recall cards just available, new entries. `review`: cards already started, due or not, weakest first. `due`: cards due only. |
+| `size` | 1 … 60 cards |
 | `mode` | `mixed` (default), `choice` or `written` |
 
 ```json

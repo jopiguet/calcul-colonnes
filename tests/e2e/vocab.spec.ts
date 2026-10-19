@@ -113,34 +113,41 @@ test("written answers: accents tolerated, article required, Spanish letters", as
   expect(await post(banana, "recall", "written", "el platano")).toMatchObject({ verdict: "accent", correct: true });
   expect(await post(banana, "recall", "choice", "el platano")).toMatchObject({ verdict: "wrong" }); // a choice is exact
 
-  // Water recognised twice (box 2): recall becomes available.
+  // Water recognised once; banana's Spanish card was started above.
   await page.click("text=Arrêter");
   if (await page.locator(".vocab-done").count()) await page.click("text=Retour aux leçons");
   const water = await cardOf(food, "el agua");
-  await post(water, "recognise", "choice", "water");
-  await post(water, "recognise", "choice", "water");
+  expect(await post(water, "recognise", "choice", "water")).toMatchObject({ verdict: "right" });
+  // Right again ten seconds later: ahead of its review, so it stays in box 1.
+  expect(await post(water, "recognise", "choice", "water")).toMatchObject({ verdict: "right", correct: true });
 
-  // Recognition at box 2: recall is offered in the next food session.
-  await page.locator(".vocab-lesson summary").nth(1).click();
-  await page.locator(".vocab-lesson").nth(1).locator(".vocab-section button").first().click();
+  // Reviewing the food lesson, written: those two cards come back.
+  await page.reload();
+  await page.locator(".vocab-home").waitFor();
+  const foodLesson = page.locator(".vocab-lesson").nth(1);
+  if (!(await foodLesson.evaluate((d) => (d as HTMLDetailsElement).open))) await foodLesson.locator("summary").click();
+  await foodLesson.locator("text=Réviser la leçon").click();
   await page.locator(".vocab-card").waitFor();
-  for (let i = 0; i < 10; i++) {
-    if ((await page.locator(".vocab-prompt").innerText()) === "water" && (await page.locator(".vocab-ask").innerText()).includes("espagnol")) break;
-    await page.fill(".vocab-input", "x");
+  await expect(page.locator(".quiz-count")).toHaveText("1 / 2");
+  for (let i = 0; i < 2; i++) {
+    const prompt = await page.locator(".vocab-prompt").innerText();
+    if (prompt === "el agua") {
+      // A feminine noun with "el" is marked on the Spanish side.
+      await expect(page.locator(".vocab-notes .vocab-fem")).toBeVisible();
+      await page.fill(".vocab-input", "water");
+    } else {
+      expect(prompt).toBe("banana");
+      await expect(page.locator(".vocab-ask")).toContainText("espagnol");
+      await page.fill(".vocab-input", "el pl");
+      await page.click(".vocab-letter:text('á')");
+      await expect(page.locator(".vocab-input")).toHaveValue("el plá");
+      await page.keyboard.type("tano");
+    }
     await page.keyboard.press("Enter");
-    await page.locator(".vocab-verdict").waitFor();
+    await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
     await next(page);
   }
-  await expect(page.locator(".vocab-prompt")).toHaveText("water");
-  await expect(page.locator(".vocab-fem")).toHaveCount(0); // the gender is not given away in recall
-  await page.fill(".vocab-input", "el ag");
-  await page.click(".vocab-letter:text('ü')");
-  await expect(page.locator(".vocab-input")).toHaveValue("el agü");
-  await page.keyboard.press("Backspace");
-  await page.keyboard.type("ua");
-  await page.keyboard.press("Enter");
-  await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
-  await expect(page.locator(".vocab-feedback .vocab-fem")).toHaveText(" (f)");
+  await expect(page.locator(".vocab-done .big-score")).toHaveText("2 justes sur 2");
 });
 
 test("vocabulary progress belongs to the account's players only", async ({ page, browser }) => {
@@ -160,4 +167,48 @@ test("vocabulary progress belongs to the account's players only", async ({ page,
   });
   expect(answer.status()).toBe(404);
   await context.close();
+});
+
+test("reviewing a lesson or everything brings back only words already learnt, without moving them up", async ({ page }) => {
+  const name = await newPlayer(page, "Rev");
+  const user = await userByName(page.request, name);
+  await openVocab(page);
+  await expect(page.locator("text=Réviser tout le vocabulaire")).toHaveCount(0); // nothing learnt yet
+
+  // Three words learnt through the API: recognised once, right.
+  const lessons = (await (await page.request.get("/api/vocab/lessons")).json()) as { id: number; sections: { id: number }[] }[];
+  const section = lessons[0]!.sections[0]!.id;
+  const cards = (await (await page.request.get(`/api/vocab/session?userId=${user.id}&kind=section&id=${section}&purpose=learn&size=3&mode=choice`)).json()) as { entryId: number; prompt: string }[];
+  expect(cards).toHaveLength(3);
+  for (const card of cards) {
+    const r = await page.request.post("/api/vocab/answers", {
+      data: { userId: user.id, entryId: card.entryId, direction: "recognise", mode: "choice", given: answerTo(card.prompt) },
+    });
+    expect(((await r.json()) as { box: number }).box).toBe(1);
+  }
+  const learnt = cards.map((c) => c.prompt);
+
+  for (const button of ["Réviser la leçon", "Réviser tout le vocabulaire"]) {
+    await page.reload();
+    await page.locator(".vocab-home").waitFor();
+    if (button === "Réviser la leçon") {
+      const lesson = page.locator(".vocab-lesson").first();
+      if (!(await lesson.evaluate((d) => (d as HTMLDetailsElement).open))) await lesson.locator("summary").click();
+    }
+    await page.click(`text=${button}`);
+    await page.locator(".vocab-card").waitFor();
+    await expect(page.locator(".quiz-count")).toHaveText("1 / 3");
+    for (let i = 0; i < 3; i++) {
+      const prompt = await page.locator(".vocab-prompt").innerText();
+      expect(learnt).toContain(prompt);
+      const options = await page.locator(".choice-text").allInnerTexts();
+      const response = page.waitForResponse("**/api/vocab/answers");
+      await page.keyboard.press(String(options.indexOf(answerTo(prompt)) + 1));
+      // Right, but ahead of its review: the word stays in box 1.
+      expect(((await (await response).json()) as { box: number; correct: boolean })).toMatchObject({ box: 1, correct: true });
+      await next(page);
+    }
+    await expect(page.locator(".vocab-done .big-score")).toHaveText("3 justes sur 3");
+    await page.click("text=Retour aux leçons");
+  }
 });

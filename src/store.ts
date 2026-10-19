@@ -96,13 +96,19 @@ export const store = {
 export const vocab = {
   lessons: (): Promise<VocabLessonInfo[]> => call("/vocab/lessons"),
   progress: (userId: number): Promise<VocabProgress> => call(`/vocab/progress?userId=${userId}&since=${startOfToday()}`),
+  /**
+   * learn: due words, then new ones; review: words already started, weakest
+   * first, due or not; due: only the words whose review is due.
+   */
   session: (
     userId: number,
-    target: { kind: "section" | "lesson" | "due"; id: number },
+    target: { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due" },
     size: number,
     mode: "mixed" | "choice" | "written",
   ): Promise<VocabCard[]> =>
-    call(`/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&size=${size}&mode=${mode}`),
+    call(
+      `/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&purpose=${target.purpose}&size=${size}&mode=${mode}`,
+    ),
   /** The server grades the answer and moves the card between boxes. */
   answer: (answer: VocabAnswer): Promise<VocabAnswerResult> => post("/vocab/answers", answer),
 };

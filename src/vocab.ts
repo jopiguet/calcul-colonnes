@@ -23,22 +23,25 @@ import { vt, type VocabKey } from "./vocab-i18n";
 
 interface Preferences {
   mode: ModePreference;
+  /** Cards per session. */
+  size: number;
   /** Lesson unfolded on the home screen. */
   open: number | null;
 }
 
 const PREFERENCES_KEY = "calcul-colonnes.vocab";
-const SESSION_SIZE = 15;
+const SIZES = [15, 30, 50];
 
 function loadPreferences(): Preferences {
   try {
     const saved = JSON.parse(localStorage.getItem(PREFERENCES_KEY) ?? "{}") as Partial<Preferences>;
     return {
       mode: saved.mode === "choice" || saved.mode === "written" ? saved.mode : "mixed",
+      size: SIZES.includes(saved.size as number) ? (saved.size as number) : SIZES[0]!,
       open: typeof saved.open === "number" ? saved.open : null,
     };
   } catch {
-    return { mode: "mixed", open: null };
+    return { mode: "mixed", size: SIZES[0]!, open: null };
   }
 }
 
@@ -54,7 +57,8 @@ const prefs = loadPreferences();
 
 // ---------------------------------------------------------------- session
 
-type Target = { kind: "section" | "lesson" | "due"; id: number; label: string };
+/** What a session covers (a section, a lesson, everything) and what for. */
+type Target = { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due"; label: string };
 
 interface Session {
   userId: number;
@@ -89,7 +93,7 @@ export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
 }
 
 async function start(ctx: VocabContext, target: Target): Promise<void> {
-  const cards = await vocab.session(ctx.user.id, target, SESSION_SIZE, prefs.mode);
+  const cards = await vocab.session(ctx.user.id, target, prefs.size, prefs.mode);
   finished = null;
   if (cards.length === 0) {
     // Nothing left to practise there: show the summary's "nothing to review".
@@ -142,13 +146,39 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   if (progress.due > 0) {
     due.append(
       el("p", "vocab-due-count", progress.due === 1 ? vt("dueOne") : vt("dueNow", { count: progress.due })),
-      button("primary", vt("reviewNow"), () => void start(ctx, { kind: "due", id: 0, label: vt("reviewNow") })),
+      button("primary", vt("reviewNow"), () =>
+        void start(ctx, { kind: "all", id: 0, purpose: "due", label: vt("reviewNow") }),
+      ),
     );
   } else {
     due.append(el("p", "vocab-due-count quiet", vt("nothingDue")));
   }
+  // Every word started, due or not: before a test, or to go further.
+  const started = Object.values(progress.sections).reduce((n, p) => n + p.learning + p.known + p.mastered, 0);
+  if (started > 0) {
+    due.append(
+      button(progress.due > 0 ? "ghost" : "primary", vt("reviewAll"), () =>
+        void start(ctx, { kind: "all", id: 0, purpose: "review", label: vt("allVocabulary") }),
+      ),
+    );
+  }
   if (progress.today.answers > 0) due.append(el("p", "hint", vt("today", progress.today)));
   wrap.append(due);
+
+  // Cards per session.
+  const size = el("fieldset", "segmented vocab-size");
+  size.append(el("legend", "field-label", vt("sizeTitle")));
+  for (const value of SIZES) {
+    const on = prefs.size === value;
+    const option = button(on ? "segment on" : "segment", String(value), () => {
+      prefs.size = value;
+      savePreferences();
+      ctx.rerender();
+    });
+    option.setAttribute("aria-pressed", String(on));
+    size.append(option);
+  }
+  wrap.append(size);
 
   // How questions are asked.
   const how = el("fieldset", "segmented vocab-how");
@@ -196,20 +226,37 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       const meta = el("span", "vocab-section-meta", vt("words", { count: section.entries }));
       if (p.due > 0) meta.append(" · ", el("span", "vocab-section-due", vt("sectionDue", { count: p.due })));
       text.append(meta, statusBar(p));
-      const started = p.new < section.entries;
-      const go = button(started ? "ghost small" : "primary small", vt(started ? "continue" : "learn"), () =>
-        void start(ctx, { kind: "section", id: section.id, label: section.title.es }),
+      const begun = p.new < section.entries;
+      const buttons = el("div", "vocab-section-actions");
+      const go = button(begun ? "ghost small" : "primary small", vt(begun ? "continue" : "learn"), () =>
+        void start(ctx, { kind: "section", id: section.id, purpose: "learn", label: section.title.es }),
       );
-      go.setAttribute("aria-label", `${vt(started ? "continue" : "learn")} : ${section.title.es}`);
-      item.append(text, go);
+      go.setAttribute("aria-label", `${vt(begun ? "continue" : "learn")} : ${section.title.es}`);
+      buttons.append(go);
+      if (begun) {
+        const again = button("ghost small", vt("review"), () =>
+          void start(ctx, { kind: "section", id: section.id, purpose: "review", label: vt("reviewOf", { name: section.title.es }) }),
+        );
+        again.setAttribute("aria-label", `${vt("review")} : ${section.title.es}`);
+        buttons.append(again);
+      }
+      item.append(text, buttons);
       sections.append(item);
     }
-    details.append(
-      sections,
-      button("ghost small vocab-whole", vt("wholeLesson"), () =>
-        void start(ctx, { kind: "lesson", id: lesson.id, label: lesson.title.es }),
+    const whole = el("div", "vocab-whole");
+    whole.append(
+      button("ghost small", vt("wholeLesson"), () =>
+        void start(ctx, { kind: "lesson", id: lesson.id, purpose: "learn", label: lesson.title.es }),
       ),
     );
+    if (sum.learning + sum.known + sum.mastered > 0) {
+      whole.append(
+        button("ghost small", vt("reviewLesson"), () =>
+          void start(ctx, { kind: "lesson", id: lesson.id, purpose: "review", label: vt("reviewOf", { name: lesson.title.es }) }),
+        ),
+      );
+    }
+    details.append(sections, whole);
     list.append(details);
   }
   wrap.append(list);

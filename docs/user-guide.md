@@ -248,10 +248,19 @@ imported on the server (see [Vocabulary › Importing a book](vocabulary.md#impo
 **The screen**
 
 - **Mots à réviser:** the words whose review is due, across every lesson. *Réviser maintenant* starts a session with them. This is the first thing to do each day.
+- **Réviser tout le vocabulaire:** every word already learnt, due or not, the weakest first. Useful before a test.
+- **Cartes par séance:** 15, 30 or 50.
 - **Questions:** *Mélangé* (multiple choice for new words, written answers once they are known), *Choix multiples* or *Écrit*. Mixed suits most children.
-- **Lessons:** click one to see its sections. Each section shows its number of words, how many are due, and a bar that fills as its words are learnt, then known, then mastered. *Apprendre* starts a section, *Continuer* goes on with it, and *Toute la leçon* mixes every section of the lesson.
+- **Lessons:** click one to see its sections. Each section shows its number of words, how many are due, and a bar that fills as its words are learnt, then known, then mastered. 
+  - *Apprendre* starts a section, *Continuer* goes on with it: words due, then up to 8 new ones.
+  - *Réviser* goes back over the section's words already learnt, without new ones.
+  - *Apprendre la leçon* and *Réviser la leçon* do the same for every section of the chapter.
 
-**A session** has up to 15 cards: words due first, then up to 8 new ones.
+**Reviewing ahead of time** is practice: a word answered right before its date
+stays in its box, so an evening of revision does not push words weeks away. A
+word answered wrong goes back to the start.
+
+**A session:**
 
 - **Two kinds of card:**
   - Spanish shown, answer the meaning in English.

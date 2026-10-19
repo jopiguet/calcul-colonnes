@@ -44,6 +44,7 @@ exponentials and logarithms, at *lycée / bachillerato* or university level.
 
 - Its chapters are the lessons and its sections the sections; the Collins *3000 words and phrases* layout is read automatically from the PDF.
 - Spaced repetition with Leitner boxes: each word, in each direction, comes back after 10 minutes, then 1, 3, 7, 16 and 35 days, and starts again after a mistake.
+- Learn a section or a chapter; review a section, a chapter or the whole vocabulary, weakest words first.
 - Multiple choice while a word is new, written answers once it is known. Accents and one-letter slips are forgiven with the spelling shown; a wrong article is not.
 - The book's own notation is understood: `el amigo / la amiga`, `Buenas tardes / noches`, `embarcar(se)`.
 

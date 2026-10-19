@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.3.0
+
+- **Review at every level:** *Réviser* on a section, *Réviser la leçon* on a chapter, *Réviser tout le vocabulaire* on everything. A review takes only the words already started, due or not: those due first, then the weakest, then those unseen for the longest time.
+- **Answering ahead of time does not move a word up:** right before its review date, it keeps its box and date; wrong, it goes back to box 1. This also applies to the repeat of a mistake at the end of a session.
+- **Cards per session:** 15, 30 or 50.
+- *Toute la leçon* is now *Apprendre la leçon*.
+- API: `purpose` (`learn`, `review`, `due`) and `kind=all` on `GET /api/vocab/session`; up to 60 cards. `kind=due` still works.
+- `npm run check:vocab` checks the three kinds of session and the rule for early answers.
+- Browser tests: 38.
+
 ## 4.2.1
 
 - **Named Luma:** the browser tab reads *Luma – Mon cahier*, *Luma – Mi cuaderno* or *Luma – My exercise book*, and the landing and sign-in pages show *Luma*. The PDF worksheet keeps its title *Calcul en colonnes*.

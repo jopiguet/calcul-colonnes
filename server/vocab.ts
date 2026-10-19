@@ -11,7 +11,7 @@ import type { Repository, Scope } from "./repository.ts";
 import { COUNTS_AS_RIGHT, display, grade, normalise } from "../shared/vocab/grade.ts";
 import type { VocabFile } from "../shared/vocab/format.ts";
 import { entryStatus, nextState, type CardState, type Direction, type ModePreference } from "../shared/vocab/schedule.ts";
-import { buildSession, progressKey, sides, type ProgressMap, type SessionEntry } from "../shared/vocab/session.ts";
+import { buildSession, progressKey, sides, type ProgressMap, type SessionEntry, type SessionPurpose } from "../shared/vocab/session.ts";
 import type {
   VocabAnswer,
   VocabAnswerResult,
@@ -185,10 +185,14 @@ export class VocabStore {
   }
 
   private async progress(userId: number): Promise<ProgressMap> {
-    const rows = await this.db.query("SELECT entry_id, direction, box, due_at FROM vocab_progress WHERE user_id = $1", [userId]);
+    const rows = await this.db.query("SELECT entry_id, direction, box, due_at, last_at FROM vocab_progress WHERE user_id = $1", [userId]);
     const map: ProgressMap = new Map();
     for (const row of rows) {
-      map.set(progressKey(n(row.entry_id), row.direction as Direction), { box: n(row.box), dueAt: n(row.due_at) });
+      map.set(progressKey(n(row.entry_id), row.direction as Direction), {
+        box: n(row.box),
+        dueAt: n(row.due_at),
+        lastAt: n(row.last_at),
+      });
     }
     return map;
   }
@@ -220,20 +224,23 @@ export class VocabStore {
 
   async session(
     userId: number,
-    target: { kind: "section" | "lesson" | "due"; id: number },
+    target: { kind: "section" | "lesson" | "all"; id: number },
+    purpose: SessionPurpose,
     size: number,
     preference: ModePreference,
     now: number,
   ) {
+    // The whole vocabulary: only the entries the session can use, not all 3,000.
     const entries =
       target.kind === "section"
         ? await this.entries("e.section_id = $1", [target.id])
         : target.kind === "lesson"
           ? await this.entries("s.lesson_id = $1", [target.id])
-          : await this.entries(
-              "e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1 AND due_at <= $2)",
-              [userId, now],
-            );
+          : purpose === "due"
+            ? await this.entries("e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1 AND due_at <= $2)", [userId, now])
+            : purpose === "review"
+              ? await this.entries("e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1)", [userId])
+              : await this.entries("1 = 1", []);
     // Wrong options come from the same lessons.
     const lessonIds = [...new Set((await this.db.query(
       "SELECT DISTINCT s.lesson_id FROM vocab_sections s WHERE s.id IN (" +
@@ -249,7 +256,7 @@ export class VocabStore {
       now,
       size,
       preference,
-      dueOnly: target.kind === "due",
+      purpose,
       random: Math.random,
     });
   }
@@ -305,7 +312,8 @@ export class VocabStore {
 
 const isId = (v: unknown): v is number => typeof v === "number" && Number.isInteger(v) && v > 0;
 const PREFERENCES: ModePreference[] = ["mixed", "choice", "written"];
-export const MAX_SESSION = 40;
+export const MAX_SESSION = 60;
+const PURPOSES: SessionPurpose[] = ["learn", "review", "due"];
 
 export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c: never) => Scope): Hono<AppEnv> {
   const routes = new Hono<AppEnv>();
@@ -324,21 +332,25 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
 
   routes.get("/session", async (c) => {
     const userId = Number(c.req.query("userId"));
-    const kind = c.req.query("kind");
+    // kind=due, from 4.2: the whole vocabulary, cards due.
+    const legacyDue = c.req.query("kind") === "due";
+    const kind = legacyDue ? "all" : c.req.query("kind");
+    const purpose = (legacyDue ? "due" : (c.req.query("purpose") ?? "learn")) as SessionPurpose;
     const id = Number(c.req.query("id") ?? 0);
     const size = Number(c.req.query("size") ?? 20);
     const mode = (c.req.query("mode") ?? "mixed") as ModePreference;
     if (
       !isId(userId) ||
-      (kind !== "section" && kind !== "lesson" && kind !== "due") ||
-      (kind !== "due" && !isId(id)) ||
+      (kind !== "section" && kind !== "lesson" && kind !== "all") ||
+      (kind !== "all" && !isId(id)) ||
+      !PURPOSES.includes(purpose) ||
       !Number.isInteger(size) || size < 1 || size > MAX_SESSION ||
       !PREFERENCES.includes(mode)
     ) {
       return c.json({ error: "invalid session" }, 400);
     }
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
-    return c.json(await store.session(userId, { kind, id }, size, mode, Date.now()));
+    return c.json(await store.session(userId, { kind, id }, purpose, size, mode, Date.now()));
   });
 
   routes.post("/answers", async (c) => {

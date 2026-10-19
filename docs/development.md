@@ -132,7 +132,7 @@ Two automated checks:
 |---|---|---|
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
-| `npm run test:e2e` | The whole app in a browser: 37 tests | about a minute |
+| `npm run test:e2e` | The whole app in a browser: 38 tests | about a minute |
 
 ### Browser tests
 

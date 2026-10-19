@@ -4,4 +4,3 @@ data
 .env
 test-results
 playwright-report
-.envrc

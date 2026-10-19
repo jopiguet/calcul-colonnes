@@ -8,7 +8,12 @@
  *
  * A right answer moves the card up one box, and the next review waits longer:
  * 10 minutes, then 1, 3, 7, 16 and 35 days. A wrong answer sends it back to
- * box 1; the browser asks it again at the end of the session. Recall starts once
+ * box 1; the browser asks it again at the end of the session.
+ *
+ * A card answered before its review is due (a review ahead of time, or the
+ * repeat of a mistake in the same session) does not move up: being right a few
+ * minutes after seeing the answer says little about memory. A wrong answer
+ * still sends it back to box 1. Recall starts once
  * recognition has reached box 2, since producing a word is harder than
  * recognising it.
  *
@@ -40,9 +45,13 @@ export const NEW_PER_SESSION = 8;
 export interface CardState {
   box: number;
   dueAt: number;
+  /** Last answer, for ordering reviews; absent when unknown. */
+  lastAt?: number;
 }
 
 export function nextState(previous: CardState | null, correct: boolean, now: number): CardState {
+  // Right, but before the review was due: the card stays where it is.
+  if (previous && correct && previous.dueAt > now) return { box: previous.box, dueAt: previous.dueAt };
   const box = correct ? Math.min((previous?.box ?? 0) + 1, TOP_BOX) : 1;
   return { box, dueAt: now + (INTERVALS[box] ?? 0) };
 }

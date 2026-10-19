@@ -9,6 +9,7 @@ import { readFileSync } from "node:fs";
 import { acceptedForms, grade, writable, type AnswerLang, type Verdict } from "../shared/vocab/grade.ts";
 import { askMode, entryStatus, nextState, DAY, MINUTE, TOP_BOX } from "../shared/vocab/schedule.ts";
 import { parseVocabFile } from "../shared/vocab/format.ts";
+import { buildSession, progressKey, type ProgressMap, type SessionEntry } from "../shared/vocab/session.ts";
 
 let failures = 0;
 function expect(label: string, actual: unknown, wanted: unknown): void {
@@ -79,6 +80,8 @@ expect("new right → box 1, 10 min", nextState(null, true, now), { box: 1, dueA
 expect("box 1 right → box 2, 1 day", nextState({ box: 1, dueAt: now }, true, now), { box: 2, dueAt: now + DAY });
 expect("box 4 wrong → box 1", nextState({ box: 4, dueAt: now }, false, now).box, 1);
 expect("top stays top", nextState({ box: TOP_BOX, dueAt: now }, true, now).box, TOP_BOX);
+expect("right ahead of time: unchanged", nextState({ box: 3, dueAt: now + DAY }, true, now), { box: 3, dueAt: now + DAY });
+expect("wrong ahead of time: box 1", nextState({ box: 3, dueAt: now + DAY }, false, now).box, 1);
 expect("mixed, new → choice", askMode(1, "mixed", true), "choice");
 expect("mixed, box 3 → written", askMode(3, "mixed", true), "written");
 expect("long answers stay choice", askMode(5, "written", false), "choice");
@@ -86,6 +89,30 @@ expect("status new", entryStatus(0, 0), "new");
 expect("status learning", entryStatus(3, 0), "learning");
 expect("status known", entryStatus(5, 4), "known");
 expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
+
+// Sessions: learn, review, due
+{
+  const at = 10 * DAY;
+  const words = ["uno", "dos", "tres", "cuatro", "cinco"];
+  const entries: SessionEntry[] = words.map((es, i) => ({
+    id: i + 1, sectionId: 1, position: i, en: `w${i + 1}`, es, group: "", feminine: false,
+  }));
+  const progress: ProgressMap = new Map([
+    [progressKey(1, "recognise"), { box: 2, dueAt: at - 1, lastAt: at - DAY }], // due
+    [progressKey(2, "recognise"), { box: 1, dueAt: at + 1, lastAt: at - 3 * DAY }], // weak, not due
+    [progressKey(3, "recognise"), { box: 4, dueAt: at + DAY, lastAt: at - DAY }], // strong, not due
+  ]);
+  const ids = (purpose: "learn" | "review" | "due") =>
+    buildSession({ entries, pool: entries, progress, now: at, size: 10, preference: "choice", purpose, random: () => 0.5 })
+      .map((c) => `${c.entryId}${c.direction === "recall" ? "r" : ""}`)
+      .sort();
+  expect("learn: due, recall ready (1, 3), new", ids("learn"), ["1", "1r", "3r", "4", "5"]);
+  expect("review: started cards only", ids("review"), ["1", "2", "3"]);
+  expect("due: due only", ids("due"), ["1"]);
+  const order = buildSession({ entries, pool: entries, progress, now: at, size: 2, preference: "choice", purpose: "review", random: () => 0.5 })
+    .map((c) => c.entryId).sort();
+  expect("review, 2 cards: the due one, then the weakest", order, [1, 2]);
+}
 
 // Every entry of a vocabulary file
 const file = process.argv[2];
