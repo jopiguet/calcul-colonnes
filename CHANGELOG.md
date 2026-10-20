@@ -1,5 +1,25 @@
 # Changelog
 
+## 5.3.0
+
+- **Vocabulary statistics:** *📊 Statistiques* on every book's page. Words seen, mastered and known; right answers over 30 days; days in a row and the record; right and wrong answers per day over 30 days, with the new words; reviews due over the next 14 days; cards per Leitner box in each direction; the share right by kind of question and direction; written answers by verdict; words seen per lesson; the 12 hardest words. Days end at the browser's midnight. `GET /api/vocab/stats`, computed in `shared/vocab/stats.ts`.
+- **Automatic updates:** each build publishes `/version.json`. A window left open (the installed desktop or phone app, a tab) checks it when it comes to the front and every 15 minutes: it reloads by itself when nothing is under way, and otherwise offers *Mettre à jour*, applied at the next return to the home page. Back after a few minutes, a quiet screen is redrawn from the server; the list of books is asked again every 5 minutes, so a new import appears.
+- **Cache headers:** `no-cache` on the page, `version.json` and the manifest; a year, immutable, on the hashed `assets/`; a day on icons; `no-store` on the API. Before, the page had none, and a browser could keep an old build for hours.
+- **Rōmaji setting** for Japanese books: *Toujours*, or *Après la réponse* (the Japanese alone during the question). Remembered per book.
+- Vocabulary checks: statistics (local days, streaks, forecast, hardest words). Browser tests: 46.
+
+## 5.2.0
+
+- **Japanese vocabulary** from *Japanese vocabulary for English speakers — 5000 words*: `tools/vocab-extract-japanese.py` reads the EPUB (standard library only) into 22 lessons, 155 sections and 5,087 entries. Comma synonyms become alternatives (*digit / figure*).
+- **Rōmaji:** shown in italics under a Japanese word, under each Japanese option, and after the answer.
+- **Japanese answers** in kanji, kana or rōmaji: 学校, がっこう, ガッコウ, *gakkō*, *gakko*, *gakkou*. Kana is compared by its sound (`shared/vocab/kana.ts`), so a kanji word can be answered without its kanji. Full-width letters and Japanese punctuation are folded.
+- Japanese text is marked `lang="ja"` and uses the system's Japanese fonts, so kanji take their Japanese forms.
+- **Spanish book:** shown as *3000 words and phrases*, without the publisher's name. Its id stays `collins-spanish`, so progress is kept; migration `010` renames a book already imported.
+- File format 2: optional `reading` on an entry. API: `promptReading` and `optionReadings` on cards, `reading` on answers.
+- Database migration `010`: `reading` on `vocab_entries`.
+- Removed a debug line left in the origin check, which logged every POST request (`ORIGIN-DEBUG`).
+- Vocabulary checks: 65 grading cases. Browser tests: 41.
+
 ## 5.1.0
 
 - **New words at random:** a *Nouveaux mots* setting per book, *Au hasard* or *Dans l'ordre du livre*. Random is the default for an alphabetical word list (*Vocabulary 4000*), the book's order for a themed book (Collins).

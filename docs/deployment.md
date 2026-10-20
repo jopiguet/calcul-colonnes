@@ -203,7 +203,25 @@ Migrations run by themselves at the next start. Then:
 
 - **Before upgrading:** back up the database ([Database › Backups](database.md#backups)).
 - **From 3.x to 4.x:** sign-in becomes required. Open the app right after the upgrade and create your account: the first account receives all existing players. See [Authentication › Upgrading](authentication.md#upgrading-from-3x).
-- **After upgrading:** reload the open pages, because a browser still running the previous build is refused when it submits a test from another generator version, and shows *Résultat non enregistré*.
+- **After upgrading:** open pages and installed apps update by themselves, from 5.3 on: each build publishes `/version.json`, and a window learns of the new build when it comes to the front (or within 15 minutes). A page still on 5.2 or older needs one manual reload (Ctrl+R / Cmd+R, or close and reopen the installed app).
+
+### Caching
+
+The server sets `Cache-Control` itself, so nothing is needed at Cloudflare or
+a proxy:
+
+| Path | `Cache-Control` | Why |
+|---|---|---|
+| `/`, `*.html`, `/version.json`, `/manifest.webmanifest` | `no-cache` | Checked at every load: a reload always gets the current build |
+| `/assets/*` | `public, max-age=31536000, immutable` | Their names contain a hash of their content: a new build has new names |
+| Other files (icons) | `public, max-age=86400` | |
+| `/api/*` | `no-store` | Per account, changes with every answer |
+
+Before 5.3, `index.html` had no `Cache-Control`: browsers could keep it for
+hours from its date alone, which is why an installed desktop app showed an old
+version. Cloudflare's own rules (*Cache Rules*, *Cache Everything*) override
+these headers: if you added one for the site, exclude `/`, `/version.json`
+and `/api/`.
 
 ## Troubleshooting
 

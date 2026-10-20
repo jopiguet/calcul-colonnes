@@ -42,6 +42,9 @@ interface Result {
 let run: Run | null = null;
 let result: Result | null = null;
 
+/** True while a test is being answered: the app must not reload under it. */
+export const quizBusy = (): boolean => run !== null;
+
 export interface QuizContext {
   user: User;
   settings: Settings;

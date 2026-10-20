@@ -68,12 +68,21 @@ export interface HomeContext {
   open(activity: Activity): void;
 }
 
-let booksCache: VocabBookInfo[] | null = null;
+let booksCache: { books: VocabBookInfo[]; at: number } | null = null;
+/** The books change only on an import: kept a few minutes, then asked again. */
+const BOOKS_FOR = 5 * 60_000;
 
-/** Books on the server; looked up again until there is one (it may be imported meanwhile). */
+/** Books on the server; looked up again when none yet, after a while, or on request. */
 export async function vocabBooks(): Promise<VocabBookInfo[]> {
-  if (!booksCache || booksCache.length === 0) booksCache = await vocab.books();
-  return booksCache;
+  if (!booksCache || booksCache.books.length === 0 || Date.now() - booksCache.at > BOOKS_FOR) {
+    booksCache = { books: await vocab.books(), at: Date.now() };
+  }
+  return booksCache.books;
+}
+
+/** The next vocabBooks() asks the server (a book may have been imported). */
+export function forgetBooks(): void {
+  booksCache = null;
 }
 
 /** One activity: what it is, and what is waiting there. */

@@ -41,7 +41,9 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `auth.ts` | Sign-in screen and Account page |
 | `landing.ts` | Landing page for first visits, with its texts in the three languages |
 | `home.ts` | A player's home page: activities by subject, what is waiting in each; the *← Accueil* bar of activities |
-| `vocab.ts`, `vocab-i18n.ts` | A vocabulary book's page: lessons, cards, summary, and their texts |
+| `vocab.ts`, `vocab-i18n.ts` | A vocabulary book's page: lessons, cards, summary, settings (rōmaji included), and their texts |
+| `vocab-stats.ts` | A book's statistics page: figures, charts in plain HTML, hardest words |
+| `update.ts` | New build or stale data in a window left open: reload when quiet, or a *Mettre à jour* bar |
 | `auth-i18n.ts` | Their texts and the sign-in error messages |
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
 | `i18n.ts` | Interface texts (arithmetic part), current language, column names |
@@ -49,12 +51,13 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `dom.ts` | `el()` and `button()` helpers |
 | `style.css` | All styles; colours are CSS variables with a dark variant |
 
-### `tools/` — book extractors (Python, pdfplumber)
+### `tools/` — book extractors (Python; pdfplumber for the PDFs)
 
 | File | Role |
 |---|---|
 | `vocab-extract.py` | Collins *3000 words and phrases* PDF → vocabulary file |
 | `vocab-extract-4000.py` | *Vocabulary 4000* PDF → vocabulary file |
+| `vocab-extract-japanese.py` | *Japanese vocabulary for English speakers* EPUB → vocabulary file (standard library only) |
 
 ### `public/` — copied as is into the build
 
@@ -69,7 +72,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 |---|---|
 | `types.ts` | Types exchanged over the API |
 | `quiz/` | Question generators and test assembly; see [Question generators](question-generators.md) |
-| `vocab/` | Vocabulary: file format, grading, Leitner boxes, sessions; see [Vocabulary](vocabulary.md#code) |
+| `vocab/` | Vocabulary: file format, grading, Leitner boxes, sessions, statistics; see [Vocabulary](vocabulary.md#code) |
 
 ### `server/`
 

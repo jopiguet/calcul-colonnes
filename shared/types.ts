@@ -139,6 +139,10 @@ export interface VocabCard {
   feminine?: boolean;
   /** Multiple choice only: four options, one right. */
   options?: string[];
+  /** How the prompt reads (Japanese: its rōmaji), shown under it. */
+  promptReading?: string;
+  /** Multiple choice: how each option reads, in the order of `options` ("" when none). */
+  optionReadings?: string[];
 }
 
 export interface VocabSectionInfo {
@@ -204,8 +208,39 @@ export interface VocabAnswerResult {
   /** The answer as printed in the book. */
   expected: string;
   feminine: boolean;
+  /** How the term reads (Japanese: its rōmaji), "" when the book gives none. */
+  reading: string;
   /** Example or remark from the book, if any. */
   note: string;
   box: number;
   dueAt: number;
+}
+
+/** A share of answers: how many, how many right. */
+export interface VocabTally {
+  answers: number;
+  right: number;
+}
+
+/** A player's statistics on one book (GET /api/vocab/stats). Days are the player's local days. */
+export interface VocabStats {
+  /** Entries of the book, by status (both directions considered, see entryStatus). */
+  words: { total: number; new: number; learning: number; known: number; mastered: number };
+  /** Cards per Leitner box, per direction: index 1–6; index 0 is unused. */
+  boxes: { recognise: number[]; recall: number[] };
+  /** Every answer on this book. */
+  all: VocabTally;
+  /** The last 30 days, oldest first: answers, right ones, and entries seen for the first time. */
+  days: { day: string; answers: number; right: number; newWords: number }[];
+  /** Days in a row with at least one answer, up to today (or yesterday, if nothing yet today); and the longest. */
+  streak: { current: number; best: number };
+  /** Cards due: index 0 is today, overdue included; then the next 13 days. */
+  forecast: number[];
+  /** Over every answer: by question kind and direction; written answers by verdict. */
+  byMode: { choice: VocabTally; written: VocabTally };
+  byDirection: { recognise: VocabTally; recall: VocabTally };
+  verdicts: { right: number; accent: number; typo: number; article: number; wrong: number };
+  lessons: { id: number; title: string; total: number; new: number; learning: number; known: number; mastered: number }[];
+  /** The entries most often answered wrong, at most 12. */
+  hardest: { entryId: number; term: string; meaning: string; reading: string; wrong: number; answers: number; box: number }[];
 }

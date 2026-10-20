@@ -27,6 +27,8 @@ export interface SessionEntry {
   feminine: boolean;
   /** Example or remark, shown after the answer ("corporeal" for "corp"). */
   note: string;
+  /** How the term reads, when its script does not say it (Japanese rōmaji), or "". */
+  reading: string;
   book: BookInfo;
 }
 
@@ -80,7 +82,9 @@ export function distractors(entry: SessionEntry, direction: Direction, pool: Ses
   const samePrompt = normalise(prompt);
   const taken = new Set(acceptedForms(answer));
   taken.add(normalise(answer));
-  const words = answer.split(" ").length;
+  // Length in words; in Japanese, written without spaces, in characters.
+  const size = (text: string): number => (sides(entry, direction).lang === "ja" ? [...text].length : text.split(" ").length);
+  const words = size(answer);
   // In a themed book, the same section gives plausible wrong options. In an
   // alphabetical list it gives look-alikes (abase, abash, abate): the whole
   // book is used instead, keeping only an explicit group (prefixes with prefixes).
@@ -96,8 +100,7 @@ export function distractors(entry: SessionEntry, direction: Direction, pool: Ses
     // Similar length first, so the answer does not stand out by its size.
     const candidates = shuffle(tier, random).sort(
       (a, b) =>
-        Math.abs(sides(a, direction).answer.split(" ").length - words) -
-        Math.abs(sides(b, direction).answer.split(" ").length - words),
+        Math.abs(size(sides(a, direction).answer) - words) - Math.abs(size(sides(b, direction).answer) - words),
     );
     for (const other of candidates) {
       if (chosen.length === 3) return chosen;
@@ -181,8 +184,18 @@ export function buildSession(req: SessionRequest): VocabCard[] {
       answerLang: lang,
       ...(entry.group ? { group: entry.group } : {}),
       ...(direction === "recognise" && entry.feminine ? { feminine: true } : {}),
+      ...(direction === "recognise" && entry.reading ? { promptReading: entry.reading } : {}),
     };
-    if (mode === "choice") card.options = shuffle([display(answer), ...distractors(entry, direction, req.pool, req.random)], req.random);
+    if (mode === "choice") {
+      card.options = shuffle([display(answer), ...distractors(entry, direction, req.pool, req.random)], req.random);
+      // Japanese options with their rōmaji, for a learner who does not read kana yet.
+      if (direction === "recall" && entry.reading) {
+        const readings = new Map<string, string>();
+        for (const e of [entry, ...req.pool]) if (e.reading && !readings.has(display(e.term))) readings.set(display(e.term), e.reading);
+        readings.set(display(entry.term), entry.reading);
+        card.optionReadings = card.options.map((o) => readings.get(o) ?? "");
+      }
+    }
     return card;
   });
 }

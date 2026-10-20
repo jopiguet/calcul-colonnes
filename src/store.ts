@@ -13,10 +13,11 @@ import type {
   VocabCard,
   VocabLessonInfo,
   VocabProgress,
+  VocabStats,
 } from "../shared/types";
 
 export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, Profile, SignInMethod, User, UserStats };
-export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabProgress };
+export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabProgress, VocabStats };
 
 /**
  * Players and scores live in the server's database (SQLite, or PostgreSQL on
@@ -113,6 +114,9 @@ export const vocab = {
     call(
       `/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&purpose=${target.purpose}&size=${size}&mode=${mode}&order=${order}`,
     ),
+  /** A player's statistics on one book; days are counted in the browser's time zone. */
+  stats: (userId: number, bookId: number): Promise<VocabStats> =>
+    call(`/vocab/stats?userId=${userId}&book=${bookId}&tz=${-new Date().getTimezoneOffset()}`),
   /** The server grades the answer and moves the card between boxes. */
   answer: (answer: VocabAnswer): Promise<VocabAnswerResult> => post("/vocab/answers", answer),
 };

@@ -25,9 +25,11 @@ import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { quizView } from "./quiz";
-import { activityBar, homeView, vocabBooks, type Activity } from "./home";
-import { vocabView } from "./vocab";
+import { activityBar, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
+import { vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
+import { quizBusy } from "./quiz";
+import { applyPendingUpdate, watchForUpdates } from "./update";
 import { progressView } from "./progress";
 
 const NAME_LENGTH = 20;
@@ -240,7 +242,19 @@ function open(activity: Activity): void {
 
 function goHome(): void {
   updateSettings({ mode: "home" });
+  applyPendingUpdate();
   void render();
+}
+
+/**
+ * Nothing a reload would lose: no vocabulary session or test under way, and
+ * nothing typed in a field (a column exercise, a name, a password).
+ */
+function idle(): boolean {
+  if (vocabBusy() || quizBusy()) return false;
+  return ![...document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("#app input, #app textarea")].some(
+    (field) => field.type !== "checkbox" && field.type !== "radio" && field.type !== "hidden" && field.value.trim() !== "" && !field.disabled,
+  );
 }
 
 /** Player and scores on the left (while playing), language on the right (always). */
@@ -693,3 +707,10 @@ window.addEventListener("hashchange", () => {
 });
 
 void start();
+watchForUpdates({
+  idle,
+  refresh: () => {
+    forgetBooks();
+    void render();
+  },
+});

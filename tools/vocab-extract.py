@@ -253,7 +253,7 @@ def extract(path: str) -> dict:
 
     return {
         "format": 2,
-        "book": {"id": "collins-spanish", "title": "Collins Spanish", "kind": "translation", "term": "es", "meaning": "en"},
+        "book": {"id": "collins-spanish", "title": "3000 words and phrases", "kind": "translation", "term": "es", "meaning": "en"},
         "lessons": [
             {
                 "title": l.title_es,

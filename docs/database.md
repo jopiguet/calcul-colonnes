@@ -156,7 +156,7 @@ progress. See [Vocabulary](vocabulary.md).
 | `vocab_books` | one per book | `slug` (the file's book id), `position`, `title`, `kind` (`translation` or `definition`), `term_lang`, `meaning_lang`, `ordering` (`book` or `alphabetical`) |
 | `vocab_lessons` | one per lesson (chapter) | `book_id`, `position` (unique per book), `title`, `subtitle` |
 | `vocab_sections` | one per section | `lesson_id`, `position`, `title`, `subtitle` |
-| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example) |
+| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji) |
 | `vocab_progress` | one per player, entry and direction | primary key `(user_id, entry_id, direction)`; `box` 1–6, `due_at`, `last_at`, `right_count`, `wrong_count` |
 | `vocab_answers` | one per answer | `user_id`, `entry_id`, `direction`, `mode`, `at`, `given`, `verdict`, `correct` |
 
@@ -185,6 +185,7 @@ start, in order, each in its own transaction together with its row in
 | `007_vocabulary` | `vocab_lessons`, `vocab_sections`, `vocab_entries`, `vocab_progress`, `vocab_answers` |
 | `008_vocab_books` | `vocab_books`; lessons belong to a book; `es`/`en` become `term`/`meaning`, titles become `title`/`subtitle`; `note` on entries. A Spanish book already imported becomes the book `collins-spanish`, keeping its ids and progress. |
 | `009_vocab_ordering` | `ordering` on `vocab_books`; the book `english-4000` becomes `alphabetical` (common SQL, one file) |
+| `010_vocab_reading` | `reading` on `vocab_entries`; the Spanish book's title loses the publisher's name (common SQL, one file) |
 
 **File names.**
 

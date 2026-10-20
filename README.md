@@ -40,14 +40,16 @@ exponentials and logarithms, at *lycée / bachillerato* or university level.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.
 - An automated check verifies tens of thousands of generated questions numerically, independently of the generators.
 
-**Vocabulary** — from books you own, imported once: Spanish with translations, English with definitions.
+**Vocabulary** — from books you own, imported once: Spanish and Japanese with translations, English with definitions.
 
-- Their chapters are the lessons and their sections the sections. The Collins *3000 words and phrases* and *Vocabulary 4000* layouts are read automatically from the PDF; any other list can be written as a simple JSON file.
+- Their chapters are the lessons and their sections the sections. *Spanish 3000 words and phrases* and *Vocabulary 4000* are read automatically from their PDF, *Japanese vocabulary for English speakers* from its EPUB; any other list can be written as a simple JSON file.
 - A translation is chosen or written; a definition is chosen and the word written.
 - Spaced repetition with Leitner boxes: each word, in each direction, comes back after 10 minutes, then 1, 3, 7, 16 and 35 days, and starts again after a mistake.
 - Learn a section or a chapter; review a section, a chapter or the whole vocabulary, weakest words first.
 - Multiple choice while a word is new, written answers once it is known. Accents and one-letter slips are forgiven with the spelling shown; a wrong article is not.
 - The book's own notation is understood: `el amigo / la amiga`, `Buenas tardes / noches`, `embarcar(se)`.
+- Japanese comes with its rōmaji, and is answered in kanji, kana or rōmaji: 学校, がっこう, *gakkō* and *gakko* are all right.
+- Statistics per book: progress by lesson, the last 30 days, the reviews coming, the hardest words.
 
 **Players and progress**
 
@@ -88,7 +90,7 @@ npm start          # http://localhost:8787
 | `npm run check:quiz` | Generates thousands of tests and verifies every question (see [question generators](docs/question-generators.md#verification)) |
 | `npm run test:e2e` | Browser tests of the whole app, on a separate server and database (see [Development › Tests](docs/development.md#tests)) |
 | `npm run vocab:import -- data/vocab-english.json` | Imports a vocabulary book, keeping progress on unchanged entries (see [Vocabulary](docs/vocabulary.md)) |
-| `npm run check:vocab` | Checks the vocabulary grading; with a file, every entry |
+| `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |
 | `npm run db:copy-to-postgres` | One-off copy of the SQLite data into the PostgreSQL database named by `DATABASE_URL` |
 
 ## Configuration

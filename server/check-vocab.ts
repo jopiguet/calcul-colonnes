@@ -9,6 +9,7 @@ import { readFileSync } from "node:fs";
 import { acceptedForms, grade, writable, type AnswerLang, type Verdict } from "../shared/vocab/grade.ts";
 import { askMode, entryStatus, nextState, DAY, MINUTE, TOP_BOX } from "../shared/vocab/schedule.ts";
 import { parseVocabFile } from "../shared/vocab/format.ts";
+import { computeStats } from "../shared/vocab/stats.ts";
 import { buildSession, canWrite, distractors, progressKey, type ProgressMap, type SessionEntry } from "../shared/vocab/session.ts";
 
 let failures = 0;
@@ -71,6 +72,34 @@ for (const [given, expected, lang, verdict] of cases) {
   expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)})`, grade(given, expected, lang), verdict);
 }
 
+// Japanese answers: the term in Japanese script, its rōmaji, or kana for its sound.
+const japanese: [string, string, string, Verdict][] = [
+  ["ガチョウ", "ガチョウ", "gachō", "right"],
+  ["gachō", "ガチョウ", "gachō", "right"],
+  ["gacho", "ガチョウ", "gachō", "right"],
+  ["gachou", "ガチョウ", "gachō", "right"],
+  ["Gachoo", "ガチョウ", "gachō", "right"],
+  ["neko", "猫", "neko", "right"],
+  ["ねこ", "猫", "neko", "right"],
+  ["ネコ", "猫", "neko", "right"],
+  ["がっこう", "学校", "gakkō", "right"],
+  ["きょう", "今日", "kyō", "right"],
+  ["コーヒー", "コーヒー", "kōhī", "right"],
+  ["しんぶん", "新聞", "shimbun", "right"],
+  ["CD", "CD（シーディー）", "shīdī", "right"],
+  ["ＣＤ", "CD（シーディー）", "shīdī", "right"],
+  ["こんにちは！", "こんにちは！", "konnichiwa", "right"],
+  ["konnichiwa", "こんにちは！", "konnichiwa", "right"],
+  ["konichiwa", "こんにちは！", "konnichiwa", "typo"],
+  ["inu", "猫", "neko", "wrong"],
+  ["いぬ", "猫", "neko", "wrong"],
+  ["", "猫", "neko", "wrong"],
+  ["neko", "猫", "", "wrong"],
+];
+for (const [given, expected, reading, verdict] of japanese) {
+  expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)}, ja)`, grade(given, expected, "ja", reading), verdict);
+}
+
 expect("writable short", writable("el coche"), true);
 expect("writable long", writable("¿Puedo preguntarle qué edad tiene?"), false);
 
@@ -96,7 +125,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   const words = ["uno", "dos", "tres", "cuatro", "cinco"];
   const book = { kind: "translation" as const, termLang: "es", meaningLang: "en", alphabetical: false };
   const entries: SessionEntry[] = words.map((term, i) => ({
-    id: i + 1, sectionId: 1, position: i, term, meaning: `w${i + 1}`, group: "", feminine: false, note: "", book,
+    id: i + 1, sectionId: 1, position: i, term, meaning: `w${i + 1}`, group: "", feminine: false, note: "", reading: "", book,
   }));
   const progress: ProgressMap = new Map([
     [progressKey(1, "recognise"), { box: 2, dueAt: at - 1, lastAt: at - DAY }], // due
@@ -119,7 +148,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
 {
   const book = { kind: "definition" as const, termLang: "en", meaningLang: "en", alphabetical: true };
   const make = (id: number, term: string, meaning: string): SessionEntry => ({
-    id, sectionId: 1, position: id, term, meaning, group: "", feminine: false, note: "", book,
+    id, sectionId: 1, position: id, term, meaning, group: "", feminine: false, note: "", reading: "", book,
   });
   const roots = [make(1, "macro", "large"), make(2, "magn", "large"), make(3, "bene", "good"), make(4, "chron", "time"), make(5, "mono", "one")];
   expect("definition: recognise never written", canWrite(roots[0]!, "recognise"), false);
@@ -136,7 +165,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   const book = { kind: "definition" as const, termLang: "en", meaningLang: "en", alphabetical: true };
   const list: SessionEntry[] = Array.from({ length: 30 }, (_, i) => ({
     id: i + 1, sectionId: 1 + Math.floor(i / 10), position: i % 10, term: `word${i + 1}`, meaning: `meaning number ${i + 1}`,
-    group: "", feminine: false, note: "", book,
+    group: "", feminine: false, note: "", reading: "", book,
   }));
   let seed = 7;
   const random = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
@@ -153,14 +182,72 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   if (otherSections === 0) expect("alphabetical: wrong options from other sections", 0, "some");
 }
 
+// A Japanese book: the rōmaji goes with the prompt, and with each option of a recall card.
+{
+  const book = { kind: "translation" as const, termLang: "ja", meaningLang: "en", alphabetical: false };
+  const words: [string, string, string][] = [["猫", "cat", "neko"], ["犬", "dog", "inu"], ["鳥", "bird", "tori"], ["魚", "fish", "sakana"]];
+  const list: SessionEntry[] = words.map(([term, meaning, reading], i) => ({
+    id: i + 1, sectionId: 1, position: i, term, meaning, group: "", feminine: false, note: "", reading, book,
+  }));
+  const progress: ProgressMap = new Map(list.map((e) => [progressKey(e.id, "recognise"), { box: 2, dueAt: 1e12, lastAt: 0 }]));
+  const cards = buildSession({ entries: list, pool: list, progress, now: 0, size: 10, preference: "choice", purpose: "learn", newOrder: "book", random: Math.random });
+  const recall = cards.find((c) => c.direction === "recall")!;
+  const readingOf = new Map(words.map(([term, , reading]) => [term, reading]));
+  expect("ja recall: options with their rōmaji", recall.optionReadings, recall.options!.map((o) => readingOf.get(o)));
+  expect("ja recall: no reading on the English prompt", recall.promptReading, undefined);
+  const first = buildSession({ entries: list, pool: list, progress: new Map(), now: 0, size: 1, preference: "choice", purpose: "learn", newOrder: "book", random: () => 0 })[0]!;
+  expect("ja recognise: rōmaji with the prompt", first.promptReading, readingOf.get(first.prompt));
+}
+
+// Statistics: local days, streaks, forecast, hardest words.
+{
+  const offsetMinutes = 120; // Madrid in summer
+  const local = (day: number, hour: number): number => day * DAY + hour * 3_600_000 - offsetMinutes * 60_000;
+  const today = 20_000;
+  const now = local(today, 10);
+  const entries = [1, 2, 3].map((id) => ({ id, lessonId: id === 3 ? 2 : 1, term: `t${id}`, meaning: `m${id}`, reading: "" }));
+  const answer = (entryId: number, at: number, correct: boolean, mode: "choice" | "written" = "choice", verdict = correct ? "right" : "wrong") =>
+    ({ entryId, direction: "recognise" as const, mode, at, verdict, correct });
+  const stats = computeStats({
+    entries,
+    lessons: [{ id: 1, title: "One" }, { id: 2, title: "Two" }],
+    progress: new Map([
+      [1, { recognise: { box: 2, dueAt: now - DAY, wrong: 0 }, recall: { box: 1, dueAt: local(today + 3, 9), wrong: 0 } }],
+      [2, { recognise: { box: 1, dueAt: local(today, 23), wrong: 2 } }],
+    ]),
+    answers: [
+      answer(1, local(today - 3, 20), true),
+      answer(2, local(today - 2, 23.5), false), // 23:30 local: still that day, though the next day in UTC+0
+      answer(2, local(today - 1, 8), false, "written", "wrong"),
+      answer(1, local(today - 1, 9), true, "written", "accent"),
+      answer(2, local(today, 0.25), true),
+    ],
+    now,
+    offsetMinutes,
+  });
+  expect("stats: words", stats.words, { total: 3, new: 1, learning: 2, known: 0, mastered: 0 });
+  expect("stats: boxes", [stats.boxes.recognise[1], stats.boxes.recognise[2], stats.boxes.recall[1]], [1, 1, 1]);
+  expect("stats: forecast today (overdue included), in 3 days", [stats.forecast[0], stats.forecast[3]], [2, 1]);
+  expect("stats: last days", stats.days.slice(-4).map((d) => [d.answers, d.right, d.newWords]), [[1, 1, 1], [1, 0, 1], [2, 1, 0], [1, 1, 0]]);
+  expect("stats: today is the last day", stats.days.at(-1)!.day, new Date(today * DAY).toISOString().slice(0, 10));
+  expect("stats: streak", stats.streak, { current: 4, best: 4 });
+  expect("stats: by mode", stats.byMode, { choice: { answers: 3, right: 2 }, written: { answers: 2, right: 1 } });
+  expect("stats: written verdicts", stats.verdicts, { right: 0, accent: 1, typo: 0, article: 0, wrong: 1 });
+  expect("stats: hardest", stats.hardest.map((h) => [h.term, h.wrong, h.answers]), [["t2", 2, 3]]);
+  expect("stats: lessons", stats.lessons.map((l) => [l.title, l.total, l.new]), [["One", 2, 0], ["Two", 1, 1]]);
+  const later = computeStats({ entries, lessons: [], progress: new Map(), answers: [answer(1, local(today - 2, 12), true)], now, offsetMinutes });
+  expect("stats: a missed day ends the streak", later.streak, { current: 0, best: 1 });
+}
+
 // Every entry of a vocabulary file
 const file = process.argv[2];
 if (file) {
   const vocab = parseVocabFile(JSON.parse(readFileSync(file, "utf8")));
   let entries = 0;
   let written = 0;
-  const termLang = vocab.book.term === "es" ? "es" : "en";
-  const meaningLang = vocab.book.meaning === "es" ? "es" : "en";
+  const lang = (code: string): AnswerLang => (code === "es" || code === "ja" ? code : "en");
+  const termLang = lang(vocab.book.term);
+  const meaningLang = lang(vocab.book.meaning);
   for (const lesson of vocab.lessons) {
     for (const section of lesson.sections) {
       for (const entry of section.entries) {
@@ -169,9 +256,13 @@ if (file) {
           failures++;
           console.error(`✘ nothing to accept: ${section.title}: ${entry.term} / ${entry.meaning}`);
         }
-        if (grade(entry.term, entry.term, termLang) !== "right") {
+        if (grade(entry.term, entry.term, termLang, entry.reading) !== "right") {
           failures++;
           console.error(`✘ own term refused: ${entry.term}`);
+        }
+        if (entry.reading && grade(entry.reading, entry.term, termLang, entry.reading) !== "right") {
+          failures++;
+          console.error(`✘ own reading refused: ${entry.term} (${entry.reading})`);
         }
         if (grade(entry.meaning, entry.meaning, meaningLang) !== "right") {
           failures++;
@@ -188,4 +279,4 @@ if (failures > 0) {
   console.error(`${failures} failure(s)`);
   process.exit(1);
 }
-console.log(`vocabulary checks passed (${cases.length} grading cases)`);
+console.log(`vocabulary checks passed (${cases.length + japanese.length} grading cases)`);

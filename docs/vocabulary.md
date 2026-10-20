@@ -9,8 +9,10 @@ Two kinds of book are supported:
 
 | Kind | Example | A card shows | and asks |
 |---|---|---|---|
-| translation | Collins *Spanish 3000 words and phrases* | *la llave* | its meaning: *key* |
+| translation | *Spanish 3000 words and phrases* | *la llave* | its meaning: *key* |
 | | | *key* | the Spanish: *la llave* |
+| translation | *Japanese vocabulary for English speakers* | 猫 *neko* | its meaning: *cat* |
+| | | *cat* | the Japanese: 猫, ねこ or *neko* |
 | definition | *Vocabulary 4000* (English) | *abase* | its definition: *degrade* |
 | | | *degrade* | the word: *abase* |
 
@@ -26,12 +28,12 @@ Two kinds of book are supported:
 The app contains **no vocabulary of its own**. The words come from books you
 own, and stay in your database:
 
-- **Extraction:** the scripts in `tools/` read your copy of a PDF and write a JSON file to `data/`, which is ignored by version control.
+- **Extraction:** the scripts in `tools/` read your copy of a PDF or EPUB and write a JSON file to `data/`, which is ignored by version control.
 - **Storage:** the import puts the entries in your database (SQLite or Neon). They are never part of the project, a build or a release.
 - **Access:** keep the app behind its sign-in, and set `REGISTRATION=closed` if the server is reachable from the internet. Only your accounts then see the content.
 
-The tests use two invented books (`tests/e2e/fixtures/`): 27 Spanish entries
-and 20 English ones.
+The tests use three invented books (`tests/e2e/fixtures/`): 27 Spanish
+entries, 20 English ones and 13 Japanese ones.
 
 ## Importing a book
 
@@ -44,16 +46,22 @@ python3 tools/vocab-extract.py "Collins Spanish 3000.pdf" > data/vocab-spanish.j
 # Vocabulary 4000 (Jeff Kolby)
 python3 tools/vocab-extract-4000.py "Vocabulary 4000.pdf" > data/vocab-english.json
 
+# Japanese vocabulary for English speakers, 5000 words (EPUB; no pip install needed)
+python3 tools/vocab-extract-japanese.py "Japanese vocabulary.epub" > data/vocab-japanese.json
+
 npm run check:vocab -- data/vocab-english.json   # optional: every entry can be asked and graded
 npm run vocab:import -- data/vocab-spanish.json  # into the database of .env
 npm run vocab:import -- data/vocab-english.json
+npm run vocab:import -- data/vocab-japanese.json
 ```
 
 Each file holds one book, identified by its id (`collins-spanish`,
-`english-4000`). Importing a file updates that book only.
+`english-4000`, `japanese-5000`). Importing a file updates that book only. The
+Spanish book keeps the id of its first version, so progress carries over; it
+is shown by its title, *3000 words and phrases*.
 
 **Instead of the command,** list the files in `.env`:
-`VOCAB_FILE=data/vocab-spanish.json,data/vocab-english.json`. At startup the
+`VOCAB_FILE=data/vocab-spanish.json,data/vocab-english.json,data/vocab-japanese.json`. At startup the
 server imports each book that is not on it yet, so once.
 
 **Importing again** (after a new extraction, or a corrected file) keeps every
@@ -63,7 +71,7 @@ Entries no longer in the file are removed, with their progress. The import
 runs in one transaction, and takes a second or two for a whole book, on Neon
 too.
 
-### Collins *Spanish 3000 words and phrases*
+### *Spanish 3000 words and phrases* (Collins)
 
 `tools/vocab-extract.py` reads the layout of the Collins series:
 
@@ -92,6 +100,39 @@ other languages of the same series should work too.
 27 lessons, 174 sections, 4,150 entries (3,929 words, 221 word parts). The
 book is marked `alphabetical`: the letters are only a way to find a word, not
 an order to learn in.
+
+### *Japanese vocabulary for English speakers — 5000 words*
+
+`tools/vocab-extract-japanese.py` reads the EPUB (T&P Books), with the
+standard library only:
+
+| In the book | In the app |
+|---|---|
+| Chapter ("FOOD. NUTRICION") | Lesson ("Food. Nutricion") |
+| Numbered heading ("35. Food") | Section ("Food") |
+| English, Japanese, rōmaji | Entry: the Japanese is the term, the English its meaning, the rōmaji its reading |
+| "digit, figure", "to reserve, to book" | "digit / figure": either is accepted. Commas in brackets ("to order (meal, etc.)") stay. |
+| "(vt)", "(adj)", "(fam.)" | Kept: they tell apart *Hello! (fam.)* and *Hello! (form.)*, and are optional in an answer |
+| Blank lines between small groups of words | Not kept: sections (3 to 80 words) are enough for the wrong options |
+
+22 lessons, 155 sections, 5,087 entries. Some English words appear in several
+themes (*to pay* in shopping and in banking); each is its own entry.
+
+**The rōmaji** is shown in italics under the Japanese, on the card and under
+each option of a multiple-choice answer: the book is for learners who do not
+read kana yet. The *Rōmaji* setting of the book's page can hold it back until
+the answer (*Après la réponse*), to practise reading kana. When the Japanese is to be written, any of these is right:
+
+| Typed | For 学校 (*gakkō*) |
+|---|---|
+| Kanji or kana, as printed | 学校 |
+| Kana for its sound | がっこう, ガッコウ |
+| Rōmaji, long vowels marked or not | *gakkō*, *gakko*, *gakkou* |
+
+The app has no Japanese font of its own: Japanese text is marked `lang="ja"`
+and uses the system's Japanese fonts (Hiragino on Apple devices, Yu Gothic on
+Windows, Noto Sans CJK on Android and Linux), so kanji take their Japanese
+forms.
 
 ## The file format
 
@@ -136,6 +177,7 @@ Format 2, one book per file:
 | `group` | Optional heading inside the section |
 | `note` | Optional example or remark, shown after the answer |
 | `feminine` | Optional: a feminine noun taking *el* (`el agua`), shown as *f* |
+| `reading` | Optional: how the term reads when its script does not say it, in Latin letters (Japanese rōmaji: `"gachō"` for ガチョウ). Shown with the term, and accepted as an answer. |
 
 Files in format 1, written by version 4.2 for the Collins book (titles and
 entries as `{ "en", "es" }`), are still read, as the book `collins-spanish`.
@@ -195,6 +237,13 @@ The cards chosen are then shuffled together. *Due* is the daily routine, and
 the home page shows how many words are due in each book; *Review* is for going
 over a chapter before a test, or over everything learnt so far.
 
+**Statistics.** *📊 Statistiques* on a book's page: words by status and per
+lesson, answers over the last 30 days, the reviews coming in the next 14 days,
+cards per box, the share right by kind of question, written answers by
+verdict, and the hardest words. Computed by `shared/vocab/stats.ts` from the
+player's boxes and answers; days end at the browser's midnight (`tz` in the
+request). See the [user guide](user-guide.md#vocabulary).
+
 **Multiple choice or written.** The *Questions* setting:
 
 | Setting | Asks |
@@ -220,7 +269,8 @@ so neither is a wrong option for the other.
 ## How answers are graded
 
 The grading is in `shared/vocab/grade.ts`. The server's verdict is what is
-recorded. Case, punctuation (`¿ ? ¡ ! . ,`) and spacing are ignored.
+recorded. Case, punctuation (`¿ ? ¡ ! . ,`, and `。 、 ！ ？` in Japanese) and
+spacing are ignored.
 
 | Verdict | When | Counts as |
 |---|---|---|
@@ -251,10 +301,25 @@ of two Spanish words with the same English meaning.
 In English answers, *the*, *a*, *an* and *to* are optional: *key*, *the key*;
 *walk*, *to walk*.
 
+**Japanese answers** (`shared/vocab/grade.ts`, `shared/vocab/kana.ts`):
+
+| Typed | Verdict |
+|---|---|
+| The term as printed, full-width or half-width (`ＣＤ`, `CD`) | right |
+| Without a bracketed reading: *CD* for `CD（シーディー）` | right |
+| Kana, read as rōmaji: ねこ for 猫 (*neko*) | right |
+| Rōmaji: case, spaces, hyphens, long-vowel marks and spellings ignored (*tōkyō*, *tokyo*, *toukyou*; *shimbun*, *shinbun*) | right |
+| Rōmaji one letter off, in a word of at least 5 letters (*konichiwa*) | typo |
+| Anything else | wrong |
+
+Kana is compared by its sound, so は is *ha*: こんにちは typed in kana is right
+as printed, while *konnichiha* is a typo for *konnichiwa*.
+
 A multiple-choice answer is compared with the option as printed.
 
-`npm run check:vocab` runs 44 grading cases, the scheduling rules, the three
-kinds of session and the rules of definition books. With a file, it also
+`npm run check:vocab` runs 65 grading cases (21 of them Japanese), the
+scheduling rules, the three kinds of session, the rules of definition books
+and the rōmaji on Japanese cards. With a file, it also
 checks that every entry is accepted when typed as printed, in both
 directions.
 
@@ -264,14 +329,18 @@ directions.
 |---|---|
 | `tools/vocab-extract.py` | Collins PDF → JSON |
 | `tools/vocab-extract-4000.py` | *Vocabulary 4000* PDF → JSON |
+| `tools/vocab-extract-japanese.py` | Japanese EPUB → JSON |
 | `shared/vocab/format.ts` | File formats 1 and 2, and their validation |
 | `shared/vocab/grade.ts` | Grading of written answers |
+| `shared/vocab/kana.ts` | Kana → rōmaji, for Japanese answers typed in kana |
+| `shared/vocab/stats.ts` | A player's statistics on a book, from their boxes and answers |
 | `shared/vocab/schedule.ts` | Boxes, intervals, how a card is asked |
 | `shared/vocab/session.ts` | Choice of cards and wrong options; sides of a card by book kind |
 | `server/vocab.ts` | Storage, import, sessions, answers; the `/api/vocab` routes |
 | `server/vocab-import.ts` | `npm run vocab:import` |
 | `server/check-vocab.ts` | `npm run check:vocab` |
 | `src/vocab.ts`, `src/vocab-i18n.ts` | A book's page: lessons, cards, summary; texts in three languages |
+| `src/vocab-stats.ts` | A book's statistics page |
 | `src/home.ts` | The home page, with the books and what is due in each |
 | `tests/e2e/vocab.spec.ts` | Browser tests, on the invented books |
 

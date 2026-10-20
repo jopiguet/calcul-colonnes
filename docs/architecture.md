@@ -176,6 +176,12 @@ the data routes, which require a session.
 The test in progress lives in `src/quiz.ts` (`run`, `result`), so it survives
 re-renders such as a language change, but not a page reload.
 
+That is why `src/update.ts` reloads for a new build only when nothing is under
+way: no vocabulary session (`vocabBusy()`), no test (`quizBusy()`), no field
+with something typed in it. Otherwise it shows a *Mettre à jour* bar, and
+reloads at the next return to the home page. The build id it compares is
+compiled in by `vite.config.ts` and published as `/version.json`.
+
 ## Internationalisation
 
 - **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 39 kinds of question and of the 36 mistake types. Every dictionary is typed against the French one, so a missing translation is a compile error.

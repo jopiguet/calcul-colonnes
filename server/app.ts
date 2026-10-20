@@ -147,6 +147,12 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
   });
 
   const app = new Hono<AppEnv>();
+  // Answers are per account and change with every answer: never kept by a
+  // browser or a proxy (Cloudflare).
+  app.use("/api/*", async (c, next) => {
+    await next();
+    if (!c.res.headers.has("Cache-Control")) c.res.headers.set("Cache-Control", "no-store");
+  });
   app.route("/api", api);
   return app;
 }

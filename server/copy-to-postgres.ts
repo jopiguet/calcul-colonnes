@@ -101,7 +101,7 @@ try {
         insert("vocab_books", ["id", "slug", "position", "title", "kind", "term_lang", "meaning_lang"], vocabBooks) +
         insert("vocab_lessons", ["id", "book_id", "position", "title", "subtitle"], vocabLessons) +
         insert("vocab_sections", ["id", "lesson_id", "position", "title", "subtitle"], vocabSections) +
-        insert("vocab_entries", ["id", "section_id", "position", "term", "meaning", "grp", "feminine", "note"], vocabEntries) +
+        insert("vocab_entries", ["id", "section_id", "position", "term", "meaning", "grp", "feminine", "note", "reading"], vocabEntries) +
         insert(
           "vocab_progress",
           ["user_id", "entry_id", "direction", "box", "due_at", "last_at", "right_count", "wrong_count"],

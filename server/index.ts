@@ -55,6 +55,20 @@ const app = createApp(db, authConfig, providers);
 
 // In production the same process serves the built app (npm run build → dist/).
 if (existsSync("dist/index.html")) {
+  // Caching: the page and version.json are checked on every load, so a new
+  // build shows up at once (an installed app included); the hashed files in
+  // assets/ never change and are kept for a year; icons for a day.
+  app.use("/*", async (c, next) => {
+    await next();
+    const path = c.req.path;
+    if (path.startsWith("/api/") || c.res.status !== 200 || c.res.headers.has("Cache-Control")) return;
+    const policy = path.startsWith("/assets/")
+      ? "public, max-age=31536000, immutable"
+      : path === "/" || path.endsWith(".html") || path === "/version.json" || path.endsWith(".webmanifest")
+        ? "no-cache"
+        : "public, max-age=86400";
+    c.res.headers.set("Cache-Control", policy);
+  });
   app.use("/*", serveStatic({ root: "./dist" }));
 } else {
   console.log("dist/ not found: API only (use `npm run dev`, or `npm run build` first)");

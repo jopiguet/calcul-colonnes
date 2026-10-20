@@ -309,3 +309,117 @@ test("an alphabetical book: new words at random across the book by default, or i
   // The session mixes its cards, but every new one is among the book's first unseen words.
   expect([...unseenFirst, ...["jovial", "keen", "lofty", "meek", "nimble", "odd", "placid"]]).toContain(prompt);
 });
+
+test("the Japanese book: rōmaji under the word, and accepted as an answer, like kana and kanji", async ({ page }) => {
+  const name = await newPlayer(page, "Jpn");
+  const user = await userByName(page.request, name);
+  await openActivity(page, "vocab-test-japanese");
+  await expect(page.locator(".vocab-home h1")).toHaveText("Vocabulaire japonais");
+  await expect(page.locator(".vocab-lesson")).toHaveCount(2);
+
+  // A new word: the Japanese shown with its rōmaji, the English asked as multiple choice.
+  const words: Record<string, [string, string]> = {
+    猫: ["cat", "neko"], 犬: ["dog", "inu"], 鳥: ["bird", "tori"], 魚: ["fish", "sakana"], 馬: ["horse", "uma"], 牛: ["cow / ox", "ushi"],
+  };
+  await startFirstSection(page);
+  await expect(page.locator(".vocab-ask")).toHaveText("Que veut dire ?");
+  const prompt = await page.locator(".vocab-prompt").innerText();
+  await expect(page.locator(".vocab-prompt")).toHaveAttribute("lang", "ja");
+  const [meaning, reading] = words[prompt]!;
+  await expect(page.locator(".vocab-reading")).toHaveText(reading);
+  const options = await page.locator(".choice-text").allInnerTexts();
+  await page.keyboard.press(String(options.indexOf(meaning) + 1));
+  await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
+
+  // Recall, written: the word in kanji, in kana or in rōmaji, long vowels marked or not.
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { slug: string; lessons: { id: number }[] }[];
+  const japanese = books.find((b) => b.slug === "test-japanese")!;
+  const cards = (await (
+    await page.request.get(`/api/vocab/session?userId=${user.id}&kind=lesson&id=${japanese.lessons[1]!.id}&purpose=learn&size=20&mode=written`)
+  ).json()) as { entryId: number; prompt: string }[];
+  const entryOf = (p: string): number => cards.find((c) => c.prompt === p)!.entryId;
+  const post = (entryId: number, given: string) =>
+    page.request.post("/api/vocab/answers", { data: { userId: user.id, entryId, direction: "recall", mode: "written", given } })
+      .then((r) => r.json()) as Promise<{ verdict: string; correct: boolean; expected: string; reading: string }>;
+  const school = entryOf("学校");
+  expect(await post(school, "学校")).toMatchObject({ verdict: "right", expected: "学校", reading: "gakkō" });
+  expect(await post(school, "がっこう")).toMatchObject({ verdict: "right" });
+  expect(await post(school, "gakko")).toMatchObject({ verdict: "right" });
+  expect(await post(school, "gakkou")).toMatchObject({ verdict: "right" });
+  expect(await post(school, "eki")).toMatchObject({ correct: false });
+  expect(await post(entryOf("コーヒー"), "koohii")).toMatchObject({ verdict: "right" });
+  expect(await post(entryOf("東京"), "tokyo")).toMatchObject({ verdict: "right" });
+
+  await page.locator(".home-link").click();
+  await expect(page.locator("[data-activity='vocab-test-japanese'] .activity-text")).toContainText("Test words");
+});
+
+test("the Japanese book: rōmaji can wait until the answer", async ({ page }) => {
+  await newPlayer(page, "Rom");
+  await openActivity(page, "vocab-test-japanese");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Toujours");
+  await page.click(".vocab-romaji >> text=Après la réponse");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Après la réponse");
+  // Not offered for a book in Latin letters.
+  await page.locator(".home-link").click();
+  await openActivity(page, "vocab-collins-spanish");
+  await expect(page.locator(".vocab-romaji")).toHaveCount(0);
+  await page.locator(".home-link").click();
+  await openActivity(page, "vocab-test-japanese");
+
+  await startFirstSection(page);
+  await expect(page.locator(".vocab-prompt")).toHaveAttribute("lang", "ja");
+  await expect(page.locator(".vocab-reading")).toHaveCount(0);
+  await page.locator(".choice").first().click();
+  await expect(page.locator(".vocab-reading")).toHaveCount(1);
+});
+
+test("statistics: words seen, the last 30 days, what comes back, the hardest words", async ({ page }) => {
+  const name = await newPlayer(page, "Sta");
+  const user = await userByName(page.request, name);
+  await openActivity(page, "vocab-test-english");
+  await page.click(".vocab-stats-link");
+  await expect(page.locator(".vocab-stats h1")).toHaveText("Statistiques");
+  await expect(page.locator(".vocab-stats .empty")).toBeVisible();
+
+  // Five answers on five new words, right or wrong.
+  await page.click("text=Retour aux leçons");
+  await startFirstSection(page);
+  let answered = 0;
+  while (answered < 5) {
+    const options = page.locator(".choice");
+    await options.first().waitFor();
+    await options.first().click();
+    await page.locator(".vocab-verdict").waitFor();
+    await page.locator(".vocab-card .actions button.primary").click();
+    answered++;
+  }
+  await page.click("text=Arrêter");
+  await page.locator(".vocab-done, .vocab-home").first().waitFor();
+  if (await page.locator("text=Retour aux leçons").count()) await page.click("text=Retour aux leçons");
+  await page.click(".vocab-stats-link");
+  await page.locator(".stats-tiles").waitFor();
+  await expect(page.locator(".stats-tile").first().locator(".stats-tile-value")).toHaveText("5");
+  await expect(page.locator(".stats-tile").nth(2).locator(".stats-tile-sub")).toHaveText("5 réponses");
+  await expect(page.locator(".stats-columns.is-history .stats-col")).toHaveCount(30);
+  await expect(page.locator(".stats-columns.is-forecast .stats-col")).toHaveCount(14);
+  await expect(page.locator(".stats-tile").nth(3).locator(".stats-tile-value")).toHaveText("1");
+
+  // The API, directly: the same figures; another account's player is not visible.
+  const stats = (await (await page.request.get(`/api/vocab/stats?userId=${user.id}&book=${(await englishBookId(page))}&tz=120`)).json()) as {
+    words: { total: number; new: number };
+    all: { answers: number };
+    days: { answers: number }[];
+  };
+  expect(stats.words.total).toBe(20);
+  expect(stats.words.total - stats.words.new).toBe(5);
+  expect(stats.all.answers).toBe(5);
+  expect(stats.days.at(-1)!.answers).toBe(5);
+  expect((await page.request.get(`/api/vocab/stats?userId=${user.id}&book=999999&tz=0`)).status()).toBe(404);
+  expect((await page.request.get(`/api/vocab/stats?userId=${user.id}&book=1&tz=9999`)).status()).toBe(400);
+});
+
+async function englishBookId(page: Page): Promise<number> {
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { id: number; slug: string }[];
+  return books.find((b) => b.slug === "test-english")!.id;
+}

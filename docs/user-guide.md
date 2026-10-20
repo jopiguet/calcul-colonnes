@@ -259,7 +259,8 @@ by clicking a player's name on the Scores screen. It shows:
 One activity per book imported on the server (see
 [Vocabulary › Importing a book](vocabulary.md#importing-a-book)), for example:
 
-- **Vocabulaire espagnol** (Collins): Spanish words and phrases with their English meaning.
+- **Vocabulaire espagnol** (*3000 words and phrases*): Spanish words and phrases with their English meaning.
+- **Vocabulaire japonais** (*Themed vocabulary*): Japanese words by theme with their English meaning. The rōmaji is shown under the Japanese, and under each Japanese option. To write a Japanese word, type it in kanji or kana with a Japanese keyboard, or in rōmaji with a normal one: *gakkō*, *gakko* and *gakkou* are all right for 学校.
 - **Vocabulaire anglais** (*Vocabulary 4000*): demanding English words with a short English definition, plus prefixes, roots and suffixes. Here the definition is always chosen from four; the word itself can be written. After each answer about a word part, an example is shown (*corp* → *corporeal*).
 
 Each book's page works the same way.
@@ -272,10 +273,25 @@ Each book's page works the same way.
 - **Nouveaux mots:** *Au hasard* or *Dans l'ordre du livre*. For the English word list, random is the default, so a child doesn't learn every word in *a* first.
 - **Apprendre au hasard dans tout le livre:** a learning session whose new words come from anywhere in the book.
 - **Questions:** *Mélangé* (multiple choice for new words, written answers once they are known), *Choix multiples* or *Écrit*. Mixed suits most children.
+- **Rōmaji** (Japanese only): *Toujours* shows the rōmaji under the Japanese during the question; *Après la réponse* shows the Japanese alone, and the rōmaji once answered. The second is the step towards reading kana. Remembered per book.
 - **Lessons:** click one to see its sections. Each section shows its number of words, how many are due, and a bar that fills as its words are learnt, then known, then mastered. 
   - *Apprendre* starts a section, *Continuer* goes on with it: words due, then up to 8 new ones.
   - *Réviser* goes back over the section's words already learnt, without new ones.
   - *Apprendre la leçon* and *Réviser la leçon* do the same for every section of the chapter.
+
+**📊 Statistiques**, under the book's title, opens the player's statistics
+for this book:
+
+- **Four figures:** words seen (out of the book's), words mastered (and known), the share of right answers over 30 days, and the days in a row with at least one answer (with the record).
+- **The last 30 days:** right and wrong answers per day. Hover a bar (or tap it) for the day's figures and the number of new words.
+- **Where the words stand:** mastered, known, learning, new.
+- **To review, next 14 days:** how many cards come due each day; today includes the overdue ones. A tall first bar means reviews are piling up.
+- **Cards per box:** for each direction, how many cards are in boxes 1 to 6.
+- **By kind of question:** the share right in multiple choice and in writing, recognising a word and recalling it; written answers by verdict (exact, accents, nearly, article, wrong).
+- **By lesson:** words seen out of the lesson's, with the progress bar.
+- **The hardest words:** the 12 words with the most mistakes, with their rōmaji in Japanese.
+
+Days end at midnight where the browser is.
 
 **Reviewing ahead of time** is practice: a word answered right before its date
 stays in its box, so an evening of revision does not push words weeks away. A
@@ -332,6 +348,14 @@ without the browser's address bar.
 The icon is named *Luma*. Sign in once in the installed app: on iPhone it
 keeps its own sign-in, separate from Safari's. The app still needs the
 connection to the server; it does not work offline.
+
+**Updates come by themselves**, in an installed app (phone, or Chrome's
+*Install Luma* on a computer) as in a tab left open:
+
+- When the window comes back to the front, and every 15 minutes while it is in front, the app asks the server whether a new version is out.
+- If so, and nothing is under way (the home page, the lists, a book's page), it reloads at once.
+- During a vocabulary session, a test or a half-filled exercise, a bar at the bottom offers *Mettre à jour*; otherwise the update happens on the next return to the home page.
+- Coming back after a few minutes, the screen is redrawn from the server: the words due are current, and a newly imported book appears.
 
 ## What is stored where
 

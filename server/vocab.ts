@@ -21,12 +21,13 @@ import {
   type NewOrder,
   type SessionPurpose,
 } from "../shared/vocab/session.ts";
-import type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabProgress, VocabSectionProgress } from "../shared/types.ts";
+import type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabProgress, VocabSectionProgress, VocabStats } from "../shared/types.ts";
+import { computeStats, type StatsAnswer, type StatsInput } from "../shared/vocab/stats.ts";
 
 const n = (value: unknown): number => Number(value);
 
 /** Entries with their book's kind and languages, for grading and sessions. */
-const ENTRY_COLUMNS = `e.id, e.section_id, e.position, e.term, e.meaning, e.grp, e.feminine, e.note,
+const ENTRY_COLUMNS = `e.id, e.section_id, e.position, e.term, e.meaning, e.grp, e.feminine, e.note, e.reading,
   b.kind, b.term_lang, b.meaning_lang, b.ordering`;
 const ENTRY_JOINS = `FROM vocab_entries e
   JOIN vocab_sections s ON s.id = e.section_id
@@ -43,6 +44,7 @@ function toEntry(row: Row): SessionEntry {
     group: String(row.grp ?? ""),
     feminine: n(row.feminine) === 1,
     note: String(row.note ?? ""),
+    reading: String(row.reading ?? ""),
     book: {
       kind: row.kind === "definition" ? "definition" : "translation",
       termLang: String(row.term_lang),
@@ -52,8 +54,8 @@ function toEntry(row: Row): SessionEntry {
   };
 }
 
-/** Grading knows Spanish articles and English "the/a/to"; other languages are graded as plain text. */
-const answerLang = (lang: string): AnswerLang => (lang === "es" ? "es" : "en");
+/** Grading knows Spanish articles, English "the/a/to" and Japanese rōmaji; other languages are graded as plain text. */
+const answerLang = (lang: string): AnswerLang => (lang === "es" || lang === "ja" ? lang : "en");
 
 export interface ImportReport {
   book: string;
@@ -132,7 +134,7 @@ export class VocabStore {
 
           // Entries matched by their text; the first match wins for duplicates.
           const rows = await tx.query(
-            "SELECT id, term, meaning, position, grp, feminine, note FROM vocab_entries WHERE section_id = $1 ORDER BY position",
+            "SELECT id, term, meaning, position, grp, feminine, note, reading FROM vocab_entries WHERE section_id = $1 ORDER BY position",
             [sectionId],
           );
           const free = new Map<string, Row[]>();
@@ -145,28 +147,29 @@ export class VocabStore {
           const fresh: Param[][] = [];
           for (const [e, entry] of section.entries.entries()) {
             const row = free.get(`${entry.term}\u0000${entry.meaning}`)?.shift();
-            const values = [e, entry.group ?? "", entry.feminine ? 1 : 0, entry.note ?? ""] as const;
+            const values = [e, entry.group ?? "", entry.feminine ? 1 : 0, entry.note ?? "", entry.reading ?? ""] as const;
             if (row) {
               const same =
                 n(row.position) === values[0] &&
                 String(row.grp) === values[1] &&
                 n(row.feminine) === values[2] &&
-                String(row.note ?? "") === values[3];
+                String(row.note ?? "") === values[3] &&
+                String(row.reading ?? "") === values[4];
               if (!same) {
-                await tx.query("UPDATE vocab_entries SET position = $1, grp = $2, feminine = $3, note = $4 WHERE id = $5", [
+                await tx.query("UPDATE vocab_entries SET position = $1, grp = $2, feminine = $3, note = $4, reading = $5 WHERE id = $6", [
                   ...values, n(row.id),
                 ]);
               }
             } else {
-              fresh.push([sectionId, e, entry.term, entry.meaning, values[1], values[2], values[3]]);
+              fresh.push([sectionId, e, entry.term, entry.meaning, values[1], values[2], values[3], values[4]]);
             }
             report.entries++;
           }
           if (fresh.length > 0) {
-            const width = 7;
+            const width = 8;
             const placeholders = fresh.map((_, i) => `(${Array.from({ length: width }, (_, k) => `$${i * width + k + 1}`).join(", ")})`);
             await tx.query(
-              `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note) VALUES ${placeholders.join(", ")}`,
+              `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading) VALUES ${placeholders.join(", ")}`,
               fresh.flat(),
             );
             report.added += fresh.length;
@@ -287,6 +290,59 @@ export class VocabStore {
     return { sections, books, due, today: { answers: n(today[0]?.answers), right: n(today[0]?.right_answers) } };
   }
 
+  /** A player's statistics on one book; null for an unknown book. */
+  async stats(userId: number, bookId: number, now: number, offsetMinutes: number): Promise<VocabStats | null> {
+    const lessons = await this.db.query("SELECT id, title FROM vocab_lessons WHERE book_id = $1 ORDER BY position", [bookId]);
+    if (lessons.length === 0) return null;
+    const entries = await this.db.query(
+      `SELECT e.id, e.term, e.meaning, e.reading, l.id AS lesson_id ${ENTRY_JOINS} WHERE l.book_id = $1 ORDER BY l.position, s.position, e.position`,
+      [bookId],
+    );
+    const cards = await this.db.query(
+      `SELECT p.entry_id, p.direction, p.box, p.due_at, p.last_at, p.wrong_count
+         FROM vocab_progress p JOIN vocab_entries e ON e.id = p.entry_id
+         JOIN vocab_sections s ON s.id = e.section_id JOIN vocab_lessons l ON l.id = s.lesson_id
+        WHERE p.user_id = $1 AND l.book_id = $2`,
+      [userId, bookId],
+    );
+    const answers = await this.db.query(
+      `SELECT a.entry_id, a.direction, a.mode, a.at, a.verdict, a.correct
+         FROM vocab_answers a JOIN vocab_entries e ON e.id = a.entry_id
+         JOIN vocab_sections s ON s.id = e.section_id JOIN vocab_lessons l ON l.id = s.lesson_id
+        WHERE a.user_id = $1 AND l.book_id = $2`,
+      [userId, bookId],
+    );
+    const progress: StatsInput["progress"] = new Map();
+    for (const row of cards) {
+      const own = progress.get(n(row.entry_id)) ?? {};
+      own[row.direction as Direction] = { box: n(row.box), dueAt: n(row.due_at), lastAt: n(row.last_at), wrong: n(row.wrong_count) };
+      progress.set(n(row.entry_id), own);
+    }
+    return computeStats({
+      entries: entries.map((row) => ({
+        id: n(row.id),
+        lessonId: n(row.lesson_id),
+        term: display(String(row.term)),
+        meaning: display(String(row.meaning)),
+        reading: String(row.reading ?? ""),
+      })),
+      lessons: lessons.map((row) => ({ id: n(row.id), title: String(row.title) })),
+      progress,
+      answers: answers.map(
+        (row): StatsAnswer => ({
+          entryId: n(row.entry_id),
+          direction: row.direction === "recall" ? "recall" : "recognise",
+          mode: row.mode === "written" ? "written" : "choice",
+          at: n(row.at),
+          verdict: String(row.verdict),
+          correct: n(row.correct) === 1,
+        }),
+      ),
+      now,
+      offsetMinutes,
+    });
+  }
+
   async session(
     userId: number,
     target: { kind: "section" | "lesson" | "all"; id: number },
@@ -351,17 +407,17 @@ export class VocabStore {
     let verdict =
       answer.mode === "choice"
         ? normalise(answer.given) === normalise(display(expected)) ? "right" : "wrong"
-        : grade(answer.given, expected, answerLang(lang));
+        : grade(answer.given, expected, answerLang(lang), answer.direction === "recall" ? entry.reading : "");
     if (verdict === "wrong" && answer.mode === "written") {
       // Another entry of the book with the same prompt is just as right
       // ("large": macro or magn; two Spanish words for one English one).
       const twins = await this.db.query(
-        `SELECT e.term, e.meaning ${ENTRY_JOINS} WHERE l.book_id = $1 AND e.id <> $2 AND ${answer.direction === "recall" ? "e.meaning" : "e.term"} = $3`,
+        `SELECT e.term, e.meaning, e.reading ${ENTRY_JOINS} WHERE l.book_id = $1 AND e.id <> $2 AND ${answer.direction === "recall" ? "e.meaning" : "e.term"} = $3`,
         [entry.bookId, entry.id, answer.direction === "recall" ? entry.meaning : entry.term],
       );
       for (const twin of twins) {
         const other = answer.direction === "recall" ? String(twin.term) : String(twin.meaning);
-        const v = grade(answer.given, other, answerLang(lang));
+        const v = grade(answer.given, other, answerLang(lang), answer.direction === "recall" ? String(twin.reading ?? "") : "");
         if (COUNTS_AS_RIGHT.has(v)) {
           verdict = v;
           break;
@@ -399,6 +455,7 @@ export class VocabStore {
       correct,
       expected: display(expected),
       feminine: answer.direction === "recall" && entry.feminine,
+      reading: entry.reading,
       note: entry.note,
       box: next.box,
       dueAt: next.dueAt,
@@ -426,6 +483,19 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     if (!isId(userId) || !Number.isFinite(since) || since < 0) return c.json({ error: "invalid query" }, 400);
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
     return c.json(await store.summary(userId, Date.now(), Math.trunc(since)));
+  });
+
+  routes.get("/stats", async (c) => {
+    const userId = Number(c.req.query("userId"));
+    const bookId = Number(c.req.query("book"));
+    // The browser's offset from UTC in minutes, so days end at the player's midnight.
+    const tz = Number(c.req.query("tz") ?? 0);
+    if (!isId(userId) || !isId(bookId) || !Number.isInteger(tz) || Math.abs(tz) > 14 * 60) {
+      return c.json({ error: "invalid query" }, 400);
+    }
+    if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+    const stats = await store.stats(userId, bookId, Date.now(), tz);
+    return stats ? c.json(stats) : c.json({ error: "unknown book" }, 404);
   });
 
   routes.get("/session", async (c) => {

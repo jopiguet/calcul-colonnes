@@ -230,7 +230,7 @@ See [Vocabulary](vocabulary.md) for the method and the grading.
   {
     "id": 1,
     "slug": "collins-spanish",
-    "title": "Collins Spanish",
+    "title": "3000 words and phrases",
     "kind": "translation",
     "term": "es",
     "meaning": "en",
@@ -272,6 +272,35 @@ language studied and the language of the meanings.
 `books` gives it per book, with the number of entries started. Every section
 is listed; an entry counts as `new` until one of its cards has been answered.
 
+### `GET /api/vocab/stats`
+
+`?userId=1&book=3&tz=120`: a player's statistics on one book. `tz` is the
+browser's offset from UTC in minutes (`-new Date().getTimezoneOffset()`), so
+days end at the player's midnight.
+
+```json
+{
+  "words": { "total": 5087, "new": 4948, "learning": 105, "known": 34, "mastered": 0 },
+  "boxes": { "recognise": [0, 25, 24, 21, 24, 30, 15], "recall": [0, 34, 26, 20, 28, 6, 0] },
+  "all": { "answers": 707, "right": 587 },
+  "days": [{ "day": "2026-10-20", "answers": 22, "right": 18, "newWords": 6 }],
+  "streak": { "current": 9, "best": 9 },
+  "forecast": [54, 16, 11, 18, 12, 18, 16, 15, 16, 14, 13, 13, 9, 4],
+  "byMode": { "choice": { "answers": 427, "right": 352 }, "written": { "answers": 280, "right": 236 } },
+  "byDirection": { "recognise": { "answers": 426, "right": 349 }, "recall": { "answers": 281, "right": 239 } },
+  "verdicts": { "right": 192, "accent": 44, "typo": 0, "article": 0, "wrong": 44 },
+  "lessons": [{ "id": 12, "title": "Basic concepts. Part 1", "total": 140, "new": 2, "learning": 104, "known": 34, "mastered": 0 }],
+  "hardest": [{ "entryId": 901, "term": "こんにちは！", "meaning": "Hello! (form.)", "reading": "konnichiwa!", "wrong": 5, "answers": 16, "box": 1 }]
+}
+```
+
+- `days`: always the last 30, oldest first, today last.
+- `forecast`: cards due today (overdue included), then on each of the next 13 days.
+- `boxes`: index = box, 1–6.
+- `hardest`: at most 12.
+
+Errors: `invalid query` (400), `unknown user`, `unknown book` (404).
+
 ### `GET /api/vocab/session`
 
 | Query | |
@@ -302,7 +331,10 @@ is listed; an entry counts as `new` until one of its cards has been answered.
 
 `options` is present for `choice` cards only. `feminine: true` marks a
 feminine noun taking *el*, on recognise cards. The recognise card of a
-definition book (word shown, definition asked) is always `choice`.
+definition book (word shown, definition asked) is always `choice`. In a book
+with readings (Japanese), `promptReading` is the rōmaji of the word shown on a
+recognise card, and `optionReadings` the rōmaji of each option of a recall
+`choice` card, in the order of `options`.
 
 ### `POST /api/vocab/answers`
 
@@ -313,14 +345,15 @@ definition book (word shown, definition asked) is always `choice`.
 `201`:
 
 ```json
-{ "verdict": "right", "correct": true, "expected": "la regla", "feminine": false, "note": "", "box": 2, "dueAt": 1792423727408 }
+{ "verdict": "right", "correct": true, "expected": "la regla", "feminine": false, "reading": "", "note": "", "box": 2, "dueAt": 1792423727408 }
 ```
 
 `verdict` is `right`, `accent`, `typo`, `article` or `wrong`; `correct` is
 what moves the card between boxes. A `choice` answer must equal the option as
 printed. A `written` answer that is wrong for this entry but right for another
 entry of the book with the same prompt counts as right. `note` is the entry's
-example, if any. Errors: `invalid answer` (400), `unknown user`, `unknown entry` (404).
+example, if any; `reading` the term's rōmaji, if any. A Japanese `written`
+answer may be kanji, kana or rōmaji. Errors: `invalid answer` (400), `unknown user`, `unknown entry` (404).
 
 ## Authentication
 

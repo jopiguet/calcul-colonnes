@@ -20,9 +20,10 @@
  * means nothing; new words then come at random by default.
  * Lessons and sections may have a "subtitle" (the title in the other language).
  * An entry may have "group" (heading inside the section), "note" (an example,
- * shown after the answer) and "feminine" (a feminine noun taking "el").
+ * shown after the answer), "feminine" (a feminine noun taking "el") and
+ * "reading" (how the term reads: Japanese rōmaji, accepted as an answer).
  *
- * Format 1, written by 4.2 for the Collins Spanish book, is still read:
+ * Format 1, written by 4.2 for the Spanish book, is still read:
  * titles {"en", "es"} and entries {"en", "es"}, Spanish being studied.
  */
 
@@ -32,6 +33,8 @@ export interface VocabFileEntry {
   group?: string;
   note?: string;
   feminine?: boolean;
+  /** How the term reads, when its script does not say it: Japanese rōmaji ("gachō" for ガチョウ). */
+  reading?: string;
 }
 
 export interface VocabFileBook {
@@ -54,10 +57,10 @@ export interface VocabFile {
   }[];
 }
 
-/** The book of format-1 files. */
-export const COLLINS_SPANISH: VocabFileBook = {
+/** The book of format-1 files. The id is kept from the first version, for continuity. */
+export const SPANISH_3000: VocabFileBook = {
   id: "collins-spanish",
-  title: "Collins Spanish",
+  title: "3000 words and phrases",
   kind: "translation",
   term: "es",
   meaning: "en",
@@ -107,7 +110,7 @@ export function parseVocabFile(data: unknown): VocabFile {
   const subtitle = (raw: Record<string, unknown>): string => (v1 ? "" : (text(raw.subtitle, 200) ?? ""));
 
   return {
-    book: v1 ? COLLINS_SPANISH : book(root.book),
+    book: v1 ? SPANISH_3000 : book(root.book),
     lessons: root.lessons.map((rawLesson, l) => {
       const lesson = (rawLesson ?? {}) as Record<string, unknown>;
       const where = `lesson ${l + 1}`;
@@ -133,12 +136,14 @@ export function parseVocabFile(data: unknown): VocabFile {
               }
               const group = text(entry.group, 100);
               const note = text(entry.note, 300);
+              const reading = text(entry.reading, 300);
               return {
                 term,
                 meaning,
                 ...(group ? { group } : {}),
                 ...(note ? { note } : {}),
                 ...(entry.feminine === true ? { feminine: true } : {}),
+                ...(reading ? { reading } : {}),
               };
             }),
           };

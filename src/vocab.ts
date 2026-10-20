@@ -19,6 +19,7 @@ import {
   type VocabProgress,
 } from "./store";
 import { langName, vt, type VocabKey } from "./vocab-i18n";
+import { statsView } from "./vocab-stats";
 
 // ------------------------------------------------------------ preferences
 
@@ -30,6 +31,8 @@ interface Preferences {
   open: number | null;
   /** Order of new words, per book id; absent: random for an alphabetical list, the book's order otherwise. */
   order: Record<number, "book" | "random">;
+  /** Japanese rōmaji, per book id: shown with the question, or only after the answer. */
+  romaji: Record<number, "always" | "after">;
 }
 
 const PREFERENCES_KEY = "calcul-colonnes.vocab";
@@ -47,9 +50,14 @@ function loadPreferences(): Preferences {
           ([, v]) => v === "book" || v === "random",
         ),
       ) as Preferences["order"],
+      romaji: Object.fromEntries(
+        Object.entries(typeof saved.romaji === "object" && saved.romaji ? saved.romaji : {}).filter(
+          ([, v]) => v === "always" || v === "after",
+        ),
+      ) as Preferences["romaji"],
     };
   } catch {
-    return { mode: "mixed", size: SIZES[0]!, open: null, order: {} };
+    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romaji: {} };
   }
 }
 
@@ -85,6 +93,8 @@ interface Session {
 
 let session: Session | null = null;
 let finished: Session | null = null;
+/** The book whose statistics page is open, if any. */
+let statsOf: number | null = null;
 
 export interface VocabContext {
   user: User;
@@ -106,8 +116,26 @@ export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
   if (other(finished)) finished = null;
   if (session) return cardView(ctx, session);
   if (finished) return doneView(ctx, finished);
+  if (statsOf === ctx.book.id) {
+    return statsView({
+      user: ctx.user,
+      book: ctx.book,
+      onBack: () => {
+        statsOf = null;
+        ctx.rerender();
+      },
+    });
+  }
   return homeView(ctx);
 }
+
+/** True while a session is under way: the app must not reload under it. */
+export function vocabBusy(): boolean {
+  return session !== null;
+}
+
+/** Japanese rōmaji with the question, or only after the answer. */
+const romajiAlways = (book: VocabBookInfo): boolean => (prefs.romaji[book.id] ?? "always") === "always";
 
 async function start(ctx: VocabContext, target: Target): Promise<void> {
   // The whole book: the server takes the book's id.
@@ -135,7 +163,7 @@ function titleBlock(title: string, subtitle: string, cls: string): HTMLElement {
 }
 
 /** A thin bar: mastered, known, learning, new. */
-function statusBar(p: { new: number; learning: number; known: number; mastered: number }): HTMLElement {
+export function statusBar(p: { new: number; learning: number; known: number; mastered: number }): HTMLElement {
   const total = p.new + p.learning + p.known + p.mastered || 1;
   const bar = el("span", "vocab-bar");
   bar.setAttribute("role", "img");
@@ -155,6 +183,11 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     el("h1", "title", bookTitle(book)),
     el("p", "vocab-source", `${book.title} · ${vt("words", { count: book.entries })}`),
   );
+  const statsLink = button("ghost small vocab-stats-link", vt("stats"), () => {
+    statsOf = book.id;
+    ctx.rerender();
+  });
+  wrap.append(statsLink);
   const lessons = book.lessons;
   const progress: VocabProgress = await vocab.progress(ctx.user.id);
   const mine = progress.books[book.id] ?? { due: 0, started: 0 };
@@ -233,6 +266,23 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     order.append(option);
   }
   wrap.append(order);
+
+  // Japanese: rōmaji with the question, or only once answered.
+  if (book.term === "ja") {
+    const romaji = el("fieldset", "segmented vocab-romaji");
+    romaji.append(el("legend", "field-label", vt("romajiTitle")));
+    for (const [value, key] of [["always", "romajiShow"], ["after", "romajiHide"]] as const) {
+      const on = (prefs.romaji[book.id] ?? "always") === value;
+      const option = button(on ? "segment on" : "segment", vt(key), () => {
+        prefs.romaji[book.id] = value;
+        savePreferences();
+        ctx.rerender();
+      });
+      option.setAttribute("aria-pressed", String(on));
+      romaji.append(option);
+    }
+    wrap.append(romaji, el("p", "hint left", vt("romajiHint")));
+  }
 
   // Lessons, one open at a time.
   const list = el("div", "vocab-lessons");
@@ -351,6 +401,13 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   const prompt = el("p", "vocab-prompt", card.prompt);
   prompt.lang = card.promptLang;
   question.append(prompt);
+  // Rōmaji: with the question, or once answered, as the player chose.
+  const showReading = romajiAlways(ctx.book) || s.result !== null;
+  if (card.promptReading && showReading) {
+    const reading = el("p", "vocab-reading", card.promptReading);
+    reading.lang = `${card.promptLang}-Latn`;
+    question.append(reading);
+  }
   const notes = el("p", "vocab-notes");
   if (card.feminine) notes.append(el("span", "vocab-fem", `f · ${vt("feminine")}`));
   if (card.group) notes.append(el("span", "vocab-group", card.group));
@@ -372,7 +429,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
       if (result.correct) s.right++;
       else {
         const key = card.entryId * 2 + (recognise ? 0 : 1);
-        s.missed.set(key, { prompt: card.prompt, expected: result.expected });
+        s.missed.set(key, { prompt: card.prompt, expected: !recognise && result.reading ? `${result.expected} (${result.reading})` : result.expected });
         // Asked again at the end, once: the box has gone back to 1.
         if (!s.retried.has(key)) {
           s.retried.add(key);
@@ -407,8 +464,15 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     const choices = el("div", "choices");
     (card.options ?? []).forEach((option, i) => {
       const b = button("choice", "", () => void submit(option));
-      b.append(el("span", "letter", "ABCD"[i] ?? ""), el("span", "choice-text", option));
-      b.lang = answerLang;
+      const text = el("span", "choice-text", option);
+      text.lang = answerLang;
+      const reading = card.optionReadings?.[i];
+      if (reading && showReading) {
+        const r = el("span", "choice-reading", reading);
+        r.lang = `${answerLang}-Latn`;
+        text.append(r);
+      }
+      b.append(el("span", "letter", "ABCD"[i] ?? ""), text);
       if (s.result) {
         b.disabled = true;
         if (option === s.result.expected) b.classList.add("is-right");
@@ -420,7 +484,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   } else {
     const form = el("form", "vocab-write");
     const label = el("label", "field");
-    label.append(el("span", "field-label", vt("answerIn", { lang: langName(answerLang) })));
+    label.append(el("span", "field-label", answerLang === "ja" ? vt("answerJa") : vt("answerIn", { lang: langName(answerLang) })));
     const input = el("input", "vocab-input");
     input.type = "text";
     input.lang = answerLang;
@@ -468,6 +532,12 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     feedback.className = `vocab-feedback ${COUNTS_AS_RIGHT.has(r.verdict) ? "good" : "bad"}`;
     const line = el("span", "vocab-verdict", r.verdict === "right" ? vt("right") : verdictText(r.verdict, r.expected));
     feedback.append(line);
+    // Japanese: the word as printed and how it reads, whatever was typed.
+    if (!recognise && r.reading) {
+      const reading = el("span", "vocab-verdict-reading", r.verdict === "right" ? `${r.expected} · ${r.reading}` : r.reading);
+      reading.lang = "ja";
+      feedback.append(reading);
+    }
     if (r.feminine) feedback.append(el("span", "vocab-fem", ` (f)`));
     if (r.note) feedback.append(el("span", "vocab-note", vt("example", { note: r.note })));
     feedback.append(el("span", "vocab-when", r.correct ? whenBack(r) : vt("again")));

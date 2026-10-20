@@ -2051,3 +2051,389 @@ button.home-link {
   font-size: 0.9rem;
   color: var(--ink);
 }
+
+/* Japanese: the system's Japanese fonts (the app's own fonts are Latin only),
+   so kanji get their Japanese forms rather than the Chinese ones. */
+:lang(ja) {
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans JP",
+    "Noto Sans CJK JP", var(--font);
+}
+
+.vocab-prompt:lang(ja) {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Rōmaji under a Japanese word. */
+.vocab-reading {
+  font-family: var(--font);
+  margin: -0.2rem 0 0.5rem;
+  font-size: 1.05rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.choice-reading {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  font-family: var(--font);
+}
+
+.vocab-verdict-reading {
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------- vocabulary statistics */
+
+.vocab-stats-link {
+  align-self: center;
+}
+
+.vocab-home .vocab-stats-link {
+  display: block;
+  margin: 0 auto;
+}
+
+.vocab-stats > .ghost.small:first-child {
+  align-self: flex-start;
+}
+
+.stats-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(8rem, 40%), 1fr));
+  gap: 0.6rem;
+}
+
+.stats-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.stats-tile-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.stats-tile-value {
+  font-family: var(--digits);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.stats-tile-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.stats-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.stats-title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.stats-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.stats-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.stats-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.stats-swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 3px;
+}
+
+.is-right {
+  background: var(--good);
+}
+
+.is-wrong {
+  background: var(--bad);
+}
+
+.is-due,
+.is-box {
+  background: var(--accent);
+}
+
+.stats-swatch.is-new {
+  background: var(--line);
+}
+
+/* Columns: bars grow from a common baseline, 2px apart, rounded at the top. */
+.stats-columns {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  height: 9rem;
+}
+
+.stats-columns.is-boxes {
+  height: 6rem;
+  flex: 1;
+}
+
+.stats-col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stats-col-area {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  border-bottom: 1px solid var(--line);
+}
+
+.stats-col:hover .stats-stack {
+  opacity: 0.8;
+}
+
+.stats-stack {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 4px 4px 0 0;
+}
+
+.stats-seg {
+  min-height: 2px;
+}
+
+.stats-col-top {
+  font-family: var(--digits);
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.stats-col-label {
+  min-height: 1.1rem;
+  padding-top: 0.15rem;
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.stats-columns.is-history .stats-col-label {
+  text-align: left;
+}
+
+/* The last date ends under the last bar, overflowing to the left. */
+.stats-columns.is-history .stats-col:last-child .stats-col-label {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.vocab-bar.is-large {
+  height: 0.9rem;
+}
+
+.stats-boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.stats-box-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8rem;
+}
+
+.stats-box-name {
+  width: 6.5rem;
+  padding-bottom: 1.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stats-rates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stats-rate {
+  display: grid;
+  grid-template-columns: minmax(7rem, 11rem) 1fr 3.2rem;
+  grid-template-areas: "name bar value" "name of of";
+  align-items: center;
+  column-gap: 0.7rem;
+  font-size: 0.9rem;
+}
+
+.stats-rate-name {
+  grid-area: name;
+  font-weight: 600;
+}
+
+.stats-rate-bar {
+  grid-area: bar;
+  height: 0.5rem;
+  border-radius: 1rem;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.stats-rate-fill {
+  display: block;
+  height: 100%;
+  border-radius: 1rem;
+  background: var(--good);
+}
+
+.stats-rate-value {
+  grid-area: value;
+  font-family: var(--digits);
+  text-align: right;
+}
+
+.stats-rate-of {
+  grid-area: of;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.stats-lessons,
+.stats-hardest {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stats-lesson {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(5rem, 9rem) 4.5rem;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.9rem;
+}
+
+.stats-lesson-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stats-lesson-value {
+  font-family: var(--digits);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+.stats-hard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 0.95rem;
+}
+
+.stats-hard-term {
+  font-weight: 700;
+}
+
+.stats-hard-reading {
+  font-family: var(--font);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.stats-hard-meaning {
+  color: var(--muted);
+}
+
+.stats-hard-count {
+  font-size: 0.8rem;
+  color: var(--bad);
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .stats-hard {
+    grid-template-columns: 1fr auto;
+  }
+  .stats-hard-meaning {
+    grid-column: 1;
+  }
+  .stats-box-name {
+    width: 4.8rem;
+  }
+}
+
+/* A new version of the app is available. */
+.update-banner {
+  position: fixed;
+  left: 50%;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.6rem 0.7rem 0.6rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+}
+
+.vocab-stats > .stats-tiles,
+.vocab-stats > .stats-panel,
+.vocab-stats > .empty {
+  align-self: stretch;
+}
+
+.vocab-stats > .stats-panel:first-of-type {
+  border-top: 0;
+}

@@ -1,0 +1,44 @@
+{
+ "format": 2,
+ "book": { "id": "test-japanese", "title": "Test words", "kind": "translation", "term": "ja", "meaning": "en" },
+ "lessons": [
+  {
+   "title": "Animals",
+   "sections": [
+    {
+     "title": "Pets and farm",
+     "entries": [
+      { "term": "猫", "meaning": "cat", "reading": "neko" },
+      { "term": "犬", "meaning": "dog", "reading": "inu" },
+      { "term": "鳥", "meaning": "bird", "reading": "tori" },
+      { "term": "魚", "meaning": "fish", "reading": "sakana" },
+      { "term": "馬", "meaning": "horse", "reading": "uma" },
+      { "term": "牛", "meaning": "cow / ox", "reading": "ushi" }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Places and drinks",
+   "sections": [
+    {
+     "title": "Drinks",
+     "entries": [
+      { "term": "コーヒー", "meaning": "coffee", "reading": "kōhī" },
+      { "term": "お茶", "meaning": "tea", "reading": "ocha" },
+      { "term": "水", "meaning": "water", "reading": "mizu" },
+      { "term": "牛乳", "meaning": "milk", "reading": "gyūnyū" }
+     ]
+    },
+    {
+     "title": "Places",
+     "entries": [
+      { "term": "学校", "meaning": "school", "reading": "gakkō" },
+      { "term": "東京", "meaning": "Tokyo", "reading": "Tōkyō" },
+      { "term": "駅", "meaning": "station", "reading": "eki" }
+     ]
+    }
+   ]
+  }
+ ]
+}

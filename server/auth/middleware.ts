@@ -14,7 +14,6 @@ export function originCheck(config: AuthConfig): MiddlewareHandler<AppEnv> {
     if (["GET", "HEAD", "OPTIONS"].includes(c.req.method)) return next();
     if (c.req.header("sec-fetch-site") === "cross-site") return c.json({ error: "cross_site" }, 403);
     const origin = c.req.header("origin");
-    console.log("ORIGIN-DEBUG", JSON.stringify({ origin, url: c.req.url, host: c.req.header("host"), sfs: c.req.header("sec-fetch-site"), xfh: c.req.header("x-forwarded-host") }));
     if (origin && origin !== config.publicUrl.origin && origin !== new URL(c.req.url).origin) {
       return c.json({ error: "cross_site" }, 403);
     }

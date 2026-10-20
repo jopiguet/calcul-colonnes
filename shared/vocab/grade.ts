@@ -22,10 +22,17 @@
  * right, accent and typo count as right for the spaced repetition: the
  * correct spelling is shown. article counts as wrong: the gender is part of
  * the word in Spanish.
+ *
+ * Japanese answers are written in kana or kanji (with a Japanese keyboard) or
+ * in rōmaji, the entry's reading. Rōmaji is compared without its long-vowel
+ * marks: "gacho", "gachou" and "gachō" are all ガチョウ. Full-width and
+ * half-width characters are the same, and Japanese punctuation is ignored.
  */
 
+import { hasKana, kanaToRomaji } from "./kana";
+
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "es";
+export type AnswerLang = "en" | "es" | "ja";
 
 export const COUNTS_AS_RIGHT: ReadonlySet<Verdict> = new Set(["right", "accent", "typo"]);
 
@@ -33,6 +40,7 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   es: ["el", "la", "los", "las", "un", "una", "unos", "unas"],
   // English entries have no article ("key"), but "the key" and "to walk" are fine.
   en: ["the", "a", "an", "to"],
+  ja: [],
 };
 
 /** Text as shown: book typography cleaned, "..." for an open end. */
@@ -141,7 +149,55 @@ function withoutArticle(text: string, lang: AnswerLang): string {
   return words.length > 1 && ARTICLES[lang].includes(words[0]!) ? words.slice(1).join(" ") : text;
 }
 
-export function grade(given: string, expected: string, lang: AnswerLang): Verdict {
+/** Japanese text: full-width forms folded (ＣＤ → CD, （ → (), Japanese punctuation and spaces dropped. */
+function japanese(text: string): string {
+  return text
+    .normalize("NFKC")
+    .replace(/[［\[]/g, "(")
+    .replace(/[］\]]/g, ")")
+    .replace(/[。、・「」『』〜~ー\s]+$/u, "")
+    .replace(/[。、・「」『』〜~\s]/gu, "");
+}
+
+/**
+ * Rōmaji without what varies between ways of writing it: case, spaces,
+ * hyphens and apostrophes, long-vowel marks (ō → o) and the spellings of a
+ * long vowel (ou, oo, uu, aa, ii, ee → one vowel).
+ */
+export function romajiKey(text: string): string {
+  return plain(text.normalize("NFKC").toLowerCase())
+    .replace(/[^a-z]/g, "")
+    .replace(/m(?=[bpm])/g, "n") // shimbun, shinbun
+    .replace(/ou/g, "o")
+    .replace(/([aeiou])\1+/g, "$1");
+}
+
+function gradeJapanese(given: string, expected: string, reading: string): Verdict {
+  const answer = normalise(japanese(given)).replace(/\s/g, "");
+  if (!answer) return "wrong";
+  // In Japanese script: as printed, or without an optional bracketed reading ("CD（シーディー）").
+  const forms = acceptedForms(japanese(expected)).map((f) => f.replace(/\s/g, ""));
+  if (forms.includes(answer)) return "right";
+  if (!reading) return "wrong";
+  // In rōmaji: any of the reading's alternatives.
+  const typed = normalise(given);
+  const readings = acceptedForms(reading);
+  if (readings.includes(typed)) return "right";
+  // Kana is compared by its sound: ねこ for 猫 (neko).
+  const key = romajiKey(hasKana(given) ? kanaToRomaji(answer) : given);
+  const keys = readings.map(romajiKey).filter(Boolean);
+  if (!key) return "wrong";
+  if (keys.includes(key)) return "right";
+  if (keys.some((k) => k.length >= 5 && distance(key, k, 1) <= 1)) return "typo";
+  return "wrong";
+}
+
+/**
+ * The verdict for a written answer. `reading` is the term's reading, for a
+ * Japanese term: rōmaji is accepted for it.
+ */
+export function grade(given: string, expected: string, lang: AnswerLang, reading = ""): Verdict {
+  if (lang === "ja") return gradeJapanese(given, expected, reading);
   const answer = normalise(given);
   if (!answer) return "wrong";
   const forms = acceptedForms(expected);
