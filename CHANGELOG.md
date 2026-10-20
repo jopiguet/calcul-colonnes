@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.3.1
+
+- Browser tests: `goHome()` in `tests/e2e/helpers.ts`. The home page is drawn once its data arrives; a click on the previous screen's *← Accueil* link could land just as that screen was replaced, and wait for a link that no longer existed (timeout on a fast or slow machine). The helper now clicks if the link is there and retries until the home page shows. No change to the app.
+
 ## 5.3.0
 
 - **Vocabulary statistics:** *📊 Statistiques* on every book's page. Words seen, mastered and known; right answers over 30 days; days in a row and the record; right and wrong answers per day over 30 days, with the new words; reviews due over the next 14 days; cards per Leitner box in each direction; the share right by kind of question and direction; written answers by verdict; words seen per lesson; the 12 hardest words. Days end at the browser's midnight. `GET /api/vocab/stats`, computed in `shared/vocab/stats.ts`.

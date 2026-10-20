@@ -54,16 +54,26 @@ export async function newPlayer(page: Page, base: string): Promise<string> {
 }
 
 /**
+ * Back to the home page, from wherever the app is. The home page is drawn
+ * after its data arrives: until then the previous screen, with its ← link, is
+ * still there, and may be replaced in the middle of a click. So: click the
+ * link if there is one, and try again until the home page shows.
+ */
+export async function goHome(page: Page): Promise<void> {
+  await expect(async () => {
+    if (await page.locator(".home").isVisible()) return;
+    const link = page.locator(".home-link");
+    if (await link.isVisible()) await link.click({ timeout: 1_000 }).catch(() => undefined);
+    await page.locator(".home").waitFor({ timeout: 2_000 });
+  }).toPass({ timeout: 20_000 });
+}
+
+/**
  * Opens an activity from the home page (going back there first if needed):
  * "columns", "quiz", or "vocab-<book id>".
  */
 export async function openActivity(page: Page, activity: string): Promise<void> {
-  // The home page, or an activity with its link back home.
-  await page.locator(".home, .home-link").first().waitFor();
-  if (!(await page.locator(".home").isVisible())) {
-    await page.locator(".home-link").click();
-    await page.locator(".home").waitFor();
-  }
+  await goHome(page);
   await page.locator(`[data-activity='${activity}']`).click();
   await page
     .locator(activity === "columns" ? ".board" : activity === "quiz" ? ".quiz-setup, .quiz" : ".vocab-home")

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { newPlayer, openActivity, takeQuiz } from "./helpers";
+import { goHome, newPlayer, openActivity, takeQuiz } from "./helpers";
 
 const LANGUAGES = [
   { code: "fr", vocabTab: "💬 Vocabulaire", quizTab: "📐 QCM", start: "Commencer le test", progress: "📈 Mes progrès", title: "Luma – Mon cahier" },
@@ -44,8 +44,7 @@ for (const lang of LANGUAGES) {
     await expectClean(page);
 
     // The home page and the English book.
-    await page.locator(".home-link").click();
-    await page.locator(".home").waitFor();
+    await goHome(page);
     await expectClean(page);
     await openActivity(page, "vocab-test-english");
     await expectClean(page);

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { newPlayer, openActivity } from "./helpers";
+import { goHome, newPlayer, openActivity } from "./helpers";
 
 /** The server's version.json, answered with another build: a new version is out. */
 async function newBuildOut(page: import("@playwright/test").Page): Promise<void> {
@@ -20,8 +20,7 @@ test("the page and version.json are always checked; the built files are kept", a
 
 test("a new version reloads a quiet window by itself", async ({ page }) => {
   await newPlayer(page, "Upd");
-  await page.locator(".home-link").click();
-  await page.locator(".home").waitFor();
+  await goHome(page);
   await page.evaluate(() => ((window as unknown as { marker: boolean }).marker = true));
   await newBuildOut(page);
   await page.evaluate(() => window.dispatchEvent(new Event("focus")));

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import type { VocabProgress } from "../../shared/types.ts";
-import { newPlayer, openActivity, signUp, userByName } from "./helpers";
+import { goHome, newPlayer, openActivity, signUp, userByName } from "./helpers";
 
 interface Entry { en: string; es: string }
 const fixture = JSON.parse(readFileSync("tests/e2e/fixtures/vocab.json", "utf8")) as {
@@ -266,7 +266,7 @@ test("the English book: definitions chosen, words written, a root of the same me
   expect(await post("magm")).toMatchObject({ verdict: "wrong" }); // 4 letters: too short for a typo
 
   // The home page counts the words due per book.
-  await page.locator(".home-link").click();
+  await goHome(page);
   await expect(page.locator("[data-activity='vocab-test-english'] .activity-status")).not.toHaveText("20 mots");
 });
 
@@ -350,7 +350,7 @@ test("the Japanese book: rōmaji under the word, and accepted as an answer, like
   expect(await post(entryOf("コーヒー"), "koohii")).toMatchObject({ verdict: "right" });
   expect(await post(entryOf("東京"), "tokyo")).toMatchObject({ verdict: "right" });
 
-  await page.locator(".home-link").click();
+  await goHome(page);
   await expect(page.locator("[data-activity='vocab-test-japanese'] .activity-text")).toContainText("Test words");
 });
 
@@ -361,10 +361,8 @@ test("the Japanese book: rōmaji can wait until the answer", async ({ page }) =>
   await page.click(".vocab-romaji >> text=Après la réponse");
   await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Après la réponse");
   // Not offered for a book in Latin letters.
-  await page.locator(".home-link").click();
   await openActivity(page, "vocab-collins-spanish");
   await expect(page.locator(".vocab-romaji")).toHaveCount(0);
-  await page.locator(".home-link").click();
   await openActivity(page, "vocab-test-japanese");
 
   await startFirstSection(page);
