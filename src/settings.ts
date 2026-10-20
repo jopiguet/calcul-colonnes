@@ -17,6 +17,8 @@ export interface Settings {
   mode: Mode;
   /** Vocabulary book open in the "vocab" activity (its id on the server). */
   vocabBook: number | null;
+  /** Lab open in the "discover" activity. */
+  discoverActivity: "dice" | "coins";
   quizLevel: Level;
   quizTopics: Topic[];
   quizCount: number;
@@ -87,6 +89,7 @@ export function loadSettings(): Settings {
   return {
     mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" || saved.mode === "discover" ? saved.mode : "home",
     vocabBook: typeof saved.vocabBook === "number" && saved.vocabBook > 0 ? saved.vocabBook : null,
+    discoverActivity: saved.discoverActivity === "coins" ? "coins" : "dice",
     quizLevel: QUIZ_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),

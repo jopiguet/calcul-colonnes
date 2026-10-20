@@ -83,7 +83,7 @@ home page: **Que fait-on, Léa ?**
 |---|---|---|
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM | For the QCM, how many kinds of question are to review |
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
-| Découvrir | 🎲 Le labo des probabilités | |
+| Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face | |
 
 Click an activity to open it. Every activity has *← Accueil* at the top to
 come back.
@@ -333,7 +333,22 @@ session once a week is less effective. The method is described in
 experiment: *Refaire l'expérience n°* with the same number gives exactly the
 same rolls. Two children can each predict, roll the same dice, and compare.
 
-Nothing is saved yet: a new visit starts a new experiment. Details in
+**🪙 Pile ou face.** A coin, and its streaks.
+
+1. **Prévoir:** in 100 flips, how many times in a row the same side, at most? And which of two sequences of 6 flips is likelier: six times *face*, a mixed one, or both the same?
+2. **Lancer:** flip once, 10, 100 or 1,000 times. Under the coin:
+   - the last 100 flips, with streaks of 5 or more circled;
+   - after a streak of 3 or more, whether the next flip continued it or broke it;
+   - how many streaks of each length;
+   - the share of *face*.
+3. **Comparer**, from 100 flips:
+   - your longest streak against the exact chances (in 100 flips, most often 6);
+   - the 64 sequences of 6 flips, each 1 in 64;
+   - what followed your streaks, against one in two.
+4. **Comprendre**, then **Vérifier:** a made-up list of flips, or a real one: which has a streak of 4?
+
+Each lab keeps its experiment while you go to the other and back. Nothing is
+saved yet: a new visit starts a new experiment. Details in
 [Discover](discover.md).
 
 ## Scores

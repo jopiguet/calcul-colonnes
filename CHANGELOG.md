@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.5.0
+
+- **Heads or tails** (🪙 *Pile ou face*), the second Discover lab, on streaks:
+  - **Predict:** the longest streak in 100 flips, and which of two sequences of 6 is likelier.
+  - **Flip:** the last 100 flips with long streaks circled, what follows a streak of 3, streaks by length, the share of heads.
+  - **Compare:** the longest streak against its exact distribution, the 64 sequences of 6 (1 in 64 each), what followed the streaks against one in two.
+  - **Check:** a made-up list against a real one.
+- **Exact streak theory** (`shared/discover/coins.ts`): the distribution of the longest run in n flips by a recurrence, and the expected number of runs of each length. `npm run check:discover` compares both with a brute-force count of every sequence (up to 20 flips: 1,048,576 sequences). It also tests the coin generator: a million flips per seed, what follows a streak, and the longest run of 20,000 series of 100 against its exact distribution.
+- **The shared shape of a lab**, extracted now that there are two (`src/discover/lab.ts`): redrawing with the keyboard focus kept, prediction choices, batch buttons, the interruptible animation, the counts chart with theory marks, the running-share chart, reveal, explanation, check question and replay. The dice lab is rewritten on it, with the same markup, and its tests pass unchanged.
+- `shared/discover/experiment.ts`: experiment numbers, chart points and the chi-square statistic, shared by both engines.
+- Each lab keeps its own experiment; the update watcher waits for either.
+- Browser tests: 55. The language test goes through both labs in the three languages.
+
 ## 5.4.0
 
 - **Discover**, a third group on the home page: experiments rather than exercises. Docs: `docs/discover.md`.

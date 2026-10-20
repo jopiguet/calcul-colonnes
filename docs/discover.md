@@ -6,6 +6,7 @@ the project's planning notes; this page describes what exists.
 
 - [The pattern](#the-pattern)
 - [The probability lab](#the-probability-lab)
+- [Heads or tails](#heads-or-tails)
 - [Randomness and experiment numbers](#randomness-and-experiment-numbers)
 - [What is saved](#what-is-saved)
 - [Checks and tests](#checks-and-tests)
@@ -21,8 +22,9 @@ Each activity follows the same steps, known in science teaching as
 3. **Compare and explain:** the result next to the theory, and next to the prediction.
 4. **Check:** one follow-up question, on the misconception the activity is about.
 
-There is one activity so far. The common shape (steps, state, texts) is
-extracted when the second one is written, not before.
+The common shape was extracted when the second lab, the coins, was written,
+not before: `src/discover/lab.ts` holds what both share (see [Code](#code)).
+Each lab keeps its own state, steps and texts.
 
 ## The probability lab
 
@@ -48,10 +50,34 @@ focus stays on the roll button after a roll. The dice, the charts and the
 grid carry labels with their figures, and the table of the eleven sums gives
 the same numbers as the chart.
 
+## Heads or tails
+
+A coin, and its streaks. Three misconceptions, each with its own measure:
+
+- **The coin is "due":** after a run of heads, tails is not more likely. The coin has no memory.
+- **Long runs look suspicious,** but they are normal.
+- **HTTHTH looks likelier than HHHHHH,** but every precise sequence has the same chance.
+
+| Step | What happens |
+|---|---|
+| 1. Predict | In 100 flips, the longest run of the same side: 2 to 8, or 9 or more (the usual guess, 3 or 4, is far too short). Which of two sequences of 6 is likelier: six heads, a mixed one, or *both the same*. Both are required. |
+| 2. Flip | × 1, × 10, × 100, × 1,000. The coin: heads filled, tails outlined, each with its initial, so the side reads without colour. Below: the last 100 flips, runs of 5 or more circled; after a run of 3 or more, whether the next flip continued or broke it; the number of runs of each length; the share of heads. |
+| 3. Compare | From 100 flips. The longest run of the first 100 flips against the prediction, and the exact chances of each longest run in 100 flips, the learner's row highlighted. The 64 sequences of 6, \(P = (1/2)^6 = 1/64\) for each. What followed the runs, against one in two. The expected number of runs of each length appears on the bars (each longer run about half as frequent), and the 1-in-2 marks on the chart and the run-breaking bars. |
+| 4. Understand | No memory; long runs are normal (6 or more in 100 flips: about 4 times in 5); every sequence is as likely, a regular one just stands out. |
+| 5. Check | Lea makes up 20 flips, Tom flips a real coin 20 times: in which list is a run of 4 likelier? The real one: 77 %. People who invent lists avoid runs, which is how invented lists are spotted. |
+
+**The exact theory** is computed, not simulated:
+
+- **Longest run:** the probability that no run in n flips is longer than k comes from counting the sequences whose runs are all at most k, by a recurrence. In 100 flips, the longest run is most often 6 (26.4 %); 4 or less happens 2.8 % of the time.
+- **Runs of each length:** expected numbers from where a run can sit. It needs k − 1 equal neighbours and a different flip on each side that exists.
+
+`npm run check:discover` compares both against a brute-force count of every sequence.
+
 ## Randomness and experiment numbers
 
-An experiment is its seed: *Expérience n° 4821*. The rolls come from the
-seeded generator of the tests (`shared/quiz/rng.ts`, mulberry32), so:
+An experiment is its seed: *Expérience n° 4821*. The rolls and the flips
+come from the seeded generator of the tests (`shared/quiz/rng.ts`,
+mulberry32), so:
 
 - the same number gives the same rolls, whatever the batches (10 then 100, or 110 at once);
 - *Refaire l'expérience n°* replays an experiment: two children can roll the same dice and compare what they predicted;
@@ -63,9 +89,10 @@ A new experiment draws its number from the system's secure generator
 
 ## What is saved
 
-Nothing yet. The experiment lives in the page: a language change keeps it, a
-reload starts a new one. The update watcher does not reload during an
-experiment that has rolls and is not finished.
+Nothing yet. Each lab's experiment lives in the page: a language change keeps
+it, going to the other lab and back keeps it, a reload starts a new one. The
+update watcher does not reload during an experiment, in either lab, that has
+trials and is not finished.
 
 Recording predictions is the planned next step: a learner who predicted
 "all the same" holds a misconception, which should come back later, as the
@@ -79,19 +106,34 @@ QCM's kinds of question to review do.
 - reproducibility: same seed, same rolls in other batches; another seed, other rolls;
 - the generator: a million rolls for each of five seeds, chi-square tests on the eleven sums (limit 29.6, 10 degrees of freedom, p = 0.001) and on the six faces of each die (limit 20.5), and the share of 7s within 0.002 of 1/6. A die biased by only 10 % on the sum 12 scores about 280.
 
-Browser tests (`tests/e2e/discover.spec.ts`): the whole sequence on
-experiment 4821, with the counts computed by the engine; the verdicts on the
-predictions; the keyboard; a language change in the middle of an experiment;
-no sideways scrolling at 360 px; the animation, and a click during it. The
-language test goes through every step in the three languages; the update test
-checks that a new version waits during an experiment.
+For the coin:
+
+- **Exact formulas against brute force:** the longest-run probabilities are compared with every sequence of up to 16 flips for every k, and with the full distribution of 20 flips (1,048,576 sequences). The expected runs of each length are compared with every sequence of 12.
+- **The taught figures:** 6 is the most likely longest run in 100 flips; a run of 6 or more happens 80.7 % of the time; a run of 4 or more in 20 flips, 76.8 %.
+- **The bookkeeping:** a hand-made sequence (H H H T H H H H T) checks the counts of runs and of what followed a streak.
+- **The generator:** a million flips per seed, heads against tails (limit 10.83), and the flip after a streak within 0.005 of one in two. Then the longest run of 20,000 series of 100 flips against its exact distribution (limit 24.3, 7 degrees of freedom).
+
+Browser tests (`tests/e2e/discover.spec.ts`):
+
+- **Both labs:** the whole sequence on experiment 4821, with the figures computed by the engine (counts, longest run, circled runs, what followed the streaks); the verdicts on the predictions; the keyboard; no sideways scrolling at 360 px.
+- **The dice:** a language change in the middle of an experiment; the animation, and a click during it.
+- **Together:** each lab keeps its own experiment.
+
+The language test goes through every step of both labs in the three
+languages; the update test checks that a new version waits during an
+experiment.
 
 ## Code
 
 | File | Role |
 |---|---|
-| `shared/discover/dice.ts` | The engine: ways and exact probabilities, an experiment (counts, series, the share of 7s), the chi-square statistic |
-| `src/discover/dice.ts` | The lab: its five steps, the dice, the charts in plain HTML and SVG, the 36-square grid |
-| `src/discover/i18n.ts` | Its texts in French, Spanish and English; numbers and percentages in each language's format |
+| `shared/discover/experiment.ts` | What experiments share: experiment numbers, the points of a running chart, the chi-square statistic |
+| `shared/discover/dice.ts` | Two dice: ways and exact probabilities, an experiment (counts, series, the share of 7s) |
+| `shared/discover/coins.ts` | A coin: flips, runs, what follows a streak; the exact longest-run distribution and expected runs |
+| `src/discover/lab.ts` | What the labs share: redrawing with the focus kept, header, prediction choices, batch buttons, interruptible animation, counts chart with theory marks, running-share chart, reveal, explanation, check question, replay |
+| `src/discover/dice.ts` | The dice lab: its steps, the dice, the series of 10, the 36-square grid |
+| `src/discover/coins.ts` | The coins lab: its steps, the coin, the ribbon of the last 100 flips, what follows a streak, the longest-run table |
+| `src/discover/index.ts` | The list of labs, the view of the one open, and whether any has an experiment under way |
+| `src/discover/i18n.ts` | Their texts in French, Spanish and English; numbers and percentages in each language's format |
 | `server/check-discover.ts` | `npm run check:discover` |
 | `tests/e2e/discover.spec.ts` | Browser tests |

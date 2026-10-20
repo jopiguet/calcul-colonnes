@@ -2907,3 +2907,180 @@ button.home-link {
     height: 3rem;
   }
 }
+
+/* ------------------------------------------------------------- discover: heads or tails */
+
+/* A coin: heads filled, tails outlined, each with its initial, so the side reads without colour. */
+.coin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  font-family: var(--digits);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.coin.is-heads {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.coin.is-tails {
+  background: var(--paper);
+  color: var(--accent);
+}
+
+.coin.small {
+  width: 1.35rem;
+  height: 1.35rem;
+  font-size: 0.6rem;
+}
+
+.coin.large {
+  width: 4.2rem;
+  height: 4.2rem;
+  border-width: 3px;
+  font-size: 1.5rem;
+}
+
+.coin.dot {
+  width: 0.95rem;
+  height: 0.95rem;
+  border-width: 1.5px;
+  font-size: 0;
+}
+
+.discover-coin {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 4.6rem;
+}
+
+.discover-coin.is-idle {
+  opacity: 0.35;
+}
+
+.discover-coin-name {
+  min-width: 4rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.discover-coin.is-flipping .coin {
+  animation: coin-spin 0.12s linear;
+}
+
+@keyframes coin-spin {
+  50% {
+    transform: scaleX(0.15);
+  }
+}
+
+.coin-seq {
+  display: inline-flex;
+  gap: 3px;
+}
+
+/* Predict: the two sequences side by side, "both the same" under them. */
+.discover-seq {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.discover-seq legend {
+  margin-bottom: 0.5rem;
+}
+
+.discover-seq .segment {
+  min-height: 2.8rem;
+}
+
+.discover-seq .segment.is-same {
+  grid-column: 1 / -1;
+}
+
+.discover-run-guess {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.discover-run-guess .segment.is-same {
+  grid-column: span 1;
+}
+
+/* The latest 100 flips; long streaks circled. */
+.coin-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 3px;
+}
+
+.ribbon-run {
+  display: inline-flex;
+  gap: 2px;
+  padding: 1px;
+  border: 1.5px solid transparent;
+  border-radius: 0.7rem;
+}
+
+.ribbon-run.is-long {
+  border-color: var(--ink);
+}
+
+.coin-streaks .stats-rate-bar {
+  position: relative;
+  height: 0.7rem;
+  overflow: visible;
+}
+
+.coin-streaks .stats-rate-fill.is-box {
+  background: var(--accent);
+}
+
+/* The 1-in-2 mark across both bars, after the reveal. */
+.coin-half {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: 50%;
+  border-left: 2px solid var(--ink);
+}
+
+.coin-pair {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 1.6rem;
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .discover-run-guess {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .discover-seq {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Coins inside a selected option: reversed, so heads stay visible on the accent. */
+.segment.on .coin.is-heads {
+  border-color: var(--on-accent);
+  background: var(--on-accent);
+  color: var(--accent);
+}
+
+.segment.on .coin.is-tails {
+  border-color: var(--on-accent);
+  background: transparent;
+  color: var(--on-accent);
+}

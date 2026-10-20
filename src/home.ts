@@ -62,7 +62,7 @@ type HomeKey = keyof (typeof texts)["fr"];
 export const ht = (key: HomeKey, values: Record<string, string | number> = {}): string =>
   texts[currentLang()][key].replace(/\{(\w+)\}/g, (_, name: string) => String(values[name] ?? ""));
 
-export type Activity = { mode: "columns" | "quiz" | "discover" } | { mode: "vocab"; book: number };
+export type Activity = { mode: "columns" | "quiz" } | { mode: "vocab"; book: number } | { mode: "discover"; activity: "dice" | "coins" };
 
 export interface HomeContext {
   user: User;
@@ -152,7 +152,10 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const discover = el("div", "activity-group");
   discover.append(el("h2", "activity-group-title", dt("group")));
   const lab = el("div", "activity-grid");
-  lab.append(card("discover-dice", dt("diceTitle"), dt("diceText"), null, () => ctx.open({ mode: "discover" })));
+  lab.append(
+    card("discover-dice", dt("diceTitle"), dt("diceText"), null, () => ctx.open({ mode: "discover", activity: "dice" })),
+    card("discover-coins", dt("coinsTitle"), dt("coinsText"), null, () => ctx.open({ mode: "discover", activity: "coins" })),
+  );
   discover.append(lab);
 
   wrap.append(maths, languages, discover);

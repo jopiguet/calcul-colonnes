@@ -10,6 +10,9 @@
  * generator itself with a chi-square test on a million rolls.
  */
 import { createRng, type Rng } from "../quiz/rng";
+import { recordPoint } from "./experiment";
+
+export { MAX_SEED, chiSquare, freshSeed } from "./experiment";
 
 export const FACES = 6;
 export const OUTCOMES = FACES * FACES; // 36 equally likely pairs
@@ -17,8 +20,6 @@ export const SUMS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
 export type Sum = (typeof SUMS)[number];
 /** The sum the lab asks about. */
 export const TARGET: Sum = 7;
-/** Experiment numbers shown to the learner: easy to read out and type. */
-export const MAX_SEED = 9999;
 
 export interface Roll {
   a: number;
@@ -80,16 +81,6 @@ export function newExperiment(seed: number): Experiment {
   };
 }
 
-/**
- * The running share is recorded after every roll up to 100, then every 10 up
- * to 1,000, every 100 up to 10,000 and every 1,000 beyond: enough points for a
- * chart on a logarithmic axis, at a fixed cost.
- */
-function recordPoint(rolls: number): boolean {
-  const step = rolls <= 100 ? 1 : rolls <= 1000 ? 10 : rolls <= 10_000 ? 100 : 1000;
-  return rolls % step === 0;
-}
-
 /** Rolls `count` times; a batch of exactly 10 also adds a series. Returns the rolls when few, for animation. */
 export function rollBatch(experiment: Experiment, count: number): Roll[] {
   const kept: Roll[] = [];
@@ -119,20 +110,3 @@ export function mostFrequent(experiment: Experiment): number[] {
 /** Expected count of a sum after `rolls` rolls: rolls × ways / 36. */
 export const expected = (sum: number, rolls: number): number => (rolls * ways(sum)) / OUTCOMES;
 
-/**
- * Pearson's chi-square statistic of observed counts against expected ones.
- * Used by the check script to test the generator, not shown to learners.
- */
-export function chiSquare(observed: number[], expectedCounts: number[]): number {
-  return observed.reduce((sum, o, i) => {
-    const e = expectedCounts[i]!;
-    return e > 0 ? sum + ((o - e) * (o - e)) / e : sum;
-  }, 0);
-}
-
-/** A fresh experiment number, from the browser's or Node's secure generator. */
-export function freshSeed(): number {
-  const buffer = new Uint32Array(1);
-  globalThis.crypto.getRandomValues(buffer);
-  return 1 + (buffer[0]! % MAX_SEED);
-}

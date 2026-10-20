@@ -55,6 +55,17 @@ for (const lang of LANGUAGES) {
     await page.locator(".discover-check .choice").nth(1).click();
     await expectClean(page);
 
+    await openActivity(page, "discover-coins");
+    await expectClean(page);
+    await page.click("[data-focus=run-6]");
+    await page.click("[data-focus=seq-equal]");
+    await page.click("[data-focus=predict-done]");
+    await page.click("[data-focus=roll-100]");
+    await expectClean(page);
+    await page.click("[data-focus=reveal]");
+    await page.click("[data-focus=check-real]");
+    await expectClean(page);
+
     // The home page and the English book.
     await goHome(page);
     await expectClean(page);

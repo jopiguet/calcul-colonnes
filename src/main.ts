@@ -30,7 +30,7 @@ import { vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
-import { diceView, discoverBusy } from "./discover/dice";
+import { discoverBusy, discoverView } from "./discover/index";
 import { dt } from "./discover/i18n";
 import { progressView } from "./progress";
 
@@ -171,7 +171,7 @@ async function render(): Promise<void> {
         await vocabView({ user: state.user, book, rerender: () => void render() }),
       );
     } else if (state.settings.mode === "discover") {
-      app.replaceChildren(topBar(), activityBar(dt("group"), goHome), diceView({ user: state.user }));
+      app.replaceChildren(topBar(), activityBar(dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
       app.replaceChildren(
@@ -239,6 +239,7 @@ function next(): void {
 /** Opens an activity from the home page. */
 function open(activity: Activity): void {
   if (activity.mode === "vocab") updateSettings({ mode: "vocab", vocabBook: activity.book });
+  else if (activity.mode === "discover") updateSettings({ mode: "discover", discoverActivity: activity.activity });
   else updateSettings({ mode: activity.mode });
   if (activity.mode === "columns") next();
   else void render();
