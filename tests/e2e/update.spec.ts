@@ -54,3 +54,15 @@ test("during a dice experiment, a new version waits for a button", async ({ page
   await expect(page.locator(".update-banner")).toBeVisible();
   await expect(page.locator(".discover-status")).toContainText("100");
 });
+
+test("during an unfinished grid, a new version waits for a button", async ({ page }) => {
+  await newPlayer(page, "Upd3");
+  await openActivity(page, "discover-puzzles");
+  const free = page.locator(".puzzle-cell:not(.is-given)").first();
+  await free.click();
+  await page.keyboard.press("1");
+  await newBuildOut(page);
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect(page.locator(".update-banner")).toBeVisible();
+  await expect(free.locator(".cell-value")).toHaveText("1");
+});

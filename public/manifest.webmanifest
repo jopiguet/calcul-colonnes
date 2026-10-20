@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Luma – Mon cahier",
   "short_name": "Luma",
-  "description": "Calcul en colonnes, QCM de mathématiques, vocabulaire et expériences de probabilités (dés, pièces).",
+  "description": "Calcul en colonnes, QCM de mathématiques, vocabulaire, expériences de probabilités et grilles logiques.",
   "lang": "fr",
   "start_url": "/",
   "scope": "/",

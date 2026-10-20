@@ -38,6 +38,19 @@ import {
   expectedRuns,
   type Side,
 } from "../shared/discover/coins.ts";
+import {
+  LEVELS,
+  cageCombos,
+  cageHolds,
+  colOf,
+  countSolutions,
+  generatePuzzle,
+  nextStep,
+  rowOf,
+  solveLogically,
+  type Cage,
+} from "../shared/discover/puzzles.ts";
+import { createRng } from "../shared/quiz/rng.ts";
 
 let failures = 0;
 function expect(label: string, actual: unknown, wanted: unknown): void {
@@ -215,11 +228,93 @@ for (const seed of [1, 7, 4821, 9999, 123456789]) {
   if (chi > 24.32) expect("longest run in 20,000 series of 100: chi-square", Number(chi.toFixed(2)), "≤ 24.32");
 }
 
+// ---------------------------------------------------------------- puzzles
+
+// Cage arithmetic, by hand: 7+ on two squares of a row of a 4 × 4 grid is 3 + 4 only;
+// 6+ on an L of three squares may repeat the two squares that share no row or column.
+expect("7+ on a row of two", cageCombos({ cells: [0, 1], op: "+", target: 7 }, 4), [[3, 4]]);
+expect("6+ on an L of three", cageCombos({ cells: [0, 1, 4], op: "+", target: 6 }, 4), [[1, 1, 4], [1, 2, 3]]);
+expect("2÷ on 4 × 4", cageCombos({ cells: [0, 1], op: "÷", target: 2 }, 4), [[1, 2], [2, 4]]);
+expect("3− on 6 × 6", cageCombos({ cells: [0, 6], op: "−", target: 3 }, 6), [[1, 4], [2, 5], [3, 6]]);
+
+// Every level, 300 grids each: structure, reasoning alone, one solution, the same grid from the same number.
+const PUZZLES = 300;
+let puzzleSteps = 0;
+for (const level of LEVELS) {
+  const n = level.size;
+  for (let seed = 1; seed <= PUZZLES; seed++) {
+    const p = generatePuzzle(seed, level.id);
+    const where = `level ${level.id}, grid ${seed}`;
+    // A Latin square.
+    for (let i = 0; i < n; i++) {
+      const row = new Set(p.solution.slice(i * n, i * n + n));
+      const col = new Set(p.solution.filter((_, c) => colOf(c, n) === i));
+      if (row.size !== n || col.size !== n) expect(`${where}: rows and columns hold 1 to ${n} once`, false, true);
+    }
+    if (p.solution.some((v) => v < 1 || v > n)) expect(`${where}: numbers 1 to ${n}`, false, true);
+    if (level.ops.length === 0) {
+      expect(`${where}: given numbers`, p.givens.length, Math.floor((n * n) / 2) - 1);
+    } else {
+      // Cages: every square once, connected, the operation allowed, the target right.
+      const seen = p.cages.flatMap((c) => c.cells).sort((a, b) => a - b);
+      if (seen.join() !== [...Array(n * n).keys()].join()) expect(`${where}: cages cover the grid once`, seen.length, n * n);
+      for (const cage of p.cages) {
+        if (!cageHolds(cage, cage.cells.map((c) => p.solution[c]!))) expect(`${where}: cage holds on the solution`, cage, "holds");
+        if (cage.op !== "=" && !level.ops.includes(cage.op)) expect(`${where}: operation of the level`, cage.op, level.ops);
+        if ((cage.op === "−" || cage.op === "÷") && cage.cells.length !== 2) expect(`${where}: − and ÷ on two squares`, cage.cells.length, 2);
+        if (cage.cells.length > 4) expect(`${where}: cage size`, cage.cells.length, "≤ 4");
+        if (!connected(cage, n)) expect(`${where}: cage is connected`, cage.cells, "connected");
+      }
+    }
+    const solved = solveLogically(p);
+    if (!solved.solved) expect(`${where}: solved by reasoning alone`, false, true);
+    puzzleSteps += solved.steps.length;
+    if (level.pairs === false && solved.steps.some((s) => s.reason.kind === "combined" && s.reason.pairs)) expect(`${where}: no pairs below level 3`, true, false);
+    const combinedSteps = solved.steps.filter((s) => s.reason.kind === "combined").length;
+    if (combinedSteps > level.maxCombined) expect(`${where}: steps needing combined clues`, combinedSteps, `≤ ${level.maxCombined}`);
+    const solutions = countSolutions(p);
+    if (solutions !== 1) expect(`${where}: one solution`, solutions, 1);
+    if (seed <= 20 && JSON.stringify(generatePuzzle(seed, level.id)) !== JSON.stringify(p)) expect(`${where}: same number, same grid`, "different", "same");
+  }
+}
+
+// Hints from a grid partly filled (rightly), in any order: always a step, always the solution's number.
+{
+  const rng = createRng(2024);
+  for (const level of LEVELS) {
+    for (let k = 0; k < 200; k++) {
+      const p = generatePuzzle(1000 + k, level.id);
+      const placed = Array<number>(p.size * p.size).fill(0);
+      for (const cell of rng.shuffle([...Array(p.size * p.size).keys()]).slice(0, rng.int(0, p.size * p.size - 1))) placed[cell] = p.solution[cell]!;
+      const step = nextStep(p, placed);
+      if (!step) expect(`level ${level.id}, hint ${k}: a step from a partial grid`, null, "a step");
+      else if (placed[step.cell] || step.value !== p.solution[step.cell]) expect(`level ${level.id}, hint ${k}: right number on an empty square`, step, p.solution[step.cell]);
+    }
+  }
+}
+
+function connected(cage: Cage, n: number): boolean {
+  const cells = new Set(cage.cells);
+  const reached = new Set([cage.cells[0]!]);
+  for (const queue = [cage.cells[0]!]; queue.length; ) {
+    const cell = queue.pop()!;
+    for (const other of cells) {
+      const near = Math.abs(rowOf(cell, n) - rowOf(other, n)) + Math.abs(colOf(cell, n) - colOf(other, n)) === 1;
+      if (near && !reached.has(other)) {
+        reached.add(other);
+        queue.push(other);
+      }
+    }
+  }
+  return reached.size === cells.size;
+}
+
 if (failures > 0) {
   console.error(`${failures} failure(s)`);
   process.exit(1);
 }
 console.log(
   "discover checks passed (two dice: distribution, seeds, 5 × 1,000,000 rolls; " +
-    "a coin: streak formulas against every sequence up to 20 flips, 5 × 1,000,000 flips, 20,000 series of 100)",
+    "a coin: streak formulas against every sequence up to 20 flips, 5 × 1,000,000 flips, 20,000 series of 100; " +
+    `puzzles: ${PUZZLES * LEVELS.length} grids solved by reasoning, each with one solution, ${puzzleSteps} steps; 800 hints from partial grids)`,
 );

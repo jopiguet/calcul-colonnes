@@ -178,7 +178,8 @@ re-renders such as a language change, but not a page reload.
 
 That is why `src/update.ts` reloads for a new build only when nothing is under
 way: no vocabulary session (`vocabBusy()`), no test (`quizBusy()`), no Discover
-experiment with trials and not finished (`discoverBusy()`, any lab), no field with
+experiment with trials and not finished, nor grid started and not solved
+(`discoverBusy()`), no field with
 something typed in it. Otherwise it shows a *Mettre à jour* bar, and
 reloads at the next return to the home page. The build id it compares is
 compiled in by `vite.config.ts` and published as `/version.json`.

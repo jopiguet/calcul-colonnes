@@ -3084,3 +3084,224 @@ button.home-link {
   background: transparent;
   color: var(--on-accent);
 }
+
+/* ------------------------------------------------------------- discover: logic grids */
+
+.puzzle-levels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.puzzle-levels legend {
+  margin-bottom: 0.5rem;
+}
+
+.puzzle-levels .segment {
+  min-height: 3rem;
+}
+
+.puzzle-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+}
+
+.puzzle-level strong {
+  font-family: var(--digits);
+  font-size: 1.1rem;
+}
+
+.puzzle-level-size {
+  font-family: var(--digits);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.puzzle-rules p {
+  margin: 0 0 0.4rem;
+  line-height: 1.5;
+}
+
+.puzzle-play {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* The grid: thin lines between squares, thick walls around cages. */
+.puzzle-grid {
+  --cell: min(4rem, calc((100vw - 4.5rem) / var(--n)));
+  display: grid;
+  border: 3px solid var(--ink);
+  border-radius: 0.3rem;
+  /* Thin lines between squares in the line colour; cage walls in ink (inset shadows). */
+  background: var(--line);
+  gap: 1px;
+}
+
+.puzzle-row {
+  display: grid;
+  grid-template-columns: repeat(var(--n), var(--cell));
+  gap: 1px;
+}
+
+.puzzle-cell {
+  position: relative;
+  width: var(--cell);
+  height: var(--cell);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.puzzle-cell.is-peer {
+  background: color-mix(in srgb, var(--accent) 6%, var(--paper));
+}
+
+.puzzle-cell.is-selected {
+  background: color-mix(in srgb, var(--accent) 18%, var(--paper));
+}
+
+.puzzle-cell:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+  z-index: 1;
+}
+
+.puzzle-cell.is-given {
+  color: var(--ink);
+}
+
+.puzzle-cell.is-given .cell-value {
+  font-weight: 800;
+}
+
+.puzzle-cell.is-conflict .cell-value,
+.puzzle-cell.is-wrong .cell-value {
+  color: var(--bad);
+}
+
+.puzzle-cell.is-conflict {
+  background: color-mix(in srgb, var(--bad) 10%, var(--paper));
+}
+
+.puzzle-cell.is-wrong {
+  background: color-mix(in srgb, var(--bad) 18%, var(--paper));
+}
+
+/* The square a hint points at: a ring, readable without colour. */
+.puzzle-cell.is-hinted::before {
+  content: "";
+  position: absolute;
+  inset: 22% 14% 8%;
+  border: 3px dashed var(--warn);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cell-value {
+  font-family: var(--digits);
+  font-size: calc(var(--cell) * 0.48);
+  font-weight: 600;
+}
+
+.cage-label {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  color: var(--ink);
+  font-family: var(--digits);
+  font-size: calc(var(--cell) * 0.2);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cell-notes {
+  position: absolute;
+  inset: 22% 6% 4%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  color: var(--muted);
+  font-family: var(--digits);
+  font-size: calc(var(--cell) * 0.19);
+  line-height: 1;
+  place-items: center;
+}
+
+.puzzle-pad {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.puzzle-key {
+  min-width: 2.9rem;
+  min-height: 2.9rem;
+  font-family: var(--digits);
+  font-size: 1.2rem;
+}
+
+.puzzle-key.is-erase {
+  font-family: var(--font);
+  font-size: 0.9rem;
+}
+
+.puzzle-tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.puzzle-tools .on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, var(--paper));
+}
+
+.puzzle-message {
+  min-height: 1.5rem;
+  max-width: 34rem;
+  margin: 0;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.puzzle-message.good {
+  color: var(--good);
+}
+
+.puzzle-message.bad {
+  color: var(--bad);
+}
+
+.puzzle-solved {
+  align-items: center;
+}
+
+.puzzle-solved-text {
+  margin: 0;
+  color: var(--good);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .puzzle-key {
+    min-width: 2.5rem;
+  }
+  .puzzle-levels {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

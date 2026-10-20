@@ -83,7 +83,7 @@ home page: **Que fait-on, Léa ?**
 |---|---|---|
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM | For the QCM, how many kinds of question are to review |
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
-| Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face | |
+| Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 
 Click an activity to open it. Every activity has *← Accueil* at the top to
 come back.
@@ -347,7 +347,20 @@ same rolls. Two children can each predict, roll the same dice, and compare.
    - what followed your streaks, against one in two.
 4. **Comprendre**, then **Vérifier:** a made-up list of flips, or a real one: which has a streak of 4?
 
-Each lab keeps its experiment while you go to the other and back. Nothing is
+**🧩 Grilles logiques.** Place the numbers 1 to 4 (5, 6) so that each row and
+each column has each one once.
+
+- **Niveau:**
+  - 1 is a 4 × 4 grid with some numbers given;
+  - 2 to 4 have cages: the numbers in a cage, with its operation, make the number in its corner (*7+*, *2÷*).
+- **Writing:** tap a square, then a number. On a computer: arrows, digits, Backspace, and N for **Notes** (small numbers, what the square could be).
+- **Red at once:** a number twice in a row or column, or a full cage that is wrong.
+- **Vérifier:** shows which numbers are not the solution's.
+- **Indice:** circles a square and says what to look at. Press again (*Explique*) for the reasoning and the number. If a number written is wrong, the hint says so first.
+- **Every grid can be solved without guessing.** At the end: the time and the hints used.
+- **Grille n°:** the same number at the same level gives the same grid.
+
+Each lab keeps its experiment, and each level its grid, while you go elsewhere and back. Nothing is
 saved yet: a new visit starts a new experiment. Details in
 [Discover](discover.md).
 

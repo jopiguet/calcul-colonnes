@@ -46,9 +46,10 @@ export function mountLab(cls: string, build: (draw: () => void) => HTMLElement[]
   return wrap;
 }
 
-export function labHead(title: string, seed: number): HTMLElement {
+/** Title and number; `number` replaces "Experiment no. …" (a puzzle says "Grid no. …"). */
+export function labHead(title: string, seed: number, number = dt("experiment", { seed })): HTMLElement {
   const head = el("div", "discover-head");
-  head.append(el("h1", "title", title), el("p", "discover-seed", dt("experiment", { seed })));
+  head.append(el("h1", "title", title), el("p", "discover-seed", number));
   return head;
 }
 
@@ -287,12 +288,18 @@ export function checkPanel<T extends string>(opts: {
 }
 
 /** A new experiment, or the same one again by its number. */
-export function againPanel(opts: { checked: boolean; onNew: () => void; onReplay: (seed: number) => void }): HTMLElement {
+export function againPanel(opts: {
+  checked: boolean;
+  onNew: () => void;
+  onReplay: (seed: number) => void;
+  labels?: { again: string; replay: string; hint: string };
+}): HTMLElement {
+  const labels = opts.labels ?? { again: dt("again"), replay: dt("replay"), hint: dt("replayHint") };
   const box = el("div", "discover-again");
-  box.append(control(opts.checked ? "primary" : "ghost", dt("again"), "again", opts.onNew));
+  box.append(control(opts.checked ? "primary" : "ghost", labels.again, "again", opts.onNew));
   const form = el("form", "discover-replay");
   const label = el("label", "discover-replay-label");
-  label.append(el("span", "", dt("replay")));
+  label.append(el("span", "", labels.replay));
   const input = el("input", "discover-replay-input");
   input.type = "number";
   input.min = "1";
@@ -308,6 +315,6 @@ export function againPanel(opts: { checked: boolean; onNew: () => void; onReplay
     const seed = Number(input.value);
     if (Number.isInteger(seed) && seed >= 1 && seed <= MAX_SEED) opts.onReplay(seed);
   });
-  box.append(form, el("p", "hint", dt("replayHint")));
+  box.append(form, el("p", "hint", labels.hint));
   return box;
 }

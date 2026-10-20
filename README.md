@@ -56,8 +56,9 @@ exponentials and logarithms, at *lycée / bachillerato* or university level.
 
 - The probability lab: predict which sum of two dice comes up most often, roll 1 to 1,000 times, watch the counts and the share of 7s settle, then compare with the 36 ways the dice can land.
 - Heads or tails: predict the longest streak in 100 flips, watch what follows a streak (one in two, still), and see why six heads in a row is exactly as likely as any mixed sequence of six.
-- Each experiment has a number: the same number replays the same rolls or flips, to compare with someone.
-- Checked, not assumed: millions of rolls and flips per seed against the theory by chi-square tests, and the exact streak formulas against a brute-force count of every sequence.
+- Logic grids, four levels from 4 × 4 to 6 × 6 with cages (+ − × ÷): every grid has one solution and can be solved without guessing, and the hints explain the next deduction instead of giving the number.
+- Each experiment and each grid has a number: the same number replays the same rolls, flips or grid, to compare with someone.
+- Checked, not assumed: millions of rolls and flips per seed against the theory by chi-square tests, the exact streak formulas against a brute-force count of every sequence, and 1,200 grids for one solution and a solution by reasoning.
 
 **Players and progress**
 
@@ -99,7 +100,7 @@ npm start          # http://localhost:8787
 | `npm run test:e2e` | Browser tests of the whole app, on a separate server and database (see [Development › Tests](docs/development.md#tests)) |
 | `npm run vocab:import -- data/vocab-english.json` | Imports a vocabulary book, keeping progress on unchanged entries (see [Vocabulary](docs/vocabulary.md)) |
 | `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |
-| `npm run check:discover` | Checks the dice and coin engines: exact probabilities and streak formulas, seeds, and the generator on millions of trials (see [Discover](docs/discover.md#checks-and-tests)) |
+| `npm run check:discover` | Checks the Discover engines: exact probabilities and streak formulas, the generator on millions of trials, 1,200 logic grids (see [Discover](docs/discover.md#checks-and-tests)) |
 | `npm run db:copy-to-postgres` | One-off copy of the SQLite data into the PostgreSQL database named by `DATABASE_URL` |
 
 ## Configuration

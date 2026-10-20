@@ -66,6 +66,16 @@ for (const lang of LANGUAGES) {
     await page.click("[data-focus=check-real]");
     await expectClean(page);
 
+    await openActivity(page, "discover-puzzles");
+    await page.click("[data-focus=hint]");
+    await page.click("[data-focus=hint]");
+    await expectClean(page);
+    await page.click("[data-focus=level-4]");
+    await page.click("[data-focus=hint]");
+    await page.click("[data-focus=hint]");
+    await page.click("[data-focus=check]");
+    await expectClean(page);
+
     // The home page and the English book.
     await goHome(page);
     await expectClean(page);

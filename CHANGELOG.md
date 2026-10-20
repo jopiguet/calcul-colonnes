@@ -1,5 +1,32 @@
 # Changelog
 
+## 5.6.0
+
+- **Logic grids** (🧩 *Grilles logiques*), Discover's first puzzles: n × n grids where every row and column holds 1 to n once. Four levels:
+  - 1: a 4 × 4 grid with 7 numbers given;
+  - 2: 4 × 4 with + cages;
+  - 3: 5 × 5 with + and −;
+  - 4: 6 × 6 with + − × ÷.
+- **One solution, no guessing:**
+  - the generator keeps a grid only if a logical solver, using the moves a person uses, finishes it;
+  - a separate brute-force count confirms one solution;
+  - steps that need several clues combined are capped per level (none on levels 1–2), so nearly every hint has a concrete reason.
+- **Hints in two stages,** from the grid as filled: first the square to look at and what to look for, then the reasoning with the number. A wrong number is pointed out first.
+- **Play:**
+  - a number twice in a row or column, or a wrong full cage, shows at once;
+  - *Vérifier* (check) shows numbers that are not the solution's;
+  - notes;
+  - keyboard: arrows, digits, Backspace, N;
+  - one tab stop, labelled squares;
+  - the time and hints shown at the end, with no timer while solving.
+- **Grid numbers:** the same number and level give the same grid. Each level keeps its grid.
+- `npm run check:discover`:
+  - cage arithmetic by hand;
+  - 300 grids per level for structure, reasoning alone, one solution and determinism;
+  - 800 hints from random partial grids.
+- Shared lab pieces take their own labels (*Grille n°*, *Grille suivante*). The update watcher waits during a started grid.
+- Browser tests: 60, including a 6 × 6 grid solved with hints alone through the interface.
+
 ## 5.5.0
 
 - **Heads or tails** (🪙 *Pile ou face*), the second Discover lab, on streaks:

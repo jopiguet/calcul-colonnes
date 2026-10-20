@@ -7,6 +7,7 @@ the project's planning notes; this page describes what exists.
 - [The pattern](#the-pattern)
 - [The probability lab](#the-probability-lab)
 - [Heads or tails](#heads-or-tails)
+- [Logic grids](#logic-grids)
 - [Randomness and experiment numbers](#randomness-and-experiment-numbers)
 - [What is saved](#what-is-saved)
 - [Checks and tests](#checks-and-tests)
@@ -73,6 +74,65 @@ A coin, and its streaks. Three misconceptions, each with its own measure:
 
 `npm run check:discover` compares both against a brute-force count of every sequence.
 
+## Logic grids
+
+Grids of n × n: every row and every column holds 1 to n once. Puzzles follow
+the Discover shape in their own way. The rules come first, then a grid to work
+out. The explanation step is the hints, which explain a deduction instead of
+giving a number.
+
+| Level | Grid | Clues | Age, roughly |
+|---|---|---|---|
+| 1 | 4 × 4 | 7 numbers given | from 8 |
+| 2 | 4 × 4 | cages with + | from 9 |
+| 3 | 5 × 5 | cages with + and − | from 11 |
+| 4 | 6 × 6 | cages with + − × ÷ | from 13 |
+
+**A cage** is a group of squares outlined in thick lines. Its numbers, combined
+by its operation, make the number in its corner: *7+*, *2÷*. For − and ÷ the
+larger number comes first. A number may repeat inside a cage when the two
+squares are not in the same row or column. A one-square cage is written in,
+like a given number. (The puzzle is commonly known by a trademarked name; the
+app says "cages".)
+
+**Two promises,** kept by construction and verified for 1,200 grids by
+`npm run check:discover`:
+
+- **One solution:** a separate brute-force count finds exactly one.
+- **No guessing:** the grid is solved by reasoning alone. The generator keeps a grid only if its logical solver, which uses the moves a person uses, finishes it.
+
+**The moves**, from the easiest; they are also the hints:
+
+| Move | Example of the hint |
+|---|---|
+| A square whose row and column leave one number | "Its row already has 1 and 3; its column, 4. Only 2 is left." |
+| A number with one place left in a row or column | "In this row, 3 can only go in the circled square: in the other empty squares, it is already in their column." |
+| A cage's arithmetic, with the row and column | "This cage of 2 squares makes 30×: 5 × 6. Its row already has 2: only 5 is left." |
+| Several clues combined: neighbouring cages, and from level 3 two squares of a row or column sharing the same two numbers (a *pair*) | The least concrete hint, so a grid keeps few of them: none on levels 1 and 2, at most one on level 3, two on level 4 (under 2 % of all steps). |
+
+**Hints come in two stages.** The first circles a square and says what kind
+of reasoning works there, without the number. The second gives the reasoning
+in full, with the number. Hints follow the grid as the child has filled it: a
+wrong number is pointed out first ("The circled square is not right"), so a
+hint never builds on a mistake.
+
+**Feedback, without giving answers away:**
+
+- **The rules, at once:** the same number twice in a row or column, or a full cage that misses its target, turns red as soon as it is written.
+- **The solution, on request only:** whether a number matches it is shown only with *Vérifier* (check).
+
+**Entry:** click or tap a square, then a number on the pad. By keyboard: the
+arrows move, digits write, Backspace or Delete erase, N switches to notes.
+Notes are small numbers, what a square could be. The grid has a single tab
+stop, and every square is labelled (row, column, cage, number or notes).
+
+**Solved:** the time from the first number written to the last, and the
+number of hints. There is no timer while solving.
+
+**Grid numbers:** *Grille n° 4821*. The same number at the same level gives
+the same grid, to compare with someone. Each level keeps its own grid while
+the page is open.
+
 ## Randomness and experiment numbers
 
 An experiment is its seed: *Expérience n° 4821*. The rolls and the flips
@@ -87,12 +147,15 @@ A new experiment draws its number from the system's secure generator
 (`crypto.getRandomValues`), from 1 to 9,999. The generator itself is tested
 (below), so "the dice are fair" is checked, not assumed.
 
+The grids use the same generator: a grid is its number and its level.
+
 ## What is saved
 
-Nothing yet. Each lab's experiment lives in the page: a language change keeps
-it, going to the other lab and back keeps it, a reload starts a new one. The
-update watcher does not reload during an experiment, in either lab, that has
-trials and is not finished.
+Nothing yet. Each lab's experiment, and each level's grid, lives in the page:
+a language change keeps it, going elsewhere and back keeps it, a reload starts
+anew. The update watcher does not reload during an experiment that has trials
+and is not finished, nor during a grid that has a number written and is not
+solved.
 
 Recording predictions is the planned next step: a learner who predicted
 "all the same" holds a misconception, which should come back later, as the
@@ -113,11 +176,28 @@ For the coin:
 - **The bookkeeping:** a hand-made sequence (H H H T H H H H T) checks the counts of runs and of what followed a streak.
 - **The generator:** a million flips per seed, heads against tails (limit 10.83), and the flip after a streak within 0.005 of one in two. Then the longest run of 20,000 series of 100 flips against its exact distribution (limit 24.3, 7 degrees of freedom).
 
+For the logic grids:
+
+- **Cage arithmetic by hand:** 7+ on two squares of a 4 × 4 row is 3 + 4 only; 6+ on an L of three is 1 + 1 + 4 or 1 + 2 + 3; and others.
+- **300 grids per level:**
+  - a Latin square;
+  - cages that cover the grid once, are connected, and use the level's operations, with − and ÷ on two squares only;
+  - every cage holds on the solution;
+  - solved by reasoning alone, within the level's limit of combined steps;
+  - exactly one solution, by the independent brute-force count;
+  - the same number gives the same grid.
+- **Hints from partial grids:** 200 random grids per level, partly filled at random, always give a next step, on an empty square, with the solution's number.
+
 Browser tests (`tests/e2e/discover.spec.ts`):
 
 - **Both labs:** the whole sequence on experiment 4821, with the figures computed by the engine (counts, longest run, circled runs, what followed the streaks); the verdicts on the predictions; the keyboard; no sideways scrolling at 360 px.
 - **The dice:** a language change in the middle of an experiment; the animation, and a click during it.
 - **Together:** each lab keeps its own experiment.
+- **The grids** (`tests/e2e/puzzles.spec.ts`):
+  - level 1: givens, a broken rule shown at once and erased, a given number that cannot be changed, a hint in two stages with the engine's square and number, the rest typed by keyboard;
+  - level 4 on grid 4821: cage labels, *Vérifier* finding a wrong number, the next hint pointing at it, then the whole grid **solved with hints alone**;
+  - notes, and no sideways scrolling at 360 px;
+  - each level keeping its grid.
 
 The language test goes through every step of both labs in the three
 languages; the update test checks that a new version waits during an
@@ -130,9 +210,11 @@ experiment.
 | `shared/discover/experiment.ts` | What experiments share: experiment numbers, the points of a running chart, the chi-square statistic |
 | `shared/discover/dice.ts` | Two dice: ways and exact probabilities, an experiment (counts, series, the share of 7s) |
 | `shared/discover/coins.ts` | A coin: flips, runs, what follows a streak; the exact longest-run distribution and expected runs |
+| `shared/discover/puzzles.ts` | Logic grids: levels, generation, the logical solver and its reasons (the hints), the brute-force count of solutions |
 | `src/discover/lab.ts` | What the labs share: redrawing with the focus kept, header, prediction choices, batch buttons, interruptible animation, counts chart with theory marks, running-share chart, reveal, explanation, check question, replay |
 | `src/discover/dice.ts` | The dice lab: its steps, the dice, the series of 10, the 36-square grid |
 | `src/discover/coins.ts` | The coins lab: its steps, the coin, the ribbon of the last 100 flips, what follows a streak, the longest-run table |
+| `src/discover/puzzles.ts` | The logic grids: levels, the grid with its cages, entry by pad and keyboard, notes, rule conflicts, check, hints in two stages, solved |
 | `src/discover/index.ts` | The list of labs, the view of the one open, and whether any has an experiment under way |
 | `src/discover/i18n.ts` | Their texts in French, Spanish and English; numbers and percentages in each language's format |
 | `server/check-discover.ts` | `npm run check:discover` |

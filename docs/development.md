@@ -43,7 +43,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `home.ts` | A player's home page: activities by subject, what is waiting in each; the *← Accueil* bar of activities |
 | `vocab.ts`, `vocab-i18n.ts` | A vocabulary book's page: lessons, cards, summary, settings (rōmaji included), and their texts |
 | `vocab-stats.ts` | A book's statistics page: figures, charts in plain HTML, hardest words |
-| `discover/` | The Discover labs (dice, coins), what they share, their texts; see [Discover](discover.md#code) |
+| `discover/` | The Discover activities (dice, coins, logic grids), what the labs share, their texts; see [Discover](discover.md#code) |
 | `update.ts` | New build or stale data in a window left open: reload when quiet, or a *Mettre à jour* bar |
 | `auth-i18n.ts` | Their texts and the sign-in error messages |
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
@@ -74,7 +74,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `types.ts` | Types exchanged over the API |
 | `quiz/` | Question generators and test assembly; see [Question generators](question-generators.md) |
 | `vocab/` | Vocabulary: file format, grading, Leitner boxes, sessions, statistics; see [Vocabulary](vocabulary.md#code) |
-| `discover/` | Discover engines: two dice, a coin; see [Discover](discover.md#code) |
+| `discover/` | Discover engines: two dice, a coin, logic grids; see [Discover](discover.md#code) |
 
 ### `server/`
 
@@ -146,8 +146,8 @@ Automated checks:
 |---|---|---|
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
-| `npm run check:discover` | The dice and coin engines: exact formulas against brute force, and the generator on millions of trials. See [Discover](discover.md#checks-and-tests). | a few seconds |
-| `npm run test:e2e` | The whole app in a browser: 55 tests | about a minute and a half |
+| `npm run check:discover` | The Discover engines: exact formulas against brute force, the generator on millions of trials, 1,200 logic grids. See [Discover](discover.md#checks-and-tests). | under 10 seconds |
+| `npm run test:e2e` | The whole app in a browser: 60 tests | about two minutes |
 
 ### Browser tests
 
