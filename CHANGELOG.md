@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.4.0
+
+- **Discover**, a third group on the home page: experiments rather than exercises. Docs: `docs/discover.md`.
+- **The probability lab** (🎲 *Le labo des probabilités*), two dice, in five steps:
+  - **Predict:** the most frequent sum, and the number of 7s in 100 rolls.
+  - **Roll:** 1 to 1,000 times, with the counts per sum, series of 10, and the share of 7s on a logarithmic axis.
+  - **Compare:** from 100 rolls, the 36 ways to land with the six 7s highlighted, \(P(7) = 6/36 = 1/6\), a table of every sum, and the predictions against the results.
+  - **Understand:** chance, large numbers, dice without memory.
+  - **Check:** one question on the gambler's fallacy.
+- **Experiment numbers:** an experiment is its seed (the tests' mulberry32 generator). The same number replays the same rolls, in any batches.
+- **The dice are checked:** `npm run check:discover` verifies the exact distribution and reproducibility, and runs chi-square tests on a million rolls for each of five seeds.
+- **Motion:** one roll tumbles, ten are shown one by one, more are counted at once; everything at once with reduced motion. A click during an animation rolls at once, so no roll is lost.
+- The update watcher does not reload during an experiment.
+- Browser tests: 52 (`tests/e2e/discover.spec.ts`; the language test now goes through the lab in three languages). `openActivity()` in the test helpers knows Discover activities.
+
 ## 5.3.1
 
 - Browser tests: `goHome()` in `tests/e2e/helpers.ts`. The home page is drawn once its data arrives; a click on the previous screen's *← Accueil* link could land just as that screen was replaced, and wait for a link that no longer existed (timeout on a fast or slow machine). The helper now clicks if the link is there and retries until the home page shows. No change to the app.

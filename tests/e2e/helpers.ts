@@ -70,13 +70,15 @@ export async function goHome(page: Page): Promise<void> {
 
 /**
  * Opens an activity from the home page (going back there first if needed):
- * "columns", "quiz", or "vocab-<book id>".
+ * "columns", "quiz", "vocab-<book id>" or "discover-<activity>".
  */
 export async function openActivity(page: Page, activity: string): Promise<void> {
   await goHome(page);
   await page.locator(`[data-activity='${activity}']`).click();
   await page
-    .locator(activity === "columns" ? ".board" : activity === "quiz" ? ".quiz-setup, .quiz" : ".vocab-home")
+    .locator(
+      activity === "columns" ? ".board" : activity === "quiz" ? ".quiz-setup, .quiz" : activity.startsWith("discover-") ? ".discover-lab" : ".vocab-home",
+    )
     .first()
     .waitFor();
 }

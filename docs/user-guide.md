@@ -83,6 +83,7 @@ home page: **Que fait-on, Léa ?**
 |---|---|---|
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM | For the QCM, how many kinds of question are to review |
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
+| Découvrir | 🎲 Le labo des probabilités | |
 
 Click an activity to open it. Every activity has *← Accueil* at the top to
 come back.
@@ -314,6 +315,26 @@ spaces its next review: 10 minutes, then 1, 3, 7, 16 and 35 days. A wrong
 answer sends it back to the first box. A few minutes a day is enough; a long
 session once a week is less effective. The method is described in
 [Vocabulary › The learning method](vocabulary.md#the-learning-method).
+
+## Discover
+
+**🎲 Le labo des probabilités.** Two dice; what is the sum?
+
+1. **Prévoir:** choose the sum you think will come up most often (or *Toutes autant*), and set how many 7s you expect in 100 rolls. Then *Lancer les dés*.
+2. **Lancer:** roll once, 10, 100 or 1,000 times, as often as you like. Under the dice:
+   - how many times each sum came up;
+   - the series of 10 (each *× 10* adds one): how many 7s in each, and how much they differ;
+   - the share of 7s after each roll.
+3. **Comparer**, from 100 rolls: the 36 ways two dice can land, the six that make 7, the theory (1 in 6, about 16.7 %), the table of every sum, and what you predicted next to what happened. You can keep rolling: the curve gets closer to the 1-in-6 line.
+4. **Comprendre:** three sentences on chance, large numbers and dice without memory.
+5. **Vérifier:** one question. After three 7s in a row, is a 7 less likely?
+
+**Experiment numbers.** The number at the top (*Expérience n° 4821*) is the
+experiment: *Refaire l'expérience n°* with the same number gives exactly the
+same rolls. Two children can each predict, roll the same dice, and compare.
+
+Nothing is saved yet: a new visit starts a new experiment. Details in
+[Discover](discover.md).
 
 ## Scores
 

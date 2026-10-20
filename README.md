@@ -2,7 +2,8 @@
 
 A web app for practising arithmetic the way it is written on paper, for
 multiple-choice tests in secondary-school and first-year university
-mathematics, and for vocabulary (Spanish, English) with spaced repetition. French, Spanish
+mathematics, for vocabulary (Spanish, English, Japanese) with spaced repetition, and
+for experiments to discover probability. French, Spanish
 and English interface; one server, one small database; sign-in by password or
 Google, Microsoft, GitHub and other OpenID providers; installable on a phone's
 home screen.
@@ -51,6 +52,12 @@ exponentials and logarithms, at *lycée / bachillerato* or university level.
 - Japanese comes with its rōmaji, and is answered in kanji, kana or rōmaji: 学校, がっこう, *gakkō* and *gakko* are all right.
 - Statistics per book: progress by lesson, the last 30 days, the reviews coming, the hardest words.
 
+**Discover** — experiments rather than exercises: predict, observe, explain.
+
+- The probability lab: predict which sum of two dice comes up most often, roll 1 to 1,000 times, watch the counts and the share of 7s settle, then compare with the 36 ways the dice can land.
+- Each experiment has a number: the same number replays the same rolls, to compare with someone.
+- The dice are checked: a million rolls per seed against the theory, by a chi-square test.
+
 **Players and progress**
 
 - Scores are kept per player in SQLite, or in PostgreSQL (Neon) with one setting.
@@ -91,6 +98,7 @@ npm start          # http://localhost:8787
 | `npm run test:e2e` | Browser tests of the whole app, on a separate server and database (see [Development › Tests](docs/development.md#tests)) |
 | `npm run vocab:import -- data/vocab-english.json` | Imports a vocabulary book, keeping progress on unchanged entries (see [Vocabulary](docs/vocabulary.md)) |
 | `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |
+| `npm run check:discover` | Checks the dice engine: exact probabilities, seeds, and the generator on millions of rolls (see [Discover](docs/discover.md#checks-and-tests)) |
 | `npm run db:copy-to-postgres` | One-off copy of the SQLite data into the PostgreSQL database named by `DATABASE_URL` |
 
 ## Configuration

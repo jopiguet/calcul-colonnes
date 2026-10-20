@@ -8,6 +8,7 @@ import { currentLang, type Lang } from "./i18n";
 import { qt } from "./quiz-i18n";
 import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from "./store";
 import { bookTitle } from "./vocab";
+import { dt } from "./discover/i18n";
 
 const texts = {
   fr: {
@@ -61,7 +62,7 @@ type HomeKey = keyof (typeof texts)["fr"];
 export const ht = (key: HomeKey, values: Record<string, string | number> = {}): string =>
   texts[currentLang()][key].replace(/\{(\w+)\}/g, (_, name: string) => String(values[name] ?? ""));
 
-export type Activity = { mode: "columns" | "quiz" } | { mode: "vocab"; book: number };
+export type Activity = { mode: "columns" | "quiz" | "discover" } | { mode: "vocab"; book: number };
 
 export interface HomeContext {
   user: User;
@@ -147,7 +148,14 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   if (books.length === 0) shelf.append(el("p", "empty small", ht("noBooks")));
   languages.append(shelf);
 
-  wrap.append(maths, languages);
+  // Discover: experiments rather than exercises (docs/discover.md).
+  const discover = el("div", "activity-group");
+  discover.append(el("h2", "activity-group-title", dt("group")));
+  const lab = el("div", "activity-grid");
+  lab.append(card("discover-dice", dt("diceTitle"), dt("diceText"), null, () => ctx.open({ mode: "discover" })));
+  discover.append(lab);
+
+  wrap.append(maths, languages, discover);
   return wrap;
 }
 

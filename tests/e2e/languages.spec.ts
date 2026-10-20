@@ -43,6 +43,18 @@ for (const lang of LANGUAGES) {
     await page.locator(".vocab-done").waitFor();
     await expectClean(page);
 
+    // Discover: every step of the probability lab.
+    await openActivity(page, "discover-dice");
+    await expectClean(page);
+    await page.locator(".discover-sums .segment").nth(5).click(); // 7
+    await page.locator(".discover-step > button.primary").click();
+    await page.click("[data-focus=roll-10]");
+    await page.click("[data-focus=roll-100]");
+    await expectClean(page);
+    await page.click("[data-focus=reveal]");
+    await page.locator(".discover-check .choice").nth(1).click();
+    await expectClean(page);
+
     // The home page and the English book.
     await goHome(page);
     await expectClean(page);

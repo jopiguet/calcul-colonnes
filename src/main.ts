@@ -30,6 +30,8 @@ import { vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
+import { diceView, discoverBusy } from "./discover/dice";
+import { dt } from "./discover/i18n";
 import { progressView } from "./progress";
 
 const NAME_LENGTH = 20;
@@ -168,6 +170,8 @@ async function render(): Promise<void> {
         activityBar("", goHome), // the book's page has its own title
         await vocabView({ user: state.user, book, rerender: () => void render() }),
       );
+    } else if (state.settings.mode === "discover") {
+      app.replaceChildren(topBar(), activityBar(dt("group"), goHome), diceView({ user: state.user }));
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
       app.replaceChildren(
@@ -251,9 +255,10 @@ function goHome(): void {
  * nothing typed in a field (a column exercise, a name, a password).
  */
 function idle(): boolean {
-  if (vocabBusy() || quizBusy()) return false;
+  if (vocabBusy() || quizBusy() || discoverBusy()) return false;
   return ![...document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("#app input, #app textarea")].some(
-    (field) => field.type !== "checkbox" && field.type !== "radio" && field.type !== "hidden" && field.value.trim() !== "" && !field.disabled,
+    (field) =>
+      !["checkbox", "radio", "hidden", "range"].includes(field.type) && field.value.trim() !== "" && !field.disabled,
   );
 }
 

@@ -42,3 +42,15 @@ test("during a vocabulary session, a new version waits for a button", async ({ p
   await expect(page.locator(".vocab-card")).toBeVisible(); // the session is still there
   await Promise.all([page.waitForEvent("load"), banner.locator("button").click()]);
 });
+
+test("during a dice experiment, a new version waits for a button", async ({ page }) => {
+  await newPlayer(page, "Upd2");
+  await openActivity(page, "discover-dice");
+  await page.locator(".discover-sums .segment").nth(5).click();
+  await page.locator(".discover-step > button.primary").click();
+  await page.click("[data-focus=roll-100]");
+  await newBuildOut(page);
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect(page.locator(".update-banner")).toBeVisible();
+  await expect(page.locator(".discover-status")).toContainText("100");
+});

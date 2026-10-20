@@ -24,7 +24,7 @@ export interface Settings {
   quizReview: boolean;
 }
 
-export type Mode = "home" | "columns" | "quiz" | "vocab";
+export type Mode = "home" | "columns" | "quiz" | "vocab" | "discover";
 
 export const OPERATORS: Operator[] = ["+", "−", "×", "÷"];
 
@@ -85,7 +85,7 @@ export function loadSettings(): Settings {
     ? TOPICS.filter((topic) => (saved.quizTopics as unknown[]).includes(topic))
     : [];
   return {
-    mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" ? saved.mode : "home",
+    mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" || saved.mode === "discover" ? saved.mode : "home",
     vocabBook: typeof saved.vocabBook === "number" && saved.vocabBook > 0 ? saved.vocabBook : null,
     quizLevel: QUIZ_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
