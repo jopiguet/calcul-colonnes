@@ -183,12 +183,12 @@ Tab **📐 QCM** (**Test** in Spanish).
 | Setting | Values |
 |---|---|
 | Level | *Lycée / Bachillerato*, or *Université / Universidad* |
-| Topics | Derivatives, integrals, trigonometry, limits, exponentials and logarithms; at least one |
+| Topics | By group. **Analyse:** derivatives, integrals, limits, exponentials and logarithms, trigonometry. **Probabilités:** the binomial law, trees and Bayes' formula, counting, expectation, and at university the Poisson, exponential and normal laws. Only the topics of the chosen level are shown; at least one |
 | Number of questions | 5, 10, 15 or 20 |
 | 🔁 Revoir mes erreurs | On by default; see [review of mistakes](#progress-and-review-of-mistakes) |
 
 The topics in a test are taken in turn, so a test covers all the chosen ones
-evenly. The [question generators](question-generators.md#the-39-kinds-of-question)
+evenly. The [question generators](question-generators.md#the-50-kinds-of-question)
 page lists what each topic and level contains.
 
 ### Taking a test

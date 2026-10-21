@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.7.0
+
+- **QCM: probability**, at both levels (11 kinds of question, 50 in all).
+  - **Lycée:** the binomial law P(X = k) and its mean; total probability and Bayes' formula from a tree; combinations; the expectation of a table; the union of independent events.
+  - **University:** the binomial variance, Bayes, the Poisson law, the exponential law P(X > t), standardising a normal value, combinations.
+  - **Exact answers:** fractions where they can be.
+  - **19 new mistake types,** among them P(A | B) taken for P(B | A), the base rate ignored, the binomial coefficient forgotten, and σ confused with σ².
+- **The topics of a test by group** (Analyse, Probabilités, and more to come). Only the topics of the chosen level are shown, and a choice with none at that level falls back on all of them.
+- **No version bump:** `generateQuiz` leaves out a topic without questions at the level, which no saved test has. The server refuses a test whose topics have none.
+- **Prompts:** givens one per line (`lines()`), so a phone does not cut them off.
+- **Docs:** `docs/question-generators.md` explains how to add a topic.
+- **Tests:**
+  - `chooseTopics()` in the test helpers sets the exact topics;
+  - a new test takes a probability test at both levels, graded the same by the browser, the server and an independent rebuild;
+  - `check:quiz`: 16,000 questions, 55 mistake types, 0 failures.
+
 ## 5.6.0
 
 - **Logic grids** (🧩 *Grilles logiques*), Discover's first puzzles: n × n grids where every row and column holds 1 to n once. Four levels:

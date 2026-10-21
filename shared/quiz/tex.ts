@@ -77,3 +77,9 @@ export function poly(terms: [Coef, number][]): { tex: string; fn: Fn } {
     fn: (x) => sorted.reduce((s, [e, c]) => s + val(c) * x ** e, 0),
   };
 }
+
+/**
+ * Several lines, centred: the givens of a question one under the other, so a
+ * phone does not cut them off (a KaTeX `gathered` block).
+ */
+export const lines = (...rows: string[]): string => `\\begin{gathered} ${rows.join(" \\\\ ")} \\end{gathered}`;

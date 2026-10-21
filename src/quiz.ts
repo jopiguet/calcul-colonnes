@@ -6,9 +6,11 @@ import {
   QUIZ_COUNTS,
   QUIZ_VERSION,
   TOPICS,
+  TOPIC_GROUPS,
   generateQuiz,
   gradeQuiz,
   skillsFor,
+  topicsFor,
   type Level,
   type Question,
   type QuizSpec,
@@ -16,7 +18,7 @@ import {
 } from "../shared/quiz";
 import { button, el } from "./dom";
 import { currentLang } from "./i18n";
-import { explanationText, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
+import { explanationText, groupName, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
 import { saveSettings, type Settings } from "./settings";
 import { store, type User } from "./store";
 
@@ -101,6 +103,17 @@ export function quizView(ctx: QuizContext): HTMLElement {
 
 // ------------------------------------------------------------------ settings
 
+/**
+ * The topics a test will use: those chosen that exist at the level, or every
+ * topic of the level when none of those chosen does (a choice made at the
+ * other level, or before a topic existed).
+ */
+function chosenTopics(settings: Settings): Topic[] {
+  const available = topicsFor(settings.quizLevel);
+  const chosen = settings.quizTopics.filter((t) => available.includes(t));
+  return chosen.length > 0 ? chosen : available;
+}
+
 function setupView(ctx: QuizContext): HTMLElement {
   const { settings } = ctx;
   const save = (change: Partial<Settings>): void => {
@@ -122,24 +135,34 @@ function setupView(ctx: QuizContext): HTMLElement {
     level.append(option);
   }
 
+  // Topics by group, those of the chosen level only (some exist at one level).
+  const available = topicsFor(settings.quizLevel);
+  const effective = chosenTopics(settings);
   const topics = el("fieldset", "topics");
   topics.append(el("legend", "field-label", qt("topics")));
-  for (const topic of TOPICS) {
-    const label = el("label", "topic");
-    const box = el("input");
-    box.type = "checkbox";
-    box.value = topic;
-    box.checked = settings.quizTopics.includes(topic);
-    box.addEventListener("change", () => {
-      const chosen = TOPICS.filter((t) => (t === topic ? box.checked : settings.quizTopics.includes(t)));
-      if (chosen.length === 0) {
-        box.checked = true; // at least one topic stays selected
-        return;
-      }
-      save({ quizTopics: chosen });
-    });
-    label.append(box, el("span", undefined, topicName(topic)));
-    topics.append(label);
+  for (const { group, topics: members } of TOPIC_GROUPS) {
+    const shown = members.filter((t) => available.includes(t));
+    if (shown.length === 0) continue;
+    const block = el("div", "topic-group");
+    block.append(el("span", "topic-group-name", groupName(group)));
+    for (const topic of shown) {
+      const label = el("label", "topic");
+      const box = el("input");
+      box.type = "checkbox";
+      box.value = topic;
+      box.checked = effective.includes(topic);
+      box.addEventListener("change", () => {
+        const chosen = TOPICS.filter((t) => (t === topic ? box.checked : effective.includes(t)));
+        if (chosen.length === 0) {
+          box.checked = true; // at least one topic stays selected
+          return;
+        }
+        save({ quizTopics: chosen });
+      });
+      label.append(box, el("span", undefined, topicName(topic)));
+      block.append(label);
+    }
+    topics.append(block);
   }
 
   const count = el("div", "level count");
@@ -171,14 +194,14 @@ function setupView(ctx: QuizContext): HTMLElement {
   const reviewInfo = el("p", "hint review-info");
   review.append(reviewLabel, reviewInfo);
   if (settings.quizReview) {
-    void reviewFocus(ctx.user, settings.quizLevel, settings.quizTopics).then((focus) => {
+    void reviewFocus(ctx.user, settings.quizLevel, effective).then((focus) => {
       reviewInfo.textContent = focus.length > 0 ? qt("reviewCount", { n: focus.length }) : qt("reviewNone");
     });
   }
 
   const go = button("primary", qt("start"), async () => {
     go.disabled = true;
-    const topicsChosen = [...settings.quizTopics];
+    const topicsChosen = [...effective];
     const focus = settings.quizReview ? await reviewFocus(ctx.user, settings.quizLevel, topicsChosen) : [];
     start({ seed: newSeed(), level: settings.quizLevel, topics: topicsChosen, count: settings.quizCount, focus });
     ctx.rerender();

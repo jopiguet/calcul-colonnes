@@ -213,3 +213,23 @@ export async function takeQuiz(
 
 /** Request of the last test submitted (for tests that need the payload). */
 export type QuizRequest = Request;
+
+/**
+ * Ticks exactly these topics (their names as shown) in the test's settings,
+ * whatever was ticked before. Ticks first, then unticks: one stays ticked.
+ */
+export async function chooseTopics(page: Page, names: string[]): Promise<void> {
+  const labels = page.locator(".topics .topic");
+  const count = await labels.count();
+  for (const pass of ["tick", "untick"] as const) {
+    for (let i = 0; i < count; i++) {
+      const label = labels.nth(i);
+      const name = (await label.innerText()).trim();
+      const box = label.locator("input");
+      const want = names.includes(name);
+      if (pass === "tick" && want && !(await box.isChecked())) await box.check();
+      if (pass === "untick" && !want && (await box.isChecked())) await box.uncheck();
+    }
+  }
+  for (const name of names) await expect(page.locator(".topics .topic", { hasText: name }).locator("input")).toBeChecked();
+}

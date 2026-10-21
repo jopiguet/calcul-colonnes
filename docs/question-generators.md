@@ -8,11 +8,11 @@ way in the browser and on the server.
 | `types.ts` | `Level`, `Topic`, `Draft`, `Option`, `Verify`, `Question` |
 | `rng.ts` | Seeded random numbers (mulberry32) |
 | `tex.ts` | Exact fractions and LaTeX helpers: `frac`, `sum`, `poly`, `piTex`… |
-| `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts` | The generators, one file per topic |
+| `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts` | The generators, one file per topic |
 | `index.ts` | Registry of kinds of question, `generateQuiz`, `gradeQuiz`, `QUIZ_VERSION` |
 | `progress.ts` | Status of a kind of question from the latest answers |
 
-## The 39 kinds of question
+## The 50 kinds of question
 
 A *kind* is one generator; its id is `topic.name`. Ids are stored with every
 answer, so **an id must never be renamed**. The name shown to players is in
@@ -81,6 +81,25 @@ answer, so **an id must never be renamed**. The name shown to players is in
 | `explog.otherBase` | solution of bˣ = c | ln b/ln c, c/b | | ✓ |
 | `explog.quadraticInExp` | solutions of e²ˣ − (a+1)eˣ + a = 0 | {1, a} (X instead of x), one root only | | ✓ |
 | `explog.expDerivative` | derivative of aˣ | x·aˣ⁻¹, ln a dropped | | ✓ |
+
+### Probability
+
+Answers are exact fractions where they can be. The givens of a question are
+stacked one per line (`lines()` in `tex.ts`), so a phone does not cut them off.
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `probability.binomial` | P(X = k) for X ~ B(n, p) | C(n, k) forgotten, (1 − p)ⁿ⁻ᵏ forgotten, exponents swapped | ✓ | |
+| `probability.binomialMean` | E(X) for X ~ B(n, p) | np(1 − p), n(1 − p), n/p | ✓ | |
+| `probability.totalProbability` | P(B) from P(A), P(B \| A), P(B \| Ā) | one branch only, unweighted average, P(A) used for both branches | ✓ | |
+| `probability.bayes` | P(A \| B) from the same tree | P(B \| A), P(A ∩ B), **P(B\|A) / (P(B\|A) + P(B\|Ā)): the base rate ignored** | ✓ | ✓ |
+| `probability.combinations` | choosing k among n, without order | arrangements n!/(n − k)!, nᵏ, n·k | ✓ | ✓ |
+| `probability.expectation` | E(X) from a table of values and probabilities | plain mean of the values, a term dropped, a sign dropped | ✓ | |
+| `probability.union` | P(A ∪ B) for independent A and B | P(A) + P(B), P(A)P(B), P(Ā)P(B̄) | ✓ | |
+| `probability.binomialVariance` | V(X) for X ~ B(n, p) | np, np², √(np(1 − p)) | | ✓ |
+| `probability.poisson` | P(X = k) for X ~ P(λ) | k! forgotten, e^(+λ), λᵏ dropped | | ✓ |
+| `probability.exponential` | P(X > t) for X ~ E(λ) | 1 − e^(−λt), e^(−t/λ), the density λe^(−λt) | | ✓ |
+| `probability.standardize` | z = (x − μ)/σ for X ~ N(μ, σ²) | divided by σ², sign reversed, μ forgotten | | ✓ |
 
 ## Anatomy of a generator
 
@@ -178,7 +197,26 @@ keep the label they were stored with.
 | `logRules` | Log rule misapplied | explog |
 | `expLogInverse` | exp and ln combined wrongly | explog, limits |
 | `solvingError` | Equation solved in the wrong order | explog |
-| `signError` | Sign error | derivatives, explog, integrals, limits, trigonometry |
+| `binomialCoefficient` | Binomial coefficient forgotten | probability |
+| `complementForgotten` | (1 − p) or P(Ā) left out | probability |
+| `powersSwapped` | Exponents swapped: pⁿ⁻ᵏ(1 − p)ᵏ | probability |
+| `meanVarianceConfused` | Mean and variance confused | probability |
+| `complementTaken` | 1 − P, or (1 − p), taken instead | probability |
+| `branchForgotten` | One branch of the tree left out | probability |
+| `notWeighted` | Conditional probabilities added without their weights | probability |
+| `conditionalReversed` | P(B \| A) given for P(A \| B) | probability |
+| `jointForConditional` | P(A ∩ B) or P(B) given for P(A \| B) | probability |
+| `baseRateIgnored` | P(A) left out of Bayes' formula | probability |
+| `orderCounted` | Arrangements counted instead of combinations | probability |
+| `withReplacement` | nᵏ: counted as drawing with replacement | probability |
+| `countingError` | Counting error | probability |
+| `unweightedMean` | Plain mean of the values | probability |
+| `unionNotSubtracted` | P(A ∩ B) not subtracted | probability |
+| `sdVarianceConfused` | σ and σ² confused | probability |
+| `factorialForgotten` | k! left out | probability |
+| `rateMeanConfused` | λ and 1/λ confused | probability |
+| `densityForProbability` | The density's value taken for a probability | probability |
+| `signError` | Sign error | derivatives, explog, integrals, limits, probability, trigonometry |
 
 Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
 three languages.
@@ -212,6 +250,27 @@ blank.
    - Declare the kind in `AVAILABILITY` with `from: <new version>`, so tests of older versions keep drawing from their original list.
 5. **Name it:** add the name in the three languages in `SKILL_NAMES` (`src/quiz-i18n.ts`). If you introduce a new prompt or explanation key, add it to `PromptKey` / `ExplanationKey` in `types.ts` and to the three dictionaries.
 6. **Run the checks:** `npm run check:quiz`, `npm run build` and `npm run test:e2e`.
+
+## Adding a topic
+
+A new topic needs **no version bump**. A saved test draws only from the topics
+it was made with, so a topic that did not exist cannot change it.
+
+1. **Write its file** in `shared/quiz/`, with its `school` and `university` objects. A topic may exist at one level only: leave the other object empty.
+2. **Register it:**
+   - add it to `Topic` and at the end of `TOPICS` in `types.ts`, and to one group of `TOPIC_GROUPS`;
+   - add it to `GENERATORS` in `index.ts`.
+3. **Name it:**
+   - its name in `TOPIC_NAMES`;
+   - the kinds' names in `SKILL_NAMES`;
+   - any new prompt, explanation or mistake key in the three dictionaries.
+
+   The type checker refuses a table that misses a language or a key.
+4. **Run the checks** as for a kind of question. `check:quiz` uses every topic of each level (`topicsFor`).
+
+The settings of a test show only the topics of the chosen level, by group.
+`generateQuiz` leaves out a topic without questions at the level, and the
+server refuses a test whose topics have none.
 
 ## Versioning
 

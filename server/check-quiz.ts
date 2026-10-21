@@ -8,7 +8,7 @@
  *   npm run check:quiz [-- seeds]
  */
 import katex from "katex";
-import { generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, TOPICS, type Option, type Question } from "../shared/quiz/index.ts";
+import { generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, topicsFor, type Option, type Question } from "../shared/quiz/index.ts";
 
 const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
 const near = (a: number, b: number, tol: number): boolean =>
@@ -93,9 +93,10 @@ let checked = 0;
 for (const level of LEVELS) {
   for (let seed = 1; seed <= seeds; seed++) {
     // Every other test brings back three kinds of question, as for a player with mistakes to review.
-    const kinds = skillsFor(level, TOPICS);
+    const topics = topicsFor(level);
+    const kinds = skillsFor(level, topics);
     const focus = seed % 2 === 0 ? [0, 1, 2].map((k) => kinds[(seed * 7 + k * 13) % kinds.length]!) : [];
-    const spec = { seed, level, topics: TOPICS, count: 20, focus: [...new Set(focus)] };
+    const spec = { seed, level, topics, count: 20, focus: [...new Set(focus)] };
     const quiz = generateQuiz(spec);
     const reviews = quiz.filter((q) => q.review);
     if (reviews.length !== reviewCount(20, spec.focus) || reviews.some((q) => !spec.focus.includes(q.skill))) {

@@ -1,13 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { newPlayer, profileOf, rebuild, takeQuiz, openActivity } from "./helpers";
+import { chooseTopics, newPlayer, profileOf, rebuild, takeQuiz, openActivity } from "./helpers";
 
 test("mistakes come back in the next test until they are fixed", async ({ page }) => {
   const request = page.request;
   const name = await newPlayer(page, "Rev");
   await openActivity(page, "quiz");
-  for (const topic of ["Intégrales", "Trigonométrie", "Limites", "Exponentielles et logarithmes"]) {
-    await page.click(`.topic >> text=${topic}`);
-  }
+  await chooseTopics(page, ["Dérivées"]);
   await page.click("[aria-label='Moins de questions']");
   await expect(page.locator(".review-info")).toHaveText(/Rien à revoir/);
 

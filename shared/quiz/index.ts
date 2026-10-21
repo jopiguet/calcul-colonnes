@@ -11,7 +11,8 @@ import { integrals } from "./integrals";
 import { limits } from "./limits";
 import { createRng, type Rng } from "./rng";
 import { trigonometry } from "./trigonometry";
-import type { Draft, Generator, Level, Option, Question, Topic, Verify } from "./types";
+import { probability } from "./probability";
+import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
 export * from "./types";
 export * from "./progress";
@@ -22,6 +23,7 @@ const GENERATORS: Record<Topic, Record<Level, Record<string, Generator>>> = {
   trigonometry,
   limits,
   explog,
+  probability,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -53,6 +55,11 @@ function available(id: string, version: number): boolean {
 export const SKILL_IDS: string[] = [...SKILLS.keys()];
 export const isSkill = (id: string): boolean => SKILLS.has(id);
 export const skillTopic = (id: string): Topic | undefined => SKILLS.get(id)?.topic;
+
+/** Topics with at least one kind of question at this level (some exist at one level only). */
+export function topicsFor(level: Level, version = QUIZ_VERSION): Topic[] {
+  return TOPICS.filter((topic) => skillsFor(level, [topic], version).length > 0);
+}
 
 /** Kinds of question a test with this level and these topics can contain. */
 export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION): string[] {
@@ -152,8 +159,12 @@ export function reviewCount(count: number, focus: string[]): number {
   return Math.min(Math.max(1, Math.round(count * REVIEW_SHARE)), focus.length * REVIEW_PER_SKILL, count);
 }
 
-export function generateQuiz({ seed, level, topics, count, focus = [], version = QUIZ_VERSION }: QuizSpec): Question[] {
+export function generateQuiz({ seed, level, topics: asked, count, focus = [], version = QUIZ_VERSION }: QuizSpec): Question[] {
   const rng = createRng(seed);
+  // Topics without a kind of question at this level are left out (every topic
+  // of version 2 and before has both levels, so no saved test changes).
+  const topics = asked.filter((topic) => skillsFor(level, [topic], version).length > 0);
+  if (topics.length === 0) throw new Error(`no topic with questions at level ${level}`);
   // Topics in turn, so that a test covers all the chosen ones evenly.
   const order = rng.shuffle(topics);
   const seen = new Set<string>();

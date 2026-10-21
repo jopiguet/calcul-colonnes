@@ -2,10 +2,18 @@ import type { Rng } from "./rng";
 import type { Fn } from "./tex";
 
 export type Level = "school" | "university";
-export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog";
+export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability";
 
 export const LEVELS: Level[] = ["school", "university"];
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog"];
+/** Every topic; new ones are appended (the order is the selector's within a group). */
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability"];
+
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability";
+/** How the topics are grouped in the test's settings. */
+export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
+  { group: "analysis", topics: ["derivatives", "integrals", "limits", "explog", "trigonometry"] },
+  { group: "probability", topics: ["probability"] },
+];
 
 /** Question sentences; translated by the app. */
 export type PromptKey =
@@ -18,7 +26,13 @@ export type PromptKey =
   | "identity"
   | "limit"
   | "simplify"
-  | "period";
+  | "period"
+  | "probability"
+  | "expectation"
+  | "variance"
+  | "chooseUnordered"
+  | "independent"
+  | "standardize";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -46,7 +60,17 @@ export type ExplanationKey =
   | "taylor"
   | "expLog"
   | "logRules"
-  | "substituteExp";
+  | "substituteExp"
+  | "binomial"
+  | "binomialMoments"
+  | "totalProbability"
+  | "bayes"
+  | "combinations"
+  | "expectation"
+  | "union"
+  | "poisson"
+  | "exponentialLaw"
+  | "standardize";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -94,6 +118,26 @@ export const MISTAKES = [
   "logRules", // properties of ln misapplied
   "expLogInverse", // exp and ln composed wrongly
   "solvingError", // equation solved in the wrong order
+  // probability
+  "binomialCoefficient", // C(n, k) forgotten or replaced
+  "complementForgotten", // (1 − p) or P(Ā) left out
+  "powersSwapped", // p^(n−k)(1 − p)^k
+  "meanVarianceConfused", // np for np(1 − p), or the reverse
+  "complementTaken", // 1 − P instead of P, or (1 − p) instead of p
+  "branchForgotten", // one branch of the tree left out
+  "notWeighted", // conditional probabilities added without their weights
+  "conditionalReversed", // P(B | A) given for P(A | B)
+  "jointForConditional", // P(A ∩ B) or P(B) given for P(A | B)
+  "baseRateIgnored", // P(A) left out of Bayes' formula
+  "orderCounted", // arrangements counted for combinations
+  "withReplacement", // nᵏ: drawing with replacement
+  "countingError",
+  "unweightedMean", // plain mean of the values, not weighted by their probabilities
+  "unionNotSubtracted", // P(A) + P(B) without P(A ∩ B)
+  "sdVarianceConfused", // σ and σ² (or √V and V) confused
+  "factorialForgotten", // k! left out
+  "rateMeanConfused", // λ and 1/λ confused
+  "densityForProbability", // the density's value taken for a probability
   // everywhere
   "signError",
 ] as const;

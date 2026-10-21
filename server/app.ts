@@ -4,6 +4,7 @@ import {
   MAX_QUESTIONS,
   OPTION_COUNT,
   QUIZ_VERSION,
+  topicsFor,
   TOPICS,
   isSkill,
   type Level,
@@ -55,6 +56,8 @@ function parseQuiz(body: unknown): ValidQuiz | null {
   if (!LEVELS.includes(level as Level) || !isInt(count, 1, MAX_QUESTIONS)) return null;
   if (!Array.isArray(topics) || topics.length === 0) return null;
   if (!topics.every((t) => TOPICS.includes(t as Topic)) || new Set(topics).size !== topics.length) return null;
+  // At least one topic must have questions at this level (some exist at one level only).
+  if ((level === "school" || level === "university") && !topics.some((t) => topicsFor(level, typeof version === "number" ? version : QUIZ_VERSION).includes(t as Topic))) return null;
   if (!Array.isArray(answers) || answers.length !== count) return null;
   if (!answers.every((a) => isInt(a, -1, OPTION_COUNT - 1))) return null;
   if (!Array.isArray(focus) || focus.length > 100) return null;

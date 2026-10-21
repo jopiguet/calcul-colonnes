@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { newPlayer, rebuild, statsOf, takeQuiz, openActivity } from "./helpers";
+import { chooseTopics, newPlayer, rebuild, statsOf, takeQuiz, openActivity } from "./helpers";
 
 test.beforeEach(async ({ page }) => {
   await newPlayer(page, "Quiz");
@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
 test("a test is graded the same by the browser, the server and an independent rebuild", async ({ page }) => {
   const request = page.request;
   await page.click("text=Université");
-  for (const topic of ["Dérivées", "Trigonométrie", "Exponentielles et logarithmes"]) await page.click(`.topic >> text=${topic}`);
+  await chooseTopics(page, ["Intégrales", "Limites"]);
   await page.click("text=Commencer le test");
   const { body, server } = await takeQuiz(page, (i) => (i * 3) % 4);
 
@@ -78,4 +78,20 @@ test("giving up does not save the test", async ({ page }) => {
   await expect(page.locator("text=QCM de mathématiques")).toBeVisible();
   const name = (await page.locator(".chip").first().innerText()).replace("👤", "").trim();
   expect((await statsOf(request, name)).quizTests).toBe(0);
+});
+
+test("topics come by group; a probability test, at both levels, is graded the same everywhere", async ({ page }) => {
+  await expect(page.locator(".topic-group-name")).toContainText(["Analyse", "Probabilités"]);
+  for (const level of ["Lycée", "Université"]) {
+    await page.click(`text=${level}`);
+    await chooseTopics(page, ["Probabilités"]);
+    await page.click("text=Commencer le test");
+    await page.locator(".choices").waitFor();
+    await expect(page.locator(".quiz-topic").first()).toHaveText("Probabilités");
+    await expect(page.locator(".sheet.quiz .katex").first()).toBeVisible();
+    const { body, server } = await takeQuiz(page, (i) => i % 4);
+    expect(body.topics).toEqual(["probability"]);
+    expect(server.correct).toBe(rebuild(body).correct);
+    await page.locator(".actions button", { hasText: "Changer les réglages" }).click();
+  }
 });

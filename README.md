@@ -33,10 +33,10 @@ The project and its folder keep their first name, `calcul-colonnes`.
 - A one-click A4 PDF worksheet of 20 operations, ready to print.
 
 **Multiple-choice tests (QCM)** — derivatives, integrals, trigonometry, limits,
-exponentials and logarithms, at *lycée / bachillerato* or university level.
+exponentials and logarithms, probability, at *lycée / bachillerato* or university level.
 
-- Questions are generated, not drawn from a fixed bank: 39 kinds of question, each with its own parameters.
-- The wrong options are typical mistakes, such as an exponent not lowered, the inner derivative forgotten or a sign error.
+- Questions are generated, not drawn from a fixed bank: 50 kinds of question, each with its own parameters.
+- The wrong options are typical mistakes, such as an exponent not lowered, the inner derivative forgotten, a sign error, or in probability P(A | B) taken for P(B | A) and the base rate ignored.
 - Every test ends with a corrected review and a short explanation per question.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.
 - An automated check verifies tens of thousands of generated questions numerically, independently of the generators.

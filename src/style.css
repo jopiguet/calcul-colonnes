@@ -3305,3 +3305,22 @@ button.home-link {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Topics of a test, by group. */
+.topic-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.topic-group + .topic-group {
+  margin-top: 0.5rem;
+}
+
+.topic-group-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+}

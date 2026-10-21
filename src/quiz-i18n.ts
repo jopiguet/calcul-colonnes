@@ -1,4 +1,4 @@
-import type { ExplanationKey, Level, MistakeKey, PromptKey, SkillStatus, Topic } from "../shared/quiz";
+import type { ExplanationKey, Level, MistakeKey, PromptKey, SkillStatus, Topic, TopicGroup } from "../shared/quiz";
 import { currentLang, type Lang } from "./i18n";
 
 /** Texts of the multiple-choice part, in French, Spanish and English. */
@@ -188,6 +188,12 @@ const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
   },
 };
 
+const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
+  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités" },
+  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad" },
+  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability" },
+};
+
 const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
   fr: {
     derivatives: "Dérivées",
@@ -195,6 +201,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     trigonometry: "Trigonométrie",
     limits: "Limites",
     explog: "Exponentielles et logarithmes",
+    probability: "Probabilités",
   },
   es: {
     derivatives: "Derivadas",
@@ -202,6 +209,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     trigonometry: "Trigonometría",
     limits: "Límites",
     explog: "Exponenciales y logaritmos",
+    probability: "Probabilidad",
   },
   en: {
     derivatives: "Derivatives",
@@ -209,6 +217,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     trigonometry: "Trigonometry",
     limits: "Limits",
     explog: "Exponentials and logarithms",
+    probability: "Probability",
   },
 };
 
@@ -224,6 +233,12 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     limit: "Que vaut cette limite ?",
     simplify: "Quelle est la forme simplifiée ?",
     period: "Quelle est la période de f ?",
+    probability: "Quelle est la probabilité demandée ?",
+    expectation: "Quelle est l'espérance de X ?",
+    variance: "Quelle est la variance de X ?",
+    chooseUnordered: "De combien de façons peut-on choisir k éléments parmi n, sans tenir compte de l'ordre ?",
+    independent: "Les événements A et B sont indépendants. Quelle est la probabilité demandée ?",
+    standardize: "Quelle est la valeur centrée réduite de x ?",
   },
   es: {
     derivative: "¿Cuál es la derivada de f?",
@@ -236,6 +251,12 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     limit: "¿Cuánto vale este límite?",
     simplify: "¿Cuál es la forma simplificada?",
     period: "¿Cuál es el periodo de f?",
+    probability: "¿Cuál es la probabilidad pedida?",
+    expectation: "¿Cuál es la esperanza de X?",
+    variance: "¿Cuál es la varianza de X?",
+    chooseUnordered: "¿De cuántas maneras se pueden elegir k elementos entre n, sin tener en cuenta el orden?",
+    independent: "Los sucesos A y B son independientes. ¿Cuál es la probabilidad pedida?",
+    standardize: "¿Cuál es el valor tipificado de x?",
   },
   en: {
     derivative: "What is the derivative of f?",
@@ -248,6 +269,12 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     limit: "What is the value of this limit?",
     simplify: "What is the simplified form?",
     period: "What is the period of f?",
+    probability: "What is the requested probability?",
+    expectation: "What is the expected value of X?",
+    variance: "What is the variance of X?",
+    chooseUnordered: "In how many ways can k elements be chosen among n, regardless of order?",
+    independent: "Events A and B are independent. What is the requested probability?",
+    standardize: "What is the standardised value of x?",
   },
 };
 
@@ -278,6 +305,16 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     expLog: "ln et exp sont des fonctions réciproques.",
     logRules: "Propriétés du logarithme.",
     substituteExp: "On pose X = eˣ et on résout l'équation du second degré.",
+    binomial: "Loi binomiale : on choisit les k succès parmi n essais, puis on multiplie les probabilités.",
+    binomialMoments: "Loi binomiale : E(X) = np et V(X) = np(1 − p).",
+    totalProbability: "Formule des probabilités totales : chaque branche, pondérée par sa probabilité.",
+    bayes: "Formule de Bayes : on divise la branche qui mène à A et B par toute la probabilité de B. Sans P(A), on oublie que A peut être rare.",
+    combinations: "Combinaisons : arrangements divisés par k!, car l'ordre ne compte pas.",
+    expectation: "Espérance : chaque valeur pondérée par sa probabilité.",
+    union: "Événements indépendants : P(A ∩ B) = P(A)P(B), qu'on retire pour ne pas la compter deux fois.",
+    poisson: "Loi de Poisson.",
+    exponentialLaw: "Loi exponentielle : la probabilité de dépasser t.",
+    standardize: "On centre (− μ) et on réduit (÷ σ, l'écart type, pas la variance).",
   },
   es: {
     powerRule: "Derivada de una potencia, término a término; la derivada de una constante es cero.",
@@ -305,6 +342,16 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     expLog: "ln y exp son funciones inversas.",
     logRules: "Propiedades del logaritmo.",
     substituteExp: "Se toma X = eˣ y se resuelve la ecuación de segundo grado.",
+    binomial: "Distribución binomial: se eligen los k éxitos entre n pruebas y se multiplican las probabilidades.",
+    binomialMoments: "Distribución binomial: E(X) = np y V(X) = np(1 − p).",
+    totalProbability: "Teorema de la probabilidad total: cada rama, ponderada por su probabilidad.",
+    bayes: "Teorema de Bayes: se divide la rama que lleva a A y B entre toda la probabilidad de B. Sin P(A), se olvida que A puede ser poco frecuente.",
+    combinations: "Combinaciones: variaciones divididas entre k!, porque el orden no importa.",
+    expectation: "Esperanza: cada valor ponderado por su probabilidad.",
+    union: "Sucesos independientes: P(A ∩ B) = P(A)P(B), que se resta para no contarla dos veces.",
+    poisson: "Distribución de Poisson.",
+    exponentialLaw: "Distribución exponencial: la probabilidad de superar t.",
+    standardize: "Se centra (− μ) y se reduce (÷ σ, la desviación típica, no la varianza).",
   },
   en: {
     powerRule: "Derivative of a power, term by term; the derivative of a constant is zero.",
@@ -332,6 +379,16 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     expLog: "ln and exp are inverse functions.",
     logRules: "Properties of the logarithm.",
     substituteExp: "Set X = eˣ and solve the quadratic equation.",
+    binomial: "Binomial law: choose the k successes among n trials, then multiply the probabilities.",
+    binomialMoments: "Binomial law: E(X) = np and V(X) = np(1 − p).",
+    totalProbability: "Law of total probability: each branch, weighted by its probability.",
+    bayes: "Bayes' formula: divide the branch leading to A and B by the whole probability of B. Without P(A), you forget that A may be rare.",
+    combinations: "Combinations: arrangements divided by k!, since order does not matter.",
+    expectation: "Expected value: each value weighted by its probability.",
+    union: "Independent events: P(A ∩ B) = P(A)P(B), subtracted so it is not counted twice.",
+    poisson: "Poisson law.",
+    exponentialLaw: "Exponential law: the probability of exceeding t.",
+    standardize: "Centre (− μ) and scale (÷ σ, the standard deviation, not the variance).",
   },
 };
 
@@ -377,6 +434,17 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     "explog.otherBase": "Équation aˣ = c",
     "explog.quadraticInExp": "Équation du second degré en eˣ",
     "explog.expDerivative": "Dérivée de aˣ",
+    "probability.binomial": "Loi binomiale : P(X = k)",
+    "probability.binomialMean": "Espérance d'une loi binomiale",
+    "probability.totalProbability": "Probabilités totales",
+    "probability.bayes": "Formule de Bayes",
+    "probability.combinations": "Combinaisons",
+    "probability.expectation": "Espérance d'une loi discrète",
+    "probability.union": "Union d'événements indépendants",
+    "probability.binomialVariance": "Variance d'une loi binomiale",
+    "probability.poisson": "Loi de Poisson",
+    "probability.exponential": "Loi exponentielle",
+    "probability.standardize": "Loi normale : centrer et réduire",
   },
   es: {
     "derivatives.polynomial": "Derivada de un polinomio",
@@ -418,6 +486,17 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     "explog.otherBase": "Ecuación aˣ = c",
     "explog.quadraticInExp": "Ecuación de segundo grado en eˣ",
     "explog.expDerivative": "Derivada de aˣ",
+    "probability.binomial": "Binomial: P(X = k)",
+    "probability.binomialMean": "Esperanza de una binomial",
+    "probability.totalProbability": "Probabilidad total",
+    "probability.bayes": "Teorema de Bayes",
+    "probability.combinations": "Combinaciones",
+    "probability.expectation": "Esperanza de una variable discreta",
+    "probability.union": "Unión de sucesos independientes",
+    "probability.binomialVariance": "Varianza de una binomial",
+    "probability.poisson": "Distribución de Poisson",
+    "probability.exponential": "Distribución exponencial",
+    "probability.standardize": "Normal: tipificar",
   },
   en: {
     "derivatives.polynomial": "Derivative of a polynomial",
@@ -459,6 +538,17 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     "explog.otherBase": "Equation aˣ = c",
     "explog.quadraticInExp": "Quadratic equation in eˣ",
     "explog.expDerivative": "Derivative of aˣ",
+    "probability.binomial": "Binomial law: P(X = k)",
+    "probability.binomialMean": "Mean of a binomial law",
+    "probability.totalProbability": "Total probability",
+    "probability.bayes": "Bayes' formula",
+    "probability.combinations": "Combinations",
+    "probability.expectation": "Expected value of a discrete law",
+    "probability.union": "Union of independent events",
+    "probability.binomialVariance": "Variance of a binomial law",
+    "probability.poisson": "Poisson law",
+    "probability.exponential": "Exponential law",
+    "probability.standardize": "Normal law: standardising",
   },
 };
 
@@ -501,6 +591,25 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     expLogInverse: "exp et ln mal combinés",
     solvingError: "Équation résolue dans le mauvais ordre",
     signError: "Erreur de signe",
+    binomialCoefficient: "Coefficient binomial oublié",
+    complementForgotten: "Complémentaire oublié",
+    powersSwapped: "Exposants intervertis",
+    meanVarianceConfused: "Espérance et variance confondues",
+    complementTaken: "Complémentaire pris à la place",
+    branchForgotten: "Branche de l'arbre oubliée",
+    notWeighted: "Probabilités non pondérées",
+    conditionalReversed: "P(A | B) confondu avec P(B | A)",
+    jointForConditional: "P(A ∩ B) pris pour P(A | B)",
+    baseRateIgnored: "Probabilité de départ ignorée",
+    orderCounted: "Ordre compté en trop",
+    withReplacement: "Tirage avec remise compté",
+    countingError: "Erreur de dénombrement",
+    unweightedMean: "Moyenne non pondérée",
+    unionNotSubtracted: "Intersection non retirée",
+    sdVarianceConfused: "Écart type et variance confondus",
+    factorialForgotten: "Factorielle oubliée",
+    rateMeanConfused: "λ et 1/λ confondus",
+    densityForProbability: "Densité prise pour une probabilité",
   },
   es: {
     exponentKept: "Exponente sin reducir",
@@ -539,6 +648,25 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     expLogInverse: "exp y ln mal combinados",
     solvingError: "Ecuación resuelta en el orden equivocado",
     signError: "Error de signo",
+    binomialCoefficient: "Coeficiente binomial olvidado",
+    complementForgotten: "Complementario olvidado",
+    powersSwapped: "Exponentes intercambiados",
+    meanVarianceConfused: "Esperanza y varianza confundidas",
+    complementTaken: "Complementario tomado en su lugar",
+    branchForgotten: "Rama del árbol olvidada",
+    notWeighted: "Probabilidades sin ponderar",
+    conditionalReversed: "P(A | B) confundida con P(B | A)",
+    jointForConditional: "P(A ∩ B) tomada por P(A | B)",
+    baseRateIgnored: "Probabilidad inicial ignorada",
+    orderCounted: "Orden contado de más",
+    withReplacement: "Extracción con reemplazamiento contada",
+    countingError: "Error de recuento",
+    unweightedMean: "Media sin ponderar",
+    unionNotSubtracted: "Intersección no restada",
+    sdVarianceConfused: "Desviación típica y varianza confundidas",
+    factorialForgotten: "Factorial olvidado",
+    rateMeanConfused: "λ y 1/λ confundidos",
+    densityForProbability: "Densidad tomada por una probabilidad",
   },
   en: {
     exponentKept: "Exponent not lowered",
@@ -577,6 +705,25 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     expLogInverse: "exp and ln combined wrongly",
     solvingError: "Equation solved in the wrong order",
     signError: "Sign error",
+    binomialCoefficient: "Binomial coefficient forgotten",
+    complementForgotten: "Complement forgotten",
+    powersSwapped: "Exponents swapped",
+    meanVarianceConfused: "Mean and variance confused",
+    complementTaken: "Complement taken instead",
+    branchForgotten: "Tree branch forgotten",
+    notWeighted: "Probabilities not weighted",
+    conditionalReversed: "P(A | B) confused with P(B | A)",
+    jointForConditional: "P(A ∩ B) taken for P(A | B)",
+    baseRateIgnored: "Base rate ignored",
+    orderCounted: "Order counted when it should not be",
+    withReplacement: "Counted as drawing with replacement",
+    countingError: "Counting error",
+    unweightedMean: "Unweighted mean",
+    unionNotSubtracted: "Intersection not subtracted",
+    sdVarianceConfused: "Standard deviation and variance confused",
+    factorialForgotten: "Factorial forgotten",
+    rateMeanConfused: "λ and 1/λ confused",
+    densityForProbability: "Density taken for a probability",
   },
 };
 
@@ -596,6 +743,7 @@ export function qt(key: QuizKey, values: Record<string, string | number> = {}): 
 
 export const levelName = (level: Level): string => LEVEL_NAMES[currentLang()][level];
 export const topicName = (topic: Topic): string => TOPIC_NAMES[currentLang()][topic];
+export const groupName = (group: TopicGroup): string => GROUP_NAMES[currentLang()][group];
 export const promptText = (key: PromptKey): string => PROMPTS[currentLang()][key];
 export const explanationText = (key: ExplanationKey): string => EXPLANATIONS[currentLang()][key];
 export const skillName = (skill: string): string => SKILL_NAMES[currentLang()][skill] ?? skill;
