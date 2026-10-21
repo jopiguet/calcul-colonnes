@@ -129,8 +129,8 @@ export interface SignInMethod {
 /** One card of a vocabulary session (see shared/vocab/session.ts). */
 export interface VocabCard {
   entryId: number;
-  /** recognise: Spanish shown, meaning asked; recall: meaning shown, Spanish asked. */
-  direction: "recognise" | "recall";
+  /** recognise: Spanish shown, meaning asked; recall: meaning shown, Spanish asked; read: a kanji shown, a reading asked. */
+  direction: "recognise" | "recall" | "read";
   mode: "choice" | "written";
   /** Leitner box before this answer; 0 for a card never asked. */
   box: number;
@@ -148,6 +148,10 @@ export interface VocabCard {
   promptReading?: string;
   /** Multiple choice: how each option reads, in the order of `options` ("" when none). */
   optionReadings?: string[];
+  /** Characters book: a kana ("kana") or a kanji ("kanji") card. */
+  script?: "kana" | "kanji";
+  /** Characters book: met in a word the player has started in another Japanese book. */
+  met?: boolean;
 }
 
 export interface VocabSectionInfo {
@@ -170,12 +174,14 @@ export interface VocabBookInfo {
   id: number;
   slug: string;
   title: string;
-  kind: "translation" | "definition";
+  kind: "translation" | "definition" | "characters";
   /** Language studied, and language of the meanings ("es", "en"). */
   term: string;
   meaning: string;
   /** "alphabetical": a word list; new words come at random by default. */
   order: "book" | "alphabetical";
+  /** Where the content comes from (a licence's attribution), "" when nothing to say. */
+  credit: string;
   entries: number;
   lessons: VocabLessonInfo[];
 }
@@ -192,8 +198,8 @@ export interface VocabSectionProgress {
 
 export interface VocabProgress {
   sections: Record<number, VocabSectionProgress>;
-  /** Per book: cards due, entries started. */
-  books: Record<number, { due: number; started: number }>;
+  /** Per book: cards due, entries started; for a Characters book, characters met in the player's words and not started. */
+  books: Record<number, { due: number; started: number; met?: number }>;
   due: number;
   /** Answers since the `since` given. */
   today: { answers: number; right: number };
@@ -202,9 +208,21 @@ export interface VocabProgress {
 export interface VocabAnswer {
   userId: number;
   entryId: number;
-  direction: "recognise" | "recall";
+  direction: "recognise" | "recall" | "read";
   mode: "choice" | "written";
   given: string;
+  /** Interface language: a meaning given in it is graded against it ("fr", "es", "en"). */
+  lang?: string;
+}
+
+/** A word or a character shown with an answer, to link the books together. */
+export interface VocabRelated {
+  term: string;
+  /** How it reads (rōmaji of a word), "" if none. */
+  reading: string;
+  meaning: string;
+  /** A character: already started in the Characters book. */
+  started?: boolean;
 }
 
 export interface VocabAnswerResult {
@@ -219,6 +237,13 @@ export interface VocabAnswerResult {
   note: string;
   box: number;
   dueAt: number;
+  /** Characters book, kanji: the meaning (in the interface's language) and the readings. */
+  meaning?: string;
+  readings?: string;
+  /** Characters book: words the player has started that use this character. */
+  inWords?: VocabRelated[];
+  /** Japanese word: its kanji, as the Characters book gives them. */
+  characters?: VocabRelated[];
 }
 
 /** A share of answers: how many, how many right. */
@@ -232,7 +257,7 @@ export interface VocabStats {
   /** Entries of the book, by status (both directions considered, see entryStatus). */
   words: { total: number; new: number; learning: number; known: number; mastered: number };
   /** Cards per Leitner box, per direction: index 1–6; index 0 is unused. */
-  boxes: { recognise: number[]; recall: number[] };
+  boxes: { recognise: number[]; recall: number[]; read: number[] };
   /** Every answer on this book. */
   all: VocabTally;
   /** The last 30 days, oldest first: answers, right ones, and entries seen for the first time. */
@@ -243,7 +268,7 @@ export interface VocabStats {
   forecast: number[];
   /** Over every answer: by question kind and direction; written answers by verdict. */
   byMode: { choice: VocabTally; written: VocabTally };
-  byDirection: { recognise: VocabTally; recall: VocabTally };
+  byDirection: { recognise: VocabTally; recall: VocabTally; read: VocabTally };
   verdicts: { right: number; accent: number; typo: number; article: number; wrong: number };
   lessons: { id: number; title: string; total: number; new: number; learning: number; known: number; mastered: number }[];
   /** The entries most often answered wrong, at most 12. */

@@ -166,7 +166,9 @@ export async function statsView(ctx: StatsContext): Promise<HTMLElement> {
   // Leitner boxes, per direction.
   const boxes = panel(vt("boxesTitle"), vt("boxesHint"));
   const grid = el("div", "stats-boxes");
-  for (const [direction, key] of [["recognise", "recogniseRow"], ["recall", "recallRow"]] as const) {
+  const directions = [["recognise", "recogniseRow"], ["recall", "recallRow"], ["read", "readRow"]] as const;
+  // Reading is a kanji's third direction: shown once there is a card in it.
+  for (const [direction, key] of directions.filter(([d]) => d !== "read" || s.boxes.read.some((c) => c > 0))) {
     const counts = s.boxes[direction].slice(1, TOP_BOX + 1);
     const row = el("div", "stats-box-row");
     row.append(
@@ -195,6 +197,7 @@ export async function statsView(ctx: StatsContext): Promise<HTMLElement> {
     [vt("howWritten"), s.byMode.written],
     [vt("kindRecognise"), s.byDirection.recognise],
     [vt("kindRecall"), s.byDirection.recall],
+    [vt("kindRead"), s.byDirection.read],
   ] as const) {
     if (t.answers === 0) continue;
     const row = el("div", "stats-rate");

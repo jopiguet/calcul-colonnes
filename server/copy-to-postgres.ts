@@ -90,18 +90,18 @@ try {
         ) +
         insert(
           "quiz_results",
-          ["id", "user_id", "at", "level", "topics", "seed", "question_count", "correct", "answers", "focus", "version"],
+          ["id", "user_id", "at", "level", "topics", "seed", "question_count", "correct", "answers", "focus", "version", "mode"],
           quizzes,
         ) +
         insert(
           "quiz_answers",
-          ["id", "quiz_id", "user_id", "at", "position", "skill", "topic", "given", "correct", "review", "mistake"],
+          ["id", "quiz_id", "user_id", "at", "position", "skill", "topic", "given", "correct", "review", "mistake", "typed"],
           quizAnswers,
         ) +
-        insert("vocab_books", ["id", "slug", "position", "title", "kind", "term_lang", "meaning_lang"], vocabBooks) +
+        insert("vocab_books", ["id", "slug", "position", "title", "kind", "term_lang", "meaning_lang", "ordering", "credit"], vocabBooks) +
         insert("vocab_lessons", ["id", "book_id", "position", "title", "subtitle"], vocabLessons) +
         insert("vocab_sections", ["id", "lesson_id", "position", "title", "subtitle"], vocabSections) +
-        insert("vocab_entries", ["id", "section_id", "position", "term", "meaning", "grp", "feminine", "note", "reading"], vocabEntries) +
+        insert("vocab_entries", ["id", "section_id", "position", "term", "meaning", "grp", "feminine", "note", "reading", "readings", "translations"], vocabEntries) +
         insert(
           "vocab_progress",
           ["user_id", "entry_id", "direction", "box", "due_at", "last_at", "right_count", "wrong_count"],

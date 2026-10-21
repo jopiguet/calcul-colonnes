@@ -110,9 +110,12 @@ export const vocab = {
     size: number,
     mode: "mixed" | "choice" | "written",
     order: "book" | "random" = "book",
+    /** Interface language: meanings in it, when the book has them. */
+    lang?: string,
   ): Promise<VocabCard[]> =>
     call(
-      `/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&purpose=${target.purpose}&size=${size}&mode=${mode}&order=${order}`,
+      `/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&purpose=${target.purpose}&size=${size}&mode=${mode}&order=${order}` +
+        (lang ? `&lang=${lang}` : ""),
     ),
   /** A player's statistics on one book; days are counted in the browser's time zone. */
   stats: (userId: number, bookId: number): Promise<VocabStats> =>

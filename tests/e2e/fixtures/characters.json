@@ -1,0 +1,43 @@
+{
+ "format": 2,
+ "book": {
+  "id": "test-characters", "title": "Test characters", "kind": "characters", "term": "ja", "meaning": "en",
+  "credit": "Written for the tests."
+ },
+ "lessons": [
+  {
+   "title": "ひらがな", "subtitle": "Hiragana",
+   "sections": [
+    { "title": "あ い う え お", "subtitle": "a i u e o",
+      "entries": [ { "term": "あ", "meaning": "a" }, { "term": "い", "meaning": "i" }, { "term": "う", "meaning": "u" },
+                   { "term": "え", "meaning": "e" }, { "term": "お", "meaning": "o" } ] },
+    { "title": "か き く け こ", "subtitle": "ka ki ku ke ko",
+      "entries": [ { "term": "か", "meaning": "ka" }, { "term": "き", "meaning": "ki" }, { "term": "く", "meaning": "ku" },
+                   { "term": "け", "meaning": "ke" }, { "term": "こ", "meaning": "ko" } ] }
+   ]
+  },
+  {
+   "title": "小学一年", "subtitle": "Grade 1",
+   "sections": [
+    { "title": "一 二 三 日 水", "subtitle": "1–5",
+      "entries": [
+       { "term": "一", "meaning": "one", "readings": "イチ / ひと(つ)", "translations": { "fr": "un", "es": "uno" }, "note": "一つ (ひとつ) one" },
+       { "term": "二", "meaning": "two", "readings": "ニ / ふた(つ)", "translations": { "fr": "deux", "es": "dos" } },
+       { "term": "三", "meaning": "three", "readings": "サン / み(っつ)", "translations": { "fr": "trois", "es": "tres" } },
+       { "term": "日", "meaning": "day / sun", "readings": "ニチ / ジツ / ひ / か", "translations": { "fr": "jour / soleil", "es": "día / sol" } },
+       { "term": "水", "meaning": "water", "readings": "スイ / みず", "translations": { "fr": "eau", "es": "agua" }, "note": "水 (みず) water" }
+      ] }
+   ]
+  },
+  {
+   "title": "小学二年", "subtitle": "Grade 2",
+   "sections": [
+    { "title": "学 校", "subtitle": "6–7",
+      "entries": [
+       { "term": "学", "meaning": "study / learning", "readings": "ガク / まな(ぶ)", "translations": { "fr": "étudier / apprendre" } },
+       { "term": "校", "meaning": "school", "readings": "コウ", "translations": { "fr": "école", "es": "escuela" }, "note": "学校 (がっこう) school" }
+      ] }
+   ]
+  }
+ ]
+}

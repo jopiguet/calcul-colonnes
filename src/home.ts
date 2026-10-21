@@ -23,6 +23,9 @@ const texts = {
     oneWordDue: "1 mot à réviser",
     upToDate: "À jour",
     notStarted: "{count} mots",
+    cardsDue: "{count} cartes à réviser",
+    oneCardDue: "1 carte à réviser",
+    charsNotStarted: "{count} caractères",
     noBooks: "Aucun livre de vocabulaire importé : voir docs/vocabulary.md.",
     home: "Accueil",
   },
@@ -38,6 +41,9 @@ const texts = {
     oneWordDue: "1 palabra por repasar",
     upToDate: "Al día",
     notStarted: "{count} palabras",
+    cardsDue: "{count} tarjetas por repasar",
+    oneCardDue: "1 tarjeta por repasar",
+    charsNotStarted: "{count} caracteres",
     noBooks: "No hay libros de vocabulario importados: ver docs/vocabulary.md.",
     home: "Inicio",
   },
@@ -53,6 +59,9 @@ const texts = {
     oneWordDue: "1 word to review",
     upToDate: "Up to date",
     notStarted: "{count} words",
+    cardsDue: "{count} cards to review",
+    oneCardDue: "1 card to review",
+    charsNotStarted: "{count} characters",
     noBooks: "No vocabulary book imported: see docs/vocabulary.md.",
     home: "Home",
   },
@@ -133,14 +142,17 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const shelf = el("div", "activity-grid");
   for (const book of books) {
     const mine = progress?.books[book.id];
+    const signs = book.kind === "characters";
     const status =
       mine && mine.due > 0
-        ? { text: mine.due === 1 ? ht("oneWordDue") : ht("wordsDue", { count: mine.due }), waiting: true }
+        ? signs
+          ? { text: mine.due === 1 ? ht("oneCardDue") : ht("cardsDue", { count: mine.due }), waiting: true }
+          : { text: mine.due === 1 ? ht("oneWordDue") : ht("wordsDue", { count: mine.due }), waiting: true }
         : mine && mine.started > 0
           ? { text: ht("upToDate"), waiting: false }
-          : { text: ht("notStarted", { count: book.entries }), waiting: false };
+          : { text: ht(signs ? "charsNotStarted" : "notStarted", { count: book.entries }), waiting: false };
     shelf.append(
-      card(`vocab-${book.slug}`, `💬 ${bookTitle(book)}`, book.title, status, () =>
+      card(`vocab-${book.slug}`, `${signs ? "✍️" : "💬"} ${bookTitle(book)}`, book.title, status, () =>
         ctx.open({ mode: "vocab", book: book.id }),
       ),
     );

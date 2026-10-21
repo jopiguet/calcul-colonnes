@@ -15,6 +15,12 @@ Two kinds of book are supported:
 | | | *cat* | the Japanese: 猫, ねこ or *neko* |
 | definition | *Vocabulary 4000* (English) | *abase* | its definition: *degrade* |
 | | | *degrade* | the word: *abase* |
+| characters | *Kana and jōyō kanji* | 日 | its meaning, and its reading: *nichi*, ひ |
+| | | *day / sun* | the kanji: 日 |
+
+The Characters book is built from the EDRDG dictionaries rather than
+extracted from a book, and works with the Japanese word books: see
+[Kanji and kana](characters.md).
 
 - [Content and copyright](#content-and-copyright)
 - [Importing a book](#importing-a-book)
@@ -32,8 +38,8 @@ own, and stay in your database:
 - **Storage:** the import puts the entries in your database (SQLite or Neon). They are never part of the project, a build or a release.
 - **Access:** keep the app behind its sign-in, and set `REGISTRATION=closed` if the server is reachable from the internet. Only your accounts then see the content.
 
-The tests use three invented books (`tests/e2e/fixtures/`): 27 Spanish
-entries, 20 English ones and 13 Japanese ones.
+The tests use four invented books (`tests/e2e/fixtures/`): 27 Spanish
+entries, 20 English ones, 13 Japanese ones and 17 characters.
 
 ## Importing a book
 
@@ -169,8 +175,9 @@ Format 2, one book per file:
 |---|---|
 | `book.id` | Lower-case letters, digits and `-`. Importing a file with the same id updates that book. |
 | `book.title` | Shown under the book's name ("Vocabulary 4000") |
-| `book.kind` | `translation` (meaning in another language) or `definition` (meaning explained in the same language) |
+| `book.kind` | `translation` (meaning in another language), `definition` (meaning explained in the same language) or `characters` (kana and kanji, see [Kanji and kana](characters.md)) |
 | `book.term`, `book.meaning` | Language codes: the language studied, and the language of the meanings |
+| `book.credit` | Optional: where the content comes from, shown under the book's title (a licence's attribution) |
 | `book.order` | Optional. `book` (default): the order means something (Collins: by theme). `alphabetical`: a word list; new words then come at random by default, and wrong options are not taken from the alphabetical neighbours. |
 | `title`, `subtitle` | Of a lesson or a section. The subtitle is optional: the title in the other language, for example. |
 | `term`, `meaning` | As printed: alternatives with `/`, optional parts in brackets, `...` for an open end |
@@ -178,6 +185,8 @@ Format 2, one book per file:
 | `note` | Optional example or remark, shown after the answer |
 | `feminine` | Optional: a feminine noun taking *el* (`el agua`), shown as *f* |
 | `reading` | Optional: how the term reads when its script does not say it, in Latin letters (Japanese rōmaji: `"gachō"` for ガチョウ). Shown with the term, and accepted as an answer. |
+| `readings` | Optional, Characters book: a kanji's readings, on'yomi in katakana then kun'yomi in hiragana, okurigana in brackets: `"ニチ / ジツ / ひ / か"`. Asked as a third direction; any one is a right answer. |
+| `translations` | Optional: the meaning in other interface languages, `{"fr": "jour / soleil", "es": "día / sol"}`. Used when the interface is in that language. |
 
 Files in format 1, written by version 4.2 for the Collins book (titles and
 entries as `{ "en", "es" }`), are still read, as the book `collins-spanish`.

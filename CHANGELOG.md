@@ -1,5 +1,25 @@
 # Changelog
 
+## 6.2.0
+
+- **Kanji and kana,** a new book in the Japanese school's order. See [Kanji and kana](docs/characters.md).
+  - **Order:** hiragana and katakana row by row (with the voiced rows, the contracted sounds and the borrowed sounds), then the 1,026 kanji of grades 1 to 6 and the 1,110 other jōyō kanji. Within a grade, the most frequent kanji come first.
+  - **Kana** are asked by their sound and found from it.
+  - **Kanji** are learnt three ways, each with its own Leitner box: the meaning, the reading (a new direction), and the kanji from its meaning.
+    - Any one reading is right, typed in katakana, hiragana or rōmaji, okurigana optional.
+    - A character to produce is always chosen, among four of the same kind.
+  - **Meanings in French or Spanish** when the interface is, from KANJIDIC2; English otherwise. Entries of any book may now carry `translations`.
+  - **After each kanji:** its readings, on and kun apart, and up to three common words whose kanji are all learnt by then.
+- **One learning with the Japanese word books:**
+  - characters met in the words a player has started come first among the new ones; the home screen counts them, and their cards say *seen in your words*;
+  - a character's card shows the player's words that use it;
+  - a word's card shows its kanji, those not yet started highlighted.
+- **`npm run characters:build`** writes `data/characters.json` from KANJIDIC2 and JMdict, downloaded into `data/`. Without them it builds the kana only. Nothing from the dictionaries is in the project; the book shows the EDRDG's CC BY-SA attribution (`book.credit`, a new field).
+- **Migration 012:** book kind `characters`, direction `read`, columns `credit`, `readings` and `translations`. SQLite rebuilds two tables, keeping their rows.
+- **Import:** new entries are inserted at most 100 per statement, so any section size stays within the engines' parameter limits.
+- **`npm run db:copy-to-postgres`** now also copies the columns added since 5.x: `ordering`, `credit`, `readings`, `translations`, the test answer `mode` and `typed`.
+- **Checks:** `check:vocab` covers kana sounds, readings, example words, the third direction, localised meanings and met characters, and with a Characters file checks that every reading and translation is accepted. Two new e2e tests use an invented 17-character book.
+
 ## 6.1.1
 
 - **Vocabulary, keyboard:** a key pressed just as a multiple-choice card appeared could be lost. The card takes the focus on the next frame, and a key pressed before that went to the page, not to the card. The card's keys (1–4, A–D, Enter) are now read at document level while a card is on screen, wherever the focus is. Seen on GitHub's runners, where two vocabulary tests failed this way; reproduced locally under CPU load, then 30 runs out of 30 passed under the same load.

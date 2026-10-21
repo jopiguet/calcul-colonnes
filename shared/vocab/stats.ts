@@ -4,7 +4,7 @@
  * `npm run check:vocab` can test it without a database.
  */
 import type { VocabStats, VocabTally } from "../types";
-import { DAY, TOP_BOX, entryStatus, type CardState, type Direction } from "./schedule";
+import { DAY, DIRECTIONS, TOP_BOX, entryStatus, type CardState, type Direction } from "./schedule";
 
 export interface StatsEntry {
   id: number;
@@ -12,6 +12,8 @@ export interface StatsEntry {
   term: string;
   meaning: string;
   reading: string;
+  /** A kanji's readings: then also learnt in the "read" direction. */
+  readings?: string;
 }
 
 export interface StatsAnswer {
@@ -54,12 +56,16 @@ export function computeStats(input: StatsInput): VocabStats {
 
   // Words by status, overall and per lesson; cards per box; what comes due.
   const words = { total: 0, new: 0, learning: 0, known: 0, mastered: 0 };
-  const boxes = { recognise: Array<number>(TOP_BOX + 1).fill(0), recall: Array<number>(TOP_BOX + 1).fill(0) };
+  const boxes = {
+    recognise: Array<number>(TOP_BOX + 1).fill(0),
+    recall: Array<number>(TOP_BOX + 1).fill(0),
+    read: Array<number>(TOP_BOX + 1).fill(0),
+  };
   const forecast = Array<number>(FORECAST_DAYS).fill(0);
   const perLesson = new Map(input.lessons.map((l) => [l.id, { id: l.id, title: l.title, total: 0, new: 0, learning: 0, known: 0, mastered: 0 }]));
   for (const entry of entries) {
     const cards = progress.get(entry.id) ?? {};
-    const status = entryStatus(cards.recognise?.box ?? 0, cards.recall?.box ?? 0);
+    const status = entryStatus(cards.recognise?.box ?? 0, cards.recall?.box ?? 0, entry.readings ? (cards.read?.box ?? 0) : null);
     words.total++;
     words[status]++;
     const lesson = perLesson.get(entry.lessonId);
@@ -67,7 +73,7 @@ export function computeStats(input: StatsInput): VocabStats {
       lesson.total++;
       lesson[status]++;
     }
-    for (const direction of ["recognise", "recall"] as const) {
+    for (const direction of DIRECTIONS) {
       const card = cards[direction];
       if (!card) continue;
       boxes[direction][Math.min(Math.max(card.box, 1), TOP_BOX)]!++;
@@ -79,7 +85,7 @@ export function computeStats(input: StatsInput): VocabStats {
   // Answers: by day, kind, direction and verdict; first sight of each entry.
   const all = tally();
   const byMode = { choice: tally(), written: tally() };
-  const byDirection = { recognise: tally(), recall: tally() };
+  const byDirection = { recognise: tally(), recall: tally(), read: tally() };
   const verdicts = { right: 0, accent: 0, typo: 0, article: 0, wrong: 0 };
   const perDay = new Map<number, { answers: number; right: number; newWords: number }>();
   const firstSeen = new Map<number, number>();
@@ -127,7 +133,7 @@ export function computeStats(input: StatsInput): VocabStats {
   const byId = new Map(entries.map((e) => [e.id, e]));
   const lowestBox = (id: number): number => {
     const cards = progress.get(id) ?? {};
-    return Math.min(cards.recognise?.box ?? TOP_BOX, cards.recall?.box ?? TOP_BOX);
+    return Math.min(cards.recognise?.box ?? TOP_BOX, cards.recall?.box ?? TOP_BOX, cards.read?.box ?? TOP_BOX);
   };
   const hardest = [...answered.entries()]
     .filter(([id, e]) => e.wrong > 0 && byId.has(id))

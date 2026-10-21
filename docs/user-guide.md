@@ -287,6 +287,8 @@ One activity per book imported on the server (see
 - **Vocabulaire japonais** (*Themed vocabulary*): Japanese words by theme with their English meaning. The rōmaji is shown under the Japanese, and under each Japanese option. To write a Japanese word, type it in kanji or kana with a Japanese keyboard, or in rōmaji with a normal one: *gakkō*, *gakko* and *gakkou* are all right for 学校.
 - **Vocabulaire anglais** (*Vocabulary 4000*): demanding English words with a short English definition, plus prefixes, roots and suffixes. Here the definition is always chosen from four; the word itself can be written. After each answer about a word part, an example is shown (*corp* → *corporeal*).
 
+- **Kanji et kana** (*Kana and jōyō kanji*): hiragana, katakana, then the kanji grade by grade as in Japanese schools. A kana is asked by its sound; a kanji by its meaning, by its reading (one is enough, in kana or rōmaji) and from its meaning. The character is shown large; when it must be found, four characters are offered. After a kanji: its readings (on and kun), example words made only of kanji already learnt, and the player's own words that use it. Characters met in the Japanese words come first among the new ones. See [Kanji and kana](characters.md).
+
 Each book's page works the same way.
 
 **The screen**

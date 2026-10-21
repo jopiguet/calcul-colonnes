@@ -9,6 +9,7 @@
 import { COUNTS_AS_RIGHT, type Verdict } from "../shared/vocab/grade";
 import { DAY, TOP_BOX, type ModePreference } from "../shared/vocab/schedule";
 import { button, el } from "./dom";
+import { currentLang } from "./i18n";
 import {
   SignedOutError,
   vocab,
@@ -18,6 +19,7 @@ import {
   type VocabCard,
   type VocabProgress,
 } from "./store";
+import type { VocabRelated } from "../shared/types";
 import { langName, vt, type VocabKey } from "./vocab-i18n";
 import { statsView } from "./vocab-stats";
 
@@ -83,11 +85,11 @@ interface Session {
   cards: VocabCard[];
   index: number;
   /** Cards answered wrong, asked again once at the end. */
-  retried: Set<number>;
+  retried: Set<string>;
   result: (VocabAnswerResult & { given: string }) | null;
   right: number;
   answered: number;
-  missed: Map<number, { prompt: string; expected: string }>;
+  missed: Map<string, { prompt: string; expected: string }>;
   saveFailed: boolean;
 }
 
@@ -106,8 +108,12 @@ export interface VocabContext {
 const newOrder = (book: VocabBookInfo): "book" | "random" =>
   prefs.order[book.id] ?? (book.order === "alphabetical" ? "random" : "book");
 
-/** "Vocabulaire espagnol", "Vocabulaire anglais": the book's language studied. */
-export const bookTitle = (book: VocabBookInfo): string => vt("title", { lang: langName(book.term) });
+/** "Vocabulaire espagnol", "Vocabulaire anglais": the book's language studied; "Kanji et kana". */
+export const bookTitle = (book: VocabBookInfo): string =>
+  book.kind === "characters" ? vt("charactersTitle") : vt("title", { lang: langName(book.term) });
+
+/** "12 mots", or "12 caractères" in the Characters book. */
+const countOf = (book: VocabBookInfo, count: number): string => vt(book.kind === "characters" ? "characters" : "words", { count });
 
 export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
   // Another player or another book: not the previous session.
@@ -140,7 +146,7 @@ const romajiAlways = (book: VocabBookInfo): boolean => (prefs.romaji[book.id] ??
 async function start(ctx: VocabContext, target: Target): Promise<void> {
   // The whole book: the server takes the book's id.
   const query = target.kind === "all" ? { ...target, id: ctx.book.id } : target;
-  const cards = await vocab.session(ctx.user.id, query, prefs.size, prefs.mode, newOrder(ctx.book));
+  const cards = await vocab.session(ctx.user.id, query, prefs.size, prefs.mode, newOrder(ctx.book), currentLang());
   finished = null;
   const fresh: Session = {
     userId: ctx.user.id, bookId: ctx.book.id, target, cards, index: 0, retried: new Set(),
@@ -181,8 +187,9 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   const wrap = el("section", "sheet vocab-home");
   wrap.append(
     el("h1", "title", bookTitle(book)),
-    el("p", "vocab-source", `${book.title} · ${vt("words", { count: book.entries })}`),
+    el("p", "vocab-source", `${book.title} · ${countOf(book, book.entries)}`),
   );
+  if (book.credit) wrap.append(el("p", "vocab-credit", book.credit));
   const statsLink = button("ghost small vocab-stats-link", vt("stats"), () => {
     statsOf = book.id;
     ctx.rerender();
@@ -220,6 +227,8 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     );
   }
   if (progress.today.answers > 0) due.append(el("p", "hint", vt("today", progress.today)));
+  // Characters met in the player's words: they come first among the new ones.
+  if (mine.met) due.append(el("p", "hint vocab-met-count", mine.met === 1 ? vt("metOne") : vt("metMany", { count: mine.met })));
   wrap.append(due);
 
   // Cards per session.
@@ -268,7 +277,7 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   wrap.append(order);
 
   // Japanese: rōmaji with the question, or only once answered.
-  if (book.term === "ja") {
+  if (book.term === "ja" && book.kind !== "characters") {
     const romaji = el("fieldset", "segmented vocab-romaji");
     romaji.append(el("legend", "field-label", vt("romajiTitle")));
     for (const [value, key] of [["always", "romajiShow"], ["after", "romajiHide"]] as const) {
@@ -312,7 +321,7 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       const item = el("li", "vocab-section");
       const text = el("div", "vocab-section-text");
       text.append(titleBlock(section.title, section.subtitle, "vocab-section-title"));
-      const meta = el("span", "vocab-section-meta", vt("words", { count: section.entries }));
+      const meta = el("span", "vocab-section-meta", countOf(book, section.entries));
       if (p.due > 0) meta.append(" · ", el("span", "vocab-section-due", vt("sectionDue", { count: p.due })));
       text.append(meta, statusBar(p));
       const begun = p.new < section.entries;
@@ -402,6 +411,46 @@ function whenBack(result: VocabAnswerResult): string {
   return vt("backIn", { days });
 }
 
+/** On'yomi (katakana) and kun'yomi (hiragana) apart: "On ニチ · ジツ  Kun ひ · か". */
+export function splitReadings(readings: string): { on: string[]; kun: string[] } {
+  const all = readings.split("/").map((r) => r.trim()).filter(Boolean);
+  return { on: all.filter((r) => /^[ァ-ヺー]/.test(r)), kun: all.filter((r) => !/^[ァ-ヺー]/.test(r)) };
+}
+
+function kanjiFacts(meaning: string, readings: string, direction: VocabCard["direction"]): HTMLElement {
+  const box = el("span", "vocab-kanji-facts");
+  if (direction !== "recognise" && meaning) box.append(el("span", "vocab-kanji-meaning", meaning));
+  const { on, kun } = splitReadings(readings);
+  for (const [label, list] of [[vt("onyomi"), on], [vt("kunyomi"), kun]] as const) {
+    if (!list.length) continue;
+    const line = el("span", "vocab-kanji-readings");
+    const value = el("span", "", list.join(" · "));
+    value.lang = "ja";
+    line.append(el("span", "vocab-kanji-label", label), value);
+    box.append(line);
+  }
+  return box;
+}
+
+/** Words of the player that use this character, or a word's kanji. */
+function related(title: string, items: VocabRelated[], kind: "words" | "kanji"): HTMLElement {
+  const box = el("span", `vocab-related is-${kind}`);
+  box.append(el("span", "vocab-related-title", title));
+  const list = el("span", "vocab-related-list");
+  for (const item of items) {
+    const one = el("span", item.started === false ? "vocab-related-item is-new" : "vocab-related-item");
+    const term = el("span", "vocab-related-term", item.term);
+    term.lang = "ja";
+    one.append(term);
+    // A word: its rōmaji; a kanji: no readings here, they come with its own card.
+    if (kind === "words" && item.reading) one.append(el("span", "vocab-related-reading", item.reading));
+    one.append(el("span", "vocab-related-meaning", item.meaning));
+    list.append(one);
+  }
+  box.append(list);
+  return box;
+}
+
 function cardView(ctx: VocabContext, s: Session): HTMLElement {
   const card = s.cards[s.index]!;
   const wrap = el("section", "sheet vocab-card");
@@ -419,10 +468,20 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   wrap.append(head, bar);
 
   const recognise = card.direction === "recognise";
-  const ask = recognise ? vt("askMeaning") : card.promptLang === card.answerLang ? vt("askWord") : vt("askIn", { lang: langName(card.answerLang) });
+  // The character itself is shown (recognise, read) or chosen (recall): large.
+  const glyphShown = card.script !== undefined && card.direction !== "recall";
+  const glyphChosen = card.script !== undefined && card.direction === "recall";
+  if (card.script) wrap.classList.add("is-characters");
+  const ask = card.script
+    ? vt(
+        card.direction === "read" ? "askReading"
+          : card.direction === "recall" ? (card.script === "kana" ? "askKana" : "askKanji")
+          : card.script === "kana" ? "askSound" : "askMeaning",
+      )
+    : recognise ? vt("askMeaning") : card.promptLang === card.answerLang ? vt("askWord") : vt("askIn", { lang: langName(card.answerLang) });
   const question = el("div", "vocab-question");
   question.append(el("p", "vocab-ask", ask));
-  const prompt = el("p", "vocab-prompt", card.prompt);
+  const prompt = el("p", glyphShown ? "vocab-prompt vocab-glyph" : "vocab-prompt", card.prompt);
   prompt.lang = card.promptLang;
   question.append(prompt);
   // Rōmaji: with the question, or once answered, as the player chose.
@@ -434,6 +493,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   }
   const notes = el("p", "vocab-notes");
   if (card.feminine) notes.append(el("span", "vocab-fem", `f · ${vt("feminine")}`));
+  if (card.met && !s.result) notes.append(el("span", "vocab-met", vt("metBadge")));
   if (card.group) notes.append(el("span", "vocab-group", card.group));
   notes.append(boxDots(s.result ? s.result.box : card.box));
   question.append(notes);
@@ -447,13 +507,15 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     if (s.result) return;
     // The server grades (shared/vocab/grade.ts) and moves the card between boxes.
     try {
-      const result = await vocab.answer({ userId: s.userId, entryId: card.entryId, direction: card.direction, mode: card.mode, given });
+      const result = await vocab.answer({
+        userId: s.userId, entryId: card.entryId, direction: card.direction, mode: card.mode, given, lang: currentLang(),
+      });
       s.result = { ...result, given };
       s.answered++;
       if (result.correct) s.right++;
       else {
-        const key = card.entryId * 2 + (recognise ? 0 : 1);
-        s.missed.set(key, { prompt: card.prompt, expected: !recognise && result.reading ? `${result.expected} (${result.reading})` : result.expected });
+        const key = `${card.entryId}:${card.direction}`;
+        s.missed.set(key, { prompt: card.prompt, expected: card.direction === "recall" && result.reading ? `${result.expected} (${result.reading})` : result.expected });
         // Asked again at the end, once: the box has gone back to 1.
         if (!s.retried.has(key)) {
           s.retried.add(key);
@@ -487,7 +549,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   if (card.mode === "choice") {
     const choices = el("div", "choices");
     (card.options ?? []).forEach((option, i) => {
-      const b = button("choice", "", () => void submit(option));
+      const b = button(glyphChosen ? "choice is-glyph" : "choice", "", () => void submit(option));
       const text = el("span", "choice-text", option);
       text.lang = answerLang;
       const reading = card.optionReadings?.[i];
@@ -508,7 +570,15 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   } else {
     const form = el("form", "vocab-write");
     const label = el("label", "field");
-    label.append(el("span", "field-label", answerLang === "ja" ? vt("answerJa") : vt("answerIn", { lang: langName(answerLang) })));
+    label.append(
+      el(
+        "span",
+        "field-label",
+        card.direction === "read" ? vt("answerReading")
+          : card.script === "kana" ? vt("answerSound")
+          : answerLang === "ja" ? vt("answerJa") : vt("answerIn", { lang: langName(answerLang) }),
+      ),
+    );
     const input = el("input", "vocab-input");
     input.type = "text";
     input.lang = answerLang;
@@ -557,13 +627,17 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     const line = el("span", "vocab-verdict", r.verdict === "right" ? vt("right") : verdictText(r.verdict, r.expected));
     feedback.append(line);
     // Japanese: the word as printed and how it reads, whatever was typed.
-    if (!recognise && r.reading) {
+    if (card.direction === "recall" && r.reading) {
       const reading = el("span", "vocab-verdict-reading", r.verdict === "right" ? `${r.expected} · ${r.reading}` : r.reading);
       reading.lang = "ja";
       feedback.append(reading);
     }
     if (r.feminine) feedback.append(el("span", "vocab-fem", ` (f)`));
-    if (r.note) feedback.append(el("span", "vocab-note", vt("example", { note: r.note })));
+    // A kanji: its meaning and readings, whichever way it was asked.
+    if (r.readings) feedback.append(kanjiFacts(r.meaning ?? "", r.readings, card.direction));
+    if (r.note) feedback.append(el("span", "vocab-note", vt(card.script ? "exampleWords" : "example", { note: r.note })));
+    if (r.inWords?.length) feedback.append(related(vt("inYourWords"), r.inWords, "words"));
+    if (r.characters?.length) feedback.append(related(vt("itsKanji"), r.characters, "kanji"));
     feedback.append(el("span", "vocab-when", r.correct ? whenBack(r) : vt("again")));
   }
   wrap.append(feedback);

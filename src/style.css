@@ -2086,6 +2086,139 @@ button.home-link {
   font-style: italic;
 }
 
+/* ---------------------------------------------------------- kanji and kana */
+
+/* The character asked, large enough to see its strokes. */
+.vocab-prompt.vocab-glyph {
+  margin: 0.4rem 0 0.2rem;
+  font-size: clamp(4.5rem, 3rem + 10vw, 7rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+/* The Japanese rule above makes prompts bold: a single character reads better at a regular weight. */
+.vocab-prompt.vocab-glyph:lang(ja) {
+  font-weight: 400;
+}
+
+/* Characters to choose from: two by two, each large. */
+.choices:has(.choice.is-glyph) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+button.choice.is-glyph {
+  justify-content: center;
+  min-height: 5.5rem;
+  position: relative;
+}
+
+button.choice.is-glyph .letter {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
+}
+
+button.choice.is-glyph .choice-text {
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.vocab-met {
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+/* Facts, not the verdict: in the ink colour whatever the answer. */
+.vocab-kanji-facts {
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0.2rem 0;
+}
+
+.vocab-kanji-meaning {
+  font-weight: 700;
+}
+
+.vocab-kanji-readings {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  font-size: 1.05rem;
+}
+
+.vocab-kanji-label {
+  min-width: 2.2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.vocab-related {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.vocab-related-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.vocab-related-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 0.9rem;
+}
+
+.vocab-related-item {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+
+.vocab-related-term {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.vocab-related-reading {
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* A kanji of the word not started yet in the Characters book. */
+.vocab-related-item.is-new .vocab-related-term {
+  color: var(--accent);
+}
+
+.vocab-credit {
+  margin: 0.2rem 0 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
 /* ---------------------------------------------------------- vocabulary statistics */
 
 .vocab-stats-link {

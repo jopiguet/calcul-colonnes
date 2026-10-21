@@ -10,7 +10,9 @@ import { acceptedForms, grade, writable, type AnswerLang, type Verdict } from ".
 import { askMode, entryStatus, nextState, DAY, MINUTE, TOP_BOX } from "../shared/vocab/schedule.ts";
 import { parseVocabFile } from "../shared/vocab/format.ts";
 import { computeStats } from "../shared/vocab/stats.ts";
-import { buildSession, canWrite, distractors, progressKey, type ProgressMap, type SessionEntry } from "../shared/vocab/session.ts";
+import { buildSession, canWrite, distractors, localise, progressKey, type ProgressMap, type SessionEntry } from "../shared/vocab/session.ts";
+import { kanaToRomaji } from "../shared/vocab/kana.ts";
+import { kanaLessons, kanaSound, kunReading, meaningOf, pickExamples, readingsOf } from "./characters-build.ts";
 
 let failures = 0;
 function expect(label: string, actual: unknown, wanted: unknown): void {
@@ -125,7 +127,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   const words = ["uno", "dos", "tres", "cuatro", "cinco"];
   const book = { kind: "translation" as const, termLang: "es", meaningLang: "en", alphabetical: false };
   const entries: SessionEntry[] = words.map((term, i) => ({
-    id: i + 1, sectionId: 1, position: i, term, meaning: `w${i + 1}`, group: "", feminine: false, note: "", reading: "", book,
+    id: i + 1, sectionId: 1, position: i, term, meaning: `w${i + 1}`, group: "", feminine: false, note: "", reading: "", readings: "", translations: {}, book,
   }));
   const progress: ProgressMap = new Map([
     [progressKey(1, "recognise"), { box: 2, dueAt: at - 1, lastAt: at - DAY }], // due
@@ -148,7 +150,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
 {
   const book = { kind: "definition" as const, termLang: "en", meaningLang: "en", alphabetical: true };
   const make = (id: number, term: string, meaning: string): SessionEntry => ({
-    id, sectionId: 1, position: id, term, meaning, group: "", feminine: false, note: "", reading: "", book,
+    id, sectionId: 1, position: id, term, meaning, group: "", feminine: false, note: "", reading: "", readings: "", translations: {}, book,
   });
   const roots = [make(1, "macro", "large"), make(2, "magn", "large"), make(3, "bene", "good"), make(4, "chron", "time"), make(5, "mono", "one")];
   expect("definition: recognise never written", canWrite(roots[0]!, "recognise"), false);
@@ -165,7 +167,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   const book = { kind: "definition" as const, termLang: "en", meaningLang: "en", alphabetical: true };
   const list: SessionEntry[] = Array.from({ length: 30 }, (_, i) => ({
     id: i + 1, sectionId: 1 + Math.floor(i / 10), position: i % 10, term: `word${i + 1}`, meaning: `meaning number ${i + 1}`,
-    group: "", feminine: false, note: "", reading: "", book,
+    group: "", feminine: false, note: "", reading: "", readings: "", translations: {}, book,
   }));
   let seed = 7;
   const random = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
@@ -187,7 +189,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   const book = { kind: "translation" as const, termLang: "ja", meaningLang: "en", alphabetical: false };
   const words: [string, string, string][] = [["猫", "cat", "neko"], ["犬", "dog", "inu"], ["鳥", "bird", "tori"], ["魚", "fish", "sakana"]];
   const list: SessionEntry[] = words.map(([term, meaning, reading], i) => ({
-    id: i + 1, sectionId: 1, position: i, term, meaning, group: "", feminine: false, note: "", reading, book,
+    id: i + 1, sectionId: 1, position: i, term, meaning, group: "", feminine: false, note: "", reading, readings: "", translations: {}, book,
   }));
   const progress: ProgressMap = new Map(list.map((e) => [progressKey(e.id, "recognise"), { box: 2, dueAt: 1e12, lastAt: 0 }]));
   const cards = buildSession({ entries: list, pool: list, progress, now: 0, size: 10, preference: "choice", purpose: "learn", newOrder: "book", random: Math.random });
@@ -239,6 +241,63 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   expect("stats: a missed day ends the streak", later.streak, { current: 0, best: 1 });
 }
 
+// The Characters book: kana sounds, kanji readings, a third direction.
+{
+  expect("kana sounds", ["か", "きゃ", "しゅ", "ちょ", "じゃ", "を", "ティ", "ファ", "ヴ"].map(kanaSound), [
+    "ka", "kya", "shu", "cho", "ja", "wo / o", "ti", "fa", "vu",
+  ]);
+  const kana = kanaLessons().flatMap((l) => l.sections.flatMap((s) => s.entries));
+  expect("kana: hiragana and katakana, each once", [kana.length, new Set(kana.map((e) => e.term)).size], [223, 223]);
+  expect("kun reading: okurigana in brackets, no dash", ["たか.い", "-び", "ひと-", "ひ"].map(kunReading), ["たか(い)", "び", "ひと", "ひ"]);
+  expect("readings: on, then kun, a voiced suffix dropped", readingsOf({ on: ["ニチ", "ジツ"], kun: ["ひ", "-び", "-か"] }), "ニチ / ジツ / ひ / か");
+  expect("readings: one stem once", readingsOf({ on: ["セイ"], kun: ["い.きる", "い.かす", "う.まれる"] }), "セイ / い(きる) / う(まれる)");
+  expect("meanings: three, no radical number", meaningOf(["one", "one radical (no.1)"]), "one");
+  const readings = "コウ / たか(い) / たか";
+  for (const [given, wanted] of [["こう", "right"], ["コウ", "right"], ["kou", "right"], ["kō", "right"], ["たかい", "right"], ["takai", "right"], ["たか", "right"], ["yasui", "wrong"]] as const) {
+    expect(`read ${given}`, grade(given, readings, "ja", kanaToRomaji(readings)), wanted);
+  }
+  const words = [
+    { written: "一人", kana: "ひとり", gloss: "one person", rank: 1 },
+    { written: "二人", kana: "ふたり", gloss: "two persons", rank: 2 },
+    { written: "人", kana: "ひと", gloss: "person", rank: 3 },
+    { written: "大人", kana: "おとな", gloss: "adult", rank: 1 }, // 大 is not in the book
+  ];
+  const examples = pickExamples(["一", "二", "人"], words);
+  expect("examples: a word with its last kanji, unknown kanji left out", [...examples].map(([k, w]) => [k, w.map((x) => x.written)]), [
+    ["一", []], ["二", []], ["人", ["一人", "二人", "人"]],
+  ]);
+
+  const book = { kind: "characters" as const, termLang: "ja", meaningLang: "en", alphabetical: false };
+  const kanji = (id: number, term: string, meaning: string, read: string, fr: string): SessionEntry => ({
+    id, sectionId: 2, position: id, term, meaning, group: "", feminine: false, note: "", reading: "", readings: read, translations: { fr }, book,
+  });
+  const kanaEntry = (id: number, term: string, sound: string): SessionEntry => ({
+    id, sectionId: 1, position: id, term, meaning: sound, group: "", feminine: false, note: "", reading: "", readings: "", translations: {}, book,
+  });
+  const list = [
+    kanaEntry(1, "あ", "a"), kanaEntry(2, "い", "i"), kanaEntry(3, "う", "u"), kanaEntry(4, "え", "e"),
+    kanji(11, "一", "one", "イチ / ひと", "un"), kanji(12, "二", "two", "ニ / ふた", "deux"),
+    kanji(13, "三", "three", "サン / み", "trois"), kanji(14, "日", "day / sun", "ニチ / ひ", "jour / soleil"),
+  ];
+  expect("characters: a kanji's meaning in French", [localise(list[4]!, "fr").meaning, localise(list[4]!, "fr").book.meaningLang], ["un", "fr"]);
+  expect("characters: English as it is", localise(list[4]!, "en").meaning, "one");
+  expect("characters: a character to produce is chosen, a reading written", [canWrite(list[4]!, "recall"), canWrite(list[4]!, "read"), canWrite(list[0]!, "recognise")], [false, true, true]);
+  const progress: ProgressMap = new Map([[progressKey(11, "recognise"), { box: 2, dueAt: 1e12, lastAt: 0 }]]);
+  // More new characters than a session takes: the met ones must be among those taken.
+  const more = Array.from({ length: 10 }, (_, i) => kanaEntry(21 + i, "かきくけこさしすせそ"[i]!, `k${i}`));
+  const cards = buildSession({ entries: [...more, ...list], pool: list, progress, now: 0, size: 20, preference: "written", purpose: "learn", newOrder: "book", met: new Set([14, 3]), random: Math.random });
+  const ready = cards.filter((c) => c.entryId === 11).map((c) => [c.direction, c.mode]).sort();
+  expect("characters: recall and reading together, recall by choice", ready, [["read", "written"], ["recall", "choice"]]);
+  const fresh = cards.filter((c) => c.box === 0 && c.direction === "recognise").map((c) => c.entryId);
+  expect("characters: met first among the new", [fresh.length, fresh.includes(3), fresh.includes(14)], [8, true, true]);
+  expect("characters: kanji and kana cards", [cards.find((c) => c.entryId === 14)?.script, cards.find((c) => c.entryId === 1)?.script, cards.find((c) => c.entryId === 14)?.met], ["kanji", "kana", true]);
+  const kanjiOptions = distractors(list[6]!, "read", list, Math.random);
+  expect("characters: readings offered are kanji readings", kanjiOptions.length === 3 && kanjiOptions.every((o) => /[ァ-ン]/.test(o)), true);
+  const kanaOptions = distractors(list[0]!, "recall", list, Math.random);
+  expect("characters: kana offered for a kana", kanaOptions.every((o) => /^[ぁ-ん]$/.test(o)), true);
+  expect("status: a kanji counts its reading", [entryStatus(6, 6, 2), entryStatus(6, 6, null), entryStatus(0, 0, 0)], ["learning", "mastered", "new"]);
+}
+
 // Every entry of a vocabulary file
 const file = process.argv[2];
 if (file) {
@@ -267,6 +326,21 @@ if (file) {
         if (grade(entry.meaning, entry.meaning, meaningLang) !== "right") {
           failures++;
           console.error(`✘ own meaning refused: ${entry.meaning}`);
+        }
+        if (entry.readings) {
+          const own = entry.readings.split(" / ");
+          for (const form of [...own, ...own.map((r) => kanaToRomaji(r))]) {
+            if (!["right"].includes(grade(form, entry.readings, "ja", kanaToRomaji(entry.readings)))) {
+              failures++;
+              console.error(`✘ own reading refused: ${entry.term}: ${form}`);
+            }
+          }
+        }
+        for (const [code, meaning] of Object.entries(entry.translations ?? {})) {
+          if (grade(meaning, meaning, lang(code)) !== "right") {
+            failures++;
+            console.error(`✘ own ${code} meaning refused: ${entry.term}: ${meaning}`);
+          }
         }
         if (writable(entry.term)) written++;
       }

@@ -10,10 +10,13 @@ import type { Database, Param, Row } from "./db/index.ts";
 import type { AppEnv } from "./auth/middleware.ts";
 import type { Repository, Scope } from "./repository.ts";
 import { COUNTS_AS_RIGHT, display, grade, normalise, type AnswerLang } from "../shared/vocab/grade.ts";
-import type { VocabFile } from "../shared/vocab/format.ts";
-import { entryStatus, nextState, type CardState, type Direction, type ModePreference } from "../shared/vocab/schedule.ts";
+import { kanaToRomaji } from "../shared/vocab/kana.ts";
+import { TRANSLATION_LANGS, type BookKind, type TranslationLang, type VocabFile } from "../shared/vocab/format.ts";
+import { DIRECTIONS, entryStatus, nextState, type CardState, type Direction, type ModePreference } from "../shared/vocab/schedule.ts";
 import {
   buildSession,
+  directionsOf,
+  localise,
   progressKey,
   sides,
   type ProgressMap,
@@ -21,18 +24,54 @@ import {
   type NewOrder,
   type SessionPurpose,
 } from "../shared/vocab/session.ts";
-import type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabProgress, VocabSectionProgress, VocabStats } from "../shared/types.ts";
+import type {
+  VocabAnswer,
+  VocabAnswerResult,
+  VocabBookInfo,
+  VocabProgress,
+  VocabRelated,
+  VocabSectionProgress,
+  VocabStats,
+} from "../shared/types.ts";
 import { computeStats, type StatsAnswer, type StatsInput } from "../shared/vocab/stats.ts";
 
 const n = (value: unknown): number => Number(value);
 
 /** Entries with their book's kind and languages, for grading and sessions. */
 const ENTRY_COLUMNS = `e.id, e.section_id, e.position, e.term, e.meaning, e.grp, e.feminine, e.note, e.reading,
-  b.kind, b.term_lang, b.meaning_lang, b.ordering`;
+  e.readings, e.translations, b.kind, b.term_lang, b.meaning_lang, b.ordering`;
 const ENTRY_JOINS = `FROM vocab_entries e
   JOIN vocab_sections s ON s.id = e.section_id
   JOIN vocab_lessons l ON l.id = s.lesson_id
   JOIN vocab_books b ON b.id = l.book_id`;
+
+const bookKind = (value: unknown): BookKind =>
+  value === "definition" || value === "characters" ? value : "translation";
+
+/** The translations column: JSON {"fr": "…"}; anything else reads as none. */
+function translationsOf(value: unknown): SessionEntry["translations"] {
+  if (typeof value !== "string" || !value) return {};
+  try {
+    const parsed = JSON.parse(value) as Record<string, unknown>;
+    const out: SessionEntry["translations"] = {};
+    for (const lang of TRANSLATION_LANGS) if (typeof parsed[lang] === "string") out[lang] = parsed[lang] as string;
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+/** Stored form of translations: keys in a fixed order, so an unchanged entry compares equal. */
+const storedTranslations = (t: Partial<Record<TranslationLang, string>> | undefined): string => {
+  if (!t) return "";
+  const kept = TRANSLATION_LANGS.filter((lang) => t[lang]).map((lang) => [lang, t[lang]]);
+  return kept.length ? JSON.stringify(Object.fromEntries(kept)) : "";
+};
+
+const isLang = (value: unknown): value is TranslationLang => TRANSLATION_LANGS.includes(value as TranslationLang);
+
+/** Kanji (and 々) in a text: the characters a word shares with the Characters book. */
+const kanjiOf = (text: string): string[] => [...new Set([...text].filter((c) => /[\u4e00-\u9fff\u3400-\u4dbf]/u.test(c)))];
 
 function toEntry(row: Row): SessionEntry {
   return {
@@ -45,8 +84,10 @@ function toEntry(row: Row): SessionEntry {
     feminine: n(row.feminine) === 1,
     note: String(row.note ?? ""),
     reading: String(row.reading ?? ""),
+    readings: String(row.readings ?? ""),
+    translations: translationsOf(row.translations),
     book: {
-      kind: row.kind === "definition" ? "definition" : "translation",
+      kind: bookKind(row.kind),
       termLang: String(row.term_lang),
       meaningLang: String(row.meaning_lang),
       alphabetical: row.ordering === "alphabetical",
@@ -90,14 +131,16 @@ export class VocabStore {
       let bookId: number;
       if (found[0]) {
         bookId = n(found[0].id);
-        await tx.query("UPDATE vocab_books SET title = $1, kind = $2, term_lang = $3, meaning_lang = $4, ordering = $5 WHERE id = $6", [
-          book.title, book.kind, book.term, book.meaning, book.order ?? "book", bookId,
-        ]);
+        await tx.query(
+          "UPDATE vocab_books SET title = $1, kind = $2, term_lang = $3, meaning_lang = $4, ordering = $5, credit = $6 WHERE id = $7",
+          [book.title, book.kind, book.term, book.meaning, book.order ?? "book", book.credit ?? "", bookId],
+        );
       } else {
         const last = await tx.query("SELECT COALESCE(MAX(position), -1) AS p FROM vocab_books");
         const inserted = await tx.query(
-          "INSERT INTO vocab_books (slug, position, title, kind, term_lang, meaning_lang, ordering) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
-          [book.id, n(last[0]?.p) + 1, book.title, book.kind, book.term, book.meaning, book.order ?? "book"],
+          `INSERT INTO vocab_books (slug, position, title, kind, term_lang, meaning_lang, ordering, credit)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+          [book.id, n(last[0]?.p) + 1, book.title, book.kind, book.term, book.meaning, book.order ?? "book", book.credit ?? ""],
         );
         bookId = n(inserted[0]!.id);
       }
@@ -134,7 +177,7 @@ export class VocabStore {
 
           // Entries matched by their text; the first match wins for duplicates.
           const rows = await tx.query(
-            "SELECT id, term, meaning, position, grp, feminine, note, reading FROM vocab_entries WHERE section_id = $1 ORDER BY position",
+            "SELECT id, term, meaning, position, grp, feminine, note, reading, readings, translations FROM vocab_entries WHERE section_id = $1 ORDER BY position",
             [sectionId],
           );
           const free = new Map<string, Row[]>();
@@ -147,31 +190,43 @@ export class VocabStore {
           const fresh: Param[][] = [];
           for (const [e, entry] of section.entries.entries()) {
             const row = free.get(`${entry.term}\u0000${entry.meaning}`)?.shift();
-            const values = [e, entry.group ?? "", entry.feminine ? 1 : 0, entry.note ?? "", entry.reading ?? ""] as const;
+            const values = [
+              e, entry.group ?? "", entry.feminine ? 1 : 0, entry.note ?? "", entry.reading ?? "",
+              entry.readings ?? "", storedTranslations(entry.translations),
+            ] as const;
             if (row) {
               const same =
                 n(row.position) === values[0] &&
                 String(row.grp) === values[1] &&
                 n(row.feminine) === values[2] &&
                 String(row.note ?? "") === values[3] &&
-                String(row.reading ?? "") === values[4];
+                String(row.reading ?? "") === values[4] &&
+                String(row.readings ?? "") === values[5] &&
+                String(row.translations ?? "") === values[6];
               if (!same) {
-                await tx.query("UPDATE vocab_entries SET position = $1, grp = $2, feminine = $3, note = $4, reading = $5 WHERE id = $6", [
-                  ...values, n(row.id),
-                ]);
+                await tx.query(
+                  `UPDATE vocab_entries SET position = $1, grp = $2, feminine = $3, note = $4, reading = $5, readings = $6, translations = $7
+                    WHERE id = $8`,
+                  [...values, n(row.id)],
+                );
               }
             } else {
-              fresh.push([sectionId, e, entry.term, entry.meaning, values[1], values[2], values[3], values[4]]);
+              fresh.push([sectionId, e, entry.term, entry.meaning, ...values.slice(1)]);
             }
             report.entries++;
           }
           if (fresh.length > 0) {
-            const width = 8;
-            const placeholders = fresh.map((_, i) => `(${Array.from({ length: width }, (_, k) => `$${i * width + k + 1}`).join(", ")})`);
-            await tx.query(
-              `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading) VALUES ${placeholders.join(", ")}`,
-              fresh.flat(),
-            );
+            // At most 100 rows a statement: 1,000 parameters, well below either engine's limit.
+            const width = 10;
+            for (let start = 0; start < fresh.length; start += 100) {
+              const rows = fresh.slice(start, start + 100);
+              const placeholders = rows.map((_, i) => `(${Array.from({ length: width }, (_, k) => `$${i * width + k + 1}`).join(", ")})`);
+              await tx.query(
+                `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations)
+                 VALUES ${placeholders.join(", ")}`,
+                rows.flat(),
+              );
+            }
             report.added += fresh.length;
           }
           for (const left of free.values()) {
@@ -200,7 +255,7 @@ export class VocabStore {
   }
 
   async books(): Promise<VocabBookInfo[]> {
-    const books = await this.db.query("SELECT id, slug, title, kind, term_lang, meaning_lang, ordering FROM vocab_books ORDER BY position");
+    const books = await this.db.query("SELECT id, slug, title, kind, term_lang, meaning_lang, ordering, credit FROM vocab_books ORDER BY position");
     const lessons = await this.db.query("SELECT id, book_id, title, subtitle FROM vocab_lessons ORDER BY position");
     const sections = await this.db.query(
       `SELECT s.id, s.lesson_id, s.title, s.subtitle, COUNT(e.id) AS entries
@@ -224,10 +279,11 @@ export class VocabStore {
           id: n(b.id),
           slug: String(b.slug),
           title: String(b.title),
-          kind: (b.kind === "definition" ? "definition" : "translation") as VocabBookInfo["kind"],
+          kind: bookKind(b.kind),
           term: String(b.term_lang),
           meaning: String(b.meaning_lang),
           order: (b.ordering === "alphabetical" ? "alphabetical" : "book") as VocabBookInfo["order"],
+          credit: String(b.credit ?? ""),
           entries: own.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.entries, 0), 0),
           lessons: own,
         };
@@ -258,24 +314,44 @@ export class VocabStore {
     return map;
   }
 
+  /**
+   * The words a player has started in the Japanese books other than a
+   * Characters book, as one text: a character is "met" when it is in it.
+   */
+  private async wordsStarted(userId: number): Promise<string> {
+    const rows = await this.db.query(
+      `SELECT DISTINCT e.term ${ENTRY_JOINS}
+        WHERE b.term_lang = 'ja' AND b.kind <> 'characters'
+          AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1)`,
+      [userId],
+    );
+    return rows.map((r) => String(r.term)).join("\n");
+  }
+
   async summary(userId: number, now: number, since: number): Promise<VocabProgress> {
     const progress = await this.progress(userId);
     const rows = await this.db.query(
-      "SELECT e.id, e.section_id, l.book_id FROM vocab_entries e JOIN vocab_sections s ON s.id = e.section_id JOIN vocab_lessons l ON l.id = s.lesson_id",
+      `SELECT e.id, e.section_id, l.book_id, b.kind, CASE WHEN e.readings = '' THEN 0 ELSE 1 END AS kanji,
+              CASE WHEN b.kind = 'characters' THEN e.term ELSE '' END AS term
+         FROM vocab_entries e JOIN vocab_sections s ON s.id = e.section_id JOIN vocab_lessons l ON l.id = s.lesson_id
+         JOIN vocab_books b ON b.id = l.book_id`,
     );
+    const words = rows.some((r) => r.kind === "characters") ? await this.wordsStarted(userId) : "";
     const sections: Record<number, VocabSectionProgress> = {};
-    const books: Record<number, { due: number; started: number }> = {};
+    const books: VocabProgress["books"] = {};
     let due = 0;
     for (const row of rows) {
       const id = n(row.id);
       const section = (sections[n(row.section_id)] ??= { new: 0, learning: 0, known: 0, mastered: 0, due: 0 });
-      const book = (books[n(row.book_id)] ??= { due: 0, started: 0 });
-      const recognise = progress.get(progressKey(id, "recognise"));
-      const recall = progress.get(progressKey(id, "recall"));
-      const status = entryStatus(recognise?.box ?? 0, recall?.box ?? 0);
+      const book = (books[n(row.book_id)] ??= row.kind === "characters" ? { due: 0, started: 0, met: 0 } : { due: 0, started: 0 });
+      const directions = directionsOf({ readings: n(row.kanji) === 1 ? "x" : "" });
+      const cards = directions.map((d) => progress.get(progressKey(id, d)));
+      const [recognise, recall, read] = cards;
+      const status = entryStatus(recognise?.box ?? 0, recall?.box ?? 0, directions.length > 2 ? (read?.box ?? 0) : null);
       section[status]++;
       if (status !== "new") book.started++;
-      for (const card of [recognise, recall]) {
+      else if (book.met !== undefined && row.term && words.includes(String(row.term))) book.met++;
+      for (const card of cards) {
         if (card && card.dueAt <= now) {
           section.due++;
           book.due++;
@@ -295,7 +371,7 @@ export class VocabStore {
     const lessons = await this.db.query("SELECT id, title FROM vocab_lessons WHERE book_id = $1 ORDER BY position", [bookId]);
     if (lessons.length === 0) return null;
     const entries = await this.db.query(
-      `SELECT e.id, e.term, e.meaning, e.reading, l.id AS lesson_id ${ENTRY_JOINS} WHERE l.book_id = $1 ORDER BY l.position, s.position, e.position`,
+      `SELECT e.id, e.term, e.meaning, e.reading, e.readings, l.id AS lesson_id ${ENTRY_JOINS} WHERE l.book_id = $1 ORDER BY l.position, s.position, e.position`,
       [bookId],
     );
     const cards = await this.db.query(
@@ -325,13 +401,14 @@ export class VocabStore {
         term: display(String(row.term)),
         meaning: display(String(row.meaning)),
         reading: String(row.reading ?? ""),
+        readings: String(row.readings ?? ""),
       })),
       lessons: lessons.map((row) => ({ id: n(row.id), title: String(row.title) })),
       progress,
       answers: answers.map(
         (row): StatsAnswer => ({
           entryId: n(row.entry_id),
-          direction: row.direction === "recall" ? "recall" : "recognise",
+          direction: DIRECTIONS.includes(row.direction as Direction) ? (row.direction as Direction) : "recognise",
           mode: row.mode === "written" ? "written" : "choice",
           at: n(row.at),
           verdict: String(row.verdict),
@@ -351,6 +428,7 @@ export class VocabStore {
     preference: ModePreference,
     now: number,
     newOrder: NewOrder = "book",
+    lang?: TranslationLang,
   ) {
     // The whole book: only the entries the session can use, not all 4,000.
     const entries =
@@ -386,9 +464,17 @@ export class VocabStore {
       : lessonIds.length
         ? await this.entries(`l.id IN (${lessonIds.map(Number).join(",")})`, [])
         : [];
+    // Characters: those met in the player's words come first among the new ones.
+    const characters = entries.filter((e) => e.book.kind === "characters");
+    let met: Set<number> | undefined;
+    if (characters.length > 0 && purpose === "learn") {
+      const words = await this.wordsStarted(userId);
+      met = new Set(characters.filter((e) => words.includes(e.term)).map((e) => e.id));
+    }
     return buildSession({
-      entries,
-      pool,
+      entries: entries.map((e) => localise(e, lang)),
+      pool: pool.map((e) => localise(e, lang)),
+      met,
       progress: await this.progress(userId),
       now,
       size,
@@ -400,15 +486,20 @@ export class VocabStore {
   }
 
   async answer(answer: VocabAnswer, now: number): Promise<VocabAnswerResult | null> {
-    const entry = await this.getEntry(answer.entryId);
-    if (!entry) return null;
+    const found = await this.getEntry(answer.entryId);
+    // Only a kanji is read.
+    if (!found || !directionsOf(found).includes(answer.direction)) return null;
+    const entry = { ...localise(found, answer.lang), bookId: found.bookId };
+    const characters = entry.book.kind === "characters";
     const { answer: expected, lang } = sides(entry, answer.direction);
+    // Rōmaji accepted: a word's reading when it is asked, a kanji's readings (any one).
+    const reading = answer.direction === "recall" ? entry.reading : answer.direction === "read" ? kanaToRomaji(entry.readings) : "";
     // A multiple-choice answer is one of the printed options: compare as printed.
     let verdict =
       answer.mode === "choice"
         ? normalise(answer.given) === normalise(display(expected)) ? "right" : "wrong"
-        : grade(answer.given, expected, answerLang(lang), answer.direction === "recall" ? entry.reading : "");
-    if (verdict === "wrong" && answer.mode === "written") {
+        : grade(answer.given, expected, answerLang(lang), reading);
+    if (verdict === "wrong" && answer.mode === "written" && answer.direction !== "read") {
       // Another entry of the book with the same prompt is just as right
       // ("large": macro or magn; two Spanish words for one English one).
       const twins = await this.db.query(
@@ -450,7 +541,7 @@ export class VocabStore {
       "INSERT INTO vocab_answers (user_id, entry_id, direction, mode, at, given, verdict, correct) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
       [answer.userId, entry.id, answer.direction, answer.mode, now, answer.given.slice(0, 300), verdict, correct ? 1 : 0],
     );
-    return {
+    const result: VocabAnswerResult = {
       verdict: verdict as VocabAnswerResult["verdict"],
       correct,
       expected: display(expected),
@@ -460,6 +551,54 @@ export class VocabStore {
       box: next.box,
       dueAt: next.dueAt,
     };
+    if (characters) {
+      if (entry.readings) {
+        result.meaning = display(entry.meaning);
+        result.readings = entry.readings;
+      }
+      const words = await this.wordsWith(answer.userId, entry.term, answer.lang);
+      if (words.length) result.inWords = words;
+    } else if (entry.book.termLang === "ja") {
+      const kanji = await this.charactersOf(answer.userId, entry.term, answer.lang);
+      if (kanji.length) result.characters = kanji;
+    }
+    return result;
+  }
+
+  /** Up to three words the player has started (other Japanese books) that use a kanji. */
+  private async wordsWith(userId: number, kanji: string, lang: string | undefined): Promise<VocabRelated[]> {
+    if (kanjiOf(kanji).length === 0) return [];
+    const rows = await this.db.query(
+      `SELECT ${ENTRY_COLUMNS} ${ENTRY_JOINS}
+        WHERE b.term_lang = 'ja' AND b.kind <> 'characters' AND e.term LIKE $2
+          AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1)
+        ORDER BY e.id LIMIT 3`,
+      [userId, `%${kanji}%`],
+    );
+    return rows.map((row) => {
+      const word = localise(toEntry(row), lang);
+      return { term: display(word.term), reading: word.reading, meaning: display(word.meaning) };
+    });
+  }
+
+  /** A word's kanji, as the Characters book has them: meaning, readings, started or not. */
+  private async charactersOf(userId: number, term: string, lang: string | undefined): Promise<VocabRelated[]> {
+    const kanji = kanjiOf(term).slice(0, 8);
+    if (kanji.length === 0) return [];
+    const rows = await this.db.query(
+      `SELECT ${ENTRY_COLUMNS},
+              (SELECT COUNT(*) FROM vocab_progress p WHERE p.user_id = $1 AND p.entry_id = e.id) AS cards
+         ${ENTRY_JOINS}
+        WHERE b.kind = 'characters' AND e.term IN (${kanji.map((_, i) => `$${i + 2}`).join(", ")})`,
+      [userId, ...kanji],
+    );
+    const byTerm = new Map(rows.map((row) => [String(row.term), row]));
+    return kanji.flatMap((k) => {
+      const row = byTerm.get(k);
+      if (!row) return [];
+      const entry = localise(toEntry(row), lang);
+      return [{ term: k, reading: entry.readings, meaning: display(entry.meaning), started: n(row.cards) > 0 }];
+    });
   }
 }
 
@@ -507,7 +646,9 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     const size = Number(c.req.query("size") ?? 20);
     const mode = (c.req.query("mode") ?? "mixed") as ModePreference;
     const order = (c.req.query("order") ?? "book") as NewOrder;
+    const lang = c.req.query("lang");
     if (
+      (lang !== undefined && !isLang(lang)) ||
       !isId(userId) ||
       (order !== "book" && order !== "random") ||
       (kind !== "section" && kind !== "lesson" && kind !== "all") ||
@@ -519,7 +660,7 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
       return c.json({ error: "invalid session" }, 400);
     }
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
-    return c.json(await store.session(userId, { kind, id }, purpose, size, mode, Date.now(), order));
+    return c.json(await store.session(userId, { kind, id }, purpose, size, mode, Date.now(), order, lang as TranslationLang | undefined));
   });
 
   routes.post("/answers", async (c) => {
@@ -530,10 +671,12 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
       direction: body.direction as VocabAnswer["direction"],
       mode: body.mode as VocabAnswer["mode"],
       given: typeof body.given === "string" ? body.given : "",
+      ...(body.lang !== undefined ? { lang: body.lang as string } : {}),
     };
     if (
       !isId(answer.userId) || !isId(answer.entryId) ||
-      (answer.direction !== "recognise" && answer.direction !== "recall") ||
+      !DIRECTIONS.includes(answer.direction) ||
+      (answer.lang !== undefined && !isLang(answer.lang)) ||
       (answer.mode !== "choice" && answer.mode !== "written") ||
       answer.given.length > 300
     ) {

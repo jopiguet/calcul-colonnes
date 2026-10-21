@@ -42,7 +42,7 @@ at *lycée / bachillerato* or university level.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.
 - An automated check verifies tens of thousands of generated questions numerically, independently of the generators.
 
-**Vocabulary** — from books you own, imported once: Spanish and Japanese with translations, English with definitions.
+**Vocabulary** — from books you own, imported once: Spanish and Japanese with translations, English with definitions. Plus kanji and kana in the Japanese school's order.
 
 - Their chapters are the lessons and their sections the sections. *Spanish 3000 words and phrases* and *Vocabulary 4000* are read automatically from their PDF, *Japanese vocabulary for English speakers* from its EPUB; any other list can be written as a simple JSON file.
 - A translation is chosen or written; a definition is chosen and the word written.
@@ -52,6 +52,7 @@ at *lycée / bachillerato* or university level.
 - The book's own notation is understood: `el amigo / la amiga`, `Buenas tardes / noches`, `embarcar(se)`.
 - Japanese comes with its rōmaji, and is answered in kanji, kana or rōmaji: 学校, がっこう, *gakkō* and *gakko* are all right.
 - Statistics per book: progress by lesson, the last 30 days, the reviews coming, the hardest words.
+- **Kanji and kana:** hiragana, katakana and the 2,136 jōyō kanji, grade by grade as in Japanese schools. A kanji is learnt three ways: its meaning (in French, Spanish or English), its readings (in kana or rōmaji) and the kanji from its meaning. Example words use only kanji already learnt. Characters met in your Japanese words come first, and each card shows the other side: a character's words, a word's kanji. Built from KANJIDIC2 and JMdict (EDRDG, CC BY-SA), downloaded by you.
 
 **Discover** — experiments rather than exercises: predict, observe, explain.
 
@@ -101,6 +102,7 @@ npm start          # http://localhost:8787
 | `npm run test:e2e` | Browser tests of the whole app, on a separate server and database (see [Development › Tests](docs/development.md#tests)) |
 | `npm run vocab:import -- data/vocab-english.json` | Imports a vocabulary book, keeping progress on unchanged entries (see [Vocabulary](docs/vocabulary.md)) |
 | `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |
+| `npm run characters:build` | Builds the kanji and kana book from the EDRDG dictionaries in `data/` (see [Kanji and kana](docs/characters.md)) |
 | `npm run check:discover` | Checks the Discover engines: exact probabilities and streak formulas, the generator on millions of trials, 1,200 logic grids (see [Discover](docs/discover.md#checks-and-tests)) |
 | `npm run test:e2e:postgres` | The same browser tests on PostgreSQL, with `E2E_DATABASE_URL` naming a database that may be emptied |
 | `npm run maintenance` | Migrations, backfills, new vocabulary books and session purge, then exit: what a Cloud Run release runs as a job |
@@ -130,6 +132,7 @@ Settings are read from `.env` (see `.env.example`):
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
 | [Question generators](docs/question-generators.md) | The 110 kinds of question, how a generator works, adding one, verification, versioning |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
+| [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |
 | [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |
 | [Database](docs/database.md) | Schema, migrations, SQLite and PostgreSQL |
 | [API](docs/api.md) | Every endpoint with request and response examples |

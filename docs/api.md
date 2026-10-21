@@ -312,6 +312,7 @@ Errors: `invalid query` (400), `unknown user`, `unknown book` (404).
 | `size` | 1 … 60 cards |
 | `mode` | `mixed` (default), `choice` or `written` |
 | `order` | New entries: `book` (default, the book's order) or `random` |
+| `lang` | Optional, `fr`, `es` or `en`: meanings in that language when the book has them (`translations`) |
 
 ```json
 [
@@ -336,6 +337,12 @@ with readings (Japanese), `promptReading` is the rōmaji of the word shown on a
 recognise card, and `optionReadings` the rōmaji of each option of a recall
 `choice` card, in the order of `options`.
 
+In a Characters book, `direction` may also be `read` (a kanji shown, a reading
+asked); `script` is `kana` or `kanji`; `met: true` marks a character met in a
+word the player has started in another Japanese book. Recall cards there are
+always `choice`. With `lang`, `answerLang` (recognise) or `promptLang`
+(recall) is the language of the meaning given.
+
 ### `POST /api/vocab/answers`
 
 ```json
@@ -353,7 +360,17 @@ what moves the card between boxes. A `choice` answer must equal the option as
 printed. A `written` answer that is wrong for this entry but right for another
 entry of the book with the same prompt counts as right. `note` is the entry's
 example, if any; `reading` the term's rōmaji, if any. A Japanese `written`
-answer may be kanji, kana or rōmaji. Errors: `invalid answer` (400), `unknown user`, `unknown entry` (404).
+answer may be kanji, kana or rōmaji.
+
+`lang` (optional, `fr`, `es`, `en`) grades a meaning in that language when
+the entry has one. A `read` answer (Characters book, kanji only) is right when
+it is any one of the readings, in katakana, hiragana or rōmaji. Then also:
+
+- `meaning` and `readings` (a kanji): its meaning in the language asked, and all its readings;
+- `inWords` (a character): up to three words the player has started that use it, `{term, reading, meaning}`;
+- `characters` (a word of a Japanese book): its kanji in the Characters book, `{term, reading, meaning, started}`, `reading` being the kanji's readings.
+
+Errors: `invalid answer` (400), `unknown user`, `unknown entry` (404).
 
 ## Authentication
 

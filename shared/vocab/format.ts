@@ -23,6 +23,12 @@
  * shown after the answer), "feminine" (a feminine noun taking "el") and
  * "reading" (how the term reads: Japanese rōmaji, accepted as an answer).
  *
+ * kind "characters": a Japanese script book (kana and kanji, docs/characters.md).
+ * A kanji entry has "readings" ("ニチ / ジツ / ひ"), asked as a third
+ * direction, and "translations" ({"fr": "jour", "es": "día"}): the meaning in
+ * the interface's language when there is one. The book may carry a "credit",
+ * shown with it (the dictionaries' licence).
+ *
  * Format 1, written by 4.2 for the Spanish book, is still read:
  * titles {"en", "es"} and entries {"en", "es"}, Spanish being studied.
  */
@@ -35,17 +41,28 @@ export interface VocabFileEntry {
   feminine?: boolean;
   /** How the term reads, when its script does not say it: Japanese rōmaji ("gachō" for ガチョウ). */
   reading?: string;
+  /** Characters book, kanji: on'yomi and kun'yomi, " / " between ("ニチ / ジツ / ひ / か"). */
+  readings?: string;
+  /** The meaning in other interface languages ("fr", "es"), when known. */
+  translations?: Partial<Record<TranslationLang, string>>;
 }
+
+export const TRANSLATION_LANGS = ["fr", "es", "en"] as const;
+export type TranslationLang = (typeof TRANSLATION_LANGS)[number];
+
+export type BookKind = "translation" | "definition" | "characters";
 
 export interface VocabFileBook {
   /** Stable identifier: importing a file with the same id updates that book. */
   id: string;
   title: string;
-  kind: "translation" | "definition";
+  kind: BookKind;
   term: string;
   meaning: string;
   /** "book" (default): the order means something. "alphabetical": a word list. */
   order?: "book" | "alphabetical";
+  /** Where the content comes from, shown with the book (a licence's attribution). */
+  credit?: string;
 }
 
 export interface VocabFile {
@@ -77,14 +94,18 @@ function book(raw: unknown): VocabFileBook {
   const title = text(b.title, 200);
   if (!id || !/^[a-z0-9][a-z0-9-]*$/.test(id)) throw new Error('book: "id" must be lower-case letters, digits and "-"');
   if (!title) throw new Error('book: "title" is required');
-  if (b.kind !== "translation" && b.kind !== "definition") throw new Error('book: "kind" must be "translation" or "definition"');
+  if (b.kind !== "translation" && b.kind !== "definition" && b.kind !== "characters") {
+    throw new Error('book: "kind" must be "translation", "definition" or "characters"');
+  }
   if (typeof b.term !== "string" || !LANG.test(b.term) || typeof b.meaning !== "string" || !LANG.test(b.meaning)) {
     throw new Error('book: "term" and "meaning" must be language codes ("es", "en")');
   }
   if (b.order !== undefined && b.order !== "book" && b.order !== "alphabetical") {
     throw new Error('book: "order" must be "book" or "alphabetical"');
   }
-  return { id, title, kind: b.kind, term: b.term, meaning: b.meaning, order: b.order ?? "book" };
+  const credit = b.credit === undefined ? null : text(b.credit, 500);
+  if (b.credit !== undefined && !credit) throw new Error('book: "credit" must be a text of at most 500 characters');
+  return { id, title, kind: b.kind, term: b.term, meaning: b.meaning, order: b.order ?? "book", ...(credit ? { credit } : {}) };
 }
 
 /** Validates a parsed vocabulary file; throws with the place of the first problem. */
@@ -137,6 +158,21 @@ export function parseVocabFile(data: unknown): VocabFile {
               const group = text(entry.group, 100);
               const note = text(entry.note, 300);
               const reading = text(entry.reading, 300);
+              const readings = text(entry.readings, 300);
+              const translations: Partial<Record<TranslationLang, string>> = {};
+              if (entry.translations !== undefined) {
+                const raw = entry.translations;
+                if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
+                  throw new Error(`${at}, entry ${e + 1}: "translations" must be an object {"fr": "…"}`);
+                }
+                for (const [lang, value] of Object.entries(raw)) {
+                  const t = text(value, 300);
+                  if (!TRANSLATION_LANGS.includes(lang as TranslationLang) || !t) {
+                    throw new Error(`${at}, entry ${e + 1}: translations are "fr", "es" or "en", each a text`);
+                  }
+                  translations[lang as TranslationLang] = t;
+                }
+              }
               return {
                 term,
                 meaning,
@@ -144,6 +180,8 @@ export function parseVocabFile(data: unknown): VocabFile {
                 ...(note ? { note } : {}),
                 ...(entry.feminine === true ? { feminine: true } : {}),
                 ...(reading ? { reading } : {}),
+                ...(readings ? { readings } : {}),
+                ...(Object.keys(translations).length ? { translations } : {}),
               };
             }),
           };

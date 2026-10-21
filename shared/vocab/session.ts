@@ -2,8 +2,11 @@
  * Builds a practice session: which cards, in which order, asked how.
  *
  * learn    1. cards due for review (their wait is over), oldest first;
- *          2. recall cards that just became available (recognition in box 2);
- *          3. new entries, in the book's order, at most NEW_PER_SESSION.
+ *          2. recall (and reading) cards that just became available
+ *             (recognition in box 2);
+ *          3. new entries, in the book's order, at most NEW_PER_SESSION. In
+ *             the Characters book, the characters met in the player's words
+ *             (another Japanese book) come first.
  * due      cards due for review only.
  * review   cards already started, due or not: due first, then the weakest
  *          (lowest box), then those not seen for the longest time. No new
@@ -13,6 +16,7 @@
  */
 import { acceptedForms, display, normalise, writable } from "./grade";
 import { NEW_PER_SESSION, RECALL_AFTER, askMode, type CardState, type Direction, type ModePreference } from "./schedule";
+import type { BookKind, TranslationLang } from "./format";
 import type { VocabCard } from "../types";
 
 export interface SessionEntry {
@@ -29,13 +33,20 @@ export interface SessionEntry {
   note: string;
   /** How the term reads, when its script does not say it (Japanese rōmaji), or "". */
   reading: string;
+  /** A kanji's readings ("ニチ / ジツ / ひ"), or "": asked as a third direction. */
+  readings: string;
+  /** The meaning in other interface languages. */
+  translations: Partial<Record<TranslationLang, string>>;
   book: BookInfo;
 }
 
 /** How a book is studied. */
 export interface BookInfo {
-  /** translation: meaning in another language; definition: meaning explained in the same language. */
-  kind: "translation" | "definition";
+  /**
+   * translation: meaning in another language; definition: meaning explained
+   * in the same language; characters: kana and kanji (docs/characters.md).
+   */
+  kind: BookKind;
   termLang: string;
   meaningLang: string;
   /** A word list in alphabetical order: neighbours are not related in meaning. */
@@ -45,19 +56,41 @@ export interface BookInfo {
 export type ProgressMap = Map<string, CardState>;
 export const progressKey = (entryId: number, direction: Direction): string => `${entryId}:${direction}`;
 
+/** The directions an entry is learnt in: a kanji is also read. */
+export const directionsOf = (entry: Pick<SessionEntry, "readings">): Direction[] =>
+  entry.readings ? ["recognise", "recall", "read"] : ["recognise", "recall"];
+
+/**
+ * The entry with its meaning in the interface's language, when the book gives
+ * one ("jour" for 日 in French); as it is otherwise.
+ */
+export function localise(entry: SessionEntry, lang: string | undefined): SessionEntry {
+  const translated = lang ? entry.translations[lang as TranslationLang] : undefined;
+  if (!translated || lang === entry.book.meaningLang) return entry;
+  return { ...entry, meaning: translated, book: { ...entry.book, meaningLang: lang! } };
+}
+
 /**
  * The side shown, the side to answer and its language. Recognise: the term
- * shown, its meaning asked. Recall: the meaning shown, the term asked.
+ * shown, its meaning asked. Recall: the meaning shown, the term asked. Read: a
+ * kanji shown, its readings asked (one is enough).
  */
 export function sides(entry: SessionEntry, direction: Direction): { prompt: string; answer: string; lang: string } {
+  if (direction === "read") return { prompt: entry.term, answer: entry.readings, lang: entry.book.termLang };
   return direction === "recognise"
     ? { prompt: entry.term, answer: entry.meaning, lang: entry.book.meaningLang }
     : { prompt: entry.meaning, answer: entry.term, lang: entry.book.termLang };
 }
 
-/** Can this card be answered in writing? Not a definition, nor a long phrase. */
+/**
+ * Can this card be answered in writing? Not a definition, nor a long phrase;
+ * nor a character to produce (chosen among look-alikes instead: few keyboards
+ * write one kana or one kanji on its own). A kanji's reading is: one of its
+ * readings, in kana or rōmaji.
+ */
 export function canWrite(entry: SessionEntry, direction: Direction): boolean {
   if (direction === "recognise" && entry.book.kind === "definition") return false;
+  if (entry.book.kind === "characters") return direction === "read" || writable(entry.meaning) && direction === "recognise";
   return writable(sides(entry, direction).answer);
 }
 
@@ -88,12 +121,19 @@ export function distractors(entry: SessionEntry, direction: Direction, pool: Ses
   // In a themed book, the same section gives plausible wrong options. In an
   // alphabetical list it gives look-alikes (abase, abash, abate): the whole
   // book is used instead, keeping only an explicit group (prefixes with prefixes).
+  // Characters: kana with kana, kanji with kanji, meanings in the same language.
+  const kin =
+    entry.book.kind === "characters"
+      ? pool.filter(
+          (e) => Boolean(e.readings) === Boolean(entry.readings) && (direction !== "recognise" || e.book.meaningLang === entry.book.meaningLang),
+        )
+      : pool;
   const tiers = entry.book.alphabetical
-    ? [entry.group ? pool.filter((e) => e.group === entry.group) : [], pool]
+    ? [entry.group ? kin.filter((e) => e.group === entry.group) : [], kin]
     : [
-        pool.filter((e) => e.sectionId === entry.sectionId && e.group === entry.group),
-        pool.filter((e) => e.sectionId === entry.sectionId),
-        pool,
+        kin.filter((e) => e.sectionId === entry.sectionId && e.group === entry.group),
+        kin.filter((e) => e.sectionId === entry.sectionId),
+        kin,
       ];
   const chosen: string[] = [];
   for (const tier of tiers) {
@@ -107,7 +147,7 @@ export function distractors(entry: SessionEntry, direction: Direction, pool: Ses
       if (other.id === entry.id || normalise(sides(other, direction).prompt) === samePrompt) continue;
       const text = sides(other, direction).answer;
       const key = normalise(text);
-      if (taken.has(key) || acceptedForms(text).some((f) => taken.has(f))) continue;
+      if (!key || taken.has(key) || acceptedForms(text).some((f) => taken.has(f))) continue;
       taken.add(key);
       chosen.push(display(text));
     }
@@ -127,6 +167,8 @@ export interface SessionRequest {
   purpose: SessionPurpose;
   /** Order of new entries: the book's, or at random. */
   newOrder: NewOrder;
+  /** Characters book: entries met in the player's words, introduced first. */
+  met?: ReadonlySet<number>;
   random: () => number;
 }
 
@@ -139,17 +181,21 @@ export function buildSession(req: SessionRequest): VocabCard[] {
 
   const due: { entry: SessionEntry; direction: Direction; state: CardState }[] = [];
   const ahead: { entry: SessionEntry; direction: Direction; state: CardState }[] = [];
-  const recallReady: SessionEntry[] = [];
+  const ready: { entry: SessionEntry; direction: Direction }[] = [];
   const fresh: SessionEntry[] = [];
   for (const entry of entries) {
-    const recognise = progress.get(progressKey(entry.id, "recognise"));
-    const recall = progress.get(progressKey(entry.id, "recall"));
-    if (!recognise && !recall) fresh.push(entry);
-    for (const [direction, state] of [["recognise", recognise], ["recall", recall]] as const) {
+    const directions = directionsOf(entry);
+    const states = directions.map((d) => [d, progress.get(progressKey(entry.id, d))] as const);
+    if (states.every(([, state]) => !state)) fresh.push(entry);
+    for (const [direction, state] of states) {
       if (!state) continue;
       (state.dueAt <= now ? due : ahead).push({ entry, direction, state });
     }
-    if (recognise && !recall && recognise.box >= RECALL_AFTER) recallReady.push(entry);
+    // Recall, and a kanji's reading, once recognition has reached its box.
+    const recognise = progress.get(progressKey(entry.id, "recognise"));
+    if (recognise && recognise.box >= RECALL_AFTER) {
+      for (const [direction, state] of states) if (direction !== "recognise" && !state) ready.push({ entry, direction });
+    }
   }
   due.sort((a, b) => a.state.dueAt - b.state.dueAt);
 
@@ -162,10 +208,13 @@ export function buildSession(req: SessionRequest): VocabCard[] {
     for (const d of order) if (picked.length < size) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
   }
   if (req.purpose === "learn") {
-    for (const entry of recallReady) if (picked.length < size) picked.push({ entry, direction: "recall", box: 0 });
+    for (const r of ready) if (picked.length < size) picked.push({ ...r, box: 0 });
     const ordered =
       req.newOrder === "random" ? shuffle(fresh, req.random) : fresh.sort((a, b) => a.sectionId - b.sectionId || a.position - b.position);
-    for (const entry of ordered.slice(0, NEW_PER_SESSION)) {
+    // Characters met in the player's words first, in the same order.
+    const met = req.met;
+    const first = met ? [...ordered.filter((e) => met.has(e.id)), ...ordered.filter((e) => !met.has(e.id))] : ordered;
+    for (const entry of first.slice(0, NEW_PER_SESSION)) {
       if (picked.length < size) picked.push({ entry, direction: "recognise", box: 0 });
     }
   }
@@ -174,17 +223,20 @@ export function buildSession(req: SessionRequest): VocabCard[] {
   return shuffle(picked, req.random).map(({ entry, direction, box }) => {
     const { prompt, answer, lang } = sides(entry, direction);
     const mode = askMode(box, req.preference, canWrite(entry, direction));
+    const characters = entry.book.kind === "characters";
     const card: VocabCard = {
       entryId: entry.id,
       direction,
       mode,
       box,
       prompt: display(prompt),
-      promptLang: direction === "recognise" ? entry.book.termLang : entry.book.meaningLang,
+      promptLang: direction === "recall" ? entry.book.meaningLang : entry.book.termLang,
       answerLang: lang,
       ...(entry.group ? { group: entry.group } : {}),
       ...(direction === "recognise" && entry.feminine ? { feminine: true } : {}),
       ...(direction === "recognise" && entry.reading ? { promptReading: entry.reading } : {}),
+      ...(characters ? { script: entry.readings ? ("kanji" as const) : ("kana" as const) } : {}),
+      ...(characters && req.met?.has(entry.id) ? { met: true } : {}),
     };
     if (mode === "choice") {
       card.options = shuffle([display(answer), ...distractors(entry, direction, req.pool, req.random)], req.random);

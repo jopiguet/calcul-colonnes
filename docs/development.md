@@ -91,6 +91,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `check-quiz.ts` | Verification of the generators (`npm run check:quiz`) |
 | `vocab.ts` | Vocabulary storage, import, sessions, answers; `/api/vocab` |
 | `vocab-import.ts`, `check-vocab.ts` | `npm run vocab:import`, `npm run check:vocab` |
+| `characters-build.ts` | `npm run characters:build`: the kanji and kana book from the EDRDG dictionaries |
 | `check-discover.ts` | `npm run check:discover` |
 | `copy-to-postgres.ts` | One-off copy SQLite → PostgreSQL |
 
@@ -147,7 +148,7 @@ Automated checks:
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
 | `npm run check:discover` | The Discover engines: exact formulas against brute force, the generator on millions of trials, 1,200 logic grids. See [Discover](discover.md#checks-and-tests). | under 10 seconds |
-| `npm run test:e2e` | The whole app in a browser: 65 tests | about two minutes |
+| `npm run test:e2e` | The whole app in a browser: 67 tests | about two minutes |
 | `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
 
 ### Browser tests

@@ -155,11 +155,11 @@ progress. See [Vocabulary](vocabulary.md).
 
 | Table | Rows | Key columns |
 |---|---|---|
-| `vocab_books` | one per book | `slug` (the file's book id), `position`, `title`, `kind` (`translation` or `definition`), `term_lang`, `meaning_lang`, `ordering` (`book` or `alphabetical`) |
+| `vocab_books` | one per book | `slug` (the file's book id), `position`, `title`, `kind` (`translation`, `definition` or `characters`), `term_lang`, `meaning_lang`, `ordering` (`book` or `alphabetical`), `credit` (attribution shown with the book) |
 | `vocab_lessons` | one per lesson (chapter) | `book_id`, `position` (unique per book), `title`, `subtitle` |
 | `vocab_sections` | one per section | `lesson_id`, `position`, `title`, `subtitle` |
-| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji) |
-| `vocab_progress` | one per player, entry and direction | primary key `(user_id, entry_id, direction)`; `box` 1–6, `due_at`, `last_at`, `right_count`, `wrong_count` |
+| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji), `readings` (a kanji's on and kun readings), `translations` (JSON: the meaning in French, Spanish) |
+| `vocab_progress` | one per player, entry and direction | primary key `(user_id, entry_id, direction)`, direction `recognise`, `recall` or `read` (a kanji's reading); `box` 1–6, `due_at`, `last_at`, `right_count`, `wrong_count` |
 | `vocab_answers` | one per answer | `user_id`, `entry_id`, `direction`, `mode`, `at`, `given`, `verdict`, `correct` |
 
 `direction` is `recognise` (Spanish shown) or `recall` (meaning shown).
@@ -192,11 +192,12 @@ runs: add tables and columns, rename or drop later.
 | `009_vocab_ordering` | `ordering` on `vocab_books`; the book `english-4000` becomes `alphabetical` (common SQL, one file) |
 | `010_vocab_reading` | `reading` on `vocab_entries`; the Spanish book's title loses the publisher's name (common SQL, one file) |
 | `011_typed_answers` | `mode` on `quiz_results`, `typed` on `quiz_answers` (common SQL, one file) |
+| `012_characters` | Book kind `characters` and `credit` on `vocab_books`; direction `read` on `vocab_progress`; `readings` and `translations` on `vocab_entries`. SQLite rebuilds `vocab_books` and `vocab_progress`, keeping their rows. |
 
 **File names.**
 
 - `NNN_name.sql` runs on both engines.
-- `NNN_name.sqlite.sql` and `NNN_name.postgres.sql` are used when the DDL differs: identity columns, or SQLite's inability to alter a `CHECK` or `UNIQUE` constraint, which forced `002` and `008` to rebuild a table.
+- `NNN_name.sqlite.sql` and `NNN_name.postgres.sql` are used when the DDL differs: identity columns, or SQLite's inability to alter a `CHECK` or `UNIQUE` constraint, which forced `002`, `008` and `012` to rebuild a table.
 - A SQLite step that rebuilds a table referenced by others starts with the line `-- sqlite: foreign keys off`. The runner then switches foreign keys off around its transaction (SQLite ignores the switch inside one), so dropping the old table does not cascade to the rows that reference it, and runs `PRAGMA foreign_key_check` before switching them on again.
 
 **Adding a migration.**
