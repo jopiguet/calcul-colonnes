@@ -8,11 +8,11 @@ way in the browser and on the server.
 | `types.ts` | `Level`, `Topic`, `Draft`, `Option`, `Verify`, `Question` |
 | `rng.ts` | Seeded random numbers (mulberry32) |
 | `tex.ts` | Exact fractions and LaTeX helpers: `frac`, `sum`, `poly`, `piTex`… |
-| `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts` | The generators, one file per topic |
+| `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts` | The generators, one file per topic |
 | `index.ts` | Registry of kinds of question, `generateQuiz`, `gradeQuiz`, `QUIZ_VERSION` |
 | `progress.ts` | Status of a kind of question from the latest answers |
 
-## The 50 kinds of question
+## The 69 kinds of question
 
 A *kind* is one generator; its id is `topic.name`. Ids are stored with every
 answer, so **an id must never be renamed**. The name shown to players is in
@@ -100,6 +100,52 @@ stacked one per line (`lines()` in `tex.ts`), so a phone does not cut them off.
 | `probability.poisson` | P(X = k) for X ~ P(λ) | k! forgotten, e^(+λ), λᵏ dropped | | ✓ |
 | `probability.exponential` | P(X > t) for X ~ E(λ) | 1 − e^(−λt), e^(−t/λ), the density λe^(−λt) | | ✓ |
 | `probability.standardize` | z = (x − μ)/σ for X ~ N(μ, σ²) | divided by σ², sign reversed, μ forgotten | | ✓ |
+
+### Sequences
+
+The first index is u₀ or u₁ at random, so the off-by-one mistake is always
+possible.
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `sequences.arithmeticTerm` | uₙ of an arithmetic sequence | one step too many or too few, r subtracted, the first term left out | ✓ | |
+| `sequences.geometricTerm` | uₙ of a geometric sequence | qⁿ⁻¹ for qⁿ (or the reverse), u₀ + nq, u₀·n·q | ✓ | |
+| `sequences.arithmeticSum` | u₀ + … + uₙ | n terms instead of n + 1, ÷2 forgotten | ✓ | |
+| `sequences.geometricSum` | u₀ + … + uₙ | qⁿ for qⁿ⁺¹, ÷(1 − q) forgotten, sign | ✓ | ✓ |
+| `sequences.geometricLimit` | lim u·qⁿ | 0 and ±∞ swapped, u, 1, the sum of the series | ✓ | ✓ |
+| `sequences.fixedPoint` | lim uₙ for uₙ₊₁ = auₙ + b, \|a\| < 1 | b/(1 + a), b/a, b, u₀ | ✓ | ✓ |
+| `sequences.explicitTerm` | uₙ for uₙ₊₁ = auₙ + b, a > 1 | u₀·aⁿ + ℓ (limit not subtracted first), sign of ℓ, aⁿ⁻¹ | | ✓ |
+
+### Complex numbers
+
+Options are complex numbers (`z`) or sets of them (`zs`). The exact forms use
+the angles whose cosine and sine are known: multiples of π/6 and π/4.
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `complex.product` | (a + bi)(c + di) | i² = +1, multiplied part by part, sign | ✓ | |
+| `complex.quotient` | (a + bi)/(c + di) | a/c + (b/d)i, multiplied by the number instead of its conjugate, c² − d² | ✓ | ✓ |
+| `complex.modulus` | \|a + bi\| | a² + b², \|a\| + \|b\|, √\|a² − b²\| | ✓ | |
+| `complex.argument` | arg z in ]−π, π] | −θ, θ + π, π − θ, π/2 − θ (cos and sin swapped) | ✓ | ✓ |
+| `complex.exponentialForm` | z = re^(iθ) | r², the conjugate's argument, the wrong quadrant | ✓ | ✓ |
+| `complex.quadratic` | the two roots of z² + pz + q = 0, Δ < 0 | sign of the real part, β² for β, two real roots, not divided by 2 | ✓ | ✓ |
+| `complex.deMoivre` | (re^(iθ))ⁿ in exponential form | modulus not raised, argument not multiplied, n·r, + π | | ✓ |
+| `complex.nthRoot` | which number solves zⁿ = w | modulus not rooted, argument not divided, roots spaced by π/n | | ✓ |
+
+### Differential equations
+
+The question gives an initial condition, so the answer is one function. The
+check substitutes each option into the equation and checks the initial values
+(`ode` in `Verify`).
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `odes.homogeneous` | y′ = ay, y(0) given | eᵃˣ + C, e^(−ax), a·y(0)·eᵃˣ, e^(x/a) | ✓ | |
+| `odes.affine` | y′ = ay + b, y(0) given | C = y(0) without the constant solution, its sign, e^(−ax) | ✓ | ✓ |
+| `odes.separable` | y′ = axy, y(0) given | e^(ax) (not integrated), e^(ax²), sign | | ✓ |
+| `odes.distinctRoots` | y″ + py′ + qy = 0, two real roots | roots' signs, A and B swapped, A = y(0) and B = y′(0), a double root's form | | ✓ |
+| `odes.doubleRoot` | the same, double root | the x forgotten, B = y′(0), root's sign | | ✓ |
+| `odes.complexRoots` | the same, roots α ± iβ | cos and sin swapped, B = y′(0), α and β swapped, sign | | ✓ |
 
 ## Anatomy of a generator
 
@@ -216,7 +262,25 @@ keep the label they were stored with.
 | `factorialForgotten` | k! left out | probability |
 | `rateMeanConfused` | λ and 1/λ confused | probability |
 | `densityForProbability` | The density's value taken for a probability | probability |
-| `signError` | Sign error | derivatives, explog, integrals, limits, probability, trigonometry |
+| `offByOne` | An index or a number of terms off by one | sequences |
+| `arithmeticGeometricConfused` | The other kind of sequence's formula | sequences |
+| `firstTermKept` | The first term left out, or given as the answer | sequences |
+| `convergenceMisjudged` | Limit of qⁿ decided the wrong way | sequences |
+| `fixedPointForgotten` | The limit not subtracted: uₙ − ℓ not formed | sequences |
+| `iSquared` | i² taken as +1 | complex |
+| `componentwise` | Computed part by part | complex |
+| `conjugateForgotten` | A quotient not multiplied by the conjugate | complex |
+| `sqrtForgotten` | Square root forgotten | complex |
+| `argumentQuadrant` | Argument in the wrong quadrant | complex |
+| `argumentSign` | Argument of the conjugate | complex |
+| `discriminantSign` | Negative discriminant treated as positive | complex |
+| `powerMisapplied` | Modulus or argument not raised (or not rooted) | complex |
+| `rootSpacing` | n-th roots not spaced by 2π/n | complex |
+| `initialConditionMisapplied` | Constant set to y(0) without the rest, or constants swapped | odes |
+| `characteristicRoots` | Wrong roots of the characteristic equation | odes |
+| `doubleRootFactor` | The x of a double root forgotten | odes |
+| `separationError` | Variables not separated: ax not integrated | odes |
+| `signError` | Sign error | complex, derivatives, explog, integrals, limits, odes, probability, sequences, trigonometry |
 
 Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
 three languages.
@@ -267,6 +331,12 @@ it was made with, so a topic that did not exist cannot change it.
 
    The type checker refuses a table that misses a language or a key.
 4. **Run the checks** as for a kind of question. `check:quiz` uses every topic of each level (`topicsFor`).
+
+A new kind of answer needs a field on `Option` and a `Verify` kind, with three things:
+- its comparison in `same()` (`index.ts`), only for the new kind;
+- its independent check in `isRight()` (`server/check-quiz.ts`).
+
+Complex numbers (`z`, `zs`) and differential equations (`ode`) were added this way.
 
 The settings of a test show only the topics of the chosen level, by group.
 `generateQuiz` leaves out a topic without questions at the level, and the

@@ -12,6 +12,9 @@ import { limits } from "./limits";
 import { createRng, type Rng } from "./rng";
 import { trigonometry } from "./trigonometry";
 import { probability } from "./probability";
+import { sequences } from "./sequences";
+import { complex } from "./complex";
+import { odes } from "./odes";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
 export * from "./types";
@@ -24,6 +27,9 @@ const GENERATORS: Record<Topic, Record<Level, Record<string, Generator>>> = {
   limits,
   explog,
   probability,
+  sequences,
+  complex,
+  odes,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -100,6 +106,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
   switch (verify.kind) {
     case "derivative":
     case "identity":
+    case "ode":
       return SAMPLES.every((x) => close(a.fn!(x), b.fn!(x), version));
     case "primitive": {
       // Primitives are equal up to a constant.
@@ -108,6 +115,14 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     }
     case "solutions":
       return a.set!.length === b.set!.length && a.set!.every((v, i) => close(v, b.set![i]!, version));
+    case "complex":
+    case "complexRoot":
+      return close(a.z![0], b.z![0], version) && close(a.z![1], b.z![1], version);
+    case "complexRoots":
+      return (
+        a.zs!.length === b.zs!.length &&
+        a.zs!.every((z) => b.zs!.some((w) => close(z[0], w[0], version) && close(z[1], w[1], version)))
+      );
     default:
       return close(a.num!, b.num!, version);
   }

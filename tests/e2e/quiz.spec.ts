@@ -95,3 +95,25 @@ test("topics come by group; a probability test, at both levels, is graded the sa
     await page.locator(".actions button", { hasText: "Changer les réglages" }).click();
   }
 });
+
+test("each new topic alone, at each of its levels, is graded the same everywhere", async ({ page }) => {
+  test.setTimeout(150_000);
+  const topics: [string, string[]][] = [
+    ["Suites", ["Lycée", "Université"]],
+    ["Nombres complexes", ["Lycée", "Université"]],
+    ["Équations différentielles", ["Lycée", "Université"]],
+  ];
+  for (const [topic, levels] of topics) {
+    for (const level of levels) {
+      await page.click(`.quiz-setup .segment >> text=${level}`);
+      await chooseTopics(page, [topic]);
+      await page.click("text=Commencer le test");
+      await page.locator(".choices").waitFor();
+      // A kind answered wrong in the first test of a topic comes back marked "À revoir".
+      await expect(page.locator(".quiz-topic").first()).toContainText(topic);
+      const { body, server } = await takeQuiz(page, (i) => (i * 7) % 4);
+      expect(server.correct).toBe(rebuild(body).correct);
+      await page.locator(".actions button", { hasText: "Changer les réglages" }).click();
+    }
+  }
+});

@@ -1,5 +1,31 @@
 # Changelog
 
+## 5.8.0
+
+- **QCM: three new topics,** 19 kinds of question (69 in all), 18 new mistake types.
+  - **Sequences:**
+    - arithmetic and geometric terms and sums, starting at u₀ or u₁ so that the off-by-one mistake is always possible;
+    - the limit of u·qⁿ;
+    - the limit of uₙ₊₁ = auₙ + b, and at university its explicit term.
+  - **Complex numbers (Algèbre):**
+    - product, quotient, modulus, argument, exponential form;
+    - second-degree equations with Δ < 0;
+    - at university, De Moivre and n-th roots.
+
+    The classic mistakes: i² = +1, a quotient divided part by part, the argument in the wrong quadrant.
+  - **Differential equations:**
+    - y′ = ay and y′ = ay + b;
+    - at university, y′ = axy and y″ + py′ + qy = 0 with distinct, double or complex roots.
+
+    Always with initial conditions, so the answer is one function. Wrong options include the x of the double root forgotten, and the constant set to y(0) without the particular solution.
+- **New kinds of answer:**
+  - complex numbers and sets of them, compared as complex numbers;
+  - the check: each listed number is a root of the polynomial and all roots are listed, or zⁿ by repeated multiplication;
+  - differential equations, checked by substituting the option into the equation (numerical derivatives) and checking the initial values.
+
+  Not one of these uses the generators' formulas.
+- `check:quiz`: 16,000 questions, 73 mistake types, 0 failures.
+
 ## 5.7.0
 
 - **QCM: probability**, at both levels (11 kinds of question, 50 in all).

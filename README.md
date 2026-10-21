@@ -32,10 +32,11 @@ The project and its folder keep their first name, `calcul-colonnes`.
 - Adjustable ranges: largest number 20 to 1000; multiplier and divisor 2 to 12.
 - A one-click A4 PDF worksheet of 20 operations, ready to print.
 
-**Multiple-choice tests (QCM)** — derivatives, integrals, trigonometry, limits,
-exponentials and logarithms, probability, at *lycée / bachillerato* or university level.
+**Multiple-choice tests (QCM)** — sequences, derivatives, integrals, trigonometry, limits,
+exponentials and logarithms, differential equations, complex numbers and probability,
+at *lycée / bachillerato* or university level.
 
-- Questions are generated, not drawn from a fixed bank: 50 kinds of question, each with its own parameters.
+- Questions are generated, not drawn from a fixed bank: 69 kinds of question, each with its own parameters.
 - The wrong options are typical mistakes, such as an exponent not lowered, the inner derivative forgotten, a sign error, or in probability P(A | B) taken for P(B | A) and the base rate ignored.
 - Every test ends with a corrected review and a short explanation per question.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.

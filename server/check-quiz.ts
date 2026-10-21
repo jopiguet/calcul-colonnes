@@ -73,6 +73,41 @@ function isRight(q: Question, o: Option): boolean {
       const unique = roots.filter((r, i) => i === 0 || Math.abs(r - roots[i - 1]!) > 1e-6);
       return unique.length === o.set!.length && unique.every((r, i) => near(r, o.set![i]!, 1e-7));
     }
+    case "complex":
+      return near(o.z![0], v.re, 1e-9) && near(o.z![1], v.im, 1e-9);
+    case "complexRoots": {
+      // Every number of the option is a root (Horner in ℂ), they are distinct, and there are as many as the degree.
+      const zs = o.zs!;
+      const isRoot = ([x, y]: [number, number]): boolean => {
+        let re = 0;
+        let im = 0;
+        for (const c of v.coefficients) [re, im] = [re * x - im * y + c, re * y + im * x];
+        return Math.hypot(re, im) < 1e-9;
+      };
+      const distinct = zs.every((z, i) => zs.every((w, j) => i === j || Math.hypot(z[0] - w[0], z[1] - w[1]) > 1e-9));
+      return zs.length === v.coefficients.length - 1 && distinct && zs.every(isRoot);
+    }
+    case "ode": {
+      // y′ and y″ by central differences; the equation's residual small at every sample, and the initial values.
+      const f = o.fn!;
+      const h = 1e-4;
+      const d1 = (x: number): number => (f(x + h) - f(x - h)) / (2 * h);
+      const d2 = (x: number): number => (f(x + h) - 2 * f(x) + f(x - h)) / (h * h);
+      const solves = SAMPLES.every((x) => {
+        const scale = Math.max(1, Math.abs(f(x)), Math.abs(d1(x)), Math.abs(d2(x)));
+        return Math.abs(v.equation(f(x), d1(x), d2(x), x)) <= 1e-4 * scale;
+      });
+      const start = Math.abs(f(0) - v.y0) < 1e-9 && (v.dy0 === undefined || Math.abs(d1(0) - v.dy0) < 1e-6 * Math.max(1, Math.abs(v.dy0)));
+      return solves && start;
+    }
+    case "complexRoot": {
+      // zⁿ by repeated multiplication, against the target.
+      const [x, y] = o.z!;
+      let re = 1;
+      let im = 0;
+      for (let k = 0; k < v.n; k++) [re, im] = [re * x - im * y, re * y + im * x];
+      return Math.hypot(re - v.re, im - v.im) < 1e-9 * Math.max(1, Math.hypot(v.re, v.im));
+    }
   }
 }
 

@@ -2,16 +2,17 @@ import type { Rng } from "./rng";
 import type { Fn } from "./tex";
 
 export type Level = "school" | "university";
-export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability";
+export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes";
 
 export const LEVELS: Level[] = ["school", "university"];
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes"];
 
 export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
-  { group: "analysis", topics: ["derivatives", "integrals", "limits", "explog", "trigonometry"] },
+  { group: "analysis", topics: ["sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes"] },
+  { group: "algebra", topics: ["complex"] },
   { group: "probability", topics: ["probability"] },
 ];
 
@@ -32,7 +33,19 @@ export type PromptKey =
   | "variance"
   | "chooseUnordered"
   | "independent"
-  | "standardize";
+  | "standardize"
+  | "arithmeticTerm"
+  | "geometricTerm"
+  | "arithmeticSum"
+  | "geometricSum"
+  | "explicitTerm"
+  | "algebraicForm"
+  | "modulus"
+  | "argument"
+  | "exponentialForm"
+  | "complexRoots"
+  | "isRoot"
+  | "odeSolution";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -70,7 +83,28 @@ export type ExplanationKey =
   | "union"
   | "poisson"
   | "exponentialLaw"
-  | "standardize";
+  | "standardize"
+  | "arithmeticTerm"
+  | "geometricTerm"
+  | "arithmeticSum"
+  | "geometricSum"
+  | "geometricLimit"
+  | "fixedPoint"
+  | "explicitTerm"
+  | "complexProduct"
+  | "complexQuotient"
+  | "modulus"
+  | "argument"
+  | "exponentialForm"
+  | "complexQuadratic"
+  | "deMoivre"
+  | "nthRoots"
+  | "odeHomogeneous"
+  | "odeAffine"
+  | "odeSeparable"
+  | "odeDistinct"
+  | "odeDouble"
+  | "odeComplex";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -138,6 +172,27 @@ export const MISTAKES = [
   "factorialForgotten", // k! left out
   "rateMeanConfused", // λ and 1/λ confused
   "densityForProbability", // the density's value taken for a probability
+  // sequences
+  "offByOne", // an index or a number of terms off by one
+  "arithmeticGeometricConfused", // the formula of the other kind of sequence
+  "firstTermKept", // the first term left out, or kept as the answer
+  "convergenceMisjudged", // limit of qⁿ decided the wrong way
+  "fixedPointForgotten", // uₙ − ℓ not formed: the limit left out
+  // complex numbers
+  "iSquared", // i² taken as +1
+  "componentwise", // multiplied, divided or added part by part
+  "conjugateForgotten", // a quotient not multiplied by the conjugate
+  "sqrtForgotten", // a² + b² for the modulus, or the discriminant not square-rooted
+  "argumentQuadrant", // the argument in the wrong quadrant
+  "argumentSign", // the argument of the conjugate
+  "discriminantSign", // a negative discriminant treated as positive
+  "powerMisapplied", // modulus or argument not raised (or not rooted)
+  "rootSpacing", // n-th roots not spaced by 2π/n
+  // differential equations
+  "initialConditionMisapplied", // the constant set to y(0) without the rest, or constants swapped
+  "characteristicRoots", // wrong roots of the characteristic equation
+  "doubleRootFactor", // the x of a double root forgotten
+  "separationError", // variables not separated: the integral of ax forgotten
   // everywhere
   "signError",
 ] as const;
@@ -150,6 +205,10 @@ export interface Option {
   fn?: Fn;
   num?: number;
   set?: number[];
+  /** A complex number [re, im]. */
+  z?: [number, number];
+  /** A set of complex numbers. */
+  zs?: [number, number][];
   /** For a wrong option: the mistake it stands for. */
   mistake?: MistakeKey;
 }
@@ -166,7 +225,15 @@ export type Verify =
   | { kind: "limit"; f: Fn; probe: number } // f(probe) is close to the limit
   | { kind: "value"; value: number }
   | { kind: "root"; f: Fn } // the option x satisfies f(x) = 0
-  | { kind: "solutions"; f: Fn; lo: number; hi: number }; // all roots of f in [lo, hi[
+  | { kind: "solutions"; f: Fn; lo: number; hi: number } // all roots of f in [lo, hi[
+  | { kind: "complex"; re: number; im: number } // options are this complex number
+  | { kind: "complexRoots"; coefficients: number[] } // options are the set of all roots of this polynomial (highest degree first)
+  | { kind: "complexRoot"; n: number; re: number; im: number } // the option z satisfies zⁿ = re + i·im
+  /**
+   * The option is a function y satisfying the equation, written as a residual
+   * equation(y, y′, y″, x) = 0, with y(0) = y0 and, for a second-order one, y′(0) = dy0.
+   */
+  | { kind: "ode"; equation: (y: number, dy: number, d2y: number, x: number) => number; y0: number; dy0?: number }
 
 export interface Draft {
   prompt: { key: PromptKey; tex: string };
