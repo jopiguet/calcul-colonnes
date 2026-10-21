@@ -1,11 +1,12 @@
 import pg from "pg";
 import type { Database, Param, Row } from "./index.ts";
+import { log } from "../runtime.ts";
 
 export function openPostgres(databaseUrl: string): Database {
   // Neon: use the connection string from the dashboard as is (it carries sslmode=require).
   const pool = new pg.Pool({ connectionString: databaseUrl, max: 5 });
   // An idle connection dropped by the server (Neon suspends idle computes) must not crash us.
-  pool.on("error", (error) => console.error("postgres pool:", error.message));
+  pool.on("error", (error) => log.error("postgres pool", error));
 
   const url = new URL(databaseUrl);
 

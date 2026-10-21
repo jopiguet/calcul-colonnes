@@ -1,0 +1,63 @@
+# Every push to main: type checks, the generator checks, the e2e suite on
+# SQLite and again on PostgreSQL (the engine production uses), and the image
+# build. Nothing is deployed. The release workflow runs the same checks first.
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: luma_e2e
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type checks and build (app, server, tests)
+        run: npm run build && npm run build:server
+
+      - name: Question, vocabulary and Discover checks
+        run: npm run check:quiz && npm run check:vocab && npm run check:discover
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: e2e on SQLite
+        run: npx playwright test
+
+      - name: e2e on PostgreSQL
+        run: npx playwright test
+        env:
+          E2E_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/luma_e2e
+
+      - name: Keep the traces of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7
+
+      - name: The image builds
+        run: docker build --build-arg BUILD_ID=check-${{ github.sha }} -t luma:check .

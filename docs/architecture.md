@@ -156,10 +156,17 @@ browser's own reading is only for the screen.
 
 1. Loads `.env` if present (`process.loadEnvFile`).
 2. Opens the database chosen by `DATABASE_URL` / `SQLITE_PATH`.
-3. Applies pending migrations (`server/db/migrate.ts`), each in a transaction.
-4. Rebuilds `quiz_answers` for any test saved without them (`backfillQuizAnswers`), regenerating each from its seed with its own generator version.
-5. Reads the sign-in settings and providers, purges expired sessions (then hourly).
-6. Serves `/api`, and `dist/` if it exists.
+3. Runs the maintenance (`server/maintenance.ts`), except on Cloud Run where each release runs it once as a job:
+   - applies pending migrations (`server/db/migrate.ts`), each in a transaction;
+   - rebuilds `quiz_answers` for any test saved without them (`backfillQuizAnswers`), regenerating each from its seed with its own generator version;
+   - imports vocabulary books from `VOCAB_FILE` not yet present;
+   - purges expired sessions.
+4. Reads the sign-in settings and providers; off Cloud Run, purges expired sessions hourly.
+5. Serves `/api`, and `dist/` if it exists.
+
+`node dist-server/index.js maintenance` (or `npm run maintenance`) runs step 3
+alone and exits. `server/runtime.ts` tells Cloud Run apart (`K_SERVICE`,
+`CLOUD_RUN_JOB`) and writes logs as JSON there.
 
 Each request passes through, in order: the origin check (changes from other
 sites refused), session loading from the cookie, then either `/api/auth/*` or

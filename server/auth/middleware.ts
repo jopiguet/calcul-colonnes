@@ -14,11 +14,25 @@ export function originCheck(config: AuthConfig): MiddlewareHandler<AppEnv> {
     if (["GET", "HEAD", "OPTIONS"].includes(c.req.method)) return next();
     if (c.req.header("sec-fetch-site") === "cross-site") return c.json({ error: "cross_site" }, 403);
     const origin = c.req.header("origin");
-    if (origin && origin !== config.publicUrl.origin && origin !== new URL(c.req.url).origin) {
+    if (origin && origin !== config.publicUrl.origin && origin !== new URL(c.req.url).origin && origin !== proxiedOrigin(c, config)) {
       return c.json({ error: "cross_site" }, 403);
     }
     return next();
   };
+}
+
+/**
+ * The address the browser used, behind a proxy that ends HTTPS (Cloud Run,
+ * nginx): the request reaches the server as http://, so its own URL says
+ * http while the page's Origin says https. With TRUST_PROXY, the proxy's
+ * X-Forwarded-Proto gives the scheme back. This lets a Cloud Run candidate
+ * revision, at its own address, accept sign-in as well as PUBLIC_URL does.
+ */
+function proxiedOrigin(c: Parameters<MiddlewareHandler<AppEnv>>[0], config: AuthConfig): string | null {
+  if (!config.trustProxy) return null;
+  const proto = c.req.header("x-forwarded-proto")?.split(",")[0]?.trim();
+  const host = c.req.header("host")?.trim();
+  return proto && host ? `${proto}://${host}` : null;
 }
 
 export function loadSession(store: AuthStore, config: AuthConfig): MiddlewareHandler<AppEnv> {

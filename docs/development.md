@@ -147,7 +147,8 @@ Automated checks:
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
 | `npm run check:discover` | The Discover engines: exact formulas against brute force, the generator on millions of trials, 1,200 logic grids. See [Discover](discover.md#checks-and-tests). | under 10 seconds |
-| `npm run test:e2e` | The whole app in a browser: 60 tests | about two minutes |
+| `npm run test:e2e` | The whole app in a browser: 65 tests | about two minutes |
+| `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
 
 ### Browser tests
 
@@ -163,7 +164,9 @@ fresh SQLite file in `test-results/` (`tests/e2e/server.ts`), and a mock
 OpenID provider on port 8798 (`tests/e2e/mock-oidc.ts`). The variables set in
 `playwright.config.ts` take precedence over `.env`, so a development
 database, SQLite or Neon, is never touched, and real providers configured in
-`.env` are switched off. Tests run one after the other against that shared
+`.env` are switched off. With `E2E_DATABASE_URL`, the server runs on that
+PostgreSQL database instead, after dropping and recreating its `public`
+schema: never point it at a database you want to keep. Tests run one after the other against that shared
 server; each signs up its own account.
 
 | File | Covers |

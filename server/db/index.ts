@@ -46,6 +46,10 @@ export async function openDatabase(config: DatabaseConfig = configFromEnv()): Pr
     const { openPostgres } = await import("./postgres.ts");
     return openPostgres(config.databaseUrl);
   }
-  const { openSqlite } = await import("./sqlite.ts");
+  // better-sqlite3 is an optional dependency: the production image leaves it
+  // out (it always has DATABASE_URL), and nothing loads it unless SQLite is used.
+  const { openSqlite } = await import("./sqlite.ts").catch((error: unknown) => {
+    throw new Error(`SQLite is not available (${(error as Error).message}): set DATABASE_URL, or run npm install`);
+  });
   return openSqlite(config.sqlitePath);
 }

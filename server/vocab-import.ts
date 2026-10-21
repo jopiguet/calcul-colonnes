@@ -23,7 +23,11 @@ export async function importVocabFile(db: Database, path: string): Promise<Impor
   return new VocabStore(db).import(file);
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+// Run as a command only when this file itself is the program: bundled into
+// dist-server/index.js, import.meta.url is the bundle's, and the name check
+// keeps the server from taking its arguments for a vocabulary file.
+const main = process.argv[1] ?? "";
+if (/vocab-import\.[jt]s$/.test(main) && main === fileURLToPath(import.meta.url)) {
   const path = process.argv[2];
   if (!path) {
     console.error("usage: npm run vocab:import -- data/vocab.json");

@@ -23,6 +23,7 @@ import type {
   UserStats,
 } from "../shared/types.ts";
 import type { Database, Row } from "./db/index.ts";
+import { log } from "./runtime.ts";
 
 // PostgreSQL returns BIGINT and aggregates as strings, SQLite as numbers: always go through Number().
 const toUser = (row: Row): User => ({
@@ -217,7 +218,7 @@ export class Repository {
         await this.addQuizAnswers(Number(row.id), Number(row.user_id), Number(row.at), questions, answers, mode);
         filled += 1;
       } catch (error) {
-        console.error(`quiz ${String(row.id)}: answers not rebuilt (${(error as Error).message})`);
+        log.error(`quiz ${String(row.id)}: answers not rebuilt`, error);
       }
     }
     return filled;
@@ -255,7 +256,7 @@ export class Repository {
         }
         filled += 1;
       } catch (error) {
-        console.error(`quiz ${String(row.id)}: mistakes not rebuilt (${(error as Error).message})`);
+        log.error(`quiz ${String(row.id)}: mistakes not rebuilt`, error);
       }
     }
     return filled;

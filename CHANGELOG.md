@@ -1,5 +1,40 @@
 # Changelog
 
+## 6.1.0
+
+- **Runs on Google Cloud Run,** with releases from GitHub Actions. See [Deployment › Cloud Run](docs/deployment.md#cloud-run) and [Releases](docs/deployment.md#releases).
+  - **`Dockerfile`:** the built app and a bundled server (`npm run build:server` → `dist-server/`, faster to start than `tsx`), on Node 22, run as an unprivileged user. The image has no native module.
+  - **`deploy/setup-gcp.sh`:** the one-time Google Cloud setup, safe to run again.
+    - Image repository with a cleanup policy.
+    - Two service accounts with only what each needs.
+    - Secrets in Secret Manager, typed rather than passed as arguments.
+    - GitHub Actions access without any key (Workload Identity Federation, limited to the repository).
+    - The service (one instance at most, startup CPU boost) and the maintenance job.
+  - **`checks.yml`,** on every push to main: type checks, the three check scripts, the e2e suite on SQLite and on PostgreSQL, and the image build.
+  - **`release.yml`,** on a version tag:
+    - builds the image once and checks it;
+    - rehearses the migrations on a Neon branch of production that expires after two hours;
+    - migrates production;
+    - deploys a candidate revision without traffic and smoke-tests its own address;
+    - only then moves all traffic to it.
+
+    *Hold* and *promote* let a release be tried on a phone first. Any failure leaves the current revision serving.
+  - **Dependabot** keeps the pinned actions and npm packages current.
+- **Maintenance as a command:** `npm run maintenance` (or `node dist-server/index.js maintenance`) runs the migrations, backfills, vocabulary import and session purge, then exits.
+  - **Locally and on a home server:** it still runs at every start, as before.
+  - **On Cloud Run:** the release runs it once, and instances start without it.
+- **Cloud Run is recognised automatically** (`K_SERVICE`, `CLOUD_RUN_JOB`). There:
+  - logs are JSON lines with a severity, for Cloud Logging;
+  - the server refuses to start without `DATABASE_URL`;
+  - the hourly purge timer is off.
+
+  `STARTUP_MAINTENANCE` and `LOG_FORMAT` override these defaults. API errors are logged with Cloud Run's trace id.
+- **Sign-in behind a proxy that ends HTTPS** (Cloud Run, nginx): with `TRUST_PROXY=true`, the origin check also accepts the address from `X-Forwarded-Proto` and `Host`. Without it, a request arriving as `http://` while the page is `https://` was refused as cross-site at any address other than `PUBLIC_URL`, such as a Cloud Run candidate's.
+- **`better-sqlite3` is now an optional dependency** and is loaded only when SQLite is used: a platform without a prebuilt binary can still run on PostgreSQL. A missing module gives a clear message.
+- **The e2e suite runs on PostgreSQL too:** `npm run test:e2e:postgres` with `E2E_DATABASE_URL`. All 65 tests pass on both engines.
+- **Build id from the release:** `BUILD_ID` (the tag) names the build in `/version.json`, so a release can check that the deployed revision is the one it built.
+- **Docs:** deployment (Cloud Run, custom domain, releases, rollback, checks after the first release), architecture, database (migrations that work with the previous release), development, README, `.env.example`.
+
 ## 6.0.0
 
 - **QCM: graph questions,** a new topic *Lecture graphique* (Analyse), 10 kinds of question at both levels:

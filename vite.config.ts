@@ -7,7 +7,9 @@ import { defineConfig, loadEnv, type Plugin } from "vite";
  * open, such as the installed desktop app, learns that a new version is out.
  */
 const version = (JSON.parse(readFileSync("package.json", "utf8")) as { version: string }).version;
-const buildId = `${version}+${Date.now().toString(36)}`;
+// A release sets BUILD_ID (the git tag, e.g. v6.1.0), so the smoke test can
+// check that /version.json is the build it just deployed.
+const buildId = process.env.BUILD_ID?.trim() || `${version}+${Date.now().toString(36)}`;
 
 function versionFile(): Plugin {
   return {

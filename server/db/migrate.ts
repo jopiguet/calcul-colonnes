@@ -1,9 +1,16 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Database } from "./index.ts";
 
-const MIGRATIONS = fileURLToPath(new URL("../migrations", import.meta.url));
+/**
+ * server/migrations beside the sources (server/db/../migrations), or
+ * migrations/ beside the bundle (dist-server/migrations, copied by
+ * `npm run build:server`).
+ */
+const MIGRATIONS = [new URL("../migrations", import.meta.url), new URL("./migrations", import.meta.url)]
+  .map((url) => fileURLToPath(url))
+  .find((dir) => existsSync(join(dir, "001_init.sqlite.sql"))) ?? fileURLToPath(new URL("../migrations", import.meta.url));
 
 /**
  * Applies the pending files of server/migrations, in order.

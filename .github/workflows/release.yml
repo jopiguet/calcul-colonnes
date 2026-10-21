@@ -1,0 +1,201 @@
+# Release to Cloud Run: on a version tag (npm version minor && git push
+# --follow-tags), or by hand from the Actions tab. See docs/deployment.md#releases.
+#
+#   checks → build the image once → start it and check it → push it
+#   → rehearse the migrations on a Neon branch of production (expires in 2 h)
+#   → migrate production (Cloud Run job) → deploy a candidate revision with no
+#   traffic → smoke test its own URL → move all traffic to it.
+#
+# A failure at any step leaves the current revision serving. By hand:
+#   hold     stop before moving traffic, to try the candidate URL first;
+#   promote  only smoke test the current candidate and move traffic to it.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      hold:
+        description: Stop before moving traffic (try the candidate URL first)
+        type: boolean
+        default: false
+      promote:
+        description: Only move traffic to the current candidate (after a held release)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write # Workload Identity Federation: a short-lived Google token, no key
+
+# One release at a time; a second one waits instead of cancelling the first.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  PROJECT: ${{ vars.GCP_PROJECT }}
+  REGION: ${{ vars.GCP_REGION }}
+  SERVICE: luma
+  JOB: luma-maintenance
+  REPOSITORY: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/luma/app
+
+jobs:
+  checks:
+    if: ${{ !inputs.promote }}
+    uses: ./.github/workflows/checks.yml
+
+  release:
+    needs: checks
+    if: ${{ !inputs.promote }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: luma_image
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Version
+        id: version
+        run: |
+          # A tag names the release; a release by hand from main gets the
+          # package version and the commit.
+          if [ "$GITHUB_REF_TYPE" = tag ]; then tag="$GITHUB_REF_NAME"
+          else tag="v$(node -p 'require("./package.json").version')-${GITHUB_SHA::7}"; fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "image=$REPOSITORY:$tag" >> "$GITHUB_OUTPUT"
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Build the image
+        run: docker build --build-arg BUILD_ID=${{ steps.version.outputs.tag }} -t ${{ steps.version.outputs.image }} .
+
+      - name: Start the image and check it
+        env:
+          IMAGE: ${{ steps.version.outputs.image }}
+          TAG: ${{ steps.version.outputs.tag }}
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/luma_image
+        run: |
+          # As on Cloud Run (K_SERVICE set): JSON logs, no work at startup.
+          trap 'docker logs luma 2>&1 || true; docker rm -f luma >/dev/null 2>&1 || true' EXIT
+          docker run --rm --network host -e DATABASE_URL -e CLOUD_RUN_JOB=ci "$IMAGE" node dist-server/index.js maintenance
+          docker run -d --name luma --network host -e DATABASE_URL -e K_SERVICE=ci \
+            -e PORT=8080 -e PUBLIC_URL=http://localhost:8080 "$IMAGE"
+          for _ in $(seq 30); do curl -fsS localhost:8080/api/health && break; sleep 1; done
+          curl -fsS localhost:8080/api/health | grep -q '"ok":true'
+          test "$(curl -fsS localhost:8080/version.json | jq -r .build)" = "$TAG"
+          curl -fsS localhost:8080/ | grep -q 'id="app"'
+
+      - name: Push the image
+        run: |
+          gcloud auth configure-docker "$REGION-docker.pkg.dev" --quiet
+          docker push ${{ steps.version.outputs.image }}
+
+      - name: Rehearse the migrations on a copy of production
+        id: rehearse
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT: ${{ vars.NEON_PROJECT_ID }}
+          IMAGE: ${{ steps.version.outputs.image }}
+        run: |
+          npm install -g neonctl@8
+          branch="ci-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          # Neon deletes the branch by itself after two hours, even if this run dies.
+          expires=$(date -u -d '+2 hours' +%Y-%m-%dT%H:%M:%SZ)
+          neonctl branches create --project-id "$NEON_PROJECT" --name "$branch" --expires-at "$expires" --output json > /dev/null
+          url=$(neonctl connection-string "$branch" --project-id "$NEON_PROJECT" --pooled)
+          echo "::add-mask::$url"
+          docker run --rm -e DATABASE_URL="$url" -e CLOUD_RUN_JOB=rehearsal "$IMAGE" node dist-server/index.js maintenance
+
+      - name: Delete the rehearsal branch
+        if: always() && steps.rehearse.outputs.branch != ''
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: neonctl branches delete "${{ steps.rehearse.outputs.branch }}" --project-id "${{ vars.NEON_PROJECT_ID }}" || true
+
+      - name: Migrate production
+        run: |
+          gcloud run jobs update "$JOB" --image ${{ steps.version.outputs.image }} --region "$REGION" --project "$PROJECT" --quiet
+          gcloud run jobs execute "$JOB" --region "$REGION" --project "$PROJECT" --wait
+
+      - name: Deploy the candidate (no traffic)
+        id: candidate
+        run: |
+          gcloud run deploy "$SERVICE" --image ${{ steps.version.outputs.image }} \
+            --region "$REGION" --project "$PROJECT" --no-traffic --tag candidate --quiet
+          describe=$(gcloud run services describe "$SERVICE" --region "$REGION" --project "$PROJECT" --format json)
+          echo "revision=$(jq -r '.status.traffic[] | select(.tag == "candidate") | .revisionName' <<<"$describe")" >> "$GITHUB_OUTPUT"
+          echo "url=$(jq -r '.status.traffic[] | select(.tag == "candidate") | .url' <<<"$describe")" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke test the candidate
+        env:
+          URL: ${{ steps.candidate.outputs.url }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          curl -fsS --retry 5 --retry-all-errors "$URL/api/health" | grep -q '"ok":true'
+          test "$(curl -fsS "$URL/version.json" | jq -r .build)" = "$TAG"
+          curl -fsS "$URL/" | grep -q 'id="app"'
+
+      - name: Move all traffic to the candidate
+        if: ${{ !inputs.hold }}
+        run: |
+          # The candidate is the newest revision: "latest" also lets a later
+          # `gcloud run services update` (a variable, a secret) be served at once.
+          latest=$(gcloud run services describe "$SERVICE" --region "$REGION" --project "$PROJECT" \
+            --format='value(status.latestCreatedRevisionName)')
+          test "$latest" = "${{ steps.candidate.outputs.revision }}"
+          gcloud run services update-traffic "$SERVICE" --region "$REGION" --project "$PROJECT" --to-latest --quiet
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### ${{ steps.version.outputs.tag }}"
+            echo "- Candidate: ${{ steps.candidate.outputs.revision }} at ${{ steps.candidate.outputs.url }}"
+            if [ "${{ inputs.hold }}" = true ]; then echo "- Held: run the workflow with **promote** to move the traffic."; fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  promote:
+    if: ${{ inputs.promote }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Smoke test the candidate and move all traffic to it
+        run: |
+          describe=$(gcloud run services describe "$SERVICE" --region "$REGION" --project "$PROJECT" --format json)
+          revision=$(jq -r '.status.traffic[] | select(.tag == "candidate") | .revisionName' <<<"$describe")
+          url=$(jq -r '.status.traffic[] | select(.tag == "candidate") | .url' <<<"$describe")
+          test -n "$revision" || { echo "no candidate revision"; exit 1; }
+          curl -fsS --retry 5 --retry-all-errors "$url/api/health" | grep -q '"ok":true'
+          # Normally the candidate is the newest revision: traffic then follows
+          # the latest. If something was deployed since, pin the candidate.
+          latest=$(jq -r '.status.latestCreatedRevisionName' <<<"$describe")
+          if [ "$latest" = "$revision" ]; then
+            gcloud run services update-traffic "$SERVICE" --region "$REGION" --project "$PROJECT" --to-latest --quiet
+          else
+            gcloud run services update-traffic "$SERVICE" --region "$REGION" --project "$PROJECT" \
+              --to-revisions "$revision=100" --quiet
+          fi
+          echo "### Promoted $revision" >> "$GITHUB_STEP_SUMMARY"

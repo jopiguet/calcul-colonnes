@@ -6,6 +6,8 @@ import { defineConfig } from "@playwright/test";
  * Playwright builds the app and starts its own server on a separate port with
  * a fresh SQLite file (test-results/e2e.sqlite), so a developer's database —
  * SQLite or Neon — is never touched: variables set here win over `.env`.
+ * E2E_DATABASE_URL=postgresql://… runs the same suite on PostgreSQL (emptied
+ * first), as CI does.
  */
 const PORT = 8799;
 const MOCK_PORT = 8798;
@@ -41,6 +43,8 @@ export default defineConfig({
         PORT: String(PORT),
         SQLITE_PATH: "test-results/e2e.sqlite",
         DATABASE_URL: "",
+        // Set to run the suite on PostgreSQL instead (emptied first): see tests/e2e/server.ts.
+        E2E_DATABASE_URL: process.env.E2E_DATABASE_URL ?? "",
         PUBLIC_URL: `http://localhost:${PORT}`,
         COOKIE_SECURE: "false",
         REGISTRATION: "open",

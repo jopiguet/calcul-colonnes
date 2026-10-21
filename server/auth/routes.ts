@@ -10,6 +10,7 @@ import { exchangeCode, type Provider } from "./providers.ts";
 import { RateLimit } from "./rate-limit.ts";
 import { cookieOptions, endSession, flowCookieName, randomToken, startSession } from "./sessions.ts";
 import { AuthStore, FLOW_LIFETIME, type Credential } from "./store.ts";
+import { log } from "../runtime.ts";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const USERNAME = /^[a-z0-9._-]{3,30}$/;
@@ -119,7 +120,7 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
       secret: await hashPassword(input.password as string),
       label: email,
     });
-    if (claimed > 0) console.log(`account ${account.id} took over ${claimed} existing player(s)`);
+    if (claimed > 0) log.info(`account ${account.id} took over ${claimed} existing player(s)`);
     await startSession(c, store, config, account.id, null);
     return c.json({ authenticated: true, account: { id: account.id, name, email }, player: null } satisfies AuthState, 201);
   });
@@ -296,7 +297,7 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
     try {
       endpoints = await provider.endpoints();
     } catch (error) {
-      console.error(`oauth ${provider.id}:`, (error as Error).message);
+      log.error(`oauth ${provider.id}`, error);
       return back(c, "auth_error=provider_unavailable");
     }
     const url = new URL(endpoints.authorization);
@@ -335,7 +336,7 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
       const token = await exchangeCode(provider, endpoints, code, redirectUri(provider), flow.verifier);
       profile = await provider.profile(token, endpoints);
     } catch (error) {
-      console.error(`oauth ${provider.id}:`, (error as Error).message);
+      log.error(`oauth ${provider.id}`, error);
       return back(c, "auth_error=provider_failed");
     }
 
@@ -356,7 +357,7 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
       if (profile.email && (await store.accountByEmail(profile.email))) return back(c, "auth_error=email_in_use");
       const name = (profile.name ?? profile.email ?? provider.name).slice(0, NAME_LENGTH);
       const { account, claimed } = await store.createAccount(email, name);
-      if (claimed > 0) console.log(`account ${account.id} took over ${claimed} existing player(s)`);
+      if (claimed > 0) log.info(`account ${account.id} took over ${claimed} existing player(s)`);
       await store.addCredential({
         accountId: account.id,
         playerId: null,

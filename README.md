@@ -102,6 +102,9 @@ npm start          # http://localhost:8787
 | `npm run vocab:import -- data/vocab-english.json` | Imports a vocabulary book, keeping progress on unchanged entries (see [Vocabulary](docs/vocabulary.md)) |
 | `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |
 | `npm run check:discover` | Checks the Discover engines: exact probabilities and streak formulas, the generator on millions of trials, 1,200 logic grids (see [Discover](docs/discover.md#checks-and-tests)) |
+| `npm run test:e2e:postgres` | The same browser tests on PostgreSQL, with `E2E_DATABASE_URL` naming a database that may be emptied |
+| `npm run maintenance` | Migrations, backfills, new vocabulary books and session purge, then exit: what a Cloud Run release runs as a job |
+| `npm run build:server` | Bundles the server into `dist-server/` for the container image |
 | `npm run db:copy-to-postgres` | One-off copy of the SQLite data into the PostgreSQL database named by `DATABASE_URL` |
 
 ## Configuration
@@ -116,6 +119,7 @@ Settings are read from `.env` (see `.env.example`):
 | `PUBLIC_URL` | `http://localhost:$PORT` | Address of the app as typed in the browser; `https://` makes cookies `Secure` |
 | `REGISTRATION` | `open` | `closed` allows only the first account |
 | `SESSION_DAYS`, `COOKIE_SECURE`, `TRUST_PROXY` | | See [Deployment › HTTPS and sign-in](docs/deployment.md#https-and-sign-in) |
+| `STARTUP_MAINTENANCE`, `LOG_FORMAT` | from the platform | Maintenance at startup and JSON logs: on locally, off and JSON on Cloud Run. See [Deployment › Cloud Run](docs/deployment.md#cloud-run) |
 | `GOOGLE_*`, `MICROSOFT_*`, `GITHUB_*`, `OIDC_*` | *(empty)* | Sign-in providers, see [Authentication](docs/authentication.md#providers-1) |
 
 ## Documentation
@@ -129,7 +133,7 @@ Settings are read from `.env` (see `.env.example`):
 | [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |
 | [Database](docs/database.md) | Schema, migrations, SQLite and PostgreSQL |
 | [API](docs/api.md) | Every endpoint with request and response examples |
-| [Deployment](docs/deployment.md) | Production setup, Neon, backups, security |
+| [Deployment](docs/deployment.md) | Home server or Cloud Run, releases from GitHub Actions, Neon, security |
 | [Development](docs/development.md) | Code layout, conventions, adding a language, checks before a release |
 | [Changelog](CHANGELOG.md) | What changed, version by version |
 

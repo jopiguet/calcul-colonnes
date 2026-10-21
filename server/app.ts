@@ -22,6 +22,7 @@ import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
 import { Repository, type Scope } from "./repository.ts";
 import { VocabStore, vocabRoutes } from "./vocab.ts";
+import { log } from "./runtime.ts";
 
 const NAME_LENGTH = 20;
 const LIMIT = 1_000_000; // generous bound on the numbers the app can send
@@ -153,7 +154,8 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
   api.route("/", data);
 
   api.onError((error, c) => {
-    console.error(`${c.req.method} ${c.req.path}:`, error.message);
+    // Cloud Run passes its trace id, so the error can be found next to its request in the logs.
+    log.error(`${c.req.method} ${c.req.path}`, error, { trace: c.req.header("x-cloud-trace-context") });
     return c.json({ error: "database error" }, 500);
   });
 

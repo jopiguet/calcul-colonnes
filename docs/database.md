@@ -173,8 +173,11 @@ The versions of the migrations already applied.
 ## Migrations
 
 Migrations live in `server/migrations/` and run automatically at server
-start, in order, each in its own transaction together with its row in
-`schema_migrations`.
+start (on Cloud Run: once per release, in the job `luma-maintenance`, after a
+rehearsal on a Neon branch of production), in order, each in its own
+transaction together with its row in `schema_migrations`. A migration must
+work with the code of the previous release too, which still serves while it
+runs: add tables and columns, rename or drop later.
 
 | File | Content |
 |---|---|
