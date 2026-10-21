@@ -21,7 +21,11 @@
  *
  * right, accent and typo count as right for the spaced repetition: the
  * correct spelling is shown. article counts as wrong: the gender is part of
- * the word in Spanish.
+ * the word in Spanish and in German.
+ *
+ * German: capitals are not checked (nouns are capitalised, a phone may not
+ * be); ß may be written ss (as in Switzerland) and ä, ö, ü as ae, oe, ue:
+ * both are right. A plain vowel for an umlaut (Mutter for Mütter) is "accent".
  *
  * Japanese answers are written in kana or kanji (with a Japanese keyboard) or
  * in rōmaji, the entry's reading. Rōmaji is compared without its long-vowel
@@ -32,12 +36,13 @@
 import { hasKana, kanaToRomaji } from "./kana";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "es" | "ja";
+export type AnswerLang = "en" | "es" | "de" | "ja";
 
 export const COUNTS_AS_RIGHT: ReadonlySet<Verdict> = new Set(["right", "accent", "typo"]);
 
 const ARTICLES: Record<AnswerLang, string[]> = {
   es: ["el", "la", "los", "las", "un", "una", "unos", "unas"],
+  de: ["der", "die", "das", "den", "dem", "des", "ein", "eine", "einen", "einem", "einer", "eines"],
   // English entries have no article ("key"), but "the key" and "to walk" are fine.
   en: ["the", "a", "an", "to"],
   ja: [],
@@ -59,6 +64,11 @@ export function normalise(text: string): string {
     .replace(/\s*\/\s*/g, " / ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+/** German spellings without special letters: "Straße" and "Strasse", "Mütter" and "Muetter" are one. */
+export function germanFold(text: string): string {
+  return text.replace(/ß/g, "ss").replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue");
 }
 
 /** Without accents or tilde: "niño" → "nino". */
@@ -207,12 +217,14 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   const tried = lang === "en" ? [answer, withoutArticle(answer, "en")] : [answer];
 
   if (candidates.some((f) => tried.includes(f))) return "right";
+  if (lang === "de" && candidates.some((f) => tried.some((t) => germanFold(t) === germanFold(f)))) return "right";
   if (candidates.some((f) => tried.some((t) => plain(t) === plain(f)))) return "accent";
 
-  if (lang === "es") {
+  if (lang === "es" || lang === "de") {
     // Right word, wrong or missing article.
-    const bare = plain(withoutArticle(answer, "es"));
-    if (forms.some((f) => withoutArticle(f, "es") !== f && plain(withoutArticle(f, "es")) === bare)) return "article";
+    const fold = (t: string): string => (lang === "de" ? plain(germanFold(t)) : plain(t));
+    const bare = fold(withoutArticle(answer, lang));
+    if (forms.some((f) => withoutArticle(f, lang) !== f && fold(withoutArticle(f, lang)) === bare)) return "article";
   }
 
   // One letter off, on answers long enough for that to be a slip.

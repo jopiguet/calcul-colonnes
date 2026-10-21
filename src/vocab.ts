@@ -390,7 +390,11 @@ function installCardKeys(): void {
   });
 }
 
-const SPANISH_LETTERS = ["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"];
+/** Letters missing from most keyboards outside the country, per language answered. */
+const LETTERS: Record<string, string[]> = {
+  es: ["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"],
+  de: ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"],
+};
 
 function boxDots(box: number): HTMLElement {
   const dots = el("span", "vocab-box");
@@ -593,11 +597,12 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     }
     label.append(input);
     form.append(label);
-    if (answerLang === "es" && !s.result) {
+    const letterKeys = LETTERS[answerLang];
+    if (letterKeys && !s.result) {
       // Letters missing from most keyboards outside Spain.
       const letters = el("div", "vocab-letters");
       letters.setAttribute("aria-label", vt("accents"));
-      for (const letter of SPANISH_LETTERS) {
+      for (const letter of letterKeys) {
         const key = button("ghost vocab-letter", letter, () => {
           const at = input.selectionStart ?? input.value.length;
           input.setRangeText(letter, at, input.selectionEnd ?? at, "end");

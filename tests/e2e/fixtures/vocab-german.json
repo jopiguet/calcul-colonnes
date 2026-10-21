@@ -1,0 +1,21 @@
+{
+ "format": 2,
+ "book": { "id": "test-german", "title": "Test words", "kind": "translation", "term": "de", "meaning": "en" },
+ "lessons": [
+  {
+   "title": "Im Alltag", "subtitle": "Day-to-day",
+   "sections": [
+    {
+     "title": "Die Stadt", "subtitle": "The town",
+     "entries": [
+      { "term": "der Tag", "meaning": "day" },
+      { "term": "die Straße", "meaning": "street" },
+      { "term": "das Mädchen", "meaning": "girl" },
+      { "term": "die Küche", "meaning": "kitchen" },
+      { "term": "täglich", "meaning": "daily" }
+     ]
+    }
+   ]
+  }
+ ]
+}

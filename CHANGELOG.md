@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.3.0
+
+- **German vocabulary:** *German 3000 words and phrases* (Collins), read by the Spanish book's extractor with the language as argument: `python3 tools/vocab-extract.py book.pdf de`. 10 lessons, 112 sections, 3,206 entries.
+  - **Titles** get their German capitals back: the headings' small capitals lose them ("Probleme mit dem Auto").
+  - **ß in headings,** which the book sets in a smaller size, is no longer dropped ("Fußball").
+- **German grading:**
+  - the article is part of the answer, as in Spanish: *Straße* or *der Straße* for *die Straße* is wrong;
+  - *ss* for *ß* (the Swiss spelling) and *ae*, *oe*, *ue* for umlauts are right;
+  - a plain vowel for an umlaut is an accent slip, right with the spelling shown;
+  - capitals are not checked.
+- **Letter buttons** for German answers: *ä ö ü ß Ä Ö Ü*.
+- **Checks:** 12 German grading cases in `check:vocab`; an e2e test with an invented five-word German book.
+
 ## 6.2.0
 
 - **Kanji and kana,** a new book in the Japanese school's order. See [Kanji and kana](docs/characters.md).

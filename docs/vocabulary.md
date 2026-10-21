@@ -11,6 +11,8 @@ Two kinds of book are supported:
 |---|---|---|---|
 | translation | *Spanish 3000 words and phrases* | *la llave* | its meaning: *key* |
 | | | *key* | the Spanish: *la llave* |
+| translation | *German 3000 words and phrases* | *die Straße* | its meaning: *street* |
+| | | *street* | the German: *die Straße* or *die Strasse* |
 | translation | *Japanese vocabulary for English speakers* | 猫 *neko* | its meaning: *cat* |
 | | | *cat* | the Japanese: 猫, ねこ or *neko* |
 | definition | *Vocabulary 4000* (English) | *abase* | its definition: *degrade* |
@@ -38,8 +40,8 @@ own, and stay in your database:
 - **Storage:** the import puts the entries in your database (SQLite or Neon). They are never part of the project, a build or a release.
 - **Access:** keep the app behind its sign-in, and set `REGISTRATION=closed` if the server is reachable from the internet. Only your accounts then see the content.
 
-The tests use four invented books (`tests/e2e/fixtures/`): 27 Spanish
-entries, 20 English ones, 13 Japanese ones and 17 characters.
+The tests use five invented books (`tests/e2e/fixtures/`): 27 Spanish
+entries, 5 German ones, 20 English ones, 13 Japanese ones and 17 characters.
 
 ## Importing a book
 
@@ -49,6 +51,9 @@ pip install pdfplumber
 # Collins Spanish 3000 words and phrases
 python3 tools/vocab-extract.py "Collins Spanish 3000.pdf" > data/vocab-spanish.json
 
+# Collins German 3000 words and phrases: same layout, language given
+python3 tools/vocab-extract.py "Collins German 3000.pdf" de > data/vocab-german.json
+
 # Vocabulary 4000 (Jeff Kolby)
 python3 tools/vocab-extract-4000.py "Vocabulary 4000.pdf" > data/vocab-english.json
 
@@ -57,12 +62,13 @@ python3 tools/vocab-extract-japanese.py "Japanese vocabulary.epub" > data/vocab-
 
 npm run check:vocab -- data/vocab-english.json   # optional: every entry can be asked and graded
 npm run vocab:import -- data/vocab-spanish.json  # into the database of .env
+npm run vocab:import -- data/vocab-german.json
 npm run vocab:import -- data/vocab-english.json
 npm run vocab:import -- data/vocab-japanese.json
 ```
 
 Each file holds one book, identified by its id (`collins-spanish`,
-`english-4000`, `japanese-5000`). Importing a file updates that book only. The
+`collins-german`, `english-4000`, `japanese-5000`). Importing a file updates that book only. The
 Spanish book keeps the id of its first version, so progress carries over; it
 is shown by its title, *3000 words and phrases*.
 
@@ -89,7 +95,15 @@ too.
 | English in the regular font, Spanish in bold below | Entry |
 
 10 lessons, 111 sections, 3,214 entries. It uses fonts and positions only, so
-other languages of the same series should work too.
+other languages of the same series work too.
+
+### *German 3000 words and phrases* (Collins)
+
+The same script, with the language as second argument (`de`): 10 lessons, 112
+sections, 3,206 entries. Two things differ from the Spanish book:
+
+- **Capitals.** Headings are set in small capitals, which lose German's capitalised nouns. A title word takes a capital unless it is a small word of grammar (*und*, *mit*, *dem*, *im*, *für*…): "Probleme mit dem Auto", "Tage, Monate und Jahreszeiten".
+- **ß in headings.** The small capitals have no ß, so the book sets it in a smaller size, which the font filter would skip ("fu ball"). A heading line holding such a letter is read again character by character: "Fußball", "Gliederfüßer".
 
 ### *Vocabulary 4000*
 
@@ -286,7 +300,7 @@ spacing are ignored.
 | right | Exact | right |
 | accent | Right letters, missing or wrong accent or tilde (*el lapiz*, *el nino*, *eclat*) | right, with the spelling shown |
 | typo | One letter off, in a word of at least 5 letters | right, with the spelling shown |
-| article | Spanish: right word, missing or wrong article (*lápiz*, *la lápiz*) | **wrong**: the gender is part of the word |
+| article | Spanish or German: right word, missing or wrong article (*lápiz*, *la lápiz*; *Straße*, *der Straße*) | **wrong**: the gender is part of the word |
 | wrong | Anything else | wrong |
 
 **Another entry with the same prompt is right too.** If the answer is wrong
@@ -310,6 +324,13 @@ of two Spanish words with the same English meaning.
 In English answers, *the*, *a*, *an* and *to* are optional: *key*, *the key*;
 *walk*, *to walk*.
 
+**German answers.** Capitals are not checked: nouns take one, but a phone
+keyboard may not. *ß* may be written *ss*, as in Switzerland, and *ä*, *ö*, *ü*
+as *ae*, *oe*, *ue*: both are right. A plain vowel for an umlaut (*die Kuche*)
+counts as an accent slip: right, with the spelling shown. The articles are
+*der*, *die*, *das* and their cases, and *ein*, *eine* and theirs. Buttons
+under the field add *ä ö ü ß Ä Ö Ü*.
+
 **Japanese answers** (`shared/vocab/grade.ts`, `shared/vocab/kana.ts`):
 
 | Typed | Verdict |
@@ -326,7 +347,7 @@ as printed, while *konnichiha* is a typo for *konnichiwa*.
 
 A multiple-choice answer is compared with the option as printed.
 
-`npm run check:vocab` runs 65 grading cases (21 of them Japanese), the
+`npm run check:vocab` runs 77 grading cases (21 of them Japanese, 12 German), the
 scheduling rules, the three kinds of session, the rules of definition books
 and the rōmaji on Japanese cards. With a file, it also
 checks that every entry is accepted when typed as printed, in both

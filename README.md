@@ -42,13 +42,13 @@ at *lycée / bachillerato* or university level.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.
 - An automated check verifies tens of thousands of generated questions numerically, independently of the generators.
 
-**Vocabulary** — from books you own, imported once: Spanish and Japanese with translations, English with definitions. Plus kanji and kana in the Japanese school's order.
+**Vocabulary** — from books you own, imported once: Spanish, German and Japanese with translations, English with definitions. Plus kanji and kana in the Japanese school's order.
 
-- Their chapters are the lessons and their sections the sections. *Spanish 3000 words and phrases* and *Vocabulary 4000* are read automatically from their PDF, *Japanese vocabulary for English speakers* from its EPUB; any other list can be written as a simple JSON file.
+- Their chapters are the lessons and their sections the sections. *Spanish 3000 words and phrases*, *German 3000 words and phrases* and *Vocabulary 4000* are read automatically from their PDF, *Japanese vocabulary for English speakers* from its EPUB; any other list can be written as a simple JSON file.
 - A translation is chosen or written; a definition is chosen and the word written.
 - Spaced repetition with Leitner boxes: each word, in each direction, comes back after 10 minutes, then 1, 3, 7, 16 and 35 days, and starts again after a mistake.
 - Learn a section or a chapter; review a section, a chapter or the whole vocabulary, weakest words first.
-- Multiple choice while a word is new, written answers once it is known. Accents and one-letter slips are forgiven with the spelling shown; a wrong article is not.
+- Multiple choice while a word is new, written answers once it is known. Accents and one-letter slips are forgiven with the spelling shown; a wrong article is not. In German, *ss* for *ß* and *ae*, *oe*, *ue* for umlauts are right.
 - The book's own notation is understood: `el amigo / la amiga`, `Buenas tardes / noches`, `embarcar(se)`.
 - Japanese comes with its rōmaji, and is answered in kanji, kana or rōmaji: 学校, がっこう, *gakkō* and *gakko* are all right.
 - Statistics per book: progress by lesson, the last 30 days, the reviews coming, the hardest words.

@@ -23,6 +23,19 @@ function expect(label: string, actual: unknown, wanted: unknown): void {
 }
 
 const cases: [string, string, AnswerLang, Verdict][] = [
+  // German answers
+  ["der Tag", "der Tag", "de", "right"],
+  ["der tag", "der Tag", "de", "right"],
+  ["Tag", "der Tag", "de", "article"],
+  ["die Tag", "der Tag", "de", "article"],
+  ["die Strasse", "die Straße", "de", "right"],
+  ["die Muetter", "die Mütter", "de", "right"],
+  ["die Mutter", "die Mütter", "de", "accent"],
+  ["Strasse", "die Straße", "de", "article"],
+  ["das Wochenede", "das Wochenende", "de", "typo"],
+  ["täglich", "täglich", "de", "right"],
+  ["taeglich", "täglich", "de", "right"],
+  ["eine Partnerin", "einen Partner / eine Partnerin", "de", "right"],
   // Spanish answers
   ["la llave", "la llave", "es", "right"],
   ["La Llave.", "la llave", "es", "right"],
@@ -304,7 +317,7 @@ if (file) {
   const vocab = parseVocabFile(JSON.parse(readFileSync(file, "utf8")));
   let entries = 0;
   let written = 0;
-  const lang = (code: string): AnswerLang => (code === "es" || code === "ja" ? code : "en");
+  const lang = (code: string): AnswerLang => (code === "es" || code === "de" || code === "ja" ? code : "en");
   const termLang = lang(vocab.book.term);
   const meaningLang = lang(vocab.book.meaning);
   for (const lesson of vocab.lessons) {

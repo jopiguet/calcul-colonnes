@@ -4,7 +4,10 @@ Extracts the vocabulary of a Collins "3000 words and phrases" PDF into the
 JSON format read by `npm run vocab:import` (format 2, see docs/vocabulary.md).
 
     pip install pdfplumber
-    python3 tools/vocab-extract.py book.pdf > data/vocab.json
+    python3 tools/vocab-extract.py book.pdf > data/vocab-spanish.json
+    python3 tools/vocab-extract.py book.pdf de > data/vocab-german.json
+
+The second argument is the language of the book: es (default) or de.
 
 Run it on your own copy of the book. The result is for your own use: keep it
 out of version control (data/ is ignored) and the app behind its sign-in.
@@ -20,8 +23,9 @@ How the book is laid out, and how this script reads it:
 - An entry is one or more lines in the regular font (English), followed by one
   or more lines in the bold font (Spanish), in the same column.
 
-Only fonts and positions are used, so the script should also read the other
-languages of the same series. Lines it cannot pair (notes, captions) are
+Only fonts and positions are used, so the script reads the other languages of
+the same series: the German book has the same layout. Below, "es" names the
+studied language's lines whatever it is. Lines it cannot pair (notes, captions) are
 counted on stderr.
 """
 import json
@@ -40,6 +44,7 @@ class Line:
     kind: str  # en, es, chapter, section, group
     text: str
     feminine: bool = False
+    bottom: float = 0.0
 
 
 @dataclass
@@ -92,7 +97,7 @@ def page_lines(page, number: int) -> list[Line]:
         kind = kind_of(w["fontname"], w["size"])
         if kind is None or w["x0"] < 0 or w["x0"] > page.width:
             continue  # printer's marks of the facing page lie outside this one
-        raw.append(Line(number, w["x0"], w["top"], kind, w["text"]))
+        raw.append(Line(number, w["x0"], w["top"], kind, w["text"], bottom=w["bottom"]))
 
     # Headings: the English part (bold) and the Spanish part (normal) sit on
     # one line, separated by "|". Merge everything on that line.
@@ -113,6 +118,26 @@ def page_lines(page, number: int) -> list[Line]:
         if prev and prev.kind == kind and 0 < top - prev.top <= 14 and prev.text.endswith("|"):
             prev.text = f"{prev.text} {text}"
             continue
+        # A letter the small capitals lack is set smaller in the heading (ß in
+        # "fußball", German): its word has another size and was left out. The
+        # line is then read again character by character.
+        bottom = max(p.bottom for p in parts)
+        small = [
+            c for c in page.chars
+            if "FrescoSansSC" in c["fontname"] and round(c["size"], 1) not in (7.5, 10.0, 12.0) and abs(c["bottom"] - bottom) < 2.5
+            and parts[0].x0 - 1 <= c["x0"] <= page.width
+        ]
+        if small:
+            chars = sorted(
+                (c for c in page.chars if "FrescoSansSC" in c["fontname"] and abs(c["bottom"] - bottom) < 2.5 and c["x0"] >= parts[0].x0 - 1),
+                key=lambda c: c["x0"],
+            )
+            text = ""
+            for i, c in enumerate(chars):
+                if i and c["x0"] - chars[i - 1]["x1"] > 1.5 and not text.endswith(" "):
+                    text += " "
+                text += c["text"]
+            text = clean(text)
         merged.append(Line(number, parts[0].x0, top, kind, text))
     lines.extend(merged)
 
@@ -147,7 +172,13 @@ def split_heading(text: str) -> tuple[str, str]:
     return sentence_case(en), sentence_case(es)
 
 
-def extract(path: str) -> dict:
+BOOKS = {
+    "es": {"id": "collins-spanish", "title": "3000 words and phrases", "kind": "translation", "term": "es", "meaning": "en"},
+    "de": {"id": "collins-german", "title": "3000 words and phrases", "kind": "translation", "term": "de", "meaning": "en"},
+}
+
+
+def extract(path: str, lang: str = "es") -> dict:
     lessons: list[Lesson] = []
     orphans = 0
     started = False
@@ -237,6 +268,26 @@ def extract(path: str) -> dict:
         lesson.sections = [s for s in lesson.sections if s.entries]
     lessons = [l for l in lessons if l.sections]
 
+    # German capitalises nouns, which small capitals lose: a title word takes
+    # its capital when the book prints it with one ("im haus" → "Im Haus").
+    if lang == "de":
+        # Titles are short noun phrases: every word but the small words of
+        # grammar takes a capital ("tage, monate und jahreszeiten").
+        small_words = {
+            "und", "oder", "mit", "der", "die", "das", "dem", "den", "des", "im", "in", "am", "an", "auf",
+            "für", "beim", "bei", "zum", "zur", "über", "von", "vom", "aus", "zu", "ein", "eine",
+        }
+
+        def german(title: str) -> str:
+            words = title.split(" ")
+            out = [w if i > 0 and w.lower() in small_words else w[:1].upper() + w[1:] for i, w in enumerate(words)]
+            return " ".join(out)
+
+        for lesson in lessons:
+            lesson.title_es = german(lesson.title_es)
+            for section in lesson.sections:
+                section.title_es = german(section.title_es)
+
     total = sum(len(s.entries) for l in lessons for s in l.sections)
     print(
         f"{len(lessons)} lessons, {sum(len(l.sections) for l in lessons)} sections, "
@@ -253,7 +304,7 @@ def extract(path: str) -> dict:
 
     return {
         "format": 2,
-        "book": {"id": "collins-spanish", "title": "3000 words and phrases", "kind": "translation", "term": "es", "meaning": "en"},
+        "book": BOOKS[lang],
         "lessons": [
             {
                 "title": l.title_es,
@@ -269,7 +320,7 @@ def extract(path: str) -> dict:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        sys.exit("usage: python3 tools/vocab-extract.py book.pdf > data/vocab.json")
-    json.dump(extract(sys.argv[1]), sys.stdout, ensure_ascii=False, indent=1)
+    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in BOOKS):
+        sys.exit("usage: python3 tools/vocab-extract.py book.pdf [es|de] > data/vocab.json")
+    json.dump(extract(sys.argv[1], sys.argv[2] if len(sys.argv) == 3 else "es"), sys.stdout, ensure_ascii=False, indent=1)
     sys.stdout.write("\n")

@@ -421,3 +421,36 @@ async function englishBookId(page: Page): Promise<number> {
   const books = (await (await page.request.get("/api/vocab/books")).json()) as { id: number; slug: string }[];
   return books.find((b) => b.slug === "test-english")!.id;
 }
+
+test("the German book: articles required, ß as ss and umlauts as ae, oe, ue accepted, letters to type them", async ({ page }) => {
+  const name = await newPlayer(page, "Deu");
+  const user = await userByName(page.request, name);
+  await openActivity(page, "vocab-test-german");
+  await expect(page.locator(".vocab-home h1")).toHaveText("Vocabulaire allemand");
+
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { slug: string; lessons: { id: number }[] }[];
+  const german = books.find((b) => b.slug === "test-german")!;
+  const cards = (await (
+    await page.request.get(`/api/vocab/session?userId=${user.id}&kind=lesson&id=${german.lessons[0]!.id}&purpose=learn&size=20&mode=written`)
+  ).json()) as { entryId: number; prompt: string }[];
+  const entryOf = (p: string): number => cards.find((c) => c.prompt === p)!.entryId;
+  const post = (entryId: number, given: string) =>
+    page.request.post("/api/vocab/answers", { data: { userId: user.id, entryId, direction: "recall", mode: "written", given } })
+      .then((r) => r.json()) as Promise<{ verdict: string; correct: boolean; expected: string }>;
+  const street = entryOf("die Straße");
+  expect(await post(street, "die Straße")).toMatchObject({ verdict: "right" });
+  expect(await post(street, "die Strasse")).toMatchObject({ verdict: "right" });
+  expect(await post(street, "Straße")).toMatchObject({ verdict: "article", correct: false });
+  expect(await post(street, "der Straße")).toMatchObject({ verdict: "article", correct: false });
+  expect(await post(entryOf("die Küche"), "die Kueche")).toMatchObject({ verdict: "right" });
+  expect(await post(entryOf("die Küche"), "die Kuche")).toMatchObject({ verdict: "accent", correct: true, expected: "die Küche" });
+  expect(await post(entryOf("der Tag"), "der tag")).toMatchObject({ verdict: "right" });
+
+  // A recall card, written: ä ö ü ß under the field. Reviewing brings back the cards just answered.
+  await page.click(".vocab-how >> text=Écrit");
+  await page.click("text=Réviser tout le vocabulaire");
+  await page.locator(".vocab-card").waitFor();
+  await expect(page.locator(".vocab-letter")).toHaveText(["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"]);
+  await page.locator(".vocab-letter", { hasText: "ß" }).click();
+  await expect(page.locator(".vocab-input")).toHaveValue("ß");
+});

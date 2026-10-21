@@ -96,7 +96,7 @@ function toEntry(row: Row): SessionEntry {
 }
 
 /** Grading knows Spanish articles, English "the/a/to" and Japanese rōmaji; other languages are graded as plain text. */
-const answerLang = (lang: string): AnswerLang => (lang === "es" || lang === "ja" ? lang : "en");
+const answerLang = (lang: string): AnswerLang => (lang === "es" || lang === "de" || lang === "ja" ? lang : "en");
 
 export interface ImportReport {
   book: string;
