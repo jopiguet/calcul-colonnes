@@ -357,6 +357,30 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
 /** The view is built before it is placed in the page: focus on the next frame. */
 const afterRender = (fn: () => void): void => void requestAnimationFrame(fn);
 
+/** The card on screen and its keyboard handler (one card at a time). */
+let currentCard: { wrap: HTMLElement; keys: (event: KeyboardEvent) => void } | null = null;
+let cardKeysInstalled = false;
+
+/**
+ * One document listener for the cards' keys, so a key counts whether the
+ * card already has the focus, still has not (the focus moves on the next
+ * frame), or the page has it. Keys typed into another field, or while the card
+ * is no longer on screen, are left alone.
+ */
+function installCardKeys(): void {
+  if (cardKeysInstalled) return;
+  cardKeysInstalled = true;
+  document.addEventListener("keydown", (event) => {
+    const card = currentCard;
+    if (!card || !card.wrap.isConnected) return;
+    const target = event.target;
+    const inCard = target instanceof Node && card.wrap.contains(target);
+    const onPage = target === document.body || target === document.documentElement;
+    if (!inCard && !onPage) return;
+    card.keys(event);
+  });
+}
+
 const SPANISH_LETTERS = ["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"];
 
 function boxDots(box: number): HTMLElement {
@@ -559,8 +583,10 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   );
   wrap.append(actions);
 
-  // Keyboard: 1–4 or A–D to choose; Enter to go on.
-  wrap.addEventListener("keydown", (event) => {
+  // Keyboard: 1–4 or A–D to choose; Enter to go on. Read at document level
+  // (installCardKeys): the card takes the focus on the next frame, and a key
+  // pressed before that goes to the page, not to the card.
+  currentCard = { wrap, keys: (event: KeyboardEvent) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     if (event.key === "Enter" && s.result && !(event.target instanceof HTMLButtonElement) && !(event.target instanceof HTMLInputElement)) {
       event.preventDefault();
@@ -576,7 +602,8 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
         void submit(option);
       }
     }
-  });
+  } };
+  installCardKeys();
   if (card.mode === "choice" && !s.result) afterRender(() => wrap.focus());
   return wrap;
 }

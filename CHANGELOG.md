@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.1
+
+- **Vocabulary, keyboard:** a key pressed just as a multiple-choice card appeared could be lost. The card takes the focus on the next frame, and a key pressed before that went to the page, not to the card. The card's keys (1–4, A–D, Enter) are now read at document level while a card is on screen, wherever the focus is. Seen on GitHub's runners, where two vocabulary tests failed this way; reproduced locally under CPU load, then 30 runs out of 30 passed under the same load.
+
 ## 6.1.0
 
 - **Runs on Google Cloud Run,** with releases from GitHub Actions. See [Deployment › Cloud Run](docs/deployment.md#cloud-run) and [Releases](docs/deployment.md#releases).
