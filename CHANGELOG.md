@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.4.1
+
+- **Fix: a German book could replace the Spanish one.**
+  - **Cause:** `tools/vocab-extract.py` took Spanish as the default language. Run without `de` on the German book, it wrote the German words as the book `collins-spanish`. Importing that file then replaced the Spanish book's words, and the progress on them was deleted with them.
+  - **The extractor now reads the language from the cover** ("german | 3000 words and phrases"). The argument is optional and must match the cover; when neither says, nothing is written.
+  - **The import refuses to overwrite another book,** and changes nothing, when:
+    - the file's book id is on the server in another language;
+    - or more than a fifth of the book's entries would disappear while players have progress on them.
+
+    `--replace` imports it anyway.
+  - **Checks:** `check:vocab` tests the guard on a temporary SQLite database.
+- **Recovering a replaced book:** see [Deployment › Undoing a bad import](docs/deployment.md#undoing-a-bad-import).
+
 ## 6.4.0
 
 - **Arabic vocabulary:** *Arabic 3000 words and phrases* (Collins): `python3 tools/vocab-extract.py book.pdf ar`. It gives 10 lessons, 109 sections and 3,014 entries, each with the book's transliteration.

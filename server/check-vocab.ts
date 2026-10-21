@@ -8,7 +8,7 @@
 import { readFileSync } from "node:fs";
 import { acceptedForms, grade, writable, type AnswerLang, type Verdict } from "../shared/vocab/grade.ts";
 import { askMode, entryStatus, nextState, DAY, MINUTE, TOP_BOX } from "../shared/vocab/schedule.ts";
-import { parseVocabFile } from "../shared/vocab/format.ts";
+import { parseVocabFile, type VocabFile } from "../shared/vocab/format.ts";
 import { computeStats } from "../shared/vocab/stats.ts";
 import { buildSession, canWrite, distractors, localise, progressKey, type ProgressMap, type SessionEntry } from "../shared/vocab/session.ts";
 import { kanaToRomaji } from "../shared/vocab/kana.ts";
@@ -332,6 +332,48 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   const kanaOptions = distractors(list[0]!, "recall", list, Math.random);
   expect("characters: kana offered for a kana", kanaOptions.every((o) => /^[ぁ-ん]$/.test(o)), true);
   expect("status: a kanji counts its reading", [entryStatus(6, 6, 2), entryStatus(6, 6, null), entryStatus(0, 0, 0)], ["learning", "mastered", "new"]);
+}
+
+// Imports that would overwrite another book are refused (a temporary SQLite database).
+{
+  const { mkdtempSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "luma-check-"));
+  const { openDatabase } = await import("./db/index.ts");
+  const db = await openDatabase({ databaseUrl: "", sqlitePath: join(dir, "check.sqlite") }).catch(() => null);
+  if (!db) console.log("import guard: skipped (SQLite not installed)");
+  else {
+    try {
+      const { migrate } = await import("./db/migrate.ts");
+      const { ImportRefused, VocabStore } = await import("./vocab.ts");
+      await migrate(db);
+      const store = new VocabStore(db);
+      const book = (id: string, term: string, words: [string, string][]): VocabFile => ({
+        book: { id, title: "t", kind: "translation", term, meaning: "en" },
+        lessons: [{ title: "L", subtitle: "", sections: [{ title: "S", subtitle: "", entries: words.map(([t, m]) => ({ term: t, meaning: m })) }] }],
+      });
+      const spanish: [string, string][] = [["el día", "day"], ["la calle", "street"], ["la cocina", "kitchen"], ["la semana", "week"], ["el mes", "month"]];
+      await store.import(book("collins-spanish", "es", spanish));
+      await db.query("INSERT INTO users (name, name_key, created_at) VALUES ('p', 'p', 0)");
+      const user = Number((await db.query("SELECT id FROM users"))[0]!.id);
+      const entry = Number((await db.query("SELECT id FROM vocab_entries WHERE term = 'la calle'"))[0]!.id);
+      await db.query("INSERT INTO vocab_progress (user_id, entry_id, direction, box, due_at, last_at) VALUES ($1, $2, 'recognise', 3, 0, 0)", [user, entry]);
+      const german = book("collins-spanish", "de", [["der Tag", "day"], ["die Straße", "street"]]);
+      const refused = async (file: VocabFile): Promise<boolean> =>
+        store.import(file).then(() => false, (e: unknown) => e instanceof ImportRefused);
+      expect("import: another language under the same id is refused", await refused(german), true);
+      expect("import: most entries gone, with progress, is refused", await refused(book("collins-spanish", "es", [["el día", "day"]])), true);
+      expect("import: refused means unchanged", (await db.query("SELECT COUNT(*) AS n FROM vocab_progress"))[0]!.n, 1);
+      expect("import: one entry corrected is fine", await refused(book("collins-spanish", "es", [...spanish.slice(0, 4), ["el mes", "month (of the year)"]])), false);
+      expect("import: a new book is fine", await refused(book("collins-german", "de", [["der Tag", "day"]])), false);
+      await store.import(german, { replace: true });
+      expect("import: --replace replaces", (await db.query("SELECT term_lang FROM vocab_books WHERE slug = 'collins-spanish'"))[0]!.term_lang, "de");
+    } finally {
+      await db.close();
+      rmSync(dir, { recursive: true, force: true });
+    }
+  }
 }
 
 // Every entry of a vocabulary file

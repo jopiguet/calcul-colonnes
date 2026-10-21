@@ -53,11 +53,11 @@ pip install pdfplumber
 # Collins Spanish 3000 words and phrases
 python3 tools/vocab-extract.py "Collins Spanish 3000.pdf" > data/vocab-spanish.json
 
-# Collins German 3000 words and phrases: same layout, language given
-python3 tools/vocab-extract.py "Collins German 3000.pdf" de > data/vocab-german.json
+# Collins German 3000 words and phrases: same script, language read from the cover
+python3 tools/vocab-extract.py "Collins German 3000.pdf" > data/vocab-german.json
 
 # Collins Arabic 3000 words and phrases: same layout, Arabic rebuilt from its glyphs
-python3 tools/vocab-extract.py "Collins Arabic 3000.pdf" ar > data/vocab-arabic.json
+python3 tools/vocab-extract.py "Collins Arabic 3000.pdf" > data/vocab-arabic.json
 
 # Vocabulary 4000 (Jeff Kolby)
 python3 tools/vocab-extract-4000.py "Vocabulary 4000.pdf" > data/vocab-english.json
@@ -81,6 +81,19 @@ is shown by its title, *3000 words and phrases*.
 **Instead of the command,** list the files in `.env`:
 `VOCAB_FILE=data/vocab-spanish.json,data/vocab-english.json,data/vocab-japanese.json`. At startup the
 server imports each book that is not on it yet, so once.
+
+**The Collins extractor reads the language from the cover** ("german | 3000
+words and phrases") and gives the book its id from it: `collins-spanish`,
+`collins-german`, `collins-arabic`. A language given as second argument (`es`,
+`de`, `ar`) must match the cover.
+
+**An import never overwrites another book by mistake.** It is refused, with
+nothing changed, when the file's book id is already on the server:
+
+- **in another language:** for example, a German file labelled `collins-spanish`;
+- **or with most of its entries missing:** more than a fifth of the book's entries would disappear while players have progress on some of them.
+
+`npm run vocab:import -- file.json --replace` imports it anyway.
 
 **Importing again** (after a new extraction, or a corrected file) keeps every
 player's progress on the entries that did not change. An entry is the same

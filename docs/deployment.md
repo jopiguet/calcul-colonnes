@@ -364,6 +364,26 @@ Migrations run by themselves at the next start. Then:
 - **From 3.x to 4.x:** sign-in becomes required. Open the app right after the upgrade and create your account: the first account receives all existing players. See [Authentication › Upgrading](authentication.md#upgrading-from-3x).
 - **After upgrading:** open pages and installed apps update by themselves, from 5.3 on: each build publishes `/version.json`, and a window learns of the new build when it comes to the front (or within 15 minutes). A page still on 5.2 or older needs one manual reload (Ctrl+R / Cmd+R, or close and reopen the installed app).
 
+### Undoing a bad import
+
+A vocabulary import that removes entries also removes the players' progress
+on them. Since 6.4.1 such an import is refused unless `--replace` is given.
+If one went through all the same, Neon can put the database back as it was a
+moment before, from its history. How far back depends on the plan; see Neon's
+*History window* page.
+
+1. **Check what happened:** `SELECT slug, term_lang, title FROM vocab_books;`. A book in the wrong language (`collins-spanish` with `term_lang` `de`) confirms an overwrite.
+2. **Find a time before the import,** in UTC (Madrid in summer is UTC+2).
+3. **Restore the production branch to it.** In the Neon console: *Branches › main › Restore*, or:
+
+   ```sh
+   neonctl branches restore main ^self@2026-10-21T18:00:00Z \
+     --preserve-under-name main_before_restore --project-id <project id>
+   ```
+
+   Connections drop for a few seconds; the app reconnects by itself. Everything written after that time is undone too: answers given since, any other import. The state before the restore is kept as the branch `main_before_restore`, to look at or go back to. Delete it once you are satisfied, as it counts towards the branch limit.
+4. **Import the right file:** for example `npm run vocab:import -- data/vocab-german.json`, with the German file extracted again by 6.4.1 (`collins-german`).
+
 ### Caching
 
 The server sets `Cache-Control` itself, so nothing is needed at Cloudflare or

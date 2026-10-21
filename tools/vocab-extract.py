@@ -7,7 +7,10 @@ JSON format read by `npm run vocab:import` (format 2, see docs/vocabulary.md).
     python3 tools/vocab-extract.py book.pdf > data/vocab-spanish.json
     python3 tools/vocab-extract.py book.pdf de > data/vocab-german.json
 
-The second argument is the language of the book: es (default), de or ar.
+The book's language is read from its cover ("german | 3000 words and
+phrases"). The second argument, es, de or ar, is optional and checked against
+it: a German book is never written out as the Spanish one, which would replace
+that book on import.
 
 Arabic (ar): the PDF holds Arabic in visual order, right to left, as single
 glyphs with their vowel marks placed by position. Lines in the Arabic font are
@@ -425,8 +428,28 @@ def extract(path: str, lang: str = "es") -> dict:
     }
 
 
+COVER = {"spanish": "es", "german": "de", "arabic": "ar"}
+
+
+def cover_language(path: str) -> str | None:
+    """The language named on the cover: its first word ("german | 3000 words and phrases")."""
+    with pdfplumber.open(path) as pdf:
+        text = (pdf.pages[0].extract_text() or "").strip().lower()
+    word = re.split(r"[^a-z]+", text, maxsplit=1)[0] if text else ""
+    return COVER.get(word)
+
+
 if __name__ == "__main__":
+    usage = "usage: python3 tools/vocab-extract.py book.pdf [es|de|ar] > data/vocab.json"
     if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in BOOKS):
-        sys.exit("usage: python3 tools/vocab-extract.py book.pdf [es|de] > data/vocab.json")
-    json.dump(extract(sys.argv[1], sys.argv[2] if len(sys.argv) == 3 else "es"), sys.stdout, ensure_ascii=False, indent=1)
+        sys.exit(usage)
+    found = cover_language(sys.argv[1])
+    given = sys.argv[2] if len(sys.argv) == 3 else None
+    if given and found and given != found:
+        sys.exit(f"the cover says {found}, not {given}: nothing written")
+    lang = given or found
+    if not lang:
+        sys.exit(f"the cover does not name the language: give it ({usage})")
+    print(f"language: {lang} (book id {BOOKS[lang]['id']})", file=sys.stderr)
+    json.dump(extract(sys.argv[1], lang), sys.stdout, ensure_ascii=False, indent=1)
     sys.stdout.write("\n")

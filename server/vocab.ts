@@ -98,6 +98,12 @@ function toEntry(row: Row): SessionEntry {
 /** Grading knows Spanish articles, English "the/a/to" and Japanese rōmaji; other languages are graded as plain text. */
 const answerLang = (lang: string): AnswerLang => (lang === "es" || lang === "de" || lang === "ja" || lang === "ar" ? lang : "en");
 
+/** An import that would overwrite another book, or most of one: nothing was changed. */
+export class ImportRefused extends Error {}
+
+/** Share of a book's entries that may disappear in one import without `replace`. */
+export const MAX_REMOVED_SHARE = 0.2;
+
 export interface ImportReport {
   book: string;
   lessons: number;
@@ -121,8 +127,14 @@ export class VocabStore {
    * section position, same term and meaning) keep their ids, and so the
    * players' progress; entries no longer in the file are removed with their
    * progress. Other books are not touched. All in one transaction.
+   *
+   * Refused (ImportRefused, nothing changed) unless `replace` is set, when the
+   * file would overwrite another book: same id but another language (a German
+   * book labelled as the Spanish one), or more than a fifth of the book's
+   * entries removed while players have progress on some of them.
    */
-  async import(file: VocabFile): Promise<ImportReport> {
+  async import(file: VocabFile, options: { replace?: boolean } = {}): Promise<ImportReport> {
+    if (!options.replace) await this.checkImport(file);
     return this.db.transaction(async (tx) => {
       const { book } = file;
       const report: ImportReport = { book: book.id, lessons: 0, sections: 0, entries: 0, added: 0, removed: 0 };
@@ -252,6 +264,32 @@ export class VocabStore {
       await tx.query("DELETE FROM vocab_lessons WHERE book_id = $1 AND position >= $2", [bookId, file.lessons.length]);
       return report;
     });
+  }
+
+  private async checkImport(file: VocabFile): Promise<void> {
+    const { book } = file;
+    const found = await this.db.query("SELECT id, title, term_lang, meaning_lang FROM vocab_books WHERE slug = $1", [book.id]);
+    if (!found[0]) return;
+    const known = found[0];
+    if (known.term_lang !== book.term || known.meaning_lang !== book.meaning) {
+      throw new ImportRefused(
+        `the book "${book.id}" on the server is ${known.term_lang} → ${known.meaning_lang}, this file is ${book.term} → ${book.meaning}: ` +
+          `not imported. Check the file's book id; to replace the book anyway, add --replace.`,
+      );
+    }
+    const rows = await this.db.query(
+      `SELECT e.term, e.meaning, (SELECT COUNT(*) FROM vocab_progress p WHERE p.entry_id = e.id) AS cards ${ENTRY_JOINS} WHERE b.id = $1`,
+      [n(known.id)],
+    );
+    const kept = new Set(file.lessons.flatMap((l) => l.sections.flatMap((s) => s.entries.map((e) => `${e.term}\u0000${e.meaning}`))));
+    const gone = rows.filter((r) => !kept.has(`${r.term}\u0000${r.meaning}`));
+    const withProgress = gone.filter((r) => n(r.cards) > 0).length;
+    if (rows.length > 0 && gone.length > rows.length * MAX_REMOVED_SHARE && withProgress > 0) {
+      throw new ImportRefused(
+        `importing this file would remove ${gone.length} of the ${rows.length} entries of "${book.id}", ` +
+          `${withProgress} of them with players' progress: not imported. Is it the right file? To replace the book anyway, add --replace.`,
+      );
+    }
   }
 
   async books(): Promise<VocabBookInfo[]> {
