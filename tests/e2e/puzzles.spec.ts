@@ -125,6 +125,18 @@ test("notes, and a phone: no sideways scrolling at level 4", async ({ page }) =>
   await page.keyboard.press(String(p.solution[free]));
   await expect(cell(page, free).locator(".cell-value")).toHaveText(String(p.solution[free]));
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+  // The level buttons hold their labels, at the phone's width and just above it (four columns from 600 px), even with text enlarged.
+  for (const [width, fontSize] of [[360, "100%"], [360, "130%"], [600, "100%"], [600, "130%"]] as const) {
+    await page.setViewportSize({ width, height: 740 });
+    await page.evaluate((size) => (document.documentElement.style.fontSize = size), fontSize);
+    const spill = await page.evaluate(() =>
+      Array.from(document.querySelectorAll(".puzzle-levels .segment")).filter((button) => {
+        const b = button.getBoundingClientRect();
+        return Array.from(button.querySelectorAll("span")).some((t) => t.getBoundingClientRect().left < b.left || t.getBoundingClientRect().right > b.right);
+      }).length,
+    );
+    expect(spill, `${width} px, text at ${fontSize}`).toBe(0);
+  }
 });
 
 test("the same number gives the same grid; each level keeps its own", async ({ page }) => {

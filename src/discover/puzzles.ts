@@ -130,7 +130,9 @@ function levelPanel(s: State, draw: () => void): HTMLElement {
     legend: dt("levelTitle"),
     options: LEVELS.map((l) => {
       const label = el("span", "puzzle-level");
-      label.append(el("strong", "", String(l.id)), el("span", "puzzle-level-size", `${l.size} × ${l.size}${OPS_SHOWN[l.id] ? ` ${OPS_SHOWN[l.id]}` : ""}`));
+      // Size and operations on separate lines: "6 × 6 + − × ÷" on one line does not fit a quarter of a phone.
+      label.append(el("strong", "", String(l.id)), el("span", "puzzle-level-size", `${l.size} × ${l.size}`));
+      if (OPS_SHOWN[l.id]) label.append(el("span", "puzzle-level-ops", OPS_SHOWN[l.id]!));
       return { value: l.id, label, aria: `${dt("level", { level: l.id })}, ${l.size} × ${l.size} ${OPS_SHOWN[l.id]}` };
     }),
     chosen: s.level,

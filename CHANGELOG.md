@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.9.1
+
+- **Logic grids, level buttons:** "6 × 6 + − × ÷" no longer spills out of its button on a phone. The size and the operations are on two lines, the four buttons stay the same width, and they sit in two columns below 600 px instead of 520 px. A test checks this at 360 and 600 px, with text at 100 % and 130 %.
+- **Tests:** the probability test accepts the "🔁 À revoir" badge before the topic's name. This was already fixed in 5.9.0.
+
 ## 5.9.0
 
 - **QCM: five new topics,** 100 kinds of question in all, 23 new mistake types.

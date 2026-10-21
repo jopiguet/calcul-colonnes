@@ -3089,7 +3089,8 @@ button.home-link {
 
 .puzzle-levels {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* minmax(0, …): equal columns, whatever the width of a label. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.4rem;
   margin: 0;
   padding: 0;
@@ -3102,6 +3103,14 @@ button.home-link {
 
 .puzzle-levels .segment {
   min-height: 3rem;
+  min-width: 0;
+  padding: 0.45rem 0.3rem;
+}
+
+@media (min-width: 600px) {
+  .puzzle-levels {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .puzzle-level {
@@ -3116,10 +3125,15 @@ button.home-link {
   font-size: 1.1rem;
 }
 
-.puzzle-level-size {
+.puzzle-level-size,
+.puzzle-level-ops {
   font-family: var(--digits);
   font-size: 0.7rem;
   white-space: nowrap;
+}
+
+.puzzle-level-ops {
+  letter-spacing: -0.02em;
 }
 
 .puzzle-rules p {
@@ -3300,9 +3314,6 @@ button.home-link {
 @media (max-width: 520px) {
   .puzzle-key {
     min-width: 2.5rem;
-  }
-  .puzzle-levels {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
