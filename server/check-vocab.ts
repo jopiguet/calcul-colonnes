@@ -115,6 +115,29 @@ for (const [given, expected, reading, verdict] of japanese) {
   expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)}, ja)`, grade(given, expected, "ja", reading), verdict);
 }
 
+// Arabic: script with or without vowel marks, or the book's transliteration.
+const arabic: [string, string, string, Verdict][] = [
+  ["الأسبوع", "الأُسبوع", "al usbou’", "right"],
+  ["الأُسبوع", "الأُسبوع", "al usbou’", "right"],
+  ["الاسبوع", "الأُسبوع", "al usbou’", "accent"],
+  ["أسبوع", "الأُسبوع", "al usbou’", "typo"],
+  ["al usbou’", "الأُسبوع", "al usbou’", "right"],
+  ["al-usbu", "الأُسبوع", "al usbou’", "right"],
+  ["Alusbou", "الأُسبوع", "al usbou’", "right"],
+  ["usbou", "الأُسبوع", "al usbou’", "typo"],
+  ["daqiqa", "دقيقة", "daqeeqa", "right"],
+  ["دقيقه", "دقيقة", "daqeeqa", "accent"],
+  ["المُهندسة", "المُهَندس/المهندسة", "al muhandes/ almuhandesa", "right"],
+  ["al muhandesa", "المُهَندس/المهندسة", "al muhandes/ almuhandesa", "right"],
+  ["متى؟", "متى...؟", "mata...?", "right"],
+  ["الشهر", "الأُسبوع", "al usbou’", "wrong"],
+  ["shahr", "الأُسبوع", "al usbou’", "wrong"],
+  ["", "الأُسبوع", "al usbou’", "wrong"],
+];
+for (const [given, expected, reading, verdict] of arabic) {
+  expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)}, ar)`, grade(given, expected, "ar", reading), verdict);
+}
+
 expect("writable short", writable("el coche"), true);
 expect("writable long", writable("¿Puedo preguntarle qué edad tiene?"), false);
 
@@ -317,7 +340,7 @@ if (file) {
   const vocab = parseVocabFile(JSON.parse(readFileSync(file, "utf8")));
   let entries = 0;
   let written = 0;
-  const lang = (code: string): AnswerLang => (code === "es" || code === "de" || code === "ja" ? code : "en");
+  const lang = (code: string): AnswerLang => (code === "es" || code === "de" || code === "ja" || code === "ar" ? code : "en");
   const termLang = lang(vocab.book.term);
   const meaningLang = lang(vocab.book.meaning);
   for (const lesson of vocab.lessons) {
@@ -366,4 +389,4 @@ if (failures > 0) {
   console.error(`${failures} failure(s)`);
   process.exit(1);
 }
-console.log(`vocabulary checks passed (${cases.length + japanese.length} grading cases)`);
+console.log(`vocabulary checks passed (${cases.length + japanese.length + arabic.length} grading cases)`);

@@ -2059,6 +2059,25 @@ button.home-link {
     "Noto Sans CJK JP", var(--font);
 }
 
+/* Arabic: the system's Arabic fonts, larger than Latin text at the same size
+   and with room above and below for the vowel marks. */
+:lang(ar) {
+  font-family: "Geeza Pro", "Noto Naskh Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, var(--font);
+}
+
+.vocab-prompt:lang(ar) {
+  font-size: clamp(2rem, 1.5rem + 2.5vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+
+.choice-text:lang(ar),
+.vocab-input:lang(ar) {
+  font-size: 1.35rem;
+  line-height: 1.7;
+}
+
 .vocab-prompt:lang(ja) {
   font-weight: 700;
   letter-spacing: 0.02em;

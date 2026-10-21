@@ -1,0 +1,21 @@
+{
+ "format": 2,
+ "book": { "id": "test-arabic", "title": "Test words", "kind": "translation", "term": "ar", "meaning": "en" },
+ "lessons": [
+  {
+   "title": "الأساسيات", "subtitle": "Basics",
+   "sections": [
+    {
+     "title": "الوقت", "subtitle": "Time",
+     "entries": [
+      { "term": "اليَوم", "meaning": "day", "reading": "al yawm" },
+      { "term": "الأُسبوع", "meaning": "week", "reading": "al usbou’" },
+      { "term": "الشَّهر", "meaning": "month", "reading": "ash-shahr" },
+      { "term": "السَّنة", "meaning": "year", "reading": "as-sana" },
+      { "term": "أخضَر", "meaning": "green", "reading": "akhdar" }
+     ]
+    }
+   ]
+  }
+ ]
+}

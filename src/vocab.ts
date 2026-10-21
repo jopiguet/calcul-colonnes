@@ -163,7 +163,9 @@ async function start(ctx: VocabContext, target: Target): Promise<void> {
 /** Lesson and section titles: in the language studied, the other below when the book has it. */
 function titleBlock(title: string, subtitle: string, cls: string): HTMLElement {
   const block = el("span", cls);
-  block.append(el("span", `${cls}-es`, title));
+  const main = el("span", `${cls}-es`, title);
+  main.dir = "auto"; // Arabic titles read right to left
+  block.append(main);
   if (subtitle && subtitle.toLowerCase() !== title.toLowerCase()) block.append(el("span", `${cls}-en`, subtitle));
   return block;
 }
@@ -277,9 +279,11 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   wrap.append(order);
 
   // Japanese: rōmaji with the question, or only once answered.
-  if (book.term === "ja" && book.kind !== "characters") {
+  // Arabic: the transliteration, the same choice.
+  if ((book.term === "ja" || book.term === "ar") && book.kind !== "characters") {
+    const arabic = book.term === "ar";
     const romaji = el("fieldset", "segmented vocab-romaji");
-    romaji.append(el("legend", "field-label", vt("romajiTitle")));
+    romaji.append(el("legend", "field-label", vt(arabic ? "transcriptionTitle" : "romajiTitle")));
     for (const [value, key] of [["always", "romajiShow"], ["after", "romajiHide"]] as const) {
       const on = (prefs.romaji[book.id] ?? "always") === value;
       const option = button(on ? "segment on" : "segment", vt(key), () => {
@@ -290,7 +294,7 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       option.setAttribute("aria-pressed", String(on));
       romaji.append(option);
     }
-    wrap.append(romaji, el("p", "hint left", vt("romajiHint")));
+    wrap.append(romaji, el("p", "hint left", vt(arabic ? "transcriptionHint" : "romajiHint")));
   }
 
   // Lessons, one open at a time.
@@ -487,6 +491,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   question.append(el("p", "vocab-ask", ask));
   const prompt = el("p", glyphShown ? "vocab-prompt vocab-glyph" : "vocab-prompt", card.prompt);
   prompt.lang = card.promptLang;
+  prompt.dir = "auto";
   question.append(prompt);
   // Rōmaji: with the question, or once answered, as the player chose.
   const showReading = romajiAlways(ctx.book) || s.result !== null;
@@ -556,6 +561,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
       const b = button(glyphChosen ? "choice is-glyph" : "choice", "", () => void submit(option));
       const text = el("span", "choice-text", option);
       text.lang = answerLang;
+      text.dir = "auto";
       const reading = card.optionReadings?.[i];
       if (reading && showReading) {
         const r = el("span", "choice-reading", reading);
@@ -580,12 +586,14 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
         "field-label",
         card.direction === "read" ? vt("answerReading")
           : card.script === "kana" ? vt("answerSound")
-          : answerLang === "ja" ? vt("answerJa") : vt("answerIn", { lang: langName(answerLang) }),
+          : answerLang === "ja" ? vt("answerJa")
+          : answerLang === "ar" ? vt("answerAr") : vt("answerIn", { lang: langName(answerLang) }),
       ),
     );
     const input = el("input", "vocab-input");
     input.type = "text";
     input.lang = answerLang;
+    input.dir = "auto";
     input.autocomplete = "off";
     input.spellcheck = false;
     input.setAttribute("autocapitalize", "off");
@@ -634,7 +642,8 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     // Japanese: the word as printed and how it reads, whatever was typed.
     if (card.direction === "recall" && r.reading) {
       const reading = el("span", "vocab-verdict-reading", r.verdict === "right" ? `${r.expected} · ${r.reading}` : r.reading);
-      reading.lang = "ja";
+      reading.lang = card.answerLang;
+      reading.dir = "auto";
       feedback.append(reading);
     }
     if (r.feminine) feedback.append(el("span", "vocab-fem", ` (f)`));
@@ -701,7 +710,10 @@ function doneView(ctx: VocabContext, s: Session): HTMLElement {
       const list = el("ul", "vocab-missed");
       for (const m of s.missed.values()) {
         const item = el("li");
-        item.append(el("span", "vocab-missed-prompt", m.prompt), el("span", "vocab-missed-answer", m.expected));
+        const prompt = el("span", "vocab-missed-prompt", m.prompt);
+        const answer = el("span", "vocab-missed-answer", m.expected);
+        prompt.dir = answer.dir = "auto";
+        item.append(prompt, answer);
         list.append(item);
       }
       wrap.append(list);

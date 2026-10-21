@@ -13,6 +13,8 @@ Two kinds of book are supported:
 | | | *key* | the Spanish: *la llave* |
 | translation | *German 3000 words and phrases* | *die Straße* | its meaning: *street* |
 | | | *street* | the German: *die Straße* or *die Strasse* |
+| translation | *Arabic 3000 words and phrases* | الأُسبوع *al usbou’* | its meaning: *week* |
+| | | *week* | the Arabic: الأُسبوع, الأسبوع or *al usbou’* |
 | translation | *Japanese vocabulary for English speakers* | 猫 *neko* | its meaning: *cat* |
 | | | *cat* | the Japanese: 猫, ねこ or *neko* |
 | definition | *Vocabulary 4000* (English) | *abase* | its definition: *degrade* |
@@ -40,8 +42,8 @@ own, and stay in your database:
 - **Storage:** the import puts the entries in your database (SQLite or Neon). They are never part of the project, a build or a release.
 - **Access:** keep the app behind its sign-in, and set `REGISTRATION=closed` if the server is reachable from the internet. Only your accounts then see the content.
 
-The tests use five invented books (`tests/e2e/fixtures/`): 27 Spanish
-entries, 5 German ones, 20 English ones, 13 Japanese ones and 17 characters.
+The tests use six invented books (`tests/e2e/fixtures/`): 27 Spanish
+entries, 5 German ones, 5 Arabic ones, 20 English ones, 13 Japanese ones and 17 characters.
 
 ## Importing a book
 
@@ -54,6 +56,9 @@ python3 tools/vocab-extract.py "Collins Spanish 3000.pdf" > data/vocab-spanish.j
 # Collins German 3000 words and phrases: same layout, language given
 python3 tools/vocab-extract.py "Collins German 3000.pdf" de > data/vocab-german.json
 
+# Collins Arabic 3000 words and phrases: same layout, Arabic rebuilt from its glyphs
+python3 tools/vocab-extract.py "Collins Arabic 3000.pdf" ar > data/vocab-arabic.json
+
 # Vocabulary 4000 (Jeff Kolby)
 python3 tools/vocab-extract-4000.py "Vocabulary 4000.pdf" > data/vocab-english.json
 
@@ -63,12 +68,13 @@ python3 tools/vocab-extract-japanese.py "Japanese vocabulary.epub" > data/vocab-
 npm run check:vocab -- data/vocab-english.json   # optional: every entry can be asked and graded
 npm run vocab:import -- data/vocab-spanish.json  # into the database of .env
 npm run vocab:import -- data/vocab-german.json
+npm run vocab:import -- data/vocab-arabic.json
 npm run vocab:import -- data/vocab-english.json
 npm run vocab:import -- data/vocab-japanese.json
 ```
 
 Each file holds one book, identified by its id (`collins-spanish`,
-`collins-german`, `english-4000`, `japanese-5000`). Importing a file updates that book only. The
+`collins-german`, `collins-arabic`, `english-4000`, `japanese-5000`). Importing a file updates that book only. The
 Spanish book keeps the id of its first version, so progress carries over; it
 is shown by its title, *3000 words and phrases*.
 
@@ -104,6 +110,18 @@ sections, 3,206 entries. Two things differ from the Spanish book:
 
 - **Capitals.** Headings are set in small capitals, which lose German's capitalised nouns. A title word takes a capital unless it is a small word of grammar (*und*, *mit*, *dem*, *im*, *für*…): "Probleme mit dem Auto", "Tage, Monate und Jahreszeiten".
 - **ß in headings.** The small capitals have no ß, so the book sets it in a smaller size, which the font filter would skip ("fu ball"). A heading line holding such a letter is read again character by character: "Fußball", "Gliederfüßer".
+
+### *Arabic 3000 words and phrases* (Collins)
+
+The same script with `ar`: 10 lessons, 109 sections, 3,014 entries, each with
+its transliteration as the reading. The page layout is the series', but the
+Arabic needs rebuilding:
+
+- **Order.** The PDF stores Arabic in visual order, left to right on the page, as single glyphs. Each line of a column is read again from its characters, right to left. Numbers and Latin inside it stay left to right.
+- **Vowel marks** are separate glyphs placed by position. A mark goes with the letter starting at or just before it on the page, where the glyph ends when read right to left. Two entries out of 3,014 still show a doubled mark.
+- **Brackets** come out in either glyph. In reading order they are made to open, then close.
+- **Headings:** the Arabic half sits on the heading's line, or on the next one when a long English title ends with "|".
+- **Transliteration:** the small Latin lines under each entry. A line ending in "-" goes on without a space.
 
 ### *Vocabulary 4000*
 
@@ -324,6 +342,22 @@ of two Spanish words with the same English meaning.
 In English answers, *the*, *a*, *an* and *to* are optional: *key*, *the key*;
 *walk*, *to walk*.
 
+**Arabic answers** are written in Arabic script or in the book's
+transliteration, which is the entry's reading.
+
+| Typed | Verdict |
+|---|---|
+| The word as printed, or without any vowel marks (الأُسبوع, الأسبوع) | right |
+| The transliteration; case, spaces, hyphens, apostrophes and long-vowel spellings ignored (*al usbou’*, *al-usbu*, *daqiqa* for *daqeeqa*) | right |
+| Another alef, alif maqsura for ya, ta marbuta for ha (الاسبوع, دقيقه) | accent: right, spelling shown |
+| The article ال (*al*) left out or added (أسبوع, *usbou*) | typo: right, spelling shown |
+| One letter off, in a word of at least 5 letters | typo |
+| Anything else | wrong |
+
+Arabic is shown right to left, in the system's Arabic font and a larger size,
+with the transliteration under the word. As in Japanese, the transliteration
+can wait until the answer (*Transcription › Après la réponse*).
+
 **German answers.** Capitals are not checked: nouns take one, but a phone
 keyboard may not. *ß* may be written *ss*, as in Switzerland, and *ä*, *ö*, *ü*
 as *ae*, *oe*, *ue*: both are right. A plain vowel for an umlaut (*die Kuche*)
@@ -347,7 +381,7 @@ as printed, while *konnichiha* is a typo for *konnichiwa*.
 
 A multiple-choice answer is compared with the option as printed.
 
-`npm run check:vocab` runs 77 grading cases (21 of them Japanese, 12 German), the
+`npm run check:vocab` runs 93 grading cases (21 of them Japanese, 16 Arabic, 12 German), the
 scheduling rules, the three kinds of session, the rules of definition books
 and the rōmaji on Japanese cards. With a file, it also
 checks that every entry is accepted when typed as printed, in both

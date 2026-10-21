@@ -1,5 +1,22 @@
 # Changelog
 
+## 6.4.0
+
+- **Arabic vocabulary:** *Arabic 3000 words and phrases* (Collins): `python3 tools/vocab-extract.py book.pdf ar`. It gives 10 lessons, 109 sections and 3,014 entries, each with the book's transliteration.
+  - **Arabic rebuilt from the PDF's glyphs:** the PDF stores it in visual order.
+    - Lines are read right to left.
+    - Each vowel mark goes with its letter.
+    - Numbers and Latin stay left to right.
+    - Brackets are balanced.
+  - **Headings:** the Arabic half of a heading is found on its line or, after a long English title, on the next.
+- **Arabic grading:**
+  - **Script:** vowel marks optional; another alef, alif maqsura or ta marbuta is an accent slip; a missing or extra article ال is a near miss.
+  - **Transliteration:** compared by its letters, long-vowel spellings and hyphens ignored.
+- **Right to left:** Arabic prompts, options, answers, titles and the summary are laid out right to left, in the system's Arabic font, larger, with room for the vowel marks.
+- **Transliteration setting:** the *Rōmaji* choice (with the question, or after the answer) also applies to Arabic, as *Transcription*.
+- **Fix:** the reading shown after a recall answer was always marked as Japanese; it now takes the book's language.
+- **Checks:** 16 Arabic grading cases; every entry of the extracted book accepts its own text and transliteration; an e2e test with an invented five-word Arabic book.
+
 ## 6.3.0
 
 - **German vocabulary:** *German 3000 words and phrases* (Collins), read by the Spanish book's extractor with the language as argument: `python3 tools/vocab-extract.py book.pdf de`. 10 lessons, 112 sections, 3,206 entries.

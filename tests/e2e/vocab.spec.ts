@@ -454,3 +454,48 @@ test("the German book: articles required, ß as ss and umlauts as ae, oe, ue acc
   await page.locator(".vocab-letter", { hasText: "ß" }).click();
   await expect(page.locator(".vocab-input")).toHaveValue("ß");
 });
+
+test("the Arabic book: right to left, transliteration under the word, answers in script or transliteration", async ({ page }) => {
+  const name = await newPlayer(page, "Ara");
+  const user = await userByName(page.request, name);
+  await openActivity(page, "vocab-test-arabic");
+  await expect(page.locator(".vocab-home h1")).toHaveText("Vocabulaire arabe");
+  await expect(page.locator(".vocab-romaji legend")).toHaveText("Transcription");
+
+  // A new word: the Arabic shown right to left, its transliteration under it.
+  const words: Record<string, [string, string]> = {
+    "اليَوم": ["day", "al yawm"], "الأُسبوع": ["week", "al usbou’"], "الشَّهر": ["month", "ash-shahr"],
+    "السَّنة": ["year", "as-sana"], "أخضَر": ["green", "akhdar"],
+  };
+  await startFirstSection(page);
+  const prompt = await page.locator(".vocab-prompt").innerText();
+  await expect(page.locator(".vocab-prompt")).toHaveAttribute("lang", "ar");
+  expect(await page.locator(".vocab-prompt").evaluate((el) => getComputedStyle(el).direction)).toBe("rtl");
+  const [meaning, reading] = words[prompt]!;
+  await expect(page.locator(".vocab-reading")).toHaveText(reading);
+  const options = await page.locator(".choice-text").allInnerTexts();
+  await page.keyboard.press(String(options.indexOf(meaning) + 1));
+  await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
+
+  // Recall, written: with or without vowel marks, or in transliteration.
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { slug: string; lessons: { id: number }[] }[];
+  const arabic = books.find((b) => b.slug === "test-arabic")!;
+  // New words and the one just learnt: every entry of the section.
+  const cards: { entryId: number; prompt: string }[] = [];
+  for (const purpose of ["learn", "review"]) {
+    const url = `/api/vocab/session?userId=${user.id}&kind=lesson&id=${arabic.lessons[0]!.id}&purpose=${purpose}&size=20&mode=written`;
+    cards.push(...((await (await page.request.get(url)).json()) as { entryId: number; prompt: string }[]));
+  }
+  const entryOf = (p: string): number => cards.find((c) => c.prompt === p)!.entryId;
+  const post = (entryId: number, given: string) =>
+    page.request.post("/api/vocab/answers", { data: { userId: user.id, entryId, direction: "recall", mode: "written", given } })
+      .then((r) => r.json()) as Promise<{ verdict: string; correct: boolean; expected: string; reading: string }>;
+  const week = entryOf("الأُسبوع");
+  expect(await post(week, "الأُسبوع")).toMatchObject({ verdict: "right", reading: "al usbou’" });
+  expect(await post(week, "الأسبوع")).toMatchObject({ verdict: "right" });
+  expect(await post(week, "al-usbu")).toMatchObject({ verdict: "right" });
+  expect(await post(week, "الاسبوع")).toMatchObject({ verdict: "accent", correct: true, expected: "الأُسبوع" });
+  expect(await post(week, "أسبوع")).toMatchObject({ verdict: "typo", correct: true });
+  expect(await post(week, "الشهر")).toMatchObject({ correct: false });
+  expect(await post(entryOf("أخضَر"), "akhdar")).toMatchObject({ verdict: "right" });
+});

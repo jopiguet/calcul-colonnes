@@ -27,6 +27,13 @@
  * be); ß may be written ss (as in Switzerland) and ä, ö, ü as ae, oe, ue:
  * both are right. A plain vowel for an umlaut (Mutter for Mütter) is "accent".
  *
+ * Arabic answers are written in Arabic script or in the book's transliteration
+ * (the entry's reading). Vowel marks are optional: كتاب and كِتاب are both
+ * right. Another form of alef, alif maqsura for ya, ta marbuta for ha (أ/ا,
+ * ى/ي, ة/ه) is "accent"; the article ال (al) left out or added is "typo".
+ * Transliteration is compared by its letters: case, spaces, hyphens,
+ * apostrophes and the spelling of long vowels (ee/i, ou/u, aa/a) do not count.
+ *
  * Japanese answers are written in kana or kanji (with a Japanese keyboard) or
  * in rōmaji, the entry's reading. Rōmaji is compared without its long-vowel
  * marks: "gacho", "gachou" and "gachō" are all ガチョウ. Full-width and
@@ -36,7 +43,7 @@
 import { hasKana, kanaToRomaji } from "./kana";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "es" | "de" | "ja";
+export type AnswerLang = "en" | "es" | "de" | "ja" | "ar";
 
 export const COUNTS_AS_RIGHT: ReadonlySet<Verdict> = new Set(["right", "accent", "typo"]);
 
@@ -46,6 +53,7 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   // English entries have no article ("key"), but "the key" and "to walk" are fine.
   en: ["the", "a", "an", "to"],
   ja: [],
+  ar: [],
 };
 
 /** Text as shown: book typography cleaned, "..." for an open end. */
@@ -60,7 +68,7 @@ export function normalise(text: string): string {
     .toLowerCase()
     .replace(/[’`´]/g, "'")
     .replace(/\.\.\.|…/g, " ")
-    .replace(/[¿?¡!.,;:"«»“”()]/g, " ")
+    .replace(/[¿?¡!.,;:"«»“”()؟،؛]/g, " ")
     .replace(/\s*\/\s*/g, " / ")
     .replace(/\s+/g, " ")
     .trim();
@@ -202,12 +210,63 @@ function gradeJapanese(given: string, expected: string, reading: string): Verdic
   return "wrong";
 }
 
+/** Arabic letters only: no vowel marks, no tatweel, no punctuation, no spaces. */
+export function arabicKey(text: string): string {
+  return normalise(text.normalize("NFKC"))
+    .replace(/[\u064b-\u065f\u0670\u0640]/g, "")
+    .replace(/\s/g, "");
+}
+
+/** Spellings that vary: forms of alef, alif maqsura, ta marbuta, hamza seats. */
+const arabicLoose = (key: string): string =>
+  key.replace(/[أإآٱ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه").replace(/ؤ/g, "و").replace(/ئ/g, "ي");
+
+/** Without the article: الـ at the start of a word ("اليوم" → "يوم"). */
+const withoutAl = (key: string): string => key.replace(/^ال/, "");
+
+/** A transliteration by its letters: "al usbou’", "alusbu" and "Al-Usbu" are one. */
+export function latinKey(text: string): string {
+  return plain(text.normalize("NFKC").toLowerCase())
+    .replace(/[^a-z]/g, "")
+    .replace(/ou|oo/g, "u")
+    .replace(/ee/g, "i")
+    .replace(/e/g, "i")
+    .replace(/o/g, "u")
+    .replace(/([a-z])\1+/g, "$1");
+}
+
+function gradeArabic(given: string, expected: string, reading: string): Verdict {
+  if (!normalise(given)) return "wrong";
+  // Arabic script: each accepted form, without its vowel marks.
+  if (/[\u0600-\u06ff]/.test(given)) {
+    const answer = arabicKey(given);
+    const forms = acceptedForms(expected.normalize("NFKC")).map(arabicKey);
+    if (forms.includes(answer)) return "right";
+    if (forms.some((f) => arabicLoose(f) === arabicLoose(answer))) return "accent";
+    if (forms.some((f) => withoutAl(arabicLoose(f)) === withoutAl(arabicLoose(answer)))) return "typo";
+    if (forms.some((f) => f.length >= 5 && distance(arabicLoose(f), arabicLoose(answer), 1) <= 1)) return "typo";
+    return "wrong";
+  }
+  if (!reading) return "wrong";
+  // Transliteration.
+  const key = latinKey(given);
+  // Each side of a "/" on its own: the book spaces them unevenly ("al muhandes/ almuhandesa").
+  const keys = [...acceptedForms(reading), ...reading.split("/").flatMap(acceptedForms)].map(latinKey).filter(Boolean);
+  if (!key) return "wrong";
+  if (keys.includes(key)) return "right";
+  const bare = (k: string): string => k.replace(/^a[lshdtrnz]?(?=[a-z]{2})/, "");
+  if (keys.some((k) => /^al/.test(k) !== /^al/.test(key) && bare(k) === bare(key))) return "typo";
+  if (keys.some((k) => k.length >= 5 && distance(key, k, 1) <= 1)) return "typo";
+  return "wrong";
+}
+
 /**
  * The verdict for a written answer. `reading` is the term's reading, for a
  * Japanese term: rōmaji is accepted for it.
  */
 export function grade(given: string, expected: string, lang: AnswerLang, reading = ""): Verdict {
   if (lang === "ja") return gradeJapanese(given, expected, reading);
+  if (lang === "ar") return gradeArabic(given, expected, reading);
   const answer = normalise(given);
   if (!answer) return "wrong";
   const forms = acceptedForms(expected);

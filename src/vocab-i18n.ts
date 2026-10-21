@@ -40,6 +40,9 @@ const fr = {
   askWord: "Quel est le mot ?",
   answerIn: "Réponse en {lang}",
   answerJa: "Réponse en japonais : kana, kanji ou rōmaji",
+  answerAr: "Réponse en arabe : écriture arabe ou transcription",
+  transcriptionTitle: "Transcription",
+  transcriptionHint: "Après la réponse : l'arabe seul pendant la question, la transcription ensuite.",
   example: "Exemple : {note}",
   check: "Vérifier",
   next: "Continuer",
@@ -172,6 +175,9 @@ const es: Record<Key, string> = {
   askWord: "¿Cuál es la palabra?",
   answerIn: "Respuesta en {lang}",
   answerJa: "Respuesta en japonés: kana, kanji o rōmaji",
+  answerAr: "Respuesta en árabe: escritura árabe o transcripción",
+  transcriptionTitle: "Transcripción",
+  transcriptionHint: "Tras la respuesta: solo el árabe durante la pregunta, la transcripción después.",
   example: "Ejemplo: {note}",
   check: "Comprobar",
   next: "Continuar",
@@ -302,6 +308,9 @@ const en: Record<Key, string> = {
   askWord: "What is the word?",
   answerIn: "Answer in {lang}",
   answerJa: "Answer in Japanese: kana, kanji or rōmaji",
+  answerAr: "Answer in Arabic: Arabic script or transliteration",
+  transcriptionTitle: "Transliteration",
+  transcriptionHint: "After the answer: only the Arabic during the question, the transliteration afterwards.",
   example: "Example: {note}",
   check: "Check",
   next: "Continue",
@@ -402,9 +411,9 @@ export function vt(key: Key, values: Record<string, string | number> = {}): stri
 
 /** A language's name in the interface's language, as used in "Vocabulaire {lang}". */
 const LANGUAGE_NAMES: Record<Lang, Record<string, string>> = {
-  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais" },
-  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés" },
-  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese" },
+  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe" },
+  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe" },
+  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic" },
 };
 
 export function langName(code: string): string {
