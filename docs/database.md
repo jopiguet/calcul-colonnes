@@ -120,7 +120,8 @@ they are regenerated from the test's definition. See
 | `question_count` | integer | |
 | `focus` | text | comma-separated kinds brought back for review; empty if none |
 | `version` | integer | generator version the test was made with |
-| `answers` | text | JSON array of chosen option indexes, `-1` = blank |
+| `answers` | text | JSON array: for each question the chosen option index (`-1` = blank), or in a typed test the text typed |
+| `mode` | text | `choices`, or `typed` when numbers were typed where possible |
 | `correct` | integer | number of right answers, computed by the server |
 
 Index: `(user_id, at)`.
@@ -139,10 +140,11 @@ review of mistakes are built from.
 | `position` | integer | question number in the test, from 0 |
 | `skill` | text | kind of question, e.g. `derivatives.product` |
 | `topic` | text | |
-| `given` | integer | option chosen, `-1` = blank |
+| `given` | integer | option chosen, `-1` = blank; for a typed answer the option it matches, `-2` when it matches none |
 | `correct` | smallint | |
 | `review` | smallint | 1 if the question was brought back for review |
-| `mistake` | text, null | mistake type of the wrong option chosen (`MISTAKES` in `shared/quiz/types.ts`); null when right or blank |
+| `mistake` | text, null | mistake type of the wrong option chosen or typed (`MISTAKES` in `shared/quiz/types.ts`); null when right, blank or matching no option |
+| `typed` | text, null | the text typed, as typed; null when an option was picked |
 
 Indexes: `(user_id, skill, at)`, `(quiz_id)`.
 
@@ -186,6 +188,7 @@ start, in order, each in its own transaction together with its row in
 | `008_vocab_books` | `vocab_books`; lessons belong to a book; `es`/`en` become `term`/`meaning`, titles become `title`/`subtitle`; `note` on entries. A Spanish book already imported becomes the book `collins-spanish`, keeping its ids and progress. |
 | `009_vocab_ordering` | `ordering` on `vocab_books`; the book `english-4000` becomes `alphabetical` (common SQL, one file) |
 | `010_vocab_reading` | `reading` on `vocab_entries`; the Spanish book's title loses the publisher's name (common SQL, one file) |
+| `011_typed_answers` | `mode` on `quiz_results`, `typed` on `quiz_answers` (common SQL, one file) |
 
 **File names.**
 
@@ -195,7 +198,7 @@ start, in order, each in its own transaction together with its row in
 
 **Adding a migration.**
 
-1. Create `010_name.sql`, or the pair of `010_name.sqlite.sql` and `010_name.postgres.sql`.
+1. Create `012_name.sql`, or the pair of `012_name.sqlite.sql` and `012_name.postgres.sql`.
 2. Restart the server.
 3. Never edit a migration that has already been applied somewhere: add a new one.
 

@@ -183,12 +183,13 @@ Tab **📐 QCM** (**Test** in Spanish).
 | Setting | Values |
 |---|---|
 | Level | *Lycée / Bachillerato*, or *Université / Universidad* |
-| Topics | By group. **Analyse:** function study, sequences, derivatives, integrals, limits, exponentials and logarithms, trigonometry, differential equations, and at university series and functions of two variables. **Algèbre:** complex numbers, matrices and systems. **Géométrie:** vectors, planes and distances in space. **Probabilités:** the binomial law, trees and Bayes' formula, counting, expectation, and at university the Poisson, exponential and normal laws. Only the topics of the chosen level are shown; at least one |
+| Topics | By group. **Analyse:** reading graphs, function study, sequences, derivatives, integrals, limits, exponentials and logarithms, trigonometry, differential equations, and at university series and functions of two variables. **Algèbre:** complex numbers, matrices and systems. **Géométrie:** vectors, planes and distances in space. **Probabilités:** the binomial law, trees and Bayes' formula, counting, expectation, and at university the Poisson, exponential and normal laws. Only the topics of the chosen level are shown; at least one |
 | Number of questions | 5, 10, 15 or 20 |
+| Réponses | *4 choix*, or *Au clavier*: questions whose answer is a number are answered by typing it (see [typed answers](#typed-answers)) |
 | 🔁 Revoir mes erreurs | On by default; see [review of mistakes](#progress-and-review-of-mistakes) |
 
 The topics in a test are taken in turn, so a test covers all the chosen ones
-evenly. The [question generators](question-generators.md#the-100-kinds-of-question)
+evenly. The [question generators](question-generators.md#the-110-kinds-of-question)
 page lists what each topic and level contains.
 
 ### Taking a test
@@ -207,6 +208,28 @@ are answered.
 Answers can be changed until the test is finished. Finishing with blank
 answers asks for confirmation; a blank counts as wrong. *Abandonner* drops the
 test without saving it. Changing the language during a test keeps the test.
+
+**Graph questions** (*Lecture graphique*) show a curve and ask for another:
+which curve is f′, which is g(x) = f(x − 2), which plane has this equation.
+The four options are drawn two by two and named by their letter only; their
+formulas appear in the corrections.
+
+#### Typed answers
+
+With *Réponses: Au clavier*, a question whose answer is a number shows a field
+instead of four options; the others keep their options. Under the field, the
+app shows what it reads (≈ 2,0944) as you type, and a row of keys adds the
+symbols phones hide: π, √, /, ^, −, e and brackets. `Enter` goes on.
+
+| Typed | Read as |
+|---|---|
+| `7/45`, `2π/3`, `2pi/3`, `√2`, `sqrt(2)/2`, `e^2 − 1`, `ln 3`, `3√2` | an exact value |
+| `1,05` or `1.05` | a rounding, right to its last digit: π/3 = 1.0472 is accepted, `1` or `1,0` is not |
+
+A rounding is never allowed more than 0.6 % of the answer. A value typed
+that matches a wrong option counts as that option, and its mistake is named
+in the corrections, as when it is picked. The server reads the text again
+and decides.
 
 ### Results
 

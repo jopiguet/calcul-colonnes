@@ -138,11 +138,17 @@ sequenceDiagram
   B->>B: focus = kinds "to review" within level and topics
   B->>B: seed = crypto random, then generateQuiz(spec)
   Note over B: player answers, browser grades for display
-  B->>S: POST /api/quizzes {seed, level, topics, count, focus, version, answers}
-  S->>S: generateQuiz(spec) → gradeQuiz()
+  B->>S: POST /api/quizzes {seed, level, topics, count, focus, version, mode, answers}
+  S->>S: generateQuiz(spec) → resolveAnswers() → gradeQuiz()
   S->>S: INSERT quiz_results + one quiz_answers row per question
   S-->>B: {correct, total}
 ```
+
+In a typed test (`mode: "typed"`), an answer to a question whose options are
+all numbers is the text typed. The server reads it with the same code as the
+browser (`shared/quiz/typed.ts`) and files it under the option it matches:
+the right one, a wrong one (so its mistake is recorded), or none (`-2`). The
+browser's own reading is only for the screen.
 
 ### Starting the server
 
@@ -186,7 +192,7 @@ compiled in by `vite.config.ts` and published as `/version.json`.
 
 ## Internationalisation
 
-- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 100 kinds of question and of the 96 mistake types. Every dictionary is typed against the French one, so a missing translation is a compile error.
+- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 110 kinds of question and of the 102 mistake types. Every dictionary is typed against the French one, so a missing translation is a compile error.
 - **Generated questions:** the generators produce only LaTeX plus *keys* for the sentence around it (`PromptKey`, `ExplanationKey`), so they contain no language.
 - **Spanish notation:** KaTeX macros render `\sin` as *sen* and `\arcsin` as *arcsen*.
 

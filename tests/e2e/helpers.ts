@@ -1,5 +1,5 @@
 import { expect, type APIRequestContext, type Page, type Request } from "@playwright/test";
-import { generateQuiz, gradeQuiz, type Question } from "../../shared/quiz/index.ts";
+import { generateQuiz, gradeQuiz, resolveAnswers, type Question } from "../../shared/quiz/index.ts";
 import type { NewQuizResult, Profile, User, UserStats } from "../../shared/types.ts";
 
 let counter = 0;
@@ -183,7 +183,37 @@ export function rebuild(body: NewQuizResult): { questions: Question[]; correct: 
     focus: body.focus ?? [],
     version: body.version,
   });
-  return { questions, correct: gradeQuiz(questions, body.answers) };
+  return { questions, correct: gradeQuiz(questions, resolveAnswers(questions, body.answers, body.mode ?? "choices")) };
+}
+
+/**
+ * Answers a test in which some questions are typed: `typed(i)` gives the text
+ * for a question shown with a field, `pick(i)` the option for the others.
+ */
+export async function takeMixedQuiz(
+  page: Page,
+  typed: (index: number) => string,
+  pick: (index: number) => number,
+): Promise<{ body: NewQuizResult; server: { correct: number; total: number }; typedAt: number[] }> {
+  await page.locator(".choices, .typed-input").first().waitFor();
+  const count = Number((await page.locator(".quiz-count").innerText()).split("/")[1]);
+  const typedAt: number[] = [];
+  for (let i = 0; i < count; i++) {
+    await expect(page.locator(".quiz-count")).toHaveText(new RegExp(`Question ${i + 1} /`));
+    if ((await page.locator(".typed-input").count()) > 0) {
+      typedAt.push(i);
+      await page.locator(".typed-input").fill(typed(i));
+    } else if (pick(i) >= 0) await page.locator(".choice").nth(pick(i)).click();
+    if (i < count - 1) await page.locator(".quiz .actions button.primary").click();
+  }
+  page.once("dialog", (dialog) => void dialog.accept());
+  const request = page.waitForRequest("**/api/quizzes");
+  const response = page.waitForResponse("**/api/quizzes");
+  await page.locator(".quiz .actions button.primary").click();
+  const body = (await request).postDataJSON() as NewQuizResult;
+  const server = (await (await response).json()) as { correct: number; total: number };
+  await expect(page.locator("#quiz-status")).not.toHaveText(/…/);
+  return { body, server, typedAt };
 }
 
 /**

@@ -36,7 +36,7 @@ The project and its folder keep their first name, `calcul-colonnes`.
 exponentials and logarithms, differential equations, complex numbers and probability,
 at *lycée / bachillerato* or university level.
 
-- Questions are generated, not drawn from a fixed bank: 100 kinds of question in 14 topics, each with its own parameters.
+- Questions are generated, not drawn from a fixed bank: 110 kinds of question in 15 topics, with graph questions and typed numeric answers, each with its own parameters.
 - The wrong options are typical mistakes, such as an exponent not lowered, the inner derivative forgotten, a sign error, or in probability P(A | B) taken for P(B | A) and the base rate ignored.
 - Every test ends with a corrected review and a short explanation per question.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.
@@ -124,7 +124,7 @@ Settings are read from `.env` (see `.env.example`):
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
-| [Question generators](docs/question-generators.md) | The 100 kinds of question, how a generator works, adding one, verification, versioning |
+| [Question generators](docs/question-generators.md) | The 110 kinds of question, how a generator works, adding one, verification, versioning |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |
 | [Database](docs/database.md) | Schema, migrations, SQLite and PostgreSQL |

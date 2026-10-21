@@ -42,8 +42,13 @@ export interface NewQuizResult {
   level: string;
   topics: string[];
   count: number;
-  /** Option index chosen for each question, or -1 when left blank. */
-  answers: number[];
+  /**
+   * For each question: the option index chosen (−1 when left blank), or in a
+   * typed test the text typed for a question whose answer is a number.
+   */
+  answers: (number | string)[];
+  /** "typed" when numbers were typed where possible; "choices" when omitted. */
+  mode?: "choices" | "typed";
   /** Kinds of question brought back for review (see generateQuiz). */
   focus?: string[];
   /** Generator version used by the browser; must be the server's. */

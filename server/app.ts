@@ -2,11 +2,14 @@ import { Hono } from "hono";
 import {
   LEVELS,
   MAX_QUESTIONS,
+  ANSWER_MODES,
   OPTION_COUNT,
   QUIZ_VERSION,
+  TYPED_MAX,
   topicsFor,
   TOPICS,
   isSkill,
+  type AnswerMode,
   type Level,
   type Topic,
 } from "../shared/quiz/index.ts";
@@ -42,11 +45,11 @@ function parseAttempt(body: unknown): NewAttempt | null {
   return { userId, maximum, operator, top, bottom, given, givenRemainder };
 }
 
-type ValidQuiz = NewQuizResult & { level: Level; topics: Topic[] };
+type ValidQuiz = NewQuizResult & { level: Level; topics: Topic[]; mode: AnswerMode };
 
 function parseQuiz(body: unknown): ValidQuiz | null {
   if (typeof body !== "object" || body === null) return null;
-  const { userId, seed, level, topics, count, answers, focus = [], version = QUIZ_VERSION } = body as Record<
+  const { userId, seed, level, topics, count, answers, focus = [], version = QUIZ_VERSION, mode = "choices" } = body as Record<
     string,
     unknown
   >;
@@ -59,7 +62,11 @@ function parseQuiz(body: unknown): ValidQuiz | null {
   // At least one topic must have questions at this level (some exist at one level only).
   if ((level === "school" || level === "university") && !topics.some((t) => topicsFor(level, typeof version === "number" ? version : QUIZ_VERSION).includes(t as Topic))) return null;
   if (!Array.isArray(answers) || answers.length !== count) return null;
-  if (!answers.every((a) => isInt(a, -1, OPTION_COUNT - 1))) return null;
+  if (!ANSWER_MODES.includes(mode as AnswerMode)) return null;
+  // An option index, or in a typed test a short text (matched against the options when graded).
+  const valid = (a: unknown): boolean =>
+    isInt(a, -1, OPTION_COUNT - 1) || (mode === "typed" && typeof a === "string" && a.length <= TYPED_MAX);
+  if (!answers.every(valid)) return null;
   if (!Array.isArray(focus) || focus.length > 100) return null;
   if (!focus.every((s) => typeof s === "string" && isSkill(s)) || new Set(focus).size !== focus.length) return null;
   return {
@@ -68,8 +75,9 @@ function parseQuiz(body: unknown): ValidQuiz | null {
     level: level as Level,
     topics: topics as Topic[],
     count,
-    answers: answers as number[],
+    answers: answers as (number | string)[],
     focus: focus as string[],
+    mode: mode as AnswerMode,
   };
 }
 

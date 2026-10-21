@@ -8,7 +8,7 @@
  *   npm run check:quiz [-- seeds]
  */
 import katex from "katex";
-import { generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, topicsFor, type Option, type Question } from "../shared/quiz/index.ts";
+import { generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, topicsFor, type Graph, type Option, type Question, matchTyped, typeable } from "../shared/quiz/index.ts";
 
 const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
 const near = (a: number, b: number, tol: number): boolean =>
@@ -156,6 +156,19 @@ function isRight(q: Question, o: Option): boolean {
       const [c, d] = v.y;
       return near(o.num!, simpson((x) => simpson((y) => v.f(x, y), c, d, 40), a, b, 40), 1e-9);
     }
+    case "slope":
+      return near(o.num!, derivative(v.f, v.a), 1e-6);
+    case "count": {
+      // Sign changes of f − k on a fine grid; the generator keeps the level away from tangency.
+      let n = 0;
+      const steps = 20000;
+      for (let i = 1; i <= steps; i++) {
+        const x0 = v.lo + ((v.hi - v.lo) * (i - 1)) / steps;
+        const x1 = v.lo + ((v.hi - v.lo) * i) / steps;
+        if (Math.sign(v.f(x0) - v.k) !== Math.sign(v.f(x1) - v.k)) n += 1;
+      }
+      return o.num === n;
+    }
     case "determinant":
       return near(o.num!, det(v.a), 1e-9);
     case "rank":
@@ -229,6 +242,48 @@ function rank(a: number[][]): number {
   return r;
 }
 
+/**
+ * Graphs: every curve shows enough of itself in its window, option curves can
+ * be told apart by eye (half a grid square somewhere), and options are drawn
+ * alike (all graphs or none, same window or same axes).
+ */
+function checkGraphs(q: Question): void {
+  const SAMPLES_X = 400;
+  const visible = (g: Extract<Graph, { type: "curves" }>, fn: (x: number) => number): number[] => {
+    const [x0, x1] = g.x;
+    return Array.from({ length: SAMPLES_X + 1 }, (_, i) => fn(x0 + ((x1 - x0) * i) / SAMPLES_X));
+  };
+  const share = (g: Extract<Graph, { type: "curves" }>, ys: number[]): number =>
+    ys.filter((y) => Number.isFinite(y) && y >= g.y[0] && y <= g.y[1]).length / ys.length;
+  const prompt = q.prompt.graph;
+  if (prompt?.type === "curves") {
+    for (const c of prompt.curves) if (share(prompt, visible(prompt, c.fn)) < 0.3) throw new Error("prompt curve mostly outside its window");
+  }
+  const graphs = q.options.map((o) => o.graph);
+  if (graphs.every((g) => g === undefined)) return;
+  if (graphs.some((g) => g === undefined)) throw new Error("some options drawn, some not");
+  const first = graphs[0]!;
+  if (first.type === "curves") {
+    const all = graphs as Extract<Graph, { type: "curves" }>[];
+    if (all.some((g) => g.type !== "curves" || g.x.join() !== first.x.join() || g.y.join() !== first.y.join())) throw new Error("options in different windows");
+    const clip = (y: number): number => (Number.isFinite(y) ? Math.max(first.y[0] - 1, Math.min(first.y[1] + 1, y)) : NaN);
+    const drawn = all.map((g) => visible(g, g.curves[0]!.fn));
+    drawn.forEach((ys) => {
+      if (share(first, ys) < 0.25) throw new Error("option curve mostly outside its window");
+    });
+    for (let i = 0; i < drawn.length; i++)
+      for (let j = i + 1; j < drawn.length; j++) {
+        const gap = Math.max(0, ...drawn[i]!.map((y, k) => Math.abs(clip(y) - clip(drawn[j]![k]!))).filter(Number.isFinite));
+        if (gap < 0.5) throw new Error(`options ${i} and ${j} look the same`);
+      }
+  } else {
+    const all = graphs as Extract<Graph, { type: "plane" }>[];
+    if (all.some((g) => g.type !== "plane" || g.extent !== first.extent)) throw new Error("planes on different axes");
+    if (all.some((g) => g.intercepts.some((v) => v === 0 || Math.abs(v) > g.extent))) throw new Error("intercept off the axes");
+    if (new Set(all.map((g) => g.intercepts.join())).size !== all.length) throw new Error("two planes drawn alike");
+  }
+}
+
 const sameList = (a: number[], b: number[], tol = 1e-9): boolean => a.length === b.length && a.every((x, i) => near(x, b[i]!, tol));
 
 function render(tex: string, where: string): void {
@@ -242,6 +297,7 @@ function render(tex: string, where: string): void {
 const seeds = Number(process.argv[2] ?? 400);
 const failures: string[] = [];
 const prompts = new Map<string, number>();
+const typedCount = new Map<string, number>();
 const mistakesSeen = new Map<string, number>();
 let checked = 0;
 
@@ -271,6 +327,18 @@ for (const level of LEVELS) {
         render(q.prompt.tex, where);
         render(q.explanation.tex, where);
         q.options.forEach((o) => render(o.tex, where));
+        checkGraphs(q);
+        if (typeable(q)) {
+          typedCount.set(q.skill, (typedCount.get(q.skill) ?? 0) + 1);
+          // Typed: each option's value, written to 4 and 10 decimals, comes back as that option.
+          q.options.forEach((o, i) => {
+            for (const text of [o.num!.toFixed(4), o.num!.toFixed(10), o.num!.toFixed(4).replace(".", ",")]) {
+              const got = matchTyped(q, text);
+              if (got !== i) throw new Error(`typed ${text} read as option ${got}, not ${i}`);
+            }
+          });
+          if (matchTyped(q, "") !== -1) throw new Error("blank typed answer not blank");
+        }
         q.options.forEach((o, i) => {
           const right = isRight(q, o);
           if (i === q.correct && !right) throw new Error(`marked answer is wrong: ${o.tex}`);
@@ -288,6 +356,7 @@ for (const level of LEVELS) {
 }
 
 for (const [key, n] of [...prompts].sort()) console.log(`${key.padEnd(40)} ${n}`);
+console.log(`\n${typedCount.size} kinds can be typed; ${[...typedCount.values()].reduce((a, b) => a + b, 0)} questions were`);
 const unused = MISTAKES.filter((m) => !mistakesSeen.has(m));
 if (unused.length > 0) failures.push(`mistake types never shown: ${unused.join(", ")}`);
 console.log(`\n${mistakesSeen.size} of ${MISTAKES.length} mistake types shown`);

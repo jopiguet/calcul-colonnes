@@ -51,7 +51,7 @@ test("the mistake behind each wrong answer is recorded and shown", async ({ page
   // Expected mistakes: the label of each wrong option chosen.
   const expected = new Map<string, number>();
   questions.forEach((q, i) => {
-    const given = body.answers[i]!;
+    const given = body.answers[i] as number; // a test with options only
     if (given === q.correct) return;
     const mistake = q.options[given]!.mistake!;
     expected.set(mistake, (expected.get(mistake) ?? 0) + 1);

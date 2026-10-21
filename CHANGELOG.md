@@ -1,5 +1,31 @@
 # Changelog
 
+## 6.0.0
+
+- **QCM: graph questions,** a new topic *Lecture graphique* (Analyse), 10 kinds of question at both levels:
+  - the graph of f′ from the graph of f, and at university the graph of f from f′ and f(0);
+  - which curve has this formula (a parabola; at university an exponential or a hyperbola), and which equation has this drawn line;
+  - translations and reflections of a curve, and at university f(2x), 2f(x), |f(x)|;
+  - f′(a) read on a drawn tangent; the number of solutions of f(x) = k read on a curve;
+  - which plane, drawn through its intercepts, has this equation.
+
+  The app draws the curves as SVG, in light and dark themes. The options are named by their letter only, and their formulas appear in the corrections. Wrong options are still named mistakes, among them f taken for f′, a shift in the wrong direction, a transformation along the other axis, the intercept read as the slope, and the coefficients taken for the intercepts. There are 6 new mistake types.
+- **QCM: typed answers.** A new setting, *Réponses: 4 choix / Au clavier*.
+  - **Which questions:** those whose answer is a number are answered by typing it (55 kinds can be); the others keep their options.
+  - **What is accepted:** exact values (7/45, 2π/3, √2, e^2 − 1, ln 3) or a rounding right to its last digit, never looser than 0.6 % of the answer.
+  - **While typing:** the app shows what it reads, and a row of keys adds π, √, /, ^, −, e and brackets.
+  - **Grading:** a typed value matching a wrong option records that option's mistake. The server reads the text itself; the browser's reading is only for the screen.
+  - **Safeguard:** a question is never offered typed when a wrong option is near enough to the answer to be confused with it.
+- **Database:** migration 011 adds `quiz_results.mode` and `quiz_answers.typed`. Earlier tests read as `choices`, unchanged.
+- **API:** `POST /api/quizzes` takes `mode` and, in a typed test, text answers of at most 40 characters. A string is refused in a `choices` test.
+- `check:quiz`: 16,000 questions, 102 mistake types, 0 failures.
+  - **Graphs:** each curve shows enough of itself in its window, option curves differ by half a grid square, and all options share their window.
+  - **Typed:** every option's value typed with 4 or 10 decimals, with a point or a comma, is read as that option.
+- **Tests:**
+  - graph questions drawn;
+  - a typed test answered twice on the same seed: wrong option values come back as their mistakes, right values give full marks;
+  - the API refuses text outside a typed test.
+
 ## 5.9.1
 
 - **Logic grids, level buttons:** "6 × 6 + − × ÷" no longer spills out of its button on a phone. The size and the operations are on two lines, the four buttons stay the same width, and they sit in two columns below 600 px instead of 520 px. A test checks this at 360 and 600 px, with text at 100 % and 130 %.

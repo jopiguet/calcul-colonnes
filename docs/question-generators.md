@@ -8,11 +8,12 @@ way in the browser and on the server.
 | `types.ts` | `Level`, `Topic`, `Draft`, `Option`, `Verify`, `Question` |
 | `rng.ts` | Seeded random numbers (mulberry32) |
 | `tex.ts` | Exact fractions and LaTeX helpers: `frac`, `sum`, `poly`, `piTex`… |
-| `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts` | The generators, one file per topic |
+| `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts`, `graphs.ts` | The generators, one file per topic |
+| `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
 | `index.ts` | Registry of kinds of question, `generateQuiz`, `gradeQuiz`, `QUIZ_VERSION` |
 | `progress.ts` | Status of a kind of question from the latest answers |
 
-## The 100 kinds of question
+## The 110 kinds of question
 
 A *kind* is one generator; its id is `topic.name`. Ids are stored with every
 answer, so **an id must never be renamed**. The name shown to players is in
@@ -208,6 +209,29 @@ so each mistake gives a different value.
 | `multivariable.criticalPoint` | the critical point of a quadratic | opposite, swapped, the xy term ignored, factor 2 | | ✓ |
 | `multivariable.doubleIntegral` | ∫∫ over [0, A] × [0, B] of a polynomial | no divisors, one divisor, the y integration skipped, bounds swapped | | ✓ |
 
+### Reading graphs
+
+The app draws the curves (SVG, `src/graph.ts`); a generator gives functions
+and a window. All the options of a question share one window, so they can be
+compared by eye. Where the options are drawn, they are named by their letter
+only on screen; their formula appears in the corrections.
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `graphs.derivativeCurve` | the graph of f′, given the graph of a cubic f | −f′, f itself, a primitive of f, f″ | ✓ | ✓ |
+| `graphs.primitiveCurve` | the graph of f, given the graph of f′ and f(0) | f′ itself, f″, −f, the wrong constant | | ✓ |
+| `graphs.formulaToCurve` | the graph of a(x − h)² + k | shifted the wrong way, upside down, h and k swapped, sign of k | ✓ | |
+| `graphs.formulaToCurveAdvanced` | the graph of e^(x−h) + k or 1/(x − h) + k | the same mistakes | | ✓ |
+| `graphs.curveToFormula` | the equation of a drawn line (two grid points marked) | −m, sign of p, m and p swapped, 1/m | ✓ | |
+| `graphs.transformCurve` | the graph of f(x − c), f(x) + c, −f(x) or f(−x), given f's | shifted the wrong way, along the other axis, the other reflection | ✓ | |
+| `graphs.transformCurveAdvanced` | the same, and f(2x), 2f(x), \|f(x)\| | f(x/2) for f(2x), stretched along the other axis, f(\|x\|) | | ✓ |
+| `graphs.tangentSlope` | f′(a), read on a drawn tangent | −m, f(a), the tangent's intercept, 1/m | ✓ | ✓ |
+| `graphs.solutionCount` | the number of solutions of f(x) = k on [−4, 4] | one more, one fewer, the solutions of f(x) = 0 | ✓ | ✓ |
+| `graphs.planeFromEquation` | the plane ax + by + cz = d, drawn through its intercepts | the coefficients taken for the intercepts, two intercepts swapped, a sign | ✓ | ✓ |
+
+`solutionCount` keeps the level away from the turning values and the ends of
+the interval, so the count never hangs on a tangency.
+
 ## Anatomy of a generator
 
 A generator is a function `(rng) => Draft`:
@@ -238,8 +262,8 @@ const polynomial: Generator = (rng) => {
 
 | Field | Content |
 |---|---|
-| `prompt` | A sentence key (translated by the app) and the LaTeX of the question |
-| `correct` | The right answer: its LaTeX, plus what it stands for, as `fn` (a function), `num` (a number, possibly ±∞) or `set` (a sorted set of numbers) |
+| `prompt` | A sentence key (translated by the app) and the LaTeX of the question (may be empty when a graph says it all); optionally a `graph`, and then an `id` that tells two questions apart as the LaTeX does otherwise |
+| `correct` | The right answer: its LaTeX, plus what it stands for, as `fn` (a function), `num` (a number, possibly ±∞) or `set` (a sorted set of numbers); optionally a `graph` to show instead of the LaTeX |
 | `wrong` | Candidate wrong answers, each labelled with the mistake it stands for (`tag(option, mistake)`). Give more than three, because duplicates are removed. |
 | `explanation` | A sentence key and a formula shown in the corrections |
 | `verify` | What the right answer must satisfy; used to remove duplicates and by the check script |
@@ -271,6 +295,28 @@ const polynomial: Generator = (rng) => {
 | `partial`, `gradient` | numbers, vectors | central differences in x and y |
 | `critical` | points | both central differences vanish |
 | `doubleIntegral` | numbers | nested Simpson's rule |
+| `slope` | numbers | f′(a) by central difference |
+| `count` | numbers | sign changes of f − k on a 20,000-step grid |
+
+A `graph` is either `{ type: "curves", x, y, curves, points }` (curves are
+`main` or dashed `guide` lines, such as a tangent or a level y = k) or
+`{ type: "plane", intercepts, extent }`.
+
+## Typed answers
+
+In a test set to *Au clavier*, a question whose four options are all numbers
+below a million is answered by typing the number. Other questions keep their
+four options.
+
+- **Accepted:** an exact value (`7/45`, `2π/3`, `2pi/3`, `√2`, `sqrt(2)/2`, `e^2 − 1`, `ln 3`, implicit products like `3√2`), or a decimal rounding with a point or a comma.
+- **Tolerance of a rounding:** half a unit of its last digit (`1.05` stands for anything in [1.045, 1.055]), and never more than 0.6 % of the value (at least 0.1 × 0.6 %). So `1,05` is π/3 but `1` is not, and `0.1` is not 12/121 = 0.0992.
+- **Exact values** are compared to 10⁻⁹.
+- **Which questions:** `typeable(q)` refuses a question where a wrong option is close enough to the answer that one rounding could stand for both.
+- **Mistakes still count:** a typed value is matched against the right option first, then the wrong ones. Typing a wrong option's value records its mistake, as if it had been picked. A value matching nothing is wrong without a mistake (`given = −2`).
+
+The browser shows what it reads as the player types (≈ 2,0944), but grading
+is the server's: it regenerates the test and reads the text with the same
+code.
 
 ## Mistake types
 
@@ -294,18 +340,18 @@ keep the label they were stored with.
 | `quotientRule` | Quotient rule misapplied | derivatives |
 | `logDerivative` | Derivative of ln misapplied | derivatives |
 | `powerRuleOnExponential` | Power rule applied to an exponential | derivatives, explog, integrals |
-| `derivedInstead` | Derivative instead of an antiderivative | integrals |
+| `derivedInstead` | Derivative instead of an antiderivative | graphs, integrals |
 | `wrongPowerDivisor` | Wrong divisor: n + 1 expected | integrals, multivariable |
 | `constantNotIntegrated` | Constant term not integrated | integrals |
 | `multipliedInsteadOfDivided` | Multiplied by a instead of dividing | integrals |
-| `wrongFactor` | Constant factor missing or extra | complex, functions, geometry, integrals, linear, multivariable, odes, probability, sequences, series |
+| `wrongFactor` | Constant factor missing or extra | complex, functions, geometry, graphs, integrals, linear, multivariable, odes, probability, sequences, series |
 | `logPrimitiveError` | Antiderivative of 1/x not known | integrals |
 | `byParts` | Integration by parts unfinished | integrals |
 | `substitutionError` | Change of variable misapplied | explog, integrals |
 | `boundsError` | F(b) − F(a) miscalculated | integrals, multivariable |
 | `sinCosSwapped` | sin and cos swapped | complex, derivatives, geometry, integrals, odes, trigonometry |
 | `exactValueError` | Wrong exact value | geometry, trigonometry |
-| `missingSolution` | Solution missed | explog, trigonometry |
+| `missingSolution` | Solution missed | explog, graphs, trigonometry |
 | `wrongSymmetry` | Wrong symmetry (π − x, 2π − x, π + x) | trigonometry |
 | `outOfRange` | Value outside the interval | trigonometry |
 | `trigFormula` | Trigonometric identity misremembered | trigonometry |
@@ -313,12 +359,12 @@ keep the label they were stored with.
 | `dominantTerms` | Dominant terms misidentified | functions, limits, series |
 | `growthReversed` | Growth rates compared the wrong way | limits |
 | `indeterminateGuess` | Indeterminate form taken for a value | limits, sequences |
-| `invertedRatio` | Ratio inverted | explog, geometry, limits, odes, probability, sequences, series |
+| `invertedRatio` | Ratio inverted | explog, geometry, graphs, limits, odes, probability, sequences, series |
 | `taylorError` | Wrong Taylor coefficient | limits |
 | `factorisationError` | Wrong factorisation | limits |
 | `logRules` | Log rule misapplied | explog |
 | `expLogInverse` | exp and ln combined wrongly | explog, limits |
-| `solvingError` | Equation solved in the wrong order | explog |
+| `solvingError` | Equation solved in the wrong order | explog, graphs |
 | `binomialCoefficient` | Binomial coefficient forgotten | probability |
 | `complementForgotten` | (1 − p) or P(Ā) left out | probability |
 | `powersSwapped` | Exponents swapped: pⁿ⁻ᵏ(1 − p)ᵏ | probability |
@@ -331,7 +377,7 @@ keep the label they were stored with.
 | `baseRateIgnored` | P(A) left out of Bayes' formula | probability |
 | `orderCounted` | Arrangements counted instead of combinations | probability |
 | `withReplacement` | nᵏ: counted as drawing with replacement | probability |
-| `countingError` | Counting error | probability |
+| `countingError` | Counting error | graphs, probability |
 | `unweightedMean` | Plain mean of the values | probability |
 | `unionNotSubtracted` | P(A ∩ B) not subtracted | probability |
 | `sdVarianceConfused` | σ and σ² confused | probability |
@@ -352,24 +398,24 @@ keep the label they were stored with.
 | `discriminantSign` | Negative discriminant treated as positive | complex |
 | `powerMisapplied` | Modulus or argument not raised (or not rooted) | complex, series |
 | `rootSpacing` | n-th roots not spaced by 2π/n | complex |
-| `initialConditionMisapplied` | Constant set to y(0) without the rest, or constants swapped | odes |
+| `initialConditionMisapplied` | Constant set to y(0) without the rest, or constants swapped | graphs, odes |
 | `characteristicRoots` | Wrong roots of the characteristic equation | odes |
 | `doubleRootFactor` | The x of a double root forgotten | odes |
 | `separationError` | Variables not separated: ax not integrated | odes |
 | `determinantPattern` | The wrong products taken | linear |
 | `cofactorSign` | Cofactor signs forgotten | geometry, linear |
 | `scalarPower` | det(kA) = k·det A | linear |
-| `orderSwapped` | BA for AB, or x and y swapped | geometry, linear, multivariable |
+| `orderSwapped` | BA for AB, or x and y swapped | geometry, graphs, linear, multivariable |
 | `rowByRow` | Rows multiplied by rows | linear |
 | `adjugateError` | Diagonal not swapped, or the wrong entries negated | linear |
 | `diagonalTaken` | The diagonal taken for the eigenvalues | linear |
 | `traceDeterminantConfused` | Trace and determinant taken for the eigenvalues | linear |
 | `rankMiscounted` | Rank miscounted | linear |
 | `tangentPointForgotten` | y = f′(a)x + f(a) | functions |
-| `tangentRolesSwapped` | f(a) and f′(a) swapped | functions |
+| `tangentRolesSwapped` | f(a) and f′(a) swapped | functions, graphs |
 | `valueAbscissaConfused` | Abscissa and value confused | functions |
 | `vietaConfused` | Sum and product taken for the roots | functions |
-| `derivativeOrder` | f′ used where f″ is needed | functions |
+| `derivativeOrder` | f′ used where f″ is needed | functions, graphs |
 | `maxMinConfused` | The minimum given for the maximum | functions |
 | `asymptoteDivision` | The division not done | functions |
 | `componentsMismatched` | Coordinates paired wrongly | geometry |
@@ -379,7 +425,13 @@ keep the label they were stored with.
 | `denominatorForgotten` | A quotient's denominator left out | geometry |
 | `telescopingTerms` | Only one partial fraction summed, or 1/k left out | series |
 | `variableConfused` | Differentiated in the other variable | multivariable |
-| `signError` | Sign error | complex, derivatives, explog, functions, geometry, integrals, limits, linear, multivariable, odes, probability, sequences, series, trigonometry |
+| `givenCurveChosen` | The curve already given (f for f′, f′ for f) | graphs |
+| `primitiveForDerivative` | A primitive taken for the derivative | graphs |
+| `shiftDirection` | f(x − c) moved left, or f(x + c) right | graphs |
+| `axisConfused` | Transformation along the other axis | graphs |
+| `interceptForSlope` | The intercept read as the slope | graphs |
+| `coefficientsAsIntercepts` | The equation's coefficients taken for the intercepts | graphs |
+| `signError` | Sign error | complex, derivatives, explog, functions, geometry, graphs, integrals, limits, linear, multivariable, odes, probability, sequences, series, trigonometry |
 
 Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
 three languages.
@@ -484,6 +536,8 @@ mistakes to review. It then checks:
 - **Wrong options:** none of them is also right.
 - **Options:** exactly four, with distinct LaTeX; every wrong option carries a known mistake type, and every type in `MISTAKES` occurs somewhere.
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
+- **Graphs:** every drawn curve is at least 30 % inside its window (25 % for an option); option curves differ by half a grid square somewhere; all options of a question share their window or axes; plane intercepts are non-zero and distinct.
+- **Typed answers:** for every question that can be typed, each option's value written to 4 and 10 decimals (and with a comma) is read as that option, and a blank as a blank.
 - **Determinism:** the same seed gives the same test twice.
 - **Review questions:** their number and kinds match the focus.
 

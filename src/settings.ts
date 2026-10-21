@@ -1,4 +1,4 @@
-import { LEVELS as QUIZ_LEVELS, QUIZ_COUNTS, TOPICS, type Level, type Topic } from "../shared/quiz";
+import { LEVELS as QUIZ_LEVELS, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 
@@ -24,6 +24,8 @@ export interface Settings {
   quizCount: number;
   /** Mix the player's recent mistakes into new tests. */
   quizReview: boolean;
+  /** Pick from four options, or type the number where the answer is one. */
+  quizMode: AnswerMode;
 }
 
 export type Mode = "home" | "columns" | "quiz" | "vocab" | "discover";
@@ -94,6 +96,7 @@ export function loadSettings(): Settings {
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,
+    quizMode: saved.quizMode === "typed" ? "typed" : "choices",
     lang: isLang(saved.lang) ? saved.lang : browserLanguage(),
     maximum: nearest(LEVELS, saved.maximum ?? legacyMaximum, 100),
     smallLimit: nearest(SMALL_LEVELS, saved.smallLimit, 9),

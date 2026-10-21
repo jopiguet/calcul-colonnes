@@ -1,22 +1,31 @@
 import katex from "katex";
 import "katex/dist/katex.min.css";
 import {
+  ANSWER_MODES,
   LEVELS,
   OPTION_COUNT,
   QUIZ_COUNTS,
   QUIZ_VERSION,
   TOPICS,
+  TYPED_MAX,
   TOPIC_GROUPS,
   generateQuiz,
   gradeQuiz,
+  readNumber,
+  resolveAnswers,
   skillsFor,
   topicsFor,
+  typeable,
+  type AnswerMode,
+  type GivenAnswer,
   type Level,
+  type Option,
   type Question,
   type QuizSpec,
   type Topic,
 } from "../shared/quiz";
 import { button, el } from "./dom";
+import { drawGraph } from "./graph";
 import { currentLang } from "./i18n";
 import { explanationText, groupName, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
 import { saveSettings, type Settings } from "./settings";
@@ -30,9 +39,22 @@ import { store, type User } from "./store";
 
 interface Run {
   spec: QuizSpec;
+  /** In a typed test, questions whose answer is a number are answered by typing it. */
+  mode: AnswerMode;
   questions: Question[];
-  answers: number[];
+  /** Option index (−1 blank), or the text typed. */
+  answers: GivenAnswer[];
   index: number;
+}
+
+const answered = (a: GivenAnswer): boolean => (typeof a === "string" ? a.trim() !== "" : a >= 0);
+/** Whether this question of this run is answered by typing. */
+const typedHere = (current: Run, q: Question): boolean => current.mode === "typed" && typeable(q);
+
+/** A number as the player's language writes it: 1,0472 in French and Spanish. */
+function decimal(value: number): string {
+  const text = String(Number(value.toPrecision(6)));
+  return currentLang() === "en" ? text : text.replace(".", ",");
 }
 
 interface Result {
@@ -84,14 +106,43 @@ function math(tex: string, display = false): HTMLElement {
   return node;
 }
 
+/** The givens of a question: its graph, then its formula (empty when the graph says it all). */
+function givens(q: Question): HTMLElement[] {
+  const shown: HTMLElement[] = [];
+  if (q.prompt.graph) {
+    const box = el("div", "quiz-graph");
+    box.append(drawGraph(q.prompt.graph, qt("graphPrompt")));
+    shown.push(box);
+  }
+  if (q.prompt.tex !== "") shown.push(math(q.prompt.tex, true));
+  return shown;
+}
+
+/** A typed answer in the corrections: as typed, and what it was read as. */
+function typedView(text: string): HTMLElement {
+  const read = readNumber(text);
+  const box = el("span", "typed-given", text);
+  if (read) box.append(el("span", "typed-reading", ` ${qt("typedValue", { value: decimal(read.value) })}`));
+  return box;
+}
+
+/** An option in the corrections: its graph and formula, or its formula. */
+function optionView(option: Option): HTMLElement {
+  const formula = math(`\\displaystyle ${option.tex}`);
+  if (!option.graph) return formula;
+  const box = el("span", "option-graph");
+  box.append(drawGraph(option.graph, option.tex, "small"), formula);
+  return box;
+}
+
 function newSeed(): number {
   const buffer = new Uint32Array(1);
   crypto.getRandomValues(buffer);
   return buffer[0]!;
 }
 
-function start(spec: QuizSpec): void {
-  run = { spec, questions: generateQuiz(spec), answers: Array(spec.count).fill(-1), index: 0 };
+function start(spec: QuizSpec, mode: AnswerMode): void {
+  run = { spec, mode, questions: generateQuiz(spec), answers: Array<GivenAnswer>(spec.count).fill(-1), index: 0 };
   result = null;
 }
 
@@ -183,6 +234,17 @@ function setupView(ctx: QuizContext): HTMLElement {
     step(1, "+", qt("more")),
   );
 
+  // Answers: four options, or the number typed where the answer is one.
+  const answerMode = el("fieldset", "segmented answer-mode");
+  answerMode.append(el("legend", "field-label", qt("answerMode")));
+  for (const value of ANSWER_MODES) {
+    const on = value === settings.quizMode;
+    const option = button(on ? "segment on" : "segment", qt(value === "typed" ? "modeTyped" : "modeChoices"), () => save({ quizMode: value }));
+    option.setAttribute("aria-pressed", String(on));
+    answerMode.append(option);
+  }
+  if (settings.quizMode === "typed") answerMode.append(el("p", "hint mode-hint", qt("modeTypedHint")));
+
   // Review of recent mistakes: on by default; the number of kinds concerned is shown once known.
   const review = el("div", "review-option");
   const reviewLabel = el("label", "topic");
@@ -203,11 +265,11 @@ function setupView(ctx: QuizContext): HTMLElement {
     go.disabled = true;
     const topicsChosen = [...effective];
     const focus = settings.quizReview ? await reviewFocus(ctx.user, settings.quizLevel, topicsChosen) : [];
-    start({ seed: newSeed(), level: settings.quizLevel, topics: topicsChosen, count: settings.quizCount, focus });
+    start({ seed: newSeed(), level: settings.quizLevel, topics: topicsChosen, count: settings.quizCount, focus }, settings.quizMode);
     ctx.rerender();
   });
 
-  wrap.append(level, topics, count, review, go, button("ghost small", qt("progress"), ctx.showProgress));
+  wrap.append(level, topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
   queueMicrotask(() => go.focus());
   return wrap;
 }
@@ -228,13 +290,17 @@ function questionView(ctx: QuizContext, current: Run): HTMLElement {
   head.append(el("span", "quiz-count", qt("questionOf", { n: current.index + 1, count: questions.length })), where);
   const progress = el("div", "progress");
   const bar = el("div", "progress-bar");
-  bar.style.width = `${(100 * answers.filter((a) => a >= 0).length) / questions.length}%`;
+  const fill = (): void => {
+    bar.style.width = `${(100 * answers.filter(answered).length) / questions.length}%`;
+  };
+  fill();
   progress.append(bar);
 
   const prompt = el("p", "quiz-prompt", promptText(q.prompt.key));
-  const formula = math(q.prompt.tex, true);
+  const drawn = q.options.some((o) => o.graph);
 
-  const list = el("div", "choices");
+  const typed = typedHere(current, q);
+  const list = el("div", drawn ? "choices graphs" : "choices");
   list.setAttribute("role", "radiogroup");
   list.setAttribute("aria-label", qt("options"));
   const choose = (i: number): void => {
@@ -247,7 +313,11 @@ function questionView(ctx: QuizContext, current: Run): HTMLElement {
     choice.type = "button";
     choice.setAttribute("role", "radio");
     choice.setAttribute("aria-checked", String(selected));
-    choice.append(el("span", "letter", LETTERS[i]), math(`\\displaystyle ${option.tex}`));
+    choice.append(
+      el("span", "letter", LETTERS[i]),
+      // A drawn option is named by its letter only: its formula would give the answer away.
+      option.graph ? drawGraph(option.graph, qt("graphOption", { letter: LETTERS[i]! }), "small") : math(`\\displaystyle ${option.tex}`),
+    );
     choice.addEventListener("click", () => choose(i));
     list.append(choice);
   });
@@ -257,7 +327,7 @@ function questionView(ctx: QuizContext, current: Run): HTMLElement {
     ctx.rerender();
   };
   const finish = (): void => {
-    const blank = answers.filter((a) => a < 0).length;
+    const blank = answers.filter((a) => !answered(a)).length;
     if (blank > 0 && !confirm(qt("confirmBlank", { n: blank }))) return;
     submit(ctx, current);
   };
@@ -276,9 +346,10 @@ function questionView(ctx: QuizContext, current: Run): HTMLElement {
 
   wrap.addEventListener("keydown", (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.target instanceof HTMLInputElement) return; // typing an answer: the field handles its keys
     const key = event.key.toLowerCase();
     const pick = "1234".indexOf(key) >= 0 ? "1234".indexOf(key) : "abcd".indexOf(key);
-    if (pick >= 0 && pick < OPTION_COUNT) {
+    if (pick >= 0 && pick < OPTION_COUNT && !typed) {
       event.preventDefault();
       choose(pick);
     } else if (event.key === "ArrowRight" && !last) {
@@ -294,20 +365,85 @@ function questionView(ctx: QuizContext, current: Run): HTMLElement {
     }
   });
 
-  wrap.append(head, progress, prompt, formula, list, nav, el("p", "hint", qt("keyboardHint")), quit);
+  if (typed) {
+    const field = typedField(current, fill, () => (last ? finish() : go(current.index + 1)));
+    wrap.append(head, progress, prompt, ...givens(q), field.box, nav, el("p", "hint", qt("typedHint")), quit);
+    queueMicrotask(() => field.input.focus({ preventScroll: true }));
+    return wrap;
+  }
+  wrap.append(head, progress, prompt, ...givens(q), list, nav, el("p", "hint", qt("keyboardHint")), quit);
   queueMicrotask(() => wrap.focus({ preventScroll: true }));
   return wrap;
 }
 
+/** Symbols that phone keyboards hide, inserted where the cursor is. */
+const SYMBOLS = ["π", "√", "/", "^", "−", "e", "(", ")"];
+
+/**
+ * The field for a typed answer, with what the app reads in it as the player
+ * types (≈ 1,0472), and a row of symbols. Typing does not redraw the screen,
+ * so the keyboard stays open.
+ */
+function typedField(current: Run, changed: () => void, submit: () => void): { box: HTMLElement; input: HTMLInputElement } {
+  const box = el("div", "typed");
+  const input = el("input", "typed-input");
+  input.type = "text";
+  input.autocomplete = "off";
+  input.spellcheck = false;
+  input.maxLength = TYPED_MAX;
+  input.setAttribute("autocapitalize", "off");
+  input.setAttribute("autocorrect", "off");
+  input.placeholder = qt("typedPlaceholder");
+  input.setAttribute("aria-label", qt("typedPlaceholder"));
+  const before = current.answers[current.index];
+  input.value = typeof before === "string" ? before : "";
+
+  const reading = el("p", "typed-reading");
+  reading.setAttribute("aria-live", "polite");
+  const update = (): void => {
+    const text = input.value;
+    current.answers[current.index] = text.trim() === "" ? -1 : text;
+    const read = text.trim() === "" ? null : readNumber(text);
+    reading.textContent = text.trim() === "" ? "" : read ? qt("typedValue", { value: decimal(read.value) }) : qt("typedInvalid");
+    reading.classList.toggle("bad", text.trim() !== "" && !read);
+    changed();
+  };
+  input.addEventListener("input", update);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      submit();
+    }
+  });
+
+  const keys = el("div", "typed-keys");
+  for (const symbol of SYMBOLS) {
+    const key = button("ghost small typed-key", symbol, () => {
+      const start = input.selectionStart ?? input.value.length;
+      const end = input.selectionEnd ?? input.value.length;
+      input.setRangeText(symbol, start, end, "end");
+      input.focus();
+      update();
+    });
+    // Keep the field focused (and a phone's keyboard open) while a symbol is tapped.
+    key.addEventListener("mousedown", (event) => event.preventDefault());
+    keys.append(key);
+  }
+  box.append(input, reading, keys);
+  update();
+  return { box, input };
+}
+
 function submit(ctx: QuizContext, done: Run): void {
-  const correct = gradeQuiz(done.questions, done.answers);
+  // The server grades again from the seed and the text typed; this is only for the screen.
+  const correct = gradeQuiz(done.questions, resolveAnswers(done.questions, done.answers, done.mode));
   const current: Result = { run: done, correct, status: "saving" };
   result = current;
   run = null;
   ctx.rerender();
   const { seed, level, topics, count, focus = [] } = done.spec;
   store
-    .addQuiz({ userId: ctx.user.id, seed, level, topics, count, focus, version: QUIZ_VERSION, answers: done.answers })
+    .addQuiz({ userId: ctx.user.id, seed, level, topics, count, focus, version: QUIZ_VERSION, answers: done.answers, mode: done.mode })
     .then(() => (current.status = "saved"))
     .catch(() => (current.status = "unsaved"))
     .finally(() => {
@@ -319,7 +455,8 @@ function submit(ctx: QuizContext, done: Run): void {
 // ------------------------------------------------------------------- results
 
 function resultView(ctx: QuizContext, done: Result): HTMLElement {
-  const { questions, answers, spec } = done.run;
+  const { questions, answers, spec, mode } = done.run;
+  const resolved = resolveAnswers(questions, answers, mode);
   const wrap = el("section", "sheet quiz-result");
 
   const percent = Math.round((100 * done.correct) / questions.length);
@@ -337,11 +474,11 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
   actions.append(
     button("primary", qt("newTest"), async () => {
       const focus = ctx.settings.quizReview ? await reviewFocus(ctx.user, spec.level, spec.topics) : [];
-      start({ ...spec, seed: newSeed(), focus });
+      start({ ...spec, seed: newSeed(), focus }, mode);
       ctx.rerender();
     }),
     button("ghost", qt("retry"), () => {
-      start(spec);
+      start(spec, mode);
       ctx.rerender();
     }),
     button("ghost", qt("settings"), () => {
@@ -354,13 +491,15 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
 
   const list = el("ol", "review");
   questions.forEach((q, i) => {
-    const given = answers[i]!;
+    const given = resolved[i]!;
+    const raw = answers[i]!;
     const ok = given === q.correct;
     const item = el("li", ok ? "review-item good" : "review-item bad");
     const head = el("div", "review-head");
     head.append(el("span", "review-mark", ok ? "✅" : "❌"), el("span", "quiz-topic", topicName(q.topic)));
     if (q.review) head.append(el("span", "badge is-review", qt("reviewBadge")));
-    item.append(head, el("p", "quiz-prompt", promptText(q.prompt.key)), math(q.prompt.tex, true));
+    if (mode === "typed" && typeable(q)) head.append(el("span", "badge is-typed", qt("typedBadge")));
+    item.append(head, el("p", "quiz-prompt", promptText(q.prompt.key)), ...givens(q));
 
     const line = (label: string, content: HTMLElement | string, kind: string): HTMLElement => {
       const row = el("p", `review-line ${kind}`);
@@ -369,13 +508,17 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
     };
     if (!ok) {
       item.append(
-        line(qt("yourAnswer"), given < 0 ? qt("blank") : math(`\\displaystyle ${q.options[given]!.tex}`), "given"),
+        line(
+          qt("yourAnswer"),
+          typeof raw === "string" ? typedView(raw) : given < 0 ? qt("blank") : optionView(q.options[given]!),
+          "given",
+        ),
       );
       // The typical mistake behind the option chosen.
       const mistake = given >= 0 ? q.options[given]!.mistake : undefined;
       if (mistake) item.append(line(qt("mistake"), mistakeName(mistake), "mistake"));
     }
-    item.append(line(qt("rightAnswer"), math(`\\displaystyle ${q.options[q.correct]!.tex}`), "right"));
+    item.append(line(qt("rightAnswer"), optionView(q.options[q.correct]!), "right"));
     const why = el("div", "explanation");
     why.append(el("p", undefined, explanationText(q.explanation.key)), math(q.explanation.tex, true));
     item.append(why);

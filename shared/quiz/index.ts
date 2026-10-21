@@ -18,12 +18,14 @@ import { odes } from "./odes";
 import { linear } from "./linear";
 import { functions } from "./functions";
 import { geometry } from "./geometry";
+import { graphs } from "./graphs";
 import { multivariable } from "./multivariable";
 import { series } from "./series";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
 export * from "./types";
 export * from "./progress";
+export * from "./typed";
 
 const GENERATORS: Record<Topic, Record<Level, Record<string, Generator>>> = {
   derivatives,
@@ -40,6 +42,7 @@ const GENERATORS: Record<Topic, Record<Level, Record<string, Generator>>> = {
   geometry,
   series,
   multivariable,
+  graphs,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -195,6 +198,9 @@ export function reviewCount(count: number, focus: string[]): number {
   return Math.min(Math.max(1, Math.round(count * REVIEW_SHARE)), focus.length * REVIEW_PER_SKILL, count);
 }
 
+/** What makes two questions the same: the formula, and for a graph its id (a formula alone is unchanged). */
+const promptKey = (prompt: Draft["prompt"]): string => (prompt.id === undefined ? prompt.tex : `${prompt.tex}#${prompt.id}`);
+
 export function generateQuiz({ seed, level, topics: asked, count, focus = [], version = QUIZ_VERSION }: QuizSpec): Question[] {
   const rng = createRng(seed);
   // Topics without a kind of question at this level are left out (every topic
@@ -211,11 +217,11 @@ export function generateQuiz({ seed, level, topics: asked, count, focus = [], ve
     for (let attempt = 0; attempt < 50 && !question; attempt++) {
       const [skill, generator] = pick();
       const draft = generator(rng);
-      if (seen.has(draft.prompt.tex) && attempt < 49) continue; // no repeated question
+      if (seen.has(promptKey(draft.prompt)) && attempt < 49) continue; // no repeated question
       question = finalize(rng, version, topic, skill, review, draft);
     }
     if (!question) throw new Error(`could not generate a ${topic} question`);
-    seen.add(question.prompt.tex);
+    seen.add(promptKey(question.prompt));
     return question;
   };
 

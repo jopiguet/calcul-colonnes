@@ -3335,3 +3335,186 @@ button.home-link {
   text-transform: uppercase;
   color: var(--muted);
 }
+
+/* Graphs of the QCM: curves on a unit grid, or a plane in space. */
+.quiz-graph {
+  display: flex;
+  justify-content: center;
+}
+
+svg.graph {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+svg.graph.large {
+  max-width: 300px;
+}
+
+svg.graph .g-grid {
+  stroke: var(--line);
+  stroke-width: 0.6;
+  opacity: 0.7;
+}
+
+svg.graph .g-axis {
+  stroke: var(--muted);
+  stroke-width: 1.2;
+}
+
+svg.graph .g-axis-back {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  opacity: 0.7;
+}
+
+svg.graph .g-tick,
+svg.graph .g-label {
+  fill: var(--muted);
+  font-family: var(--digits);
+  font-size: 9px;
+}
+
+svg.graph .g-label {
+  fill: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+svg.graph .g-tick-dot {
+  fill: var(--muted);
+}
+
+svg.graph .g-curve {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+svg.graph .g-guide {
+  fill: none;
+  stroke: var(--bad);
+  stroke-width: 1.8;
+  stroke-dasharray: 5 4;
+}
+
+svg.graph .g-point {
+  fill: var(--ink);
+}
+
+svg.graph .g-plane {
+  fill: color-mix(in srgb, var(--accent) 22%, transparent);
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+/* Drawn options: two by two, the letter above its graph. */
+.choices.graphs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.choices.graphs button.choice {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  padding: 0.45rem;
+  overflow: hidden;
+}
+
+.option-graph {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  width: min(100%, 200px);
+}
+
+svg.graph.plane .g-label {
+  font-size: 14px;
+}
+
+svg.graph.plane .g-axis,
+svg.graph.plane .g-axis-back {
+  stroke-width: 1.4;
+}
+
+/* Typed answers: the field, what the app reads in it, symbols phones hide. */
+.typed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.typed-input {
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0.5rem 0.9rem;
+  font-family: var(--digits);
+  font-size: 1.3rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+}
+
+.typed-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.typed-reading {
+  min-height: 1.3em;
+  margin: 0;
+  font-family: var(--digits);
+  color: var(--muted);
+}
+
+.typed-reading.bad {
+  color: var(--bad);
+}
+
+.typed-keys {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0.3rem;
+}
+
+button.typed-key {
+  min-height: 2.6rem;
+  padding: 0;
+  font-family: var(--digits);
+  font-size: 1.05rem;
+}
+
+.typed-given {
+  font-family: var(--digits);
+}
+
+.typed-given .typed-reading {
+  display: inline;
+}
+
+.mode-hint {
+  width: 100%;
+  margin-top: 0.4rem;
+  text-align: left;
+}
+
+@media (max-width: 380px) {
+  .typed-keys {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.badge.is-typed {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--paper));
+}

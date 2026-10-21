@@ -3,7 +3,10 @@ import {
   RECENT,
   generateQuiz,
   gradeQuiz,
+  resolveAnswers,
   skillStatus,
+  typeable,
+  type AnswerMode,
   type Level,
   type Question,
   type Topic,
@@ -120,6 +123,7 @@ export class Repository {
 
   /** Regenerates the test from its seed, grades it, and stores the result and each answer. */
   async addQuiz(result: NewQuizResult & { level: Level; topics: Topic[] }): Promise<{ correct: number; total: number }> {
+    const mode = result.mode ?? "choices";
     const focus = result.focus ?? [];
     const questions = generateQuiz({
       seed: result.seed,
@@ -129,11 +133,13 @@ export class Repository {
       focus,
       version: QUIZ_VERSION,
     });
-    const correct = gradeQuiz(questions, result.answers);
+    // Typed answers are matched to the options here, never trusted from the browser.
+    const given = resolveAnswers(questions, result.answers, mode);
+    const correct = gradeQuiz(questions, given);
     const at = Date.now();
     const rows = await this.db.query(
-      `INSERT INTO quiz_results (user_id, at, level, topics, seed, question_count, correct, answers, focus, version)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      `INSERT INTO quiz_results (user_id, at, level, topics, seed, question_count, correct, answers, focus, version, mode)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
        RETURNING id`,
       [
         result.userId,
@@ -146,9 +152,10 @@ export class Repository {
         JSON.stringify(result.answers),
         focus.join(","),
         QUIZ_VERSION,
+        mode,
       ],
     );
-    await this.addQuizAnswers(Number(rows[0]!.id), result.userId, at, questions, result.answers);
+    await this.addQuizAnswers(Number(rows[0]!.id), result.userId, at, questions, result.answers, mode);
     return { correct, total: result.count };
   }
 
@@ -157,12 +164,16 @@ export class Repository {
     userId: number,
     at: number,
     questions: Question[],
-    answers: number[],
+    answers: (number | string)[],
+    mode: AnswerMode,
   ): Promise<void> {
     if (questions.length === 0) return;
+    const resolved = resolveAnswers(questions, answers, mode);
     const params: (string | number | null)[] = [];
     const values = questions.map((q, i) => {
-      const given = answers[i] ?? -1;
+      const given = resolved[i]!;
+      const raw = answers[i];
+      const typed = typeof raw === "string" && mode === "typed" && typeable(q) ? raw : null;
       params.push(
         quizId,
         userId,
@@ -174,12 +185,13 @@ export class Repository {
         given === q.correct ? 1 : 0,
         q.review ? 1 : 0,
         mistakeOf(q, given),
+        typed,
       );
-      const n = params.length - 10;
-      return `(${Array.from({ length: 10 }, (_, k) => `$${n + k + 1}`).join(", ")})`;
+      const n = params.length - 11;
+      return `(${Array.from({ length: 11 }, (_, k) => `$${n + k + 1}`).join(", ")})`;
     });
     await this.db.query(
-      `INSERT INTO quiz_answers (quiz_id, user_id, at, position, skill, topic, given, correct, review, mistake)
+      `INSERT INTO quiz_answers (quiz_id, user_id, at, position, skill, topic, given, correct, review, mistake, typed)
        VALUES ${values.join(", ")}`,
       params,
     );
@@ -192,7 +204,7 @@ export class Repository {
    */
   async backfillQuizAnswers(): Promise<number> {
     const rows = await this.db.query(
-      `SELECT r.id, r.user_id, r.at, r.level, r.topics, r.seed, r.question_count, r.answers, r.focus, r.version
+      `SELECT r.id, r.user_id, r.at, r.level, r.topics, r.seed, r.question_count, r.answers, r.focus, r.version, r.mode
          FROM quiz_results r
         WHERE NOT EXISTS (SELECT 1 FROM quiz_answers a WHERE a.quiz_id = r.id)`,
     );
@@ -200,8 +212,9 @@ export class Repository {
     for (const row of rows) {
       try {
         const questions = this.regenerate(row); // exactly as the player saw it
-        const answers = JSON.parse(String(row.answers)) as number[];
-        await this.addQuizAnswers(Number(row.id), Number(row.user_id), Number(row.at), questions, answers);
+        const answers = JSON.parse(String(row.answers)) as (number | string)[];
+        const mode = String(row.mode ?? "choices") === "typed" ? "typed" : "choices";
+        await this.addQuizAnswers(Number(row.id), Number(row.user_id), Number(row.at), questions, answers, mode);
         filled += 1;
       } catch (error) {
         console.error(`quiz ${String(row.id)}: answers not rebuilt (${(error as Error).message})`);

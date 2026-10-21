@@ -4,16 +4,16 @@ import type { Fn } from "./tex";
 export type Fn2 = (x: number, y: number) => number;
 
 export type Level = "school" | "university";
-export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable";
+export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 
 export const LEVELS: Level[] = ["school", "university"];
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs"];
 
 export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
-  { group: "analysis", topics: ["functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
+  { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
   { group: "algebra", topics: ["complex", "linear"] },
   { group: "geometry", topics: ["geometry"] },
   { group: "probability", topics: ["probability"] },
@@ -73,7 +73,15 @@ export type PromptKey =
   | "partialDerivative"
   | "gradient"
   | "criticalPoint"
-  | "doubleIntegral";
+  | "doubleIntegral"
+  | "derivativeCurve"
+  | "primitiveCurve"
+  | "formulaToCurve"
+  | "curveToFormula"
+  | "transformCurve"
+  | "tangentSlope"
+  | "solutionCount"
+  | "planeFromEquation";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -161,7 +169,15 @@ export type ExplanationKey =
   | "partialDerivative"
   | "gradient"
   | "criticalPoint"
-  | "doubleIntegral";
+  | "doubleIntegral"
+  | "derivativeCurve"
+  | "primitiveCurve"
+  | "formulaToCurve"
+  | "curveToFormula"
+  | "transformCurve"
+  | "tangentSlope"
+  | "solutionCount"
+  | "planeFromEquation";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -277,6 +293,13 @@ export const MISTAKES = [
   // series and several variables
   "telescopingTerms", // only one of the partial fractions summed, or the 1/k left out
   "variableConfused", // differentiated with respect to the other variable
+  // reading graphs
+  "givenCurveChosen", // the curve already given (f for f′, f′ for f)
+  "primitiveForDerivative", // a primitive taken for the derivative
+  "shiftDirection", // f(x − c) moved left, or f(x + c) right
+  "axisConfused", // a transformation applied along the other axis
+  "interceptForSlope", // the line's intercept read as its slope
+  "coefficientsAsIntercepts", // the equation's coefficients taken for the intercepts
   // everywhere
   "signError",
 ] as const;
@@ -284,8 +307,33 @@ export const MISTAKES = [
 export type MistakeKey = (typeof MISTAKES)[number];
 
 /** An answer: its LaTeX, and what it stands for (function, number or set of numbers). */
+/**
+ * A picture the app draws: curves in a window (grid every unit), or a plane in
+ * space drawn through its three intercepts. Generators give every option of a
+ * question the same window, so options can be compared by eye.
+ */
+export type Graph =
+  | {
+      type: "curves";
+      x: [number, number];
+      y: [number, number];
+      /** "main" curves are solid, "guide" ones (a tangent, a level y = k) dashed. */
+      curves: { fn: Fn; style?: "main" | "guide" }[];
+      points?: { x: number; y: number; label?: string }[];
+    }
+  | {
+      type: "plane";
+      /** Where the plane cuts the x, y and z axes. */
+      intercepts: [number, number, number];
+      /** The axes are drawn from −extent to extent: the same for every option. */
+      extent: number;
+    };
+
 export interface Option {
+  /** Its formula: shown in the corrections under a graph, and unique within a question. */
   tex: string;
+  /** Shown as a graph instead of a formula. */
+  graph?: Graph;
   fn?: Fn;
   num?: number;
   set?: number[];
@@ -338,9 +386,16 @@ export type Verify =
   | { kind: "gradient"; f: Fn2; at: [number, number] } // the option (`set`) is ∇f at the point
   | { kind: "critical"; f: Fn2 } // the option (`set`: x, y) is a point where ∇f = 0
   | { kind: "doubleIntegral"; f: Fn2; x: [number, number]; y: [number, number] } // the option is the integral of f over the rectangle
+  | { kind: "slope"; f: Fn; a: number } // the option is f′(a)
+  | { kind: "count"; f: Fn; k: number; lo: number; hi: number } // the option is the number of solutions of f(x) = k on [lo, hi]
 
 export interface Draft {
-  prompt: { key: PromptKey; tex: string };
+  /**
+   * The sentence, the formula (may be empty when a graph says it all), a graph,
+   * and for a graph an id: what makes two questions the same, as the formula
+   * does otherwise.
+   */
+  prompt: { key: PromptKey; tex: string; graph?: Graph; id?: string };
   correct: Option;
   /** Candidate wrong answers (common mistakes); three distinct ones are kept. */
   wrong: Option[];
