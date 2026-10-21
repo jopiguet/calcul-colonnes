@@ -1,18 +1,21 @@
 import type { Rng } from "./rng";
 import type { Fn } from "./tex";
 
+export type Fn2 = (x: number, y: number) => number;
+
 export type Level = "school" | "university";
-export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes";
+export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable";
 
 export const LEVELS: Level[] = ["school", "university"];
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable"];
 
 export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
-  { group: "analysis", topics: ["sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes"] },
-  { group: "algebra", topics: ["complex"] },
+  { group: "analysis", topics: ["functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
+  { group: "algebra", topics: ["complex", "linear"] },
+  { group: "geometry", topics: ["geometry"] },
   { group: "probability", topics: ["probability"] },
 ];
 
@@ -45,7 +48,32 @@ export type PromptKey =
   | "exponentialForm"
   | "complexRoots"
   | "isRoot"
-  | "odeSolution";
+  | "odeSolution"
+  | "determinant"
+  | "scaledDeterminant"
+  | "matrixProduct"
+  | "matrixInverse"
+  | "linearSystem"
+  | "eigenvalues"
+  | "rank"
+  | "tangentLine"
+  | "extremumAbscissa"
+  | "inflection"
+  | "localMaximum"
+  | "obliqueAsymptote"
+  | "dotProduct"
+  | "vectorNorm"
+  | "vectorAngle"
+  | "planeEquation"
+  | "pointPlaneDistance"
+  | "crossProduct"
+  | "linePlane"
+  | "seriesSum"
+  | "radius"
+  | "partialDerivative"
+  | "gradient"
+  | "criticalPoint"
+  | "doubleIntegral";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -104,7 +132,36 @@ export type ExplanationKey =
   | "odeSeparable"
   | "odeDistinct"
   | "odeDouble"
-  | "odeComplex";
+  | "odeComplex"
+  | "determinant2"
+  | "determinant3"
+  | "scaledDeterminant"
+  | "matrixProduct"
+  | "matrixInverse"
+  | "linearSystem"
+  | "eigenvalues"
+  | "rank"
+  | "tangentLine"
+  | "vertex"
+  | "quadraticRoots"
+  | "inflection"
+  | "localExtremum"
+  | "obliqueAsymptote"
+  | "dotProduct"
+  | "vectorNorm"
+  | "vectorAngle"
+  | "planeEquation"
+  | "pointPlaneDistance"
+  | "crossProduct"
+  | "linePlane"
+  | "geometricSeries"
+  | "telescoping"
+  | "exponentialSeries"
+  | "radius"
+  | "partialDerivative"
+  | "gradient"
+  | "criticalPoint"
+  | "doubleIntegral";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -193,6 +250,33 @@ export const MISTAKES = [
   "characteristicRoots", // wrong roots of the characteristic equation
   "doubleRootFactor", // the x of a double root forgotten
   "separationError", // variables not separated: the integral of ax forgotten
+  // linear algebra
+  "determinantPattern", // the wrong products taken
+  "cofactorSign", // cofactor signs (+ − +) forgotten
+  "scalarPower", // det(kA) = k·det A instead of kⁿ·det A
+  "orderSwapped", // BA for AB, or x and y swapped
+  "rowByRow", // rows multiplied by rows
+  "adjugateError", // diagonal not swapped, or the wrong entries negated
+  "diagonalTaken", // the diagonal taken for the eigenvalues
+  "traceDeterminantConfused", // trace and determinant taken for the eigenvalues
+  "rankMiscounted",
+  // function study
+  "tangentPointForgotten", // y = f′(a)x + f(a): the point a left out
+  "tangentRolesSwapped", // f(a) as the slope, f′(a) as the value
+  "valueAbscissaConfused", // the abscissa given for the value, or the reverse
+  "vietaConfused", // the sum and product of the roots taken for the roots
+  "derivativeOrder", // f′ used where f″ is needed
+  "maxMinConfused", // the minimum given for the maximum
+  "asymptoteDivision", // the division not done: the numerator's terms kept
+  // vectors and geometry
+  "componentsMismatched", // coordinates paired with the wrong partners
+  "supplementaryAngle", // π − θ for θ: the sign of the dot product misread
+  "normalPointSwapped", // the point used as the normal, the normal as the point
+  "normForgotten", // the distance not divided by the normal's length
+  "denominatorForgotten", // a quotient's denominator left out
+  // series and several variables
+  "telescopingTerms", // only one of the partial fractions summed, or the 1/k left out
+  "variableConfused", // differentiated with respect to the other variable
   // everywhere
   "signError",
 ] as const;
@@ -234,6 +318,26 @@ export type Verify =
    * equation(y, y′, y″, x) = 0, with y(0) = y0 and, for a second-order one, y′(0) = dy0.
    */
   | { kind: "ode"; equation: (y: number, dy: number, d2y: number, x: number) => number; y0: number; dy0?: number }
+  // Linear algebra: options are numbers (`num`) or matrices and vectors row by row (`set`).
+  | { kind: "determinant"; a: number[][] } // the option is det a
+  | { kind: "rank"; a: number[][] } // the option is the rank of a
+  | { kind: "matrixProduct"; a: number[][]; b: number[][] } // the option is ab
+  | { kind: "matrixInverse"; a: number[][] } // a times the option is the identity
+  | { kind: "linearSolution"; a: number[][]; b: number[] } // a times the option is b
+  | { kind: "eigenvalues"; a: number[][] } // the option is the set of eigenvalues of a, in increasing order
+  | { kind: "tangent"; f: Fn; a: number } // the option is the tangent line to f at a
+  | { kind: "asymptote"; f: Fn } // the option is a line ℓ with f − ℓ → 0 at ±∞
+  | { kind: "crossProduct"; u: number[]; v: number[] } // the option (`set`) is u × v
+  | { kind: "plane"; normal: number[]; point: number[] } // the option (`set`: a, b, c, d) is ax + by + cz + d = 0 through point, normal to normal
+  /** The option is the sum of term(n) for n ≥ from; `terms` terms are enough to see the limit (the check extrapolates a 1/N tail). */
+  | { kind: "series"; term: (n: number) => number; from: number; terms: number }
+  /** The option is the radius of convergence of Σ aₙ x^(power·n), with logCoef(n) = ln |aₙ|. */
+  | { kind: "radius"; logCoef: (n: number) => number; power: number }
+  // Several variables: f(x, y).
+  | { kind: "partial"; f: Fn2; at: [number, number]; variable: "x" | "y" } // the option is ∂f/∂variable at the point
+  | { kind: "gradient"; f: Fn2; at: [number, number] } // the option (`set`) is ∇f at the point
+  | { kind: "critical"; f: Fn2 } // the option (`set`: x, y) is a point where ∇f = 0
+  | { kind: "doubleIntegral"; f: Fn2; x: [number, number]; y: [number, number] } // the option is the integral of f over the rectangle
 
 export interface Draft {
   prompt: { key: PromptKey; tex: string };

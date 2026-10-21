@@ -1,5 +1,34 @@
 # Changelog
 
+## 5.9.0
+
+- **QCM: five new topics,** 100 kinds of question in all, 23 new mistake types.
+  - **Matrices and systems (Algèbre):**
+    - 2×2 and 3×3 determinants, det(kA), products, 2×2 inverses, 2×2 systems;
+    - at university, eigenvalues and rank.
+
+    The classic mistakes: BA for AB, rows times rows, det(kA) = k·det A, the diagonal taken for the eigenvalues.
+  - **Function study (Analyse):** tangent lines, extrema, roots of a trinomial, inflection points, local maxima; at university, oblique asymptotes. The classic mistakes: y = f′(a)x + f(a), the abscissa given for the value, f′ used where f″ is needed.
+  - **Vectors and geometry in space (new group Géométrie):**
+    - dot product, length, angle between two vectors;
+    - the plane through a point with a given normal;
+    - the distance from a point to a plane;
+    - at university, the cross product and where a line meets a plane.
+
+    The classic mistakes: the distance not divided by ‖n‖, π − θ for θ, point and normal swapped, v × u.
+  - **Series (university):** geometric series from n = 0 or 1, telescoping sums, the exponential series, radii of convergence.
+  - **Functions of several variables (university):** partial derivatives, gradients, critical points, double integrals.
+- **University-only topics** are not offered at lycée.
+- **Phone layout:** long givens are stacked on several rows, so a 380-pixel screen shows them whole.
+- **New kinds of answer, each checked without the generators' formulas:**
+  - matrices and vectors, by Gaussian elimination and direct products;
+  - planes: the normal must be parallel and the point on the plane;
+  - series: partial sums extrapolated, 2·S(2N) − S(N);
+  - radii: |aₙ|^(1/n) at n = 10⁷;
+  - two variables: central differences and nested Simpson's rule.
+- `check:quiz`: 16,000 questions, 96 mistake types, 0 failures.
+- Docs: the question-generator page covers every topic, all `verify` kinds, and the topics column of the mistakes table is generated from real output.
+
 ## 5.8.0
 
 - **QCM: three new topics,** 19 kinds of question (69 in all), 18 new mistake types.

@@ -15,6 +15,11 @@ import { probability } from "./probability";
 import { sequences } from "./sequences";
 import { complex } from "./complex";
 import { odes } from "./odes";
+import { linear } from "./linear";
+import { functions } from "./functions";
+import { geometry } from "./geometry";
+import { multivariable } from "./multivariable";
+import { series } from "./series";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
 export * from "./types";
@@ -30,6 +35,11 @@ const GENERATORS: Record<Topic, Record<Level, Record<string, Generator>>> = {
   sequences,
   complex,
   odes,
+  linear,
+  functions,
+  geometry,
+  series,
+  multivariable,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -107,6 +117,8 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "derivative":
     case "identity":
     case "ode":
+    case "tangent":
+    case "asymptote":
       return SAMPLES.every((x) => close(a.fn!(x), b.fn!(x), version));
     case "primitive": {
       // Primitives are equal up to a constant.
@@ -118,6 +130,15 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "complex":
     case "complexRoot":
       return close(a.z![0], b.z![0], version) && close(a.z![1], b.z![1], version);
+    case "crossProduct":
+    case "plane":
+    case "gradient":
+    case "critical":
+    case "matrixProduct":
+    case "matrixInverse":
+    case "linearSolution":
+    case "eigenvalues":
+      return a.set!.length === b.set!.length && a.set!.every((v, i) => close(v, b.set![i]!, version));
     case "complexRoots":
       return (
         a.zs!.length === b.zs!.length &&

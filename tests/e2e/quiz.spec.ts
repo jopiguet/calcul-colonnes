@@ -81,13 +81,13 @@ test("giving up does not save the test", async ({ page }) => {
 });
 
 test("topics come by group; a probability test, at both levels, is graded the same everywhere", async ({ page }) => {
-  await expect(page.locator(".topic-group-name")).toContainText(["Analyse", "Probabilités"]);
+  await expect(page.locator(".topic-group-name")).toContainText(["Analyse", "Algèbre", "Géométrie", "Probabilités"]);
   for (const level of ["Lycée", "Université"]) {
     await page.click(`text=${level}`);
     await chooseTopics(page, ["Probabilités"]);
     await page.click("text=Commencer le test");
     await page.locator(".choices").waitFor();
-    await expect(page.locator(".quiz-topic").first()).toHaveText("Probabilités");
+    await expect(page.locator(".quiz-topic").first()).toContainText("Probabilités");
     await expect(page.locator(".sheet.quiz .katex").first()).toBeVisible();
     const { body, server } = await takeQuiz(page, (i) => i % 4);
     expect(body.topics).toEqual(["probability"]);
@@ -97,11 +97,16 @@ test("topics come by group; a probability test, at both levels, is graded the sa
 });
 
 test("each new topic alone, at each of its levels, is graded the same everywhere", async ({ page }) => {
-  test.setTimeout(150_000);
+  test.setTimeout(360_000);
   const topics: [string, string[]][] = [
     ["Suites", ["Lycée", "Université"]],
     ["Nombres complexes", ["Lycée", "Université"]],
     ["Équations différentielles", ["Lycée", "Université"]],
+    ["Matrices et systèmes", ["Lycée", "Université"]],
+    ["Étude de fonctions", ["Lycée", "Université"]],
+    ["Vecteurs et géométrie dans l'espace", ["Lycée", "Université"]],
+    ["Séries", ["Université"]],
+    ["Fonctions de plusieurs variables", ["Université"]],
   ];
   for (const [topic, levels] of topics) {
     for (const level of levels) {
@@ -116,4 +121,8 @@ test("each new topic alone, at each of its levels, is graded the same everywhere
       await page.locator(".actions button", { hasText: "Changer les réglages" }).click();
     }
   }
+  // University-only topics are not offered at lycée.
+  await page.click(".quiz-setup .segment >> text=Lycée");
+  await expect(page.locator(".topics .topic", { hasText: "Séries" })).toHaveCount(0);
+  await expect(page.locator(".topics .topic", { hasText: "Fonctions de plusieurs variables" })).toHaveCount(0);
 });

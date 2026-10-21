@@ -8,11 +8,11 @@ way in the browser and on the server.
 | `types.ts` | `Level`, `Topic`, `Draft`, `Option`, `Verify`, `Question` |
 | `rng.ts` | Seeded random numbers (mulberry32) |
 | `tex.ts` | Exact fractions and LaTeX helpers: `frac`, `sum`, `poly`, `piTex`… |
-| `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts` | The generators, one file per topic |
+| `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts` | The generators, one file per topic |
 | `index.ts` | Registry of kinds of question, `generateQuiz`, `gradeQuiz`, `QUIZ_VERSION` |
 | `progress.ts` | Status of a kind of question from the latest answers |
 
-## The 69 kinds of question
+## The 100 kinds of question
 
 A *kind* is one generator; its id is `topic.name`. Ids are stored with every
 answer, so **an id must never be renamed**. The name shown to players is in
@@ -147,6 +147,67 @@ check substitutes each option into the equation and checks the initial values
 | `odes.doubleRoot` | the same, double root | the x forgotten, B = y′(0), root's sign | | ✓ |
 | `odes.complexRoots` | the same, roots α ± iβ | cos and sin swapped, B = y′(0), α and β swapped, sign | | ✓ |
 
+### Matrices and systems
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `linear.determinant2` | det of a 2×2 matrix | ps + qr, the wrong diagonals, the opposite | ✓ | |
+| `linear.determinant3` | det of a 3×3 matrix (Sarrus) | cofactor signs forgotten, the − products added, the + products only, the main diagonal | ✓ | ✓ |
+| `linear.scaledDeterminant` | det(kA) from det A | k·det A, the wrong power of k, det A | ✓ | ✓ |
+| `linear.product` | AB | BA, entry by entry, rows times rows, signs | ✓ | ✓ |
+| `linear.inverse` | A⁻¹ for a 2×2 matrix | 1/det forgotten, diagonal not swapped, the wrong entries negated | ✓ | ✓ |
+| `linear.system` | (x, y) for a 2×2 system | x and y swapped, signs, Cramer's numerators not divided | ✓ | ✓ |
+| `linear.eigenvalues` | eigenvalues of a 2×2 matrix | the diagonal, the opposites, trace and determinant | | ✓ |
+| `linear.rank` | rank of a 3×3 or 3×4 matrix | the other ranks | | ✓ |
+
+### Function study
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `functions.tangent` | tangent line to a cubic at a | y = f′(a)x + f(a), f(a) and f′(a) swapped, sign of a | ✓ | ✓ |
+| `functions.vertex` | where a parabola has its extremum | the extremum's value, sign, factor 2 | ✓ | |
+| `functions.quadraticRoots` | roots of a trinomial | sum and product taken for the roots, opposites, factor | ✓ | |
+| `functions.inflection` | inflection point of a cubic | f′ used instead of f″, sign, factor | ✓ | ✓ |
+| `functions.localMaximum` | value of the local maximum of x³ − 3k²x + c | the minimum, the abscissa, c | ✓ | ✓ |
+| `functions.obliqueAsymptote` | oblique asymptote of (ax² + bx + c)/(x + d) | division not done (y = ax + b), sign of the remainder term | | ✓ |
+
+### Vectors and geometry in space
+
+Vectors used for norms and distances have whole lengths ((1, 2, 2) has length
+3, (2, 3, 6) length 7…), shuffled and with random signs, so the answers stay
+exact.
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `geometry.dotProduct` | u · v in space | a term dropped, a sign, (Σu)(Σv), coordinates mismatched | ✓ | |
+| `geometry.vectorNorm` | ‖u‖ | the sum of squares, Σ\|uᵢ\|, a coordinate dropped | ✓ | |
+| `geometry.vectorAngle` | angle between u and v | π − θ, π/2 − θ, θ/2 | ✓ | ✓ |
+| `geometry.planeEquation` | plane through A with normal n | sign of d, point and normal swapped, d forgotten | ✓ | ✓ |
+| `geometry.pointPlaneDistance` | distance from M to a plane | not divided by ‖n‖, divided by ‖n‖², d dropped, sign of d | ✓ | ✓ |
+| `geometry.crossProduct` | u × v | v × u, entry by entry, middle sign, all + | | ✓ |
+| `geometry.linePlane` | t where M(t) = A + tu meets the plane | sign, n · u not divided by, d dropped, ratio inverted | | ✓ |
+
+### Series (university)
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `series.geometricSeries` | Σ a·qⁿ from n = 0 or 1 | the other start, a/(1 + q), a forgotten, ÷(1 − q)² | | ✓ |
+| `series.telescoping` | Σ c/(n(n + k)) | c/k (one partial fraction only), the 1/k forgotten, one term too many or too few | | ✓ |
+| `series.exponentialSeries` | Σ kⁿ/n! from n = 0 or 1 | e^k ± 1, e^(−k), k·e^k, 1/(1 − k) | | ✓ |
+| `series.radius` | radius of Σ nᵖxⁿ/rⁿ, Σ rⁿxⁿ/nᵖ, Σ nᵖx²ⁿ/rⁿ | inverted, 1 (nᵖ taken as deciding), √ forgotten, r² | | ✓ |
+
+### Functions of several variables (university)
+
+f is a polynomial in x and y with a mixed term, an x-only and a y-only term,
+so each mistake gives a different value.
+
+| Id | Asks for | Typical wrong options | Lycée | Univ. |
+|---|---|---|:-:|:-:|
+| `multivariable.partialDerivative` | ∂f/∂x or ∂f/∂y at a point | the other variable, terms without it kept, exponent not brought down, f itself | | ✓ |
+| `multivariable.gradient` | ∇f at a point | components swapped, the point swapped, terms kept, exponent not brought down | | ✓ |
+| `multivariable.criticalPoint` | the critical point of a quadratic | opposite, swapped, the xy term ignored, factor 2 | | ✓ |
+| `multivariable.doubleIntegral` | ∫∫ over [0, A] × [0, B] of a polynomial | no divisors, one divisor, the y integration skipped, bounds swapped | | ✓ |
+
 ## Anatomy of a generator
 
 A generator is a function `(rng) => Draft`:
@@ -195,6 +256,21 @@ const polynomial: Generator = (rng) => {
 | `value` | numbers | equals a value computed independently |
 | `root` | numbers | f(x) = 0 |
 | `solutions` | sets | exactly the roots of f on [lo, hi) |
+| `complex` | complex numbers | equals re + i·im |
+| `complexRoots` | sets of complex numbers | exactly the roots of the polynomial (Horner) |
+| `complexRoot` | complex numbers | zⁿ = re + i·im |
+| `ode` | functions | the equation's residual vanishes (central differences) and the initial values hold |
+| `determinant`, `rank` | numbers | equals det a or rank a (Gaussian elimination) |
+| `matrixProduct`, `matrixInverse`, `linearSolution` | matrices or vectors | equals ab; a times it is I; a times it is b |
+| `eigenvalues` | sets | the roots of det(a − λI) |
+| `tangent`, `asymptote` | lines | f(a) + f′(a)(x − a); f − ℓ → 0 at ±∞ |
+| `crossProduct` | vectors | equals u × v |
+| `plane` | a, b, c, d | (a, b, c) parallel to the normal, and the point on the plane |
+| `series` | numbers | the partial sums S(N), S(2N), extrapolated as 2S(2N) − S(N) |
+| `radius` | numbers | (1/\|aₙ\|^(1/n))^(1/power) at n = 10⁷ |
+| `partial`, `gradient` | numbers, vectors | central differences in x and y |
+| `critical` | points | both central differences vanish |
+| `doubleIntegral` | numbers | nested Simpson's rule |
 
 ## Mistake types
 
@@ -209,9 +285,9 @@ keep the label they were stored with.
 | Type | Meaning | Topics |
 |---|---|---|
 | `exponentKept` | Exponent not lowered | derivatives |
-| `coefficientMissing` | Exponent not brought down as a factor | derivatives |
-| `constantKept` | Derivative of a constant not zero | derivatives |
-| `termDropped` | Term left out | derivatives |
+| `coefficientMissing` | Exponent not brought down as a factor | derivatives, multivariable |
+| `constantKept` | Derivative of a constant not zero | derivatives, multivariable |
+| `termDropped` | Term left out | complex, derivatives, functions, geometry, linear, multivariable, odes, probability, sequences, series |
 | `chainRuleForgotten` | Inner derivative forgotten | derivatives, explog |
 | `wrongInnerFactor` | Wrong factor from the inner function | derivatives, explog, limits |
 | `productRule` | Product rule misapplied | derivatives |
@@ -219,25 +295,25 @@ keep the label they were stored with.
 | `logDerivative` | Derivative of ln misapplied | derivatives |
 | `powerRuleOnExponential` | Power rule applied to an exponential | derivatives, explog, integrals |
 | `derivedInstead` | Derivative instead of an antiderivative | integrals |
-| `wrongPowerDivisor` | Wrong divisor: n + 1 expected | integrals |
+| `wrongPowerDivisor` | Wrong divisor: n + 1 expected | integrals, multivariable |
 | `constantNotIntegrated` | Constant term not integrated | integrals |
 | `multipliedInsteadOfDivided` | Multiplied by a instead of dividing | integrals |
-| `wrongFactor` | Constant factor missing or extra | integrals |
+| `wrongFactor` | Constant factor missing or extra | complex, functions, geometry, integrals, linear, multivariable, odes, probability, sequences, series |
 | `logPrimitiveError` | Antiderivative of 1/x not known | integrals |
 | `byParts` | Integration by parts unfinished | integrals |
 | `substitutionError` | Change of variable misapplied | explog, integrals |
-| `boundsError` | F(b) − F(a) miscalculated | integrals |
-| `sinCosSwapped` | sin and cos swapped | derivatives, integrals, trigonometry |
-| `exactValueError` | Wrong exact value | trigonometry |
+| `boundsError` | F(b) − F(a) miscalculated | integrals, multivariable |
+| `sinCosSwapped` | sin and cos swapped | complex, derivatives, geometry, integrals, odes, trigonometry |
+| `exactValueError` | Wrong exact value | geometry, trigonometry |
 | `missingSolution` | Solution missed | explog, trigonometry |
 | `wrongSymmetry` | Wrong symmetry (π − x, 2π − x, π + x) | trigonometry |
 | `outOfRange` | Value outside the interval | trigonometry |
 | `trigFormula` | Trigonometric identity misremembered | trigonometry |
 | `periodError` | Period miscalculated | trigonometry |
-| `dominantTerms` | Dominant terms misidentified | limits |
+| `dominantTerms` | Dominant terms misidentified | functions, limits, series |
 | `growthReversed` | Growth rates compared the wrong way | limits |
-| `indeterminateGuess` | Indeterminate form taken for a value | limits |
-| `invertedRatio` | Ratio inverted | explog, limits |
+| `indeterminateGuess` | Indeterminate form taken for a value | limits, sequences |
+| `invertedRatio` | Ratio inverted | explog, geometry, limits, odes, probability, sequences, series |
 | `taylorError` | Wrong Taylor coefficient | limits |
 | `factorisationError` | Wrong factorisation | limits |
 | `logRules` | Log rule misapplied | explog |
@@ -262,25 +338,48 @@ keep the label they were stored with.
 | `factorialForgotten` | k! left out | probability |
 | `rateMeanConfused` | λ and 1/λ confused | probability |
 | `densityForProbability` | The density's value taken for a probability | probability |
-| `offByOne` | An index or a number of terms off by one | sequences |
-| `arithmeticGeometricConfused` | The other kind of sequence's formula | sequences |
+| `offByOne` | An index or a number of terms off by one | sequences, series |
+| `arithmeticGeometricConfused` | The other kind of sequence's formula | sequences, series |
 | `firstTermKept` | The first term left out, or given as the answer | sequences |
 | `convergenceMisjudged` | Limit of qⁿ decided the wrong way | sequences |
 | `fixedPointForgotten` | The limit not subtracted: uₙ − ℓ not formed | sequences |
 | `iSquared` | i² taken as +1 | complex |
-| `componentwise` | Computed part by part | complex |
+| `componentwise` | Computed part by part | complex, geometry, linear |
 | `conjugateForgotten` | A quotient not multiplied by the conjugate | complex |
-| `sqrtForgotten` | Square root forgotten | complex |
+| `sqrtForgotten` | Square root forgotten | complex, geometry, series |
 | `argumentQuadrant` | Argument in the wrong quadrant | complex |
 | `argumentSign` | Argument of the conjugate | complex |
 | `discriminantSign` | Negative discriminant treated as positive | complex |
-| `powerMisapplied` | Modulus or argument not raised (or not rooted) | complex |
+| `powerMisapplied` | Modulus or argument not raised (or not rooted) | complex, series |
 | `rootSpacing` | n-th roots not spaced by 2π/n | complex |
 | `initialConditionMisapplied` | Constant set to y(0) without the rest, or constants swapped | odes |
 | `characteristicRoots` | Wrong roots of the characteristic equation | odes |
 | `doubleRootFactor` | The x of a double root forgotten | odes |
 | `separationError` | Variables not separated: ax not integrated | odes |
-| `signError` | Sign error | complex, derivatives, explog, integrals, limits, odes, probability, sequences, trigonometry |
+| `determinantPattern` | The wrong products taken | linear |
+| `cofactorSign` | Cofactor signs forgotten | geometry, linear |
+| `scalarPower` | det(kA) = k·det A | linear |
+| `orderSwapped` | BA for AB, or x and y swapped | geometry, linear, multivariable |
+| `rowByRow` | Rows multiplied by rows | linear |
+| `adjugateError` | Diagonal not swapped, or the wrong entries negated | linear |
+| `diagonalTaken` | The diagonal taken for the eigenvalues | linear |
+| `traceDeterminantConfused` | Trace and determinant taken for the eigenvalues | linear |
+| `rankMiscounted` | Rank miscounted | linear |
+| `tangentPointForgotten` | y = f′(a)x + f(a) | functions |
+| `tangentRolesSwapped` | f(a) and f′(a) swapped | functions |
+| `valueAbscissaConfused` | Abscissa and value confused | functions |
+| `vietaConfused` | Sum and product taken for the roots | functions |
+| `derivativeOrder` | f′ used where f″ is needed | functions |
+| `maxMinConfused` | The minimum given for the maximum | functions |
+| `asymptoteDivision` | The division not done | functions |
+| `componentsMismatched` | Coordinates paired wrongly | geometry |
+| `supplementaryAngle` | π − θ for θ | geometry |
+| `normalPointSwapped` | Point and normal swapped | geometry |
+| `normForgotten` | Distance not divided by the normal's length | geometry |
+| `denominatorForgotten` | A quotient's denominator left out | geometry |
+| `telescopingTerms` | Only one partial fraction summed, or 1/k left out | series |
+| `variableConfused` | Differentiated in the other variable | multivariable |
+| `signError` | Sign error | complex, derivatives, explog, functions, geometry, integrals, limits, linear, multivariable, odes, probability, sequences, series, trigonometry |
 
 Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
 three languages.
@@ -336,7 +435,7 @@ A new kind of answer needs a field on `Option` and a `Verify` kind, with three t
 - its comparison in `same()` (`index.ts`), only for the new kind;
 - its independent check in `isRight()` (`server/check-quiz.ts`).
 
-Complex numbers (`z`, `zs`) and differential equations (`ode`) were added this way.
+Complex numbers (`z`, `zs`), differential equations (`ode`), matrices, planes, series and functions of two variables were added this way.
 
 The settings of a test show only the topics of the chosen level, by group.
 `generateQuiz` leaves out a topic without questions at the level, and the

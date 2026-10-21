@@ -100,6 +100,84 @@ function isRight(q: Question, o: Option): boolean {
       const start = Math.abs(f(0) - v.y0) < 1e-9 && (v.dy0 === undefined || Math.abs(d1(0) - v.dy0) < 1e-6 * Math.max(1, Math.abs(v.dy0)));
       return solves && start;
     }
+    case "tangent": {
+      // f(a) + f′(a)(x − a), with f′(a) by central difference.
+      const slope = derivative(v.f, v.a);
+      return SAMPLES.every((x) => near(o.fn!(x), v.f(v.a) + slope * (x - v.a), 1e-6));
+    }
+    case "asymptote":
+      // A line (two points determine it) along which f − ℓ vanishes at ±∞.
+      return [1e6, -1e6].every((x) => Math.abs(v.f(x) - o.fn!(x)) < 1e-4) && near(o.fn!(2) - o.fn!(1), o.fn!(1) - o.fn!(0), 1e-12);
+    case "crossProduct": {
+      const [a, b, c] = v.u as [number, number, number];
+      const [d, e, f] = v.v as [number, number, number];
+      return sameList(o.set!, [b * f - c * e, c * d - a * f, a * e - b * d]);
+    }
+    case "plane": {
+      // (a, b, c) parallel to the normal (their cross product is zero), not zero, and the point on the plane.
+      const [a, b, c, d] = o.set as [number, number, number, number];
+      const [p, q, r] = v.normal as [number, number, number];
+      const parallel = [b * r - c * q, c * p - a * r, a * q - b * p].every((x) => Math.abs(x) < 1e-9) && Math.hypot(a, b, c) > 0;
+      const [x, y, z] = v.point as [number, number, number];
+      return parallel && Math.abs(a * x + b * y + c * z + d) < 1e-9;
+    }
+    case "series": {
+      // Partial sums S(N) and S(2N); a 1/N tail cancels in 2·S(2N) − S(N).
+      const partial = (count: number): number => {
+        let s = 0;
+        for (let n = v.from; n < v.from + count; n++) s += v.term(n);
+        return s;
+      };
+      return near(o.num!, 2 * partial(2 * v.terms) - partial(v.terms), 1e-6);
+    }
+    case "radius": {
+      // |aₙ|^(1/n) at a large n, then R = (1 / that)^(1/power).
+      const n = 1e7;
+      return near(o.num!, Math.exp(-v.logCoef(n) / n) ** (1 / v.power), 1e-4);
+    }
+    case "partial": {
+      const [p, q] = v.at;
+      const h = 1e-5;
+      const d = v.variable === "x" ? (v.f(p + h, q) - v.f(p - h, q)) / (2 * h) : (v.f(p, q + h) - v.f(p, q - h)) / (2 * h);
+      return near(o.num!, d, 1e-6);
+    }
+    case "gradient": {
+      const [p, q] = v.at;
+      const h = 1e-5;
+      return sameList(o.set!, [(v.f(p + h, q) - v.f(p - h, q)) / (2 * h), (v.f(p, q + h) - v.f(p, q - h)) / (2 * h)], 1e-6);
+    }
+    case "critical": {
+      const [p, q] = o.set as [number, number];
+      const h = 1e-5;
+      return [(v.f(p + h, q) - v.f(p - h, q)) / (2 * h), (v.f(p, q + h) - v.f(p, q - h)) / (2 * h)].every((g) => Math.abs(g) < 1e-6);
+    }
+    case "doubleIntegral": {
+      const [a, b] = v.x;
+      const [c, d] = v.y;
+      return near(o.num!, simpson((x) => simpson((y) => v.f(x, y), c, d, 40), a, b, 40), 1e-9);
+    }
+    case "determinant":
+      return near(o.num!, det(v.a), 1e-9);
+    case "rank":
+      return o.num === rank(v.a);
+    case "matrixProduct": {
+      const ab = v.a.map((row) => v.b[0]!.map((_, j) => row.reduce((s, x, k) => s + x * v.b[k]![j]!, 0)));
+      return sameList(o.set!, ab.flat());
+    }
+    case "matrixInverse": {
+      const n = v.a.length;
+      const m = (i: number, j: number): number => o.set![i * n + j]!;
+      return o.set!.length === n * n && v.a.every((row, i) => row.every((_, j) => near(row.reduce((s, x, k) => s + x * m(k, j), 0), i === j ? 1 : 0, 1e-9)));
+    }
+    case "linearSolution":
+      return o.set!.length === v.b.length && v.a.every((row, i) => near(row.reduce((s, x, k) => s + x * o.set![k]!, 0), v.b[i]!, 1e-9));
+    case "eigenvalues": {
+      // Each value λ makes A − λI singular, they are distinct and as many as the size (here, eigenvalues are simple).
+      const n = v.a.length;
+      const shifted = (l: number): number[][] => v.a.map((row, i) => row.map((x, j) => x - (i === j ? l : 0)));
+      const values = o.set!;
+      return values.length === n && new Set(values).size === n && values.every((l) => Math.abs(det(shifted(l))) < 1e-9 * Math.max(1, Math.abs(l) ** n));
+    }
     case "complexRoot": {
       // zⁿ by repeated multiplication, against the target.
       const [x, y] = o.z!;
@@ -110,6 +188,48 @@ function isRight(q: Question, o: Option): boolean {
     }
   }
 }
+
+/** Determinant by Gaussian elimination with partial pivoting. */
+function det(a: number[][]): number {
+  const m = a.map((row) => [...row]);
+  const n = m.length;
+  let d = 1;
+  for (let c = 0; c < n; c++) {
+    let p = c;
+    for (let r = c + 1; r < n; r++) if (Math.abs(m[r]![c]!) > Math.abs(m[p]![c]!)) p = r;
+    if (Math.abs(m[p]![c]!) < 1e-12) return 0;
+    if (p !== c) {
+      [m[p], m[c]] = [m[c]!, m[p]!];
+      d = -d;
+    }
+    d *= m[c]![c]!;
+    for (let r = c + 1; r < n; r++) {
+      const f = m[r]![c]! / m[c]![c]!;
+      for (let k = c; k < n; k++) m[r]![k]! -= f * m[c]![k]!;
+    }
+  }
+  return d;
+}
+
+/** Rank by Gaussian elimination. */
+function rank(a: number[][]): number {
+  const m = a.map((row) => [...row]);
+  let r = 0;
+  for (let c = 0; c < m[0]!.length && r < m.length; c++) {
+    let p = r;
+    for (let i = r + 1; i < m.length; i++) if (Math.abs(m[i]![c]!) > Math.abs(m[p]![c]!)) p = i;
+    if (Math.abs(m[p]![c]!) < 1e-9) continue;
+    [m[p], m[r]] = [m[r]!, m[p]!];
+    for (let i = r + 1; i < m.length; i++) {
+      const f = m[i]![c]! / m[r]![c]!;
+      for (let k = c; k < m[0]!.length; k++) m[i]![k]! -= f * m[r]![k]!;
+    }
+    r++;
+  }
+  return r;
+}
+
+const sameList = (a: number[], b: number[], tol = 1e-9): boolean => a.length === b.length && a.every((x, i) => near(x, b[i]!, tol));
 
 function render(tex: string, where: string): void {
   try {
