@@ -272,10 +272,13 @@ the *Sciences* group: multiple-choice tests on *Atkins' Physical Chemistry*,
 | 1 · Les gaz | Focus 1 | Perfect gas, kinetic model, real gases |
 | 2 · Premier principe | Focus 2 | Work, heat, internal energy, enthalpy, thermochemistry, adiabatic changes |
 | 3 · Deuxième et troisième principes | Focus 3 | Entropy, its measurement, Helmholtz and Gibbs energies, the fundamental equations |
+| 4 · Transformations physiques | Focus 4 | Phase diagrams, the phase rule, the Clapeyron and Clausius–Clapeyron equations |
+| 5 · Les mélanges | Focus 5 | Partial molar quantities, ideal and dilute solutions, colligative properties, binary and ternary phase diagrams, activities, ionic strength |
+| 6 · L'équilibre chimique | Focus 6 | K and ΔrG°, Le Chatelier and van 't Hoff, cells, the Nernst equation, electrode potentials |
 
 A test mixes two kinds of question:
 
-- **Calculations,** generated with new data each time: the pressure of a gas, the work of an expansion, an entropy of heating, ΔG at a temperature. Data are given to three significant figures and the options carry their unit; the wrong options are the usual slips, such as °C used for K, kJ mixed with J, or C_p taken for C_V. With *Au clavier*, the number is typed in the unit shown, unless the options are too close to tell apart by typing.
+- **Calculations,** generated with new data each time: the pressure of a gas, the work of an expansion, an entropy of heating, ΔG at a temperature, a vapour pressure, a freezing-point depression, an equilibrium constant, a cell potential. Data are given to three significant figures and the options carry their unit; the wrong options are the usual slips, such as °C used for K, kJ mixed with J, or C_p taken for C_V. With *Au clavier*, the number is typed in the unit shown, unless the options are too close to tell apart by typing. Equilibrium constants, which span powers of ten, are always chosen from the four options.
 - **Concept questions,** written from the book. Each shows its section (*Atkins 2B.1*) and, in the corrections, why the answer is right. They are in the app's language: French, Spanish or English.
 
 In the progress page, each Topic of the book is one kind of question per

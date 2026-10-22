@@ -181,7 +181,8 @@ export function readNumber(text: string): Reading | null {
 export function accepts(reading: Reading, v: number): boolean {
   if (reading.exact) return Math.abs(reading.value - v) <= 1e-9 * Math.max(1, Math.abs(v));
   // An integer typed for an integer answer is exact; a rounding is good to its last digit, within the cap.
-  return Math.abs(reading.value - v) <= Math.min(reading.halfUnit, cap(v)) + 1e-12;
+  // The margin is relative: a half unit at the limit stays accepted for large values despite floating-point error.
+  return Math.abs(reading.value - v) <= Math.min(reading.halfUnit, cap(v)) + 1e-12 * Math.max(1, Math.abs(v));
 }
 
 /**
@@ -190,8 +191,8 @@ export function accepts(reading: Reading, v: number): boolean {
  * rounding could stand for both.
  */
 export function typeable(q: Question): boolean {
-  // Numbers someone can type: no infinities, nothing beyond a million.
-  if (!q.options.every((o) => o.num !== undefined && Math.abs(o.num) < 1e6 && !o.graph)) return false;
+  // Numbers someone can type: no infinities, nothing beyond a million, no constant spread over powers of ten.
+  if (!q.options.every((o) => o.num !== undefined && Math.abs(o.num) < 1e6 && !o.graph && !o.choiceOnly)) return false;
   const right = q.options[q.correct]!.num!;
   return q.options.every((o, i) => i === q.correct || Math.abs(o.num! - right) > cap(right) + cap(o.num!));
 }

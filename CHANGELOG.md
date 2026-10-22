@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.9.0
+
+- **Physical chemistry, Focuses 4 to 6:** three new topics, *4 · Transformations physiques*, *5 · Les mélanges* and *6 · L'équilibre chimique*, in the *Thermodynamique* group.
+  - 29 new kinds of calculation, 57 in all:
+    - Phase rule, Clapeyron slope, Clausius–Clapeyron (vapour pressure, ΔvapH, boiling point under another pressure), the chemical potential of a condensed phase.
+    - Gibbs energy and entropy of mixing, Raoult and Henry, the composition of the vapour, freezing and boiling points, molar mass by osmometry, the lever rule, activity coefficients, ionic strength, Debye–Hückel.
+    - K from ΔrG° and back, ΔrG from the reaction quotient, van 't Hoff both ways, degree of dissociation under pressure, ΔrG° and K of a cell, the Nernst equation, cell potentials from electrode potentials, combining standard potentials.
+  - 8 new mistake types: ions of a salt forgotten, components swapped, one phase's composition for the other's, total pressure for partial, charge not squared, ln for log₁₀, potentials multiplied by electrons, potentials combined without weighting.
+  - The bank file now covers Topics 1A–6D: 291 core and 112 advanced concept questions in French, Spanish and English (136 and 51 new). It stays out of the project; import it with `npm run quiz:import -- data/atkins-12-concepts.json`.
+- **Typed answers:** equilibrium constants, spread over powers of ten, are offered as choices only (`choiceOnly` on their options). A rounding typed to its last digit is no longer refused by floating-point error on large values.
+- **Givens on separate lines,** so the new calculations fit a phone screen.
+- **Tests:** the invented bank has a unit for the new topics; 78 browser tests.
+
 ## 6.8.0
 
 - **Linux quiz:** activity 🐧 Linux, in a new *Informatique* group on the home page.

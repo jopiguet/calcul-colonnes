@@ -25,6 +25,9 @@ import { gases } from "./gases";
 import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools } from "./linux";
 import { firstLaw } from "./firstlaw";
 import { secondLaw } from "./secondlaw";
+import { phases } from "./phases";
+import { mixtures } from "./mixtures";
+import { equilibrium } from "./equilibrium";
 import { EMPTY_BANK, bankLevelOf, bankSkills, type Bank, type BankLevel } from "./bank";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
@@ -53,6 +56,9 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   gases,
   firstLaw,
   secondLaw,
+  phases,
+  mixtures,
+  equilibrium,
   linuxFiles,
   linuxText,
   linuxShell,

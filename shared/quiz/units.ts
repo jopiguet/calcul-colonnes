@@ -14,6 +14,8 @@ export const R_ATM = 0.08206;
 export const K_B = 1.381e-23;
 export const N_A = 6.022e23;
 export const KELVIN = 273.15;
+/** Faraday constant, C mol⁻¹. */
+export const FARADAY = 96485;
 
 /**
  * A number to `digits` significant figures, in TeX: plain between 0.001 and

@@ -199,7 +199,7 @@ compiled in by `vite.config.ts` and published as `/version.json`.
 
 ## Internationalisation
 
-- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 110 kinds of question and of the 102 mistake types. Every dictionary is typed against the French one, so a missing translation is a compile error.
+- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 204 kinds of question and of the 137 mistake types (with `quiz-i18n-chemistry.ts`, `quiz-i18n-equilibria.ts` and `quiz-i18n-linux.ts` merged into it). Every dictionary is typed against the French one, so a missing translation is a compile error.
 - **Generated questions:** the generators produce only LaTeX plus *keys* for the sentence around it (`PromptKey`, `ExplanationKey`), so they contain no language.
 - **Spanish notation:** KaTeX macros render `\sin` as *sen* and `\arcsin` as *arcsen*.
 

@@ -2,7 +2,7 @@
 
 The physical chemistry tests mix two sources:
 
-- **Calculations,** generated like the maths questions: one generator per kind, in `shared/quiz/gases.ts`, `firstlaw.ts` and `secondlaw.ts`. See [Question generators](question-generators.md#physical-chemistry).
+- **Calculations,** generated like the maths questions: one generator per kind, in `shared/quiz/gases.ts`, `firstlaw.ts`, `secondlaw.ts`, `phases.ts`, `mixtures.ts` and `equilibrium.ts`. See [Question generators](question-generators.md#physical-chemistry).
 - **Concept questions,** written from a textbook: the *question bank*. They are not in the project. They come from a file the author keeps in `data/`, imported into the database like a vocabulary book.
 
 The bank has two levels. **Core** questions join the calculations in the
@@ -62,7 +62,7 @@ hand.
 - **`level`:** `core` (the default) or `advanced`.
 - **Formulas** go between `$…$` and are rendered by KaTeX; an odd number of `$` is refused.
 - **Exactly three wrong answers,** all different from each other and from the right one.
-- **Units** are the book's topics ("1A"). Each belongs to one test topic: `gases`, `firstLaw` or `secondLaw`. A unit at a level is one kind of question, `topic.conceptsUNIT` or `topic.advancedUNIT` (`gases.concepts1A`, `gases.advanced1A`): its progress and review work like a generator's.
+- **Units** are the book's topics ("1A"). Each belongs to one test topic: `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures` or `equilibrium` (Focuses 1 to 6). A unit at a level is one kind of question, `topic.conceptsUNIT` or `topic.advancedUNIT` (`gases.concepts1A`, `gases.advanced1A`): its progress and review work like a generator's.
 - **`source`** is shown as a badge on each written question ("Atkins 1A.2").
 
 ## Revisions

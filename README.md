@@ -48,11 +48,11 @@ at *lycée / bachillerato* or university level.
 - Tools missing from a default install (`ripgrep`, `fzf`, `jq`, `tmux`, `hyperfine`, `shellcheck`, `nmap`…) are marked with their package and the install command for Debian, Fedora and macOS.
 - `chmod`, `umask` and crontab questions are generated, with the usual slips as wrong options; an octal mode can be typed.
 
-**Physical chemistry** — multiple-choice tests from *Atkins' Physical Chemistry* (12th edition), a book you own: gases, the First Law, the Second and Third Laws for a start.
+**Physical chemistry** — multiple-choice tests from *Atkins' Physical Chemistry* (12th edition), a book you own: Focuses 1 to 6, from gases and the laws of thermodynamics to mixtures and chemical equilibrium.
 
-- Calculations are generated like the maths questions: 28 kinds, from the perfect gas law to the Gibbs energy, with data to three significant figures and units in the options. The wrong options are unit slips and real mistakes: °C for K, kJ mixed with J, C_p for C_V, a log₁₀ for a ln.
-- Concept questions are written from the book, Topic by Topic, and imported from a file kept out of the project: 155 for Topics 1A–3E. Each shows its section of the book ("Atkins 2B.1") and explains the answer.
-- An advanced level of 61 reasoning and derivation questions: free expansion of a van der Waals gas, the Gibbs paradox, entropy of water compressed below 4 °C.
+- Calculations are generated like the maths questions: 57 kinds, from the perfect gas law to the Nernst equation, with data to three significant figures and units in the options. The wrong options are unit slips and real mistakes: °C for K, kJ mixed with J, C_p for C_V, a log₁₀ for a ln, the ions of a salt counted as one particle, electrode potentials weighted by electrons.
+- Concept questions are written from the book, Topic by Topic, and imported from a file kept out of the project: 291 for Topics 1A–6D. Each shows its section of the book ("Atkins 2B.1") and explains the answer.
+- An advanced level of 112 reasoning and derivation questions: free expansion of a van der Waals gas, the Gibbs paradox, entropy of water compressed below 4 °C, a concentration cell, the Harned cell.
 - In French, Spanish and English: texts are stored per language, never in the code.
 - Any question can be flagged from the corrections, with a note, for the author to check.
 
@@ -149,7 +149,7 @@ Settings are read from `.env` (see `.env.example`):
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
-| [Question generators](docs/question-generators.md) | The 110 maths, 28 chemistry and 37 Linux kinds of question, how a generator works, adding one, verification, versioning |
+| [Question generators](docs/question-generators.md) | The 110 maths, 57 chemistry and 37 Linux kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |

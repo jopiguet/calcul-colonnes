@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
-import { generateQuiz, localized, registerBank, topicsFor, type Level, type Question } from "../../shared/quiz/index.ts";
+import { generateQuiz, localized, registerBank, topicsFor, typeable, type Level, type Question } from "../../shared/quiz/index.ts";
 import { parseBankFile, toBank } from "../../shared/quiz/bank-file.ts";
-import { newPlayer, openActivity, profileOf, rebuild, takeQuiz } from "./helpers";
+import { chooseTopics, newPlayer, openActivity, profileOf, rebuild, takeMixedQuiz, takeQuiz } from "./helpers";
 
 /** The invented bank the server imported at startup (playwright.config.ts): revision 1. */
 const fixture = parseBankFile(JSON.parse(readFileSync("tests/e2e/fixtures/bank.json", "utf8")));
@@ -41,7 +41,14 @@ test("physical chemistry: its own topics and levels; calculations and written qu
   await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Fondamental", "Avancé"]);
   await expect(page.locator(".segment.on", { hasText: "Fondamental" })).toHaveCount(1);
   await expect(page.locator(".topic-group-name")).toHaveText(["Thermodynamique"]);
-  await expect(page.locator(".topics .topic")).toHaveText(["1 · Les gaz", "2 · Premier principe", "3 · Deuxième et troisième principes"]);
+  await expect(page.locator(".topics .topic")).toHaveText([
+    "1 · Les gaz",
+    "2 · Premier principe",
+    "3 · Deuxième et troisième principes",
+    "4 · Transformations physiques",
+    "5 · Les mélanges",
+    "6 · L'équilibre chimique",
+  ]);
 
   const count = 10;
   await page.locator(".count button").first().click(); // 10 → 5
@@ -122,4 +129,29 @@ test("the advanced level: written questions only, in the app's language, its own
   await page.click("text=📈 Mes progrès");
   const unit = fixture.units.find((u) => first.skill.endsWith(`advanced${u.id}`))!;
   await expect(page.locator("#app")).toContainText(`Avancé ${unit.id} – ${localized(unit.title, "fr")}`);
+});
+
+test("Focuses 4–6: a calculation typed, a written question of the new topics, graded the same everywhere", async ({ page }) => {
+  await chooseTopics(page, ["5 · Les mélanges", "6 · L'équilibre chimique"]);
+  await page.click("text=Au clavier");
+  await page.locator(".count button").first().click(); // 5 questions
+  const topics = ["mixtures", "equilibrium"] as const;
+  let seed = 1;
+  let quiz: Question[] = [];
+  for (; ; seed++) {
+    quiz = generateQuiz({ seed, level: "chemistry", topics: [...topics], count: 5, bank: 1 });
+    if (quiz[0]!.skill === "mixtures.ionicStrength" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "equilibrium.concepts6A")) break;
+  }
+  await fixSeed(page, seed);
+  await page.click("text=Commencer le test");
+  await expect(page.locator(".quiz-prompt")).toContainText("Force ionique");
+  const right = quiz[0]!.options[quiz[0]!.correct]!.tex;
+  const { body, server } = await takeMixedQuiz(page, (i) => (i === 0 ? right.replace(".", ",") : "0"), () => 0);
+  expect(body.topics).toEqual([...topics]);
+  expect(body.mode).toBe("typed");
+  const rebuilt = rebuild(body);
+  expect(server.correct).toBe(rebuilt.correct);
+  expect(rebuilt.questions.map((q) => q.topic).every((t) => (topics as readonly string[]).includes(t))).toBe(true);
+  expect(server.correct).toBeGreaterThanOrEqual(1);
+  await expect(page.locator(".review-item").first()).toHaveClass(/good/);
 });

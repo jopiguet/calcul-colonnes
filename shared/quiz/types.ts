@@ -11,8 +11,11 @@ export type Fn2 = (x: number, y: number) => number;
  */
 export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
-/** Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws. */
-export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw";
+/**
+ * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
+ * 4 physical transformations, 5 mixtures, 6 chemical equilibrium.
+ */
+export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium";
 /** The Linux command line: core commands by area, then tools that need installing. */
 export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools";
 export type Topic = MathTopic | ChemistryTopic | LinuxTopic;
@@ -25,14 +28,14 @@ export type Subject = "maths" | "chemistry" | "linux";
 export const subjectOf = (level: Level): Subject =>
   level === "linux" ? "linux" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
-export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw"];
+export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"];
 /** The levels offered in the mathematics test's settings. */
 export const MATH_LEVELS: Level[] = ["school", "university"];
 /** The levels offered in the physical chemistry test's settings. */
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium"];
 
 export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxInstall";
 /** How the topics are grouped in the test's settings. */
@@ -41,7 +44,7 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "algebra", topics: ["complex", "linear"] },
   { group: "geometry", topics: ["geometry"] },
   { group: "probability", topics: ["probability"] },
-  { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw"] },
+  { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"] },
   { group: "linuxCommands", topics: ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork"] },
   { group: "linuxInstall", topics: ["linuxTools"] },
 ];
@@ -146,6 +149,35 @@ export type PromptKey =
   | "crossoverTemperature"
   | "gibbsPressure"
   | "debyeEntropy"
+  | "phaseRule"
+  | "clapeyronSlope"
+  | "vapourPressure"
+  | "vaporizationEnthalpy"
+  | "boilingTemperature"
+  | "condensedPotential"
+  | "gibbsMixing"
+  | "entropyMixing"
+  | "raoultPressure"
+  | "vapourComposition"
+  | "henrySolubility"
+  | "freezingDepression"
+  | "boilingElevation"
+  | "osmoticMolarMass"
+  | "leverRule"
+  | "activityCoefficient"
+  | "ionicStrength"
+  | "debyeHuckel"
+  | "constantFromGibbs"
+  | "gibbsFromK"
+  | "reactionGibbs"
+  | "vantHoff"
+  | "vantHoffEnthalpy"
+  | "dissociationDegree"
+  | "cellGibbs"
+  | "cellEquilibrium"
+  | "nernst"
+  | "cellPotential"
+  | "combinedPotential"
   // Linux: written questions use "concept"; generated ones
   | "chmodToOctal"
   | "chmodToSymbolic"
@@ -275,6 +307,34 @@ export type ExplanationKey =
   | "crossoverTemperature"
   | "gibbsPressure"
   | "debyeEntropy"
+  | "phaseRule"
+  | "clapeyron"
+  | "clausiusClapeyron"
+  | "vaporizationEnthalpy"
+  | "boilingTemperature"
+  | "condensedPotential"
+  | "gibbsMixing"
+  | "entropyMixing"
+  | "raoult"
+  | "vapourComposition"
+  | "henry"
+  | "colligative"
+  | "osmosis"
+  | "leverRule"
+  | "activity"
+  | "ionicStrength"
+  | "debyeHuckel"
+  | "constantFromGibbs"
+  | "gibbsFromK"
+  | "reactionGibbs"
+  | "vantHoff"
+  | "vantHoffEnthalpy"
+  | "dissociationDegree"
+  | "cellGibbs"
+  | "cellEquilibrium"
+  | "nernst"
+  | "cellPotential"
+  | "combinedPotential"
   | "chmod"
   | "umask"
   | "cron";
@@ -421,6 +481,14 @@ export const MISTAKES = [
   "logBase", // log₁₀ used where ln is needed
   "linearForLog", // ΔT/T for ln(T₂/T₁)
   "ratioInverted", // a ratio upside down: V₁/V₂ for V₂/V₁
+  "particlesForgotten", // a salt counted as one particle: the ions it gives ignored
+  "componentsSwapped", // each component's mole fraction paired with the other's property
+  "phaseCompositionConfused", // the composition of one phase taken for the other's, or for the overall one
+  "totalForPartial", // the total pressure used where a partial pressure is needed
+  "chargeNotSquared", // |z| for z² in the ionic strength
+  "lnForLog", // e^x where 10^x is needed: ln for log₁₀
+  "potentialTimesElectrons", // electrode potentials multiplied by electron numbers to subtract them
+  "potentialsNotWeighted", // potentials subtracted directly where Gibbs energies (νE) must be
   // Linux
   "permissionClassesSwapped",
   "permissionWeights",
@@ -474,6 +542,8 @@ export interface Option {
   mistake?: MistakeKey;
   /** A written answer, shown instead of the formula (the formula is then only its identity). */
   text?: Localized;
+  /** Values spread over powers of ten (an equilibrium constant): offered as choices, never typed. */
+  choiceOnly?: boolean;
 }
 
 /** A wrong option labelled with its mistake. */

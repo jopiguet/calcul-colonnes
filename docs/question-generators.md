@@ -237,7 +237,8 @@ the interval, so the count never hangs on a tangency.
 ## Physical chemistry
 
 Physical chemistry has its own topics, grouped as *Thermodynamics*:
-`gases`, `firstLaw` and `secondLaw` (Atkins, Focuses 1–3), and two levels.
+`gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures` and `equilibrium`
+(Atkins, Focuses 1–6), and two levels.
 At `chemistry` (*Fondamental*), each topic mixes the calculations below with
 the core questions of the [question bank](question-bank.md), one kind per
 unit of the book (`gases.concepts1A`). At `chemistryAdvanced` (*Avancé*), it
@@ -284,6 +285,47 @@ no value of a million or more, options far enough apart.
 
 These kinds came with the level, so `QUIZ_VERSION` stayed at 2: no saved
 test could contain them.
+
+Focuses 4–6 came as three new topics (6.9.0). A saved test only draws from
+the topics it names, so the new kinds cannot change an older test either:
+`QUIZ_VERSION` stays at 2.
+
+| Id | Asks for | Typical wrong options |
+|---|---|---|
+| `phases.phaseRule` | F = C − P + 2 | the 2 dropped, P − C + 2, signs |
+| `phases.clapeyronSlope` | dp/dT = ΔfusH/(TΔfusV), melting point in °C | °C for K, kJ/J, ΔV in m³ unconverted, answer in Pa, sign |
+| `phases.vapourPressure` | p* at θ from the normal boiling point (Clausius–Clapeyron) | exponent's sign, kJ/J, 10ˣ for eˣ, °C for K |
+| `phases.vaporizationEnthalpy` | ΔvapH from p* at two temperatures | sign, log₁₀, °C for K, kJ/J, R in dm³ bar |
+| `phases.boilingTemperature` | the boiling temperature at another pressure | sign, log₁₀, answer left in K, kJ/J |
+| `phases.condensedPotential` | Δμ = V_mΔp for a liquid or solid | RT ln(p_f/p_i) as for a gas, cm³/dm³, ρ/M for M/ρ, kJ/J, bar as Pa |
+| `mixtures.gibbsMixing` | ΔmixG = nRTΣx ln x, θ in °C | sign, log₁₀, n_A/n_B for x_A, °C for K, kJ/J |
+| `mixtures.entropyMixing` | ΔmixS = −nRΣx ln x | sign, log₁₀, per mole, n_A/n_B for x_A |
+| `mixtures.raoultPressure` | x_Ap_A* + x_Bp_B* | fractions swapped, n_A/n_B for x_A, one term |
+| `mixtures.vapourComposition` | y_A = x_Ap_A*/p | x_A itself, y_B, p_B* for p_A*, x_A forgotten |
+| `mixtures.henrySolubility` | b = yp/K, in mmol kg⁻¹ | total pressure for partial, K/p, kPa as Pa, mmol/mol |
+| `mixtures.freezingDepression`, `mixtures.boilingElevation` | ΔT = iKb | ions of a salt forgotten, solvent in g, molality without the solvent, K/b |
+| `mixtures.osmoticMolarMass` | M = cRT/Π | °C for K, Π/cRT, g/kg, dm³/m³, R in L atm |
+| `mixtures.leverRule` | the fraction of the amount in the liquid | the complement, the ratio n_l/n_v, its inverse, the overall composition |
+| `mixtures.activityCoefficient` | γ_A = p_A/(x_Ap_A*) | the activity a_A, the inverse, x_B for x_A |
+| `mixtures.ionicStrength` | I = ½Σz²b for two salts | ½ forgotten, \|z\| for z², ions per formula unit forgotten, molalities added |
+| `mixtures.debyeHuckel` | log γ± = −A\|z₊z₋\|√I | eˣ for 10ˣ, I for √I, sign, charges dropped, b for I |
+| `equilibrium.constantFromGibbs` | K = exp(−ΔrG°/RT), θ in °C | 1/K, kJ/J, 10ˣ, °C for K |
+| `equilibrium.gibbsFromK` | −RT ln K | sign, log₁₀, kJ/J, °C for K |
+| `equilibrium.reactionGibbs` | ΔrG° + RT ln Q from partial pressures | Q inverted, exponents dropped, J added to kJ, ΔrG° alone |
+| `equilibrium.vantHoff` | K at another temperature | sign, kJ/J, 10ˣ, °C for K |
+| `equilibrium.vantHoffEnthalpy` | ΔrH° from K at two temperatures | sign, log₁₀, kJ/J, °C for K |
+| `equilibrium.dissociationDegree` | α = (1 + 4p/Kp°)^(−1/2) | p and K swapped, square root forgotten, 4 dropped, kPa as bar |
+| `equilibrium.cellGibbs` | −νFE° | ν forgotten, sign, kJ/J, divided by ν |
+| `equilibrium.cellEquilibrium` | K = exp(νFE°/RT) | 1/K, 10ˣ, ν forgotten, °C for K |
+| `equilibrium.nernst` | E° − (RT/νF) ln Q | sign, log₁₀, E° alone, ν forgotten or multiplied |
+| `equilibrium.cellPotential` | E°(R) − E°(L) for two metal electrodes | L − R, R + L, E°(R) alone, potentials multiplied by electrons |
+| `equilibrium.combinedPotential` | ν_cE°(c) = ν_aE°(a) − ν_bE°(b), from tabulated couples | potentials subtracted or added without ν, sign, not divided by ν_c |
+
+Equilibrium constants span powers of ten: their options carry `choiceOnly`,
+so those three kinds are never offered typed (`typeable`). Constants and
+tabulated data (vapour pressures, Henry's law constants, cryoscopic
+constants, standard potentials) are the usual textbook values, written in
+the generators.
 
 ## Linux
 
@@ -417,7 +459,7 @@ four options.
 - **Accepted:** an exact value (`7/45`, `2π/3`, `2pi/3`, `√2`, `sqrt(2)/2`, `e^2 − 1`, `ln 3`, implicit products like `3√2`), or a decimal rounding with a point or a comma.
 - **Tolerance of a rounding:** half a unit of its last digit (`1.05` stands for anything in [1.045, 1.055]), and never more than 0.6 % of the value (at least 0.1 × 0.6 %). So `1,05` is π/3 but `1` is not, and `0.1` is not 12/121 = 0.0992.
 - **Exact values** are compared to 10⁻⁹.
-- **Which questions:** `typeable(q)` refuses a question where a wrong option is close enough to the answer that one rounding could stand for both.
+- **Which questions:** `typeable(q)` refuses a question where a wrong option is close enough to the answer that one rounding could stand for both, and one whose options are marked `choiceOnly` (equilibrium constants, spread over powers of ten).
 - **Mistakes still count:** a typed value is matched against the right option first, then the wrong ones. Typing a wrong option's value records its mistake, as if it had been picked. A value matching nothing is wrong without a mistake (`given = −2`).
 
 The browser shows what it reads as the player types (≈ 2,0944), but grading

@@ -28,6 +28,15 @@
    "title": {
     "en": "Entropy"
    }
+  },
+  {
+   "id": "6A",
+   "topic": "equilibrium",
+   "title": {
+    "en": "Equilibrium",
+    "fr": "Équilibre",
+    "es": "Equilibrio"
+   }
   }
  ],
  "questions": [
@@ -368,6 +377,43 @@
     "en": "The total entropy increases because of the extra heat released outside.",
     "fr": "L'entropie totale augmente grâce à la chaleur supplémentaire rejetée dehors.",
     "es": "La entropía total aumenta por el calor extra expulsado fuera."
+   }
+  },
+  {
+   "id": "6A-01",
+   "unit": "6A",
+   "section": "6A.1",
+   "prompt": {
+    "en": "A reaction mixture has $Q < K$. Which way does it go?",
+    "fr": "Un mélange réactionnel a $Q < K$. Dans quel sens évolue-t-il ?",
+    "es": "Una mezcla de reacción tiene $Q < K$. ¿En qué sentido evoluciona?"
+   },
+   "correct": {
+    "en": "Towards the products",
+    "fr": "Vers les produits",
+    "es": "Hacia los productos"
+   },
+   "wrong": [
+    {
+     "en": "Towards the reactants",
+     "fr": "Vers les réactifs",
+     "es": "Hacia los reactivos"
+    },
+    {
+     "en": "It is at equilibrium",
+     "fr": "Il est à l'équilibre",
+     "es": "Está en equilibrio"
+    },
+    {
+     "en": "It depends on the pressure only",
+     "fr": "Cela dépend seulement de la pression",
+     "es": "Depende solo de la presión"
+    }
+   ],
+   "explanation": {
+    "en": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$: the forward reaction is spontaneous.",
+    "fr": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$ : la réaction directe est spontanée.",
+    "es": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$: la reacción directa es espontánea."
    }
   }
  ]
