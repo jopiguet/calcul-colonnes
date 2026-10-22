@@ -293,7 +293,7 @@ Two GitHub Actions workflows, for one developer working on `main`:
 
 | Workflow | When | What |
 |---|---|---|
-| [checks.yml](../.github/workflows/checks.yml) | Every push to `main` | Type checks and build, `check:quiz`, `check:vocab`, `check:discover`, `check:physics`, the e2e suite on SQLite and again on PostgreSQL, the image build. Nothing is deployed. |
+| [checks.yml](../.github/workflows/checks.yml) | Every push to `main` | Type checks and build, `check:quiz`, `check:vocab`, `check:discover`, `check:physics`, `check:astronomy`, `check:biology`, the e2e suite on SQLite and again on PostgreSQL, the image build. Nothing is deployed. |
 | [release.yml](../.github/workflows/release.yml) | A tag `v*`, or *Run workflow* | The same checks, then the steps below |
 
 A release:

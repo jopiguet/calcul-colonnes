@@ -9,7 +9,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -18,15 +18,19 @@ export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" 
 export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium";
 /** The Linux command line: core commands by area, then tools that need installing. */
 export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools";
-export type Topic = MathTopic | ChemistryTopic | LinuxTopic;
+/** Chemistry and biology basics: balancing equations, first. */
+export type ChemBioTopic = "balancing";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio"];
+/** Topics of the chemistry-and-biology test. */
+export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
 export const LINUX_TOPICS: LinuxTopic[] = ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools"];
 /** The three subjects of the tests, each with its own levels and topics. */
-export type Subject = "maths" | "chemistry" | "linux";
+export type Subject = "maths" | "chemistry" | "linux" | "chembio";
 export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+  level === "linux" ? "linux" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"];
 /** The levels offered in the mathematics test's settings. */
@@ -35,9 +39,9 @@ export const MATH_LEVELS: Level[] = ["school", "university"];
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxInstall";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxInstall" | "reactions";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -47,6 +51,7 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"] },
   { group: "linuxCommands", topics: ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork"] },
   { group: "linuxInstall", topics: ["linuxTools"] },
+  { group: "reactions", topics: ["balancing"] },
 ];
 
 /**
@@ -182,7 +187,10 @@ export type PromptKey =
   | "chmodToOctal"
   | "chmodToSymbolic"
   | "umask"
-  | "cron";
+  | "cron"
+  // chemistry basics
+  | "balanceEquation"
+  | "balanceCoefficient";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -337,7 +345,8 @@ export type ExplanationKey =
   | "combinedPotential"
   | "chmod"
   | "umask"
-  | "cron";
+  | "cron"
+  | "balanceEquation";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -497,6 +506,11 @@ export const MISTAKES = [
   "cronFieldsSwapped",
   "cronStepRead",
   "cronDayFields",
+  // balancing equations
+  "subscriptChanged", // a formula's subscript changed instead of a coefficient: another substance
+  "notLowestTerms", // balanced, but not in the smallest whole numbers
+  "elementUnbalanced", // one coefficient off: an element left unbalanced
+  "diatomicForgotten", // O₂, H₂, N₂, Cl₂ written as single atoms
   // everywhere
   "signError",
 ] as const;
@@ -595,6 +609,10 @@ export type Verify =
   | { kind: "mode"; mode: number }
   /** umask: options are "file/directory" octal modes ("640/750") in their formula. */
   | { kind: "umask"; mask: number }
+  /** A chemical equation: the option (its formula) must have these substances, every element balanced, in smallest whole numbers. */
+  | { kind: "equation"; reactants: string[]; products: string[] }
+  /** The option is the coefficient of one substance in the balanced equation (`coefficients`, reactants then products). */
+  | { kind: "coefficient"; reactants: string[]; products: string[]; coefficients: number[]; species: number }
 
 export interface Draft {
   /**

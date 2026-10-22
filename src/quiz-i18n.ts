@@ -2,6 +2,7 @@ import type { ExplanationKey, Level, MistakeKey, PromptKey, SkillStatus, Topic, 
 import { currentLang, type Lang } from "./i18n";
 import { bankSkillParts, currentBank, localized } from "../shared/quiz";
 import { LX_EXPLANATIONS, LX_GROUPS, LX_LEVEL, LX_MISTAKES, LX_PROMPTS, LX_SKILLS, LX_TEXTS, LX_TOPICS } from "./quiz-i18n-linux";
+import { CB_EXPLANATIONS, CB_GROUPS, CB_LEVEL, CB_MISTAKES, CB_PROMPTS, CB_SKILLS, CB_TEXTS, CB_TOPICS } from "./quiz-i18n-chembio";
 import { EQ_EXPLANATIONS, EQ_MISTAKES, EQ_PROMPTS, EQ_SKILLS } from "./quiz-i18n-equilibria";
 import { CHEM_ADVANCED, CHEM_EXPLANATIONS, CHEM_GROUP, CHEM_LEVEL, CHEM_MISTAKES, CHEM_PROMPTS, CHEM_SKILLS, CHEM_TEXTS, CHEM_TOPICS } from "./quiz-i18n-chemistry";
 
@@ -76,6 +77,7 @@ const fr = {
   typedBadge: "⌨️ Au clavier",
   ...CHEM_TEXTS.fr,
     ...LX_TEXTS.fr,
+    ...CB_TEXTS.fr,
 };
 
 type QuizKey = keyof typeof fr;
@@ -149,6 +151,7 @@ const es: Record<QuizKey, string> = {
   typedBadge: "⌨️ Con el teclado",
   ...CHEM_TEXTS.es,
     ...LX_TEXTS.es,
+    ...CB_TEXTS.es,
 };
 
 const en: Record<QuizKey, string> = {
@@ -220,30 +223,33 @@ const en: Record<QuizKey, string> = {
   typedBadge: "⌨️ Typed",
   ...CHEM_TEXTS.en,
     ...LX_TEXTS.en,
+    ...CB_TEXTS.en,
 };
 
 const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
-  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr },
-  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es },
+  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr, chembio: CB_LEVEL.fr },
+  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es, chembio: CB_LEVEL.es },
   en: {
     school: "High school",
     university: "University",
     chemistry: CHEM_LEVEL.en,
     chemistryAdvanced: CHEM_ADVANCED.en,
     linux: LX_LEVEL.en,
+    chembio: CB_LEVEL.en,
   },
 };
 
 const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
-  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, ...LX_GROUPS.fr },
-  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, ...LX_GROUPS.es },
-  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, ...LX_GROUPS.en },
+  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr },
+  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es },
+  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en },
 };
 
 const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
   fr: {
     ...CHEM_TOPICS.fr,
     ...LX_TOPICS.fr,
+    ...CB_TOPICS.fr,
     derivatives: "Dérivées",
     integrals: "Intégrales",
     trigonometry: "Trigonométrie",
@@ -263,6 +269,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
   es: {
     ...CHEM_TOPICS.es,
     ...LX_TOPICS.es,
+    ...CB_TOPICS.es,
     derivatives: "Derivadas",
     integrals: "Integrales",
     trigonometry: "Trigonometría",
@@ -282,6 +289,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
   en: {
     ...CHEM_TOPICS.en,
     ...LX_TOPICS.en,
+    ...CB_TOPICS.en,
     derivatives: "Derivatives",
     integrals: "Integrals",
     trigonometry: "Trigonometry",
@@ -305,6 +313,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     ...CHEM_PROMPTS.fr,
     ...EQ_PROMPTS.fr,
     ...LX_PROMPTS.fr,
+    ...CB_PROMPTS.fr,
     derivative: "Quelle est la dérivée de f ?",
     primitive: "Quelle est une primitive de f ?",
     integral: "Que vaut cette intégrale ?",
@@ -371,6 +380,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     ...CHEM_PROMPTS.es,
     ...EQ_PROMPTS.es,
     ...LX_PROMPTS.es,
+    ...CB_PROMPTS.es,
     derivative: "¿Cuál es la derivada de f?",
     primitive: "¿Cuál es una primitiva de f?",
     integral: "¿Cuánto vale esta integral?",
@@ -437,6 +447,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     ...CHEM_PROMPTS.en,
     ...EQ_PROMPTS.en,
     ...LX_PROMPTS.en,
+    ...CB_PROMPTS.en,
     derivative: "What is the derivative of f?",
     primitive: "What is an antiderivative of f?",
     integral: "What is the value of this integral?",
@@ -506,6 +517,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     ...CHEM_EXPLANATIONS.fr,
     ...EQ_EXPLANATIONS.fr,
     ...LX_EXPLANATIONS.fr,
+    ...CB_EXPLANATIONS.fr,
     powerRule: "Dérivée d'une puissance, terme par terme ; la dérivée d'une constante est nulle.",
     chainRule: "Dérivée d'une fonction composée : on multiplie par la dérivée de l'intérieur.",
     productRule: "Dérivée d'un produit.",
@@ -604,6 +616,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     ...CHEM_EXPLANATIONS.es,
     ...EQ_EXPLANATIONS.es,
     ...LX_EXPLANATIONS.es,
+    ...CB_EXPLANATIONS.es,
     powerRule: "Derivada de una potencia, término a término; la derivada de una constante es cero.",
     chainRule: "Regla de la cadena: se multiplica por la derivada de la función interior.",
     productRule: "Derivada de un producto.",
@@ -702,6 +715,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     ...CHEM_EXPLANATIONS.en,
     ...EQ_EXPLANATIONS.en,
     ...LX_EXPLANATIONS.en,
+    ...CB_EXPLANATIONS.en,
     powerRule: "Derivative of a power, term by term; the derivative of a constant is zero.",
     chainRule: "Chain rule: multiply by the derivative of the inner function.",
     productRule: "Derivative of a product.",
@@ -804,6 +818,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...CHEM_SKILLS.fr,
     ...EQ_SKILLS.fr,
     ...LX_SKILLS.fr,
+    ...CB_SKILLS.fr,
     "derivatives.polynomial": "Dérivée d'un polynôme",
     "derivatives.trig": "Dérivée de sin(bx), cos(bx)",
     "derivatives.exponential": "Dérivée de e^(ax+b)",
@@ -919,6 +934,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...CHEM_SKILLS.es,
     ...EQ_SKILLS.es,
     ...LX_SKILLS.es,
+    ...CB_SKILLS.es,
     "derivatives.polynomial": "Derivada de un polinomio",
     "derivatives.trig": "Derivada de sen(bx), cos(bx)",
     "derivatives.exponential": "Derivada de e^(ax+b)",
@@ -1034,6 +1050,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...CHEM_SKILLS.en,
     ...EQ_SKILLS.en,
     ...LX_SKILLS.en,
+    ...CB_SKILLS.en,
     "derivatives.polynomial": "Derivative of a polynomial",
     "derivatives.trig": "Derivative of sin(bx), cos(bx)",
     "derivatives.exponential": "Derivative of e^(ax+b)",
@@ -1153,6 +1170,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...CHEM_MISTAKES.fr,
     ...EQ_MISTAKES.fr,
     ...LX_MISTAKES.fr,
+    ...CB_MISTAKES.fr,
     exponentKept: "Exposant non abaissé",
     coefficientMissing: "Exposant non descendu en facteur",
     constantKept: "Dérivée d'une constante non nulle",
@@ -1260,6 +1278,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...CHEM_MISTAKES.es,
     ...EQ_MISTAKES.es,
     ...LX_MISTAKES.es,
+    ...CB_MISTAKES.es,
     exponentKept: "Exponente sin reducir",
     coefficientMissing: "Exponente no bajado como factor",
     constantKept: "Derivada de una constante distinta de cero",
@@ -1367,6 +1386,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...CHEM_MISTAKES.en,
     ...EQ_MISTAKES.en,
     ...LX_MISTAKES.en,
+    ...CB_MISTAKES.en,
     exponentKept: "Exponent not lowered",
     coefficientMissing: "Exponent not brought down as a factor",
     constantKept: "Derivative of a constant not zero",

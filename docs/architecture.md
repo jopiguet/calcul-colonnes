@@ -189,17 +189,19 @@ the data routes, which require a session.
 The test in progress lives in `src/quiz.ts` (`run`, `result`), so it survives
 re-renders such as a language change, but not a page reload.
 
-That is why `src/update.ts` reloads for a new build only when nothing is under
-way: no vocabulary session (`vocabBusy()`), no test (`quizBusy()`), no Discover
-experiment with trials and not finished, nor grid started and not solved
-(`discoverBusy()`), no field with
-something typed in it. Otherwise it shows a *Mettre à jour* bar, and
-reloads at the next return to the home page. The build id it compares is
+That is why `src/update.ts` reloads for a new build only between activities
+(the home page, the list of players, the sign-in screens) and when nothing is
+under way: no vocabulary session (`vocabBusy()`), no test (`quizBusy()`), no
+Discover experiment with trials and not finished, nor grid started and not
+solved (`discoverBusy()`), no field with something typed in it. Inside an
+activity, even an idle one, it only shows a *Mettre à jour* bar, and reloads
+at the next return to the home page. The redraw with fresh data after a
+while away is limited the same way. The build id it compares is
 compiled in by `vite.config.ts` and published as `/version.json`.
 
 ## Internationalisation
 
-- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 204 kinds of question and of the 137 mistake types (with `quiz-i18n-chemistry.ts`, `quiz-i18n-equilibria.ts` and `quiz-i18n-linux.ts` merged into it). Every dictionary is typed against the French one, so a missing translation is a compile error.
+- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 210 kinds of question and of the 141 mistake types (with `quiz-i18n-chemistry.ts`, `quiz-i18n-equilibria.ts`, `quiz-i18n-linux.ts` and `quiz-i18n-chembio.ts` merged into it). Every dictionary is typed against the French one, so a missing translation is a compile error.
 - **Generated questions:** the generators produce only LaTeX plus *keys* for the sentence around it (`PromptKey`, `ExplanationKey`), so they contain no language.
 - **Spanish notation:** KaTeX macros render `\sin` as *sen* and `\arcsin` as *arcsen*.
 

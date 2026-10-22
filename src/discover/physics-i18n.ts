@@ -735,7 +735,7 @@ export function pt(key: Key, values: Record<string, string | number> = {}): stri
   return dictionaries[currentLang()][key].replace(/\{(\w+)\}/g, (_, name: string) => String(values[name] ?? ""));
 }
 
-const locale = (): string => ({ fr: "fr-CH", es: "es-ES", en: "en-GB" })[currentLang()];
+export const locale = (): string => ({ fr: "fr-CH", es: "es-ES", en: "en-GB" })[currentLang()];
 
 /** A decimal in the interface's language, to `digits` places: "19,9", "19,9", "19.9". */
 export function num(x: number, digits = 1): string {

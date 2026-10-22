@@ -10,6 +10,7 @@ way in the browser and on the server.
 | `tex.ts` | Exact fractions and LaTeX helpers: `frac`, `sum`, `poly`, `piTex`… |
 | `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts`, `graphs.ts` | The generators, one file per topic |
 | `units.ts`, `gases.ts`, `firstlaw.ts`, `secondlaw.ts` | Physical chemistry: quantities with units and significant figures, constants; the generators of Focuses 1–3 |
+| `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
 | `index.ts` | Registry of kinds of question, `generateQuiz`, `gradeQuiz`, `QUIZ_VERSION` |
@@ -380,6 +381,59 @@ version. Rewording a question, or fixing a translation, needs no bump. The
 level came after version 2, with no saved test, so the first 167 questions
 have no `since`.
 
+## Balancing equations
+
+The test *⚗️ Équations chimiques*, in the home page's *Chimie et biologie*
+group, has its own level, `chembio`, and one topic, `balancing`, in the group
+*Réactions chimiques* (`reactions`). Phase 4 of the roadmap: the
+generator-and-grader pattern applied to chemistry.
+
+**Reactions** come from five families, drawn with the seed's `rng`:
+
+| Kind | Reactions | Example |
+|---|---|---|
+| `balancing.combustion` | Alkanes C1–C8, alkenes C2–C6, alcohols C1–C5, glucose, sucrose, acetylene, benzene, acetic acid, in O₂ | C₃H₈ + 5 O₂ → 3 CO₂ + 4 H₂O |
+| `balancing.synthesis` | A metal with O₂ or Cl₂ (the formula built from the ions' charges), and eight non-metal syntheses | 4 Al + 3 O₂ → 2 Al₂O₃ |
+| `balancing.neutralization` | Four acids by six hydroxides, the salt built from the charges | 2 H₃PO₄ + 3 Ca(OH)₂ → Ca₃(PO₄)₂ + 6 H₂O |
+| `balancing.displacement` | A metal in an acid (hydrogen given off), or a metal taking another's place in its salt | 2 Al + 3 CuSO₄ → Al₂(SO₄)₃ + 3 Cu |
+| `balancing.decomposition` | Ten decompositions and reductions | 2 KClO₃ → 2 KCl + 3 O₂ |
+| `balancing.coefficient` | Any family; one coefficient asked, shown as “?” | ? = 3 in Fe₂O₃ + C … |
+
+Reactions balanced with all coefficients 1, or with one above 30, are drawn
+again.
+
+**Balancing** is exact: one equation per element (atoms on the left minus
+atoms on the right), one unknown per substance, reduced with exact fractions;
+a reaction must have exactly one free unknown, and the solution is scaled to
+the smallest whole numbers. Formulas are parsed with parentheses
+(`Ca(OH)2`, `Pb(NO3)2`).
+
+**The question** shows the unbalanced equation (broken after the arrow when
+it would not fit a phone) and asks which one is balanced with the smallest
+whole numbers; the options are whole equations. The explanation gives the
+balanced equation and the atom count of each element on each side.
+
+**Wrong options** are the mistakes learners make:
+
+| Mistake | What it looks like |
+|---|---|
+| `subscriptChanged` | A coefficient folded into the formula: 2 H₂O written H₄O₂. The atoms balance, but it is another substance. One option per coefficient above 1. |
+| `notLowestTerms` | Every coefficient doubled: balanced, not in the smallest numbers. |
+| `elementUnbalanced` | One coefficient one too many or too few. |
+| `diatomicForgotten` | O₂, H₂, N₂ or Cl₂ written as a single atom, then balanced. |
+
+`balancing.coefficient` asks for one coefficient above 1, as a number, so
+it can be typed; its wrong options are the doubled value, ±1, +2, and with a
+diatomic element the single-atom value.
+
+**Verification.** `check:quiz` reads every option back from its TeX, the
+way the player sees it, with its own formula parser (a stack of counts per
+parenthesis), and checks that it has the question's substances, every
+element balanced, coefficients without a common factor, and that the
+element-by-substance matrix has rank one less than the number of substances
+(only one way to balance). A coefficient question's coefficients pass the
+same checks before the option is compared with them.
+
 ## Anatomy of a generator
 
 A generator is a function `(rng, version?) => Draft`:
@@ -579,6 +633,10 @@ keep the label they were stored with.
 | `axisConfused` | Transformation along the other axis | graphs |
 | `interceptForSlope` | The intercept read as the slope | graphs |
 | `coefficientsAsIntercepts` | The equation's coefficients taken for the intercepts | graphs |
+| `subscriptChanged` | A subscript changed instead of a coefficient | balancing |
+| `notLowestTerms` | Balanced, not in the smallest whole numbers | balancing |
+| `elementUnbalanced` | An element left unbalanced | balancing |
+| `diatomicForgotten` | O₂, H₂, N₂ or Cl₂ written as one atom | balancing |
 | `signError` | Sign error | complex, derivatives, explog, functions, geometry, graphs, integrals, limits, linear, multivariable, odes, probability, sequences, series, trigonometry |
 
 Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
@@ -685,6 +743,7 @@ mistakes to review. It then checks:
 - **Wrong options:** none of them is also right.
 - **Options:** exactly four, with distinct LaTeX; every wrong option carries a known mistake type, and every type in `MISTAKES` occurs somewhere.
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
+- **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).
 - **Graphs:** every drawn curve is at least 30 % inside its window (25 % for an option); option curves differ by half a grid square somewhere; all options of a question share their window or axes; plane intercepts are non-zero and distinct.
 - **Typed answers:** for every question that can be typed, each option's value written to 4 and 10 decimals (and with a comma) is read as that option, and a blank as a blank.
 - **Determinism:** the same seed gives the same test twice.

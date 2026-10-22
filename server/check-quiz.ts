@@ -48,6 +48,74 @@ function modeOf(text: string): number {
   return mode;
 }
 
+/**
+ * Atoms in a formula, read without the generator's parser: a stack of counts,
+ * one level per parenthesis.
+ */
+function atomCount(formula: string): Map<string, number> {
+  const stack: Map<string, number>[] = [new Map()];
+  const tokens = formula.match(/[A-Z][a-z]?|\d+|\(|\)/g) ?? [];
+  if (tokens.join("") !== formula) throw new Error(`unreadable formula ${formula}`);
+  let last: Map<string, number> | null = null;
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i]!;
+    const next = tokens[i + 1];
+    const times = next !== undefined && /^\d+$/.test(next) ? Number(next) : 1;
+    if (t === "(") {
+      stack.push(new Map());
+    } else if (t === ")") {
+      last = stack.pop()!;
+      const top = stack.at(-1)!;
+      for (const [e, n] of last) top.set(e, (top.get(e) ?? 0) + n * times);
+      if (times !== 1 || /^\d+$/.test(next ?? "")) i++;
+    } else if (/^[A-Z]/.test(t)) {
+      const top = stack.at(-1)!;
+      top.set(t, (top.get(t) ?? 0) + times);
+      if (/^\d+$/.test(next ?? "")) i++;
+    } else throw new Error(`stray number in ${formula}`);
+  }
+  if (stack.length !== 1) throw new Error(`unbalanced parentheses in ${formula}`);
+  return stack[0]!;
+}
+
+/** An equation as the player sees it: "2\\,\\mathrm{H_{2}} + … \\longrightarrow …", read back into coefficients and formulas. */
+function readEquation(tex: string): { left: [number, string][]; right: [number, string][] } {
+  const side = (part: string): [number, string][] =>
+    part.split(" + ").map((term) => {
+      const m = /^\s*(?:(\d+)\\,)?\\mathrm\{(.+)\}\s*$/.exec(term);
+      if (!m) throw new Error(`unreadable term ${term}`);
+      return [m[1] ? Number(m[1]) : 1, m[2]!.replace(/_\{(\d+)\}/g, "$1")];
+    });
+  const [left, right, ...rest] = tex.split("\\longrightarrow");
+  if (right === undefined || rest.length > 0) throw new Error(`no single arrow in ${tex}`);
+  return { left: side(left!), right: side(right) };
+}
+
+/** Atoms balanced element by element. */
+function balanced(left: [number, string][], right: [number, string][]): boolean {
+  const total = (side: [number, string][]): Map<string, number> => {
+    const sum = new Map<string, number>();
+    for (const [k, f] of side) for (const [e, n] of atomCount(f)) sum.set(e, (sum.get(e) ?? 0) + k * n);
+    return sum;
+  };
+  const a = total(left);
+  const b = total(right);
+  return a.size === b.size && [...a].every(([e, n]) => b.get(e) === n);
+}
+
+const gcdOf = (values: number[]): number => values.reduce((g, v) => {
+  let [x, y] = [g, v];
+  while (y) [x, y] = [y, x % y];
+  return x;
+}, 0);
+
+/** The rank of the element-by-substance matrix: one less than the substances when the balance is unique. */
+function balanceRank(reactants: string[], products: string[]): number {
+  const species = [...reactants, ...products].map(atomCount);
+  const elements = [...new Set(species.flatMap((m) => [...m.keys()]))];
+  return rank(elements.map((e) => species.map((m, j) => (m.get(e) ?? 0) * (j < reactants.length ? 1 : -1))));
+}
+
 /** Whether an option is a right answer to the question, computed without the generator. */
 function isRight(q: Question, o: Option): boolean {
   const v = q.verify;
@@ -221,6 +289,22 @@ function isRight(q: Question, o: Option): boolean {
       // Files start from 666 and directories from 777; the mask's bits are taken away.
       const [file, dir] = o.tex.split("/").map((x) => parseInt(x, 8));
       return file === (0o666 & ~v.mask) && dir === (0o777 & ~v.mask);
+    }
+    case "equation": {
+      // The same substances, every element balanced, the smallest whole numbers, and only one way to balance.
+      const { left, right } = readEquation(o.tex);
+      const same = (side: [number, string][], formulas: string[]): boolean => side.length === formulas.length && side.every(([, f], i) => f === formulas[i]);
+      if (!same(left, v.reactants) || !same(right, v.products)) return false;
+      if (balanceRank(v.reactants, v.products) !== v.reactants.length + v.products.length - 1) throw new Error("more than one way to balance");
+      return balanced(left, right) && gcdOf([...left, ...right].map(([k]) => k)) === 1;
+    }
+    case "coefficient": {
+      const c = v.coefficients;
+      const left = v.reactants.map((f, i): [number, string] => [c[i]!, f]);
+      const right = v.products.map((f, i): [number, string] => [c[v.reactants.length + i]!, f]);
+      if (!balanced(left, right) || gcdOf(c) !== 1 || c.some((k) => k < 1)) throw new Error("coefficients not balanced in smallest whole numbers");
+      if (balanceRank(v.reactants, v.products) !== c.length - 1) throw new Error("more than one way to balance");
+      return o.num === c[v.species];
     }
     case "complexRoot": {
       // zⁿ by repeated multiplication, against the target.

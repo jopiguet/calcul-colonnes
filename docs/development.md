@@ -43,13 +43,13 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `home.ts` | A player's home page: activities by subject, what is waiting in each; the *← Accueil* bar of activities |
 | `vocab.ts`, `vocab-i18n.ts` | A vocabulary book's page: lessons, cards, summary, settings (rōmaji included), and their texts |
 | `vocab-stats.ts` | A book's statistics page: figures, charts in plain HTML, hardest words |
-| `discover/` | The Discover activities (dice, coins, logic grids), what the labs share, their texts; see [Discover](discover.md#code) |
+| `discover/` | The Discover activities (dice, coins, logic grids), the physics, astronomy and biology labs, what the labs share, their texts; see [Discover](discover.md#code) |
 | `update.ts` | New build or stale data in a window left open: reload when quiet, or a *Mettre à jour* bar |
 | `auth-i18n.ts` | Their texts and the sign-in error messages |
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
 | `i18n.ts` | Interface texts (arithmetic part), current language, column names |
 | `quiz-i18n.ts` | Texts of tests and progress, names of the kinds of question, prompts and explanations |
-| `quiz-i18n-chemistry.ts` | The same for physical chemistry, merged into `quiz-i18n.ts` |
+| `quiz-i18n-chemistry.ts` | The same for physical chemistry, merged into `quiz-i18n.ts` (as are `quiz-i18n-equilibria.ts`, `quiz-i18n-linux.ts` and `quiz-i18n-chembio.ts`) |
 | `dom.ts` | `el()` and `button()` helpers |
 | `style.css` | All styles; colours are CSS variables with a dark variant |
 
@@ -75,7 +75,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `types.ts` | Types exchanged over the API |
 | `quiz/` | Question generators and test assembly; see [Question generators](question-generators.md) |
 | `vocab/` | Vocabulary: file format, grading, Leitner boxes, sessions, statistics; see [Vocabulary](vocabulary.md#code) |
-| `discover/` | Discover engines: two dice, a coin, logic grids; see [Discover](discover.md#code) |
+| `discover/` | Discover engines and models: two dice, a coin, logic grids, the physics simulations, the astronomy and biology models; see [Discover](discover.md#code) |
 
 ### `server/`
 
@@ -97,6 +97,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `characters-build.ts` | `npm run characters:build`: the kanji and kana book from the EDRDG dictionaries |
 | `check-discover.ts` | `npm run check:discover` |
 | `check-physics.ts` | `npm run check:physics` |
+| `check-astronomy.ts`, `check-biology.ts` | `npm run check:astronomy`, `npm run check:biology` |
 | `copy-to-postgres.ts` | One-off copy SQLite → PostgreSQL |
 
 ### TypeScript projects
@@ -153,7 +154,9 @@ Automated checks:
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
 | `npm run check:discover` | The Discover engines: exact formulas against brute force, the generator on millions of trials, 1,200 logic grids. See [Discover](discover.md#checks-and-tests). | under 10 seconds |
 | `npm run check:physics` | The physics playground: every simulation against its exact solution and the conservation laws. See [Discover](discover.md#physics-checks). | about 15 seconds |
-| `npm run test:e2e` | The whole app in a browser: 87 tests | about two minutes |
+| `npm run check:astronomy` | The astronomy models against an integration, Newton's gravity and centuries of eclipses. See [Discover](discover.md#astronomy-checks). | a few seconds |
+| `npm run check:biology` | The chemistry and biology models: bonds, crosses, diffusion, predators and prey. See [Discover](discover.md#biology-checks). | a second or two |
+| `npm run test:e2e` | The whole app in a browser: 101 tests | about two minutes |
 | `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
 
 ### Browser tests
@@ -204,6 +207,8 @@ npm run check:quiz     # if shared/quiz/ changed
 npm run check:vocab
 npm run check:discover
 npm run check:physics
+npm run check:astronomy
+npm run check:biology
 npm run test:e2e
 ```
 

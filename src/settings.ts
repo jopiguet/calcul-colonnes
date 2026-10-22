@@ -1,4 +1,4 @@
-import { CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 import { isDiscoverActivity, type DiscoverActivity } from "./discover/activities";
@@ -31,6 +31,8 @@ export interface Settings {
   chemLevel: Level;
   /** Topics chosen for the Linux test. */
   linuxTopics: Topic[];
+  /** Topics chosen for the chemistry-and-biology test. */
+  chembioTopics: Topic[];
   quizCount: number;
   /** Mix the player's recent mistakes into new tests. */
   quizReview: boolean;
@@ -107,11 +109,14 @@ export function loadSettings(): Settings {
     discoverActivity: isDiscoverActivity(saved.discoverActivity) ? saved.discoverActivity : "dice",
     quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
-    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" ? saved.quizSubject : "maths",
+    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" ? saved.quizSubject : "maths",
     chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
     linuxTopics: Array.isArray(saved.linuxTopics) && LINUX_TOPICS.some((t) => (saved.linuxTopics as unknown[]).includes(t))
       ? LINUX_TOPICS.filter((t) => (saved.linuxTopics as unknown[]).includes(t))
       : [...LINUX_TOPICS],
+    chembioTopics: Array.isArray(saved.chembioTopics) && CHEMBIO_TOPICS.some((t) => (saved.chembioTopics as unknown[]).includes(t))
+      ? CHEMBIO_TOPICS.filter((t) => (saved.chembioTopics as unknown[]).includes(t))
+      : [...CHEMBIO_TOPICS],
     chemLevel: CHEMISTRY_LEVELS.includes(saved.chemLevel as Level) ? (saved.chemLevel as Level) : "chemistry",
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,

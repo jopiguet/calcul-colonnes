@@ -24,6 +24,11 @@
   --grass: #d7ead0;
   --light: #e6a700;
   --glow: #ffd84d;
+  /* The astronomy labs: the Sun, moonlight, space. */
+  --sun: #f2a900;
+  --moonlit: #f6f1dc;
+  --space: #1d2747;
+  --eclipsed: #a8432f;
   color-scheme: light dark;
 }
 
@@ -44,6 +49,10 @@
     --grass: #2f4a3a;
     --light: #f2d36b;
     --glow: #ffe48a;
+    --sun: #ffc93d;
+    --moonlit: #f4efd8;
+    --space: #0f1714;
+    --eclipsed: #c45a43;
   }
 }
 
@@ -4371,4 +4380,502 @@ code.inline-code {
 
 .vocab-section-skipped {
   color: var(--muted);
+}
+
+/* ------------------------------------------------------------- astronomy */
+
+.astro-views {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.astro-figure {
+  flex: 1 1 16rem;
+  max-width: 28rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.astro-figure-sky {
+  flex: 0 1 12rem;
+}
+
+.astro-figure-wide {
+  max-width: 40rem;
+  flex-basis: 100%;
+}
+
+.astro-top,
+.astro-sky,
+.astro-orbit-view,
+.astro-noon,
+.astro-discs,
+.astro-kepler,
+.astro-mars,
+.astro-views > .physics-curve {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.astro-views > .physics-curve {
+  flex: 1 1 18rem;
+  max-width: 28rem;
+}
+
+.astro-mars {
+  flex: 1 1 14rem;
+  max-width: 20rem;
+}
+
+.astro-sky,
+.astro-discs {
+  max-width: 12rem;
+  margin: 0 auto;
+  background: var(--space);
+}
+
+.astro-discs {
+  max-width: 20rem;
+}
+
+.astro-top .axis-label,
+.astro-orbit-view .axis-label,
+.astro-noon .axis-label {
+  fill: var(--muted);
+  font-size: 13px;
+  font-family: var(--font);
+}
+
+.astro-sun {
+  fill: var(--sun);
+}
+
+.astro-ray {
+  stroke: var(--sun);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+
+.astro-shadow {
+  fill: var(--ink);
+  opacity: 0.12;
+}
+
+.astro-orbit {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.astro-mark {
+  fill: var(--muted);
+}
+
+.astro-night {
+  fill: var(--space);
+}
+
+.astro-day {
+  fill: var(--moonlit);
+  stroke: var(--muted);
+  stroke-width: 0.5;
+}
+
+.astro-earth.astro-day {
+  fill: #6aa7d8;
+}
+
+.astro-moon.is-eclipsed.astro-day,
+.astro-moon.is-eclipsed.astro-night {
+  fill: var(--eclipsed);
+}
+
+.astro-sight {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.astro-sight.is-past {
+  opacity: 0.35;
+  stroke-width: 1;
+}
+
+.astro-night-sky {
+  fill: var(--space);
+}
+
+.astro-disc {
+  fill: #3a4363;
+}
+
+.astro-disc.is-eclipsed {
+  fill: var(--eclipsed);
+}
+
+.astro-disc-lit {
+  fill: var(--moonlit);
+}
+
+.astro-eclipse-note {
+  color: var(--eclipsed);
+}
+
+.astro-planet {
+  fill: #4b8fd0;
+}
+
+.astro-pole {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.astro-ground {
+  fill: var(--grass);
+}
+
+.astro-beam {
+  fill: var(--sun);
+  opacity: 0.35;
+}
+
+.astro-lit-ground {
+  stroke: var(--sun);
+  stroke-width: 5;
+}
+
+.astro-angle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.astro-year .astro-flat {
+  stroke-dasharray: 6 5;
+  stroke: var(--muted);
+}
+
+.astro-today {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.astro-band-solar {
+  fill: var(--sun);
+  opacity: 0.18;
+}
+
+.astro-band-lunar {
+  fill: var(--eclipsed);
+  opacity: 0.18;
+}
+
+.astro-ecliptic {
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.astro-new {
+  fill: var(--ink);
+}
+
+.astro-full {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.astro-eclipse-ring {
+  fill: none;
+  stroke: var(--bad);
+  stroke-width: 2;
+}
+
+.astro-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.astro-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.astro-key {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+}
+
+.astro-key.is-new {
+  background: var(--ink);
+}
+
+.astro-key.is-full {
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+
+.astro-key.is-solar,
+.astro-key.is-lunar {
+  border-radius: 0.15rem;
+  background: color-mix(in srgb, var(--sun) 35%, transparent);
+}
+
+.astro-key.is-lunar {
+  background: color-mix(in srgb, var(--eclipsed) 35%, transparent);
+}
+
+.astro-corona {
+  fill: var(--glow);
+  opacity: 0.25;
+}
+
+.astro-moon-disc {
+  fill: #11162a;
+}
+
+.astro-sector {
+  fill: var(--accent);
+  opacity: 0.16;
+}
+
+.astro-sector.is-alt {
+  opacity: 0.06;
+}
+
+.astro-planet-dot {
+  fill: var(--accent);
+}
+
+.astro-stars {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 6;
+  stroke-dasharray: 1 9;
+  stroke-linecap: round;
+}
+
+.astro-mars-dot {
+  fill: var(--ball);
+}
+
+.astro-distance {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.astro-orbit-view {
+  max-width: 20rem;
+  margin: 0 auto;
+}
+
+/* ------------------------------------------------------------- chemistry and biology labs */
+
+.bio-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.bio-molecule,
+.bio-cube {
+  display: block;
+  width: 100%;
+  max-width: 18rem;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.bio-bond {
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.bio-atom {
+  stroke-width: 2.5;
+  fill: var(--paper);
+  stroke: var(--muted);
+}
+
+.bio-atom.is-o {
+  fill: color-mix(in srgb, var(--bad) 22%, var(--paper));
+}
+
+.bio-atom.is-n {
+  fill: color-mix(in srgb, var(--accent) 22%, var(--paper));
+}
+
+.bio-atom.is-c {
+  fill: color-mix(in srgb, var(--ink) 15%, var(--paper));
+}
+
+.bio-atom.is-cl {
+  fill: color-mix(in srgb, var(--good) 22%, var(--paper));
+}
+
+.bio-atom.is-ok {
+  stroke: var(--good);
+}
+
+.bio-atom.is-off {
+  stroke: var(--bad);
+  stroke-dasharray: 4 3;
+}
+
+.bio-atom-label {
+  fill: var(--ink);
+  font: 700 17px var(--font);
+}
+
+.bio-picker .segment {
+  flex: 0 1 auto;
+  min-width: 3.6rem;
+}
+
+.bio-picker .segment.is-done::after {
+  content: " ✓";
+  color: var(--good);
+}
+
+.bio-bonds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.bio-bonds .segment {
+  flex: 1 1 8rem;
+}
+
+.bio-atoms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.bio-atoms .good,
+.bio-status .good {
+  color: var(--good);
+}
+
+.bio-atoms .bad {
+  color: var(--bad);
+}
+
+.bio-status p,
+.discover-status p {
+  margin: 0.2rem 0;
+}
+
+.bio-strong {
+  font-weight: 700;
+}
+
+.bio-rule {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.bio-punnett td,
+.bio-punnett th {
+  font-family: var(--digits);
+  text-align: center;
+}
+
+.bio-face {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.bio-face.is-top {
+  fill: color-mix(in srgb, var(--good) 30%, var(--paper));
+}
+
+.bio-face.is-left {
+  fill: color-mix(in srgb, var(--good) 45%, var(--paper));
+}
+
+.bio-face.is-right {
+  fill: color-mix(in srgb, var(--good) 60%, var(--paper));
+}
+
+.bio-cut {
+  stroke: var(--ink);
+  stroke-width: 0.8;
+  opacity: 0.6;
+}
+
+.bio-cube .axis-label {
+  fill: var(--muted);
+  font-size: 13px;
+  font-family: var(--font);
+}
+
+.bio-prey,
+.bio-predators,
+.bio-euler {
+  fill: none;
+  stroke-width: 2;
+}
+
+.bio-prey {
+  stroke: var(--light);
+}
+
+.bio-predators {
+  stroke: var(--ball);
+}
+
+.bio-euler {
+  stroke: var(--muted);
+  stroke-dasharray: 3 4;
+  stroke-width: 1.5;
+}
+
+.astro-key.bio-key-prey {
+  border-radius: 0.15rem;
+  background: var(--light);
+}
+
+.astro-key.bio-key-predators {
+  border-radius: 0.15rem;
+  background: var(--ball);
+}
+
+.bio-phase {
+  display: block;
+  width: 100%;
+  max-width: 20rem;
+  height: auto;
+  margin: 0 auto;
 }

@@ -28,6 +28,7 @@ import { secondLaw } from "./secondlaw";
 import { phases } from "./phases";
 import { mixtures } from "./mixtures";
 import { equilibrium } from "./equilibrium";
+import { balancing } from "./balancing";
 import { EMPTY_BANK, bankLevelOf, bankSkills, type Bank, type BankLevel } from "./bank";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
@@ -66,6 +67,7 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   linuxSystem,
   linuxNetwork,
   linuxTools,
+  balancing,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -194,6 +196,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "choice":
     case "mode":
     case "umask":
+    case "equation":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);

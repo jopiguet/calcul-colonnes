@@ -1,5 +1,30 @@
 # Changelog
 
+## 6.12.1
+
+- **Updates never interrupt an activity:** a new version reloads the app by itself only on the home page, the list of players or the sign-in screens. Inside any activity, even one with nothing under way yet (a lab at its prediction, a test's results, a progress page), it only shows the *Mettre à jour* bar, and is applied on the way back to the home page. The redraw with fresh data after a while away is limited to the home page too.
+- **No stretched screen on the way home:** the wider layout of the home page and the progress overview now comes with their content. The screen being left keeps its own width while the next one loads.
+- **Tests:** 101 browser tests.
+
+## 6.12.0
+
+- **Astronomy** (Phase 3): a new *Astronomie* group, four labs in the Discover pattern, in French, Spanish and English, on geometric models (no physics engine), each aimed at one misconception.
+  - **🌓 Les phases de la Lune**, the anchor: the Moon moved through the month, seen from above the North Pole with the Earth's shadow, and seen from the Earth. The phase, the lit share, the rising time. The shadow reaches the Moon only at full moon: an eclipse, not a phase. The check: when a lunar eclipse can happen.
+  - **🌍 Les saisons:** date, latitude and the axis's tilt; the orbit, the noon Sun spreading its light, the day's length and the day's sunlight, a year of sunlight. The Earth is closest in January; with an upright axis the seasons go. The check: summer in Spain, winter in Argentina.
+  - **🌑 Les éclipses:** the Moon's height above the Earth's orbit at each new and full moon, a year at a time over 18 years, the eclipses circled and listed; without the tilt, one every new moon. The Moon's distance: total or annular, and the width of the strip.
+  - **🪐 Les orbites des planètes:** an orbit in twelve slices of equal time, Kepler's three laws, the planets; Mars seen from the Earth going backwards as the Earth overtakes it.
+  - `npm run check:astronomy` checks the models against independent computations: the lit fraction by integration over the Moon's surface, the daily sunlight minute by minute, 2,880 simulated years of eclipses (2 to 5 solar a year), Kepler's ellipse against Newton's gravity, Mars' retrograde spells. CI runs it.
+- **Chemistry and biology** (Phase 4): a new *Chimie et biologie* group.
+  - **⚗️ Équations chimiques**, the anchor, a test of its own (level `chembio`, topic *Équilibrer une équation*): reactions generated from five families (combustion, synthesis, neutralization, displacement, decomposition) and balanced exactly; choose the balanced equation, or type one coefficient. Four new mistake types: a subscript changed instead of a coefficient, coefficients not the smallest, an element left unbalanced, O₂ written O. Graded on the server like every test; `check:quiz` reads each option back from its TeX and counts the atoms with its own parser.
+  - **🧬 Construire des molécules:** ten molecules; set each bond single, double or triple until every valence holds, then the shape and angle from the lone pairs (water bent at 104.5°, CO₂ straight).
+  - **🫛 Les pois de Mendel:** Punnett squares for one and two genes, seeded offspring bred 1 to 1,000 at a time, chi-square and p-value; the streak question linked to the coins lab.
+  - **🦠 Pourquoi les cellules sont petites:** surface over volume (6/s) and oxygen's diffusion time (x²/2D), from 1 µm to 1 mm, cutting a cube.
+  - **🐇 Lièvres et lynx:** Lotka–Volterra cycles over time and as a loop, the prey first, the averages at the equilibrium whatever the start; Euler's spiral as a naive simulation.
+  - `npm run check:biology`: one valid set of bonds per molecule, squares against direct enumeration, the chi-square p-value against the tables and rejecting chance about 5 % of the time, random walks spreading as 2Dt, the Lotka–Volterra invariant kept by Runge–Kutta and lost by Euler. CI runs it.
+- **Account page:** the nine new activities can be shown or hidden per player.
+- **Database:** migration `018_chembio_level`.
+- **Tests:** 99 browser tests.
+
 ## 6.11.0
 
 - **Home page on a large screen:** it now uses the width (up to 72rem). Subjects with one or two activities sit side by side, each group as wide as its cards; on a phone the groups still follow one another.

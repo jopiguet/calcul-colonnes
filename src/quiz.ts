@@ -5,6 +5,7 @@ import {
   CHEMISTRY_TOPICS,
   MATH_LEVELS,
   richParts,
+  CHEMBIO_TOPICS,
   CHEMISTRY_LEVELS,
   isChemistry,
   subjectOf,
@@ -82,7 +83,7 @@ export const quizBusy = (): boolean => run !== null;
 
 export interface QuizContext {
   user: User;
-  /** Mathematics, physical chemistry (written questions from the bank too) or Linux. */
+  /** Mathematics, physical chemistry (written questions from the bank too), Linux or chemistry basics. */
   subject: Subject;
   settings: Settings;
   rerender(): void;
@@ -152,7 +153,7 @@ const promptView = (q: Question): HTMLElement =>
 
 /** The level of this subject's tests. */
 const levelOf = (ctx: QuizContext): Level =>
-  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.settings.quizLevel;
+  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.subject === "chembio" ? "chembio" : ctx.settings.quizLevel;
 
 /** Spanish writes sen and arcsen. */
 const macros = (): Record<string, string> =>
@@ -223,7 +224,14 @@ export function quizView(ctx: QuizContext): HTMLElement {
  */
 function chosenTopics(ctx: QuizContext): Topic[] {
   const available = topicsFor(levelOf(ctx));
-  const saved = ctx.subject === "chemistry" ? ctx.settings.chemTopics : ctx.subject === "linux" ? ctx.settings.linuxTopics : ctx.settings.quizTopics;
+  const saved =
+    ctx.subject === "chemistry"
+      ? ctx.settings.chemTopics
+      : ctx.subject === "linux"
+        ? ctx.settings.linuxTopics
+        : ctx.subject === "chembio"
+          ? ctx.settings.chembioTopics
+          : ctx.settings.quizTopics;
   const chosen = saved.filter((t) => available.includes(t));
   return chosen.length > 0 ? chosen : available;
 }
@@ -240,7 +248,8 @@ function setupView(ctx: QuizContext): HTMLElement {
   const testLevel = levelOf(ctx);
   const wrap = el("section", "sheet quiz-setup");
   const linux = ctx.subject === "linux";
-  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : "setupTitle")));
+  const chembio = ctx.subject === "chembio";
+  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : "setupTitle")));
   if (chemistry && bankRevision() === 0) wrap.append(el("p", "hint", qt("noBank")));
 
   // Mathematics: lycée or university. Physical chemistry: core or advanced.
@@ -272,12 +281,12 @@ function setupView(ctx: QuizContext): HTMLElement {
       box.value = topic;
       box.checked = effective.includes(topic);
       box.addEventListener("change", () => {
-        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
+        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
         if (chosen.length === 0) {
           box.checked = true; // at least one topic stays selected
           return;
         }
-        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : { quizTopics: chosen });
+        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : { quizTopics: chosen });
       });
       label.append(box, el("span", undefined, topicName(topic)));
       block.append(label);
@@ -345,8 +354,8 @@ function setupView(ctx: QuizContext): HTMLElement {
     wrap.append(level, el("p", "hint", qt("noAdvanced")), button("ghost small", qt("progress"), ctx.showProgress));
     return wrap;
   }
-  // Linux has one level: no choice to show.
-  wrap.append(...(linux ? [] : [level]), topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
+  // Linux and chemistry basics have one level: no choice to show.
+  wrap.append(...(linux || chembio ? [] : [level]), topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
   queueMicrotask(() => go.focus());
   return wrap;
 }

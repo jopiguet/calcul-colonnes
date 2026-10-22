@@ -42,6 +42,13 @@ at *lycée / bachillerato* or university level.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.
 - An automated check verifies tens of thousands of generated questions numerically, independently of the generators.
 
+**Chemistry and biology** — a test on balancing chemical equations, and four labs.
+
+- Equations generated from five families (combustion, synthesis, neutralization, displacement, decomposition), balanced exactly; the wrong options are the classic slips: a subscript changed instead of a coefficient, coefficients not the smallest, an element left unbalanced, O₂ written O.
+- Labs: building molecules (bonds from valences, shapes from lone pairs), Mendel's peas (Punnett squares, seeded offspring, chi-square), why cells are small (surface, volume, diffusion), hares and lynxes (Lotka–Volterra cycles).
+
+**Astronomy** — four labs on geometric models: the Moon's phases (not the Earth's shadow), the seasons (the tilt, not the distance), eclipses (the tilted orbit), and the planets' orbits (Kepler's laws, Mars going backwards).
+
 **Linux** — multiple-choice tests on the command line: files and permissions, text processing, the shell, processes and services, the system, the network, and tools worth installing.
 
 - 167 questions written for the app, in French, Spanish and English, from `find` and `sed` to `systemctl`, `ssh`, `rsync` and `dig`.
@@ -132,6 +139,8 @@ npm start          # http://localhost:8787
 | `npm run characters:build` | Builds the kanji and kana book from the EDRDG dictionaries in `data/` (see [Kanji and kana](docs/characters.md)) |
 | `npm run check:discover` | Checks the Discover engines: exact probabilities and streak formulas, the generator on millions of trials, 1,200 logic grids (see [Discover](docs/discover.md#checks-and-tests)) |
 | `npm run check:physics` | Checks the physics playground: every simulation against its exact solution, energy that does not drift, Kirchhoff's laws (see [Discover](docs/discover.md#physics-checks)) |
+| `npm run check:astronomy` | Checks the astronomy models: the Moon's lit fraction and shadow, the seasons' sunlight, centuries of eclipses, Kepler against Newton (see [Discover](docs/discover.md#astronomy-checks)) |
+| `npm run check:biology` | Checks the chemistry and biology labs: unique bonds, Punnett squares and chi-square, diffusion, Lotka–Volterra (see [Discover](docs/discover.md#biology-checks)) |
 | `npm run test:e2e:postgres` | The same browser tests on PostgreSQL, with `E2E_DATABASE_URL` naming a database that may be emptied |
 | `npm run maintenance` | Migrations, backfills, new vocabulary books and session purge, then exit: what a Cloud Run release runs as a job |
 | `npm run build:server` | Bundles the server into `dist-server/` for the container image |
@@ -159,7 +168,7 @@ Settings are read from `.env` (see `.env.example`):
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
-| [Question generators](docs/question-generators.md) | The 110 maths, 57 chemistry and 37 Linux kinds of question, how a generator works, adding one, verification, versioning |
+| [Question generators](docs/question-generators.md) | The 110 maths, 57 chemistry, 37 Linux and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |

@@ -10,8 +10,15 @@ describes every screen, every setting and the keyboard shortcuts.
 - [Column arithmetic](#column-arithmetic)
 - [Printable worksheet](#printable-worksheet)
 - [Multiple-choice tests](#multiple-choice-tests)
+- [Physical chemistry](#physical-chemistry)
+- [Linux](#linux)
+- [Chemical equations](#chemical-equations)
 - [Progress and review of mistakes](#progress-and-review-of-mistakes)
 - [Vocabulary](#vocabulary)
+- [Discover](#discover)
+- [Physics](#physics)
+- [Astronomy](#astronomy)
+- [Chemistry and biology labs](#chemistry-and-biology-labs)
 - [Scores](#scores)
 - [Language](#language)
 - [On a phone or tablet](#on-a-phone-or-tablet)
@@ -91,8 +98,10 @@ home page: **Que fait-on, Léa ?**
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM | For the QCM, how many kinds of question are to review |
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
+| Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
+| Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
 
 Click an activity to open it. Every activity has *← Accueil* at the top to
 come back.
@@ -326,6 +335,26 @@ Some questions are generated each time: `chmod` modes in both directions,
 the modes left by a `umask`, and when a crontab line runs. An octal mode can
 be typed with *Au clavier*.
 
+## Chemical equations
+
+Activity **⚗️ Équations chimiques**, in the *Chimie et biologie* group
+(*Química y biología*, *Chemistry and biology*): tests on balancing
+equations. Settings, keys, typed answers and results work as for the
+[QCM](#multiple-choice-tests); there is one level and one topic.
+
+Each question shows an unbalanced equation, such as
+C₃H₈ + O₂ → CO₂ + H₂O, and four equations to choose from: the one
+balanced with the smallest whole numbers, and the usual slips:
+
+- a subscript changed instead of a coefficient (H₄O₂ for 2 H₂O): the atoms balance, but it is another substance;
+- coefficients that balance but are not the smallest (all doubled);
+- one coefficient off, so an element is not balanced;
+- O₂ written O.
+
+Some questions ask for a single coefficient, shown as “?”; it can be typed
+with *Au clavier*. The correction counts the atoms of each element on each
+side.
+
 ## Progress and review of mistakes
 
 <img src="images/progress.png" width="260" alt="Progress page">
@@ -525,6 +554,29 @@ experiment numbers: the same settings always give the same result.
 Each lab keeps what you did while you go elsewhere and back; nothing is
 saved. Details in [Discover › The physics playground](discover.md#the-physics-playground).
 
+## Astronomy
+
+Four labs in the *Astronomie* group (*Astronomía*, *Astronomy*), in the same
+five steps. The drawings are not to scale, and say so.
+
+- **🌓 Les phases de la Lune.** Predict why we see a crescent, and where the full moon is. A slider moves the Moon through the month: seen from above the North Pole, with the Earth's shadow, and seen from the Earth. The shadow only reaches the Moon at full moon: that is an eclipse, not a phase. The check: when a lunar eclipse can happen.
+- **🌍 Les saisons.** Predict why summer is warm and when the Earth is closest to the Sun. Choose a date, a latitude and the tilt of the axis: the orbit, the Sun at noon, the day's length, the sunlight of the day, and a year of sunlight. With the axis upright, the seasons go. The check: summer in Spain, winter in Argentina.
+- **🌑 Les éclipses.** Predict why there is not an eclipse every month. Follow the Moon a year at a time: its height above the Earth's orbit at each new and full moon, and the eclipses of the year. Without the tilt, one every month. The Moon's distance decides total or annular. The check: why a total eclipse is seen only from a narrow strip.
+- **🪐 Les orbites des planètes.** Predict where a planet is fastest and how long a Mars year is. Draw an orbit in twelve slices of equal time; watch Mars seen from the Earth go backwards for a while. The check: why Mars goes backwards.
+
+Details in [Discover › Astronomy](discover.md#astronomy).
+
+## Chemistry and biology labs
+
+Four labs next to the test in *Chimie et biologie*.
+
+- **🧬 Construire des molécules.** Predict the shapes of water and CO₂. Pick a molecule and set each bond single, double or triple until every atom has its number of bonds; then its shape and angle are shown. The check: why water is bent and CO₂ straight.
+- **🫛 Les pois de Mendel.** Predict the share of green peas from two Aa parents, and whether three yellow ones make green more likely next. Pick a cross, read its square, breed peas 1 to 1,000 at a time. Like the probability labs it has an experiment number. The comparison gives each cross's chi-square. The check: Aa × aa.
+- **🦠 Pourquoi les cellules sont petites.** Predict what happens to surface per volume, and to diffusion time, when a cell grows. Change the size from 1 µm to 1 mm and cut it into smaller cubes. The check: an elephant's cells and a mouse's.
+- **🐇 Lièvres et lynx.** Predict which peaks first and what happens in the long run. Choose the starting numbers and run 40 years: the populations over time and as a loop. The check: what hunting lynxes does to the averages.
+
+Details in [Discover › Chemistry and biology](discover.md#chemistry-and-biology).
+
 ## Scores
 
 **🏆 Scores** lists every player of the account (in a player's own session,
@@ -563,9 +615,9 @@ connection to the server; it does not work offline.
 *Install Luma* on a computer) as in a tab left open:
 
 - When the window comes back to the front, and every 15 minutes while it is in front, the app asks the server whether a new version is out.
-- If so, and nothing is under way (the home page, the lists, a book's page), it reloads at once.
-- During a vocabulary session, a test or a half-filled exercise, a bar at the bottom offers *Mettre à jour*; otherwise the update happens on the next return to the home page.
-- Coming back after a few minutes, the screen is redrawn from the server: the words due are current, and a newly imported book appears.
+- If so, on the home page or the list of players, it reloads at once.
+- Inside an activity it never interrupts: a bar at the bottom offers *Mettre à jour*, and otherwise the update happens on the next return to the home page.
+- Coming back to the home page after a few minutes, it is redrawn from the server: the words due are current, and a newly imported book appears.
 
 ## What is stored where
 

@@ -65,10 +65,13 @@ test("blank answers count as wrong, and the same test can be replayed", async ({
   expect(server.correct).toBe(0);
   await expect(page.locator(".review-line.given", { hasText: "Pas de réponse" })).toHaveCount(5);
 
-  const first = await page.locator(".review-item .math.display").first().innerText();
+  // The same test again: the same seed, level and topics (a first question
+  // drawn as a graph alone has no formula to compare, so the request is compared).
   await page.click("text=Refaire le même test");
-  await page.locator(".choices").waitFor();
-  expect(await page.locator(".math.display").first().innerText()).toBe(first);
+  const again = await takeQuiz(page, () => -1);
+  expect(again.body.seed).toBe(body.seed);
+  expect(again.body.level).toBe(body.level);
+  expect(again.body.topics).toEqual(body.topics);
 });
 
 test("giving up does not save the test", async ({ page }) => {

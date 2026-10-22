@@ -10,9 +10,11 @@ import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from 
 import { bookTitle } from "./vocab";
 import { dt } from "./discover/i18n";
 import { pt } from "./discover/physics-i18n";
+import { at } from "./discover/astro-i18n";
+import { bt } from "./discover/bio-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
-import { CHEMISTRY_TOPICS, LINUX_TOPICS, type Subject } from "../shared/quiz";
+import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -32,6 +34,8 @@ const texts = {
     charsNotStarted: "{count} caractères",
     noBooks: "Aucun livre de vocabulaire importé : voir docs/vocabulary.md.",
     sciences: "Sciences",
+    chembio: "Chimie et biologie",
+    chembioText: "Équilibrer les équations : combustions, sels, déplacements",
     computing: "Informatique",
     linuxText: "La ligne de commande, des bases aux outils à installer",
     nothingShown: "Aucune activité n'est ouverte pour ce joueur. Elles se choisissent sur la page Compte.",
@@ -55,6 +59,8 @@ const texts = {
     charsNotStarted: "{count} caracteres",
     noBooks: "No hay libros de vocabulario importados: ver docs/vocabulary.md.",
     sciences: "Ciencias",
+    chembio: "Química y biología",
+    chembioText: "Ajustar ecuaciones: combustiones, sales, desplazamientos",
     computing: "Informática",
     linuxText: "La línea de órdenes, de lo básico a las herramientas que instalar",
     nothingShown: "No hay ninguna actividad abierta para este jugador. Se eligen en la página Cuenta.",
@@ -78,6 +84,8 @@ const texts = {
     charsNotStarted: "{count} characters",
     noBooks: "No vocabulary book imported: see docs/vocabulary.md.",
     sciences: "Sciences",
+    chembio: "Chemistry and biology",
+    chembioText: "Balancing equations: combustions, salts, displacements",
     computing: "Computing",
     linuxText: "The command line, from the basics to tools worth installing",
     nothingShown: "No activity is open for this player. They are chosen on the Account page.",
@@ -126,7 +134,7 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "columns":
       return "columns";
     case "quiz":
-      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : "quiz";
+      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : "quiz";
     case "discover":
       return `discover-${activity.activity}`;
     case "vocab": {
@@ -141,6 +149,16 @@ export function activityCatalog(books: VocabBookInfo[]): { group: string; activi
   return [
     { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }] },
     { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
+    {
+      group: ht("chembio"),
+      activities: [
+        { id: "chembio", title: qt("modeChemBio") },
+        { id: "discover-molecules", title: bt("moleculesTitle") },
+        { id: "discover-genetics", title: bt("geneticsTitle") },
+        { id: "discover-cells", title: bt("cellsTitle") },
+        { id: "discover-ecology", title: bt("ecologyTitle") },
+      ],
+    },
     { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }] },
     {
       group: ht("languages"),
@@ -161,6 +179,15 @@ export function activityCatalog(books: VocabBookInfo[]): { group: string; activi
         { id: "discover-pendulum", title: pt("pendulumTitle") },
         { id: "discover-lenses", title: pt("lensesTitle") },
         { id: "discover-circuits", title: pt("circuitsTitle") },
+      ],
+    },
+    {
+      group: at("group"),
+      activities: [
+        { id: "discover-moon", title: at("moonTitle") },
+        { id: "discover-seasons", title: at("seasonsTitle") },
+        { id: "discover-eclipses", title: at("eclipsesTitle") },
+        { id: "discover-planets", title: at("planetsTitle") },
       ],
     },
   ];
@@ -200,7 +227,13 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   maths.append(el("h2", "activity-group-title", ht("maths")));
   // Kinds of question to review, by subject.
   const subjectOfTopic = (topic: string): Subject =>
-    (CHEMISTRY_TOPICS as string[]).includes(topic) ? "chemistry" : (LINUX_TOPICS as string[]).includes(topic) ? "linux" : "maths";
+    (CHEMISTRY_TOPICS as string[]).includes(topic)
+      ? "chemistry"
+      : (LINUX_TOPICS as string[]).includes(topic)
+        ? "linux"
+        : (CHEMBIO_TOPICS as string[]).includes(topic)
+          ? "chembio"
+          : "maths";
   const toReview = (subject: Subject): number =>
     profile ? profile.skills.filter((s) => s.status === "review" && subjectOfTopic(s.topic) === subject).length : 0;
   const reviewStatus = (n: number): { text: string; waiting: boolean } | null =>
@@ -233,6 +266,19 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
     ),
   );
   sciences.append(labs);
+
+  // Chemistry and biology: the balancing test (docs/question-generators.md#balancing), then the labs (docs/discover.md).
+  const chembio = el("div", "activity-group");
+  chembio.append(el("h2", "activity-group-title", ht("chembio")));
+  const bench = el("div", "activity-grid");
+  bench.append(
+    card("chembio", qt("modeChemBio"), ht("chembioText"), reviewStatus(toReview("chembio")), () => ctx.open({ mode: "quiz", subject: "chembio" })),
+    card("discover-molecules", bt("moleculesTitle"), bt("moleculesText"), null, () => ctx.open({ mode: "discover", activity: "molecules" })),
+    card("discover-genetics", bt("geneticsTitle"), bt("geneticsText"), null, () => ctx.open({ mode: "discover", activity: "genetics" })),
+    card("discover-cells", bt("cellsTitle"), bt("cellsText"), null, () => ctx.open({ mode: "discover", activity: "cells" })),
+    card("discover-ecology", bt("ecologyTitle"), bt("ecologyText"), null, () => ctx.open({ mode: "discover", activity: "ecology" })),
+  );
+  chembio.append(bench);
 
   const computing = el("div", "activity-group");
   computing.append(el("h2", "activity-group-title", ht("computing")));
@@ -286,11 +332,23 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   );
   physics.append(playground);
 
+  // Astronomy: geometric models of the sky, the same pattern again.
+  const astronomy = el("div", "activity-group");
+  astronomy.append(el("h2", "activity-group-title", at("group")));
+  const sky = el("div", "activity-grid");
+  sky.append(
+    card("discover-moon", at("moonTitle"), at("moonText"), null, () => ctx.open({ mode: "discover", activity: "moon" })),
+    card("discover-seasons", at("seasonsTitle"), at("seasonsText"), null, () => ctx.open({ mode: "discover", activity: "seasons" })),
+    card("discover-eclipses", at("eclipsesTitle"), at("eclipsesText"), null, () => ctx.open({ mode: "discover", activity: "eclipses" })),
+    card("discover-planets", at("planetsTitle"), at("planetsText"), null, () => ctx.open({ mode: "discover", activity: "planets" })),
+  );
+  astronomy.append(sky);
+
   // Activities the player's account hides; a group left empty goes too.
   const hidden = new Set(ctx.user.hidden ?? []);
   // On a wide screen, groups sit side by side, each as wide as its cards need.
   const groups = el("div", "home-groups");
-  for (const group of [maths, sciences, computing, languages, discover, physics]) {
+  for (const group of [maths, sciences, computing, chembio, languages, discover, physics, astronomy]) {
     for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
       if (hidden.has(node.dataset.activity!)) node.remove();
     }

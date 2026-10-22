@@ -1,4 +1,4 @@
-import { CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
+import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
 import type { Profile, SkillProgress } from "../shared/types";
 import { button, el } from "./dom";
 import { bookTitle, statusBar } from "./vocab";
@@ -26,14 +26,21 @@ const percent = (correct: number, total: number): string => (total === 0 ? "—"
 
 /** The subject of a test topic. */
 export const subjectOfTopic = (topic: Topic | string): Subject =>
-  (CHEMISTRY_TOPICS as string[]).includes(topic) ? "chemistry" : (LINUX_TOPICS as string[]).includes(topic) ? "linux" : "maths";
+  (CHEMISTRY_TOPICS as string[]).includes(topic)
+    ? "chemistry"
+    : (LINUX_TOPICS as string[]).includes(topic)
+      ? "linux"
+      : (CHEMBIO_TOPICS as string[]).includes(topic)
+        ? "chembio"
+        : "maths";
 
 const SUBJECT_TITLES: Record<Subject, () => string> = {
   maths: () => qt("modeQuiz"),
   chemistry: () => qt("modeChemistry"),
   linux: () => qt("modeLinux"),
+  chembio: () => qt("modeChemBio"),
 };
-const SUBJECT_ACTIVITY: Record<Subject, string> = { maths: "quiz", chemistry: "chemistry", linux: "linux" };
+const SUBJECT_ACTIVITY: Record<Subject, string> = { maths: "quiz", chemistry: "chemistry", linux: "linux", chembio: "chembio" };
 
 function dots(recent: boolean[]): HTMLElement {
   const line = el("span", "dots");
@@ -198,7 +205,7 @@ async function overview(ctx: ProgressContext, profile: Profile): Promise<HTMLEle
       }),
     );
   }
-  for (const subject of ["maths", "chemistry", "linux"] as const) {
+  for (const subject of ["maths", "chemistry", "linux", "chembio"] as const) {
     if (hidden.has(SUBJECT_ACTIVITY[subject])) continue;
     const skills = profile.skills.filter((s) => subjectOfTopic(s.topic) === subject);
     grid.append(

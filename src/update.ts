@@ -5,10 +5,12 @@
  * - A new build: each build has an id (vite.config.ts), published in
  *   /version.json. It is checked when the window comes back to the front and
  *   every 15 minutes while it is visible. When it differs, the app reloads at
- *   once if nothing is under way (home page, lists), and otherwise offers a
- *   button, then reloads by itself at the next quiet moment.
- * - New data: coming back after a few minutes, a quiet screen is drawn again
- *   from the server (words due, a newly imported book).
+ *   once only between activities (home page, players, sign-in, nothing under
+ *   way). Inside an activity nothing is interrupted: a discreet banner offers
+ *   the update, and the app reloads by itself on the way back to the home page.
+ * - New data: coming back after a few minutes, the home page is drawn again
+ *   from the server (words due, a newly imported book); an activity is left
+ *   as it is.
  *
  * index.html and version.json are served with Cache-Control: no-cache
  * (server/index.ts), so a reload always gets the current build.
@@ -24,7 +26,7 @@ const REFRESH_AFTER = 2 * 60_000;
 const MIN_GAP = 30_000;
 
 export interface UpdateHooks {
-  /** Nothing under way that a reload would lose (no exercise, test or vocabulary session). */
+  /** Between activities, with nothing under way that a reload would lose. */
   idle(): boolean;
   /** Draws the current screen again from the server. */
   refresh(): void;

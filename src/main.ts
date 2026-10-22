@@ -30,8 +30,10 @@ import { showVocabStats, vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
-import { PHYSICS_LABS, discoverBusy, discoverView } from "./discover/index";
+import { ASTRONOMY_LABS, BIO_LABS, PHYSICS_LABS, discoverBusy, discoverView } from "./discover/index";
 import { pt } from "./discover/physics-i18n";
+import { at as astroText } from "./discover/astro-i18n";
+import { bt as bioText } from "./discover/bio-i18n";
 import { dt } from "./discover/i18n";
 import { progressView, type ProgressScope } from "./progress";
 
@@ -141,13 +143,16 @@ async function render(): Promise<void> {
   }
   app.classList.remove("is-landing");
   // The home page and the progress overview use the width of a large screen.
-  app.classList.toggle(
-    "is-wide",
-    Boolean(state.user) && ((state.view === "play" && state.settings.mode === "home") || (state.view === "progress" && progressScope === "all")),
-  );
+  // The width changes with the content, once it is ready: the screen being
+  // left keeps its own width while the next one loads.
+  const wide = Boolean(state.user) && ((state.view === "play" && state.settings.mode === "home") || (state.view === "progress" && progressScope === "all"));
+  const paint = (...nodes: Node[]): void => {
+    app.classList.toggle("is-wide", wide);
+    app.replaceChildren(...nodes);
+  };
   try {
     if (state.view === "account" && !playerSession()) {
-      app.replaceChildren(
+      paint(
         topBar(),
         await accountView({
           state: state.auth,
@@ -169,14 +174,14 @@ async function render(): Promise<void> {
         }),
       );
     } else if (!state.user || state.view === "players") {
-      app.replaceChildren(topBar(), await playersView());
+      paint(topBar(), await playersView());
     } else if (state.view === "scores") {
-      app.replaceChildren(topBar(), await scoresView());
+      paint(topBar(), await scoresView());
     } else if (state.view === "progress") {
       const who = progressUser ?? state.user;
       await loadBank(); // the bank's units name its kinds of question
       const mine = who.id === state.user.id;
-      app.replaceChildren(
+      paint(
         topBar(),
         await progressView({
           user: who,
@@ -215,27 +220,29 @@ async function render(): Promise<void> {
         return show("players");
       }
       state.user = fresh;
-      app.replaceChildren(topBar(), await homeView({ user: fresh, open, showProgress: () => openProgress(fresh, "play", "all") }));
+      paint(topBar(), await homeView({ user: fresh, open, showProgress: () => openProgress(fresh, "play", "all") }));
     } else if (state.settings.mode === "vocab") {
       const books = await vocabBooks();
       const book = books.find((b) => b.id === state.settings.vocabBook) ?? books[0];
       if (!book) return goHome();
-      app.replaceChildren(
+      paint(
         topBar(),
         activityBar("", goHome), // the book's page has its own title
         await vocabView({ user: state.user, book, rerender: () => void render() }),
       );
     } else if (state.settings.mode === "discover") {
       const physics = PHYSICS_LABS.includes(state.settings.discoverActivity);
-      app.replaceChildren(topBar(), activityBar(physics ? pt("group") : dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
+      const astronomy = ASTRONOMY_LABS.includes(state.settings.discoverActivity);
+      const biology = BIO_LABS.includes(state.settings.discoverActivity);
+      paint(topBar(), activityBar(biology ? bioText("group") : astronomy ? astroText("group") : physics ? pt("group") : dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
       const subject = state.settings.quizSubject;
       // Physical chemistry: the written questions are part of the tests, on both sides.
       if (subject === "chemistry") await loadBank();
-      app.replaceChildren(
+      paint(
         topBar(),
-        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : "modeQuiz"), goHome),
+        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : "modeQuiz"), goHome),
         quizView({
           user,
           subject,
@@ -245,7 +252,7 @@ async function render(): Promise<void> {
         }),
       );
     } else {
-      app.replaceChildren(
+      paint(
         topBar(),
         activityBar(qt("modeColumns"), goHome),
         controls(),
@@ -255,7 +262,7 @@ async function render(): Promise<void> {
     }
   } catch (error) {
     if (error instanceof SignedOutError) return signedOut();
-    app.replaceChildren(topBar(), offlineView(() => void render()));
+    paint(topBar(), offlineView(() => void render()));
   }
   if (notice) {
     const banner = el("p", `auth-message ${notice.ok ? "ok" : "error"} banner`, notice.text);
@@ -338,10 +345,15 @@ function goHome(): void {
 }
 
 /**
- * Nothing a reload would lose: no vocabulary session or test under way, and
- * nothing typed in a field (a column exercise, a name, a password).
+ * A quiet moment for a reload or a redraw: between activities (home page,
+ * players, sign-in), with no vocabulary session, test or experiment under
+ * way and nothing typed in a field. Inside an activity, an update waits for
+ * the way back to the home page.
  */
 function idle(): boolean {
+  // Only between activities: the home page, the list of players, the sign-in screens.
+  const between = !state.auth?.authenticated || !state.user || state.view === "players" || (state.view === "play" && state.settings.mode === "home");
+  if (!between) return false;
   if (vocabBusy() || quizBusy() || discoverBusy()) return false;
   return ![...document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("#app input, #app textarea")].some(
     (field) =>

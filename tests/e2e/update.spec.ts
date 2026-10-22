@@ -66,3 +66,42 @@ test("during an unfinished grid, a new version waits for a button", async ({ pag
   await expect(page.locator(".update-banner")).toBeVisible();
   await expect(free.locator(".cell-value")).toHaveText("1");
 });
+
+test("inside an activity, even with nothing under way, a new version waits for the way home", async ({ page }) => {
+  await newPlayer(page, "Upd4");
+  // A lab still at its prediction step: nothing to lose, but the player is in it.
+  await openActivity(page, "discover-pendulum");
+  await page.evaluate(() => ((window as unknown as { marker: boolean }).marker = true));
+  await newBuildOut(page);
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect(page.locator(".update-banner")).toBeVisible();
+  // Coming back to the window does not redraw it either.
+  await page.evaluate(() => document.dispatchEvent(new Event("visibilitychange")));
+  expect(await page.evaluate(() => (window as unknown as { marker?: boolean }).marker)).toBe(true);
+  await expect(page.locator(".discover-lab")).toBeVisible();
+  // Back home: the update is applied then.
+  await Promise.all([page.waitForEvent("load"), page.locator(".activity-bar button").first().click()]);
+  await page.locator(".home").waitFor();
+});
+
+test("going home, the screen being left keeps its width until the home page is ready", async ({ page }) => {
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await newPlayer(page, "Wid2");
+  await openActivity(page, "discover-pendulum");
+  const width = (): Promise<number> => page.locator("#app").evaluate((a) => a.getBoundingClientRect().width);
+  expect(await width()).toBeLessThan(600);
+  // The home page waits for its data: meanwhile the lab must not be stretched.
+  let release: () => void = () => undefined;
+  const held = new Promise<void>((resolve) => (release = resolve));
+  await page.route("**/api/**", async (route) => {
+    await held;
+    await route.continue();
+  });
+  await page.locator(".activity-bar button").first().click();
+  await page.waitForTimeout(300);
+  await expect(page.locator(".discover-lab")).toBeVisible();
+  expect(await width()).toBeLessThan(600);
+  release();
+  await page.locator(".home").waitFor();
+  expect(await width()).toBeGreaterThan(1000);
+});
