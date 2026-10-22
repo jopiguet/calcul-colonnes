@@ -22,7 +22,8 @@ import type { Provider } from "./auth/providers.ts";
 import { authRoutes } from "./auth/routes.ts";
 import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
-import { Repository, type Scope } from "./repository.ts";
+import { ACTIVITY_ID, HIDDEN_MAX, Repository, normalizeCode, type Scope } from "./repository.ts";
+import { RateLimit } from "./auth/rate-limit.ts";
 import { VocabStore, vocabRoutes } from "./vocab.ts";
 import { BankStore, bankRoutes } from "./quiz-bank.ts";
 import { log } from "./runtime.ts";
@@ -91,6 +92,8 @@ function parseQuiz(body: unknown): ValidQuiz | null {
 
 export function createApp(db: Database, authConfig: AuthConfig, providers: Map<string, Provider>): Hono<AppEnv> {
   const repository = new Repository(db);
+  // Wrong share codes per account: 20 in 15 minutes, on top of their 50 bits.
+  const shareLimit = new RateLimit(20, 15 * 60_000);
   const bank = new BankStore(db);
   const store = new AuthStore(db);
   const api = new Hono<AppEnv>();
@@ -119,12 +122,65 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
     return user ? c.json(user, 201) : c.json({ error: "name already used" }, 409);
   });
 
+  /** The account's own player is deleted with its results; a shared one only leaves this account's list. */
   data.delete("/users/:id", requireAccount, async (c) => {
     const id = Number(c.req.param("id"));
     if (!isInt(id, 1, Number.MAX_SAFE_INTEGER)) return c.json({ error: "invalid id" }, 400);
-    if (!(await repository.getUser(id, scope(c)))) return c.json({ error: "unknown user" }, 404);
-    await repository.deleteUser(id);
+    const user = await repository.getUser(id, scope(c));
+    if (!user) return c.json({ error: "unknown user" }, 404);
+    if (user.sharedBy !== undefined) await repository.removeShare(id, scope(c).accountId);
+    else await repository.deleteUser(id);
     return c.body(null, 204);
+  });
+
+  // ---- what a player sees, and sharing: the player's own account only
+  const own = async (c: Parameters<typeof scope>[0] & { req: { param(name: string): string } }) => {
+    const id = Number(c.req.param("id"));
+    return isInt(id, 1, Number.MAX_SAFE_INTEGER) ? repository.ownUser(id, scope(c)) : null;
+  };
+
+  data.put("/users/:id/hidden", requireAccount, async (c) => {
+    const user = await own(c);
+    if (!user) return c.json({ error: "unknown user" }, 404);
+    const hidden = ((await c.req.json().catch(() => null)) as { hidden?: unknown } | null)?.hidden;
+    if (!Array.isArray(hidden) || hidden.length > HIDDEN_MAX || !hidden.every((a) => typeof a === "string" && ACTIVITY_ID.test(a))) {
+      return c.json({ error: "invalid hidden" }, 400);
+    }
+    await repository.setHidden(user.id, hidden as string[]);
+    return c.body(null, 204);
+  });
+
+  data.post("/users/:id/invites", requireAccount, async (c) => {
+    const user = await own(c);
+    if (!user) return c.json({ error: "unknown user" }, 404);
+    return c.json(await repository.createInvite(user.id), 201);
+  });
+
+  data.get("/users/:id/shares", requireAccount, async (c) => {
+    const user = await own(c);
+    if (!user) return c.json({ error: "unknown user" }, 404);
+    return c.json(await repository.listShares(user.id));
+  });
+
+  data.delete("/users/:id/shares/:account", requireAccount, async (c) => {
+    const user = await own(c);
+    const account = Number(c.req.param("account"));
+    if (!user) return c.json({ error: "unknown user" }, 404);
+    if (!isInt(account, 1, Number.MAX_SAFE_INTEGER)) return c.json({ error: "invalid account" }, 400);
+    return (await repository.removeShare(user.id, account)) ? c.body(null, 204) : c.json({ error: "unknown share" }, 404);
+  });
+
+  /** A share code typed on the Account page of another account. */
+  data.post("/shares", requireAccount, async (c) => {
+    const key = String(scope(c).accountId);
+    if (!shareLimit.allowed(key)) return c.json({ error: "too_many_attempts" }, 429);
+    const code = normalizeCode(((await c.req.json().catch(() => null)) as { code?: unknown } | null)?.code);
+    const result = code ? await repository.redeemInvite(code, scope(c).accountId) : ({ error: "invalid_code" } as const);
+    if ("error" in result) {
+      if (result.error === "invalid_code") shareLimit.hit(key);
+      return c.json(result, result.error === "invalid_code" ? 404 : 409);
+    }
+    return c.json(result.user, 201);
   });
 
   data.post("/attempts", async (c) => {

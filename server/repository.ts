@@ -17,20 +17,59 @@ import type {
   NewQuizResult,
   Operator,
   OperatorProgress,
+  PlayerShare,
   Profile,
   SkillProgress,
   User,
   UserStats,
 } from "../shared/types.ts";
+import { createHash, randomInt } from "node:crypto";
 import type { Database, Row } from "./db/index.ts";
 import { log } from "./runtime.ts";
 
+/** Activity ids on the home page: "columns", "vocab-collins-spanish"… */
+export const ACTIVITY_ID = /^[a-z0-9][a-z0-9-]{0,59}$/;
+export const HIDDEN_MAX = 200;
+
+function hiddenOf(raw: unknown): string[] {
+  try {
+    const list: unknown = JSON.parse(String(raw ?? "[]"));
+    return Array.isArray(list) ? list.filter((a): a is string => typeof a === "string" && ACTIVITY_ID.test(a)) : [];
+  } catch {
+    return [];
+  }
+}
+
 // PostgreSQL returns BIGINT and aggregates as strings, SQLite as numbers: always go through Number().
-const toUser = (row: Row): User => ({
+// `accountId`: the session's account; a player of another account is shared with it.
+const toUser = (row: Row, accountId?: number): User => ({
   id: Number(row.id),
   name: String(row.name),
   createdAt: Number(row.created_at),
+  hidden: hiddenOf(row.hidden),
+  ...(accountId !== undefined && row.account_id !== null && row.account_id !== undefined && Number(row.account_id) !== accountId
+    ? { sharedBy: String(row.owner_name ?? "") }
+    : {}),
 });
+
+/** Players a session's account sees: its own, and those shared with it. Uses $1 for the account id. */
+const VISIBLE = "(u.account_id = $1 OR EXISTS (SELECT 1 FROM player_shares s WHERE s.user_id = u.id AND s.account_id = $1))";
+const USER_COLUMNS = "u.id, u.name, u.created_at, u.hidden, u.account_id, o.name AS owner_name";
+
+/** Share codes: 10 characters without look-alikes (0/O, 1/I), about 50 bits, shown as XXXXX-XXXXX. */
+const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+export const INVITE_DAYS = 7;
+const hashCode = (code: string): string => createHash("sha256").update(code).digest("hex");
+/** A typed code, upper-cased, without spaces or dashes; null when it cannot be one. */
+export function normalizeCode(raw: unknown): string | null {
+  if (typeof raw !== "string") return null;
+  const code = raw.toUpperCase().replace(/[\s-]/g, "");
+  return code.length === 10 && [...code].every((ch) => CODE_ALPHABET.includes(ch)) ? code : null;
+}
+
+export type RedeemResult = { user: User } | { error: "invalid_code" | "own_player" | "already_shared" };
+
+
 
 /** Unique per account: "<account id>:<lower-cased name>". */
 export const nameKey = (accountId: number, name: string): string => `${accountId}:${name.toLocaleLowerCase("fr")}`;
@@ -70,20 +109,97 @@ export class Repository {
 
   async listUsers(scope: Scope): Promise<User[]> {
     const rows = await this.db.query(
-      "SELECT id, name, created_at FROM users WHERE account_id = $1 AND (CAST($2 AS BIGINT) = 0 OR id = CAST($2 AS BIGINT))",
+      `SELECT ${USER_COLUMNS} FROM users u LEFT JOIN accounts o ON o.id = u.account_id
+        WHERE ${VISIBLE} AND (CAST($2 AS BIGINT) = 0 OR u.id = CAST($2 AS BIGINT))`,
       [scope.accountId, scope.playerId ?? 0],
     );
-    return rows.map(toUser).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    return rows.map((r) => toUser(r, scope.accountId)).sort((a, b) => a.name.localeCompare(b.name, "fr"));
   }
 
-  /** The player, if this session may see it. */
+  /** The player, if this session may see it: its account's, or shared with it. */
   async getUser(id: number, scope: Scope): Promise<User | null> {
     if (scope.playerId !== null && scope.playerId !== id) return null;
-    const rows = await this.db.query("SELECT id, name, created_at FROM users WHERE id = $1 AND account_id = $2", [
-      id,
-      scope.accountId,
+    const rows = await this.db.query(
+      `SELECT ${USER_COLUMNS} FROM users u LEFT JOIN accounts o ON o.id = u.account_id WHERE ${VISIBLE} AND u.id = $2`,
+      [scope.accountId, id],
+    );
+    return rows[0] ? toUser(rows[0], scope.accountId) : null;
+  }
+
+  /** The player, if the session is its account's (not a share, not a player's own login). */
+  async ownUser(id: number, scope: Scope): Promise<User | null> {
+    if (scope.playerId !== null) return null;
+    const rows = await this.db.query(
+      `SELECT ${USER_COLUMNS} FROM users u LEFT JOIN accounts o ON o.id = u.account_id WHERE u.id = $1 AND u.account_id = $2`,
+      [id, scope.accountId],
+    );
+    return rows[0] ? toUser(rows[0], scope.accountId) : null;
+  }
+
+  async setHidden(id: number, hidden: string[]): Promise<void> {
+    await this.db.query("UPDATE users SET hidden = $1 WHERE id = $2", [JSON.stringify([...new Set(hidden)].sort()), id]);
+  }
+
+  /** A new share code for a player; the code itself is returned once and never stored. */
+  async createInvite(userId: number, now = Date.now()): Promise<{ code: string; expiresAt: number }> {
+    const code = Array.from({ length: 10 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join("");
+    const expiresAt = now + INVITE_DAYS * 86_400_000;
+    await this.db.query("DELETE FROM player_invites WHERE expires_at < $1", [now]);
+    await this.db.query("INSERT INTO player_invites (id, user_id, created_at, expires_at) VALUES ($1, $2, $3, $4)", [
+      hashCode(code),
+      userId,
+      now,
+      expiresAt,
     ]);
-    return rows[0] ? toUser(rows[0]) : null;
+    return { code: `${code.slice(0, 5)}-${code.slice(5)}`, expiresAt };
+  }
+
+  /** Uses a share code: the player becomes visible to this account. */
+  async redeemInvite(code: string, accountId: number, now = Date.now()): Promise<RedeemResult> {
+    return this.db.transaction(async (tx) => {
+      const rows = await tx.query(
+        `SELECT i.user_id, u.account_id FROM player_invites i JOIN users u ON u.id = i.user_id
+          WHERE i.id = $1 AND i.used_at IS NULL AND i.expires_at > $2`,
+        [hashCode(code), now],
+      );
+      const invite = rows[0];
+      if (!invite) return { error: "invalid_code" } as const;
+      const userId = Number(invite.user_id);
+      if (Number(invite.account_id) === accountId) return { error: "own_player" } as const;
+      const known = await tx.query("SELECT 1 AS x FROM player_shares WHERE user_id = $1 AND account_id = $2", [userId, accountId]);
+      if (known.length > 0) return { error: "already_shared" } as const;
+      await tx.query("INSERT INTO player_shares (user_id, account_id, created_at) VALUES ($1, $2, $3)", [userId, accountId, now]);
+      await tx.query("UPDATE player_invites SET used_at = $1 WHERE id = $2", [now, hashCode(code)]);
+      const user = await tx.query(
+        `SELECT ${USER_COLUMNS} FROM users u LEFT JOIN accounts o ON o.id = u.account_id WHERE u.id = $1`,
+        [userId],
+      );
+      return { user: toUser(user[0]!, accountId) };
+    });
+  }
+
+  /** The accounts a player is shared with. */
+  async listShares(userId: number): Promise<PlayerShare[]> {
+    const rows = await this.db.query(
+      `SELECT a.id, a.name, a.email, s.created_at FROM player_shares s JOIN accounts a ON a.id = s.account_id
+        WHERE s.user_id = $1 ORDER BY s.created_at`,
+      [userId],
+    );
+    return rows.map((r) => ({
+      accountId: Number(r.id),
+      name: String(r.name),
+      email: r.email === null || r.email === undefined ? null : String(r.email),
+      since: Number(r.created_at),
+    }));
+  }
+
+  /** Ends a share; the player's results stay with the player. */
+  async removeShare(userId: number, accountId: number): Promise<boolean> {
+    const rows = await this.db.query("DELETE FROM player_shares WHERE user_id = $1 AND account_id = $2 RETURNING user_id", [
+      userId,
+      accountId,
+    ]);
+    return rows.length > 0;
   }
 
   /** Null when the account already has a player with the same name (ignoring case). */
@@ -352,16 +468,17 @@ export class Repository {
   /** `since`: start of "today" in the player's time zone, in epoch milliseconds. */
   async stats(since: number, scope: Scope): Promise<UserStats[]> {
     const rows = await this.db.query(
-      `SELECT u.id, u.name, u.created_at,
+      `SELECT u.id, u.name, u.created_at, u.hidden, u.account_id, o.name AS owner_name,
               COUNT(a.id)                                                  AS total,
               COALESCE(SUM(a.correct), 0)                                  AS correct,
-              COALESCE(SUM(CASE WHEN a.at >= $1 THEN 1 ELSE 0 END), 0)         AS today_total,
-              COALESCE(SUM(CASE WHEN a.at >= $1 THEN a.correct ELSE 0 END), 0) AS today_correct
+              COALESCE(SUM(CASE WHEN a.at >= $2 THEN 1 ELSE 0 END), 0)         AS today_total,
+              COALESCE(SUM(CASE WHEN a.at >= $2 THEN a.correct ELSE 0 END), 0) AS today_correct
          FROM users u
+         LEFT JOIN accounts o ON o.id = u.account_id
          LEFT JOIN attempts a ON a.user_id = u.id
-        WHERE u.account_id = $2 AND (CAST($3 AS BIGINT) = 0 OR u.id = CAST($3 AS BIGINT))
-        GROUP BY u.id, u.name, u.created_at`,
-      [since, scope.accountId, scope.playerId ?? 0],
+        WHERE ${VISIBLE} AND (CAST($3 AS BIGINT) = 0 OR u.id = CAST($3 AS BIGINT))
+        GROUP BY u.id, u.name, u.created_at, u.hidden, u.account_id, o.name`,
+      [scope.accountId, since, scope.playerId ?? 0],
     );
     // Separate query: joining both tables at once would multiply the rows.
     const quizRows = await this.db.query(
@@ -374,7 +491,7 @@ export class Repository {
       .map((row) => {
         const q = quiz.get(Number(row.id));
         return {
-          user: toUser(row),
+          user: toUser(row, scope.accountId),
           total: Number(row.total),
           correct: Number(row.correct),
           todayTotal: Number(row.today_total),

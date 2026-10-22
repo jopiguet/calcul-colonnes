@@ -151,14 +151,15 @@ Automated checks:
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
 | `npm run check:discover` | The Discover engines: exact formulas against brute force, the generator on millions of trials, 1,200 logic grids. See [Discover](discover.md#checks-and-tests). | under 10 seconds |
-| `npm run test:e2e` | The whole app in a browser: 73 tests | about two minutes |
+| `npm run test:e2e` | The whole app in a browser: 75 tests | about two minutes |
 | `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
 
 ### Browser tests
 
 ```sh
-npx playwright install chromium   # once
+npx playwright install chromium   # once, and after a Playwright update
 npm run test:e2e
+PLAYWRIGHT_CHROMIUM=/path/to/chrome npm run test:e2e   # or a Chromium already installed
 npx playwright test progress      # one file
 npx playwright show-trace test-results/<test>/trace.zip   # after a failure
 ```

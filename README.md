@@ -74,6 +74,7 @@ at *lycée / bachillerato* or university level.
 **Players and progress**
 
 - Scores are kept per player in SQLite, or in PostgreSQL (Neon) with one setting.
+- A parent's account chooses which activities each child sees, and can share a child with another account (the other parent, a teacher) with a single-use code.
 - Every test answer is filed under its kind of question. A kind answered wrong comes back in later tests until it has been answered right twice in a row.
 - Every wrong option stands for a typical mistake (122 types, such as *inner derivative forgotten*, *solution missed* or *°C used for K*). The mistake is shown in the corrections and counted per player.
 - A progress page shows each player's status per kind of question, their most frequent mistakes, and their results per arithmetic operation.

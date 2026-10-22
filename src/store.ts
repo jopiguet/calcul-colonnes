@@ -6,6 +6,7 @@ import type {
   Profile,
   SignInMethod,
   User,
+  PlayerShare,
   UserStats,
   VocabAnswer,
   VocabAnswerResult,
@@ -17,7 +18,7 @@ import type {
 } from "../shared/types";
 import type { Bank } from "../shared/quiz";
 
-export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, Profile, SignInMethod, User, UserStats };
+export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, PlayerShare, Profile, SignInMethod, User, UserStats };
 export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabProgress, VocabStats };
 
 /**
@@ -84,7 +85,15 @@ export const store = {
   listUsers: (): Promise<User[]> => call("/users"),
   addUser: (name: string): Promise<User> =>
     call("/users", { method: "POST", body: JSON.stringify({ name }) }),
+  /** Deletes the account's own player; a shared one only leaves this account's list. */
   deleteUser: (id: number): Promise<void> => call(`/users/${id}`, { method: "DELETE" }),
+  setHidden: (id: number, hidden: string[]): Promise<void> =>
+    call(`/users/${id}/hidden`, { method: "PUT", body: JSON.stringify({ hidden }) }),
+  /** A single-use code another account types to see this player too. */
+  createInvite: (id: number): Promise<{ code: string; expiresAt: number }> => post(`/users/${id}/invites`),
+  shares: (id: number): Promise<PlayerShare[]> => call(`/users/${id}/shares`),
+  removeShare: (id: number, accountId: number): Promise<void> => call(`/users/${id}/shares/${accountId}`, { method: "DELETE" }),
+  joinShare: (code: string): Promise<User> => post("/shares", { code }),
   addAttempt: (attempt: NewAttempt): Promise<{ correct: boolean }> =>
     call("/attempts", { method: "POST", body: JSON.stringify(attempt) }),
   /** The server regenerates the test from its seed and returns its own grading. */

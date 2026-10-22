@@ -29,6 +29,7 @@ const texts = {
     charsNotStarted: "{count} caractères",
     noBooks: "Aucun livre de vocabulaire importé : voir docs/vocabulary.md.",
     sciences: "Sciences",
+    nothingShown: "Aucune activité n'est ouverte pour ce joueur. Elles se choisissent sur la page Compte.",
     chemistryText: "Chimie physique : calculs et notions, Focus par Focus",
     home: "Accueil",
   },
@@ -49,6 +50,7 @@ const texts = {
     charsNotStarted: "{count} caracteres",
     noBooks: "No hay libros de vocabulario importados: ver docs/vocabulary.md.",
     sciences: "Ciencias",
+    nothingShown: "No hay ninguna actividad abierta para este jugador. Se eligen en la página Cuenta.",
     chemistryText: "Química física: cálculos y conceptos, Focus por Focus",
     home: "Inicio",
   },
@@ -69,6 +71,7 @@ const texts = {
     charsNotStarted: "{count} characters",
     noBooks: "No vocabulary book imported: see docs/vocabulary.md.",
     sciences: "Sciences",
+    nothingShown: "No activity is open for this player. They are chosen on the Account page.",
     chemistryText: "Physical chemistry: calculations and concepts, Focus by Focus",
     home: "Home",
   },
@@ -104,6 +107,42 @@ export async function vocabBooks(): Promise<VocabBookInfo[]> {
 /** The next vocabBooks() asks the server (a book may have been imported). */
 export function forgetBooks(): void {
   booksCache = null;
+}
+
+/** An activity's id, as stored in a player's hidden list ("columns", "vocab-collins-spanish"…). */
+export function activityId(activity: Activity, books: VocabBookInfo[]): string | null {
+  switch (activity.mode) {
+    case "columns":
+      return "columns";
+    case "quiz":
+      return activity.subject === "chemistry" ? "chemistry" : "quiz";
+    case "discover":
+      return `discover-${activity.activity}`;
+    case "vocab": {
+      const book = books.find((b) => b.id === activity.book);
+      return book ? `vocab-${book.slug}` : null;
+    }
+  }
+}
+
+/** Every activity of the home page, by group: what an account can show or hide for a player. */
+export function activityCatalog(books: VocabBookInfo[]): { group: string; activities: { id: string; title: string }[] }[] {
+  return [
+    { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }] },
+    { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
+    {
+      group: ht("languages"),
+      activities: books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
+    },
+    {
+      group: dt("group"),
+      activities: [
+        { id: "discover-dice", title: dt("diceTitle") },
+        { id: "discover-coins", title: dt("coinsTitle") },
+        { id: "discover-puzzles", title: dt("puzzlesTitle") },
+      ],
+    },
+  ];
 }
 
 /** One activity: what it is, and what is waiting there. */
@@ -201,7 +240,16 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   );
   discover.append(lab);
 
-  wrap.append(maths, sciences, languages, discover);
+  // Activities the player's account hides; a group left empty goes too.
+  const hidden = new Set(ctx.user.hidden ?? []);
+  for (const group of [maths, sciences, languages, discover]) {
+    for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
+      if (hidden.has(node.dataset.activity!)) node.remove();
+    }
+    const empty = group.querySelector(".empty");
+    if (group.querySelector("[data-activity]") || (empty && hidden.size === 0)) wrap.append(group);
+  }
+  if (!wrap.querySelector(".activity-group")) wrap.append(el("p", "empty", ht("nothingShown")));
   return wrap;
 }
 

@@ -5,6 +5,8 @@ how sessions and cookies work, how to set up Google, Microsoft, GitHub or any
 OpenID Connect provider, and how passkeys and email links will fit in.
 
 - [Model](#model)
+- [Sharing a player](#sharing-a-player)
+- [Activities a player sees](#activities-a-player-sees)
 - [Ways to sign in](#ways-to-sign-in)
 - [Sessions and cookies](#sessions-and-cookies)
 - [Protection against abuse](#protection-against-abuse)
@@ -26,7 +28,7 @@ flowchart LR
 ```
 
 - **Account:** an adult (parent, teacher). It owns players, sees all their results, creates and deletes players, and manages every way to sign in.
-- **Player:** as before, a child with their results. A player belongs to one account. Two accounts can each have a player called *Léa*.
+- **Player:** as before, a child with their results. A player belongs to one account. Two accounts can each have a player called *Léa*. A player can also be [shared](#sharing-a-player) with other accounts.
 - **Sign-in method** (table `credentials`): a password, or an identity at a provider. It is attached either to the account, or to one player.
   - **Account method:** signs in as the account.
   - **Player method:** signs in as that player only. That session sees one player, cannot switch, create or delete players, and has no Account page.
@@ -34,6 +36,39 @@ flowchart LR
 An account may have several methods: for example a password plus Google. The
 last method of an account cannot be removed. Player methods can always be
 removed, since the account keeps control.
+
+## Sharing a player
+
+A player belongs to the account that created it, and that account can share
+it with others: the other parent, a teacher.
+
+1. On its Account page, the owner creates a **share code** for the player: 10 characters (about 50 bits), single use, valid 7 days. Only its SHA-256 is stored.
+2. The other account types it on its own Account page. The player appears in its list, marked *partagé*.
+
+| | Owner | Account it is shared with | Player's own sign-in |
+|---|:-:|:-:|:-:|
+| Do exercises and tests, see progress and scores | ✓ | ✓ | ✓ (only themselves) |
+| Activities shown on the home page | ✓ | | |
+| Share codes, list and end shares | ✓ | | |
+| The player's own sign-in | ✓ | | |
+| Delete the player and their results | ✓ | | |
+| Remove the player from its own list | | ✓ | |
+
+There is one set of results: what the player does under any account is the
+same player's. Ending a share, from either side, takes effect on the next
+request. Wrong codes are limited to 20 per account in 15 minutes.
+
+## Activities a player sees
+
+The owner chooses, per player, which activities show on the home page:
+column arithmetic, the QCM, physical chemistry, each vocabulary book, each
+Discover activity. The list of hidden ones is stored with the player
+(`users.hidden`), so it follows the player to every device, every account it
+is shared with, and the player's own sign-in. A new activity or book shows
+until it is hidden.
+
+It shapes the app, not the API: a hidden activity is not offered, and the app
+leaves it if it was open, but the data routes do not refuse it.
 
 ## Ways to sign in
 
@@ -105,7 +140,7 @@ usable sessions.
   - 10 failures per identifier in 15 minutes, which stops guessing one account's password from many addresses.
 
   The response is `429 too_many_attempts`. Behind a reverse proxy or Cloudflare, set `TRUST_PROXY=true` so the address comes from `CF-Connecting-IP` or the last `X-Forwarded-For` entry, otherwise every visitor shares the proxy's address. Then also set `HOST=127.0.0.1`, so nobody can reach the server without going through the proxy.
-- **Data scope:** every data route reads from the session which players it may touch. Another account's player answers `404`, the same as a player that does not exist.
+- **Data scope:** every data route reads from the session which players it may touch: the account's own and those shared with it. Another account's player answers `404`, the same as a player that does not exist.
 
 ## Providers
 

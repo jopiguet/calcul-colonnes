@@ -1,5 +1,23 @@
 # Changelog
 
+## 6.7.0
+
+- **Activities per player:** on the Account page, each player has the list of activities shown on their home page: column arithmetic, QCM, physical chemistry, each vocabulary book, each Discover activity. Untick one and it disappears from that player's home page, on every device; an open activity that gets hidden goes back home. New books show until unticked.
+- **Players shared between accounts:**
+  - The owner creates a share code on the Account page. It is single use and valid 7 days, and only its SHA-256 is stored. The other account types it on its own Account page.
+  - The other account then sees the player, marked *partagé*, with the same results, and can do exercises and tests and follow progress.
+  - It cannot delete the player, change their activities, sharing or own sign-in. Deleting a shared player only removes it from that account's list.
+  - The owner sees who has access and can end any share at once.
+  - Wrong codes are limited to 20 per account in 15 minutes.
+- **Database:** migration `015_sharing`: `hidden` on `users`; `player_shares`, `player_invites`. `db:copy-to-postgres` also copies `quiz_results.bank`, which it had missed since 6.5.0.
+- **API:** `PUT /api/users/:id/hidden`, `POST /api/users/:id/invites`, `GET /api/users/:id/shares`, `DELETE /api/users/:id/shares/:account`, `POST /api/shares`; `hidden` and `sharedBy` on players.
+- **Dependencies:**
+  - Build and test tools: TypeScript 7 (the native compiler), Vite 8, esbuild 0.28, Playwright 1.64, @types/node 26.
+  - Server: @hono/node-server 2.1.5.
+  - CI: `actions/checkout`, `setup-node` and `upload-artifact` v7; `google-github-actions/auth` and `setup-gcloud` v3, all running on Node 24.
+  - Vite 8 needs esbuild 0.27 or later, so the two are updated together.
+- **Tests:** `PLAYWRIGHT_CHROMIUM` runs the browser tests with a Chromium already installed. 75 browser tests.
+
 ## 6.6.0
 
 - **Physical chemistry in French and Spanish:** the 155 concept questions and the Topic titles of the Atkins file are translated. The app shows them in its language.

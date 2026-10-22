@@ -59,11 +59,19 @@ Errors are `{"error": "<reason>"}` with:
 
 ## `GET /api/users`
 
-Players sorted by name.
+Players sorted by name: the account's own, and those other accounts share with it.
 
 ```json
-[{ "id": 1, "name": "Léa", "createdAt": 1792337327408 }]
+[
+  { "id": 1, "name": "Léa", "createdAt": 1792337327408, "hidden": ["columns"] },
+  { "id": 7, "name": "Tom", "createdAt": 1792337400000, "hidden": [], "sharedBy": "Anne" }
+]
 ```
+
+| Field | |
+|---|---|
+| `hidden` | Activities taken off the player's home page: `columns`, `quiz`, `chemistry`, `vocab-<book slug>`, `discover-dice`, `discover-coins`, `discover-puzzles` |
+| `sharedBy` | Only for a player another account owns and shares with this one: that account's name |
 
 ## `POST /api/users`
 
@@ -82,8 +90,66 @@ Players sorted by name.
 
 ## `DELETE /api/users/:id`
 
-`204`, also when the player does not exist. Deletes their arithmetic answers,
-tests and test answers.
+`204`. For the account's own player: deletes the player with their arithmetic
+answers, tests, test answers and vocabulary. For a shared player: removes it
+from this account's list only; the player and their results stay with the
+owner. `404` for a player this session does not see.
+
+## Activities and sharing
+
+All need an account session (`403 account_only` in a player's own session).
+The routes on `/api/users/:id/…` are for the player's own account: for a
+shared player, or another account's, they answer `404`.
+
+### `PUT /api/users/:id/hidden`
+
+```json
+{ "hidden": ["columns", "discover-dice"] }
+```
+
+Replaces the list. Ids are `[a-z0-9-]`, at most 200. Unknown ids are kept
+(a book imported later). `204`; `400` for an invalid list.
+
+### `POST /api/users/:id/invites`
+
+A share code: single use, valid 7 days. Only its SHA-256 is stored, so it is
+shown once.
+
+`201`:
+
+```json
+{ "code": "K7QF2-9XMRA", "expiresAt": 1793000000000 }
+```
+
+### `GET /api/users/:id/shares`
+
+The accounts that see the player.
+
+```json
+[{ "accountId": 4, "name": "Anne", "email": "anne@example.org", "since": 1792500000000 }]
+```
+
+### `DELETE /api/users/:id/shares/:account`
+
+Ends a share at once. `204`; `404` if there was none.
+
+### `POST /api/shares`
+
+Another account uses a code.
+
+```json
+{ "code": "k7qf2 9xmra" }
+```
+
+Case, spaces and dashes are ignored. `201` with the player (with
+`sharedBy`). Errors:
+
+| Status | `error` | |
+|---|---|---|
+| `404` | `invalid_code` | Unknown, used or expired |
+| `409` | `own_player` | The player already belongs to this account |
+| `409` | `already_shared` | Already shared with this account |
+| `429` | `too_many_attempts` | 20 wrong codes in 15 minutes for this account |
 
 ## `GET /api/users/:id/profile`
 

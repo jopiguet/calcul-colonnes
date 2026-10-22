@@ -1,8 +1,9 @@
-import type { AuthOptions, AuthState, SignInMethod, User } from "../shared/types";
+import type { AuthOptions, AuthState, SignInMethod, User, VocabBookInfo } from "../shared/types";
+import { activityCatalog, vocabBooks } from "./home";
 import { at, errorText, type AuthKey } from "./auth-i18n";
 import { button, el } from "./dom";
 import { currentLang, t } from "./i18n";
-import { ApiError, auth } from "./store";
+import { ApiError, auth, store } from "./store";
 
 /**
  * Sign-in screen and account page. Sign-in with a provider is a full-page
@@ -144,6 +145,8 @@ interface AccountContext {
   onBack(): void;
   onSignedOut(): void;
   rerender(): void;
+  /** A player was added or left: the app's player list changes too. */
+  onPlayersChanged(notice?: string): void;
 }
 
 function providerName(options: AuthOptions, id: string): string {
@@ -222,49 +225,168 @@ export async function accountView(ctx: AccountContext): Promise<HTMLElement> {
   });
   wrap.append(pw);
 
-  // ---- players' own sign-in
-  if (ctx.players.length > 0) {
-    wrap.append(el("h2", "subtitle", at("playerLogins")), el("p", "hint left", at("playerLoginsHint")));
-    for (const player of ctx.players) {
-      const block = el("div", "player-login");
-      block.append(el("h3", "player-login-name", player.name));
-      const theirs = methods.filter((m) => m.playerId === player.id);
-      if (theirs.length === 0) block.append(el("p", "empty small", at("noPlayerLogin")));
-      else {
-        const ul = el("ul", "methods");
-        for (const m of theirs) ul.append(methodLine(m, options, true, remove(m)));
-        block.append(ul);
-      }
-      const form = el("form", "auth-form inline");
-      form.dataset.player = String(player.id);
-      form.append(
-        field(at("username"), "text", "username", "off"),
-        field(at("password"), "password", "password", "new-password"),
+  // ---- players: what each one sees, sharing, their own sign-in
+  const books = await vocabBooks().catch(() => [] as VocabBookInfo[]);
+  const catalog = activityCatalog(books);
+  wrap.append(el("h2", "subtitle", at("players")), el("p", "hint left", at("playersHint")));
+  for (const player of ctx.players) {
+    const block = el("div", "player-login");
+    block.dataset.player = String(player.id);
+    block.append(el("h3", "player-login-name", player.name));
+
+    if (player.sharedBy !== undefined) {
+      // Another account's player: it can only be left.
+      block.append(
+        el("p", "method-label", at("sharedBy", { name: player.sharedBy })),
+        el("p", "hint left", at("sharedPlayerHint")),
+        button("ghost small", at("leave", { player: player.name }), async () => {
+          if (!confirm(at("confirmLeave", { player: player.name, name: player.sharedBy ?? "" }))) return;
+          try {
+            await store.deleteUser(player.id);
+            ctx.onPlayersChanged();
+          } catch (e) {
+            showError(status, errorText(errorOf(e)));
+          }
+        }),
       );
-      const save = el("button", "primary", at("save"));
-      save.type = "submit";
-      form.append(save);
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
+      wrap.append(block);
+      continue;
+    }
+
+    // Activities shown on the player's home page.
+    const hidden = new Set(player.hidden ?? []);
+    const shown = el("fieldset", "player-activities");
+    shown.append(el("legend", "field-label", at("activities")));
+    const saved = el("span", "hint player-activities-saved");
+    for (const { group, activities } of catalog) {
+      if (activities.length === 0) continue;
+      const row = el("div", "topic-group");
+      row.append(el("span", "topic-group-name", group));
+      for (const activity of activities) {
+        const label = el("label", "topic");
+        const box = el("input");
+        box.type = "checkbox";
+        box.value = activity.id;
+        box.checked = !hidden.has(activity.id);
+        box.addEventListener("change", async () => {
+          if (box.checked) hidden.delete(activity.id);
+          else hidden.add(activity.id);
+          try {
+            await store.setHidden(player.id, [...hidden]);
+            player.hidden = [...hidden];
+            saved.textContent = at("saved");
+          } catch (e) {
+            box.checked = !box.checked;
+            showError(status, errorText(errorOf(e)));
+          }
+        });
+        label.append(box, el("span", undefined, activity.title));
+        row.append(label);
+      }
+      shown.append(row);
+    }
+    shown.append(saved);
+    block.append(shown);
+
+    // Sharing with other accounts.
+    block.append(el("h4", "field-label", at("sharing")), el("p", "hint left", at("sharingHint")));
+    const shares = await store.shares(player.id).catch(() => []);
+    if (shares.length === 0) block.append(el("p", "empty small", at("notShared")));
+    else {
+      const ul = el("ul", "methods shares");
+      for (const share of shares) {
+        const item = el("li", "method");
+        const text = el("div", "method-text");
+        text.append(el("span", "method-name", share.name), el("span", "method-label", share.email ?? ""));
+        item.append(
+          text,
+          button("ghost small", at("remove"), async () => {
+            if (!confirm(at("confirmStopSharing", { name: share.name, player: player.name }))) return;
+            try {
+              await store.removeShare(player.id, share.accountId);
+              ctx.rerender();
+            } catch (e) {
+              showError(status, errorText(errorOf(e)));
+            }
+          }),
+        );
+        ul.append(item);
+      }
+      block.append(ul);
+    }
+    const code = el("p", "share-code");
+    code.setAttribute("role", "status");
+    block.append(
+      button("ghost small", at("createCode"), async () => {
         try {
-          await auth.setPlayerPassword(player.id, value(form, "username"), value(form, "password"));
-          ctx.rerender();
+          const invite = await store.createInvite(player.id);
+          code.textContent = at("codeShown", {
+            code: invite.code,
+            date: new Date(invite.expiresAt).toLocaleDateString(currentLang()),
+          });
         } catch (e) {
           showError(status, errorText(errorOf(e)));
-          status.scrollIntoView({ block: "nearest" });
         }
-      });
-      block.append(form, el("p", "hint left", at("usernameHint")));
-      if (options.providers.length > 0) {
-        const links = el("div", "providers");
-        for (const p of options.providers) {
-          links.append(providerLink(p.id, p.name, auth.providerUrl(p.id, "link-player", player.id), "link"));
-        }
-        block.append(links);
-      }
-      wrap.append(block);
+      }),
+      code,
+    );
+
+    // The player's own sign-in.
+    block.append(el("h4", "field-label", at("playerLogin")), el("p", "hint left", at("playerLoginsHint")));
+    const theirs = methods.filter((m) => m.playerId === player.id);
+    if (theirs.length === 0) block.append(el("p", "empty small", at("noPlayerLogin")));
+    else {
+      const ul = el("ul", "methods");
+      for (const m of theirs) ul.append(methodLine(m, options, true, remove(m)));
+      block.append(ul);
     }
+    const form = el("form", "auth-form inline");
+    form.dataset.player = String(player.id);
+    form.append(
+      field(at("username"), "text", "username", "off"),
+      field(at("password"), "password", "password", "new-password"),
+    );
+    const save = el("button", "primary", at("save"));
+    save.type = "submit";
+    form.append(save);
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      try {
+        await auth.setPlayerPassword(player.id, value(form, "username"), value(form, "password"));
+        ctx.rerender();
+      } catch (e) {
+        showError(status, errorText(errorOf(e)));
+        status.scrollIntoView({ block: "nearest" });
+      }
+    });
+    block.append(form, el("p", "hint left", at("usernameHint")));
+    if (options.providers.length > 0) {
+      const links = el("div", "providers");
+      for (const p of options.providers) {
+        links.append(providerLink(p.id, p.name, auth.providerUrl(p.id, "link-player", player.id), "link"));
+      }
+      block.append(links);
+    }
+    wrap.append(block);
   }
+
+  // A player another account shares with this one.
+  const join = el("form", "auth-form compact join-share");
+  join.append(el("h3", "field-label", at("joinTitle")), el("p", "hint", at("joinHint")), field(at("shareCode"), "text", "code", "off"));
+  const joinButton = el("button", "primary", at("join"));
+  joinButton.type = "submit";
+  join.append(joinButton);
+  join.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    try {
+      const player = await store.joinShare(value(join, "code"));
+      ctx.onPlayersChanged(at("joined", { player: player.name }));
+    } catch (e) {
+      showError(status, errorText(errorOf(e)));
+      status.scrollIntoView({ block: "nearest" });
+    }
+  });
+  wrap.append(join);
 
   // ---- devices
   wrap.append(el("h2", "subtitle", at("devices")));

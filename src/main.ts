@@ -25,7 +25,7 @@ import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { loadBank, quizView } from "./quiz";
-import { activityBar, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
+import { activityBar, activityId, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
 import { vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
@@ -150,6 +150,16 @@ async function render(): Promise<void> {
           onBack: () => show(state.user ? "play" : "players"),
           onSignedOut: () => signedOut(),
           rerender: () => void render(),
+          onPlayersChanged: (text?: string) => {
+            if (text) notice = { ok: true, text };
+            void store.listUsers().then((users) => {
+              if (state.user && !users.some((u) => u.id === state.user!.id)) {
+                state.user = null;
+                saveUserId(null);
+              }
+              void render();
+            });
+          },
         }),
       );
     } else if (!state.user || state.view === "players") {
@@ -160,8 +170,18 @@ async function render(): Promise<void> {
       const who = progressUser ?? state.user;
       await loadBank(); // the bank's units name its kinds of question
       app.replaceChildren(topBar(), await progressView(who, () => show(progressBack)));
+    } else if (state.settings.mode !== "home" && (await hiddenNow(state.user))) {
+      return goHome(); // hidden by the player's account since it was opened
     } else if (state.settings.mode === "home") {
-      app.replaceChildren(topBar(), await homeView({ user: state.user, open }));
+      // The player as the server has it now: its account may have changed what it sees, or stopped sharing it.
+      const fresh = (await store.listUsers()).find((u) => u.id === state.user!.id);
+      if (!fresh) {
+        state.user = null;
+        saveUserId(null);
+        return show("players");
+      }
+      state.user = fresh;
+      app.replaceChildren(topBar(), await homeView({ user: fresh, open }));
     } else if (state.settings.mode === "vocab") {
       const books = await vocabBooks();
       const book = books.find((b) => b.id === state.settings.vocabBook) ?? books[0];
@@ -239,6 +259,26 @@ function next(): void {
   state.exercise = randomExercise(state.settings.operators, state.settings);
   state.phase = "answering";
   void render();
+}
+
+/** Whether the activity the settings would open is hidden for this player. */
+async function hiddenNow(user: User): Promise<boolean> {
+  const hidden = user.hidden ?? [];
+  if (hidden.length === 0) return false;
+  const { mode, quizSubject, discoverActivity, vocabBook } = state.settings;
+  const activity: Activity | null =
+    mode === "columns"
+      ? { mode: "columns" }
+      : mode === "quiz"
+        ? { mode: "quiz", subject: quizSubject }
+        : mode === "discover"
+          ? { mode: "discover", activity: discoverActivity }
+          : mode === "vocab"
+            ? { mode: "vocab", book: vocabBook ?? (await vocabBooks())[0]?.id ?? -1 }
+            : null;
+  if (!activity) return false;
+  const id = activityId(activity, activity.mode === "vocab" ? await vocabBooks() : []);
+  return id !== null && hidden.includes(id);
 }
 
 /** Opens an activity from the home page. */
@@ -538,7 +578,14 @@ async function playersView(): Promise<HTMLElement> {
 
   if (users.length > 0) {
     const list = el("div", "players");
-    for (const user of users) list.append(button("ghost player", user.name, () => selectUser(user)));
+    for (const user of users) {
+      const choice = button("ghost player", user.name, () => selectUser(user));
+      if (user.sharedBy !== undefined) {
+        choice.append(el("span", "player-shared", t("sharedMark")));
+        choice.title = user.sharedBy;
+      }
+      list.append(choice);
+    }
     wrap.append(list);
   }
 
@@ -609,7 +656,7 @@ async function scoresView(): Promise<HTMLElement> {
       el("td", undefined, total === 0 ? "—" : `${Math.round((100 * correct) / total)} %`),
     );
     const remove = button("ghost icon", "🗑️", async () => {
-      if (!confirm(t("confirmDelete", { name: user.name }))) return;
+      if (!confirm(t(user.sharedBy !== undefined ? "confirmLeavePlayer" : "confirmDelete", { name: user.name }))) return;
       try {
         await store.deleteUser(user.id);
       } catch {

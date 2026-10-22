@@ -33,6 +33,7 @@ try {
   const accounts = await source.query("SELECT * FROM accounts ORDER BY id");
   const credentials = await source.query("SELECT * FROM credentials ORDER BY id");
   const users = await source.query("SELECT * FROM users ORDER BY id");
+  const shares = await source.query("SELECT * FROM player_shares");
   const attempts = await source.query("SELECT * FROM attempts ORDER BY id");
   const quizzes = await source.query("SELECT * FROM quiz_results ORDER BY id");
   const quizAnswers = await source.query("SELECT * FROM quiz_answers ORDER BY id");
@@ -66,7 +67,8 @@ try {
     await target.exec(
       "BEGIN;\n" +
         insert("accounts", ["id", "email", "name", "created_at"], accounts) +
-        insert("users", ["id", "name", "name_key", "created_at", "account_id"], users) +
+        insert("users", ["id", "name", "name_key", "created_at", "account_id", "hidden"], users) +
+        insert("player_shares", ["user_id", "account_id", "created_at"], shares) +
         insert(
           "credentials",
           ["id", "account_id", "player_id", "type", "provider", "subject", "secret", "label", "created_at", "last_used_at"],
@@ -90,7 +92,7 @@ try {
         ) +
         insert(
           "quiz_results",
-          ["id", "user_id", "at", "level", "topics", "seed", "question_count", "correct", "answers", "focus", "version", "mode"],
+          ["id", "user_id", "at", "level", "topics", "seed", "question_count", "correct", "answers", "focus", "version", "mode", "bank"],
           quizzes,
         ) +
         insert(

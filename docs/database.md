@@ -40,6 +40,17 @@ this because the server enables `PRAGMA foreign_keys`.
 | `name_key` | text, unique | `<account id>:<lower-cased name>`; prevents "Léa" and "léa" in one account, allows them in two |
 | `created_at` | bigint | |
 | `account_id` | integer, nullable | owning account; `NULL` only for players created before version 4, until the first account claims them |
+| `hidden` | text | JSON list of activities taken off the player's home page; `[]` shows everything, and new activities show |
+
+### `player_shares`, `player_invites`
+
+A player belongs to one account (`users.account_id`) and may be shared with
+others. See [Authentication › Sharing a player](authentication.md#sharing-a-player).
+
+| Table | Columns |
+|---|---|
+| `player_shares` | `user_id`, `account_id` (primary key together), `created_at`; deleted with the player or the account |
+| `player_invites` | `id` (SHA-256 of the code), `user_id`, `created_at`, `expires_at`, `used_at` |
 
 ### `accounts`
 
@@ -208,6 +219,7 @@ runs: add tables and columns, rename or drop later.
 | `012_characters` | Book kind `characters` and `credit` on `vocab_books`; direction `read` on `vocab_progress`; `readings` and `translations` on `vocab_entries`. SQLite rebuilds `vocab_books` and `vocab_progress`, keeping their rows. |
 | `013_question_bank` | `quiz_bank_meta`, `quiz_bank_units`, `quiz_bank`, `quiz_flags`; `bank` on `quiz_results`, whose `level` accepts `chemistry`. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `014_advanced_level` | `level` on `quiz_bank`; `quiz_results.level` accepts `chemistryAdvanced`. SQLite rebuilds `quiz_results` again. |
+| `015_sharing` | `hidden` on `users`; `player_shares`, `player_invites` (common SQL, one file) |
 
 **File names.**
 

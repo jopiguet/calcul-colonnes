@@ -52,10 +52,15 @@ session).
   - **Link Google / GitHub…** adds a provider: then either the password or the provider signs in.
   - **Remove** takes one away. The last one cannot be removed.
 - **Change password** (or **Add a password** for an account created through a provider). Changing it signs out every other device.
-- **Players' own sign-in**, for each player:
-  - **Username and password:** the child signs in with the username, for example `lea.m`. Saving again replaces them and signs the child out.
-  - **Link a provider:** for an older child with their own Google or Microsoft account.
-  - **Remove:** their sign-in stops working at once.
+- **Players**, one block each:
+  - **Activités affichées:** untick what the player should not see on their home page, for example the column arithmetic for an older child. It is saved at once, for every device. New books show until unticked.
+  - **Partage:** *Créer un code de partage* gives a code such as `K7QF2-9XMRA`, valid a week and once, for another account (the other parent, a teacher). The accounts that see the player are listed, each with *Retirer*.
+  - **Own sign-in:**
+    - **Username and password:** the child signs in with the username, for example `lea.m`. Saving again replaces them and signs the child out.
+    - **Link a provider:** for an older child with their own Google or Microsoft account.
+    - **Remove:** their sign-in stops working at once.
+  - A player another account shares with this one shows only *Partagé par …* and **Ne plus voir …**: its activities, sharing and sign-in are its owner's.
+- **Ajouter un joueur partagé:** type the code received from the player's account.
 - **Devices:**
   - **Sign out other devices:** for a lost phone or a shared computer.
   - **Sign out:** this device only.
@@ -72,7 +77,9 @@ After signing in, the app shows **Qui joue ? / ¿Quién juega? / Who's playing?*
 - **Switch player:** click the 👤 name chip at the top left.
 
 A player can be deleted from the [Scores](#scores) screen, which also deletes
-all their results.
+all their results. A shared player, marked *partagé*, is only removed from
+this account's list: the player and their results stay with their own
+account.
 
 ## Home page
 

@@ -6,6 +6,18 @@ export interface User {
   id: number;
   name: string;
   createdAt: number; // epoch milliseconds
+  /** Activities hidden from the player's home page ("columns", "vocab-collins-spanish"…). */
+  hidden?: string[];
+  /** Set when another account owns the player and shares it with this one: that account's name. */
+  sharedBy?: string;
+}
+
+/** An account a player is shared with (seen by the player's own account). */
+export interface PlayerShare {
+  accountId: number;
+  name: string;
+  email: string | null;
+  since: number;
 }
 
 /**

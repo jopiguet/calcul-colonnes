@@ -318,6 +318,18 @@ button.player {
   font-size: 1.1rem;
 }
 
+/* A player another account shares with this one. */
+.player-shared {
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted);
+  vertical-align: middle;
+}
+
 .new-player {
   display: flex;
   gap: 0.5rem;
@@ -1167,6 +1179,42 @@ button.switch {
   padding: 0.8rem;
   border: 1px solid var(--line);
   border-radius: 0.7rem;
+}
+
+.player-login > h4.field-label {
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Activities a player sees: the test topics' checkboxes, smaller. */
+.player-activities {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.player-activities .topic {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.95rem;
+}
+
+.share-code:empty {
+  display: none;
+}
+
+.share-code {
+  margin: 0;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.6rem;
+  background: var(--soft, rgba(127, 127, 127, 0.08));
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
 }
 
 .chip-label {

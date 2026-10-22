@@ -25,6 +25,8 @@ export default defineConfig({
     viewport: { width: 430, height: 900 },
     locale: "fr-FR",
     trace: "retain-on-failure",
+    // Optional: a Chromium already on the machine instead of Playwright's download.
+    launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM || undefined },
   },
   webServer: [
     {
