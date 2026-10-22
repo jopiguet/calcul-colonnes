@@ -292,6 +292,8 @@ the *Sciences* group: multiple-choice tests on *Atkins' Physical Chemistry*,
 | 4 · Transformations physiques | Focus 4 | Phase diagrams, the phase rule, the Clapeyron and Clausius–Clapeyron equations |
 | 5 · Les mélanges | Focus 5 | Partial molar quantities, ideal and dilute solutions, colligative properties, binary and ternary phase diagrams, activities, ionic strength |
 | 6 · L'équilibre chimique | Focus 6 | K and ΔrG°, Le Chatelier and van 't Hoff, cells, the Nernst equation, electrode potentials |
+| 7 · Théorie quantique | Focus 7 | Photons and black bodies, the photoelectric effect, de Broglie, uncertainty, the particle in a box, vibration and rotation, tunnelling |
+| 8 · Structure atomique et spectres | Focus 8 | Hydrogenic atoms and their spectra, orbitals and nodes, many-electron atoms, term symbols and spin–orbit coupling |
 
 A test mixes two kinds of question:
 

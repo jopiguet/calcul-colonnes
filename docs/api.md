@@ -235,7 +235,7 @@ right.
   "topics": ["derivatives", "limits"],
   "count": 5,
   "focus": [],
-  "version": 2,
+  "version": 3,
   "answers": [3, 1, 0, 2, 0]
 }
 ```

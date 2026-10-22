@@ -239,7 +239,8 @@ the interval, so the count never hangs on a tangency.
 
 Physical chemistry has its own topics, grouped as *Thermodynamics*:
 `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures` and `equilibrium`
-(Atkins, Focuses 1–6), and two levels.
+(Atkins, Focuses 1–6), then *Quantum and structure*: `quantum` and `atoms`
+(Focuses 7–8). Two levels.
 At `chemistry` (*Fondamental*), each topic mixes the calculations below with
 the core questions of the [question bank](question-bank.md), one kind per
 unit of the book (`gases.concepts1A`). At `chemistryAdvanced` (*Avancé*), it
@@ -327,6 +328,29 @@ so those three kinds are never offered typed (`typeable`). Constants and
 tabulated data (vapour pressures, Henry's law constants, cryoscopic
 constants, standard potentials) are the usual textbook values, written in
 the generators.
+
+Focuses 7–8 came as two more topics (6.13.0), grouped as *Quantum and
+structure* (`quantum.ts`, `atoms.ts`). Five mistake types came with them:
+`lengthUnits` (nm, pm or cm taken for m), `hbarForH` (a factor 2π),
+`reducedMass` (the total mass, or one atom's, for μ), `nodesConfused`
+(radial, angular and total nodes) and `averagesConfused` (⟨r⟩ and r*).
+
+| Id | Asks for | Typical wrong options |
+|---|---|---|
+| `quantum.photonCount` | N = PΔtλ/hc | nm as m, ħ for h, inverted |
+| `quantum.wienPeak` | λ_max = hc/4.965kT | factor 5 or 2.82, nm as m, ħ for h |
+| `quantum.photoelectronSpeed` | v = √(2(hν − Φ)/m_e) for a tabulated metal | Φ added, factor 2, Φ forgotten |
+| `quantum.deBroglie` | λ = h/√(2m eV) | √2 dropped, ħ for h, eV as J |
+| `quantum.uncertaintySpeed` | Δv ≥ ħ/2mΔx for a proton or an electron | h for ħ, ½ dropped, pm as m |
+| `quantum.boxTransition` | λ = 8mL²/((n₂² − n₁²)h)·c | n₂ − n₁ for squares, one level, nm as m |
+| `quantum.vibrationWavenumber` | ṽ = (1/2πc)√(k/μ) for a diatomic | total mass for μ, 2π, u as kg, cm as m |
+| `quantum.zeroPointEnergy` | E₀ = ½ħω | ½ dropped, ħ for h, total mass |
+| `quantum.rotationalFrequency` | ν = 2B(J + 1) from μR² | J for J + 1, total mass, pm as m |
+| `atoms.hydrogenLine` | λ of n₂ → n₁ for H, He⁺, Li²⁺ | one term, 1/n for 1/n², Z for Z², nm |
+| `atoms.ionizationEnergy` | I = hcZ²R̃/n² in eV | 1/n, sign, Z for Z², from n = 1 |
+| `atoms.orbitalNodes` | n − l − 1 radial nodes | angular or total nodes, n − l |
+| `atoms.orbitalRadius` | r* = a₀/Z or ⟨r⟩ = 3a₀/2Z, 1s | the other average, Z², a₀Z |
+| `atoms.spinOrbitSplitting` | Δṽ = Ã(l + ½) | Ãl, Ã(l + 1), ½ twice |
 
 ## Linux
 
@@ -726,6 +750,7 @@ after the change. The hashes must match.
 |---|---|
 | 1 | First release |
 | 2 | ±∞ compared correctly when removing duplicate options. In version 1 every number counted as equal to ±∞, so questions with an infinite answer were always discarded, and `limits.growth` never appeared. |
+| 3 | No option that is not a number. `gases.rmsSpeed` offered √(3R(T − 273.15)/M) as the °C-for-K slip, which below 0 °C has no square root and showed as −∞. From version 3 that option is left out when T ≤ 273.15 K; earlier versions keep it, so their tests are unchanged. `check:quiz` now fails on any NaN option. |
 
 ## Verification
 

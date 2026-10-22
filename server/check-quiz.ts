@@ -445,6 +445,7 @@ for (const level of LEVELS) {
       try {
         if (q.options.length !== 4) throw new Error("not 4 options");
         if (new Set(q.options.map((o) => o.tex)).size !== 4) throw new Error("repeated option");
+        if (q.options.some((o) => o.num !== undefined && Number.isNaN(o.num))) throw new Error("an option is not a number");
         // Written texts: inline $…$ formulas rendered in every language, as many code runs (`…`) in each
         // (their placeholders, such as <unit>, may be translated).
         const checkText = (text: Localized): void => {

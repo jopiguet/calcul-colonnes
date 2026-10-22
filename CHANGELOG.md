@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.13.0
+
+- **Physical chemistry, Focuses 7–8:** two new topics in a new group, *Quantique et structure*.
+  - **7 · Théorie quantique:** nine kinds of calculation: photons emitted by a lamp, Wien's peak, the speed of a photoelectron from six metals, the de Broglie wavelength of an accelerated electron, the uncertainty in a speed, a transition of a particle in a box, the vibration wavenumber and zero-point energy of six diatomics, a rotational line.
+  - **8 · Structure atomique et spectres:** five: a line of H, He⁺ or Li²⁺, an ionization energy, the radial nodes of an orbital, the most probable or mean radius of a 1s electron, a spin–orbit splitting.
+  - Five new mistake types: nm, pm or cm taken for m; h for ħ; the total mass for the reduced mass; radial, angular and total nodes confused; mean and most probable values confused.
+  - **Question bank:** Topics 7A–8C, core and advanced, in French, Spanish and English: 383 core and 151 advanced questions over 34 units. Re-import it with `npm run quiz:import -- data/atkins-12-concepts.json`.
+- **Fix:** below 0 °C, the °C-for-K option of a root-mean-square speed had no square root and showed as −∞. Tests are now at version 3, which leaves that option out; older tests are rebuilt exactly as they were. `check:quiz` fails on any option that is not a number.
+- **Tests:** 102 browser tests.
+
 ## 6.12.1
 
 - **Updates never interrupt an activity:** a new version reloads the app by itself only on the home page, the list of players or the sign-in screens. Inside any activity, even one with nothing under way yet (a lab at its prediction, a test's results, a progress page), it only shows the *Mettre à jour* bar, and is applied on the way back to the home page. The redraw with fresh data after a while away is limited to the home page too.

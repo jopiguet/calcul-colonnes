@@ -49,7 +49,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
 | `i18n.ts` | Interface texts (arithmetic part), current language, column names |
 | `quiz-i18n.ts` | Texts of tests and progress, names of the kinds of question, prompts and explanations |
-| `quiz-i18n-chemistry.ts` | The same for physical chemistry, merged into `quiz-i18n.ts` (as are `quiz-i18n-equilibria.ts`, `quiz-i18n-linux.ts` and `quiz-i18n-chembio.ts`) |
+| `quiz-i18n-chemistry.ts` | The same for physical chemistry, merged into `quiz-i18n.ts` (as are `quiz-i18n-equilibria.ts`, `quiz-i18n-quantum.ts`, `quiz-i18n-linux.ts` and `quiz-i18n-chembio.ts`) |
 | `dom.ts` | `el()` and `button()` helpers |
 | `style.css` | All styles; colours are CSS variables with a dark variant |
 

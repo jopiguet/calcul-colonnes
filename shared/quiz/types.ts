@@ -13,9 +13,10 @@ export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" 
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
- * 4 physical transformations, 5 mixtures, 6 chemical equilibrium.
+ * 4 physical transformations, 5 mixtures, 6 chemical equilibrium, 7 quantum
+ * theory, 8 atomic structure and spectra.
  */
-export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium";
+export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium" | "quantum" | "atoms";
 /** The Linux command line: core commands by area, then tools that need installing. */
 export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools";
 /** Chemistry and biology basics: balancing equations, first. */
@@ -32,16 +33,16 @@ export type Subject = "maths" | "chemistry" | "linux" | "chembio";
 export const subjectOf = (level: Level): Subject =>
   level === "linux" ? "linux" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
-export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"];
+export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms"];
 /** The levels offered in the mathematics test's settings. */
 export const MATH_LEVELS: Level[] = ["school", "university"];
 /** The levels offered in the physical chemistry test's settings. */
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxInstall" | "reactions";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxInstall" | "reactions" | "structure";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -49,6 +50,7 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "geometry", topics: ["geometry"] },
   { group: "probability", topics: ["probability"] },
   { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"] },
+  { group: "structure", topics: ["quantum", "atoms"] },
   { group: "linuxCommands", topics: ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork"] },
   { group: "linuxInstall", topics: ["linuxTools"] },
   { group: "reactions", topics: ["balancing"] },
@@ -190,7 +192,24 @@ export type PromptKey =
   | "cron"
   // chemistry basics
   | "balanceEquation"
-  | "balanceCoefficient";
+  | "balanceCoefficient"
+  // quantum theory and atomic structure
+  | "photonCount"
+  | "wienPeak"
+  | "photoelectronSpeed"
+  | "deBroglie"
+  | "uncertaintyProton"
+  | "uncertaintyElectron"
+  | "boxTransition"
+  | "vibrationWavenumber"
+  | "zeroPointEnergy"
+  | "rotationalFrequency"
+  | "hydrogenLine"
+  | "ionizationEnergy"
+  | "orbitalNodes"
+  | "meanRadius"
+  | "mostProbableRadius"
+  | "spinOrbitSplitting";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -346,7 +365,22 @@ export type ExplanationKey =
   | "chmod"
   | "umask"
   | "cron"
-  | "balanceEquation";
+  | "balanceEquation"
+  | "photonCount"
+  | "wienPeak"
+  | "photoelectronSpeed"
+  | "deBroglie"
+  | "uncertaintySpeed"
+  | "boxTransition"
+  | "vibrationWavenumber"
+  | "zeroPointEnergy"
+  | "rotationalFrequency"
+  | "hydrogenLine"
+  | "ionizationEnergy"
+  | "orbitalNodes"
+  | "meanRadius"
+  | "mostProbableRadius"
+  | "spinOrbitSplitting";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -498,6 +532,11 @@ export const MISTAKES = [
   "lnForLog", // e^x where 10^x is needed: ln for log₁₀
   "potentialTimesElectrons", // electrode potentials multiplied by electron numbers to subtract them
   "potentialsNotWeighted", // potentials subtracted directly where Gibbs energies (νE) must be
+  "lengthUnits", // nm, pm or cm used as metres: a power of ten
+  "hbarForH", // h used for ħ, or the reverse: a factor of 2π
+  "reducedMass", // the total mass (or one atom's) used for the reduced mass
+  "nodesConfused", // radial, angular and total nodes confused
+  "averagesConfused", // the mean and the most probable value confused
   // Linux
   "permissionClassesSwapped",
   "permissionWeights",

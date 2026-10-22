@@ -85,9 +85,9 @@ export const CHEM_ADVANCED: Record<Lang, string> = { fr: "Chimie physique avanc�
 export const CHEM_GROUP: Record<Lang, string> = { fr: "Thermodynamique", es: "Termodinámica", en: "Thermodynamics" };
 
 export const CHEM_TOPICS: Record<Lang, Record<ChemistryTopic, string>> = {
-  fr: { gases: "1 · Les gaz", firstLaw: "2 · Premier principe", secondLaw: "3 · Deuxième et troisième principes", phases: "4 · Transformations physiques", mixtures: "5 · Les mélanges", equilibrium: "6 · L'équilibre chimique" },
-  es: { gases: "1 · Los gases", firstLaw: "2 · Primer principio", secondLaw: "3 · Segundo y tercer principios", phases: "4 · Transformaciones físicas", mixtures: "5 · Las mezclas", equilibrium: "6 · El equilibrio químico" },
-  en: { gases: "1 · Gases", firstLaw: "2 · The First Law", secondLaw: "3 · The Second and Third Laws", phases: "4 · Physical transformations", mixtures: "5 · Simple mixtures", equilibrium: "6 · Chemical equilibrium" },
+  fr: { gases: "1 · Les gaz", firstLaw: "2 · Premier principe", secondLaw: "3 · Deuxième et troisième principes", phases: "4 · Transformations physiques", mixtures: "5 · Les mélanges", equilibrium: "6 · L'équilibre chimique", quantum: "7 · Théorie quantique", atoms: "8 · Structure atomique et spectres" },
+  es: { gases: "1 · Los gases", firstLaw: "2 · Primer principio", secondLaw: "3 · Segundo y tercer principios", phases: "4 · Transformaciones físicas", mixtures: "5 · Las mezclas", equilibrium: "6 · El equilibrio químico", quantum: "7 · Teoría cuántica", atoms: "8 · Estructura atómica y espectros" },
+  en: { gases: "1 · Gases", firstLaw: "2 · The First Law", secondLaw: "3 · The Second and Third Laws", phases: "4 · Physical transformations", mixtures: "5 · Simple mixtures", equilibrium: "6 · Chemical equilibrium", quantum: "7 · Quantum theory", atoms: "8 · Atomic structure and spectra" },
 };
 
 export const CHEM_PROMPTS: Record<Lang, Record<ChemPrompt, string>> = {

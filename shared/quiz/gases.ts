@@ -84,7 +84,7 @@ const partialPressure: Generator = (rng) => {
 };
 
 /** v_rms = (3RT/M)^½, M in kg mol⁻¹. */
-const rmsSpeed: Generator = (rng) => {
+const rmsSpeed: Generator = (rng, version = 1) => {
   const gas = rng.pick(GASES);
   const T = draw(rng, 200, 600, 5);
   const M = gas.M / 1000;
@@ -97,7 +97,8 @@ const rmsSpeed: Generator = (rng) => {
       mistakeIn(Math.sqrt((8 * R * T) / (Math.PI * M)), "m\\,s^{-1}", "speedConfused"),
       mistakeIn(Math.sqrt((2 * R * T) / M), "m\\,s^{-1}", "speedConfused"),
       mistakeIn((3 * R * T) / M, "m\\,s^{-1}", "sqrtForgotten"),
-      mistakeIn(Math.sqrt((3 * R * (T - KELVIN)) / M), "m\\,s^{-1}", "celsiusForKelvin"),
+      // Below 0 °C the slip has no square root: from version 3 the option is left out (it showed as −∞).
+      ...(version < 3 || T > KELVIN ? [mistakeIn(Math.sqrt((3 * R * (T - KELVIN)) / M), "m\\,s^{-1}", "celsiusForKelvin")] : []),
     ],
     explanation: { key: "rmsSpeed", tex: `v_\\mathrm{rms} = \\left(\\frac{3RT}{M}\\right)^{1/2} = \\left(\\frac{3 \\times 8.314 \\times ${T}}{${sig(M, 4)}}\\right)^{1/2}\\,\\mathrm{m\\,s^{-1}} = ${sig(v)}\\,\\mathrm{m\\,s^{-1}}` },
     verify: { kind: "value", value: v },

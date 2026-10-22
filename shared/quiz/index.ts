@@ -29,6 +29,8 @@ import { phases } from "./phases";
 import { mixtures } from "./mixtures";
 import { equilibrium } from "./equilibrium";
 import { balancing } from "./balancing";
+import { quantum } from "./quantum";
+import { atoms } from "./atoms";
 import { EMPTY_BANK, bankLevelOf, bankSkills, type Bank, type BankLevel } from "./bank";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
@@ -68,6 +70,8 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   linuxNetwork,
   linuxTools,
   balancing,
+  quantum,
+  atoms,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -150,9 +154,10 @@ const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
  * keep producing what they produced: saved tests are rebuilt from their seed.
  *   1 — first release (its option comparison took ±∞ as equal to every number,
  *       so questions whose answer is infinite were never kept);
- *   2 — ±∞ compared correctly.
+ *   2 — ±∞ compared correctly;
+ *   3 — no option that is not a number (a v_rms slip below 0 °C gave one).
  */
-export const QUIZ_VERSION = 2;
+export const QUIZ_VERSION = 3;
 
 const close = (a: number, b: number, version: number): boolean => {
   if (version >= 2 && (!Number.isFinite(a) || !Number.isFinite(b))) return a === b;
