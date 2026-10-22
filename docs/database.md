@@ -173,6 +173,7 @@ progress. See [Vocabulary](vocabulary.md).
 | `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji), `readings` (a kanji's on and kun readings), `translations` (JSON: the meaning in French, Spanish) |
 | `vocab_progress` | one per player, entry and direction | primary key `(user_id, entry_id, direction)`, direction `recognise`, `recall` or `read` (a kanji's reading); `box` 1–6, `due_at`, `last_at`, `right_count`, `wrong_count` |
 | `vocab_answers` | one per answer | `user_id`, `entry_id`, `direction`, `mode`, `at`, `given`, `verdict`, `correct` |
+| `vocab_skips` | one per word a player skipped | primary key `(user_id, entry_id)`, `at` |
 
 `direction` is `recognise` (Spanish shown) or `recall` (meaning shown).
 Deleting a player deletes their progress and answers; an import that removes
@@ -221,6 +222,7 @@ runs: add tables and columns, rename or drop later.
 | `014_advanced_level` | `level` on `quiz_bank`; `quiz_results.level` accepts `chemistryAdvanced`. SQLite rebuilds `quiz_results` again. |
 | `015_sharing` | `hidden` on `users`; `player_shares`, `player_invites` (common SQL, one file) |
 | `016_linux_level` | `quiz_results.level` accepts `linux`. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `017_vocab_skips` | `vocab_skips`: the words each player skipped (common SQL, one file) |
 
 **File names.**
 

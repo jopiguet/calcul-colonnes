@@ -104,6 +104,8 @@ export interface Profile {
   /** Mistakes made in tests, most frequent first. */
   mistakes: MistakeProgress[];
   operators: OperatorProgress[];
+  /** Test answers since the `since` given (the start of the player's day). */
+  quizToday: { answers: number; right: number };
 }
 
 // ------------------------------------------------------------- authentication
@@ -206,8 +208,29 @@ export interface VocabSectionProgress {
   learning: number;
   known: number;
   mastered: number;
+  /** Words the player skipped: counted apart from the others. */
+  skipped: number;
   /** Cards whose review is due now. */
   due: number;
+}
+
+/** A word of a lesson, as its word list shows it. */
+export interface VocabWord {
+  id: number;
+  term: string;
+  /** How it reads (rōmaji, transliteration), "" if nothing to say. */
+  reading: string;
+  /** In the interface's language when the book has it. */
+  meaning: string;
+  note: string;
+  status: "new" | "learning" | "known" | "mastered";
+  skipped: boolean;
+}
+
+/** A lesson's words, section by section. */
+export interface VocabLessonWords {
+  lesson: { id: number; title: string; subtitle: string };
+  sections: { id: number; title: string; subtitle: string; words: VocabWord[] }[];
 }
 
 export interface VocabProgress {

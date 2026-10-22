@@ -13,13 +13,14 @@ import type {
   VocabBookInfo,
   VocabCard,
   VocabLessonInfo,
+  VocabLessonWords,
   VocabProgress,
   VocabStats,
 } from "../shared/types";
 import type { Bank } from "../shared/quiz";
 
 export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, PlayerShare, Profile, SignInMethod, User, UserStats };
-export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabProgress, VocabStats };
+export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabLessonWords, VocabProgress, VocabStats };
 
 /**
  * Players and scores live in the server's database (SQLite, or PostgreSQL on
@@ -134,6 +135,12 @@ export const vocab = {
       `/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&purpose=${target.purpose}&size=${size}&mode=${mode}&order=${order}` +
         (lang ? `&lang=${lang}` : ""),
     ),
+  /** A lesson's words, with how far each is learnt and whether it is skipped. */
+  lessonWords: (userId: number, lessonId: number, lang?: string): Promise<VocabLessonWords> =>
+    call(`/vocab/lessons/${lessonId}/words?userId=${userId}${lang ? `&lang=${lang}` : ""}`),
+  /** Skips a word, or puts it back. */
+  setSkipped: (userId: number, entryId: number, skipped: boolean): Promise<void> =>
+    call("/vocab/skips", { method: "PUT", body: JSON.stringify({ userId, entryId, skipped }) }),
   /** A player's statistics on one book; days are counted in the browser's time zone. */
   stats: (userId: number, bookId: number): Promise<VocabStats> =>
     call(`/vocab/stats?userId=${userId}&book=${bookId}&tz=${-new Date().getTimezoneOffset()}`),

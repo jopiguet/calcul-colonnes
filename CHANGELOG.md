@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.11.0
+
+- **Home page on a large screen:** it now uses the width (up to 72rem). Subjects with one or two activities sit side by side, each group as wide as its cards; on a phone the groups still follow one another.
+- **Progress, inside each activity:** *📈 Mes progrès* in the QCM, Chimie physique and Linux now shows that subject only, its kinds of question and its frequent mistakes. Calcul en colonnes has its own *📈 Mes progrès*, per operation.
+- **Progress overview:** *📈 Mes progrès* on the home page (and a name on the Scores screen) shows every activity at a glance. *Aujourd'hui* gives today's sums, test answers and vocabulary answers. Each activity gets a card with a bar and its counts, and *Détails* opens the activity's own page, or a book's statistics.
+- **A lesson's words:** *📖 Voir les mots* in each lesson lists its words section by section, with the reading, the meaning in the app's language and how far each is learnt.
+- **Skipping a word:** *Passer* takes a word out of lessons and reviews; it is crossed out and counted apart (*2 passés*), and *Remettre* brings it back with its boxes.
+- **Database:** migration `017_vocab_skips`. `db:copy-to-postgres` copies it.
+- **API:** `GET /api/vocab/lessons/:id/words`, `PUT /api/vocab/skips`; `skipped` in a section's progress; `quizToday` in a player's profile.
+- **Tests:** 87 browser tests.
+
 ## 6.10.0
 
 - **Physics playground** (Phase 2): a new *Physique* group on the home page, four labs in the Discover pattern (predict, try, compare, understand, check), in French, Spanish and English.

@@ -320,6 +320,18 @@ right answer or like each other. An entry with the same prompt is never
 offered as a wrong option: *large* is the meaning of both *macro* and *magn*,
 so neither is a wrong option for the other.
 
+## Skipping words
+
+A player can skip a word from a lesson's word list (*📖 Voir les mots*,
+`GET /api/vocab/lessons/:id/words`). A skipped word:
+
+- **never comes up in a session:** learning, reviewing or due, whatever its boxes say (`VocabStore.session` leaves it out; it can still be a wrong option for another word);
+- **is counted apart:** `skipped` in each section's progress, not `new`, and its cards are never due;
+- **keeps its boxes:** *Remettre* (`PUT /api/vocab/skips` with `skipped: false`) brings it back where it was.
+
+Skips are stored per player in `vocab_skips` and deleted with the player, or
+with the entry when an import removes it.
+
 ## How answers are graded
 
 The grading is in `shared/vocab/grade.ts`. The server's verdict is what is

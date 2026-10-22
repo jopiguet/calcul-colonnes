@@ -28,6 +28,7 @@ import type {
   VocabAnswer,
   VocabAnswerResult,
   VocabBookInfo,
+  VocabLessonWords,
   VocabProgress,
   VocabRelated,
   VocabSectionProgress,
@@ -366,8 +367,62 @@ export class VocabStore {
     return rows.map((r) => String(r.term)).join("\n");
   }
 
+  /** The entries a player skipped. */
+  private async skipped(userId: number): Promise<Set<number>> {
+    const rows = await this.db.query("SELECT entry_id FROM vocab_skips WHERE user_id = $1", [userId]);
+    return new Set(rows.map((r) => n(r.entry_id)));
+  }
+
+  /** Skips a word for a player, or puts it back; false for an unknown entry. */
+  async setSkipped(userId: number, entryId: number, skipped: boolean, now: number): Promise<boolean> {
+    if (!(await this.getEntry(entryId))) return false;
+    if (skipped) {
+      await this.db.query(
+        "INSERT INTO vocab_skips (user_id, entry_id, at) VALUES ($1, $2, $3) ON CONFLICT (user_id, entry_id) DO NOTHING",
+        [userId, entryId, now],
+      );
+    } else {
+      await this.db.query("DELETE FROM vocab_skips WHERE user_id = $1 AND entry_id = $2", [userId, entryId]);
+    }
+    return true;
+  }
+
+  /** A lesson's words for a player: what each is, how far it is learnt, whether it is skipped. */
+  async lessonWords(userId: number, lessonId: number, lang?: TranslationLang): Promise<VocabLessonWords | null> {
+    const lessons = await this.db.query("SELECT id, title, subtitle FROM vocab_lessons WHERE id = $1", [lessonId]);
+    if (!lessons[0]) return null;
+    const sections = await this.db.query("SELECT id, title, subtitle FROM vocab_sections WHERE lesson_id = $1 ORDER BY position", [lessonId]);
+    const entries = (await this.entries("l.id = $1", [lessonId])).map((e) => localise(e, lang));
+    const progress = await this.progress(userId);
+    const skipped = await this.skipped(userId);
+    return {
+      lesson: { id: n(lessons[0].id), title: String(lessons[0].title), subtitle: String(lessons[0].subtitle ?? "") },
+      sections: sections.map((s) => ({
+        id: n(s.id),
+        title: String(s.title),
+        subtitle: String(s.subtitle ?? ""),
+        words: entries
+          .filter((e) => e.sectionId === n(s.id))
+          .map((e) => {
+            const directions = directionsOf(e);
+            const [recognise, recall, read] = directions.map((d) => progress.get(progressKey(e.id, d))?.box ?? 0);
+            return {
+              id: e.id,
+              term: display(e.term),
+              reading: e.reading || e.readings,
+              meaning: display(e.meaning),
+              note: e.note,
+              status: entryStatus(recognise ?? 0, recall ?? 0, directions.length > 2 ? (read ?? 0) : null),
+              skipped: skipped.has(e.id),
+            };
+          }),
+      })),
+    };
+  }
+
   async summary(userId: number, now: number, since: number): Promise<VocabProgress> {
     const progress = await this.progress(userId);
+    const skipped = await this.skipped(userId);
     const rows = await this.db.query(
       `SELECT e.id, e.section_id, l.book_id, b.kind, CASE WHEN e.readings = '' THEN 0 ELSE 1 END AS kanji,
               CASE WHEN b.kind = 'characters' THEN e.term ELSE '' END AS term
@@ -380,8 +435,13 @@ export class VocabStore {
     let due = 0;
     for (const row of rows) {
       const id = n(row.id);
-      const section = (sections[n(row.section_id)] ??= { new: 0, learning: 0, known: 0, mastered: 0, due: 0 });
+      const section = (sections[n(row.section_id)] ??= { new: 0, learning: 0, known: 0, mastered: 0, due: 0, skipped: 0 });
       const book = (books[n(row.book_id)] ??= row.kind === "characters" ? { due: 0, started: 0, met: 0 } : { due: 0, started: 0 });
+      // A skipped word is out of the lessons: counted apart, never due.
+      if (skipped.has(id)) {
+        section.skipped++;
+        continue;
+      }
       const directions = directionsOf({ readings: n(row.kanji) === 1 ? "x" : "" });
       const cards = directions.map((d) => progress.get(progressKey(id, d)));
       const [recognise, recall, read] = cards;
@@ -509,8 +569,10 @@ export class VocabStore {
       const words = await this.wordsStarted(userId);
       met = new Set(characters.filter((e) => words.includes(e.term)).map((e) => e.id));
     }
+    // Skipped words stay out of practice (they may still serve as wrong options).
+    const skipped = await this.skipped(userId);
     return buildSession({
-      entries: entries.map((e) => localise(e, lang)),
+      entries: entries.filter((e) => !skipped.has(e.id)).map((e) => localise(e, lang)),
       pool: pool.map((e) => localise(e, lang)),
       met,
       progress: await this.progress(userId),
@@ -673,6 +735,24 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
     const stats = await store.stats(userId, bookId, Date.now(), tz);
     return stats ? c.json(stats) : c.json({ error: "unknown book" }, 404);
+  });
+
+  routes.get("/lessons/:id/words", async (c) => {
+    const userId = Number(c.req.query("userId"));
+    const lessonId = Number(c.req.param("id"));
+    const lang = c.req.query("lang");
+    if (!isId(userId) || !isId(lessonId) || (lang !== undefined && !isLang(lang))) return c.json({ error: "invalid query" }, 400);
+    if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+    const words = await store.lessonWords(userId, lessonId, lang as TranslationLang | undefined);
+    return words ? c.json(words) : c.json({ error: "unknown lesson" }, 404);
+  });
+
+  routes.put("/skips", async (c) => {
+    const body = ((await c.req.json().catch(() => null)) ?? {}) as Record<string, unknown>;
+    const { userId, entryId, skipped } = body;
+    if (!isId(userId) || !isId(entryId) || typeof skipped !== "boolean") return c.json({ error: "invalid skip" }, 400);
+    if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+    return (await store.setSkipped(userId, entryId, skipped, Date.now())) ? c.body(null, 204) : c.json({ error: "unknown entry" }, 404);
   });
 
   routes.get("/session", async (c) => {

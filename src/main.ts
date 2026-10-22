@@ -26,14 +26,14 @@ import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { loadBank, quizView } from "./quiz";
 import { activityBar, activityId, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
-import { vocabBusy, vocabView } from "./vocab";
+import { showVocabStats, vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
 import { PHYSICS_LABS, discoverBusy, discoverView } from "./discover/index";
 import { pt } from "./discover/physics-i18n";
 import { dt } from "./discover/i18n";
-import { progressView } from "./progress";
+import { progressView, type ProgressScope } from "./progress";
 
 const NAME_LENGTH = 20;
 
@@ -140,6 +140,11 @@ async function render(): Promise<void> {
     return;
   }
   app.classList.remove("is-landing");
+  // The home page and the progress overview use the width of a large screen.
+  app.classList.toggle(
+    "is-wide",
+    Boolean(state.user) && ((state.view === "play" && state.settings.mode === "home") || (state.view === "progress" && progressScope === "all")),
+  );
   try {
     if (state.view === "account" && !playerSession()) {
       app.replaceChildren(
@@ -170,7 +175,35 @@ async function render(): Promise<void> {
     } else if (state.view === "progress") {
       const who = progressUser ?? state.user;
       await loadBank(); // the bank's units name its kinds of question
-      app.replaceChildren(topBar(), await progressView(who, () => show(progressBack)));
+      const mine = who.id === state.user.id;
+      app.replaceChildren(
+        topBar(),
+        await progressView({
+          user: who,
+          scope: progressScope,
+          fromOverview: progressFromOverview,
+          onBack: () => {
+            // An activity's page opened from the overview goes back to it.
+            if (progressFromOverview) {
+              progressScope = "all";
+              progressFromOverview = false;
+              void render();
+            } else show(progressBack);
+          },
+          onScope: (scope) => {
+            progressScope = scope;
+            progressFromOverview = true;
+            void render();
+          },
+          onBook: mine
+            ? (book) => {
+                showVocabStats(book.id);
+                updateSettings({ mode: "vocab", vocabBook: book.id });
+                show("play");
+              }
+            : undefined,
+        }),
+      );
     } else if (state.settings.mode !== "home" && (await hiddenNow(state.user))) {
       return goHome(); // hidden by the player's account since it was opened
     } else if (state.settings.mode === "home") {
@@ -182,7 +215,7 @@ async function render(): Promise<void> {
         return show("players");
       }
       state.user = fresh;
-      app.replaceChildren(topBar(), await homeView({ user: fresh, open }));
+      app.replaceChildren(topBar(), await homeView({ user: fresh, open, showProgress: () => openProgress(fresh, "play", "all") }));
     } else if (state.settings.mode === "vocab") {
       const books = await vocabBooks();
       const book = books.find((b) => b.id === state.settings.vocabBook) ?? books[0];
@@ -208,7 +241,7 @@ async function render(): Promise<void> {
           subject,
           settings: state.settings,
           rerender: () => void render(),
-          showProgress: () => openProgress(user, "play"),
+          showProgress: () => openProgress(user, "play", subject),
         }),
       );
     } else {
@@ -245,10 +278,15 @@ function signedOut(): void {
 // Whose progress page is shown, and where its Back button leads.
 let progressUser: User | null = null;
 let progressBack: View = "play";
+// Which page: the overview, or one activity's; and whether that one was opened from the overview.
+let progressScope: ProgressScope = "all";
+let progressFromOverview = false;
 
-function openProgress(user: User, back: View): void {
+function openProgress(user: User, back: View, scope: ProgressScope = "all"): void {
   progressUser = user;
   progressBack = back;
+  progressScope = scope;
+  progressFromOverview = false;
   show("progress");
 }
 
@@ -461,6 +499,8 @@ function printBar(): HTMLElement {
       openWorksheet(state.settings.operators, state.settings),
     ),
   );
+  const user = state.user;
+  if (user) bar.append(button("ghost columns-progress", qt("progress"), () => openProgress(user, "play", "columns")));
   return bar;
 }
 

@@ -97,6 +97,13 @@ home page: **Que fait-on, Léa ?**
 Click an activity to open it. Every activity has *← Accueil* at the top to
 come back.
 
+**On a large screen** the page uses the width: subjects with one or two
+activities sit side by side, and a group's cards fill its row. On a phone the
+groups follow one another.
+
+**📈 Mes progrès**, next to the greeting, opens the overview of the player's
+progress (see [Progress](#progress-and-review-of-mistakes)).
+
 ## Column arithmetic
 
 Tab **🧮 Calcul en colonnes**.
@@ -343,12 +350,23 @@ brings back the kinds to review:
 
 The settings screen says how many kinds will be reviewed before the test starts.
 
-**Progress page.** Open it from the test settings, from a test's results, or
-by clicking a player's name on the Scores screen. It shows:
+**Each activity's progress, inside it.** *📈 Mes progrès* in the QCM, in
+Chimie physique and in Linux (on the settings screen and with a test's
+results) opens that subject's page:
 
 - **Each kind met in tests:** its status, its last five answers (oldest on the left) and its total.
-- **Frequent mistakes:** the six mistakes the player makes most often in tests, with how many times and in which kinds of question. A mistake keeps its count after the kind is mastered: it shows the habits to watch, not what is still to review.
-- **Column arithmetic:** today's and all-time results per operation.
+- **Frequent mistakes:** the six mistakes the player makes most often in that subject's tests, with how many times and in which kinds of question. A mistake keeps its count after the kind is mastered: it shows the habits to watch, not what is still to review.
+
+In Calcul en colonnes, *📈 Mes progrès* under the exercise shows today's and
+all-time results per operation. A vocabulary book has its own
+*📊 Statistiques* (see [Vocabulary](#vocabulary)).
+
+**The overview.** *📈 Mes progrès* on the home page, or a player's name on
+the Scores screen, opens every activity at a glance:
+
+- **Aujourd'hui:** today's sums, test answers and vocabulary answers, right out of how many.
+- **Par activité:** one card per activity the player sees. Column arithmetic: right out of total. Each test subject: a bar of its kinds of question (mastered, in progress, to review) and their counts. Each vocabulary book: words started, the bar of mastered, known and learning words, the words due today and those skipped.
+- **Détails** on a card opens that activity's page, whose button goes back to the overview; for a book, *Statistiques du livre* opens its statistics.
 
 ## Vocabulary
 
@@ -378,6 +396,13 @@ Each book's page works the same way.
   - *Apprendre* starts a section, *Continuer* goes on with it: words due, then up to 8 new ones.
   - *Réviser* goes back over the section's words already learnt, without new ones.
   - *Apprendre la leçon* and *Réviser la leçon* do the same for every section of the chapter.
+  - *📖 Voir les mots* lists the lesson's words, section by section: the word, its reading, its meaning in the app's language, and how far it is learnt.
+
+**Skipping a word.** In a lesson's word list, *Passer* skips a word the
+player already knows, or does not want: it no longer comes up in lessons or
+reviews, from any of the book's buttons. It is crossed out in the list and
+counted apart under its section (*2 passés*); *Remettre* puts it back, with
+the progress it had.
 
 **📊 Statistiques**, under the book's title, opens the player's statistics
 for this book:

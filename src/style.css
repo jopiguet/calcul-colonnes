@@ -2007,7 +2007,39 @@ button.vocab-letter {
 }
 
 .home-title {
+  margin: 0;
+}
+
+.home-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
   margin-top: 0.5rem;
+}
+
+/* The home page and the progress overview: the width of a large screen. */
+#app.is-wide {
+  max-width: 72rem;
+}
+
+/* Groups side by side, each as wide as its cards: three single-card subjects share a row. */
+.home-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem 1.25rem;
+}
+
+.home-groups > .activity-group {
+  flex: var(--cards, 1) 1 calc(var(--cards, 1) * 14rem + (var(--cards, 1) - 1) * 0.6rem);
+  min-width: 0;
+}
+
+@media (max-width: 40rem) {
+  .home-groups > .activity-group {
+    flex-basis: 100%;
+  }
 }
 
 .activity-group {
@@ -4165,4 +4197,178 @@ code.inline-code {
   font-size: 12px;
   font-weight: 700;
   font-family: var(--digits);
+}
+
+/* ------------------------------------------------------------- progress overview */
+
+.progress-today {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.progress-today-line {
+  margin: 0;
+  font-weight: 600;
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.75rem;
+}
+
+.progress-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 0.9rem 1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 0.25rem);
+}
+
+.progress-card .vocab-bar,
+.progress-skill-bar {
+  width: 100%;
+}
+
+.progress-card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.progress-card-line {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.progress-card button {
+  margin-top: auto;
+}
+
+.progress-skill-bar {
+  display: flex;
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.progress-skill-bar .is-mastered {
+  background: var(--good);
+}
+
+.progress-skill-bar .is-learning {
+  background: var(--accent);
+}
+
+.progress-skill-bar .is-review {
+  background: var(--bad);
+}
+
+/* ------------------------------------------------------------- vocabulary: a lesson's words */
+
+.vocab-words-page {
+  gap: 0.8rem;
+}
+
+.vocab-back {
+  align-self: flex-start;
+}
+
+.vocab-words-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.vocab-words-section-title {
+  margin: 0.6rem 0 0;
+  font-size: 1rem;
+}
+
+.vocab-words {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.vocab-word {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 0.8rem;
+  padding: 0.5rem 0.8rem;
+}
+
+.vocab-word + .vocab-word {
+  border-top: 1px solid var(--line);
+}
+
+.vocab-word-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+
+.vocab-word-term {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.vocab-word-reading {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.vocab-word-meaning {
+  font-size: 0.9rem;
+}
+
+.vocab-word-side {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vocab-word-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.vocab-word-status.is-mastered {
+  color: var(--good);
+}
+
+.vocab-word-status.is-known,
+.vocab-word-status.is-learning {
+  color: var(--accent);
+}
+
+.vocab-word.is-skipped .vocab-word-term,
+.vocab-word.is-skipped .vocab-word-meaning,
+.vocab-word.is-skipped .vocab-word-reading {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.vocab-skip-failed {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--bad);
+}
+
+.vocab-section-skipped {
+  color: var(--muted);
 }

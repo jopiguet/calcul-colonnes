@@ -43,6 +43,7 @@ try {
   const vocabEntries = await source.query("SELECT * FROM vocab_entries ORDER BY id");
   const vocabProgress = await source.query("SELECT * FROM vocab_progress");
   const vocabAnswers = await source.query("SELECT * FROM vocab_answers ORDER BY id");
+  const vocabSkips = await source.query("SELECT * FROM vocab_skips");
 
   // Values come from our own tables: integers, plus text passed through quote().
   const quote = (value: unknown): string => {
@@ -114,6 +115,7 @@ try {
           ["id", "user_id", "entry_id", "direction", "mode", "at", "given", "verdict", "correct"],
           vocabAnswers,
         ) +
+        insert("vocab_skips", ["user_id", "entry_id", "at"], vocabSkips) +
         bump("vocab_books") +
         bump("vocab_lessons") +
         bump("vocab_sections") +

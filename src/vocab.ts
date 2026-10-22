@@ -19,7 +19,7 @@ import {
   type VocabCard,
   type VocabProgress,
 } from "./store";
-import type { VocabRelated } from "../shared/types";
+import type { VocabRelated, VocabWord } from "../shared/types";
 import { langName, vt, type VocabKey } from "./vocab-i18n";
 import { statsView } from "./vocab-stats";
 
@@ -97,6 +97,8 @@ let session: Session | null = null;
 let finished: Session | null = null;
 /** The book whose statistics page is open, if any. */
 let statsOf: number | null = null;
+/** The lesson whose word list is open, if any (with its book). */
+let wordsOf: { book: number; lesson: number } | null = null;
 
 export interface VocabContext {
   user: User;
@@ -132,7 +134,16 @@ export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
       },
     });
   }
+  if (wordsOf?.book === ctx.book.id) return wordsView(ctx, wordsOf.lesson);
   return homeView(ctx);
+}
+
+/** Opens a book on its statistics page (from the progress overview). */
+export function showVocabStats(bookId: number): void {
+  session = null;
+  finished = null;
+  wordsOf = null;
+  statsOf = bookId;
 }
 
 /** True while a session is under way: the app must not reload under it. */
@@ -321,14 +332,15 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
 
     const sections = el("ul", "vocab-sections");
     for (const section of lesson.sections) {
-      const p = progress.sections[section.id] ?? { new: section.entries, learning: 0, known: 0, mastered: 0, due: 0 };
+      const p = progress.sections[section.id] ?? { new: section.entries, learning: 0, known: 0, mastered: 0, due: 0, skipped: 0 };
       const item = el("li", "vocab-section");
       const text = el("div", "vocab-section-text");
       text.append(titleBlock(section.title, section.subtitle, "vocab-section-title"));
       const meta = el("span", "vocab-section-meta", countOf(book, section.entries));
       if (p.due > 0) meta.append(" · ", el("span", "vocab-section-due", vt("sectionDue", { count: p.due })));
+      if (p.skipped) meta.append(" · ", el("span", "vocab-section-skipped", vt("sectionSkipped", { count: p.skipped })));
       text.append(meta, statusBar(p));
-      const begun = p.new < section.entries;
+      const begun = p.learning + p.known + p.mastered > 0;
       const buttons = el("div", "vocab-section-actions");
       const go = button(begun ? "ghost small" : "primary small", vt(begun ? "continue" : "learn"), () =>
         void start(ctx, { kind: "section", id: section.id, purpose: "learn", label: section.title }),
@@ -346,7 +358,13 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       sections.append(item);
     }
     const whole = el("div", "vocab-whole");
+    const words = button("ghost small vocab-words-link", vt("wordList"), () => {
+      wordsOf = { book: book.id, lesson: lesson.id };
+      ctx.rerender();
+    });
+    words.setAttribute("aria-label", `${vt("wordList")} : ${lesson.title}`);
     whole.append(
+      words,
       button("ghost small", vt("wholeLesson"), () =>
         void start(ctx, { kind: "lesson", id: lesson.id, purpose: "learn", label: lesson.title }),
       ),
@@ -362,6 +380,74 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     list.append(details);
   }
   wrap.append(list);
+  return wrap;
+}
+
+// ------------------------------------------------------------ word lists
+
+const WORD_STATUS: Record<VocabWord["status"], VocabKey> = { new: "wordNew", learning: "wordLearning", known: "wordKnown", mastered: "wordMastered" };
+
+/** One word of the list: the word, how it reads, what it means, how far it is learnt, and skip or put back. */
+function wordRow(ctx: VocabContext, word: VocabWord): HTMLElement {
+  const row = el("li", `vocab-word is-${word.status}${word.skipped ? " is-skipped" : ""}`);
+  row.dataset.entry = String(word.id);
+  const text = el("div", "vocab-word-text");
+  const term = el("span", "vocab-word-term", word.term);
+  term.lang = ctx.book.term;
+  term.dir = "auto";
+  text.append(term);
+  if (word.reading) text.append(el("span", "vocab-word-reading", word.reading));
+  const meaning = el("span", "vocab-word-meaning", word.meaning);
+  meaning.dir = "auto";
+  text.append(meaning);
+  const side = el("div", "vocab-word-side");
+  const badge = el("span", `vocab-word-status is-${word.skipped ? "skipped" : word.status}`, vt(word.skipped ? "wordSkipped" : WORD_STATUS[word.status]));
+  const toggle = button(`ghost small vocab-skip${word.skipped ? " on" : ""}`, vt(word.skipped ? "unskip" : "skip"), async () => {
+    const next = !word.skipped;
+    toggle.disabled = true;
+    try {
+      await vocab.setSkipped(ctx.user.id, word.id, next);
+      word.skipped = next;
+      // In place: the list keeps its scroll and the focus stays on the button.
+      const fresh = wordRow(ctx, word);
+      row.replaceWith(fresh);
+      fresh.querySelector<HTMLButtonElement>(".vocab-skip")?.focus();
+    } catch (error) {
+      if (error instanceof SignedOutError) throw error;
+      toggle.disabled = false;
+      row.querySelector(".vocab-skip-failed")?.remove();
+      row.append(el("p", "vocab-skip-failed", vt("skipFailed")));
+    }
+  });
+  toggle.setAttribute("aria-pressed", String(word.skipped));
+  toggle.setAttribute("aria-label", vt(word.skipped ? "unskipAria" : "skipAria", { term: word.term }));
+  side.append(badge, toggle);
+  row.append(text, side);
+  return row;
+}
+
+async function wordsView(ctx: VocabContext, lessonId: number): Promise<HTMLElement> {
+  const { book } = ctx;
+  const data = await vocab.lessonWords(ctx.user.id, lessonId, currentLang());
+  const wrap = el("section", "sheet vocab-words-page");
+  const back = (): void => {
+    wordsOf = null;
+    ctx.rerender();
+  };
+  wrap.append(button("ghost small vocab-back", vt("backToBook", { title: bookTitle(book) }), back));
+  wrap.append(el("h1", "title", vt("wordsTitle")), titleBlock(data.lesson.title, data.lesson.subtitle, "vocab-lesson-title"));
+  wrap.append(el("p", "hint left", vt("skipHint")));
+  for (const section of data.sections) {
+    const block = el("div", "vocab-words-section");
+    const head = el("h2", "vocab-words-section-title");
+    head.append(titleBlock(section.title, section.subtitle, "vocab-section-title"));
+    block.append(head);
+    const list = el("ul", "vocab-words");
+    list.append(...section.words.map((w) => wordRow(ctx, w)));
+    block.append(list);
+    wrap.append(block);
+  }
+  wrap.append(button("primary", vt("backToBook", { title: bookTitle(book) }), back));
   return wrap;
 }
 

@@ -90,8 +90,9 @@ at *lycée / bachillerato* or university level.
 - Scores are kept per player in SQLite, or in PostgreSQL (Neon) with one setting.
 - A parent's account chooses which activities each child sees, and can share a child with another account (the other parent, a teacher) with a single-use code.
 - Every test answer is filed under its kind of question. A kind answered wrong comes back in later tests until it has been answered right twice in a row.
-- Every wrong option stands for a typical mistake (122 types, such as *inner derivative forgotten*, *solution missed* or *°C used for K*). The mistake is shown in the corrections and counted per player.
-- A progress page shows each player's status per kind of question, their most frequent mistakes, and their results per arithmetic operation.
+- Every wrong option stands for a typical mistake (137 types, such as *inner derivative forgotten*, *solution missed* or *°C used for K*). The mistake is shown in the corrections and counted per player.
+- Each activity shows its own progress: status per kind of question and frequent mistakes for each test subject, results per operation for column arithmetic, statistics for each vocabulary book. An overview gathers them all, with today's work.
+- Each vocabulary lesson lists its words; a word the child already knows can be skipped, and put back later.
 
 ## Quick start
 

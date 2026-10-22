@@ -10,6 +10,7 @@ import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from 
 import { bookTitle } from "./vocab";
 import { dt } from "./discover/i18n";
 import { pt } from "./discover/physics-i18n";
+import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
 import { CHEMISTRY_TOPICS, LINUX_TOPICS, type Subject } from "../shared/quiz";
 
@@ -98,6 +99,8 @@ export type Activity =
 export interface HomeContext {
   user: User;
   open(activity: Activity): void;
+  /** The overview of the player's progress in every activity. */
+  showProgress(): void;
 }
 
 let booksCache: { books: VocabBookInfo[]; at: number } | null = null;
@@ -180,7 +183,11 @@ function card(
 
 export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const wrap = el("section", "home");
-  wrap.append(el("h1", "title home-title", ht("greeting", { name: ctx.user.name })));
+  const head = el("div", "home-head");
+  const progressLink = button("ghost small home-progress", qt("progress"), ctx.showProgress);
+  progressLink.title = prt("chipLabel");
+  head.append(el("h1", "title home-title", ht("greeting", { name: ctx.user.name })), progressLink);
+  wrap.append(head);
 
   // What is waiting, fetched together; a failure leaves the cards without status.
   const [profile, books, progress] = await Promise.all([
@@ -281,14 +288,19 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
 
   // Activities the player's account hides; a group left empty goes too.
   const hidden = new Set(ctx.user.hidden ?? []);
+  // On a wide screen, groups sit side by side, each as wide as its cards need.
+  const groups = el("div", "home-groups");
   for (const group of [maths, sciences, computing, languages, discover, physics]) {
     for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
       if (hidden.has(node.dataset.activity!)) node.remove();
     }
     const empty = group.querySelector(".empty");
-    if (group.querySelector("[data-activity]") || (empty && hidden.size === 0)) wrap.append(group);
+    const cards = group.querySelectorAll("[data-activity]").length;
+    group.style.setProperty("--cards", String(Math.max(1, Math.min(cards, 4))));
+    if (cards > 0 || (empty && hidden.size === 0)) groups.append(group);
   }
-  if (!wrap.querySelector(".activity-group")) wrap.append(el("p", "empty", ht("nothingShown")));
+  if (groups.childElementCount === 0) wrap.append(el("p", "empty", ht("nothingShown")));
+  else wrap.append(groups);
   return wrap;
 }
 

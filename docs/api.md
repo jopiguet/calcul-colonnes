@@ -19,6 +19,8 @@ from the app's own origin.
 | `GET` | [`/api/stats`](#get-apistats) | Totals of every player |
 | `GET` | [`/api/vocab/books`](#get-apivocabbooks) | Vocabulary books, with their lessons and sections |
 | `GET` | [`/api/vocab/progress`](#get-apivocabprogress) | One player's vocabulary progress |
+| `GET` | [`/api/vocab/lessons/:id/words`](#get-apivocablessonsidwords) | A lesson's words, for a player |
+| `PUT` | [`/api/vocab/skips`](#put-apivocabskips) | Skip a word, or put it back |
 | `GET` | [`/api/vocab/session`](#get-apivocabsession) | Cards for a practice session |
 | `POST` | [`/api/vocab/answers`](#post-apivocabanswers) | Record an answer; the server grades it |
 
@@ -183,7 +185,8 @@ Case, spaces and dashes are ignored. `201` with the player (with
   ],
   "operators": [
     { "operator": "+", "total": 12, "correct": 11, "todayTotal": 4, "todayCorrect": 4 }
-  ]
+  ],
+  "quizToday": { "answers": 10, "right": 7 }
 }
 ```
 
@@ -192,6 +195,7 @@ Case, spaces and dashes are ignored. `201` with the player (with
   - `status` is `review`, `learning` or `mastered`, following the rules in `shared/quiz/progress.ts`.
 - **`mistakes`:** every mistake type the player has made in tests, most frequent first. `skills` lists the kinds of question where it occurred, most recent first.
 - **`operators`:** in the order `+ − × ÷`, only those practised. Operators use the display symbols `+ − × ÷`.
+- **`quizToday`:** test answers since `since`, every subject together.
 
 ## `POST /api/attempts`
 
@@ -372,7 +376,7 @@ language studied and the language of the meanings.
 
 ```json
 {
-  "sections": { "1": { "new": 4, "learning": 8, "known": 0, "mastered": 0, "due": 3 } },
+  "sections": { "1": { "new": 4, "learning": 8, "known": 0, "mastered": 0, "due": 3, "skipped": 1 } },
   "books": { "1": { "due": 3, "started": 8 } },
   "due": 3,
   "today": { "answers": 9, "right": 8 }
@@ -382,6 +386,40 @@ language studied and the language of the meanings.
 `due` counts cards (an entry has two: recognise and recall), in every book;
 `books` gives it per book, with the number of entries started. Every section
 is listed; an entry counts as `new` until one of its cards has been answered.
+A skipped entry counts only as `skipped`, and its cards are never due.
+
+### `GET /api/vocab/lessons/:id/words`
+
+`?userId=1&lang=fr`: a lesson's words for a player, section by section, the
+meaning in `lang` when the book has it. `404` for an unknown lesson.
+
+```json
+{
+  "lesson": { "id": 1, "title": "En el colegio", "subtitle": "At school" },
+  "sections": [
+    {
+      "id": 1, "title": "El aula", "subtitle": "The classroom",
+      "words": [
+        { "id": 17, "term": "el lápiz", "reading": "", "meaning": "pencil", "note": "", "status": "new", "skipped": false }
+      ]
+    }
+  ]
+}
+```
+
+`status` is `new`, `learning`, `known` or `mastered`; `reading` is the
+rōmaji or transliteration, or a kanji's readings.
+
+### `PUT /api/vocab/skips`
+
+```json
+{ "userId": 1, "entryId": 17, "skipped": true }
+```
+
+`204`. Skips the word for the player (`skipped: true`) or puts it back
+(`false`); its boxes are kept either way. `400` for a malformed body, `404`
+for an unknown player or entry. See
+[Vocabulary › Skipping words](vocabulary.md#skipping-words).
 
 ### `GET /api/vocab/stats`
 

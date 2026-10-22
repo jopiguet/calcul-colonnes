@@ -462,7 +462,11 @@ export class Repository {
       }))
       .sort((a, b) => order.indexOf(a.operator) - order.indexOf(b.operator));
 
-    return { user, skills: [...bySkill.values()], mistakes, operators };
+    // Test answers since the start of the player's day, every subject together.
+    const today = answers.filter((row) => Number(row.at) >= since);
+    const quizToday = { answers: today.length, right: today.filter((row) => Number(row.correct) === 1).length };
+
+    return { user, skills: [...bySkill.values()], mistakes, operators, quizToday };
   }
 
   /** `since`: start of "today" in the player's time zone, in epoch milliseconds. */
