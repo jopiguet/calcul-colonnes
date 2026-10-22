@@ -83,6 +83,7 @@ home page: **Que fait-on, Léa ?**
 |---|---|---|
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM | For the QCM, how many kinds of question are to review |
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
+| Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 
 Click an activity to open it. Every activity has *← Accueil* at the top to
@@ -246,6 +247,35 @@ The buttons:
 
 The result is saved by the server, which recomputes the mark itself. If the
 server cannot be reached, the page says *Résultat non enregistré*.
+
+## Physical chemistry
+
+Activity **⚗️ Chimie physique** (*Química física*, *Physical chemistry*), in
+the *Sciences* group: multiple-choice tests on *Atkins' Physical Chemistry*,
+12th edition. Settings, keys, typed answers and results work as for the
+[QCM](#multiple-choice-tests); there is no level to choose.
+
+| Topic | Atkins | Content |
+|---|---|---|
+| 1 · Les gaz | Focus 1 | Perfect gas, kinetic model, real gases |
+| 2 · Premier principe | Focus 2 | Work, heat, internal energy, enthalpy, thermochemistry, adiabatic changes |
+| 3 · Deuxième et troisième principes | Focus 3 | Entropy, its measurement, Helmholtz and Gibbs energies, the fundamental equations |
+
+A test mixes two kinds of question:
+
+- **Calculations,** generated with new data each time: the pressure of a gas, the work of an expansion, an entropy of heating, ΔG at a temperature. Data are given to three significant figures and the options carry their unit; the wrong options are the usual slips, such as °C used for K, kJ mixed with J, or C_p taken for C_V. With *Au clavier*, the number is typed in the unit shown, unless the options are too close to tell apart by typing.
+- **Concept questions,** written from the book. Each shows its section (*Atkins 2B.1*) and, in the corrections, why the answer is right. They are in English for now; when a translation is added, it is shown in the app's language.
+
+In the progress page, each Topic of the book is one kind of question
+(*Notions 2B – Enthalpy*), next to the calculations.
+
+**⚑ Signaler cette question.** Under each question of the corrections: a
+question that looks wrong or unclear can be reported, with a note. Reports
+are read with `npm run quiz:flags` (see [Question bank](question-bank.md#flags)).
+
+The concept questions are imported on the server from a file kept by its
+administrator. Without it, the page says so and tests hold calculations
+only.
 
 ## Progress and review of mistakes
 

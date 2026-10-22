@@ -9,6 +9,7 @@ import { qt } from "./quiz-i18n";
 import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from "./store";
 import { bookTitle } from "./vocab";
 import { dt } from "./discover/i18n";
+import { CHEMISTRY_TOPICS } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -27,6 +28,8 @@ const texts = {
     oneCardDue: "1 carte à réviser",
     charsNotStarted: "{count} caractères",
     noBooks: "Aucun livre de vocabulaire importé : voir docs/vocabulary.md.",
+    sciences: "Sciences",
+    chemistryText: "Chimie physique : calculs et notions, Focus par Focus",
     home: "Accueil",
   },
   es: {
@@ -45,6 +48,8 @@ const texts = {
     oneCardDue: "1 tarjeta por repasar",
     charsNotStarted: "{count} caracteres",
     noBooks: "No hay libros de vocabulario importados: ver docs/vocabulary.md.",
+    sciences: "Ciencias",
+    chemistryText: "Química física: cálculos y conceptos, Focus por Focus",
     home: "Inicio",
   },
   en: {
@@ -63,6 +68,8 @@ const texts = {
     oneCardDue: "1 card to review",
     charsNotStarted: "{count} characters",
     noBooks: "No vocabulary book imported: see docs/vocabulary.md.",
+    sciences: "Sciences",
+    chemistryText: "Physical chemistry: calculations and concepts, Focus by Focus",
     home: "Home",
   },
 } satisfies Record<Lang, Record<string, string>>;
@@ -71,7 +78,11 @@ type HomeKey = keyof (typeof texts)["fr"];
 export const ht = (key: HomeKey, values: Record<string, string | number> = {}): string =>
   texts[currentLang()][key].replace(/\{(\w+)\}/g, (_, name: string) => String(values[name] ?? ""));
 
-export type Activity = { mode: "columns" | "quiz" } | { mode: "vocab"; book: number } | { mode: "discover"; activity: "dice" | "coins" | "puzzles" };
+export type Activity =
+  | { mode: "columns" }
+  | { mode: "quiz"; subject?: "maths" | "chemistry" }
+  | { mode: "vocab"; book: number }
+  | { mode: "discover"; activity: "dice" | "coins" | "puzzles" };
 
 export interface HomeContext {
   user: User;
@@ -123,7 +134,11 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
 
   const maths = el("div", "activity-group");
   maths.append(el("h2", "activity-group-title", ht("maths")));
-  const review = profile ? profile.skills.filter((s) => s.status === "review").length : 0;
+  // Kinds of question to review, mathematics and physical chemistry apart.
+  const chemistry = new Set<string>(CHEMISTRY_TOPICS);
+  const toReview = (inChemistry: boolean): number =>
+    profile ? profile.skills.filter((s) => s.status === "review" && chemistry.has(s.topic) === inChemistry).length : 0;
+  const review = toReview(false);
   const grid = el("div", "activity-grid");
   grid.append(
     card("columns", qt("modeColumns"), ht("columnsText"), null, () => ctx.open({ mode: "columns" })),
@@ -132,10 +147,25 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
       qt("modeQuiz"),
       ht("quizText"),
       review > 0 ? { text: review === 1 ? ht("oneToReview") : ht("toReview", { count: review }), waiting: true } : null,
-      () => ctx.open({ mode: "quiz" }),
+      () => ctx.open({ mode: "quiz", subject: "maths" }),
     ),
   );
   maths.append(grid);
+
+  const sciences = el("div", "activity-group");
+  sciences.append(el("h2", "activity-group-title", ht("sciences")));
+  const chemReview = toReview(true);
+  const labs = el("div", "activity-grid");
+  labs.append(
+    card(
+      "chemistry",
+      qt("modeChemistry"),
+      ht("chemistryText"),
+      chemReview > 0 ? { text: chemReview === 1 ? ht("oneToReview") : ht("toReview", { count: chemReview }), waiting: true } : null,
+      () => ctx.open({ mode: "quiz", subject: "chemistry" }),
+    ),
+  );
+  sciences.append(labs);
 
   const languages = el("div", "activity-group");
   languages.append(el("h2", "activity-group-title", ht("languages")));
@@ -171,7 +201,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   );
   discover.append(lab);
 
-  wrap.append(maths, languages, discover);
+  wrap.append(maths, sciences, languages, discover);
   return wrap;
 }
 

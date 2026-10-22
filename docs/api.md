@@ -173,15 +173,17 @@ right.
 | Field | |
 |---|---|
 | `seed` | 0 … 2³² − 1 |
-| `level` | `school` or `university` |
-| `topics` | Non-empty, without duplicates, among `derivatives`, `integrals`, `trigonometry`, `limits`, `explog` |
+| `level` | `school`, `university` or `chemistry` |
+| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw` for `chemistry` |
 | `count` | 1 … 30 (the app offers 5, 10, 15, 20) |
 | `focus` | Kinds of question brought back for review; known ids, without duplicates. Optional, default `[]`. |
 | `version` | Generator version; must equal the server's `QUIZ_VERSION`. Optional, default the server's. |
-| `answers` | `count` integers, each an option index 0–3, or `-1` for a blank |
+| `answers` | `count` integers, each an option index 0–3, or `-1` for a blank; in a typed test, texts |
+| `mode` | `choices` or `typed`. Optional, default `choices`. |
+| `bank` | `chemistry` only: the [question bank](question-bank.md) revision the test drew from, at most the server's. Optional; omitted, the test has no written question. |
 
 The server regenerates the test from `seed`, `level`, `topics`, `count`,
-`focus` and `version`, grades it, and stores the test and one row per
+`focus`, `version` and `bank`, grades it, and stores the test and one row per
 question.
 
 `201`:
@@ -192,6 +194,49 @@ question.
 
 The client displays its own grading immediately; the two always agree when
 both run the same version.
+
+## Question bank
+
+### `GET /api/quiz/bank`
+
+The whole [question bank](question-bank.md), removed questions included, so
+the browser can rebuild older tests. `{ "revision": 0, … }` when none was
+imported.
+
+```json
+{
+  "revision": 1,
+  "source": "Atkins",
+  "units": [{ "id": "1A", "topic": "gases", "title": { "en": "The perfect gas" } }],
+  "questions": [
+    {
+      "id": "1A-01", "unit": "1A", "topic": "gases", "section": "1A.2",
+      "prompt": { "en": "…" }, "correct": { "en": "…" },
+      "wrong": [{ "en": "…" }, { "en": "…" }, { "en": "…" }],
+      "explanation": { "en": "…" },
+      "from": 1
+    }
+  ]
+}
+```
+
+`until` is present on a removed question: the first revision without it.
+
+### `POST /api/quiz/flags`
+
+A question flagged from the corrections.
+
+```json
+{ "userId": 1, "skill": "gases.concepts1A", "question": "1A-01", "note": "two right answers" }
+```
+
+| Field | |
+|---|---|
+| `skill` | A known kind of question |
+| `question` | A bank question's id, or a generated question's formula; at most 2,000 characters |
+| `note` | Optional, at most 500 characters |
+
+`204`; `400` for an invalid flag; `404` for a player outside the account.
 
 ## `GET /api/stats`
 

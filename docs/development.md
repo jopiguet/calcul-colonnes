@@ -49,6 +49,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
 | `i18n.ts` | Interface texts (arithmetic part), current language, column names |
 | `quiz-i18n.ts` | Texts of tests and progress, names of the kinds of question, prompts and explanations |
+| `quiz-i18n-chemistry.ts` | The same for physical chemistry, merged into `quiz-i18n.ts` |
 | `dom.ts` | `el()` and `button()` helpers |
 | `style.css` | All styles; colours are CSS variables with a dark variant |
 
@@ -89,6 +90,8 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `db/migrate.ts` | Migration runner |
 | `migrations/` | Schema, see [Database](database.md#migrations) |
 | `check-quiz.ts` | Verification of the generators (`npm run check:quiz`) |
+| `quiz-bank.ts` | Question bank storage, import, flags; `/api/quiz/bank`, `/api/quiz/flags`. See [Question bank](question-bank.md). |
+| `quiz-import.ts`, `quiz-flags.ts` | `npm run quiz:import`, `npm run quiz:flags` |
 | `vocab.ts` | Vocabulary storage, import, sessions, answers; `/api/vocab` |
 | `vocab-import.ts`, `check-vocab.ts` | `npm run vocab:import`, `npm run check:vocab` |
 | `characters-build.ts` | `npm run characters:build`: the kanji and kana book from the EDRDG dictionaries |
@@ -148,7 +151,7 @@ Automated checks:
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
 | `npm run check:discover` | The Discover engines: exact formulas against brute force, the generator on millions of trials, 1,200 logic grids. See [Discover](discover.md#checks-and-tests). | under 10 seconds |
-| `npm run test:e2e` | The whole app in a browser: 69 tests | about two minutes |
+| `npm run test:e2e` | The whole app in a browser: 72 tests | about two minutes |
 | `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
 
 ### Browser tests

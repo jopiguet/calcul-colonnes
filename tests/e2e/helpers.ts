@@ -77,7 +77,7 @@ export async function openActivity(page: Page, activity: string): Promise<void> 
   await page.locator(`[data-activity='${activity}']`).click();
   await page
     .locator(
-      activity === "columns" ? ".board" : activity === "quiz" ? ".quiz-setup, .quiz" : activity.startsWith("discover-") ? ".discover-lab" : ".vocab-home",
+      activity === "columns" ? ".board" : activity === "quiz" || activity === "chemistry" ? ".quiz-setup, .quiz" : activity.startsWith("discover-") ? ".discover-lab" : ".vocab-home",
     )
     .first()
     .waitFor();
@@ -177,11 +177,12 @@ export async function profileOf(request: APIRequestContext, name: string): Promi
 export function rebuild(body: NewQuizResult): { questions: Question[]; correct: number } {
   const questions = generateQuiz({
     seed: body.seed,
-    level: body.level as "school" | "university",
+    level: body.level as "school" | "university" | "chemistry",
     topics: body.topics as never,
     count: body.count,
     focus: body.focus ?? [],
     version: body.version,
+    ...(typeof body.bank === "number" ? { bank: body.bank } : {}),
   });
   return { questions, correct: gradeQuiz(questions, resolveAnswers(questions, body.answers, body.mode ?? "choices")) };
 }

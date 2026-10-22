@@ -1,4 +1,4 @@
-import { LEVELS as QUIZ_LEVELS, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { CHEMISTRY_TOPICS, MATH_LEVELS, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 
@@ -19,8 +19,13 @@ export interface Settings {
   vocabBook: number | null;
   /** Lab open in the "discover" activity. */
   discoverActivity: "dice" | "coins" | "puzzles";
+  /** The mathematics test's level ("school" or "university"). */
   quizLevel: Level;
   quizTopics: Topic[];
+  /** Which test the "quiz" activity shows: mathematics, or physical chemistry. */
+  quizSubject: "maths" | "chemistry";
+  /** Topics chosen for the physical chemistry test. */
+  chemTopics: Topic[];
   quizCount: number;
   /** Mix the player's recent mistakes into new tests. */
   quizReview: boolean;
@@ -88,12 +93,17 @@ export function loadSettings(): Settings {
   const quizTopics = Array.isArray(saved.quizTopics)
     ? TOPICS.filter((topic) => (saved.quizTopics as unknown[]).includes(topic))
     : [];
+  const chemTopics = Array.isArray(saved.chemTopics)
+    ? CHEMISTRY_TOPICS.filter((topic) => (saved.chemTopics as unknown[]).includes(topic))
+    : [];
   return {
     mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" || saved.mode === "discover" ? saved.mode : "home",
     vocabBook: typeof saved.vocabBook === "number" && saved.vocabBook > 0 ? saved.vocabBook : null,
     discoverActivity: saved.discoverActivity === "coins" || saved.discoverActivity === "puzzles" ? saved.discoverActivity : "dice",
-    quizLevel: QUIZ_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
+    quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
+    quizSubject: saved.quizSubject === "chemistry" ? "chemistry" : "maths",
+    chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,
     quizMode: saved.quizMode === "typed" ? "typed" : "choices",

@@ -7,8 +7,16 @@
  *
  *   npm run check:quiz [-- seeds]
  */
+import { readFileSync } from "node:fs";
 import katex from "katex";
-import { generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, topicsFor, type Graph, type Option, type Question, matchTyped, typeable } from "../shared/quiz/index.ts";
+import {
+  generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, topicsFor, registerBank, localized,
+  type Graph, type Option, type Question, matchTyped, typeable,
+} from "../shared/quiz/index.ts";
+import { parseBankFile, toBank } from "../shared/quiz/bank-file.ts";
+
+// The invented test bank (never a book's content): written questions are checked like the others.
+registerBank(toBank(parseBankFile(JSON.parse(readFileSync("tests/e2e/fixtures/bank.json", "utf8"))), 1));
 
 const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
 const near = (a: number, b: number, tol: number): boolean =>
@@ -191,6 +199,8 @@ function isRight(q: Question, o: Option): boolean {
       const values = o.set!;
       return values.length === n && new Set(values).size === n && values.every((l) => Math.abs(det(shifted(l))) < 1e-9 * Math.max(1, Math.abs(l) ** n));
     }
+    case "choice":
+      return o.tex.endsWith(":0"); // a bank question's right answer is its first text
     case "complexRoot": {
       // zⁿ by repeated multiplication, against the target.
       const [x, y] = o.z!;
@@ -324,15 +334,25 @@ for (const level of LEVELS) {
       try {
         if (q.options.length !== 4) throw new Error("not 4 options");
         if (new Set(q.options.map((o) => o.tex)).size !== 4) throw new Error("repeated option");
-        render(q.prompt.tex, where);
-        render(q.explanation.tex, where);
-        q.options.forEach((o) => render(o.tex, where));
+        if (q.verify.kind === "choice") {
+          // Written: texts with inline $…$ formulas.
+          for (const text of [q.prompt.text, q.explanation.text, ...q.options.map((o) => o.text)]) {
+            if (!text) throw new Error("written question without its text");
+            for (const [, tex] of localized(text, "en").matchAll(/\$([^$]+)\$/g)) render(tex!, where);
+          }
+        } else {
+          render(q.prompt.tex, where);
+          render(q.explanation.tex, where);
+          q.options.forEach((o) => render(o.tex, where));
+        }
         checkGraphs(q);
         if (typeable(q)) {
           typedCount.set(q.skill, (typedCount.get(q.skill) ?? 0) + 1);
           // Typed: each option's value, written to 4 and 10 decimals, comes back as that option.
           q.options.forEach((o, i) => {
-            for (const text of [o.num!.toFixed(4), o.num!.toFixed(10), o.num!.toFixed(4).replace(".", ",")]) {
+            // About eleven significant figures: a double keeps more, so the last digit typed is exact.
+            const long = o.num!.toFixed(Math.max(0, 10 - Math.max(0, Math.floor(Math.log10(Math.abs(o.num!) || 1)) + 1)));
+            for (const text of [o.num!.toFixed(4), long, o.num!.toFixed(4).replace(".", ",")]) {
               const got = matchTyped(q, text);
               if (got !== i) throw new Error(`typed ${text} read as option ${got}, not ${i}`);
             }
@@ -343,10 +363,10 @@ for (const level of LEVELS) {
           const right = isRight(q, o);
           if (i === q.correct && !right) throw new Error(`marked answer is wrong: ${o.tex}`);
           if (i !== q.correct && right) throw new Error(`wrong option is also right: ${o.tex}`);
-          if (i !== q.correct && !(MISTAKES as readonly string[]).includes(o.mistake ?? "")) {
+          if (i !== q.correct && q.verify.kind !== "choice" && !(MISTAKES as readonly string[]).includes(o.mistake ?? "")) {
             throw new Error(`wrong option without a mistake label: ${o.tex}`);
           }
-          if (i !== q.correct) mistakesSeen.set(o.mistake!, (mistakesSeen.get(o.mistake!) ?? 0) + 1);
+          if (i !== q.correct && o.mistake) mistakesSeen.set(o.mistake, (mistakesSeen.get(o.mistake) ?? 0) + 1);
         });
       } catch (error) {
         failures.push(`${where}: ${(error as Error).message}`);

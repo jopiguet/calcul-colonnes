@@ -36,7 +36,7 @@ npm start                 # serves dist/ and /api on $PORT (default 8787)
 runs a bundle instead (`npm run build:server` → `dist-server/`), which starts
 faster. At startup the server:
 
-1. Applies migrations, rebuilds missing test answers, imports new vocabulary books (`VOCAB_FILE`) and purges expired sessions: the **maintenance**, also available alone as `npm run maintenance`.
+1. Applies migrations, rebuilds missing test answers, imports new vocabulary books (`VOCAB_FILE`) and, on a server without one, the question bank (`QUIZ_BANK_FILE`), and purges expired sessions: the **maintenance**, also available alone as `npm run maintenance`.
 2. Purges expired sessions again every hour.
 3. Logs the database used, the ways to sign in and the port.
 

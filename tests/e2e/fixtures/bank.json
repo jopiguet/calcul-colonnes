@@ -1,0 +1,39 @@
+{
+ "format": 1,
+ "book": { "id": "test-bank", "title": "Questions written for the tests", "source": "Test" },
+ "units": [
+  { "id": "1A", "topic": "gases", "title": { "en": "Gases" } },
+  { "id": "2A", "topic": "firstLaw", "title": { "en": "Energy" } },
+  { "id": "3A", "topic": "secondLaw", "title": { "en": "Entropy" } }
+ ],
+ "questions": [
+  { "id": "1A-01", "unit": "1A", "section": "1A.1",
+    "prompt": { "en": "Which of these properties is intensive?" },
+    "correct": { "en": "Temperature" }, "wrong": [ { "en": "Volume" }, { "en": "Mass" }, { "en": "Amount of substance" } ],
+    "explanation": { "en": "An intensive property does not depend on the size of the sample." } },
+  { "id": "1A-02", "unit": "1A", "section": "1A.2",
+    "prompt": { "en": "At constant $n$ and $T$, how does the pressure of a perfect gas depend on its volume?" },
+    "correct": { "en": "$p \\propto 1/V$" }, "wrong": [ { "en": "$p \\propto V$" }, { "en": "$p \\propto V^{2}$" }, { "en": "It does not depend on $V$" } ],
+    "explanation": { "en": "Boyle's law: $pV$ is constant at constant $n$ and $T$." } },
+  { "id": "1A-03", "unit": "1A", "section": "1A.2",
+    "prompt": { "en": "What is the SI unit of pressure?" },
+    "correct": { "en": "The pascal" }, "wrong": [ { "en": "The bar" }, { "en": "The atmosphere" }, { "en": "The torr" } ],
+    "explanation": { "en": "$1\\,\\mathrm{Pa} = 1\\,\\mathrm{N\\,m^{-2}}$." } },
+  { "id": "2A-01", "unit": "2A", "section": "2A.1",
+    "prompt": { "en": "An isolated system can exchange…" },
+    "correct": { "en": "neither energy nor matter" }, "wrong": [ { "en": "energy but not matter" }, { "en": "matter but not energy" }, { "en": "both energy and matter" } ],
+    "explanation": { "en": "Isolated: no exchange at all; closed: energy only; open: both." } },
+  { "id": "2A-02", "unit": "2A", "section": "2A.2",
+    "prompt": { "en": "Which of these is a state function?" },
+    "correct": { "en": "Internal energy" }, "wrong": [ { "en": "Heat" }, { "en": "Work" }, { "en": "Heat plus work along one path" } ],
+    "explanation": { "en": "$U$ depends only on the state; $q$ and $w$ depend on the path." } },
+  { "id": "3A-01", "unit": "3A", "section": "3A.1",
+    "prompt": { "en": "In a spontaneous process in an isolated system, the entropy…" },
+    "correct": { "en": "increases" }, "wrong": [ { "en": "decreases" }, { "en": "stays the same" }, { "en": "first decreases, then increases" } ],
+    "explanation": { "en": "The Second Law: $\\Delta S_\\mathrm{tot} > 0$ for a spontaneous change." } },
+  { "id": "3A-02", "unit": "3A", "section": "3A.2",
+    "prompt": { "en": "Which statement is the Third Law?" },
+    "correct": { "en": "The entropy of a perfect crystal is zero at $T = 0$" }, "wrong": [ { "en": "Energy is conserved" }, { "en": "Heat flows from hot to cold" }, { "en": "Two bodies in equilibrium with a third are in equilibrium with each other" } ],
+    "explanation": { "en": "With $S(0) = 0$, entropies can be measured absolutely." } }
+ ]
+}

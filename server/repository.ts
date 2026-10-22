@@ -123,7 +123,7 @@ export class Repository {
   }
 
   /** Regenerates the test from its seed, grades it, and stores the result and each answer. */
-  async addQuiz(result: NewQuizResult & { level: Level; topics: Topic[] }): Promise<{ correct: number; total: number }> {
+  async addQuiz(result: NewQuizResult & { level: Level; topics: Topic[]; bank?: number | null }): Promise<{ correct: number; total: number }> {
     const mode = result.mode ?? "choices";
     const focus = result.focus ?? [];
     const questions = generateQuiz({
@@ -133,14 +133,15 @@ export class Repository {
       count: result.count,
       focus,
       version: QUIZ_VERSION,
+      ...(result.bank !== null && result.bank !== undefined ? { bank: result.bank } : {}),
     });
     // Typed answers are matched to the options here, never trusted from the browser.
     const given = resolveAnswers(questions, result.answers, mode);
     const correct = gradeQuiz(questions, given);
     const at = Date.now();
     const rows = await this.db.query(
-      `INSERT INTO quiz_results (user_id, at, level, topics, seed, question_count, correct, answers, focus, version, mode)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      `INSERT INTO quiz_results (user_id, at, level, topics, seed, question_count, correct, answers, focus, version, mode, bank)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
        RETURNING id`,
       [
         result.userId,
@@ -154,6 +155,7 @@ export class Repository {
         focus.join(","),
         QUIZ_VERSION,
         mode,
+        result.bank ?? null,
       ],
     );
     await this.addQuizAnswers(Number(rows[0]!.id), result.userId, at, questions, result.answers, mode);
@@ -205,7 +207,7 @@ export class Repository {
    */
   async backfillQuizAnswers(): Promise<number> {
     const rows = await this.db.query(
-      `SELECT r.id, r.user_id, r.at, r.level, r.topics, r.seed, r.question_count, r.answers, r.focus, r.version, r.mode
+      `SELECT r.id, r.user_id, r.at, r.level, r.topics, r.seed, r.question_count, r.answers, r.focus, r.version, r.mode, r.bank
          FROM quiz_results r
         WHERE NOT EXISTS (SELECT 1 FROM quiz_answers a WHERE a.quiz_id = r.id)`,
     );
@@ -230,7 +232,7 @@ export class Repository {
    */
   async backfillMistakes(): Promise<number> {
     const rows = await this.db.query(
-      `SELECT r.id, r.level, r.topics, r.seed, r.question_count, r.focus, r.version
+      `SELECT r.id, r.level, r.topics, r.seed, r.question_count, r.focus, r.version, r.bank
          FROM quiz_results r
         WHERE EXISTS (SELECT 1 FROM quiz_answers a
                        WHERE a.quiz_id = r.id AND a.correct = 0 AND a.given >= 0 AND a.mistake IS NULL)`,
@@ -272,6 +274,7 @@ export class Repository {
       count: Number(row.question_count),
       focus: focus ? focus.split(",") : [],
       version: Number(row.version ?? 1),
+      ...(row.bank === null || row.bank === undefined ? {} : { bank: Number(row.bank) }),
     });
   }
 

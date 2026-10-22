@@ -3,21 +3,41 @@ import type { Fn } from "./tex";
 
 export type Fn2 = (x: number, y: number) => number;
 
-export type Level = "school" | "university";
-export type Topic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
+/**
+ * "school" and "university" are the levels of the mathematics tests;
+ * "chemistry" is the physical chemistry subject, a test of its own (its
+ * topics are the Focuses of Atkins' Physical Chemistry).
+ */
+export type Level = "school" | "university" | "chemistry";
+export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
+/** Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws. */
+export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw";
+export type Topic = MathTopic | ChemistryTopic;
 
-export const LEVELS: Level[] = ["school", "university"];
+export const LEVELS: Level[] = ["school", "university", "chemistry"];
+/** Topics of the physical chemistry test. */
+export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw"];
+/** The levels offered in the mathematics test's settings. */
+export const MATH_LEVELS: Level[] = ["school", "university"];
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
   { group: "algebra", topics: ["complex", "linear"] },
   { group: "geometry", topics: ["geometry"] },
   { group: "probability", topics: ["probability"] },
+  { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw"] },
 ];
+
+/**
+ * A text in several languages: English always, others when written. The app
+ * shows the interface's language, English otherwise. Inline formulas between
+ * $…$ are TeX.
+ */
+export type Localized = { en: string } & Partial<Record<"fr" | "es", string>>;
 
 /** Question sentences; translated by the app. */
 export type PromptKey =
@@ -81,7 +101,37 @@ export type PromptKey =
   | "transformCurve"
   | "tangentSlope"
   | "solutionCount"
-  | "planeFromEquation";
+  | "planeFromEquation"
+  // physical chemistry: a written question (its text is in the prompt), then calculations
+  | "concept"
+  | "gasPressure"
+  | "gasAmount"
+  | "partialPressure"
+  | "rmsSpeed"
+  | "speedRatio"
+  | "meanFreePath"
+  | "compressionFactor"
+  | "vdwPressure"
+  | "criticalTemperature"
+  | "expansionWork"
+  | "reversibleWork"
+  | "internalEnergyChange"
+  | "enthalpyFromEnergy"
+  | "hessLaw"
+  | "reactionEnthalpy"
+  | "kirchhoff"
+  | "adiabaticTemperature"
+  | "adiabaticPressure"
+  | "entropyExpansion"
+  | "entropyHeating"
+  | "transitionEntropy"
+  | "trouton"
+  | "carnot"
+  | "reactionEntropy"
+  | "gibbsEnergy"
+  | "crossoverTemperature"
+  | "gibbsPressure"
+  | "debyeEntropy";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -177,7 +227,35 @@ export type ExplanationKey =
   | "transformCurve"
   | "tangentSlope"
   | "solutionCount"
-  | "planeFromEquation";
+  | "planeFromEquation"
+  | "concept"
+  | "perfectGas"
+  | "dalton"
+  | "rmsSpeed"
+  | "speedRatio"
+  | "meanFreePath"
+  | "compressionFactor"
+  | "vanDerWaals"
+  | "criticalConstants"
+  | "expansionWork"
+  | "reversibleWork"
+  | "internalEnergy"
+  | "enthalpyEnergy"
+  | "hessLaw"
+  | "formationEnthalpies"
+  | "kirchhoff"
+  | "adiabaticTemperature"
+  | "adiabaticPressure"
+  | "entropyExpansion"
+  | "entropyHeating"
+  | "transitionEntropy"
+  | "trouton"
+  | "carnot"
+  | "reactionEntropy"
+  | "gibbsEnergy"
+  | "crossoverTemperature"
+  | "gibbsPressure"
+  | "debyeEntropy";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -300,6 +378,27 @@ export const MISTAKES = [
   "axisConfused", // a transformation applied along the other axis
   "interceptForSlope", // the line's intercept read as its slope
   "coefficientsAsIntercepts", // the equation's coefficients taken for the intercepts
+  // physical chemistry
+  "celsiusForKelvin", // a temperature in °C used where kelvins are needed
+  "volumeUnits", // dm³ and m³ (or cm³) mixed: a factor of 1000
+  "energyUnits", // J and kJ mixed: a factor of 1000
+  "massUnits", // g and kg mixed: molar mass not in kg mol⁻¹
+  "pressureUnits", // kPa (or bar) used as pascals: a factor of 1000 (or 10⁵)
+  "gasConstantUnits", // the wrong constant: R in L atm or dm³ bar where SI units are needed, or R for k
+  "formulaInverted", // the quantity asked used as given: a relation turned upside down
+  "moleFractionError", // a ratio of amounts taken for a mole fraction
+  "speedConfused", // mean, most probable and root-mean-square speeds confused
+  "perfectForReal", // the perfect gas law used where the gas is not perfect
+  "attractionSign", // the van der Waals attraction added instead of subtracted
+  "cpCvConfused", // Cp used for Cv, or the reverse
+  "stoichiometryForgotten", // the stoichiometric numbers left out
+  "productsReactantsSwapped", // reactants minus products
+  "elementsZero", // standard entropies of elements taken as zero
+  "isothermalForAdiabatic", // the temperature taken as constant in an adiabatic change
+  "exponentConfused", // γ, 1/γ and 1/c confused in adiabatic relations
+  "logBase", // log₁₀ used where ln is needed
+  "linearForLog", // ΔT/T for ln(T₂/T₁)
+  "ratioInverted", // a ratio upside down: V₁/V₂ for V₂/V₁
   // everywhere
   "signError",
 ] as const;
@@ -343,6 +442,8 @@ export interface Option {
   zs?: [number, number][];
   /** For a wrong option: the mistake it stands for. */
   mistake?: MistakeKey;
+  /** A written answer, shown instead of the formula (the formula is then only its identity). */
+  text?: Localized;
 }
 
 /** A wrong option labelled with its mistake. */
@@ -388,6 +489,8 @@ export type Verify =
   | { kind: "doubleIntegral"; f: Fn2; x: [number, number]; y: [number, number] } // the option is the integral of f over the rectangle
   | { kind: "slope"; f: Fn; a: number } // the option is f′(a)
   | { kind: "count"; f: Fn; k: number; lo: number; hi: number } // the option is the number of solutions of f(x) = k on [lo, hi]
+  /** A written question from the question bank: options are texts, nothing to compute. */
+  | { kind: "choice" }
 
 export interface Draft {
   /**
@@ -395,11 +498,20 @@ export interface Draft {
    * and for a graph an id: what makes two questions the same, as the formula
    * does otherwise.
    */
-  prompt: { key: PromptKey; tex: string; graph?: Graph; id?: string };
+  prompt: {
+    key: PromptKey;
+    tex: string;
+    graph?: Graph;
+    id?: string;
+    /** A written question: its text, shown instead of the key's sentence. */
+    text?: Localized;
+    /** Where the question comes from in its book ("Atkins 1A.2"). */
+    source?: string;
+  };
   correct: Option;
   /** Candidate wrong answers (common mistakes); three distinct ones are kept. */
   wrong: Option[];
-  explanation: { key: ExplanationKey; tex: string };
+  explanation: { key: ExplanationKey; tex: string; text?: Localized };
   verify: Verify;
 }
 

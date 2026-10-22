@@ -9,6 +9,8 @@ way in the browser and on the server.
 | `rng.ts` | Seeded random numbers (mulberry32) |
 | `tex.ts` | Exact fractions and LaTeX helpers: `frac`, `sum`, `poly`, `piTex`… |
 | `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts`, `graphs.ts` | The generators, one file per topic |
+| `units.ts`, `gases.ts`, `firstlaw.ts`, `secondlaw.ts` | Physical chemistry: quantities with units and significant figures, constants; the generators of Focuses 1–3 |
+| `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
 | `index.ts` | Registry of kinds of question, `generateQuiz`, `gradeQuiz`, `QUIZ_VERSION` |
 | `progress.ts` | Status of a kind of question from the latest answers |
@@ -231,6 +233,54 @@ only on screen; their formula appears in the corrections.
 
 `solutionCount` keeps the level away from the turning values and the ends of
 the interval, so the count never hangs on a tangency.
+
+## Physical chemistry
+
+The level `chemistry` has its own topics, grouped as *Thermodynamics*:
+`gases`, `firstLaw` and `secondLaw` (Atkins, Focuses 1–3). It has no lycée or
+university variant. Each topic mixes the calculations below with the concept
+questions of the [question bank](question-bank.md), one kind per unit of the
+book (`gases.concepts1A`).
+
+The data are drawn on grids (`draw`) and written to three significant figures
+(`sig`, `qty`); options are compared by value, so two mistakes giving the same
+number are one option. The calculations can be answered by typing the number,
+in the unit shown, under the usual rule (see [Typed answers](#typed-answers)):
+no value of a million or more, options far enough apart.
+
+| Id | Asks for | Typical wrong options |
+|---|---|---|
+| `gases.perfectGasPressure` | p from n, V, T | °C for K, dm³ as m³, R in L atm, formula inverted |
+| `gases.perfectGasAmount` | n from p, V, T | same |
+| `gases.partialPressure` | Dalton's law: partial pressure from a mole fraction | wrong mole fraction, the other gas's pressure, formula inverted |
+| `gases.rmsSpeed` | √(3RT/M) | °C for K, M in g mol⁻¹, mean or most probable speed, square root forgotten |
+| `gases.speedRatio` | ratio of mean speeds of two gases | ratio inverted, square root forgotten, wrong power |
+| `gases.meanFreePath` | λ = kT/σp | °C for K, pressure units, formula inverted |
+| `gases.compressionFactor` | Z = pV_m/RT | °C for K, R in L atm, 1 (perfect gas), inverted |
+| `gases.vdwPressure` | van der Waals pressure | attraction added, a/V_m not squared, perfect gas, n forgotten |
+| `gases.criticalTemperature` | T_c = 8a/27Rb | °C for K, R units, ratio inverted |
+| `firstLaw.expansionWork` | −p_ex ΔV | sign, volume units |
+| `firstLaw.reversibleWork` | −nRT ln(V_f/V_i) | sign, log₁₀, linear for log, kJ/J |
+| `firstLaw.internalEnergyChange` | n C_V,m ΔT | C_p for C_V, sign, n forgotten, kJ/J |
+| `firstLaw.enthalpyFromEnergy` | ΔH = ΔU + Δn_g RT | sign, Δn_g forgotten, RT in J with ΔU in kJ |
+| `firstLaw.hessLaw` | a reaction enthalpy from two others | reaction reversed without sign change, coefficient forgotten |
+| `firstLaw.reactionEnthalpy` | Σν Δ_fH | reactants minus products, coefficient forgotten, a term dropped |
+| `firstLaw.kirchhoff` | ΔH at another temperature | ΔC_p term dropped or with the wrong sign, J/kJ |
+| `firstLaw.adiabaticTemperature` | T_f = T_i(V_i/V_f)^(1/c) | isothermal, ratio inverted, γ for 1/c |
+| `firstLaw.adiabaticPressure` | p_f = p_i(V_i/V_f)^γ | isothermal, ratio inverted, wrong exponent |
+| `secondLaw.entropyExpansion` | nR ln(V_f/V_i) | log₁₀, linear for log, ratio inverted, n forgotten |
+| `secondLaw.entropyHeating` | C ln(T_f/T_i) | °C for K, C_V for C_p, log₁₀, linear |
+| `secondLaw.transitionEntropy` | Δ_trsH/T_trs | °C for K, kJ/J, inverted, sign |
+| `secondLaw.trouton` | Δ_vapH ≈ 85 J K⁻¹ mol⁻¹ × T_b | °C for K, J/kJ, inverted |
+| `secondLaw.carnot` | 1 − T_c/T_h | °C for K, T_c/T_h itself, ratio inverted |
+| `secondLaw.reactionEntropy` | Σν S_m | elements taken as zero, reversed, coefficient forgotten |
+| `secondLaw.gibbsEnergy` | ΔH − TΔS | °C for K, J/kJ mixed, sign |
+| `secondLaw.crossoverTemperature` | T = ΔH/ΔS | °C for K, J/kJ, inverted |
+| `secondLaw.gibbsPressure` | RT ln(p_f/p_i) | °C for K, log₁₀, ratio inverted |
+| `secondLaw.debyeEntropy` | S = C_p/3 at low T | C_p itself, 3C_p, ln |
+
+These kinds came with the level, so `QUIZ_VERSION` stayed at 2: no saved
+test could contain them.
 
 ## Anatomy of a generator
 

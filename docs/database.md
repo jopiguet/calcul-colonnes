@@ -114,7 +114,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school` or `university` |
+| `level` | text | `school`, `university` or `chemistry` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -123,6 +123,7 @@ they are regenerated from the test's definition. See
 | `answers` | text | JSON array: for each question the chosen option index (`-1` = blank), or in a typed test the text typed |
 | `mode` | text | `choices`, or `typed` when numbers were typed where possible |
 | `correct` | integer | number of right answers, computed by the server |
+| `bank` | integer, null | revision of the [question bank](question-bank.md) a physical chemistry test drew from; null for maths tests |
 
 Index: `(user_id, at)`.
 
@@ -166,6 +167,18 @@ progress. See [Vocabulary](vocabulary.md).
 Deleting a player deletes their progress and answers; an import that removes
 an entry deletes its progress.
 
+### Question bank
+
+Written questions from a textbook, shared by every account. See
+[Question bank](question-bank.md).
+
+| Table | Content |
+|---|---|
+| `quiz_bank_meta` | key/value: `book`, `title`, `source`, `revision` |
+| `quiz_bank_units` | `id` ("1A"), `topic`, `position`, `title` (JSON by language) |
+| `quiz_bank` | `id`, `unit`, `section`, `position`; `prompt`, `correct`, `wrong`, `explanation` as JSON by language; `from_revision`, `until_revision` (null while in the file) |
+| `quiz_flags` | `id`, `user_id`, `at`, `skill`, `question` (bank id or formula), `note`, `resolved` |
+
 ### `schema_migrations`
 
 The versions of the migrations already applied.
@@ -193,11 +206,12 @@ runs: add tables and columns, rename or drop later.
 | `010_vocab_reading` | `reading` on `vocab_entries`; the Spanish book's title loses the publisher's name (common SQL, one file) |
 | `011_typed_answers` | `mode` on `quiz_results`, `typed` on `quiz_answers` (common SQL, one file) |
 | `012_characters` | Book kind `characters` and `credit` on `vocab_books`; direction `read` on `vocab_progress`; `readings` and `translations` on `vocab_entries`. SQLite rebuilds `vocab_books` and `vocab_progress`, keeping their rows. |
+| `013_question_bank` | `quiz_bank_meta`, `quiz_bank_units`, `quiz_bank`, `quiz_flags`; `bank` on `quiz_results`, whose `level` accepts `chemistry`. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 
 - `NNN_name.sql` runs on both engines.
-- `NNN_name.sqlite.sql` and `NNN_name.postgres.sql` are used when the DDL differs: identity columns, or SQLite's inability to alter a `CHECK` or `UNIQUE` constraint, which forced `002`, `008` and `012` to rebuild a table.
+- `NNN_name.sqlite.sql` and `NNN_name.postgres.sql` are used when the DDL differs: identity columns, or SQLite's inability to alter a `CHECK` or `UNIQUE` constraint, which forced `002`, `008`, `012` and `013` to rebuild a table.
 - A SQLite step that rebuilds a table referenced by others starts with the line `-- sqlite: foreign keys off`. The runner then switches foreign keys off around its transaction (SQLite ignores the switch inside one), so dropping the old table does not cascade to the rows that reference it, and runs `PRAGMA foreign_key_check` before switching them on again.
 
 **Adding a migration.**

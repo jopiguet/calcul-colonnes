@@ -15,6 +15,7 @@ import type {
   VocabProgress,
   VocabStats,
 } from "../shared/types";
+import type { Bank } from "../shared/quiz";
 
 export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, Profile, SignInMethod, User, UserStats };
 export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabProgress, VocabStats };
@@ -93,6 +94,13 @@ export const store = {
   stats: (): Promise<UserStats[]> => call(`/stats?since=${startOfToday()}`),
   /** Progress of one player: kinds of question met in tests, column arithmetic. */
   profile: (userId: number): Promise<Profile> => call(`/users/${userId}/profile?since=${startOfToday()}`),
+};
+
+export const quizBank = {
+  /** The question bank: the browser generates the tests too, from the same questions. */
+  load: (): Promise<Bank> => call("/quiz/bank"),
+  /** A question flagged from the corrections, for the author to check. */
+  flag: (flag: { userId: number; skill: string; question: string; note: string }): Promise<void> => post("/quiz/flags", flag),
 };
 
 export const vocab = {

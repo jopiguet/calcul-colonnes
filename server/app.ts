@@ -9,6 +9,7 @@ import {
   topicsFor,
   TOPICS,
   isSkill,
+  bankRevision,
   type AnswerMode,
   type Level,
   type Topic,
@@ -22,6 +23,7 @@ import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
 import { Repository, type Scope } from "./repository.ts";
 import { VocabStore, vocabRoutes } from "./vocab.ts";
+import { BankStore, bankRoutes } from "./quiz-bank.ts";
 import { log } from "./runtime.ts";
 
 const NAME_LENGTH = 20;
@@ -46,11 +48,11 @@ function parseAttempt(body: unknown): NewAttempt | null {
   return { userId, maximum, operator, top, bottom, given, givenRemainder };
 }
 
-type ValidQuiz = NewQuizResult & { level: Level; topics: Topic[]; mode: AnswerMode };
+type ValidQuiz = NewQuizResult & { level: Level; topics: Topic[]; mode: AnswerMode; bank: number | null };
 
 function parseQuiz(body: unknown): ValidQuiz | null {
   if (typeof body !== "object" || body === null) return null;
-  const { userId, seed, level, topics, count, answers, focus = [], version = QUIZ_VERSION, mode = "choices" } = body as Record<
+  const { userId, seed, level, topics, count, answers, focus = [], version = QUIZ_VERSION, mode = "choices", bank = null } = body as Record<
     string,
     unknown
   >;
@@ -61,7 +63,10 @@ function parseQuiz(body: unknown): ValidQuiz | null {
   if (!Array.isArray(topics) || topics.length === 0) return null;
   if (!topics.every((t) => TOPICS.includes(t as Topic)) || new Set(topics).size !== topics.length) return null;
   // At least one topic must have questions at this level (some exist at one level only).
-  if ((level === "school" || level === "university") && !topics.some((t) => topicsFor(level, typeof version === "number" ? version : QUIZ_VERSION).includes(t as Topic))) return null;
+  if (!topics.some((t) => topicsFor(level as Level, typeof version === "number" ? version : QUIZ_VERSION).includes(t as Topic))) return null;
+  // The bank revision the browser drew from: the server's, or an older one (a test begun before an import).
+  if (bank !== null && !isInt(bank, 0, bankRevision())) return null;
+  if (level !== "chemistry" && bank !== null) return null;
   if (!Array.isArray(answers) || answers.length !== count) return null;
   if (!ANSWER_MODES.includes(mode as AnswerMode)) return null;
   // An option index, or in a typed test a short text (matched against the options when graded).
@@ -79,11 +84,13 @@ function parseQuiz(body: unknown): ValidQuiz | null {
     answers: answers as (number | string)[],
     focus: focus as string[],
     mode: mode as AnswerMode,
+    bank: bank as number | null,
   };
 }
 
 export function createApp(db: Database, authConfig: AuthConfig, providers: Map<string, Provider>): Hono<AppEnv> {
   const repository = new Repository(db);
+  const bank = new BankStore(db);
   const store = new AuthStore(db);
   const api = new Hono<AppEnv>();
 
@@ -137,6 +144,7 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
   });
 
   data.post("/quizzes", async (c) => {
+    await bank.refresh(); // a bank imported since the server started
     const quiz = parseQuiz(await c.req.json().catch(() => null));
     if (!quiz) return c.json({ error: "invalid quiz" }, 400);
     if (!(await repository.getUser(quiz.userId, scope(c)))) return c.json({ error: "unknown user" }, 404);
@@ -150,6 +158,7 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
   });
 
   data.route("/vocab", vocabRoutes(new VocabStore(db), repository, scope as (c: never) => Scope));
+  data.route("/quiz", bankRoutes(bank, repository, scope as (c: never) => Scope));
 
   api.route("/", data);
 

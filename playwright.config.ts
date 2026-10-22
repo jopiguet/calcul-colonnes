@@ -53,6 +53,8 @@ export default defineConfig({
         // An invented vocabulary (never a book's content), imported at startup.
         VOCAB_FILE:
           "tests/e2e/fixtures/vocab.json,tests/e2e/fixtures/vocab-english.json,tests/e2e/fixtures/vocab-japanese.json,tests/e2e/fixtures/vocab-german.json,tests/e2e/fixtures/vocab-arabic.json,tests/e2e/fixtures/characters.json",
+        // An invented question bank (never a book's content), imported at startup.
+        QUIZ_BANK_FILE: "tests/e2e/fixtures/bank.json",
         // Only the mock provider: real ones from a developer's .env are switched off.
         GOOGLE_CLIENT_ID: "",
         MICROSOFT_CLIENT_ID: "",

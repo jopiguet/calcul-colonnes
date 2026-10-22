@@ -6,11 +6,14 @@ import { Repository } from "./repository.ts";
 import { log } from "./runtime.ts";
 import { bookIdOf, importVocabFile } from "./vocab-import.ts";
 import { VocabStore } from "./vocab.ts";
+import { BankStore } from "./quiz-bank.ts";
+import { importBankFile } from "./quiz-import.ts";
 
 /**
  * Everything the database needs before a server version may serve it:
  * migrations, answers and mistakes rebuilt for older tests, vocabulary books
- * from VOCAB_FILE not yet imported, expired sessions removed.
+ * from VOCAB_FILE not yet imported, the question bank from QUIZ_BANK_FILE when
+ * the server has none, expired sessions removed.
  *
  * Locally it runs at every start (as before). On Cloud Run it runs once per
  * release as a job (`node dist-server/index.js maintenance`), so instances
@@ -19,6 +22,18 @@ import { VocabStore } from "./vocab.ts";
 export async function maintain(db: Database): Promise<void> {
   const applied = await migrate(db);
   if (applied.length > 0) log.info(`migrations applied: ${applied.join(", ")}`);
+
+  // QUIZ_BANK_FILE: imported when the server has no bank yet; later changes: npm run quiz:import.
+  const bank = new BankStore(db);
+  const bankFile = process.env.QUIZ_BANK_FILE?.trim();
+  if (bankFile && (await bank.revision()) === 0) {
+    if (existsSync(bankFile)) {
+      const report = await importBankFile(db, bankFile);
+      log.info(`question bank imported from ${bankFile}: ${report.questions} questions, revision ${report.revision}`);
+    } else log.warn(`question bank: QUIZ_BANK_FILE ${bankFile} not found`);
+  }
+  // Tests rebuilt below may draw from the bank.
+  await bank.refresh();
 
   const repository = new Repository(db);
   const rebuilt = await repository.backfillQuizAnswers();

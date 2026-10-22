@@ -51,6 +51,8 @@ export interface NewQuizResult {
   mode?: "choices" | "typed";
   /** Kinds of question brought back for review (see generateQuiz). */
   focus?: string[];
+  /** Physical chemistry: the question bank revision the test drew from. */
+  bank?: number | null;
   /** Generator version used by the browser; must be the server's. */
   version?: number;
 }

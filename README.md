@@ -42,6 +42,13 @@ at *lycée / bachillerato* or university level.
 - Each test is defined by a seed; the server regenerates it to grade it, so the browser is never trusted with the result.
 - An automated check verifies tens of thousands of generated questions numerically, independently of the generators.
 
+**Physical chemistry** — multiple-choice tests from *Atkins' Physical Chemistry* (12th edition), a book you own: gases, the First Law, the Second and Third Laws for a start.
+
+- Calculations are generated like the maths questions: 28 kinds, from the perfect gas law to the Gibbs energy, with data to three significant figures and units in the options. The wrong options are unit slips and real mistakes: °C for K, kJ mixed with J, C_p for C_V, a log₁₀ for a ln.
+- Concept questions are written from the book, Topic by Topic, and imported from a file kept out of the project: 155 for Topics 1A–3E. Each shows its section of the book ("Atkins 2B.1") and explains the answer.
+- Texts are stored per language: English now, French and Spanish can be added to the same file.
+- Any question can be flagged from the corrections, with a note, for the author to check.
+
 **Vocabulary** — from books you own, imported once: Spanish, German, Arabic and Japanese with translations, English with definitions. Plus kanji and kana in the Japanese school's order.
 
 - Their chapters are the lessons and their sections the sections. *Spanish*, *German* and *Arabic 3000 words and phrases* and *Vocabulary 4000* are read automatically from their PDF, *Japanese vocabulary for English speakers* from its EPUB; any other list can be written as a simple JSON file.
@@ -67,7 +74,7 @@ at *lycée / bachillerato* or university level.
 
 - Scores are kept per player in SQLite, or in PostgreSQL (Neon) with one setting.
 - Every test answer is filed under its kind of question. A kind answered wrong comes back in later tests until it has been answered right twice in a row.
-- Every wrong option stands for a typical mistake (36 types, such as *inner derivative forgotten* or *solution missed*). The mistake is shown in the corrections and counted per player.
+- Every wrong option stands for a typical mistake (122 types, such as *inner derivative forgotten*, *solution missed* or *°C used for K*). The mistake is shown in the corrections and counted per player.
 - A progress page shows each player's status per kind of question, their most frequent mistakes, and their results per arithmetic operation.
 
 ## Quick start
@@ -102,6 +109,8 @@ npm start          # http://localhost:8787
 | `npm run check:quiz` | Generates thousands of tests and verifies every question (see [question generators](docs/question-generators.md#verification)) |
 | `npm run test:e2e` | Browser tests of the whole app, on a separate server and database (see [Development › Tests](docs/development.md#tests)) |
 | `npm run vocab:import -- data/vocab-english.json` | Imports a vocabulary book, keeping progress on unchanged entries (see [Vocabulary](docs/vocabulary.md)) |
+| `npm run quiz:import -- data/atkins-12-concepts.json` | Imports the question bank written from a textbook, keeping old tests exact (see [Question bank](docs/question-bank.md)) |
+| `npm run quiz:flags` | Lists the questions players flagged; `-- --resolve N` closes one |
 | `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |
 | `npm run characters:build` | Builds the kanji and kana book from the EDRDG dictionaries in `data/` (see [Kanji and kana](docs/characters.md)) |
 | `npm run check:discover` | Checks the Discover engines: exact probabilities and streak formulas, the generator on millions of trials, 1,200 logic grids (see [Discover](docs/discover.md#checks-and-tests)) |
@@ -123,6 +132,7 @@ Settings are read from `.env` (see `.env.example`):
 | `REGISTRATION` | `open` | `closed` allows only the first account |
 | `SESSION_DAYS`, `COOKIE_SECURE`, `TRUST_PROXY` | | See [Deployment › HTTPS and sign-in](docs/deployment.md#https-and-sign-in) |
 | `STARTUP_MAINTENANCE`, `LOG_FORMAT` | from the platform | Maintenance at startup and JSON logs: on locally, off and JSON on Cloud Run. See [Deployment › Cloud Run](docs/deployment.md#cloud-run) |
+| `QUIZ_BANK_FILE` | *(empty)* | A question bank file imported by the maintenance when the database has none |
 | `GOOGLE_*`, `MICROSOFT_*`, `GITHUB_*`, `OIDC_*` | *(empty)* | Sign-in providers, see [Authentication](docs/authentication.md#providers-1) |
 
 ## Documentation
@@ -131,7 +141,8 @@ Settings are read from `.env` (see `.env.example`):
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
-| [Question generators](docs/question-generators.md) | The 110 kinds of question, how a generator works, adding one, verification, versioning |
+| [Question generators](docs/question-generators.md) | The 110 maths and 28 chemistry kinds of question, how a generator works, adding one, verification, versioning |
+| [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |
 | [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |

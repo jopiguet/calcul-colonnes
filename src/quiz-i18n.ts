@@ -1,5 +1,7 @@
 import type { ExplanationKey, Level, MistakeKey, PromptKey, SkillStatus, Topic, TopicGroup } from "../shared/quiz";
 import { currentLang, type Lang } from "./i18n";
+import { currentBank, localized } from "../shared/quiz";
+import { CHEM_EXPLANATIONS, CHEM_GROUP, CHEM_LEVEL, CHEM_MISTAKES, CHEM_PROMPTS, CHEM_SKILLS, CHEM_TEXTS, CHEM_TOPICS } from "./quiz-i18n-chemistry";
 
 /** Texts of the multiple-choice part, in French, Spanish and English. */
 
@@ -70,6 +72,7 @@ const fr = {
   typedInvalid: "Écriture non reconnue",
   typedHint: "Fractions, π, √, e, ^ et ln acceptés · Entrée pour continuer",
   typedBadge: "⌨️ Au clavier",
+  ...CHEM_TEXTS.fr,
 };
 
 type QuizKey = keyof typeof fr;
@@ -141,6 +144,7 @@ const es: Record<QuizKey, string> = {
   typedInvalid: "Escritura no reconocida",
   typedHint: "Se aceptan fracciones, π, √, e, ^ y ln · Intro para seguir",
   typedBadge: "⌨️ Con el teclado",
+  ...CHEM_TEXTS.es,
 };
 
 const en: Record<QuizKey, string> = {
@@ -210,25 +214,28 @@ const en: Record<QuizKey, string> = {
   typedInvalid: "Not understood",
   typedHint: "Fractions, π, √, e, ^ and ln accepted · Enter to go on",
   typedBadge: "⌨️ Typed",
+  ...CHEM_TEXTS.en,
 };
 
 const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
-  fr: { school: "Lycée", university: "Université" },
-  es: { school: "Bachillerato", university: "Universidad" },
+  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr },
+  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es },
   en: {
     school: "High school",
     university: "University",
+    chemistry: CHEM_LEVEL.en,
   },
 };
 
 const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
-  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités" },
-  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad" },
-  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability" },
+  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr },
+  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es },
+  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en },
 };
 
 const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
   fr: {
+    ...CHEM_TOPICS.fr,
     derivatives: "Dérivées",
     integrals: "Intégrales",
     trigonometry: "Trigonométrie",
@@ -246,6 +253,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     graphs: "Lecture graphique",
   },
   es: {
+    ...CHEM_TOPICS.es,
     derivatives: "Derivadas",
     integrals: "Integrales",
     trigonometry: "Trigonometría",
@@ -263,6 +271,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     graphs: "Lectura de gráficas",
   },
   en: {
+    ...CHEM_TOPICS.en,
     derivatives: "Derivatives",
     integrals: "Integrals",
     trigonometry: "Trigonometry",
@@ -283,6 +292,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
 
 const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
   fr: {
+    ...CHEM_PROMPTS.fr,
     derivative: "Quelle est la dérivée de f ?",
     primitive: "Quelle est une primitive de f ?",
     integral: "Que vaut cette intégrale ?",
@@ -346,6 +356,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     planeFromEquation: "Lequel de ces plans a cette équation ?",
   },
   es: {
+    ...CHEM_PROMPTS.es,
     derivative: "¿Cuál es la derivada de f?",
     primitive: "¿Cuál es una primitiva de f?",
     integral: "¿Cuánto vale esta integral?",
@@ -409,6 +420,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     planeFromEquation: "¿Cuál de estos planos tiene esta ecuación?",
   },
   en: {
+    ...CHEM_PROMPTS.en,
     derivative: "What is the derivative of f?",
     primitive: "What is an antiderivative of f?",
     integral: "What is the value of this integral?",
@@ -475,6 +487,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
 
 const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
   fr: {
+    ...CHEM_EXPLANATIONS.fr,
     powerRule: "Dérivée d'une puissance, terme par terme ; la dérivée d'une constante est nulle.",
     chainRule: "Dérivée d'une fonction composée : on multiplie par la dérivée de l'intérieur.",
     productRule: "Dérivée d'un produit.",
@@ -570,6 +583,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     planeFromEquation: "On pose deux coordonnées à 0 pour trouver où le plan coupe chaque axe : x = d/a, y = d/b, z = d/c.",
   },
   es: {
+    ...CHEM_EXPLANATIONS.es,
     powerRule: "Derivada de una potencia, término a término; la derivada de una constante es cero.",
     chainRule: "Regla de la cadena: se multiplica por la derivada de la función interior.",
     productRule: "Derivada de un producto.",
@@ -665,6 +679,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     planeFromEquation: "Se ponen dos coordenadas a 0 para hallar dónde corta el plano cada eje: x = d/a, y = d/b, z = d/c.",
   },
   en: {
+    ...CHEM_EXPLANATIONS.en,
     powerRule: "Derivative of a power, term by term; the derivative of a constant is zero.",
     chainRule: "Chain rule: multiply by the derivative of the inner function.",
     productRule: "Derivative of a product.",
@@ -764,6 +779,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
 /** Names of the kinds of question, by id. */
 const SKILL_NAMES: Record<Lang, Record<string, string>> = {
   fr: {
+    ...CHEM_SKILLS.fr,
     "derivatives.polynomial": "Dérivée d'un polynôme",
     "derivatives.trig": "Dérivée de sin(bx), cos(bx)",
     "derivatives.exponential": "Dérivée de e^(ax+b)",
@@ -876,6 +892,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     "graphs.planeFromEquation": "Plan à partir de son équation",
   },
   es: {
+    ...CHEM_SKILLS.es,
     "derivatives.polynomial": "Derivada de un polinomio",
     "derivatives.trig": "Derivada de sen(bx), cos(bx)",
     "derivatives.exponential": "Derivada de e^(ax+b)",
@@ -988,6 +1005,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     "graphs.planeFromEquation": "Plano a partir de su ecuación",
   },
   en: {
+    ...CHEM_SKILLS.en,
     "derivatives.polynomial": "Derivative of a polynomial",
     "derivatives.trig": "Derivative of sin(bx), cos(bx)",
     "derivatives.exponential": "Derivative of e^(ax+b)",
@@ -1104,6 +1122,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
 /** Names of the mistake types (MISTAKES in shared/quiz/types.ts). */
 const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
   fr: {
+    ...CHEM_MISTAKES.fr,
     exponentKept: "Exposant non abaissé",
     coefficientMissing: "Exposant non descendu en facteur",
     constantKept: "Dérivée d'une constante non nulle",
@@ -1208,6 +1227,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     coefficientsAsIntercepts: "Coefficients pris pour les points d'intersection",
   },
   es: {
+    ...CHEM_MISTAKES.es,
     exponentKept: "Exponente sin reducir",
     coefficientMissing: "Exponente no bajado como factor",
     constantKept: "Derivada de una constante distinta de cero",
@@ -1312,6 +1332,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     coefficientsAsIntercepts: "Coeficientes tomados por los cortes con los ejes",
   },
   en: {
+    ...CHEM_MISTAKES.en,
     exponentKept: "Exponent not lowered",
     coefficientMissing: "Exponent not brought down as a factor",
     constantKept: "Derivative of a constant not zero",
@@ -1436,7 +1457,14 @@ export const topicName = (topic: Topic): string => TOPIC_NAMES[currentLang()][to
 export const groupName = (group: TopicGroup): string => GROUP_NAMES[currentLang()][group];
 export const promptText = (key: PromptKey): string => PROMPTS[currentLang()][key];
 export const explanationText = (key: ExplanationKey): string => EXPLANATIONS[currentLang()][key];
-export const skillName = (skill: string): string => SKILL_NAMES[currentLang()][skill] ?? skill;
+export function skillName(skill: string): string {
+  const known = SKILL_NAMES[currentLang()][skill];
+  if (known) return known;
+  // A unit of the question bank: "gases.concepts1A" → "Concepts 1A – The perfect gas".
+  const unit = /\.concepts(\w+)$/.exec(skill)?.[1];
+  const found = unit ? currentBank().units.find((u) => u.id === unit) : undefined;
+  return found ? qt("conceptsOf", { unit: found.id, title: localized(found.title, currentLang()) }) : skill;
+}
 export const statusName = (status: SkillStatus): string => qt(STATUS_KEYS[status]);
 export const mistakeName = (mistake: string): string =>
   MISTAKE_NAMES[currentLang()][mistake as MistakeKey] ?? mistake;

@@ -2,12 +2,16 @@ import katex from "katex";
 import "katex/dist/katex.min.css";
 import {
   ANSWER_MODES,
-  LEVELS,
+  CHEMISTRY_TOPICS,
+  MATH_LEVELS,
   OPTION_COUNT,
   QUIZ_COUNTS,
   QUIZ_VERSION,
   TOPICS,
   TYPED_MAX,
+  bankRevision,
+  localized,
+  registerBank,
   TOPIC_GROUPS,
   generateQuiz,
   gradeQuiz,
@@ -19,6 +23,7 @@ import {
   type AnswerMode,
   type GivenAnswer,
   type Level,
+  type Localized,
   type Option,
   type Question,
   type QuizSpec,
@@ -29,7 +34,7 @@ import { drawGraph } from "./graph";
 import { currentLang } from "./i18n";
 import { explanationText, groupName, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
 import { saveSettings, type Settings } from "./settings";
-import { store, type User } from "./store";
+import { quizBank, store, type User } from "./store";
 
 /**
  * Multiple-choice tests. Three screens: settings, one question at a time,
@@ -71,6 +76,8 @@ export const quizBusy = (): boolean => run !== null;
 
 export interface QuizContext {
   user: User;
+  /** Mathematics, or physical chemistry (its own topics, written questions from the bank). */
+  subject: "maths" | "chemistry";
   settings: Settings;
   rerender(): void;
   /** Opens the player's progress page. */
@@ -95,6 +102,43 @@ async function reviewFocus(user: User, level: Level, topics: Topic[]): Promise<s
 }
 
 const LETTERS = ["A", "B", "C", "D"];
+
+let bankLoadedAt = 0;
+/** The bank changes only on an import: asked again after a few minutes. */
+const BANK_FOR = 5 * 60_000;
+
+/**
+ * Loads the question bank for the physical chemistry tests. A failure keeps
+ * the bank already loaded (or none): the tests then have only calculations.
+ */
+export async function loadBank(): Promise<void> {
+  if (Date.now() - bankLoadedAt < BANK_FOR) return;
+  try {
+    registerBank(await quizBank.load());
+    bankLoadedAt = Date.now();
+  } catch {
+    // offline: generated questions only
+  }
+}
+
+/** A written text with its inline $…$ formulas, in the interface's language (English otherwise). */
+function rich(text: Localized, cls: string, tag: "p" | "span" | "div" = "span"): HTMLElement {
+  const node = el(tag, cls);
+  const shown = localized(text, currentLang());
+  shown.split(/(\$[^$]+\$)/).forEach((part) => {
+    if (part.startsWith("$") && part.endsWith("$") && part.length > 1) node.append(math(part.slice(1, -1)));
+    else if (part) node.append(part);
+  });
+  if (shown !== text[currentLang() as keyof Localized] && currentLang() !== "en") node.lang = "en";
+  return node;
+}
+
+/** The question's sentence: its own text for a written question, the sentence of its kind otherwise. */
+const promptView = (q: Question): HTMLElement =>
+  q.prompt.text ? rich(q.prompt.text, "quiz-prompt", "p") : el("p", "quiz-prompt", promptText(q.prompt.key));
+
+/** The level of this subject's tests. */
+const levelOf = (ctx: QuizContext): Level => (ctx.subject === "chemistry" ? "chemistry" : ctx.settings.quizLevel);
 
 /** Spanish writes sen and arcsen. */
 const macros = (): Record<string, string> =>
@@ -126,8 +170,9 @@ function typedView(text: string): HTMLElement {
   return box;
 }
 
-/** An option in the corrections: its graph and formula, or its formula. */
+/** An option in the corrections: its text, its graph and formula, or its formula. */
 function optionView(option: Option): HTMLElement {
+  if (option.text) return rich(option.text, "option-text");
   const formula = math(`\\displaystyle ${option.tex}`);
   if (!option.graph) return formula;
   const box = el("span", "option-graph");
@@ -147,8 +192,11 @@ function start(spec: QuizSpec, mode: AnswerMode): void {
 }
 
 export function quizView(ctx: QuizContext): HTMLElement {
-  if (result) return resultView(ctx, result);
-  if (run) return questionView(ctx, run);
+  // A test of the other subject (opened from the home page) is not shown here.
+  const level = levelOf(ctx);
+  const mine = (spec: QuizSpec): boolean => (spec.level === "chemistry") === (level === "chemistry");
+  if (result && mine(result.run.spec)) return resultView(ctx, result);
+  if (run && mine(run.spec)) return questionView(ctx, run);
   return setupView(ctx);
 }
 
@@ -159,9 +207,10 @@ export function quizView(ctx: QuizContext): HTMLElement {
  * topic of the level when none of those chosen does (a choice made at the
  * other level, or before a topic existed).
  */
-function chosenTopics(settings: Settings): Topic[] {
-  const available = topicsFor(settings.quizLevel);
-  const chosen = settings.quizTopics.filter((t) => available.includes(t));
+function chosenTopics(ctx: QuizContext): Topic[] {
+  const available = topicsFor(levelOf(ctx));
+  const saved = ctx.subject === "chemistry" ? ctx.settings.chemTopics : ctx.settings.quizTopics;
+  const chosen = saved.filter((t) => available.includes(t));
   return chosen.length > 0 ? chosen : available;
 }
 
@@ -173,12 +222,16 @@ function setupView(ctx: QuizContext): HTMLElement {
     ctx.rerender();
   };
 
+  const chemistry = ctx.subject === "chemistry";
+  const testLevel = levelOf(ctx);
   const wrap = el("section", "sheet quiz-setup");
-  wrap.append(el("h1", "title", qt("setupTitle")));
+  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : "setupTitle")));
+  if (chemistry && bankRevision() === 0) wrap.append(el("p", "hint", qt("noBank")));
 
+  // Physical chemistry has one level: no choice to make (the fieldset is left out).
   const level = el("fieldset", "segmented");
   level.append(el("legend", "field-label", qt("level")));
-  for (const value of LEVELS) {
+  for (const value of MATH_LEVELS) {
     const option = button(value === settings.quizLevel ? "segment on" : "segment", levelName(value), () =>
       save({ quizLevel: value }),
     );
@@ -187,8 +240,8 @@ function setupView(ctx: QuizContext): HTMLElement {
   }
 
   // Topics by group, those of the chosen level only (some exist at one level).
-  const available = topicsFor(settings.quizLevel);
-  const effective = chosenTopics(settings);
+  const available = topicsFor(testLevel);
+  const effective = chosenTopics(ctx);
   const topics = el("fieldset", "topics");
   topics.append(el("legend", "field-label", qt("topics")));
   for (const { group, topics: members } of TOPIC_GROUPS) {
@@ -203,12 +256,12 @@ function setupView(ctx: QuizContext): HTMLElement {
       box.value = topic;
       box.checked = effective.includes(topic);
       box.addEventListener("change", () => {
-        const chosen = TOPICS.filter((t) => (t === topic ? box.checked : effective.includes(t)));
+        const chosen = (chemistry ? CHEMISTRY_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
         if (chosen.length === 0) {
           box.checked = true; // at least one topic stays selected
           return;
         }
-        save({ quizTopics: chosen });
+        save(chemistry ? { chemTopics: chosen } : { quizTopics: chosen });
       });
       label.append(box, el("span", undefined, topicName(topic)));
       block.append(label);
@@ -256,7 +309,7 @@ function setupView(ctx: QuizContext): HTMLElement {
   const reviewInfo = el("p", "hint review-info");
   review.append(reviewLabel, reviewInfo);
   if (settings.quizReview) {
-    void reviewFocus(ctx.user, settings.quizLevel, effective).then((focus) => {
+    void reviewFocus(ctx.user, testLevel, effective).then((focus) => {
       reviewInfo.textContent = focus.length > 0 ? qt("reviewCount", { n: focus.length }) : qt("reviewNone");
     });
   }
@@ -264,12 +317,14 @@ function setupView(ctx: QuizContext): HTMLElement {
   const go = button("primary", qt("start"), async () => {
     go.disabled = true;
     const topicsChosen = [...effective];
-    const focus = settings.quizReview ? await reviewFocus(ctx.user, settings.quizLevel, topicsChosen) : [];
-    start({ seed: newSeed(), level: settings.quizLevel, topics: topicsChosen, count: settings.quizCount, focus }, settings.quizMode);
+    const focus = settings.quizReview ? await reviewFocus(ctx.user, testLevel, topicsChosen) : [];
+    const bank = chemistry ? { bank: bankRevision() } : {};
+    start({ seed: newSeed(), level: testLevel, topics: topicsChosen, count: settings.quizCount, focus, ...bank }, settings.quizMode);
     ctx.rerender();
   });
 
-  wrap.append(level, topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
+  if (!chemistry) wrap.append(level);
+  wrap.append(topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
   queueMicrotask(() => go.focus());
   return wrap;
 }
@@ -286,6 +341,7 @@ function questionView(ctx: QuizContext, current: Run): HTMLElement {
 
   const head = el("div", "quiz-head");
   const where = el("span", "quiz-topic", topicName(q.topic));
+  if (q.prompt.source) where.append(" · ", el("span", "quiz-source", q.prompt.source));
   if (q.review) where.prepend(el("span", "badge is-review", qt("reviewBadge")), " ");
   head.append(el("span", "quiz-count", qt("questionOf", { n: current.index + 1, count: questions.length })), where);
   const progress = el("div", "progress");
@@ -296,11 +352,12 @@ function questionView(ctx: QuizContext, current: Run): HTMLElement {
   fill();
   progress.append(bar);
 
-  const prompt = el("p", "quiz-prompt", promptText(q.prompt.key));
+  const prompt = promptView(q);
   const drawn = q.options.some((o) => o.graph);
+  const written = q.options.some((o) => o.text);
 
   const typed = typedHere(current, q);
-  const list = el("div", drawn ? "choices graphs" : "choices");
+  const list = el("div", drawn ? "choices graphs" : written ? "choices written" : "choices");
   list.setAttribute("role", "radiogroup");
   list.setAttribute("aria-label", qt("options"));
   const choose = (i: number): void => {
@@ -316,7 +373,11 @@ function questionView(ctx: QuizContext, current: Run): HTMLElement {
     choice.append(
       el("span", "letter", LETTERS[i]),
       // A drawn option is named by its letter only: its formula would give the answer away.
-      option.graph ? drawGraph(option.graph, qt("graphOption", { letter: LETTERS[i]! }), "small") : math(`\\displaystyle ${option.tex}`),
+      option.text
+        ? rich(option.text, "choice-text")
+        : option.graph
+          ? drawGraph(option.graph, qt("graphOption", { letter: LETTERS[i]! }), "small")
+          : math(`\\displaystyle ${option.tex}`),
     );
     choice.addEventListener("click", () => choose(i));
     list.append(choice);
@@ -441,9 +502,9 @@ function submit(ctx: QuizContext, done: Run): void {
   result = current;
   run = null;
   ctx.rerender();
-  const { seed, level, topics, count, focus = [] } = done.spec;
+  const { seed, level, topics, count, focus = [], bank } = done.spec;
   store
-    .addQuiz({ userId: ctx.user.id, seed, level, topics, count, focus, version: QUIZ_VERSION, answers: done.answers, mode: done.mode })
+    .addQuiz({ userId: ctx.user.id, seed, level, topics, count, focus, version: QUIZ_VERSION, answers: done.answers, mode: done.mode, ...(bank === undefined ? {} : { bank }) })
     .then(() => (current.status = "saved"))
     .catch(() => (current.status = "unsaved"))
     .finally(() => {
@@ -453,6 +514,49 @@ function submit(ctx: QuizContext, done: Run): void {
 }
 
 // ------------------------------------------------------------------- results
+
+/**
+ * "Report this question": a wrong answer, an unclear text. Sent with an
+ * optional note; the author reads them with `npm run quiz:flags`.
+ */
+function flagControl(ctx: QuizContext, q: Question): HTMLElement {
+  const box = el("div", "flag");
+  const open = button("ghost small flag-open", qt("flagQuestion"), () => {
+    open.hidden = true;
+    form.hidden = false;
+    note.focus();
+  });
+  const form = el("form", "flag-form");
+  form.hidden = true;
+  const note = el("input", "flag-note");
+  note.type = "text";
+  note.maxLength = 500;
+  note.placeholder = qt("flagNote");
+  note.setAttribute("aria-label", qt("flagNote"));
+  const send = el("button", "ghost small", qt("flagSend"));
+  send.type = "submit";
+  const status = el("span", "flag-status");
+  status.setAttribute("role", "status");
+  form.append(note, send);
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    send.disabled = true;
+    // A written question by its id; a generated one by its formula.
+    const question = q.prompt.id && q.verify.kind === "choice" ? q.prompt.id : q.prompt.tex || q.prompt.id || q.skill;
+    quizBank
+      .flag({ userId: ctx.user.id, skill: q.skill, question: question.slice(0, 2000), note: note.value.trim() })
+      .then(() => {
+        form.hidden = true;
+        status.textContent = qt("flagThanks");
+      })
+      .catch(() => {
+        send.disabled = false;
+        status.textContent = qt("flagFailed");
+      });
+  });
+  box.append(open, form, status);
+  return box;
+}
 
 function resultView(ctx: QuizContext, done: Result): HTMLElement {
   const { questions, answers, spec, mode } = done.run;
@@ -474,7 +578,8 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
   actions.append(
     button("primary", qt("newTest"), async () => {
       const focus = ctx.settings.quizReview ? await reviewFocus(ctx.user, spec.level, spec.topics) : [];
-      start({ ...spec, seed: newSeed(), focus }, mode);
+      const bank = spec.level === "chemistry" ? { bank: bankRevision() } : {};
+      start({ ...spec, seed: newSeed(), focus, ...bank }, mode);
       ctx.rerender();
     }),
     button("ghost", qt("retry"), () => {
@@ -497,9 +602,10 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
     const item = el("li", ok ? "review-item good" : "review-item bad");
     const head = el("div", "review-head");
     head.append(el("span", "review-mark", ok ? "✅" : "❌"), el("span", "quiz-topic", topicName(q.topic)));
+    if (q.prompt.source) head.append(el("span", "quiz-source", q.prompt.source));
     if (q.review) head.append(el("span", "badge is-review", qt("reviewBadge")));
     if (mode === "typed" && typeable(q)) head.append(el("span", "badge is-typed", qt("typedBadge")));
-    item.append(head, el("p", "quiz-prompt", promptText(q.prompt.key)), ...givens(q));
+    item.append(head, promptView(q), ...givens(q));
 
     const line = (label: string, content: HTMLElement | string, kind: string): HTMLElement => {
       const row = el("p", `review-line ${kind}`);
@@ -520,8 +626,9 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
     }
     item.append(line(qt("rightAnswer"), optionView(q.options[q.correct]!), "right"));
     const why = el("div", "explanation");
-    why.append(el("p", undefined, explanationText(q.explanation.key)), math(q.explanation.tex, true));
-    item.append(why);
+    if (q.explanation.text) why.append(rich(q.explanation.text, "", "p"));
+    else why.append(el("p", undefined, explanationText(q.explanation.key)), math(q.explanation.tex, true));
+    item.append(why, flagControl(ctx, q));
     list.append(item);
   });
   wrap.append(list);

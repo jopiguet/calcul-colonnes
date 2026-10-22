@@ -1,5 +1,23 @@
 # Changelog
 
+## 6.5.0
+
+- **Physical chemistry,** a new activity in a new *Sciences* group: multiple-choice tests on *Atkins' Physical Chemistry*, 12th edition. This release covers Focuses 1–3: gases, the First Law, the Second and Third Laws.
+  - **28 kinds of calculation,** generated and graded like the maths: perfect gas, partial pressures, molecular speeds, mean free path, compression factor, van der Waals, critical constants; expansion work, ΔU and ΔH, Hess's and Kirchhoff's laws, adiabatic changes; entropy of expansion, heating and transitions, Trouton, Carnot, reaction entropy, ΔG, the crossover temperature, G and pressure, Debye.
+  - **Units and significant figures:** data to three figures, options with their unit. `shared/quiz/units.ts`.
+  - **20 new mistake types,** among them °C used for K, dm³ taken as m³, kJ mixed with J, R in the wrong units, C_p for C_V, products and reactants swapped, elements given a zero entropy, isothermal for adiabatic, log₁₀ for ln.
+  - **Typed answers** for the calculations, in the unit shown; a question whose options are too close to tell apart, or a value of a million or more, keeps its four options.
+- **Question bank:** concept questions written from a book, kept out of the project and imported with `npm run quiz:import`. See [Question bank](docs/question-bank.md).
+  - **Texts by language,** English required, French and Spanish optional: no question text in the code.
+  - **Revisions:** a test stores the bank revision it drew from, so corrected, added or removed questions never change an old test. An import that would mix books, move a unit or reuse a removed id is refused.
+  - **Each Atkins Topic is one kind of question,** with its own progress and review.
+  - **The Atkins file** (not in the project): 155 questions for Topics 1A–3E.
+- **⚑ Report this question,** in the corrections of every test, with an optional note; `npm run quiz:flags` lists the reports and resolves them.
+- **Database:** migration `013_question_bank`. Tables `quiz_bank_meta`, `quiz_bank_units`, `quiz_bank`, `quiz_flags`; `bank` on `quiz_results`, whose `level` accepts `chemistry`.
+- **API:** `GET /api/quiz/bank`, `POST /api/quiz/flags`; `bank` on `POST /api/quizzes`.
+- **Configuration:** `QUIZ_BANK_FILE`, imported by the maintenance when the database has no bank.
+- **Checks:** `check:quiz` covers the chemistry level with an invented bank: right answers recomputed, typed values, KaTeX rendering of the written texts. 72 browser tests.
+
 ## 6.4.1
 
 - **Fix: a German book could replace the Spanish one.**

@@ -21,13 +21,18 @@ import { geometry } from "./geometry";
 import { graphs } from "./graphs";
 import { multivariable } from "./multivariable";
 import { series } from "./series";
+import { gases } from "./gases";
+import { firstLaw } from "./firstlaw";
+import { secondLaw } from "./secondlaw";
+import { EMPTY_BANK, bankSkills, type Bank } from "./bank";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
 export * from "./types";
 export * from "./progress";
 export * from "./typed";
+export * from "./bank";
 
-const GENERATORS: Record<Topic, Record<Level, Record<string, Generator>>> = {
+const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>>> = {
   derivatives,
   integrals,
   trigonometry,
@@ -43,11 +48,14 @@ const GENERATORS: Record<Topic, Record<Level, Record<string, Generator>>> = {
   series,
   multivariable,
   graphs,
+  gases,
+  firstLaw,
+  secondLaw,
 };
 
 /** Every kind of question, by id ("topic.name"). */
 const SKILLS = new Map<string, { topic: Topic; generator: Generator; levels: Level[] }>();
-for (const [topic, byLevel] of Object.entries(GENERATORS) as [Topic, Record<Level, Record<string, Generator>>][]) {
+for (const [topic, byLevel] of Object.entries(GENERATORS) as [Topic, Partial<Record<Level, Record<string, Generator>>>][]) {
   for (const [level, generators] of Object.entries(byLevel) as [Level, Record<string, Generator>][]) {
     for (const [name, generator] of Object.entries(generators)) {
       const id = `${topic}.${name}`;
@@ -72,20 +80,40 @@ function available(id: string, version: number): boolean {
 }
 
 export const SKILL_IDS: string[] = [...SKILLS.keys()];
-export const isSkill = (id: string): boolean => SKILLS.has(id);
-export const skillTopic = (id: string): Topic | undefined => SKILLS.get(id)?.topic;
+
+/** The question bank registered here (the browser fetches it, the server loads it). */
+let bank: Bank = EMPTY_BANK;
+
+/** Makes a bank's questions part of the tests: call before generating one that uses it. */
+export function registerBank(next: Bank): void {
+  bank = next;
+}
+
+export const bankRevision = (): number => bank.revision;
+/** The registered bank (its units name the bank's kinds of question). */
+export const currentBank = (): Bank => bank;
+
+/** The bank's kinds of question at a revision, by id. */
+function bankKinds(revision: number): Map<string, { topic: Topic; generator: Generator }> {
+  return new Map(bankSkills(bank, revision).map((k) => [k.id, { topic: k.topic, generator: k.draw }]));
+}
+
+export const isSkill = (id: string): boolean => SKILLS.has(id) || bankKinds(bank.revision).has(id);
+export const skillTopic = (id: string): Topic | undefined => SKILLS.get(id)?.topic ?? bankKinds(bank.revision).get(id)?.topic;
 
 /** Topics with at least one kind of question at this level (some exist at one level only). */
 export function topicsFor(level: Level, version = QUIZ_VERSION): Topic[] {
   return TOPICS.filter((topic) => skillsFor(level, [topic], version).length > 0);
 }
 
-/** Kinds of question a test with this level and these topics can contain. */
-export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION): string[] {
-  return SKILL_IDS.filter((id) => {
+/** Kinds of question a test with this level and these topics can contain (the bank's at its current revision). */
+export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION, revision = bank.revision): string[] {
+  const generated = SKILL_IDS.filter((id) => {
     const skill = SKILLS.get(id)!;
     return topics.includes(skill.topic) && skill.levels.includes(level) && available(id, version);
   });
+  if (level !== "chemistry") return generated;
+  return [...generated, ...[...bankKinds(revision)].filter(([, k]) => topics.includes(k.topic)).map(([id]) => id)];
 }
 
 /** Share of a test given to review questions, and how often one kind may come back in a test. */
@@ -147,6 +175,8 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
         a.zs!.length === b.zs!.length &&
         a.zs!.every((z) => b.zs!.some((w) => close(z[0], w[0], version) && close(z[1], w[1], version)))
       );
+    case "choice":
+      return false; // written answers: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);
   }
@@ -190,6 +220,8 @@ export interface QuizSpec {
   focus?: string[];
   /** Generator version (QUIZ_VERSION when omitted). */
   version?: number;
+  /** Revision of the question bank the test draws from (the registered bank's when omitted). */
+  bank?: number;
 }
 
 /** How many review questions a test of `count` questions gets for these kinds. */
@@ -201,11 +233,13 @@ export function reviewCount(count: number, focus: string[]): number {
 /** What makes two questions the same: the formula, and for a graph its id (a formula alone is unchanged). */
 const promptKey = (prompt: Draft["prompt"]): string => (prompt.id === undefined ? prompt.tex : `${prompt.tex}#${prompt.id}`);
 
-export function generateQuiz({ seed, level, topics: asked, count, focus = [], version = QUIZ_VERSION }: QuizSpec): Question[] {
+export function generateQuiz({ seed, level, topics: asked, count, focus = [], version = QUIZ_VERSION, bank: revision = bank.revision }: QuizSpec): Question[] {
   const rng = createRng(seed);
+  if (revision > bank.revision) throw new Error(`question bank revision ${revision} is not loaded (${bank.revision} is)`);
+  const fromBank = level === "chemistry" ? bankKinds(revision) : new Map<string, { topic: Topic; generator: Generator }>();
   // Topics without a kind of question at this level are left out (every topic
   // of version 2 and before has both levels, so no saved test changes).
-  const topics = asked.filter((topic) => skillsFor(level, [topic], version).length > 0);
+  const topics = asked.filter((topic) => skillsFor(level, [topic], version, revision).length > 0);
   if (topics.length === 0) throw new Error(`no topic with questions at level ${level}`);
   // Topics in turn, so that a test covers all the chosen ones evenly.
   const order = rng.shuffle(topics);
@@ -227,22 +261,24 @@ export function generateQuiz({ seed, level, topics: asked, count, focus = [], ve
 
   // Review questions first (only when there is something to review: without focus,
   // the random draws are exactly those of a plain test).
-  const kinds = focus.filter((id) => isSkill(id) && available(id, version));
+  const kinds = focus.filter((id) => (SKILLS.has(id) && available(id, version)) || fromBank.has(id));
   const reviews = reviewCount(count, kinds);
   const reviewOrder = reviews > 0 ? rng.shuffle(kinds) : [];
   for (let i = 0; i < reviews; i++) {
     const id = reviewOrder[i % reviewOrder.length]!;
-    const skill = SKILLS.get(id)!;
+    const skill = SKILLS.get(id) ?? fromBank.get(id)!;
     questions.push(make(skill.topic, true, () => [id, skill.generator]));
   }
 
   for (let i = 0; i < count - reviews; i++) {
     const topic = order[i % order.length]!;
-    const entries = Object.entries(GENERATORS[topic][level]).filter(([name]) => available(`${topic}.${name}`, version));
-    questions.push(make(topic, false, () => {
-      const [name, generator] = rng.pick(entries);
-      return [`${topic}.${name}`, generator];
-    }));
+    const entries: [string, Generator][] = [
+      ...Object.entries(GENERATORS[topic][level] ?? {})
+        .filter(([name]) => available(`${topic}.${name}`, version))
+        .map(([name, generator]): [string, Generator] => [`${topic}.${name}`, generator]),
+      ...[...fromBank].filter(([, k]) => k.topic === topic).map(([id, k]): [string, Generator] => [id, k.generator]),
+    ];
+    questions.push(make(topic, false, () => rng.pick(entries)));
   }
   return rng.shuffle(questions);
 }

@@ -24,7 +24,7 @@ import "@fontsource/atkinson-hyperlegible-mono/latin-400.css";
 import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
-import { quizView } from "./quiz";
+import { loadBank, quizView } from "./quiz";
 import { activityBar, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
 import { vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
@@ -158,6 +158,7 @@ async function render(): Promise<void> {
       app.replaceChildren(topBar(), await scoresView());
     } else if (state.view === "progress") {
       const who = progressUser ?? state.user;
+      await loadBank(); // the bank's units name its kinds of question
       app.replaceChildren(topBar(), await progressView(who, () => show(progressBack)));
     } else if (state.settings.mode === "home") {
       app.replaceChildren(topBar(), await homeView({ user: state.user, open }));
@@ -174,11 +175,15 @@ async function render(): Promise<void> {
       app.replaceChildren(topBar(), activityBar(dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
+      const subject = state.settings.quizSubject;
+      // Physical chemistry: the written questions are part of the tests, on both sides.
+      if (subject === "chemistry") await loadBank();
       app.replaceChildren(
         topBar(),
-        activityBar(qt("modeQuiz"), goHome),
+        activityBar(qt(subject === "chemistry" ? "modeChemistry" : "modeQuiz"), goHome),
         quizView({
           user,
+          subject,
           settings: state.settings,
           rerender: () => void render(),
           showProgress: () => openProgress(user, "play"),
@@ -240,6 +245,7 @@ function next(): void {
 function open(activity: Activity): void {
   if (activity.mode === "vocab") updateSettings({ mode: "vocab", vocabBook: activity.book });
   else if (activity.mode === "discover") updateSettings({ mode: "discover", discoverActivity: activity.activity });
+  else if (activity.mode === "quiz") updateSettings({ mode: "quiz", quizSubject: activity.subject ?? "maths" });
   else updateSettings({ mode: activity.mode });
   if (activity.mode === "columns") next();
   else void render();
