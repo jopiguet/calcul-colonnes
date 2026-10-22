@@ -35,7 +35,8 @@ function localizedText(value: unknown, where: string): Localized {
   for (const [lang, text] of Object.entries(value)) {
     if (!LANGS.includes(lang)) throw new Error(`${where}: unknown language "${lang}" (en, fr, es)`);
     if (typeof text !== "string" || !text.trim() || text.length > 1500) throw new Error(`${where}: "${lang}" must be a text of at most 1500 characters`);
-    if ((text.match(/\$/g) ?? []).length % 2 !== 0) throw new Error(`${where}: "${lang}" has an unclosed $…$ formula`);
+    const outsideCode = text.replace(/`[^`]+`/g, "");
+    if ((outsideCode.match(/\$/g) ?? []).length % 2 !== 0) throw new Error(`${where}: "${lang}" has an unclosed $…$ formula`);
     out[lang] = text.trim();
   }
   if (!out.en) throw new Error(`${where}: "en" is required`);

@@ -239,8 +239,8 @@ right.
 | Field | |
 |---|---|
 | `seed` | 0 … 2³² − 1 |
-| `level` | `school`, `university`, `chemistry` or `chemistryAdvanced` |
-| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw` for `chemistry` and `chemistryAdvanced` |
+| `level` | `school`, `university`, `chemistry`, `chemistryAdvanced` or `linux` |
+| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw` for `chemistry` and `chemistryAdvanced`; `linuxFiles`, `linuxText`, `linuxShell`, `linuxProcesses`, `linuxSystem`, `linuxNetwork`, `linuxTools` for `linux` |
 | `count` | 1 … 30 (the app offers 5, 10, 15, 20) |
 | `focus` | Kinds of question brought back for review; known ids, without duplicates. Optional, default `[]`. |
 | `version` | Generator version; must equal the server's `QUIZ_VERSION`. Optional, default the server's. |

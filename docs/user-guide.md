@@ -290,6 +290,31 @@ The concept questions are imported on the server from a file kept by its
 administrator. Without it, the page says so and tests hold calculations
 only.
 
+## Linux
+
+Activity **🐧 Linux**, in the *Informatique* group (*Informática*,
+*Computing*): multiple-choice tests on the command line. Settings, keys,
+typed answers and results work as for the [QCM](#multiple-choice-tests);
+there is one level.
+
+| Topic | Content |
+|---|---|
+| Fichiers et permissions | `cd`, `ls`, links, `find`, `chmod` and `umask`, `tar` and `zip` |
+| Traitement de texte | `grep`, `sed`, `awk`, `cut`, `sort`, `uniq`, pipelines |
+| Le shell | Redirections, expansions, conditions and loops, variables |
+| Processus et services | `ps`, signals, jobs, `systemctl`, `cron` and `at` |
+| Système, disques, paquets | `df`, `du`, `mount`, users and groups, `apt` and `dnf` |
+| Réseau et SSH | `ip`, `ss`, `curl`, `rsync`, `ssh`, `dig` |
+| Outils à installer | `rg`, `fd`, `fzf`, `bat`, `jq`, `htop`, `tmux`, `hyperfine`, `shellcheck`, `mtr`, `nmap`… |
+
+Commands are shown as code. A question about a command that a default
+install does not have shows a *📦* badge with the package name, and its
+correction says how to install it on Debian and Ubuntu, Fedora and macOS.
+
+Some questions are generated each time: `chmod` modes in both directions,
+the modes left by a `umask`, and when a crontab line runs. An octal mode can
+be typed with *Au clavier*.
+
 ## Progress and review of mistakes
 
 <img src="images/progress.png" width="260" alt="Progress page">

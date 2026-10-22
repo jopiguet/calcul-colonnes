@@ -9,13 +9,21 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /** Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws. */
 export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw";
-export type Topic = MathTopic | ChemistryTopic;
+/** The Linux command line: core commands by area, then tools that need installing. */
+export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux"];
+/** Topics of the Linux test. */
+export const LINUX_TOPICS: LinuxTopic[] = ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools"];
+/** The three subjects of the tests, each with its own levels and topics. */
+export type Subject = "maths" | "chemistry" | "linux";
+export const subjectOf = (level: Level): Subject =>
+  level === "linux" ? "linux" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw"];
 /** The levels offered in the mathematics test's settings. */
@@ -24,9 +32,9 @@ export const MATH_LEVELS: Level[] = ["school", "university"];
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxInstall";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -34,6 +42,8 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "geometry", topics: ["geometry"] },
   { group: "probability", topics: ["probability"] },
   { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw"] },
+  { group: "linuxCommands", topics: ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork"] },
+  { group: "linuxInstall", topics: ["linuxTools"] },
 ];
 
 /**
@@ -135,7 +145,12 @@ export type PromptKey =
   | "gibbsEnergy"
   | "crossoverTemperature"
   | "gibbsPressure"
-  | "debyeEntropy";
+  | "debyeEntropy"
+  // Linux: written questions use "concept"; generated ones
+  | "chmodToOctal"
+  | "chmodToSymbolic"
+  | "umask"
+  | "cron";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -259,7 +274,10 @@ export type ExplanationKey =
   | "gibbsEnergy"
   | "crossoverTemperature"
   | "gibbsPressure"
-  | "debyeEntropy";
+  | "debyeEntropy"
+  | "chmod"
+  | "umask"
+  | "cron";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -403,6 +421,14 @@ export const MISTAKES = [
   "logBase", // log₁₀ used where ln is needed
   "linearForLog", // ΔT/T for ln(T₂/T₁)
   "ratioInverted", // a ratio upside down: V₁/V₂ for V₂/V₁
+  // Linux
+  "permissionClassesSwapped",
+  "permissionWeights",
+  "umaskOred",
+  "umaskExecOnFiles",
+  "cronFieldsSwapped",
+  "cronStepRead",
+  "cronDayFields",
   // everywhere
   "signError",
 ] as const;
@@ -495,6 +521,10 @@ export type Verify =
   | { kind: "count"; f: Fn; k: number; lo: number; hi: number } // the option is the number of solutions of f(x) = k on [lo, hi]
   /** A written question from the question bank: options are texts, nothing to compute. */
   | { kind: "choice" }
+  /** Unix permissions: options are octal modes ("754") or symbolic ones ("rwxr-xr-x") in their formula; the right one is `mode`. */
+  | { kind: "mode"; mode: number }
+  /** umask: options are "file/directory" octal modes ("640/750") in their formula. */
+  | { kind: "umask"; mask: number }
 
 export interface Draft {
   /**
@@ -519,7 +549,8 @@ export interface Draft {
   verify: Verify;
 }
 
-export type Generator = (rng: Rng) => Draft;
+/** A kind of question. `version` is the test's: written lists grow by version (docs/question-generators.md#versioning). */
+export type Generator = (rng: Rng, version?: number) => Draft;
 
 export interface Question {
   topic: Topic;

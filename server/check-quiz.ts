@@ -10,7 +10,8 @@
 import { readFileSync } from "node:fs";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, topicsFor, registerBank, localized,
+  generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  type Localized,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
 import { parseBankFile, toBank } from "../shared/quiz/bank-file.ts";
@@ -36,6 +37,15 @@ function simpson(f: (x: number) => number, a: number, b: number, n = 2000): numb
   let s = f(a) + f(b);
   for (let i = 1; i < n; i++) s += f(a + i * h) * (i % 2 ? 4 : 2);
   return (s * h) / 3;
+}
+
+/** A permission mode written in octal ("754") or as ls shows it ("rwxr-xr--"), read without the generator's helpers. */
+function modeOf(text: string): number {
+  if (/^[0-7]{3}$/.test(text)) return parseInt(text, 8);
+  if (!/^[r-][w-][x-][r-][w-][x-][r-][w-][x-]$/.test(text)) return -1;
+  let mode = 0;
+  for (let i = 0; i < 9; i++) if (text[i] !== "-") mode |= 1 << (8 - i);
+  return mode;
 }
 
 /** Whether an option is a right answer to the question, computed without the generator. */
@@ -205,6 +215,13 @@ function isRight(q: Question, o: Option): boolean {
     }
     case "choice":
       return o.tex.endsWith(":0"); // a bank question's right answer is its first text
+    case "mode":
+      return modeOf(o.tex) === v.mode;
+    case "umask": {
+      // Files start from 666 and directories from 777; the mask's bits are taken away.
+      const [file, dir] = o.tex.split("/").map((x) => parseInt(x, 8));
+      return file === (0o666 & ~v.mask) && dir === (0o777 & ~v.mask);
+    }
     case "complexRoot": {
       // zⁿ by repeated multiplication, against the target.
       const [x, y] = o.z!;
@@ -344,18 +361,25 @@ for (const level of LEVELS) {
       try {
         if (q.options.length !== 4) throw new Error("not 4 options");
         if (new Set(q.options.map((o) => o.tex)).size !== 4) throw new Error("repeated option");
-        if (q.verify.kind === "choice") {
-          // Written: texts with inline $…$ formulas.
+        // Written texts: inline $…$ formulas rendered in every language, as many code runs (`…`) in each
+        // (their placeholders, such as <unit>, may be translated).
+        const checkText = (text: Localized): void => {
+          const runs = codeRuns(text.en).length;
+          for (const lang of ["en", "fr", "es"]) {
+            const shown = localized(text, lang);
+            for (const part of richParts(shown)) if (part.kind === "math") render(part.value, `${where} (${lang})`);
+            if (text[lang as keyof Localized] !== undefined && codeRuns(shown).length !== runs) throw new Error(`code runs differ in ${lang}: ${shown}`);
+          }
+        };
+        if (q.verify.kind === "choice" && q.prompt.text) {
           for (const text of [q.prompt.text, q.explanation.text, ...q.options.map((o) => o.text)]) {
             if (!text) throw new Error("written question without its text");
-            for (const lang of ["en", "fr", "es"]) {
-              for (const [, tex] of localized(text, lang).matchAll(/\$([^$]+)\$/g)) render(tex!, `${where} (${lang})`);
-            }
+            checkText(text);
           }
         } else {
           render(q.prompt.tex, where);
           render(q.explanation.tex, where);
-          q.options.forEach((o) => render(o.tex, where));
+          q.options.forEach((o) => (o.text ? checkText(o.text) : render(o.tex, where)));
         }
         checkGraphs(q);
         if (typeable(q)) {

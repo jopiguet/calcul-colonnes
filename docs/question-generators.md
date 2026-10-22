@@ -285,9 +285,62 @@ no value of a million or more, options far enough apart.
 These kinds came with the level, so `QUIZ_VERSION` stayed at 2: no saved
 test could contain them.
 
+## Linux
+
+The Linux quiz has its own level, `linux`, and seven topics in two groups.
+*La ligne de commande*: `linuxFiles`, `linuxText`, `linuxShell`,
+`linuxProcesses`, `linuxSystem`, `linuxNetwork`. *Outils à installer*:
+`linuxTools`.
+
+Most questions are written, not generated: 167 questions in
+`shared/quiz/linux/*.ts`, each in French, Spanish and English
+(`L3 = [en, fr, es]`), with one right
+answer, at least three wrong ones and an explanation. A kind is a short list
+of them; the generator draws one with the seed's `rng` and shuffles the
+options. Text in backticks is code: `richParts` splits a string into text,
+`$math$` and `` `code` `` runs, code first, so `$HOME` stays code.
+`check:quiz` checks that every language of a question has the same number
+of code runs.
+
+A question about a command missing from a default install carries
+`install: { apt, dnf?, brew? }`. It shows a *📦 apt-name* badge, and its
+explanation ends with the install commands for Debian and Ubuntu, Fedora and
+macOS. 32 questions have one: `plocate`, `unzip`, `at`, `netcat-openbsd`,
+`dnsutils` among the commands, and every question of `linuxTools`.
+
+| Topic | Kinds (questions) |
+|---|---|
+| `linuxFiles` | `navigation` 7, `links` 5, `find` 6, `permissions` 7, `archives` 6, `chmodToSymbolic`, `chmodToOctal`, `umask` |
+| `linuxText` | `grep` 6, `sed` 5, `awk` 4, `columns` 6, `pipelines` 5 |
+| `linuxShell` | `redirection` 5, `expansion` 6, `control` 7, `environment` 5 |
+| `linuxProcesses` | `listing` 6, `signals` 4, `jobs` 3, `services` 5, `scheduling` 4, `cron` |
+| `linuxSystem` | `storage` 5, `users` 5, `packages` 5, `info` 5 |
+| `linuxNetwork` | `interfaces` 5, `transfer` 5, `ssh` 5, `dns` 3 |
+| `linuxTools` | `search` 5, `viewers` 4, `json` 3, `monitoring` 4, `workflow` 7, `diagnostics` 4 |
+
+Four kinds are generated:
+
+| Id | Asks for | Typical wrong options | Typed |
+|---|---|---|---|
+| `linuxFiles.chmodToSymbolic` | `chmod 754` as `rwxr-xr--` | user and other swapped, group and other swapped, bits read in reverse | |
+| `linuxFiles.chmodToOctal` | `rwxr-x---` as 750 | the same three slips | ✓ |
+| `linuxFiles.umask` | the modes of a new file and a new directory under a umask | mask added instead of removed, execute kept on files | |
+| `linuxProcesses.cron` | when a crontab line runs | minute and hour swapped, `*/15` read as "at 15", day of month taken for day of week | |
+
+`check:quiz` reads the modes itself (`modeOf`) rather than trusting the
+generator, and checks that the right option is the only right one.
+
+**Adding a written question.** Append it to its list with `since: N`, where
+N is the new `QUIZ_VERSION`, and bump the version: a list's length is part of
+what a seed draws, so a seed from an older test must still see the old list.
+`written(list)` keeps the questions whose `since` is at most the test's
+version. Rewording a question, or fixing a translation, needs no bump. The
+level came after version 2, with no saved test, so the first 167 questions
+have no `since`.
+
 ## Anatomy of a generator
 
-A generator is a function `(rng) => Draft`:
+A generator is a function `(rng, version?) => Draft`:
 
 ```ts
 const polynomial: Generator = (rng) => {

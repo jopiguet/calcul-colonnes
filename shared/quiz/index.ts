@@ -22,6 +22,7 @@ import { graphs } from "./graphs";
 import { multivariable } from "./multivariable";
 import { series } from "./series";
 import { gases } from "./gases";
+import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools } from "./linux";
 import { firstLaw } from "./firstlaw";
 import { secondLaw } from "./secondlaw";
 import { EMPTY_BANK, bankLevelOf, bankSkills, type Bank, type BankLevel } from "./bank";
@@ -31,6 +32,7 @@ export * from "./types";
 export * from "./progress";
 export * from "./typed";
 export * from "./bank";
+export * from "./rich";
 
 const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>>> = {
   derivatives,
@@ -51,6 +53,13 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   gases,
   firstLaw,
   secondLaw,
+  linuxFiles,
+  linuxText,
+  linuxShell,
+  linuxProcesses,
+  linuxSystem,
+  linuxNetwork,
+  linuxTools,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -177,7 +186,9 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
         a.zs!.every((z) => b.zs!.some((w) => close(z[0], w[0], version) && close(z[1], w[1], version)))
       );
     case "choice":
-      return false; // written answers: told apart by their identity (tex), checked above
+    case "mode":
+    case "umask":
+      return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);
   }
@@ -252,7 +263,7 @@ export function generateQuiz({ seed, level, topics: asked, count, focus = [], ve
     let question: Question | null = null;
     for (let attempt = 0; attempt < 50 && !question; attempt++) {
       const [skill, generator] = pick();
-      const draft = generator(rng);
+      const draft = generator(rng, version);
       if (seen.has(promptKey(draft.prompt)) && attempt < 49) continue; // no repeated question
       question = finalize(rng, version, topic, skill, review, draft);
     }
@@ -289,3 +300,5 @@ export function generateQuiz({ seed, level, topics: asked, count, focus = [], ve
 export function gradeQuiz(questions: Question[], answers: number[]): number {
   return questions.reduce((n, q, i) => n + (answers[i] === q.correct ? 1 : 0), 0);
 }
+export { LINUX_QUESTIONS, symbolic, triplet } from "./linux";
+export type { LinuxQuestion } from "./linux/types";

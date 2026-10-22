@@ -9,7 +9,7 @@ import { qt } from "./quiz-i18n";
 import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from "./store";
 import { bookTitle } from "./vocab";
 import { dt } from "./discover/i18n";
-import { CHEMISTRY_TOPICS } from "../shared/quiz";
+import { CHEMISTRY_TOPICS, LINUX_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -29,6 +29,8 @@ const texts = {
     charsNotStarted: "{count} caractères",
     noBooks: "Aucun livre de vocabulaire importé : voir docs/vocabulary.md.",
     sciences: "Sciences",
+    computing: "Informatique",
+    linuxText: "La ligne de commande, des bases aux outils à installer",
     nothingShown: "Aucune activité n'est ouverte pour ce joueur. Elles se choisissent sur la page Compte.",
     chemistryText: "Chimie physique : calculs et notions, Focus par Focus",
     home: "Accueil",
@@ -50,6 +52,8 @@ const texts = {
     charsNotStarted: "{count} caracteres",
     noBooks: "No hay libros de vocabulario importados: ver docs/vocabulary.md.",
     sciences: "Ciencias",
+    computing: "Informática",
+    linuxText: "La línea de órdenes, de lo básico a las herramientas que instalar",
     nothingShown: "No hay ninguna actividad abierta para este jugador. Se eligen en la página Cuenta.",
     chemistryText: "Química física: cálculos y conceptos, Focus por Focus",
     home: "Inicio",
@@ -71,6 +75,8 @@ const texts = {
     charsNotStarted: "{count} characters",
     noBooks: "No vocabulary book imported: see docs/vocabulary.md.",
     sciences: "Sciences",
+    computing: "Computing",
+    linuxText: "The command line, from the basics to tools worth installing",
     nothingShown: "No activity is open for this player. They are chosen on the Account page.",
     chemistryText: "Physical chemistry: calculations and concepts, Focus by Focus",
     home: "Home",
@@ -83,7 +89,7 @@ export const ht = (key: HomeKey, values: Record<string, string | number> = {}): 
 
 export type Activity =
   | { mode: "columns" }
-  | { mode: "quiz"; subject?: "maths" | "chemistry" }
+  | { mode: "quiz"; subject?: Subject }
   | { mode: "vocab"; book: number }
   | { mode: "discover"; activity: "dice" | "coins" | "puzzles" };
 
@@ -115,7 +121,7 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "columns":
       return "columns";
     case "quiz":
-      return activity.subject === "chemistry" ? "chemistry" : "quiz";
+      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : "quiz";
     case "discover":
       return `discover-${activity.activity}`;
     case "vocab": {
@@ -130,6 +136,7 @@ export function activityCatalog(books: VocabBookInfo[]): { group: string; activi
   return [
     { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }] },
     { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
+    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }] },
     {
       group: ht("languages"),
       activities: books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
@@ -173,11 +180,14 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
 
   const maths = el("div", "activity-group");
   maths.append(el("h2", "activity-group-title", ht("maths")));
-  // Kinds of question to review, mathematics and physical chemistry apart.
-  const chemistry = new Set<string>(CHEMISTRY_TOPICS);
-  const toReview = (inChemistry: boolean): number =>
-    profile ? profile.skills.filter((s) => s.status === "review" && chemistry.has(s.topic) === inChemistry).length : 0;
-  const review = toReview(false);
+  // Kinds of question to review, by subject.
+  const subjectOfTopic = (topic: string): Subject =>
+    (CHEMISTRY_TOPICS as string[]).includes(topic) ? "chemistry" : (LINUX_TOPICS as string[]).includes(topic) ? "linux" : "maths";
+  const toReview = (subject: Subject): number =>
+    profile ? profile.skills.filter((s) => s.status === "review" && subjectOfTopic(s.topic) === subject).length : 0;
+  const reviewStatus = (n: number): { text: string; waiting: boolean } | null =>
+    n > 0 ? { text: n === 1 ? ht("oneToReview") : ht("toReview", { count: n }), waiting: true } : null;
+  const review = toReview("maths");
   const grid = el("div", "activity-grid");
   grid.append(
     card("columns", qt("modeColumns"), ht("columnsText"), null, () => ctx.open({ mode: "columns" })),
@@ -193,7 +203,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
 
   const sciences = el("div", "activity-group");
   sciences.append(el("h2", "activity-group-title", ht("sciences")));
-  const chemReview = toReview(true);
+  const chemReview = toReview("chemistry");
   const labs = el("div", "activity-grid");
   labs.append(
     card(
@@ -205,6 +215,12 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
     ),
   );
   sciences.append(labs);
+
+  const computing = el("div", "activity-group");
+  computing.append(el("h2", "activity-group-title", ht("computing")));
+  const shell = el("div", "activity-grid");
+  shell.append(card("linux", qt("modeLinux"), ht("linuxText"), reviewStatus(toReview("linux")), () => ctx.open({ mode: "quiz", subject: "linux" })));
+  computing.append(shell);
 
   const languages = el("div", "activity-group");
   languages.append(el("h2", "activity-group-title", ht("languages")));
@@ -242,7 +258,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
 
   // Activities the player's account hides; a group left empty goes too.
   const hidden = new Set(ctx.user.hidden ?? []);
-  for (const group of [maths, sciences, languages, discover]) {
+  for (const group of [maths, sciences, computing, languages, discover]) {
     for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
       if (hidden.has(node.dataset.activity!)) node.remove();
     }

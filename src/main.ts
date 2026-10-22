@@ -200,7 +200,7 @@ async function render(): Promise<void> {
       if (subject === "chemistry") await loadBank();
       app.replaceChildren(
         topBar(),
-        activityBar(qt(subject === "chemistry" ? "modeChemistry" : "modeQuiz"), goHome),
+        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : "modeQuiz"), goHome),
         quizView({
           user,
           subject,

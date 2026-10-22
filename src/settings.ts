@@ -1,4 +1,4 @@
-import { CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, MATH_LEVELS, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 
@@ -23,11 +23,13 @@ export interface Settings {
   quizLevel: Level;
   quizTopics: Topic[];
   /** Which test the "quiz" activity shows: mathematics, or physical chemistry. */
-  quizSubject: "maths" | "chemistry";
+  quizSubject: Subject;
   /** Topics chosen for the physical chemistry test. */
   chemTopics: Topic[];
   /** Level of the physical chemistry test: core or advanced. */
   chemLevel: Level;
+  /** Topics chosen for the Linux test. */
+  linuxTopics: Topic[];
   quizCount: number;
   /** Mix the player's recent mistakes into new tests. */
   quizReview: boolean;
@@ -104,8 +106,11 @@ export function loadSettings(): Settings {
     discoverActivity: saved.discoverActivity === "coins" || saved.discoverActivity === "puzzles" ? saved.discoverActivity : "dice",
     quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
-    quizSubject: saved.quizSubject === "chemistry" ? "chemistry" : "maths",
+    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" ? saved.quizSubject : "maths",
     chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
+    linuxTopics: Array.isArray(saved.linuxTopics) && LINUX_TOPICS.some((t) => (saved.linuxTopics as unknown[]).includes(t))
+      ? LINUX_TOPICS.filter((t) => (saved.linuxTopics as unknown[]).includes(t))
+      : [...LINUX_TOPICS],
     chemLevel: CHEMISTRY_LEVELS.includes(saved.chemLevel as Level) ? (saved.chemLevel as Level) : "chemistry",
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,

@@ -3765,3 +3765,17 @@ button.typed-key {
   font-size: 0.85rem;
   color: var(--muted);
 }
+
+/* Commands in written questions (Linux): `…` in their texts. */
+code.inline-code {
+  font-family: var(--digits);
+  font-size: 0.9em;
+  padding: 0.05em 0.35em;
+  border: 1px solid var(--line);
+  border-radius: 0.35em;
+  background: var(--bg);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}

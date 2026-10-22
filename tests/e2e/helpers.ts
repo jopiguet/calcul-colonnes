@@ -77,7 +77,7 @@ export async function openActivity(page: Page, activity: string): Promise<void> 
   await page.locator(`[data-activity='${activity}']`).click();
   await page
     .locator(
-      activity === "columns" ? ".board" : activity === "quiz" || activity === "chemistry" ? ".quiz-setup, .quiz" : activity.startsWith("discover-") ? ".discover-lab" : ".vocab-home",
+      activity === "columns" ? ".board" : activity === "quiz" || activity === "chemistry" || activity === "linux" ? ".quiz-setup, .quiz" : activity.startsWith("discover-") ? ".discover-lab" : ".vocab-home",
     )
     .first()
     .waitFor();

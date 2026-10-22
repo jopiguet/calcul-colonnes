@@ -125,7 +125,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school`, `university`, `chemistry` or `chemistryAdvanced` |
+| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced` or `linux` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -220,6 +220,7 @@ runs: add tables and columns, rename or drop later.
 | `013_question_bank` | `quiz_bank_meta`, `quiz_bank_units`, `quiz_bank`, `quiz_flags`; `bank` on `quiz_results`, whose `level` accepts `chemistry`. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `014_advanced_level` | `level` on `quiz_bank`; `quiz_results.level` accepts `chemistryAdvanced`. SQLite rebuilds `quiz_results` again. |
 | `015_sharing` | `hidden` on `users`; `player_shares`, `player_invites` (common SQL, one file) |
+| `016_linux_level` | `quiz_results.level` accepts `linux`. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 

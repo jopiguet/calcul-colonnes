@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.8.0
+
+- **Linux quiz:** activity 🐧 Linux, in a new *Informatique* group on the home page.
+  - Seven topics: files and permissions, text processing, the shell, processes and services, the system, the network, and *Outils à installer*.
+  - 167 written questions in French, Spanish and English, each with an explanation. They are the app's own content and ship with it.
+  - 32 questions are about commands missing from a default install. They show a 📦 badge with the package, and the correction gives the install command for Debian and Ubuntu, Fedora and macOS.
+  - Four generated kinds: `chmod` octal to symbolic and back (the octal form can be typed), the modes left by a `umask`, and when a crontab line runs. 7 new mistake types: classes swapped, bit weights, mask added, execute kept on files, cron fields swapped, a step read as a value, day of month for day of week.
+- **Code in questions:** text in backticks is shown as code, in every quiz. `check:quiz` checks that each language of a question has the same code runs, and reads `chmod` and `umask` modes on its own.
+- **Database:** migration `016_linux_level`: `quiz_results.level` accepts `linux`.
+- **Tests:** 77 browser tests.
+
 ## 6.7.0
 
 - **Activities per player:** on the Account page, each player has the list of activities shown on their home page: column arithmetic, QCM, physical chemistry, each vocabulary book, each Discover activity. Untick one and it disappears from that player's home page, on every device; an open activity that gets hidden goes back home. New books show until unticked.

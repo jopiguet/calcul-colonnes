@@ -4,8 +4,12 @@ import {
   ANSWER_MODES,
   CHEMISTRY_TOPICS,
   MATH_LEVELS,
+  richParts,
   CHEMISTRY_LEVELS,
   isChemistry,
+  subjectOf,
+  LINUX_TOPICS,
+  type Subject,
   OPTION_COUNT,
   QUIZ_COUNTS,
   QUIZ_VERSION,
@@ -78,8 +82,8 @@ export const quizBusy = (): boolean => run !== null;
 
 export interface QuizContext {
   user: User;
-  /** Mathematics, or physical chemistry (its own topics, written questions from the bank). */
-  subject: "maths" | "chemistry";
+  /** Mathematics, physical chemistry (written questions from the bank too) or Linux. */
+  subject: Subject;
   settings: Settings;
   rerender(): void;
   /** Opens the player's progress page. */
@@ -123,24 +127,32 @@ export async function loadBank(): Promise<void> {
   }
 }
 
-/** A written text with its inline $…$ formulas, in the interface's language (English otherwise). */
-function rich(text: Localized, cls: string, tag: "p" | "span" | "div" = "span"): HTMLElement {
+/** A sentence with inline $…$ formulas and `code`. */
+function richString(shown: string, cls: string, tag: "p" | "span" | "div" = "span"): HTMLElement {
   const node = el(tag, cls);
+  for (const part of richParts(shown)) {
+    if (part.kind === "math") node.append(math(part.value));
+    else if (part.kind === "code") node.append(el("code", "inline-code", part.value));
+    else node.append(part.value);
+  }
+  return node;
+}
+
+/** A written text, in the interface's language (English otherwise). */
+function rich(text: Localized, cls: string, tag: "p" | "span" | "div" = "span"): HTMLElement {
   const shown = localized(text, currentLang());
-  shown.split(/(\$[^$]+\$)/).forEach((part) => {
-    if (part.startsWith("$") && part.endsWith("$") && part.length > 1) node.append(math(part.slice(1, -1)));
-    else if (part) node.append(part);
-  });
+  const node = richString(shown, cls, tag);
   if (shown !== text[currentLang() as keyof Localized] && currentLang() !== "en") node.lang = "en";
   return node;
 }
 
 /** The question's sentence: its own text for a written question, the sentence of its kind otherwise. */
 const promptView = (q: Question): HTMLElement =>
-  q.prompt.text ? rich(q.prompt.text, "quiz-prompt", "p") : el("p", "quiz-prompt", promptText(q.prompt.key));
+  q.prompt.text ? rich(q.prompt.text, "quiz-prompt", "p") : richString(promptText(q.prompt.key), "quiz-prompt", "p");
 
 /** The level of this subject's tests. */
-const levelOf = (ctx: QuizContext): Level => (ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.settings.quizLevel);
+const levelOf = (ctx: QuizContext): Level =>
+  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.settings.quizLevel;
 
 /** Spanish writes sen and arcsen. */
 const macros = (): Record<string, string> =>
@@ -196,7 +208,7 @@ function start(spec: QuizSpec, mode: AnswerMode): void {
 export function quizView(ctx: QuizContext): HTMLElement {
   // A test of the other subject (opened from the home page) is not shown here.
   const level = levelOf(ctx);
-  const mine = (spec: QuizSpec): boolean => isChemistry(spec.level) === isChemistry(level);
+  const mine = (spec: QuizSpec): boolean => subjectOf(spec.level) === subjectOf(level);
   if (result && mine(result.run.spec)) return resultView(ctx, result);
   if (run && mine(run.spec)) return questionView(ctx, run);
   return setupView(ctx);
@@ -211,7 +223,7 @@ export function quizView(ctx: QuizContext): HTMLElement {
  */
 function chosenTopics(ctx: QuizContext): Topic[] {
   const available = topicsFor(levelOf(ctx));
-  const saved = ctx.subject === "chemistry" ? ctx.settings.chemTopics : ctx.settings.quizTopics;
+  const saved = ctx.subject === "chemistry" ? ctx.settings.chemTopics : ctx.subject === "linux" ? ctx.settings.linuxTopics : ctx.settings.quizTopics;
   const chosen = saved.filter((t) => available.includes(t));
   return chosen.length > 0 ? chosen : available;
 }
@@ -227,7 +239,8 @@ function setupView(ctx: QuizContext): HTMLElement {
   const chemistry = ctx.subject === "chemistry";
   const testLevel = levelOf(ctx);
   const wrap = el("section", "sheet quiz-setup");
-  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : "setupTitle")));
+  const linux = ctx.subject === "linux";
+  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : "setupTitle")));
   if (chemistry && bankRevision() === 0) wrap.append(el("p", "hint", qt("noBank")));
 
   // Mathematics: lycée or university. Physical chemistry: core or advanced.
@@ -259,12 +272,12 @@ function setupView(ctx: QuizContext): HTMLElement {
       box.value = topic;
       box.checked = effective.includes(topic);
       box.addEventListener("change", () => {
-        const chosen = (chemistry ? CHEMISTRY_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
+        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
         if (chosen.length === 0) {
           box.checked = true; // at least one topic stays selected
           return;
         }
-        save(chemistry ? { chemTopics: chosen } : { quizTopics: chosen });
+        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : { quizTopics: chosen });
       });
       label.append(box, el("span", undefined, topicName(topic)));
       block.append(label);
@@ -332,7 +345,8 @@ function setupView(ctx: QuizContext): HTMLElement {
     wrap.append(level, el("p", "hint", qt("noAdvanced")), button("ghost small", qt("progress"), ctx.showProgress));
     return wrap;
   }
-  wrap.append(level, topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
+  // Linux has one level: no choice to show.
+  wrap.append(...(linux ? [] : [level]), topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
   queueMicrotask(() => go.focus());
   return wrap;
 }
