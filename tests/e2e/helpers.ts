@@ -1,5 +1,5 @@
 import { expect, type APIRequestContext, type Page, type Request } from "@playwright/test";
-import { generateQuiz, gradeQuiz, resolveAnswers, type Question } from "../../shared/quiz/index.ts";
+import { generateQuiz, gradeQuiz, resolveAnswers, type Level, type Question } from "../../shared/quiz/index.ts";
 import type { NewQuizResult, Profile, User, UserStats } from "../../shared/types.ts";
 
 let counter = 0;
@@ -177,7 +177,7 @@ export async function profileOf(request: APIRequestContext, name: string): Promi
 export function rebuild(body: NewQuizResult): { questions: Question[]; correct: number } {
   const questions = generateQuiz({
     seed: body.seed,
-    level: body.level as "school" | "university" | "chemistry",
+    level: body.level as Level,
     topics: body.topics as never,
     count: body.count,
     focus: body.focus ?? [],

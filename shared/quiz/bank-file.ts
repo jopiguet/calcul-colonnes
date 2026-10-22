@@ -12,10 +12,13 @@
  *       "explanation": { "en": "…" } } ]
  * }
  *
+ * A question may say "level": "advanced" (reasoning and derivations, the
+ * advanced test); without it, it is "core".
+ *
  * Every text is an object by language: "en" is required, "fr" and "es" may be
  * added later without changing anything else. Inline formulas go between $…$.
  */
-import type { Bank, BankQuestion, BankUnit } from "./bank";
+import { BANK_LEVELS, type Bank, type BankLevel, type BankQuestion, type BankUnit } from "./bank";
 import { CHEMISTRY_TOPICS, type ChemistryTopic, type Localized } from "./types";
 
 export interface BankFile {
@@ -76,6 +79,8 @@ export function parseBankFile(data: unknown): BankFile {
     seen.add(qid);
     const unit = text(q.unit, 20);
     if (!unit || !unitIds.has(unit)) throw new Error(`${where}: "unit" must be one of the units`);
+    const level = q.level ?? "core";
+    if (!BANK_LEVELS.includes(level as BankLevel)) throw new Error(`${where}: "level" must be "core" or "advanced"`);
     const section = text(q.section, 30);
     if (!section) throw new Error(`${where}: "section" is required ("1A.2")`);
     if (!Array.isArray(q.wrong) || q.wrong.length !== 3) throw new Error(`${where}: "wrong" must hold exactly three answers`);
@@ -86,6 +91,7 @@ export function parseBankFile(data: unknown): BankFile {
     return {
       id: qid,
       unit,
+      level: level as BankLevel,
       section,
       prompt: localizedText(q.prompt, `${where}, prompt`),
       correct,

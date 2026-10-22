@@ -1,39 +1,374 @@
 {
  "format": 1,
- "book": { "id": "test-bank", "title": "Questions written for the tests", "source": "Test" },
+ "book": {
+  "id": "test-bank",
+  "title": "Questions written for the tests",
+  "source": "Test"
+ },
  "units": [
-  { "id": "1A", "topic": "gases", "title": { "en": "Gases" } },
-  { "id": "2A", "topic": "firstLaw", "title": { "en": "Energy" } },
-  { "id": "3A", "topic": "secondLaw", "title": { "en": "Entropy" } }
+  {
+   "id": "1A",
+   "topic": "gases",
+   "title": {
+    "en": "Gases",
+    "fr": "Les gaz",
+    "es": "Los gases"
+   }
+  },
+  {
+   "id": "2A",
+   "topic": "firstLaw",
+   "title": {
+    "en": "Energy"
+   }
+  },
+  {
+   "id": "3A",
+   "topic": "secondLaw",
+   "title": {
+    "en": "Entropy"
+   }
+  }
  ],
  "questions": [
-  { "id": "1A-01", "unit": "1A", "section": "1A.1",
-    "prompt": { "en": "Which of these properties is intensive?" },
-    "correct": { "en": "Temperature" }, "wrong": [ { "en": "Volume" }, { "en": "Mass" }, { "en": "Amount of substance" } ],
-    "explanation": { "en": "An intensive property does not depend on the size of the sample." } },
-  { "id": "1A-02", "unit": "1A", "section": "1A.2",
-    "prompt": { "en": "At constant $n$ and $T$, how does the pressure of a perfect gas depend on its volume?" },
-    "correct": { "en": "$p \\propto 1/V$" }, "wrong": [ { "en": "$p \\propto V$" }, { "en": "$p \\propto V^{2}$" }, { "en": "It does not depend on $V$" } ],
-    "explanation": { "en": "Boyle's law: $pV$ is constant at constant $n$ and $T$." } },
-  { "id": "1A-03", "unit": "1A", "section": "1A.2",
-    "prompt": { "en": "What is the SI unit of pressure?" },
-    "correct": { "en": "The pascal" }, "wrong": [ { "en": "The bar" }, { "en": "The atmosphere" }, { "en": "The torr" } ],
-    "explanation": { "en": "$1\\,\\mathrm{Pa} = 1\\,\\mathrm{N\\,m^{-2}}$." } },
-  { "id": "2A-01", "unit": "2A", "section": "2A.1",
-    "prompt": { "en": "An isolated system can exchange…" },
-    "correct": { "en": "neither energy nor matter" }, "wrong": [ { "en": "energy but not matter" }, { "en": "matter but not energy" }, { "en": "both energy and matter" } ],
-    "explanation": { "en": "Isolated: no exchange at all; closed: energy only; open: both." } },
-  { "id": "2A-02", "unit": "2A", "section": "2A.2",
-    "prompt": { "en": "Which of these is a state function?" },
-    "correct": { "en": "Internal energy" }, "wrong": [ { "en": "Heat" }, { "en": "Work" }, { "en": "Heat plus work along one path" } ],
-    "explanation": { "en": "$U$ depends only on the state; $q$ and $w$ depend on the path." } },
-  { "id": "3A-01", "unit": "3A", "section": "3A.1",
-    "prompt": { "en": "In a spontaneous process in an isolated system, the entropy…" },
-    "correct": { "en": "increases" }, "wrong": [ { "en": "decreases" }, { "en": "stays the same" }, { "en": "first decreases, then increases" } ],
-    "explanation": { "en": "The Second Law: $\\Delta S_\\mathrm{tot} > 0$ for a spontaneous change." } },
-  { "id": "3A-02", "unit": "3A", "section": "3A.2",
-    "prompt": { "en": "Which statement is the Third Law?" },
-    "correct": { "en": "The entropy of a perfect crystal is zero at $T = 0$" }, "wrong": [ { "en": "Energy is conserved" }, { "en": "Heat flows from hot to cold" }, { "en": "Two bodies in equilibrium with a third are in equilibrium with each other" } ],
-    "explanation": { "en": "With $S(0) = 0$, entropies can be measured absolutely." } }
+  {
+   "id": "1A-01",
+   "unit": "1A",
+   "section": "1A.1",
+   "prompt": {
+    "en": "Which of these properties is intensive?",
+    "fr": "Laquelle de ces propriétés est intensive ?",
+    "es": "¿Cuál de estas propiedades es intensiva?"
+   },
+   "correct": {
+    "en": "Temperature",
+    "fr": "La température",
+    "es": "La temperatura"
+   },
+   "wrong": [
+    {
+     "en": "Volume",
+     "fr": "Le volume",
+     "es": "El volumen"
+    },
+    {
+     "en": "Mass",
+     "fr": "La masse",
+     "es": "La masa"
+    },
+    {
+     "en": "Amount of substance",
+     "fr": "La quantité de matière",
+     "es": "La cantidad de sustancia"
+    }
+   ],
+   "explanation": {
+    "en": "An intensive property does not depend on the size of the sample.",
+    "fr": "Une propriété intensive ne dépend pas de la taille de l'échantillon.",
+    "es": "Una propiedad intensiva no depende del tamaño de la muestra."
+   }
+  },
+  {
+   "id": "1A-02",
+   "unit": "1A",
+   "section": "1A.2",
+   "prompt": {
+    "en": "At constant $n$ and $T$, how does the pressure of a perfect gas depend on its volume?"
+   },
+   "correct": {
+    "en": "$p \\propto 1/V$"
+   },
+   "wrong": [
+    {
+     "en": "$p \\propto V$"
+    },
+    {
+     "en": "$p \\propto V^{2}$"
+    },
+    {
+     "en": "It does not depend on $V$"
+    }
+   ],
+   "explanation": {
+    "en": "Boyle's law: $pV$ is constant at constant $n$ and $T$."
+   }
+  },
+  {
+   "id": "1A-03",
+   "unit": "1A",
+   "section": "1A.2",
+   "prompt": {
+    "en": "What is the SI unit of pressure?"
+   },
+   "correct": {
+    "en": "The pascal"
+   },
+   "wrong": [
+    {
+     "en": "The bar"
+    },
+    {
+     "en": "The atmosphere"
+    },
+    {
+     "en": "The torr"
+    }
+   ],
+   "explanation": {
+    "en": "$1\\,\\mathrm{Pa} = 1\\,\\mathrm{N\\,m^{-2}}$."
+   }
+  },
+  {
+   "id": "2A-01",
+   "unit": "2A",
+   "section": "2A.1",
+   "prompt": {
+    "en": "An isolated system can exchange…"
+   },
+   "correct": {
+    "en": "neither energy nor matter"
+   },
+   "wrong": [
+    {
+     "en": "energy but not matter"
+    },
+    {
+     "en": "matter but not energy"
+    },
+    {
+     "en": "both energy and matter"
+    }
+   ],
+   "explanation": {
+    "en": "Isolated: no exchange at all; closed: energy only; open: both."
+   }
+  },
+  {
+   "id": "2A-02",
+   "unit": "2A",
+   "section": "2A.2",
+   "prompt": {
+    "en": "Which of these is a state function?"
+   },
+   "correct": {
+    "en": "Internal energy"
+   },
+   "wrong": [
+    {
+     "en": "Heat"
+    },
+    {
+     "en": "Work"
+    },
+    {
+     "en": "Heat plus work along one path"
+    }
+   ],
+   "explanation": {
+    "en": "$U$ depends only on the state; $q$ and $w$ depend on the path."
+   }
+  },
+  {
+   "id": "3A-01",
+   "unit": "3A",
+   "section": "3A.1",
+   "prompt": {
+    "en": "In a spontaneous process in an isolated system, the entropy…"
+   },
+   "correct": {
+    "en": "increases"
+   },
+   "wrong": [
+    {
+     "en": "decreases"
+    },
+    {
+     "en": "stays the same"
+    },
+    {
+     "en": "first decreases, then increases"
+    }
+   ],
+   "explanation": {
+    "en": "The Second Law: $\\Delta S_\\mathrm{tot} > 0$ for a spontaneous change."
+   }
+  },
+  {
+   "id": "3A-02",
+   "unit": "3A",
+   "section": "3A.2",
+   "prompt": {
+    "en": "Which statement is the Third Law?"
+   },
+   "correct": {
+    "en": "The entropy of a perfect crystal is zero at $T = 0$"
+   },
+   "wrong": [
+    {
+     "en": "Energy is conserved"
+    },
+    {
+     "en": "Heat flows from hot to cold"
+    },
+    {
+     "en": "Two bodies in equilibrium with a third are in equilibrium with each other"
+    }
+   ],
+   "explanation": {
+    "en": "With $S(0) = 0$, entropies can be measured absolutely."
+   }
+  },
+  {
+   "id": "1A-A1",
+   "unit": "1A",
+   "level": "advanced",
+   "section": "1A.2",
+   "prompt": {
+    "en": "Two flasks of equal volume at the same temperature hold the same mass of helium and of argon. Which has the higher pressure?",
+    "fr": "Deux ballons de même volume, à la même température, contiennent la même masse d'hélium et d'argon. Lequel a la pression la plus élevée ?",
+    "es": "Dos matraces del mismo volumen, a la misma temperatura, contienen la misma masa de helio y de argón. ¿Cuál tiene mayor presión?"
+   },
+   "correct": {
+    "en": "The helium flask: the same mass is more moles",
+    "fr": "Le ballon d'hélium : la même masse fait plus de moles",
+    "es": "El de helio: la misma masa son más moles"
+   },
+   "wrong": [
+    {
+     "en": "The argon flask: its atoms are heavier",
+     "fr": "Le ballon d'argon : ses atomes sont plus lourds",
+     "es": "El de argón: sus átomos son más pesados"
+    },
+    {
+     "en": "Both: pressure does not depend on the gas",
+     "fr": "Les deux : la pression ne dépend pas du gaz",
+     "es": "Ambos: la presión no depende del gas"
+    },
+    {
+     "en": "It depends on the shape of the flasks",
+     "fr": "Cela dépend de la forme des ballons",
+     "es": "Depende de la forma de los matraces"
+    }
+   ],
+   "explanation": {
+    "en": "$p = nRT/V$ and $n = m/M$: the lighter gas gives more moles.",
+    "fr": "$p = nRT/V$ et $n = m/M$ : le gaz le plus léger donne plus de moles.",
+    "es": "$p = nRT/V$ y $n = m/M$: el gas más ligero da más moles."
+   }
+  },
+  {
+   "id": "1A-A2",
+   "unit": "1A",
+   "level": "advanced",
+   "section": "1A.1",
+   "prompt": {
+    "en": "A sealed rigid container of gas is heated. Which quantity stays the same?",
+    "fr": "On chauffe un récipient rigide et fermé contenant un gaz. Quelle grandeur reste la même ?",
+    "es": "Se calienta un recipiente rígido y cerrado con un gas. ¿Qué magnitud no cambia?"
+   },
+   "correct": {
+    "en": "Its density",
+    "fr": "Sa masse volumique",
+    "es": "Su densidad"
+   },
+   "wrong": [
+    {
+     "en": "Its pressure",
+     "fr": "Sa pression",
+     "es": "Su presión"
+    },
+    {
+     "en": "The mean speed of its molecules",
+     "fr": "La vitesse moyenne de ses molécules",
+     "es": "La velocidad media de sus moléculas"
+    },
+    {
+     "en": "Its internal energy",
+     "fr": "Son énergie interne",
+     "es": "Su energía interna"
+    }
+   ],
+   "explanation": {
+    "en": "Mass and volume are fixed, so the density is too.",
+    "fr": "La masse et le volume sont fixés, donc la masse volumique aussi.",
+    "es": "La masa y el volumen están fijos, así que la densidad también."
+   }
+  },
+  {
+   "id": "2A-A1",
+   "unit": "2A",
+   "level": "advanced",
+   "section": "2A.2",
+   "prompt": {
+    "en": "A gas expands into a vacuum inside an insulated container. Which is zero?",
+    "fr": "Un gaz se détend dans le vide à l'intérieur d'un récipient isolé. Qu'est-ce qui est nul ?",
+    "es": "Un gas se expande en el vacío dentro de un recipiente aislado. ¿Qué es cero?"
+   },
+   "correct": {
+    "en": "$q$, $w$ and $\\Delta U$",
+    "fr": "$q$, $w$ et $\\Delta U$",
+    "es": "$q$, $w$ y $\\Delta U$"
+   },
+   "wrong": [
+    {
+     "en": "$q$ only",
+     "fr": "$q$ seulement",
+     "es": "Solo $q$"
+    },
+    {
+     "en": "$w$ only",
+     "fr": "$w$ seulement",
+     "es": "Solo $w$"
+    },
+    {
+     "en": "$\\Delta S$",
+     "fr": "$\\Delta S$",
+     "es": "$\\Delta S$"
+    }
+   ],
+   "explanation": {
+    "en": "No heat crosses the wall and no work is done against a vacuum.",
+    "fr": "Aucune chaleur ne traverse la paroi et aucun travail n'est fourni contre le vide.",
+    "es": "No pasa calor por la pared y no se hace trabajo contra el vacío."
+   }
+  },
+  {
+   "id": "3A-A1",
+   "unit": "3A",
+   "level": "advanced",
+   "section": "3A.1",
+   "prompt": {
+    "en": "Why can a refrigerator cool its inside without breaking the Second Law?",
+    "fr": "Pourquoi un réfrigérateur peut-il refroidir son intérieur sans violer le deuxième principe ?",
+    "es": "¿Por qué un frigorífico puede enfriar su interior sin violar el segundo principio?"
+   },
+   "correct": {
+    "en": "Work done on it lets it release more heat outside than it takes inside",
+    "fr": "Le travail reçu lui permet de rejeter dehors plus de chaleur qu'il n'en prend dedans",
+    "es": "El trabajo recibido le permite expulsar fuera más calor del que toma dentro"
+   },
+   "wrong": [
+    {
+     "en": "The Second Law does not apply to machines",
+     "fr": "Le deuxième principe ne s'applique pas aux machines",
+     "es": "El segundo principio no se aplica a las máquinas"
+    },
+    {
+     "en": "Its inside is isolated from the room",
+     "fr": "Son intérieur est isolé de la pièce",
+     "es": "Su interior está aislado de la habitación"
+    },
+    {
+     "en": "Cold air has no entropy",
+     "fr": "L'air froid n'a pas d'entropie",
+     "es": "El aire frío no tiene entropía"
+    }
+   ],
+   "explanation": {
+    "en": "The total entropy increases because of the extra heat released outside.",
+    "fr": "L'entropie totale augmente grâce à la chaleur supplémentaire rejetée dehors.",
+    "es": "La entropía total aumenta por el calor extra expulsado fuera."
+   }
+  }
  ]
 }

@@ -4,6 +4,8 @@ import {
   ANSWER_MODES,
   CHEMISTRY_TOPICS,
   MATH_LEVELS,
+  CHEMISTRY_LEVELS,
+  isChemistry,
   OPTION_COUNT,
   QUIZ_COUNTS,
   QUIZ_VERSION,
@@ -138,7 +140,7 @@ const promptView = (q: Question): HTMLElement =>
   q.prompt.text ? rich(q.prompt.text, "quiz-prompt", "p") : el("p", "quiz-prompt", promptText(q.prompt.key));
 
 /** The level of this subject's tests. */
-const levelOf = (ctx: QuizContext): Level => (ctx.subject === "chemistry" ? "chemistry" : ctx.settings.quizLevel);
+const levelOf = (ctx: QuizContext): Level => (ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.settings.quizLevel);
 
 /** Spanish writes sen and arcsen. */
 const macros = (): Record<string, string> =>
@@ -194,7 +196,7 @@ function start(spec: QuizSpec, mode: AnswerMode): void {
 export function quizView(ctx: QuizContext): HTMLElement {
   // A test of the other subject (opened from the home page) is not shown here.
   const level = levelOf(ctx);
-  const mine = (spec: QuizSpec): boolean => (spec.level === "chemistry") === (level === "chemistry");
+  const mine = (spec: QuizSpec): boolean => isChemistry(spec.level) === isChemistry(level);
   if (result && mine(result.run.spec)) return resultView(ctx, result);
   if (run && mine(run.spec)) return questionView(ctx, run);
   return setupView(ctx);
@@ -228,16 +230,17 @@ function setupView(ctx: QuizContext): HTMLElement {
   wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : "setupTitle")));
   if (chemistry && bankRevision() === 0) wrap.append(el("p", "hint", qt("noBank")));
 
-  // Physical chemistry has one level: no choice to make (the fieldset is left out).
+  // Mathematics: lycée or university. Physical chemistry: core or advanced.
   const level = el("fieldset", "segmented");
   level.append(el("legend", "field-label", qt("level")));
-  for (const value of MATH_LEVELS) {
-    const option = button(value === settings.quizLevel ? "segment on" : "segment", levelName(value), () =>
-      save({ quizLevel: value }),
-    );
-    option.setAttribute("aria-pressed", String(value === settings.quizLevel));
+  for (const value of chemistry ? CHEMISTRY_LEVELS : MATH_LEVELS) {
+    const on = value === testLevel;
+    const label = chemistry ? qt(value === "chemistry" ? "chemCore" : "chemAdvanced") : levelName(value);
+    const option = button(on ? "segment on" : "segment", label, () => save(chemistry ? { chemLevel: value } : { quizLevel: value }));
+    option.setAttribute("aria-pressed", String(on));
     level.append(option);
   }
+  if (chemistry) level.append(el("p", "hint mode-hint", qt(testLevel === "chemistry" ? "chemCoreHint" : "chemAdvancedHint")));
 
   // Topics by group, those of the chosen level only (some exist at one level).
   const available = topicsFor(testLevel);
@@ -323,8 +326,13 @@ function setupView(ctx: QuizContext): HTMLElement {
     ctx.rerender();
   });
 
-  if (!chemistry) wrap.append(level);
-  wrap.append(topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
+  // The advanced level has written questions only: none imported, no test.
+  if (available.length === 0) {
+    go.disabled = true;
+    wrap.append(level, el("p", "hint", qt("noAdvanced")), button("ghost small", qt("progress"), ctx.showProgress));
+    return wrap;
+  }
+  wrap.append(level, topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
   queueMicrotask(() => go.focus());
   return wrap;
 }
@@ -578,7 +586,7 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
   actions.append(
     button("primary", qt("newTest"), async () => {
       const focus = ctx.settings.quizReview ? await reviewFocus(ctx.user, spec.level, spec.topics) : [];
-      const bank = spec.level === "chemistry" ? { bank: bankRevision() } : {};
+      const bank = isChemistry(spec.level) ? { bank: bankRevision() } : {};
       start({ ...spec, seed: newSeed(), focus, ...bank }, mode);
       ctx.rerender();
     }),

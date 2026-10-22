@@ -46,7 +46,8 @@ at *lycée / bachillerato* or university level.
 
 - Calculations are generated like the maths questions: 28 kinds, from the perfect gas law to the Gibbs energy, with data to three significant figures and units in the options. The wrong options are unit slips and real mistakes: °C for K, kJ mixed with J, C_p for C_V, a log₁₀ for a ln.
 - Concept questions are written from the book, Topic by Topic, and imported from a file kept out of the project: 155 for Topics 1A–3E. Each shows its section of the book ("Atkins 2B.1") and explains the answer.
-- Texts are stored per language: English now, French and Spanish can be added to the same file.
+- An advanced level of 61 reasoning and derivation questions: free expansion of a van der Waals gas, the Gibbs paradox, entropy of water compressed below 4 °C.
+- In French, Spanish and English: texts are stored per language, never in the code.
 - Any question can be flagged from the corrections, with a note, for the author to check.
 
 **Vocabulary** — from books you own, imported once: Spanish, German, Arabic and Japanese with translations, English with definitions. Plus kanji and kana in the Japanese school's order.

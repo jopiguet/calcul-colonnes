@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.6.0
+
+- **Physical chemistry in French and Spanish:** the 155 concept questions and the Topic titles of the Atkins file are translated. The app shows them in its language.
+- **Advanced level** (*Avancé*), next to *Fondamental*: 61 reasoning and derivation questions on Topics 1A–3E, in the three languages. No calculations at this level.
+  - **Bank questions get a level,** `core` or `advanced`; each Topic has one kind of question per level (`gases.concepts1A`, `gases.advanced1A`), with its own progress and review.
+  - **The level is remembered** with the other test settings. Without advanced questions on the server, the page says so and offers no test.
+  - **An import refuses a question that changes level,** like one that changes unit: its old tests would change.
+- **Database:** migration `014_advanced_level`: `level` on `quiz_bank`; `quiz_results.level` accepts `chemistryAdvanced`.
+- **Checks:**
+  - `check:quiz` renders written questions in all three languages, and takes `--bank FILE` to check a real bank.
+  - An invented advanced fixture; a browser test of the advanced level in French. 73 browser tests.
+- **The Atkins file** (not in the project) is now assembled by a script that refuses missing translations and formulas that differ between languages.
+
 ## 6.5.0
 
 - **Physical chemistry,** a new activity in a new *Sciences* group: multiple-choice tests on *Atkins' Physical Chemistry*, 12th edition. This release covers Focuses 1–3: gases, the First Law, the Second and Third Laws.

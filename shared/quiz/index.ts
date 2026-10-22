@@ -24,7 +24,7 @@ import { series } from "./series";
 import { gases } from "./gases";
 import { firstLaw } from "./firstlaw";
 import { secondLaw } from "./secondlaw";
-import { EMPTY_BANK, bankSkills, type Bank } from "./bank";
+import { EMPTY_BANK, bankLevelOf, bankSkills, type Bank, type BankLevel } from "./bank";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
 export * from "./types";
@@ -93,9 +93,9 @@ export const bankRevision = (): number => bank.revision;
 /** The registered bank (its units name the bank's kinds of question). */
 export const currentBank = (): Bank => bank;
 
-/** The bank's kinds of question at a revision, by id. */
-function bankKinds(revision: number): Map<string, { topic: Topic; generator: Generator }> {
-  return new Map(bankSkills(bank, revision).map((k) => [k.id, { topic: k.topic, generator: k.draw }]));
+/** The bank's kinds of question at a revision (and level), by id. */
+function bankKinds(revision: number, level?: BankLevel): Map<string, { topic: Topic; generator: Generator }> {
+  return new Map(bankSkills(bank, revision, level).map((k) => [k.id, { topic: k.topic, generator: k.draw }]));
 }
 
 export const isSkill = (id: string): boolean => SKILLS.has(id) || bankKinds(bank.revision).has(id);
@@ -112,8 +112,9 @@ export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION,
     const skill = SKILLS.get(id)!;
     return topics.includes(skill.topic) && skill.levels.includes(level) && available(id, version);
   });
-  if (level !== "chemistry") return generated;
-  return [...generated, ...[...bankKinds(revision)].filter(([, k]) => topics.includes(k.topic)).map(([id]) => id)];
+  const tier = bankLevelOf(level);
+  if (tier === null) return generated;
+  return [...generated, ...[...bankKinds(revision, tier)].filter(([, k]) => topics.includes(k.topic)).map(([id]) => id)];
 }
 
 /** Share of a test given to review questions, and how often one kind may come back in a test. */
@@ -236,7 +237,8 @@ const promptKey = (prompt: Draft["prompt"]): string => (prompt.id === undefined 
 export function generateQuiz({ seed, level, topics: asked, count, focus = [], version = QUIZ_VERSION, bank: revision = bank.revision }: QuizSpec): Question[] {
   const rng = createRng(seed);
   if (revision > bank.revision) throw new Error(`question bank revision ${revision} is not loaded (${bank.revision} is)`);
-  const fromBank = level === "chemistry" ? bankKinds(revision) : new Map<string, { topic: Topic; generator: Generator }>();
+  const tier = bankLevelOf(level);
+  const fromBank = tier !== null ? bankKinds(revision, tier) : new Map<string, { topic: Topic; generator: Generator }>();
   // Topics without a kind of question at this level are left out (every topic
   // of version 2 and before has both levels, so no saved test changes).
   const topics = asked.filter((topic) => skillsFor(level, [topic], version, revision).length > 0);

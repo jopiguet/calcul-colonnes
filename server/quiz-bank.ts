@@ -49,6 +49,7 @@ export class BankStore {
         id: String(r.id),
         unit: String(r.unit),
         topic: topicOf.get(String(r.unit))!,
+        level: String(r.level) === "advanced" ? "advanced" : "core",
         section: String(r.section),
         prompt: json(r.prompt),
         correct: json(r.correct),
@@ -108,12 +109,12 @@ export class BankStore {
       const inFile = new Set<string>();
       for (const [position, q] of file.questions.entries()) {
         inFile.add(q.id);
-        const values = [q.unit, q.section, position, JSON.stringify(q.prompt), JSON.stringify(q.correct), JSON.stringify(q.wrong), JSON.stringify(q.explanation)];
+        const values = [q.unit, q.level, q.section, position, JSON.stringify(q.prompt), JSON.stringify(q.correct), JSON.stringify(q.wrong), JSON.stringify(q.explanation)];
         const row = rows.get(q.id);
         if (!row) {
           await tx.query(
-            `INSERT INTO quiz_bank (id, unit, section, position, prompt, correct, wrong, explanation, from_revision)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            `INSERT INTO quiz_bank (id, unit, level, section, position, prompt, correct, wrong, explanation, from_revision)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
             [q.id, ...values, next],
           );
           report.added++;
@@ -126,10 +127,13 @@ export class BankStore {
         if (String(row.unit) !== q.unit) {
           throw new BankImportRefused(`question ${q.id} moves from unit ${String(row.unit)} to ${q.unit}: give it a new id (its old tests would change).`);
         }
-        const before = [row.unit, row.section, n(row.position), row.prompt, row.correct, row.wrong, row.explanation].map(String);
+        if (String(row.level) !== q.level) {
+          throw new BankImportRefused(`question ${q.id} moves from level ${String(row.level)} to ${q.level}: give it a new id (its old tests would change).`);
+        }
+        const before = [row.unit, row.level, row.section, n(row.position), row.prompt, row.correct, row.wrong, row.explanation].map(String);
         if (before.join("\u0000") !== values.map(String).join("\u0000")) {
           await tx.query(
-            `UPDATE quiz_bank SET unit = $1, section = $2, position = $3, prompt = $4, correct = $5, wrong = $6, explanation = $7 WHERE id = $8`,
+            `UPDATE quiz_bank SET unit = $1, level = $2, section = $3, position = $4, prompt = $5, correct = $6, wrong = $7, explanation = $8 WHERE id = $9`,
             [...values, q.id],
           );
           report.updated++;

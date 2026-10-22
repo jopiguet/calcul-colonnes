@@ -236,11 +236,14 @@ the interval, so the count never hangs on a tangency.
 
 ## Physical chemistry
 
-The level `chemistry` has its own topics, grouped as *Thermodynamics*:
-`gases`, `firstLaw` and `secondLaw` (Atkins, Focuses 1–3). It has no lycée or
-university variant. Each topic mixes the calculations below with the concept
-questions of the [question bank](question-bank.md), one kind per unit of the
-book (`gases.concepts1A`).
+Physical chemistry has its own topics, grouped as *Thermodynamics*:
+`gases`, `firstLaw` and `secondLaw` (Atkins, Focuses 1–3), and two levels.
+At `chemistry` (*Fondamental*), each topic mixes the calculations below with
+the core questions of the [question bank](question-bank.md), one kind per
+unit of the book (`gases.concepts1A`). At `chemistryAdvanced` (*Avancé*), it
+has only the bank's advanced questions (`gases.advanced1A`): no generator is
+registered at that level, and a bank without advanced questions gives no
+advanced test.
 
 The data are drawn on grids (`draw`) and written to three significant figures
 (`sig`, `qty`); options are compared by value, so two mistakes giving the same
@@ -576,6 +579,7 @@ after the change. The hashes must match.
 ```sh
 npm run check:quiz          # 400 seeds per level: 16,000 questions, about a minute
 npm run check:quiz -- 1500  # 60,000 questions
+npm run check:quiz -- --bank data/atkins-12-concepts.json  # with a real question bank
 ```
 
 For each seed and level, the script generates a 20-question test on all

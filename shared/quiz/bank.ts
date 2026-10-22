@@ -8,8 +8,10 @@
  * generating a test, so a seed gives the same test on both sides.
  *
  * Each question belongs to a unit of its book (Atkins' Topic "1A") and to a
- * test topic ("gases"); the questions of a unit are one kind of question
- * ("gases.concepts1A"), tracked and reviewed like a generated kind.
+ * test topic ("gases"), at a level: "core" (the chemistry test) or
+ * "advanced" (reasoning and derivations, the chemistryAdvanced test). The
+ * questions of a unit at a level are one kind of question ("gases.concepts1A",
+ * "gases.advanced1A"), tracked and reviewed like a generated kind.
  *
  * Revisions: every import that changes the bank gives it a new revision. A
  * question is available from the revision that added it, until the one that
@@ -18,7 +20,13 @@
  * test. A question corrected in place keeps its place, with its new text.
  */
 import type { Rng } from "./rng";
-import type { ChemistryTopic, Draft, Localized } from "./types";
+import type { ChemistryTopic, Draft, Level, Localized } from "./types";
+
+export type BankLevel = "core" | "advanced";
+export const BANK_LEVELS: BankLevel[] = ["core", "advanced"];
+/** The bank level a test level draws from; null for the mathematics tests. */
+export const bankLevelOf = (level: Level): BankLevel | null =>
+  level === "chemistry" ? "core" : level === "chemistryAdvanced" ? "advanced" : null;
 
 export interface BankQuestion {
   /** Stable identifier ("1A-03"): an import matches questions by it. */
@@ -26,6 +34,7 @@ export interface BankQuestion {
   /** Unit of the book ("1A"); with the topic, its kind of question. */
   unit: string;
   topic: ChemistryTopic;
+  level: BankLevel;
   /** Section of the book the question rests on ("1A.2"). */
   section: string;
   prompt: Localized;
@@ -57,8 +66,15 @@ export const EMPTY_BANK: Bank = { revision: 0, source: "", units: [], questions:
 
 const availableAt = (q: BankQuestion, revision: number): boolean => q.from <= revision && (q.until === undefined || revision < q.until);
 
-/** The kind of question of a unit: "gases.concepts1A". */
-export const bankSkill = (topic: ChemistryTopic, unit: string): string => `${topic}.concepts${unit}`;
+/** The kind of question of a unit at a level: "gases.concepts1A", "gases.advanced1A". */
+export const bankSkill = (topic: ChemistryTopic, unit: string, level: BankLevel = "core"): string =>
+  `${topic}.${level === "core" ? "concepts" : "advanced"}${unit}`;
+
+/** The unit and level of a bank kind of question ("gases.advanced1A" → 1A, advanced). */
+export function bankSkillParts(skill: string): { unit: string; level: BankLevel } | null {
+  const m = /\.(concepts|advanced)(\w+)$/.exec(skill);
+  return m ? { unit: m[2]!, level: m[1] === "concepts" ? "core" : "advanced" } : null;
+}
 
 /** A bank question as a draft: its options are its texts, identified by the question's id. */
 export function bankDraft(q: BankQuestion, source: string): Draft {
@@ -72,14 +88,15 @@ export function bankDraft(q: BankQuestion, source: string): Draft {
 }
 
 /**
- * The bank's kinds of question at a revision: for each unit with available
- * questions, a generator drawing one of them.
+ * The bank's kinds of question at a revision and level (both levels when
+ * omitted): for each unit with available questions, a generator drawing one
+ * of them.
  */
-export function bankSkills(bank: Bank, revision: number): { id: string; topic: ChemistryTopic; draw: (rng: Rng) => Draft }[] {
+export function bankSkills(bank: Bank, revision: number, level?: BankLevel): { id: string; topic: ChemistryTopic; draw: (rng: Rng) => Draft }[] {
   const byUnit = new Map<string, BankQuestion[]>();
   for (const q of bank.questions) {
-    if (!availableAt(q, revision)) continue;
-    const key = bankSkill(q.topic, q.unit);
+    if (!availableAt(q, revision) || (level !== undefined && q.level !== level)) continue;
+    const key = bankSkill(q.topic, q.unit, q.level);
     byUnit.set(key, [...(byUnit.get(key) ?? []), q]);
   }
   // Questions in a fixed order (by id), so the draw does not depend on how the bank was loaded.

@@ -15,8 +15,12 @@ import {
 } from "../shared/quiz/index.ts";
 import { parseBankFile, toBank } from "../shared/quiz/bank-file.ts";
 
-// The invented test bank (never a book's content): written questions are checked like the others.
-registerBank(toBank(parseBankFile(JSON.parse(readFileSync("tests/e2e/fixtures/bank.json", "utf8"))), 1));
+// The invented test bank (never a book's content): written questions are checked
+// like the others. `--bank FILE` checks a real bank file instead (kept in data/).
+const bankArg = process.argv.indexOf("--bank");
+const bankFile = bankArg >= 0 ? process.argv[bankArg + 1] : "tests/e2e/fixtures/bank.json";
+if (!bankFile) throw new Error("usage: npm run check:quiz -- [seeds] [--bank FILE]");
+registerBank(toBank(parseBankFile(JSON.parse(readFileSync(bankFile, "utf8"))), 1));
 
 const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
 const near = (a: number, b: number, tol: number): boolean =>
@@ -304,7 +308,8 @@ function render(tex: string, where: string): void {
   }
 }
 
-const seeds = Number(process.argv[2] ?? 400);
+const seedArg = process.argv.slice(2).find((a, i, all) => /^\d+$/.test(a) && all[i - 1] !== "--bank");
+const seeds = Number(seedArg ?? 400);
 const failures: string[] = [];
 const prompts = new Map<string, number>();
 const typedCount = new Map<string, number>();
@@ -312,6 +317,11 @@ const mistakesSeen = new Map<string, number>();
 let checked = 0;
 
 for (const level of LEVELS) {
+  // A bank without advanced questions has no advanced test.
+  if (topicsFor(level).length === 0) {
+    console.log(`${level}: no questions in this bank`);
+    continue;
+  }
   for (let seed = 1; seed <= seeds; seed++) {
     // Every other test brings back three kinds of question, as for a player with mistakes to review.
     const topics = topicsFor(level);
@@ -338,7 +348,9 @@ for (const level of LEVELS) {
           // Written: texts with inline $…$ formulas.
           for (const text of [q.prompt.text, q.explanation.text, ...q.options.map((o) => o.text)]) {
             if (!text) throw new Error("written question without its text");
-            for (const [, tex] of localized(text, "en").matchAll(/\$([^$]+)\$/g)) render(tex!, where);
+            for (const lang of ["en", "fr", "es"]) {
+              for (const [, tex] of localized(text, lang).matchAll(/\$([^$]+)\$/g)) render(tex!, `${where} (${lang})`);
+            }
           }
         } else {
           render(q.prompt.tex, where);

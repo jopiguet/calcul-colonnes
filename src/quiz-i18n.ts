@@ -1,7 +1,7 @@
 import type { ExplanationKey, Level, MistakeKey, PromptKey, SkillStatus, Topic, TopicGroup } from "../shared/quiz";
 import { currentLang, type Lang } from "./i18n";
-import { currentBank, localized } from "../shared/quiz";
-import { CHEM_EXPLANATIONS, CHEM_GROUP, CHEM_LEVEL, CHEM_MISTAKES, CHEM_PROMPTS, CHEM_SKILLS, CHEM_TEXTS, CHEM_TOPICS } from "./quiz-i18n-chemistry";
+import { bankSkillParts, currentBank, localized } from "../shared/quiz";
+import { CHEM_ADVANCED, CHEM_EXPLANATIONS, CHEM_GROUP, CHEM_LEVEL, CHEM_MISTAKES, CHEM_PROMPTS, CHEM_SKILLS, CHEM_TEXTS, CHEM_TOPICS } from "./quiz-i18n-chemistry";
 
 /** Texts of the multiple-choice part, in French, Spanish and English. */
 
@@ -218,12 +218,13 @@ const en: Record<QuizKey, string> = {
 };
 
 const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
-  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr },
-  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es },
+  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr },
+  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es },
   en: {
     school: "High school",
     university: "University",
     chemistry: CHEM_LEVEL.en,
+    chemistryAdvanced: CHEM_ADVANCED.en,
   },
 };
 
@@ -1460,10 +1461,12 @@ export const explanationText = (key: ExplanationKey): string => EXPLANATIONS[cur
 export function skillName(skill: string): string {
   const known = SKILL_NAMES[currentLang()][skill];
   if (known) return known;
-  // A unit of the question bank: "gases.concepts1A" → "Concepts 1A – The perfect gas".
-  const unit = /\.concepts(\w+)$/.exec(skill)?.[1];
-  const found = unit ? currentBank().units.find((u) => u.id === unit) : undefined;
-  return found ? qt("conceptsOf", { unit: found.id, title: localized(found.title, currentLang()) }) : skill;
+  // A unit of the question bank: "gases.concepts1A" → "Concepts 1A – The perfect gas", "gases.advanced1A" → "Advanced 1A – …".
+  const parts = bankSkillParts(skill);
+  const found = parts ? currentBank().units.find((u) => u.id === parts.unit) : undefined;
+  return found && parts
+    ? qt(parts.level === "core" ? "conceptsOf" : "advancedOf", { unit: found.id, title: localized(found.title, currentLang()) })
+    : skill;
 }
 export const statusName = (status: SkillStatus): string => qt(STATUS_KEYS[status]);
 export const mistakeName = (mistake: string): string =>

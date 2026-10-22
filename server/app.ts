@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import {
   LEVELS,
+  isChemistry,
   MAX_QUESTIONS,
   ANSWER_MODES,
   OPTION_COUNT,
@@ -66,7 +67,7 @@ function parseQuiz(body: unknown): ValidQuiz | null {
   if (!topics.some((t) => topicsFor(level as Level, typeof version === "number" ? version : QUIZ_VERSION).includes(t as Topic))) return null;
   // The bank revision the browser drew from: the server's, or an older one (a test begun before an import).
   if (bank !== null && !isInt(bank, 0, bankRevision())) return null;
-  if (level !== "chemistry" && bank !== null) return null;
+  if (!isChemistry(level as Level) && bank !== null) return null;
   if (!Array.isArray(answers) || answers.length !== count) return null;
   if (!ANSWER_MODES.includes(mode as AnswerMode)) return null;
   // An option index, or in a typed test a short text (matched against the options when graded).

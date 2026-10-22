@@ -1,18 +1,17 @@
 import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
-import { generateQuiz, registerBank, topicsFor, type Question } from "../../shared/quiz/index.ts";
+import { generateQuiz, localized, registerBank, topicsFor, type Level, type Question } from "../../shared/quiz/index.ts";
 import { parseBankFile, toBank } from "../../shared/quiz/bank-file.ts";
 import { newPlayer, openActivity, profileOf, rebuild, takeQuiz } from "./helpers";
 
 /** The invented bank the server imported at startup (playwright.config.ts): revision 1. */
 const fixture = parseBankFile(JSON.parse(readFileSync("tests/e2e/fixtures/bank.json", "utf8")));
 registerBank(toBank(fixture, 1));
-const CHEMISTRY = topicsFor("chemistry");
 
 /** A seed whose test of `count` questions starts with a written question. */
-function seedStartingWritten(count: number): { seed: number; first: Question } {
+function seedStartingWritten(count: number, level: Level = "chemistry"): { seed: number; first: Question } {
   for (let seed = 1; ; seed++) {
-    const quiz = generateQuiz({ seed, level: "chemistry", topics: CHEMISTRY, count, bank: 1 });
+    const quiz = generateQuiz({ seed, level, topics: topicsFor(level), count, bank: 1 });
     if (quiz[0]!.verify.kind === "choice") return { seed, first: quiz[0]! };
   }
 }
@@ -37,9 +36,10 @@ test.beforeEach(async ({ page }) => {
   await expect(page.locator("h1")).toHaveText("QCM de chimie physique");
 });
 
-test("physical chemistry: its own topics and no level; calculations and written questions graded the same everywhere", async ({ page }) => {
-  // One level: no choice shown; the three Focuses of thermodynamics.
-  await expect(page.locator(".quiz-setup legend", { hasText: "Niveau" })).toHaveCount(0);
+test("physical chemistry: its own topics and levels; calculations and written questions graded the same everywhere", async ({ page }) => {
+  // Its own levels, core first; the three Focuses of thermodynamics.
+  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Fondamental", "Avancé"]);
+  await expect(page.locator(".segment.on", { hasText: "Fondamental" })).toHaveCount(1);
   await expect(page.locator(".topic-group-name")).toHaveText(["Thermodynamique"]);
   await expect(page.locator(".topics .topic")).toHaveText(["1 · Les gaz", "2 · Premier principe", "3 · Deuxième et troisième principes"]);
 
@@ -51,7 +51,7 @@ test("physical chemistry: its own topics and no level; calculations and written 
   await page.click("text=Commencer le test");
 
   // A written question: its text, its four answers in words, where it comes from.
-  await expect(page.locator(".quiz-prompt")).toContainText(first.prompt.text!.en.split("$")[0]!.trim());
+  await expect(page.locator(".quiz-prompt")).toContainText(localized(first.prompt.text!, "fr").split("$")[0]!.trim());
   await expect(page.locator(".quiz-source")).toHaveText(first.prompt.source!);
   await expect(page.locator(".choices.written .choice-text")).toHaveCount(4);
 
@@ -95,5 +95,31 @@ test("a written question answered wrong comes back for review, named after its u
   expect(skill.status).toBe("review");
   await page.click("text=📈 Mes progrès");
   const unit = fixture.units.find((u) => first.skill.endsWith(`concepts${u.id}`))!;
-  await expect(page.locator("#app")).toContainText(`Notions ${unit.id} – ${unit.title.en}`);
+  await expect(page.locator("#app")).toContainText(`Notions ${unit.id} – ${localized(unit.title, "fr")}`);
+});
+
+test("the advanced level: written questions only, in the app's language, its own kinds of question", async ({ page }) => {
+  await page.click("text=Avancé");
+  await expect(page.locator(".segment.on", { hasText: "Avancé" })).toHaveCount(1);
+  await expect(page.locator(".mode-hint").first()).toContainText("Raisonnements et démonstrations");
+  const { seed, first } = seedStartingWritten(5, "chemistryAdvanced");
+  await page.locator(".count button").first().click(); // 5 questions
+  await fixSeed(page, seed);
+  await page.click("text=Commencer le test");
+
+  // Translated into French: the prompt in French, not marked as English.
+  await expect(page.locator(".quiz-prompt")).toContainText(first.prompt.text!.fr!.split("$")[0]!.trim());
+  await expect(page.locator(".quiz-prompt[lang=en]")).toHaveCount(0);
+  const wrong = (first.correct + 1) % 4;
+  const { body, server } = await takeQuiz(page, (i) => (i === 0 ? wrong : 0));
+  expect(body.level).toBe("chemistryAdvanced");
+  expect(body.bank).toBe(1);
+  expect(server.correct).toBe(rebuild(body).correct);
+  expect(rebuild(body).questions.every((q) => q.verify.kind === "choice")).toBe(true);
+
+  // Its own kinds of question, named "Avancé".
+  expect(first.skill).toMatch(/\.advanced\w+$/);
+  await page.click("text=📈 Mes progrès");
+  const unit = fixture.units.find((u) => first.skill.endsWith(`advanced${u.id}`))!;
+  await expect(page.locator("#app")).toContainText(`Avancé ${unit.id} – ${localized(unit.title, "fr")}`);
 });

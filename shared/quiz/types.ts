@@ -5,20 +5,24 @@ export type Fn2 = (x: number, y: number) => number;
 
 /**
  * "school" and "university" are the levels of the mathematics tests;
- * "chemistry" is the physical chemistry subject, a test of its own (its
- * topics are the Focuses of Atkins' Physical Chemistry).
+ * "chemistry" and "chemistryAdvanced" those of physical chemistry, a test of
+ * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
+ * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /** Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws. */
 export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw";
 export type Topic = MathTopic | ChemistryTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced"];
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw"];
 /** The levels offered in the mathematics test's settings. */
 export const MATH_LEVELS: Level[] = ["school", "university"];
+/** The levels offered in the physical chemistry test's settings. */
+export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
+export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
 export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw"];
 

@@ -37,6 +37,12 @@ export const CHEM_TEXTS = {
     flagThanks: "Merci, la question est signalée.",
     flagFailed: "Non envoyé : réessayer plus tard.",
     conceptsOf: "Notions {unit} – {title}",
+    advancedOf: "Avancé {unit} – {title}",
+    chemCore: "Fondamental",
+    chemAdvanced: "Avancé",
+    chemCoreHint: "Calculs et notions du cours.",
+    chemAdvancedHint: "Raisonnements et démonstrations, un pas au-delà du cours. Pas de calculs.",
+    noAdvanced: "Pas encore de questions avancées sur ce serveur. Voir docs/question-bank.md.",
   },
   es: {
     modeChemistry: "⚗️ Química física",
@@ -48,6 +54,12 @@ export const CHEM_TEXTS = {
     flagThanks: "Gracias, la pregunta está señalada.",
     flagFailed: "No enviado: inténtalo más tarde.",
     conceptsOf: "Conceptos {unit} – {title}",
+    advancedOf: "Avanzado {unit} – {title}",
+    chemCore: "Fundamental",
+    chemAdvanced: "Avanzado",
+    chemCoreHint: "Cálculos y conceptos del curso.",
+    chemAdvancedHint: "Razonamientos y demostraciones, un paso más allá del curso. Sin cálculos.",
+    noAdvanced: "Aún no hay preguntas avanzadas en este servidor. Ver docs/question-bank.md.",
   },
   en: {
     modeChemistry: "⚗️ Physical chemistry",
@@ -59,10 +71,17 @@ export const CHEM_TEXTS = {
     flagThanks: "Thank you, the question is reported.",
     flagFailed: "Not sent: try again later.",
     conceptsOf: "Concepts {unit} – {title}",
+    advancedOf: "Advanced {unit} – {title}",
+    chemCore: "Core",
+    chemAdvanced: "Advanced",
+    chemCoreHint: "Calculations and concepts of the course.",
+    chemAdvancedHint: "Reasoning and derivations, a step beyond the course. No calculations.",
+    noAdvanced: "No advanced questions on this server yet. See docs/question-bank.md.",
   },
 } satisfies Record<Lang, Record<string, string>>;
 
 export const CHEM_LEVEL: Record<Lang, string> = { fr: "Chimie physique", es: "Química física", en: "Physical chemistry" };
+export const CHEM_ADVANCED: Record<Lang, string> = { fr: "Chimie physique avancée", es: "Química física avanzada", en: "Advanced physical chemistry" };
 export const CHEM_GROUP: Record<Lang, string> = { fr: "Thermodynamique", es: "Termodinámica", en: "Thermodynamics" };
 
 export const CHEM_TOPICS: Record<Lang, Record<ChemistryTopic, string>> = {

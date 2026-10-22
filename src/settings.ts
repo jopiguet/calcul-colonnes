@@ -1,4 +1,4 @@
-import { CHEMISTRY_TOPICS, MATH_LEVELS, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, MATH_LEVELS, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 
@@ -26,6 +26,8 @@ export interface Settings {
   quizSubject: "maths" | "chemistry";
   /** Topics chosen for the physical chemistry test. */
   chemTopics: Topic[];
+  /** Level of the physical chemistry test: core or advanced. */
+  chemLevel: Level;
   quizCount: number;
   /** Mix the player's recent mistakes into new tests. */
   quizReview: boolean;
@@ -104,6 +106,7 @@ export function loadSettings(): Settings {
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
     quizSubject: saved.quizSubject === "chemistry" ? "chemistry" : "maths",
     chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
+    chemLevel: CHEMISTRY_LEVELS.includes(saved.chemLevel as Level) ? (saved.chemLevel as Level) : "chemistry",
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,
     quizMode: saved.quizMode === "typed" ? "typed" : "choices",

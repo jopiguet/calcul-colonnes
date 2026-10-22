@@ -173,14 +173,14 @@ right.
 | Field | |
 |---|---|
 | `seed` | 0 … 2³² − 1 |
-| `level` | `school`, `university` or `chemistry` |
-| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw` for `chemistry` |
+| `level` | `school`, `university`, `chemistry` or `chemistryAdvanced` |
+| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw` for `chemistry` and `chemistryAdvanced` |
 | `count` | 1 … 30 (the app offers 5, 10, 15, 20) |
 | `focus` | Kinds of question brought back for review; known ids, without duplicates. Optional, default `[]`. |
 | `version` | Generator version; must equal the server's `QUIZ_VERSION`. Optional, default the server's. |
 | `answers` | `count` integers, each an option index 0–3, or `-1` for a blank; in a typed test, texts |
 | `mode` | `choices` or `typed`. Optional, default `choices`. |
-| `bank` | `chemistry` only: the [question bank](question-bank.md) revision the test drew from, at most the server's. Optional; omitted, the test has no written question. |
+| `bank` | Physical chemistry only: the [question bank](question-bank.md) revision the test drew from, at most the server's. Optional; omitted, the test has no written question. |
 
 The server regenerates the test from `seed`, `level`, `topics`, `count`,
 `focus`, `version` and `bank`, grades it, and stores the test and one row per
@@ -210,7 +210,7 @@ imported.
   "units": [{ "id": "1A", "topic": "gases", "title": { "en": "The perfect gas" } }],
   "questions": [
     {
-      "id": "1A-01", "unit": "1A", "topic": "gases", "section": "1A.2",
+      "id": "1A-01", "unit": "1A", "topic": "gases", "level": "core", "section": "1A.2",
       "prompt": { "en": "…" }, "correct": { "en": "…" },
       "wrong": [{ "en": "…" }, { "en": "…" }, { "en": "…" }],
       "explanation": { "en": "…" },
