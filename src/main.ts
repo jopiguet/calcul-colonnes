@@ -30,7 +30,8 @@ import { vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
-import { discoverBusy, discoverView } from "./discover/index";
+import { PHYSICS_LABS, discoverBusy, discoverView } from "./discover/index";
+import { pt } from "./discover/physics-i18n";
 import { dt } from "./discover/i18n";
 import { progressView } from "./progress";
 
@@ -192,7 +193,8 @@ async function render(): Promise<void> {
         await vocabView({ user: state.user, book, rerender: () => void render() }),
       );
     } else if (state.settings.mode === "discover") {
-      app.replaceChildren(topBar(), activityBar(dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
+      const physics = PHYSICS_LABS.includes(state.settings.discoverActivity);
+      app.replaceChildren(topBar(), activityBar(physics ? pt("group") : dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
       const subject = state.settings.quizSubject;

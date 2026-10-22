@@ -8,9 +8,11 @@ the project's planning notes; this page describes what exists.
 - [The probability lab](#the-probability-lab)
 - [Heads or tails](#heads-or-tails)
 - [Logic grids](#logic-grids)
+- [The physics playground](#the-physics-playground)
 - [Randomness and experiment numbers](#randomness-and-experiment-numbers)
 - [What is saved](#what-is-saved)
 - [Checks and tests](#checks-and-tests)
+- [Physics checks](#physics-checks)
 - [Code](#code)
 
 ## The pattern
@@ -133,6 +135,87 @@ number of hints. There is no timer while solving.
 the same grid, to compare with someone. Each level keeps its own grid while
 the page is open.
 
+## The physics playground
+
+Phase 2 of the roadmap: four labs in their own group on the home page,
+*Physique*. They follow the Discover pattern, with two differences:
+
+- **Trials are not random.** The same settings give the same result, so there is no experiment number; *Tout recommencer* starts the predictions again.
+- **The experiment is a simulation.** Each engine computes the motion from the forces, step by step, as a physics engine would; the exact solution is written separately. `npm run check:physics` compares the two, because a physics simulation that drifts teaches the wrong thing. The comparison step shows both to the learner.
+
+Common parts are in `src/discover/physics-ui.ts`: sliders that redraw the
+picture while they are dragged (without redrawing themselves, which would
+lose the drag), SVG drawing, tables, formulas, verdicts.
+
+### Throw a ball (the anchor)
+
+A ball, no air, g = 9.81 m s⁻².
+
+| Step | What happens |
+|---|---|
+| 1. Predict | The angle that throws farthest from the ground at 15 m/s: 15°, 30°, 45°, 60° or 75°. A flag on a slider, where a throw at 30° will land (0 to 40 m). The angle is required. |
+| 2. Throw | Angle (5° to 85°), speed (5 to 25 m/s), launch height (0 to 20 m); an arrow shows the aim. *Lancer* flies the ball in real time on a field drawn to scale (the same metres on both axes, so the path has its true shape, rescaled to fit). The last five paths stay; the latest landing is marked with its distance. For the predicted throw, the gap to the flag. A table of throws: distance, time in the air, highest point. |
+| 3. Compare | From 3 throws. The distance against the angle at the current speed and height, exact, with the throws made at them and the best angle marked (45° from the ground, less from a height). \(R = v^2 \sin 2\theta / g\), \(x(t)\), \(y(t)\). Each throw's simulated distance next to the formula's, to the millimetre. The predictions: 45°, complementary angles landing together (from the learner's own pair of throws when there is one), the flag against 19.9 m. |
+| 4. Understand | Two motions in one; up as long as down; why 45°; mass. |
+| 5. Check | A marble dropped from a table, another pushed off at the same moment: which lands first? Both at the same time; a multi-flash picture (one flash every 0.05 s) shows them at the same height at every flash. |
+
+**The engine** (`shared/discover/projectile.ts`) integrates the weight with
+velocity Verlet at 240 steps per second and places the landing by solving
+the last step's parabola. The mass is in the force and cancels.
+
+### The pendulum
+
+A ball on a string, no friction.
+
+| Step | What happens |
+|---|---|
+| 1. Predict | A heavy ball or a light one on the same string: which swings faster (heavy, light, the same)? A string 4 times longer: a swing takes the same time, 2, 4 or 16 times longer? Both required. |
+| 2. Try | Length (0.25 to 2.5 m), mass (50 g, 200 g, 1 kg, 5 kg) and release angle (5° to 80°). The pendulum swings in real time; the dashed arc shows the release angle. *Chronométrer 10 oscillations* times 10 swings on the simulation and adds them to a table and to a chart of the time of a swing against length. |
+| 3. Compare | From 3 measurements. \(T = 2\pi\sqrt{L/g}\) drawn on the chart. Each measurement against the small-angle formula and the exact period. The predictions: mass (with the learner's own measurements that differ by the mass alone, or an invitation to make them), √L, and how much longer the widest swing is than the formula (7.3 % at 60°). |
+| 4. Understand | The mass cancels; √L; amplitude barely matters (pendulum clocks); Galileo. |
+| 5. Check | A child and an adult on the same swing: about the same. |
+
+**The engine** (`shared/discover/pendulum.ts`) integrates
+\(\ddot\theta = -(g/L)\sin\theta\), from the force with the mass in it, by
+fourth-order Runge–Kutta (1 ms steps for timing; the animation uses 600
+steps per second of real time). The stopwatch times 10 swings between
+passes through the bottom, interpolated within a step. The exact period is
+\(4\sqrt{L/g}\,K(\sin(\theta_0/2))\), K by the arithmetic–geometric mean.
+
+### Lenses
+
+A thin converging lens, a lit arrow 3 cm high, a screen; distances in cm.
+
+| Step | What happens |
+|---|---|
+| 1. Predict | A card over the top half of the lens: the image loses its top half, its bottom half, stays whole and dimmer, or disappears? The arrow comes closer: must the screen move closer, away, or stay? Both required. |
+| 2. Try | Arrow distance (5 to 60 cm), screen distance (5 to 120 cm), focal length (10, 15, 20 cm), the card. The bench shows the cone of light from the arrow's tip, bent by the lens up to the screen (rays the card stops are dashed). *Sur l'écran* shows the image: upside down, blurred by the spread of the tip's light on the screen, dimmed by the share of light that gets through. Sharp within 3 % of the image distance; *Noter cette position* only then. |
+| 3. Compare | From 3 sharp positions with the arrow at different distances. \(1/d + 1/d' = 1/f\) against the positions found. A three-ray diagram for the current arrow, with the image (dashed and traced back when virtual). The predictions, and whether the card was tried. |
+| 4. Understand | A cone of light per point; the card dims; closer means farther and larger, the same size at 2f; inside f, a magnifying glass. |
+| 5. Check | Can the image in a magnifying glass be caught on a screen? No: it is virtual. |
+
+**The engine** (`shared/discover/lenses.ts`) traces each ray: the lens bends
+it by −y/f. The image comes from the lens equation; the screen's image from
+the traced rays (where they land, how far they spread, how many pass).
+
+### Circuits
+
+A 6 V battery and identical bulbs of 12 Ω (3 W alone).
+
+| Step | What happens |
+|---|---|
+| 1. Predict | Two bulbs in series, two in parallel: does each shine more, the same or less than a bulb alone? Both required. |
+| 2. Connect | Six circuits: 1 bulb, 2 and 3 in series, 2 and 3 in parallel, 1 + 2 in parallel. Bulbs glow by their power; ammeters on the wires read the current (in series: the same before, between and after the bulbs). A bulb is a button: touch it, or Enter, to unscrew it or screw it back. |
+| 3. Compare | Once a series and a parallel circuit have been tried. Every circuit: each bulb's power against a bulb alone, the battery's current. \(I = U/R\), \(P = UI\), series and parallel in words. The predictions, and a note: a real filament's resistance falls when it is cooler, so series bulbs are a little less dim than this model says. |
+| 4. Understand | Current is not used up; one path or several; the battery works harder in parallel; homes are wired in parallel. |
+| 5. Check | 0.25 A into the first of two bulbs in series: how much out of the second? The same. |
+
+**The engine** (`shared/discover/circuits.ts`) solves any layout of bulbs by
+nodal analysis: Kirchhoff's current law at every junction, Ohm's law in every
+bulb, the battery fixing the voltage between its terminals. A tiny
+conductance from every junction keeps a junction left floating by an
+unscrewed bulb defined.
+
 ## Randomness and experiment numbers
 
 An experiment is its seed: *Expérience n° 4821*. The rolls and the flips
@@ -151,7 +234,7 @@ The grids use the same generator: a grid is its number and its level.
 
 ## What is saved
 
-Nothing yet. Each lab's experiment, and each level's grid, lives in the page:
+Nothing yet, in any lab, the physics playground included. Each lab's experiment, and each level's grid, lives in the page:
 a language change keeps it, going elsewhere and back keeps it, a reload starts
 anew. The update watcher does not reload during an experiment that has trials
 and is not finished, nor during a grid that has a number written and is not
@@ -203,6 +286,30 @@ The language test goes through every step of both labs in the three
 languages; the update test checks that a new version waits during an
 experiment.
 
+## Physics checks
+
+`npm run check:physics` (about 15 seconds), in `server/check-physics.ts`:
+
+- **The throw:**
+  - 1,278 flights (speeds 2 to 25 m/s, angles 0° to 85°, heights 0 to 20 m, three masses): range and time against the exact formulas, every integrated point on the exact parabola, the energy constant;
+  - 45° best from the ground, lower from a height, complementary angles tied, \(v^2\sin 2\theta/g\);
+  - the taught figure, 19.9 m at 15 m/s and 30°, and the dropped and pushed marbles at the same height at every flash.
+- **The pendulum:**
+  - K(k) by the arithmetic–geometric mean against its power series, and Gauss's constant;
+  - the taught figures: at 90° the period is 18.0 % longer than \(2\pi\sqrt{L/g}\), at 60° 7.3 %, at 20° 0.77 %; and \(1 + \theta_0^2/16\) at small angles;
+  - 50 pendulums (5 lengths, angles 2° to 170°): the timed period within 10⁻⁷ of the exact one, the same with another mass, and the energy within 10⁻⁸ over 100 swings;
+  - a negative control: plain Euler, same step, gains more than 10 % of its energy, so the test would catch a drifting integrator.
+- **The lens:** 171 positions (three focal lengths, arrow at 3 to 60 cm), with and without the card: the lens equation, real images only beyond f, every traced ray through the image point, the card passing half the light and none of the image, the blur formula against the traced spread, the three principal rays meeting at the image.
+- **The circuits:** the six circuits with every combination of bulbs unscrewed (34 cases): Kirchhoff's current law at every junction, the battery's power equal to the bulbs', no current through an unscrewed bulb, and the series and parallel formulas; then what the lab teaches (a quarter of the power in series of two, one out all out in series, the other unchanged in parallel, 4/9 for the first bulb of the mixed circuit).
+
+Browser tests (`tests/e2e/physics.spec.ts`): each lab through its five
+steps at 360 px without sideways scrolling, with the figures computed by the
+engines (the landing distance and time, the timed period with two masses and
+a quarter of the length, the sharp screen positions, the ammeter readings
+with a bulb unscrewed, by mouse and by keyboard); the labs in Spanish and
+English, keeping their state; and one test with motion, the ball in flight
+and the pendulum swinging.
+
 ## Code
 
 | File | Role |
@@ -217,5 +324,14 @@ experiment.
 | `src/discover/puzzles.ts` | The logic grids: levels, the grid with its cages, entry by pad and keyboard, notes, rule conflicts, check, hints in two stages, solved |
 | `src/discover/index.ts` | The list of labs, the view of the one open, and whether any has an experiment under way |
 | `src/discover/i18n.ts` | Their texts in French, Spanish and English; numbers and percentages in each language's format |
+| `shared/discover/projectile.ts` | A thrown ball: the flight integrated from the forces, the exact flight, the best angle, the dropped and pushed marbles |
+| `shared/discover/pendulum.ts` | A pendulum: Runge–Kutta from the force, the timed period, the exact period by the elliptic integral, energy |
+| `shared/discover/lenses.ts` | A thin lens: the image, traced rays, what the screen shows, sharpness, the three principal rays |
+| `shared/discover/circuits.ts` | Bulbs and a battery: six layouts solved by nodal analysis |
+| `src/discover/activities.ts` | The ids of every Discover activity, and which are physics labs |
+| `src/discover/physics-ui.ts` | What the physics labs share: head, sliders that redraw while dragged, SVG drawing, tables, formulas, verdicts, restart |
+| `src/discover/throw.ts`, `pendulum.ts`, `lenses.ts`, `circuits.ts` | The four physics labs |
+| `src/discover/physics-i18n.ts` | Their texts in French, Spanish and English; decimals and percentages in each language's format |
 | `server/check-discover.ts` | `npm run check:discover` |
-| `tests/e2e/discover.spec.ts` | Browser tests |
+| `server/check-physics.ts` | `npm run check:physics` |
+| `tests/e2e/discover.spec.ts`, `tests/e2e/physics.spec.ts` | Browser tests |

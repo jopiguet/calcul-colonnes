@@ -9,6 +9,8 @@ import { qt } from "./quiz-i18n";
 import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from "./store";
 import { bookTitle } from "./vocab";
 import { dt } from "./discover/i18n";
+import { pt } from "./discover/physics-i18n";
+import type { DiscoverActivity } from "./discover/activities";
 import { CHEMISTRY_TOPICS, LINUX_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
@@ -91,7 +93,7 @@ export type Activity =
   | { mode: "columns" }
   | { mode: "quiz"; subject?: Subject }
   | { mode: "vocab"; book: number }
-  | { mode: "discover"; activity: "dice" | "coins" | "puzzles" };
+  | { mode: "discover"; activity: DiscoverActivity };
 
 export interface HomeContext {
   user: User;
@@ -147,6 +149,15 @@ export function activityCatalog(books: VocabBookInfo[]): { group: string; activi
         { id: "discover-dice", title: dt("diceTitle") },
         { id: "discover-coins", title: dt("coinsTitle") },
         { id: "discover-puzzles", title: dt("puzzlesTitle") },
+      ],
+    },
+    {
+      group: pt("group"),
+      activities: [
+        { id: "discover-throw", title: pt("throwTitle") },
+        { id: "discover-pendulum", title: pt("pendulumTitle") },
+        { id: "discover-lenses", title: pt("lensesTitle") },
+        { id: "discover-circuits", title: pt("circuitsTitle") },
       ],
     },
   ];
@@ -256,9 +267,21 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   );
   discover.append(lab);
 
+  // The physics playground: the same pattern, with simulations (docs/discover.md).
+  const physics = el("div", "activity-group");
+  physics.append(el("h2", "activity-group-title", pt("group")));
+  const playground = el("div", "activity-grid");
+  playground.append(
+    card("discover-throw", pt("throwTitle"), pt("throwText"), null, () => ctx.open({ mode: "discover", activity: "throw" })),
+    card("discover-pendulum", pt("pendulumTitle"), pt("pendulumText"), null, () => ctx.open({ mode: "discover", activity: "pendulum" })),
+    card("discover-lenses", pt("lensesTitle"), pt("lensesText"), null, () => ctx.open({ mode: "discover", activity: "lenses" })),
+    card("discover-circuits", pt("circuitsTitle"), pt("circuitsText"), null, () => ctx.open({ mode: "discover", activity: "circuits" })),
+  );
+  physics.append(playground);
+
   // Activities the player's account hides; a group left empty goes too.
   const hidden = new Set(ctx.user.hidden ?? []);
-  for (const group of [maths, sciences, computing, languages, discover]) {
+  for (const group of [maths, sciences, computing, languages, discover, physics]) {
     for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
       if (hidden.has(node.dataset.activity!)) node.remove();
     }

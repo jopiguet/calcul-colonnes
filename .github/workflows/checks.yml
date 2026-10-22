@@ -39,7 +39,7 @@ jobs:
         run: npm run build && npm run build:server
 
       - name: Question, vocabulary and Discover checks
-        run: npm run check:quiz && npm run check:vocab && npm run check:discover
+        run: npm run check:quiz && npm run check:vocab && npm run check:discover && npm run check:physics
 
       - run: npx playwright install --with-deps chromium
 

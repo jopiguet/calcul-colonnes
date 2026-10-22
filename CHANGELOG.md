@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.10.0
+
+- **Physics playground** (Phase 2): a new *Physique* group on the home page, four labs in the Discover pattern (predict, try, compare, understand, check), in French, Spanish and English.
+  - **🏀 Lancer une balle**, the anchor: pick the angle that goes farthest and plant a flag where a throw at 30° lands, then throw at any angle, speed and height. The ball flies in real time on a field drawn to scale; the comparison shows distance against angle and each throw against \(v^2\sin 2\theta/g\). The check: a dropped marble and a pushed one, with a multi-flash picture.
+  - **⏱️ Le pendule:** length, mass and release angle; time 10 swings; time against length, \(2\pi\sqrt{L/g}\) and the exact period at large angles. The check: a child and an adult on the same swing.
+  - **🔍 Les lentilles:** move the arrow and the screen until the image is sharp, cover half the lens with a card, then the lens equation and a three-ray diagram. The check: a magnifying glass's virtual image.
+  - **💡 Les circuits:** six circuits of identical bulbs, glowing by their power, with ammeters; unscrew any bulb, by mouse or keyboard. The check: current is not used up.
+- **Simulations, checked:** the flight (velocity Verlet), the pendulum (Runge–Kutta with the full sin θ), traced rays and nodal analysis. `npm run check:physics` compares them with the exact solutions and the conservation laws: periods to 10⁻⁷ up to 170°, no energy drift over 100 swings (and a drifting integrator caught), Kirchhoff's laws in every circuit. CI runs it.
+- **Account page:** the four labs can be shown or hidden per player, like the other activities.
+- **Tests:** 84 browser tests.
+
 ## 6.9.0
 
 - **Physical chemistry, Focuses 4 to 6:** three new topics, *4 · Transformations physiques*, *5 · Les mélanges* and *6 · L'équilibre chimique*, in the *Thermodynamique* group.

@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "6.9.0",
+  "version": "6.10.0",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -23,6 +23,7 @@
     "quiz:flags": "tsx server/quiz-flags.ts",
     "check:vocab": "tsx server/check-vocab.ts",
     "check:discover": "tsx server/check-discover.ts",
+    "check:physics": "tsx server/check-physics.ts",
     "test:e2e:postgres": "node -e \"if(!process.env.E2E_DATABASE_URL){console.error('set E2E_DATABASE_URL to a database that may be emptied');process.exit(2)}\" && playwright test"
   },
   "devDependencies": {

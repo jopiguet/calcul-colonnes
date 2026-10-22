@@ -1,6 +1,7 @@
 import { CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
+import { isDiscoverActivity, type DiscoverActivity } from "./discover/activities";
 
 /**
  * Settings of this browser, kept in localStorage. Players and scores are not
@@ -18,7 +19,7 @@ export interface Settings {
   /** Vocabulary book open in the "vocab" activity (its id on the server). */
   vocabBook: number | null;
   /** Lab open in the "discover" activity. */
-  discoverActivity: "dice" | "coins" | "puzzles";
+  discoverActivity: DiscoverActivity;
   /** The mathematics test's level ("school" or "university"). */
   quizLevel: Level;
   quizTopics: Topic[];
@@ -103,7 +104,7 @@ export function loadSettings(): Settings {
   return {
     mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" || saved.mode === "discover" ? saved.mode : "home",
     vocabBook: typeof saved.vocabBook === "number" && saved.vocabBook > 0 ? saved.vocabBook : null,
-    discoverActivity: saved.discoverActivity === "coins" || saved.discoverActivity === "puzzles" ? saved.discoverActivity : "dice",
+    discoverActivity: isDiscoverActivity(saved.discoverActivity) ? saved.discoverActivity : "dice",
     quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
     quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" ? saved.quizSubject : "maths",

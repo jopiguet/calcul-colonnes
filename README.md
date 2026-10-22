@@ -77,6 +77,14 @@ at *lycée / bachillerato* or university level.
 - Each experiment and each grid has a number: the same number replays the same rolls, flips or grid, to compare with someone.
 - Checked, not assumed: millions of rolls and flips per seed against the theory by chi-square tests, the exact streak formulas against a brute-force count of every sequence, and 1,200 grids for one solution and a solution by reasoning.
 
+**Physics** — the same pattern, with simulations: predict, try, compare with the theory.
+
+- Throw a ball (the anchor): pick the angle that throws farthest, plant a flag where a throw at 30° will land, then throw at any angle, speed and height. The flight is integrated force by force and shown as it happens; the formula then gives the same distance, to the millimetre.
+- The pendulum: does a heavier ball swing faster? Time 10 swings at any length, mass and angle; the motion is computed with the full sin θ, so large angles really do swing slower.
+- Lenses: move the arrow and the screen until the image is sharp, then cover half the lens with a card. The rays are traced one by one; the thin lens equation and a three-ray diagram come after.
+- Circuits: six circuits of identical bulbs, solved by Kirchhoff's laws; bulbs glow by their power, ammeters show that current is not used up, and any bulb can be unscrewed.
+- Each simulation is checked against the exact solution: the flight against the parabola, the pendulum's period against the elliptic integral up to 170° with no energy drift over 100 swings, traced rays against the lens equation, circuits against the series and parallel formulas.
+
 **Players and progress**
 
 - Scores are kept per player in SQLite, or in PostgreSQL (Neon) with one setting.
@@ -122,6 +130,7 @@ npm start          # http://localhost:8787
 | `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |
 | `npm run characters:build` | Builds the kanji and kana book from the EDRDG dictionaries in `data/` (see [Kanji and kana](docs/characters.md)) |
 | `npm run check:discover` | Checks the Discover engines: exact probabilities and streak formulas, the generator on millions of trials, 1,200 logic grids (see [Discover](docs/discover.md#checks-and-tests)) |
+| `npm run check:physics` | Checks the physics playground: every simulation against its exact solution, energy that does not drift, Kirchhoff's laws (see [Discover](docs/discover.md#physics-checks)) |
 | `npm run test:e2e:postgres` | The same browser tests on PostgreSQL, with `E2E_DATABASE_URL` naming a database that may be emptied |
 | `npm run maintenance` | Migrations, backfills, new vocabulary books and session purge, then exit: what a Cloud Run release runs as a job |
 | `npm run build:server` | Bundles the server into `dist-server/` for the container image |

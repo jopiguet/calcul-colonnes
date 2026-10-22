@@ -19,6 +19,11 @@
   --radius: 0.75rem;
   --font: "Atkinson Hyperlegible Next", system-ui, sans-serif;
   --digits: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
+  /* The physics playground: a ball, grass, light. */
+  --ball: #d9541e;
+  --grass: #d7ead0;
+  --light: #e6a700;
+  --glow: #ffd84d;
   color-scheme: light dark;
 }
 
@@ -35,6 +40,10 @@
     --good: #8fdcae;
     --bad: #ff9184;
     --warn: #f1c46a;
+    --ball: #ff9f6b;
+    --grass: #2f4a3a;
+    --light: #f2d36b;
+    --glow: #ffe48a;
   }
 }
 
@@ -3778,4 +3787,382 @@ code.inline-code {
   white-space: pre-wrap;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
+}
+
+/* ------------------------------------------------------------- physics playground */
+
+.discover-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.discover-choices legend {
+  margin-bottom: 0.5rem;
+}
+
+.discover-choices .segment {
+  flex: 1 1 auto;
+  min-height: 2.6rem;
+}
+
+.physics-angles .segment,
+.physics-masses .segment,
+.physics-focals .segment {
+  font-family: var(--digits);
+}
+
+.physics-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.physics-slider .discover-range-value {
+  min-width: 6rem;
+}
+
+.physics-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.physics-go {
+  align-self: center;
+  min-width: 12rem;
+}
+
+.physics-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  align-self: center;
+}
+
+.physics-table-wrap .discover-table {
+  font-size: 0.8rem;
+}
+
+.physics-table-wrap .discover-table th,
+.physics-table-wrap .discover-table td {
+  padding: 0.25rem 0.4rem;
+  white-space: nowrap;
+}
+
+.physics-field,
+.physics-strobe,
+.physics-pendulum,
+.physics-bench,
+.physics-circuit {
+  display: block;
+  width: 100%;
+  max-width: 40rem;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.physics-field .axis-label,
+.physics-bench .axis-label,
+.physics-circuit .axis-label,
+.physics-curve .axis-label {
+  fill: var(--muted);
+  font-size: 13px;
+  font-family: var(--font);
+}
+
+/* The throw. */
+.field-ground {
+  fill: var(--grass);
+}
+
+.field-tick,
+.strobe-level {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.strobe-level {
+  stroke-dasharray: 3 4;
+  opacity: 0.6;
+}
+
+.field-pole {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.field-flag {
+  fill: var(--bad);
+}
+
+.field-path {
+  fill: none;
+  stroke: var(--ball);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  opacity: 0.45;
+}
+
+.field-path.is-last {
+  stroke-width: 2;
+  stroke-dasharray: none;
+  opacity: 0.9;
+}
+
+.field-path.is-live {
+  stroke-dasharray: none;
+  opacity: 1;
+}
+
+.field-landing {
+  fill: var(--ball);
+  opacity: 0.6;
+}
+
+.field-landing.is-last {
+  opacity: 1;
+}
+
+.field-distance {
+  fill: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--digits);
+}
+
+.field-stand {
+  fill: color-mix(in srgb, var(--muted) 35%, var(--paper));
+}
+
+.field-aim {
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.field-ball,
+.strobe-thrown {
+  fill: var(--ball);
+}
+
+.strobe-dropped {
+  fill: var(--accent);
+}
+
+.physics-curve .theory-curve {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+/* The pendulum. */
+.pendulum-support {
+  fill: var(--muted);
+}
+
+.pendulum-vertical,
+.pendulum-arc {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.pendulum-string {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.pendulum-bob {
+  fill: var(--ball);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.pendulum-pivot {
+  fill: var(--ink);
+}
+
+/* The lens. */
+.physics-bench-box,
+.physics-screen-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bench-axis {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 6 4;
+}
+
+.bench-focus {
+  fill: var(--muted);
+}
+
+.bench-lens {
+  fill: color-mix(in srgb, var(--accent) 18%, transparent);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.bench-card {
+  fill: var(--ink);
+}
+
+.bench-ray {
+  stroke: var(--light);
+  stroke-width: 1.2;
+  opacity: 0.85;
+}
+
+.bench-ray.is-stopped {
+  stroke-dasharray: 3 3;
+  opacity: 0.5;
+}
+
+.bench-object {
+  stroke: var(--ball);
+  stroke-width: 3;
+  fill: var(--ball);
+}
+
+.bench-image {
+  stroke: var(--accent);
+  stroke-width: 3;
+  fill: var(--accent);
+}
+
+.bench-image.is-virtual {
+  stroke-dasharray: 5 4;
+  fill-opacity: 0.4;
+}
+
+.bench-screen {
+  fill: color-mix(in srgb, var(--muted) 40%, var(--paper));
+}
+
+.bench-principal {
+  fill: none;
+  stroke: var(--light);
+  stroke-width: 1.6;
+}
+
+.bench-principal.is-virtual {
+  stroke-dasharray: 4 4;
+  opacity: 0.7;
+}
+
+.physics-screen-view {
+  width: 12rem;
+  height: auto;
+}
+
+.screen-face {
+  fill: #fdfcf6;
+  stroke: var(--line);
+}
+
+.screen-image {
+  stroke: #c2410c;
+  stroke-width: 4;
+  fill: #c2410c;
+}
+
+.physics-screen-status .good {
+  color: var(--good);
+}
+
+/* The circuit. */
+.circuit-wire {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.circuit-battery-case {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.circuit-plate {
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+
+.circuit-plate.is-short {
+  stroke-width: 6;
+}
+
+.circuit-bulb {
+  cursor: pointer;
+}
+
+.circuit-bulb:focus,
+.circuit-bulb:focus-visible {
+  outline: none;
+}
+
+.circuit-bulb:focus-visible .circuit-glass {
+  stroke: var(--accent);
+  stroke-width: 4;
+}
+
+.circuit-glow {
+  fill: var(--glow);
+}
+
+.circuit-glass {
+  fill: var(--glow);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.circuit-bulb.is-out .circuit-glass {
+  fill: var(--paper);
+  stroke-dasharray: 4 3;
+}
+
+.circuit-filament {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.circuit-name {
+  font-weight: 700;
+}
+
+.circuit-meter {
+  fill: var(--paper);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.circuit-meter-a {
+  fill: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font);
+}
+
+.physics-circuits-table td {
+  white-space: normal;
+}
+
+.circuit-reading {
+  fill: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--digits);
 }

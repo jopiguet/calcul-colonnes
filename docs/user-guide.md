@@ -92,6 +92,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
+| Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 
 Click an activity to open it. Every activity has *← Accueil* at the top to
 come back.
@@ -461,6 +462,43 @@ each column has each one once.
 Each lab keeps its experiment, and each level its grid, while you go elsewhere and back. Nothing is
 saved yet: a new visit starts a new experiment. Details in
 [Discover](discover.md).
+
+## Physics
+
+Four labs in the *Physique* group (*Física*, *Physics*), in the same five
+steps as Discover: predict, try, compare, understand, check. There are no
+experiment numbers: the same settings always give the same result.
+
+**🏀 Lancer une balle.** A ball thrown at 15 m/s.
+
+1. **Prévoir:** the angle that throws farthest (15° to 75°), and a flag where a throw at 30° will land.
+2. **Lancer:** set the angle, the speed and the launch height, then *Lancer*. The ball flies on the field, its path stays, and the distance is written where it lands, next to your flag for the predicted throw. Every throw goes in a table: distance, time in the air, highest point.
+3. **Comparer**, from 3 throws: the distance for every angle at that speed and height, the formulas, each throw's distance against the formula's, and your predictions.
+4. **Comprendre**, then **Vérifier:** one marble dropped from a table, one pushed off at the same moment: which lands first? A multi-flash picture shows both, always at the same height.
+
+**⏱️ Le pendule.** A ball on a string.
+
+1. **Prévoir:** does a heavy ball swing faster than a light one? How much longer is a swing on a string 4 times longer?
+2. **Essayer:** set the length, the mass and the release angle; the pendulum swings. *Chronométrer 10 oscillations* adds a line to the table and a point to the chart of time against length.
+3. **Comparer**, from 3 measurements: \(T = 2\pi\sqrt{L/g}\), each measurement against it and against the exact period (a little longer at large angles), and your predictions, with your own measurements that differ by the mass alone.
+4. **Comprendre**, then **Vérifier:** a child and an adult on the same swing.
+
+**🔍 Les lentilles.** A lit arrow, a lens and a screen.
+
+1. **Prévoir:** a card over the top half of the lens, what does the image lose? The arrow comes closer: where must the screen go?
+2. **Essayer:** move the arrow and the screen; the light from the arrow's tip is drawn through the lens, and *Sur l'écran* shows the image, sharp or blurred, with how much light gets through. Choose the focal length (10, 15 or 20 cm), and put the card on. *Noter cette position* once the image is sharp.
+3. **Comparer**, from 3 sharp positions with the arrow at different distances: the thin lens equation against your positions, the three rays that find an image, and your predictions.
+4. **Comprendre**, then **Vérifier:** can the image in a magnifying glass be caught on a screen?
+
+**💡 Les circuits.** A 6 V battery and identical bulbs.
+
+1. **Prévoir:** two bulbs in series, two in parallel: does each shine more, the same or less than a bulb alone?
+2. **Brancher:** six circuits, from one bulb to one plus two in parallel. Bulbs glow by their power; ammeters show the current at several points. Touch a bulb (or press Enter on it) to unscrew it.
+3. **Comparer**, once a series and a parallel circuit have been tried: every circuit's bulbs and battery current, the formulas, and your predictions.
+4. **Comprendre**, then **Vérifier:** 0.25 A goes into the first bulb in series; how much comes out of the second?
+
+Each lab keeps what you did while you go elsewhere and back; nothing is
+saved. Details in [Discover › The physics playground](discover.md#the-physics-playground).
 
 ## Scores
 
