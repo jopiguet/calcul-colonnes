@@ -5,7 +5,8 @@
  *   Spanish. Commands go between backticks and are the same in every language.
  *   A question about a tool that is not installed by default says how to
  *   install it.
- * - **Generated** ones: permissions (octal ↔ symbolic), umask, cron schedules.
+ * - **Generated** ones: permissions (octal ↔ symbolic), umask, cron schedules,
+ *   and what a sed, awk or parameter-expansion command prints (`linux-output.ts`).
  *
  * A written list only grows: a new question gets `since: <new QUIZ_VERSION>`,
  * so a saved test, rebuilt at its own version, draws from the list it had.
@@ -20,6 +21,10 @@ import { processes } from "./linux/processes";
 import { system } from "./linux/system";
 import { network } from "./linux/network";
 import { tools } from "./linux/tools";
+import { scripting } from "./linux/scripting";
+import { git } from "./linux/git";
+import { vim } from "./linux/vim";
+import { awkFields, paramExpansion, sedSubstitute } from "./linux-output";
 
 export type { Install, L3, LinuxQuestion };
 
@@ -226,12 +231,15 @@ const kinds = (lists: Record<string, readonly LinuxQuestion[]>): Record<string, 
   Object.fromEntries(Object.entries(lists).map(([name, list]) => [name, written(list)]));
 
 /** Every written Linux question, for the checks. */
-export const LINUX_QUESTIONS: Record<string, Record<string, readonly LinuxQuestion[]>> = { files, text, shell, processes, system, network, tools };
+export const LINUX_QUESTIONS: Record<string, Record<string, readonly LinuxQuestion[]>> = { files, text, shell, processes, system, network, tools, scripting, git, vim };
 
 export const linuxFiles = { linux: { ...kinds(files), chmodToSymbolic, chmodToOctal, umask } };
-export const linuxText = { linux: kinds(text) };
+export const linuxText = { linux: { ...kinds(text), sedSubstitute, awkFields } };
 export const linuxShell = { linux: kinds(shell) };
 export const linuxProcesses = { linux: { ...kinds(processes), cron } };
 export const linuxSystem = { linux: kinds(system) };
 export const linuxNetwork = { linux: kinds(network) };
 export const linuxTools = { linux: kinds(tools) };
+export const linuxScripting = { linux: { ...kinds(scripting), paramExpansion } };
+export const linuxGit = { linux: kinds(git) };
+export const linuxVim = { linux: kinds(vim) };

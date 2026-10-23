@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.14.0
+
+- **Linux: scripts, git and vim.** A new group of topics, *Scripts, git et vim*, in French, Spanish and English.
+  - **Scripts bash:** tests (`[` against `[[`, `-eq` against `=`, patterns and `=~`), loops (`for` over a glob, `while IFS= read -r`, the pipe's subshell, `-print0`), functions (`local`, printing a result, `source`), arguments (`$0`, `${1:-…}`, `shift`, `getopts`, `${VAR:?}`) and arrays (`"${a[@]}"`, `+=`, `declare -A`). 27 questions.
+  - **Git:** staging and commits, branches, fast-forward, rebase and conflicts, undoing (`restore`, `revert`, `reset --soft`/`--hard`, `reflog`, `stash`), remotes (`fetch` against `pull`, rejected pushes, `--force-with-lease`, `origin/main`). 23 questions, each with the *📦 git* badge.
+  - **Vim:** modes and quitting, moving (`^`, `%`, `f`, `*`), editing with operators and text objects (`ci"`, `ddp`, `.`), search and replace (`:%s`, `gc`, `:g`, `\<…\>`). 24 questions.
+- **More sed and awk:** six sed questions (ranges, `$d`, several `-e`, basic against extended syntax, `p` without `-n`, `y`) and seven awk ones (`$1 = $1` and `OFS`, counting with arrays, `NR > 1`, `-v`, `printf`, `END {print NR}`, `gsub`).
+- **"What does this command print?"**, generated: a `sed` substitution (no flag, `g`, a number, `&`, a greedy `.*`, groups with `-E`), an `awk` program (fields, `-F:` on a passwd line, `NF` and `$NF`, `$1 $3` against `$1, $3`) and bash's `${f%.*}`, `${f%%.*}`, `${f#*.}`, `${f##*.}`. The outputs are shown as code; each wrong one is a real slip, with ten new mistake types. `check:quiz` runs every command shown with the real bash, sed and awk, and checks all 254 written Linux questions directly.
+- **Tests are now at version 4**, which adds the new sed and awk questions to *Traitement de texte*. Older tests are rebuilt exactly as they were (checked by hashing every level's tests at versions 1 to 3 before and after).
+- **Tests:** 103 browser tests.
+
 ## 6.13.0
 
 - **Physical chemistry, Focuses 7–8:** two new topics in a new group, *Quantique et structure*.

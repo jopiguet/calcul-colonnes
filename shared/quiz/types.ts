@@ -18,7 +18,7 @@ export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" 
  */
 export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium" | "quantum" | "atoms";
 /** The Linux command line: core commands by area, then tools that need installing. */
-export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools";
+export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools" | "linuxScripting" | "linuxGit" | "linuxVim";
 /** Chemistry and biology basics: balancing equations, first. */
 export type ChemBioTopic = "balancing";
 export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic;
@@ -27,7 +27,7 @@ export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryA
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
-export const LINUX_TOPICS: LinuxTopic[] = ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools"];
+export const LINUX_TOPICS: LinuxTopic[] = ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "linuxScripting", "linuxGit", "linuxVim"];
 /** The three subjects of the tests, each with its own levels and topics. */
 export type Subject = "maths" | "chemistry" | "linux" | "chembio";
 export const subjectOf = (level: Level): Subject =>
@@ -40,9 +40,9 @@ export const MATH_LEVELS: Level[] = ["school", "university"];
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxInstall" | "reactions" | "structure";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -52,6 +52,7 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"] },
   { group: "structure", topics: ["quantum", "atoms"] },
   { group: "linuxCommands", topics: ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork"] },
+  { group: "linuxDev", topics: ["linuxScripting", "linuxGit", "linuxVim"] },
   { group: "linuxInstall", topics: ["linuxTools"] },
   { group: "reactions", topics: ["balancing"] },
 ];
@@ -545,6 +546,16 @@ export const MISTAKES = [
   "cronFieldsSwapped",
   "cronStepRead",
   "cronDayFields",
+  "sedFlagMisread", // no flag, g and a number confused: first, every, n-th match
+  "sedReference", // & or \1 in the replacement taken literally, or dropped
+  "sedWholeLine", // only the matched part kept, or the whole line replaced
+  "regexGreedy", // .* taken to stop at the first possible end
+  "fieldOffByOne", // awk fields counted from 0, or the neighbour taken
+  "awkNfConfused", // NF (how many) and $NF (the last field) confused
+  "awkSeparator", // the field separator ignored or misread
+  "awkConcat", // $1 $2 (joined) and $1, $2 (with OFS) confused
+  "expansionLongest", // # and ##, or % and %%: shortest and longest match confused
+  "expansionSide", // # (front) and % (back) confused
   // balancing equations
   "subscriptChanged", // a formula's subscript changed instead of a coefficient: another substance
   "notLowestTerms", // balanced, but not in the smallest whole numbers
@@ -644,6 +655,7 @@ export type Verify =
   | { kind: "count"; f: Fn; k: number; lo: number; hi: number } // the option is the number of solutions of f(x) = k on [lo, hi]
   /** A written question from the question bank: options are texts, nothing to compute. */
   | { kind: "choice" }
+  | { kind: "shell"; command: string } // the option is what bash prints for the command
   /** Unix permissions: options are octal modes ("754") or symbolic ones ("rwxr-xr-x") in their formula; the right one is `mode`. */
   | { kind: "mode"; mode: number }
   /** umask: options are "file/directory" octal modes ("640/750") in their formula. */

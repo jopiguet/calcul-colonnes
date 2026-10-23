@@ -7,10 +7,11 @@
  *
  *   npm run check:quiz [-- seeds]
  */
+import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, MISTAKES, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  generateQuiz, LEVELS, LINUX_QUESTIONS, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
@@ -117,6 +118,17 @@ function balanceRank(reactants: string[], products: string[]): number {
 }
 
 /** Whether an option is a right answer to the question, computed without the generator. */
+/** What bash prints for a command, its last newline removed (each command run once). */
+const outputs = new Map<string, string>();
+function run(command: string): string {
+  let printed = outputs.get(command);
+  if (printed === undefined) {
+    printed = execFileSync("bash", ["-c", command], { encoding: "utf8", env: { PATH: process.env.PATH ?? "/usr/bin:/bin", LC_ALL: "C" } }).replace(/\n$/, "");
+    outputs.set(command, printed);
+  }
+  return printed;
+}
+
 function isRight(q: Question, o: Option): boolean {
   const v = q.verify;
   switch (v.kind) {
@@ -283,6 +295,8 @@ function isRight(q: Question, o: Option): boolean {
     }
     case "choice":
       return o.tex.endsWith(":0"); // a bank question's right answer is its first text
+    case "shell":
+      return o.tex === run(v.command); // what the real bash, sed and awk print
     case "mode":
       return modeOf(o.tex) === v.mode;
     case "umask": {
@@ -456,7 +470,7 @@ for (const level of LEVELS) {
             if (text[lang as keyof Localized] !== undefined && codeRuns(shown).length !== runs) throw new Error(`code runs differ in ${lang}: ${shown}`);
           }
         };
-        if (q.verify.kind === "choice" && q.prompt.text) {
+        if (q.prompt.text) {
           for (const text of [q.prompt.text, q.explanation.text, ...q.options.map((o) => o.text)]) {
             if (!text) throw new Error("written question without its text");
             checkText(text);
@@ -495,6 +509,36 @@ for (const level of LEVELS) {
     }
   }
 }
+
+// Every written Linux question, drawn or not: a unique id, three wrong answers or more, all different,
+// as many code runs in each language, formulas that render, and a version the app has reached.
+const linuxIds = new Set<string>();
+let linuxWritten = 0;
+for (const [file, lists] of Object.entries(LINUX_QUESTIONS)) {
+  for (const [kind, list] of Object.entries(lists)) {
+    for (const q of list) {
+      linuxWritten += 1;
+      const where = `linux ${file}.${kind} ${q.id}`;
+      try {
+        if (linuxIds.has(q.id)) throw new Error("id used twice");
+        linuxIds.add(q.id);
+        if (q.w.length < 3) throw new Error("fewer than three wrong answers");
+        if ((q.since ?? 2) > QUIZ_VERSION) throw new Error(`since ${q.since} is after version ${QUIZ_VERSION}`);
+        if (new Set([q.a[0], ...q.w.map((w) => w[0])]).size !== q.w.length + 1) throw new Error("two answers alike");
+        for (const text of [q.q, q.a, ...q.w, q.e]) {
+          const runs = codeRuns(text[0]).length;
+          text.forEach((shown, i) => {
+            if (codeRuns(shown).length !== runs) throw new Error(`code runs differ in ${["en", "fr", "es"][i]}: ${shown}`);
+            for (const part of richParts(shown)) if (part.kind === "math") render(part.value, where);
+          });
+        }
+      } catch (error) {
+        failures.push(`${where}: ${(error as Error).message}`);
+      }
+    }
+  }
+}
+console.log(`${linuxWritten} written Linux questions checked; ${outputs.size} commands run with bash`);
 
 for (const [key, n] of [...prompts].sort()) console.log(`${key.padEnd(40)} ${n}`);
 console.log(`\n${typedCount.size} kinds can be typed; ${[...typedCount.values()].reduce((a, b) => a + b, 0)} questions were`);

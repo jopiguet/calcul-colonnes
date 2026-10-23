@@ -1,4 +1,4 @@
-/** Linux, text: grep, sed, awk, columns and lines, pipelines. */
+/** Linux, text: grep, sed, awk, columns and lines, pipelines. sed and awk grew in 6.14.0 (`since: 4`). */
 import type { LinuxQuestion } from "./types";
 
 const grep: LinuxQuestion[] = [
@@ -154,6 +154,94 @@ const sed: LinuxQuestion[] = [
       "macOS trae las herramientas BSD. El sed de GNU se instala con `brew install gnu-sed`, con el nombre `gsed`.",
     ],
   },
+  {
+    id: "lx-sed-06",
+    since: 4,
+    q: ["What does `sed -n '/^BEGIN/,/^END/p' notes.txt` print?", "Qu'affiche `sed -n '/^BEGIN/,/^END/p' notes.txt` ?", "¿Qué muestra `sed -n '/^BEGIN/,/^END/p' notes.txt`?"],
+    a: ["Each block from a line starting with BEGIN to the next starting with END, both included", "Chaque bloc depuis une ligne qui commence par BEGIN jusqu'à la suivante qui commence par END, les deux comprises", "Cada bloque desde una línea que empieza por BEGIN hasta la siguiente que empieza por END, ambas incluidas"],
+    w: [
+      ["Only the lines starting with BEGIN or with END", "Seulement les lignes qui commencent par BEGIN ou par END", "Solo las líneas que empiezan por BEGIN o por END"],
+      ["The lines between them, without the BEGIN and END lines", "Les lignes entre les deux, sans les lignes BEGIN et END", "Las líneas entre ambas, sin las líneas BEGIN y END"],
+      ["Every line except those blocks", "Toutes les lignes sauf ces blocs", "Todas las líneas salvo esos bloques"],
+    ],
+    e: [
+      "An address can be a range of two patterns, and it starts again at each new BEGIN. `d` instead of `p` (without `-n`) would remove the blocks.",
+      "Une adresse peut être une plage entre deux motifs, et elle recommence à chaque nouveau BEGIN. `d` au lieu de `p` (sans `-n`) supprimerait les blocs.",
+      "Una dirección puede ser un rango entre dos patrones, y vuelve a empezar en cada nuevo BEGIN. `d` en vez de `p` (sin `-n`) eliminaría los bloques.",
+    ],
+  },
+  {
+    id: "lx-sed-07",
+    since: 4,
+    q: ["What does `sed '$d' list.txt` print?", "Qu'affiche `sed '$d' list.txt` ?", "¿Qué muestra `sed '$d' list.txt`?"],
+    a: ["The file without its last line", "Le fichier sans sa dernière ligne", "El archivo sin su última línea"],
+    w: [
+      ["The file without the lines containing `$`", "Le fichier sans les lignes qui contiennent `$`", "El archivo sin las líneas que contienen `$`"],
+      ["The file without its empty lines", "Le fichier sans ses lignes vides", "El archivo sin sus líneas vacías"],
+      ["The file without its first line", "Le fichier sans sa première ligne", "El archivo sin su primera línea"],
+    ],
+    e: [
+      "As an address, `$` is the last line; `1d` would delete the first. Empty lines are `/^$/d`. The single quotes keep the shell from reading `$d`.",
+      "Comme adresse, `$` est la dernière ligne ; `1d` supprimerait la première. Les lignes vides, c'est `/^$/d`. Les apostrophes empêchent le shell de lire `$d`.",
+      "Como dirección, `$` es la última línea; `1d` borraría la primera. Las líneas vacías son `/^$/d`. Las comillas simples impiden que el shell lea `$d`.",
+    ],
+  },
+  {
+    id: "lx-sed-08",
+    since: 4,
+    q: ["What does `echo a | sed -e 's/a/b/' -e 's/b/c/'` print?", "Qu'affiche `echo a | sed -e 's/a/b/' -e 's/b/c/'` ?", "¿Qué muestra `echo a | sed -e 's/a/b/' -e 's/b/c/'`?"],
+    a: ["`c`", "`c`", "`c`"],
+    w: [["`b`", "`b`", "`b`"], ["`bc`", "`bc`", "`bc`"], ["`a`", "`a`", "`a`"]],
+    e: [
+      "The commands run in order on each line, each on the result of the one before. The same with a semicolon: `sed 's/a/b/; s/b/c/'`.",
+      "Les commandes s'appliquent dans l'ordre à chaque ligne, chacune sur le résultat de la précédente. Pareil avec un point-virgule : `sed 's/a/b/; s/b/c/'`.",
+      "Las órdenes se aplican en orden a cada línea, cada una sobre el resultado de la anterior. Igual con punto y coma: `sed 's/a/b/; s/b/c/'`.",
+    ],
+  },
+  {
+    id: "lx-sed-09",
+    since: 4,
+    q: ["`sed 's/(cat|dog)s/pets/'` leaves 'cats' unchanged. Why?", "`sed 's/(cat|dog)s/pets/'` laisse « cats » inchangé. Pourquoi ?", "`sed 's/(cat|dog)s/pets/'` deja «cats» sin cambiar. ¿Por qué?"],
+    a: ["In basic syntax `(`, `|` and `)` are ordinary characters: use `sed -E`", "En syntaxe de base, `(`, `|` et `)` sont des caractères ordinaires : utiliser `sed -E`", "En sintaxis básica, `(`, `|` y `)` son caracteres normales: usar `sed -E`"],
+    w: [
+      ["`s` cannot replace a word ending in s", "`s` ne peut pas remplacer un mot qui finit par s", "`s` no puede sustituir una palabra que acaba en s"],
+      ["The `g` flag is missing", "Il manque l'option `g`", "Falta la opción `g`"],
+      ["The pipe sends the line to `dog`", "Le tube envoie la ligne à `dog`", "La tubería envía la línea a `dog`"],
+    ],
+    e: [
+      "Without `-E`, the pattern looks for the text '(cat|dog)s' itself. GNU sed also reads `\\(cat\\|dog\\)s` in basic syntax.",
+      "Sans `-E`, le motif cherche le texte « (cat|dog)s » lui-même. GNU sed lit aussi `\\(cat\\|dog\\)s` en syntaxe de base.",
+      "Sin `-E`, el patrón busca el texto «(cat|dog)s» tal cual. GNU sed también lee `\\(cat\\|dog\\)s` en sintaxis básica.",
+    ],
+  },
+  {
+    id: "lx-sed-10",
+    since: 4,
+    q: ["What does `sed p notes.txt` print?", "Qu'affiche `sed p notes.txt` ?", "¿Qué muestra `sed p notes.txt`?"],
+    a: ["Every line twice", "Chaque ligne deux fois", "Cada línea dos veces"],
+    w: [["Every line once", "Chaque ligne une fois", "Cada línea una vez"], ["The lines containing 'p'", "Les lignes qui contiennent « p »", "Las líneas que contienen «p»"], ["Nothing", "Rien", "Nada"]],
+    e: [
+      "`p` prints the line, and sed prints it again at the end of the cycle. That is why `p` goes with `-n`.",
+      "`p` affiche la ligne, et sed l'affiche encore à la fin du cycle. C'est pourquoi `p` va avec `-n`.",
+      "`p` imprime la línea, y sed la vuelve a imprimir al final del ciclo. Por eso `p` va con `-n`.",
+    ],
+  },
+  {
+    id: "lx-sed-11",
+    since: 4,
+    q: ["What does `sed 'y/abc/xyz/'` do?", "Que fait `sed 'y/abc/xyz/'` ?", "¿Qué hace `sed 'y/abc/xyz/'`?"],
+    a: ["Turns every a into x, b into y and c into z, character by character, like `tr abc xyz`", "Change chaque a en x, b en y et c en z, caractère par caractère, comme `tr abc xyz`", "Convierte cada a en x, b en y y c en z, carácter a carácter, como `tr abc xyz`"],
+    w: [
+      ["Replaces the word 'abc' with 'xyz'", "Remplace le mot « abc » par « xyz »", "Sustituye la palabra «abc» por «xyz»"],
+      ["Replaces the first 'abc' of each line only", "Ne remplace que le premier « abc » de chaque ligne", "Solo sustituye el primer «abc» de cada línea"],
+      ["Asks yes or no before each change", "Demande oui ou non avant chaque changement", "Pregunta sí o no antes de cada cambio"],
+    ],
+    e: [
+      "`y` takes two lists of the same length and works on every character of the line; it knows no ranges like `a-z`.",
+      "`y` prend deux listes de même longueur et agit sur chaque caractère de la ligne ; il ne connaît pas les plages comme `a-z`.",
+      "`y` toma dos listas de la misma longitud y actúa sobre cada carácter de la línea; no conoce rangos como `a-z`.",
+    ],
+  },
 ];
 
 const awk: LinuxQuestion[] = [
@@ -211,6 +299,114 @@ const awk: LinuxQuestion[] = [
       "A pattern without an action prints the matching lines (`{print}` is the default). `>` inside a pattern is a comparison, not a redirection.",
       "Un motif sans action affiche les lignes qui le vérifient (`{print}` par défaut). `>` dans un motif est une comparaison, pas une redirection.",
       "Un patrón sin acción muestra las líneas que lo cumplen (`{print}` por defecto). `>` dentro de un patrón es una comparación, no una redirección.",
+    ],
+  },
+  {
+    id: "lx-awk-05",
+    since: 4,
+    q: ["Why `$1 = $1` in `awk -F, -v OFS=';' '{$1 = $1; print}' data.csv`?", "Pourquoi `$1 = $1` dans `awk -F, -v OFS=';' '{$1 = $1; print}' data.csv` ?", "¿Por qué `$1 = $1` en `awk -F, -v OFS=';' '{$1 = $1; print}' data.csv`?"],
+    a: ["Assigning a field makes awk rebuild the line with `OFS`; without it, `print` gives the line unchanged", "Affecter un champ oblige awk à reconstruire la ligne avec `OFS` ; sans cela, `print` rend la ligne inchangée", "Asignar un campo obliga a awk a reconstruir la línea con `OFS`; sin eso, `print` da la línea sin cambios"],
+    w: [
+      ["It copies the first field into every column", "Il copie le premier champ dans toutes les colonnes", "Copia el primer campo en todas las columnas"],
+      ["It does nothing and can be removed", "Il ne fait rien et peut être retiré", "No hace nada y se puede quitar"],
+      ["It removes the first column", "Il supprime la première colonne", "Elimina la primera columna"],
+    ],
+    e: [
+      "The commas become semicolons. `-F` sets the input separator, `OFS` the output one. For real CSV with quoted commas, use a CSV tool.",
+      "Les virgules deviennent des points-virgules. `-F` fixe le séparateur d'entrée, `OFS` celui de sortie. Pour un vrai CSV avec des virgules entre guillemets, prendre un outil CSV.",
+      "Las comas se vuelven punto y coma. `-F` fija el separador de entrada, `OFS` el de salida. Para un CSV real con comas entre comillas, usar una herramienta CSV.",
+    ],
+  },
+  {
+    id: "lx-awk-06",
+    since: 4,
+    q: ["What does `awk '{n[$1]++} END {for (k in n) print k, n[k]}' access.log` print?", "Qu'affiche `awk '{n[$1]++} END {for (k in n) print k, n[k]}' access.log` ?", "¿Qué muestra `awk '{n[$1]++} END {for (k in n) print k, n[k]}' access.log`?"],
+    a: ["Each distinct first field (a client address, say) with its number of lines, in no set order", "Chaque premier champ distinct (une adresse de client, par exemple) avec son nombre de lignes, sans ordre fixe", "Cada primer campo distinto (una dirección de cliente, por ejemplo) con su número de líneas, sin orden fijo"],
+    w: [
+      ["The same, sorted from the most frequent", "La même chose, triée du plus fréquent au moins fréquent", "Lo mismo, ordenado del más frecuente al menos"],
+      ["The first field of each line, numbered", "Le premier champ de chaque ligne, numéroté", "El primer campo de cada línea, numerado"],
+      ["The number of distinct words in the file", "Le nombre de mots distincts du fichier", "El número de palabras distintas del archivo"],
+    ],
+    e: [
+      "Arrays in awk are indexed by strings and start empty. To rank them: `… | sort -k2,2nr | head`.",
+      "Les tableaux d'awk sont indexés par des chaînes et partent vides. Pour les classer : `… | sort -k2,2nr | head`.",
+      "Los arrays de awk se indexan con cadenas y empiezan vacíos. Para ordenarlos: `… | sort -k2,2nr | head`.",
+    ],
+  },
+  {
+    id: "lx-awk-07",
+    since: 4,
+    q: ["What does `awk 'NR > 1' data.csv` print?", "Qu'affiche `awk 'NR > 1' data.csv` ?", "¿Qué muestra `awk 'NR > 1' data.csv`?"],
+    a: ["Every line but the first: the file without its header", "Toutes les lignes sauf la première : le fichier sans son en-tête", "Todas las líneas salvo la primera: el archivo sin su cabecera"],
+    w: [
+      ["The lines with more than one field", "Les lignes de plus d'un champ", "Las líneas con más de un campo"],
+      ["The lines whose first field is above 1", "Les lignes dont le premier champ dépasse 1", "Las líneas cuyo primer campo es mayor que 1"],
+      ["Only the second line", "Seulement la deuxième ligne", "Solo la segunda línea"],
+    ],
+    e: [
+      "`NR` counts the lines read; more than one field would be `NF > 1`. With several files, `FNR` restarts at each one: `FNR > 1` skips every header.",
+      "`NR` compte les lignes lues ; plus d'un champ, ce serait `NF > 1`. Avec plusieurs fichiers, `FNR` repart à chacun : `FNR > 1` saute tous les en-têtes.",
+      "`NR` cuenta las líneas leídas; más de un campo sería `NF > 1`. Con varios archivos, `FNR` vuelve a empezar en cada uno: `FNR > 1` salta todas las cabeceras.",
+    ],
+  },
+  {
+    id: "lx-awk-08",
+    since: 4,
+    q: ["What is `-v` for in `awk -v limit=\"$max\" '$2 > limit' sizes.txt`?", "À quoi sert `-v` dans `awk -v limit=\"$max\" '$2 > limit' sizes.txt` ?", "¿Para qué sirve `-v` en `awk -v limit=\"$max\" '$2 > limit' sizes.txt`?"],
+    a: ["It sets the awk variable `limit` from the shell's `$max`, before the program starts", "Il fixe la variable awk `limit` d'après le `$max` du shell, avant que le programme démarre", "Fija la variable de awk `limit` a partir del `$max` del shell, antes de que empiece el programa"],
+    w: [
+      ["It inverts the match, as in `grep -v`", "Il inverse la sélection, comme `grep -v`", "Invierte la selección, como `grep -v`"],
+      ["It makes awk verbose", "Il rend awk bavard", "Hace que awk dé más detalles"],
+      ["It sets the field separator", "Il fixe le séparateur de champs", "Fija el separador de campos"],
+    ],
+    e: [
+      "Writing `$max` inside the single quotes would not work: the shell does not expand it there, and awk would read it as a field number.",
+      "Écrire `$max` entre les apostrophes ne marcherait pas : le shell ne le développe pas là, et awk le lirait comme un numéro de champ.",
+      "Escribir `$max` entre las comillas simples no funcionaría: el shell no lo expande ahí, y awk lo leería como un número de campo.",
+    ],
+  },
+  {
+    id: "lx-awk-09",
+    since: 4,
+    q: ["`awk '{printf \"%s %d\", $1, $2}' f` prints everything on one line. Why?", "`awk '{printf \"%s %d\", $1, $2}' f` affiche tout sur une seule ligne. Pourquoi ?", "`awk '{printf \"%s %d\", $1, $2}' f` lo muestra todo en una sola línea. ¿Por qué?"],
+    a: ["Unlike `print`, `printf` adds no newline: end the format with `\\n`", "Contrairement à `print`, `printf` n'ajoute pas de retour à la ligne : finir le format par `\\n`", "A diferencia de `print`, `printf` no añade salto de línea: terminar el formato con `\\n`"],
+    w: [
+      ["`%d` joins the lines together", "`%d` réunit les lignes", "`%d` junta las líneas"],
+      ["`printf` reads only the first line", "`printf` ne lit que la première ligne", "`printf` solo lee la primera línea"],
+      ["The double quotes stop the shell from passing the lines", "Les guillemets doubles empêchent le shell de transmettre les lignes", "Las comillas dobles impiden que el shell pase las líneas"],
+    ],
+    e: [
+      "`printf` gives control over widths: `\"%-10s %6.2f\\n\"` pads a name to 10 characters and writes a number with two decimals.",
+      "`printf` règle les largeurs : `\"%-10s %6.2f\\n\"` complète un nom à 10 caractères et écrit un nombre avec deux décimales.",
+      "`printf` controla los anchos: `\"%-10s %6.2f\\n\"` rellena un nombre hasta 10 caracteres y escribe un número con dos decimales.",
+    ],
+  },
+  {
+    id: "lx-awk-10",
+    since: 4,
+    q: ["What does `awk 'END {print NR}' log.txt` print?", "Qu'affiche `awk 'END {print NR}' log.txt` ?", "¿Qué muestra `awk 'END {print NR}' log.txt`?"],
+    a: ["The number of lines, like `wc -l`", "Le nombre de lignes, comme `wc -l`", "El número de líneas, como `wc -l`"],
+    w: [["The last line", "La dernière ligne", "La última línea"], ["0: no line is read in `END`", "0 : aucune ligne n'est lue dans `END`", "0: en `END` no se lee ninguna línea"], ["The number of fields of the last line", "Le nombre de champs de la dernière ligne", "El número de campos de la última línea"]],
+    e: [
+      "In `END`, `NR` still holds the count of lines read. A last line without a newline is counted too, unlike `wc -l`.",
+      "Dans `END`, `NR` garde le nombre de lignes lues. Une dernière ligne sans retour à la ligne est comptée aussi, contrairement à `wc -l`.",
+      "En `END`, `NR` conserva el número de líneas leídas. Una última línea sin salto de línea también cuenta, a diferencia de `wc -l`.",
+    ],
+  },
+  {
+    id: "lx-awk-11",
+    since: 4,
+    q: ["What does `awk '{gsub(/ +/, \" \"); print}' notes.txt` do?", "Que fait `awk '{gsub(/ +/, \" \"); print}' notes.txt` ?", "¿Qué hace `awk '{gsub(/ +/, \" \"); print}' notes.txt`?"],
+    a: ["Squeezes every run of spaces into one space, on every line", "Réduit chaque suite d'espaces à une seule espace, sur chaque ligne", "Reduce cada serie de espacios a un solo espacio, en cada línea"],
+    w: [
+      ["Squeezes only the first run of spaces of each line", "Ne réduit que la première suite d'espaces de chaque ligne", "Solo reduce la primera serie de espacios de cada línea"],
+      ["Removes every space", "Supprime toutes les espaces", "Quita todos los espacios"],
+      ["Adds a space after every word", "Ajoute une espace après chaque mot", "Añade un espacio tras cada palabra"],
+    ],
+    e: [
+      "`gsub` replaces every match, `sub` only the first; both change `$0` by default and return the number of replacements.",
+      "`gsub` remplace toutes les correspondances, `sub` seulement la première ; les deux modifient `$0` par défaut et rendent le nombre de remplacements.",
+      "`gsub` sustituye todas las coincidencias, `sub` solo la primera; las dos cambian `$0` por defecto y devuelven el número de sustituciones.",
     ],
   },
 ];

@@ -327,15 +327,23 @@ there is one level.
 | Processus et services | `ps`, signals, jobs, `systemctl`, `cron` and `at` |
 | Système, disques, paquets | `df`, `du`, `mount`, users and groups, `apt` and `dnf` |
 | Réseau et SSH | `ip`, `ss`, `curl`, `rsync`, `ssh`, `dig` |
+| Scripts bash | Tests, loops and `read`, functions, arguments and `getopts`, arrays, `${f%.*}` and its kin |
+| Git | Staging and commits, branches, merge and rebase, undoing (`restore`, `revert`, `reset`, `reflog`, `stash`), remotes |
+| Vim | Modes, saving and quitting, moving, operators and text objects, search and `:s`, `:g` |
 | Outils à installer | `rg`, `fd`, `fzf`, `bat`, `jq`, `htop`, `tmux`, `hyperfine`, `shellcheck`, `mtr`, `nmap`… |
 
 Commands are shown as code. A question about a command that a default
 install does not have shows a *📦* badge with the package name, and its
 correction says how to install it on Debian and Ubuntu, Fedora and macOS.
 
+The topics come in three groups: *La ligne de commande*, *Scripts, git et
+vim*, and *Outils à installer*.
+
 Some questions are generated each time: `chmod` modes in both directions,
-the modes left by a `umask`, and when a crontab line runs. An octal mode can
-be typed with *Au clavier*.
+the modes left by a `umask`, when a crontab line runs, and what a command
+prints: a `sed` substitution or an `awk` program on a line of text, or
+bash's `${f%.*}` on a file name. An octal mode can be typed with
+*Au clavier*.
 
 ## Chemical equations
 

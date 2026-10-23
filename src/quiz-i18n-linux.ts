@@ -21,16 +21,16 @@ export const LX_TEXTS = {
 
 export const LX_LEVEL: Tri = { fr: "Linux", es: "Linux", en: "Linux" };
 
-export const LX_GROUPS: Record<Lang, { linuxCommands: string; linuxInstall: string }> = {
-  fr: { linuxCommands: "La ligne de commande", linuxInstall: "Outils à installer" },
-  es: { linuxCommands: "La línea de órdenes", linuxInstall: "Herramientas que instalar" },
-  en: { linuxCommands: "The command line", linuxInstall: "Tools to install" },
+export const LX_GROUPS: Record<Lang, { linuxCommands: string; linuxDev: string; linuxInstall: string }> = {
+  fr: { linuxCommands: "La ligne de commande", linuxDev: "Scripts, git et vim", linuxInstall: "Outils à installer" },
+  es: { linuxCommands: "La línea de órdenes", linuxDev: "Scripts, git y vim", linuxInstall: "Herramientas que instalar" },
+  en: { linuxCommands: "The command line", linuxDev: "Scripts, git and vim", linuxInstall: "Tools to install" },
 };
 
 export const LX_TOPICS: Record<Lang, Record<LinuxTopic, string>> = {
-  fr: { linuxFiles: "Fichiers et permissions", linuxText: "Traitement de texte", linuxShell: "Le shell", linuxProcesses: "Processus et services", linuxSystem: "Système, disques, paquets", linuxNetwork: "Réseau et SSH", linuxTools: "Outils modernes" },
-  es: { linuxFiles: "Archivos y permisos", linuxText: "Tratamiento de texto", linuxShell: "El shell", linuxProcesses: "Procesos y servicios", linuxSystem: "Sistema, discos, paquetes", linuxNetwork: "Red y SSH", linuxTools: "Herramientas modernas" },
-  en: { linuxFiles: "Files and permissions", linuxText: "Text processing", linuxShell: "The shell", linuxProcesses: "Processes and services", linuxSystem: "System, disks, packages", linuxNetwork: "Network and SSH", linuxTools: "Modern tools" },
+  fr: { linuxFiles: "Fichiers et permissions", linuxText: "Traitement de texte", linuxShell: "Le shell", linuxProcesses: "Processus et services", linuxSystem: "Système, disques, paquets", linuxNetwork: "Réseau et SSH", linuxTools: "Outils modernes", linuxScripting: "Scripts bash", linuxGit: "Git", linuxVim: "Vim" },
+  es: { linuxFiles: "Archivos y permisos", linuxText: "Tratamiento de texto", linuxShell: "El shell", linuxProcesses: "Procesos y servicios", linuxSystem: "Sistema, discos, paquetes", linuxNetwork: "Red y SSH", linuxTools: "Herramientas modernas", linuxScripting: "Scripts de bash", linuxGit: "Git", linuxVim: "Vim" },
+  en: { linuxFiles: "Files and permissions", linuxText: "Text processing", linuxShell: "The shell", linuxProcesses: "Processes and services", linuxSystem: "System, disks, packages", linuxNetwork: "Network and SSH", linuxTools: "Modern tools", linuxScripting: "Bash scripts", linuxGit: "Git", linuxVim: "Vim" },
 };
 
 export type LinuxPrompt = "chmodToOctal" | "chmodToSymbolic" | "umask" | "cron";
@@ -113,6 +113,22 @@ export const LX_SKILLS: Record<Lang, Record<string, string>> = {
     "linuxTools.monitoring": "Surveiller : htop, btop, ncdu, duf",
     "linuxTools.workflow": "Travailler : tmux, entr, parallel…",
     "linuxTools.diagnostics": "Diagnostiquer : mtr, nmap, HTTPie, strace",
+    "linuxText.sedSubstitute": "Ce qu'affiche sed",
+    "linuxText.awkFields": "Ce qu'affiche awk",
+    "linuxScripting.tests": "Tests et conditions",
+    "linuxScripting.loops": "Boucles et lecture de lignes",
+    "linuxScripting.functions": "Fonctions",
+    "linuxScripting.arguments": "Arguments et options",
+    "linuxScripting.arrays": "Tableaux",
+    "linuxScripting.paramExpansion": "Couper un nom : # et %",
+    "linuxGit.commits": "Commits et index",
+    "linuxGit.branches": "Branches, fusion, rebase",
+    "linuxGit.undo": "Annuler",
+    "linuxGit.remotes": "Dépôts distants",
+    "linuxVim.modes": "Modes, enregistrer, quitter",
+    "linuxVim.motions": "Se déplacer",
+    "linuxVim.editing": "Modifier",
+    "linuxVim.search": "Chercher et remplacer",
   },
   es: {
     "linuxFiles.navigation": "Moverse, copiar, mover",
@@ -152,6 +168,22 @@ export const LX_SKILLS: Record<Lang, Record<string, string>> = {
     "linuxTools.monitoring": "Vigilar: htop, btop, ncdu, duf",
     "linuxTools.workflow": "Trabajar: tmux, entr, parallel…",
     "linuxTools.diagnostics": "Diagnosticar: mtr, nmap, HTTPie, strace",
+    "linuxText.sedSubstitute": "Lo que muestra sed",
+    "linuxText.awkFields": "Lo que muestra awk",
+    "linuxScripting.tests": "Pruebas y condiciones",
+    "linuxScripting.loops": "Bucles y lectura de líneas",
+    "linuxScripting.functions": "Funciones",
+    "linuxScripting.arguments": "Argumentos y opciones",
+    "linuxScripting.arrays": "Arrays",
+    "linuxScripting.paramExpansion": "Recortar un nombre: # y %",
+    "linuxGit.commits": "Commits e índice",
+    "linuxGit.branches": "Ramas, fusión, rebase",
+    "linuxGit.undo": "Deshacer",
+    "linuxGit.remotes": "Repositorios remotos",
+    "linuxVim.modes": "Modos, guardar, salir",
+    "linuxVim.motions": "Moverse",
+    "linuxVim.editing": "Editar",
+    "linuxVim.search": "Buscar y sustituir",
   },
   en: {
     "linuxFiles.navigation": "Moving around, copying, moving",
@@ -191,10 +223,29 @@ export const LX_SKILLS: Record<Lang, Record<string, string>> = {
     "linuxTools.monitoring": "Monitoring: htop, btop, ncdu, duf",
     "linuxTools.workflow": "Working: tmux, entr, parallel…",
     "linuxTools.diagnostics": "Diagnosing: mtr, nmap, HTTPie, strace",
+    "linuxText.sedSubstitute": "What sed prints",
+    "linuxText.awkFields": "What awk prints",
+    "linuxScripting.tests": "Tests and conditions",
+    "linuxScripting.loops": "Loops and reading lines",
+    "linuxScripting.functions": "Functions",
+    "linuxScripting.arguments": "Arguments and options",
+    "linuxScripting.arrays": "Arrays",
+    "linuxScripting.paramExpansion": "Trimming a name: # and %",
+    "linuxGit.commits": "Commits and the index",
+    "linuxGit.branches": "Branches, merge, rebase",
+    "linuxGit.undo": "Undoing",
+    "linuxGit.remotes": "Remotes",
+    "linuxVim.modes": "Modes, saving, quitting",
+    "linuxVim.motions": "Moving around",
+    "linuxVim.editing": "Editing",
+    "linuxVim.search": "Search and replace",
   },
 };
 
-export type LinuxMistake = "permissionClassesSwapped" | "permissionWeights" | "umaskOred" | "umaskExecOnFiles" | "cronFieldsSwapped" | "cronStepRead" | "cronDayFields";
+export type LinuxMistake =
+  | "permissionClassesSwapped" | "permissionWeights" | "umaskOred" | "umaskExecOnFiles" | "cronFieldsSwapped" | "cronStepRead" | "cronDayFields"
+  | "sedFlagMisread" | "sedReference" | "sedWholeLine" | "regexGreedy" | "fieldOffByOne" | "awkNfConfused" | "awkSeparator" | "awkConcat"
+  | "expansionLongest" | "expansionSide";
 export const LX_MISTAKES: Record<Lang, Record<LinuxMistake, string>> = {
   fr: {
     permissionClassesSwapped: "Classes inversées (propriétaire, groupe, autres)",
@@ -204,6 +255,16 @@ export const LX_MISTAKES: Record<Lang, Record<LinuxMistake, string>> = {
     cronFieldsSwapped: "Minute et heure confondues",
     cronStepRead: "*/n ou un nombre mal lu",
     cronDayFields: "Champs des jours confondus",
+    sedFlagMisread: "Sans option, g ou un numéro : première, toutes ou n-ième correspondance confondues",
+    sedReference: "& ou \\1 pris à la lettre, ou oublié",
+    sedWholeLine: "Seule la partie trouvée gardée, ou toute la ligne remplacée",
+    regexGreedy: "« .* » arrêté au premier endroit possible, alors qu'il prend le plus long",
+    fieldOffByOne: "Champs comptés à partir de 0, ou le voisin pris",
+    awkNfConfused: "NF (combien de champs) et $NF (le dernier) confondus",
+    awkSeparator: "Séparateur de champs ignoré ou mal lu",
+    awkConcat: "$1 $2 (collés) et $1, $2 (séparés par OFS) confondus",
+    expansionLongest: "# et ##, ou % et %% : plus courte et plus longue correspondance confondues",
+    expansionSide: "# (au début) et % (à la fin) confondus",
   },
   es: {
     permissionClassesSwapped: "Clases invertidas (propietario, grupo, otros)",
@@ -213,6 +274,16 @@ export const LX_MISTAKES: Record<Lang, Record<LinuxMistake, string>> = {
     cronFieldsSwapped: "Minuto y hora confundidos",
     cronStepRead: "*/n o un número mal leído",
     cronDayFields: "Campos de los días confundidos",
+    sedFlagMisread: "Sin opción, g o un número: primera, todas o n-ésima coincidencia confundidas",
+    sedReference: "& o \\1 tomados al pie de la letra, u olvidados",
+    sedWholeLine: "Solo se conserva lo encontrado, o se sustituye toda la línea",
+    regexGreedy: "«.*» detenido en el primer sitio posible, cuando toma lo más largo",
+    fieldOffByOne: "Campos contados desde 0, o tomado el vecino",
+    awkNfConfused: "NF (cuántos campos) y $NF (el último) confundidos",
+    awkSeparator: "Separador de campos ignorado o mal leído",
+    awkConcat: "$1 $2 (pegados) y $1, $2 (separados por OFS) confundidos",
+    expansionLongest: "# y ##, o % y %%: coincidencia más corta y más larga confundidas",
+    expansionSide: "# (al principio) y % (al final) confundidos",
   },
   en: {
     permissionClassesSwapped: "Classes swapped (owner, group, others)",
@@ -222,5 +293,15 @@ export const LX_MISTAKES: Record<Lang, Record<LinuxMistake, string>> = {
     cronFieldsSwapped: "Minute and hour mixed up",
     cronStepRead: "*/n or a number misread",
     cronDayFields: "Day fields mixed up",
+    sedFlagMisread: "No flag, g or a number: first, every and n-th match mixed up",
+    sedReference: "& or \\1 taken literally, or dropped",
+    sedWholeLine: "Only the matched part kept, or the whole line replaced",
+    regexGreedy: "'.*' stopped at the first possible end, though it takes the longest",
+    fieldOffByOne: "Fields counted from 0, or the neighbour taken",
+    awkNfConfused: "NF (how many fields) and $NF (the last one) mixed up",
+    awkSeparator: "Field separator ignored or misread",
+    awkConcat: "$1 $2 (joined) and $1, $2 (separated by OFS) mixed up",
+    expansionLongest: "# and ##, or % and %%: shortest and longest match mixed up",
+    expansionSide: "# (front) and % (back) mixed up",
   },
 };

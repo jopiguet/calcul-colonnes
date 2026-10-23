@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import { generateQuiz, LINUX_TOPICS, localized, type Question } from "../../shared/quiz/index.ts";
 import { chooseTopics, newPlayer, openActivity, rebuild, takeMixedQuiz, takeQuiz } from "./helpers";
+import { LX_MISTAKES, type LinuxMistake } from "../../src/quiz-i18n-linux.ts";
 
 /** The next test started in this page gets this seed. */
 async function fixSeed(page: Page, seed: number): Promise<void> {
@@ -30,9 +31,9 @@ test.beforeEach(async ({ page }) => {
   await expect(page.locator("h1")).toHaveText("QCM Linux");
 });
 
-test("Linux: its topics in two groups, no level; commands shown as code; graded the same everywhere", async ({ page }) => {
+test("Linux: its topics in three groups, no level; commands shown as code; graded the same everywhere", async ({ page }) => {
   await expect(page.locator(".quiz-setup legend", { hasText: "Niveau" })).toHaveCount(0);
-  await expect(page.locator(".topic-group-name")).toHaveText(["La ligne de commande", "Outils à installer"]);
+  await expect(page.locator(".topic-group-name")).toHaveText(["La ligne de commande", "Scripts, git et vim", "Outils à installer"]);
   await expect(page.locator(".topics .topic")).toHaveCount(LINUX_TOPICS.length);
 
   // A written question about a tool to install: its commands in code, the package as its source.
@@ -70,4 +71,26 @@ test("a permission mode can be typed: 640 is read as the octal mode", async ({ p
   expect(server.correct).toBe(rebuilt.correct);
   expect(rebuilt.questions[0]!.prompt.key).toBe("chmodToOctal");
   expect(server.correct).toBeGreaterThanOrEqual(1);
+});
+
+test("what a command prints: the command and the outputs as code, a slip named in the corrections", async ({ page }) => {
+  await chooseTopics(page, ["Scripts bash", "Git", "Vim"]);
+  await page.locator(".count button").first().click(); // 5 questions
+  const topics = ["linuxScripting", "linuxGit", "linuxVim"];
+  const { seed, first } = seedWhere(5, topics, (q) => q.skill === "linuxScripting.paramExpansion");
+  await fixSeed(page, seed);
+  await page.click("text=Commencer le test");
+  if (first.verify.kind !== "shell") throw new Error("not a generated command");
+  await expect(page.locator(".quiz-prompt")).toContainText("Qu'affiche cette commande ?");
+  await expect(page.locator(".quiz-prompt code")).toHaveText(first.verify.command);
+  await expect(page.locator(".choice code")).toHaveText(first.options.map((o) => o.tex));
+
+  // A wrong output first, the right ones after.
+  const slip = first.correct === 0 ? 1 : 0;
+  const { body, server } = await takeQuiz(page, (i) => (i === 0 ? slip : 0));
+  expect(body.topics).toEqual(topics);
+  expect(server.correct).toBe(rebuild(body).correct);
+  const review = page.locator(".review-item").first();
+  await expect(review).toHaveClass(/bad/);
+  await expect(review).toContainText(LX_MISTAKES.fr[first.options[slip]!.mistake as LinuxMistake]);
 });

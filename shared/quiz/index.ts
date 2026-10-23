@@ -22,7 +22,7 @@ import { graphs } from "./graphs";
 import { multivariable } from "./multivariable";
 import { series } from "./series";
 import { gases } from "./gases";
-import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools } from "./linux";
+import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools, linuxScripting, linuxGit, linuxVim } from "./linux";
 import { firstLaw } from "./firstlaw";
 import { secondLaw } from "./secondlaw";
 import { phases } from "./phases";
@@ -72,6 +72,9 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   balancing,
   quantum,
   atoms,
+  linuxScripting,
+  linuxGit,
+  linuxVim,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -93,7 +96,10 @@ for (const [topic, byLevel] of Object.entries(GENERATORS) as [Topic, Partial<Rec
  * and a kind whose behaviour changes is retired (`until`) and replaced by a new id.
  * See docs/question-generators.md#versioning.
  */
-const AVAILABILITY: Record<string, { from?: number; until?: number }> = {};
+const AVAILABILITY: Record<string, { from?: number; until?: number }> = {
+  "linuxText.sedSubstitute": { from: 4 },
+  "linuxText.awkFields": { from: 4 },
+};
 
 function available(id: string, version: number): boolean {
   const a = AVAILABILITY[id];
@@ -155,9 +161,10 @@ const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
  *   1 — first release (its option comparison took ±∞ as equal to every number,
  *       so questions whose answer is infinite were never kept);
  *   2 — ±∞ compared correctly;
- *   3 — no option that is not a number (a v_rms slip below 0 °C gave one).
+ *   3 — no option that is not a number (a v_rms slip below 0 °C gave one);
+ *   4 — Linux: more sed and awk questions, and what sed and awk print (linuxText).
  */
-export const QUIZ_VERSION = 3;
+export const QUIZ_VERSION = 4;
 
 const close = (a: number, b: number, version: number): boolean => {
   if (version >= 2 && (!Number.isFinite(a) || !Number.isFinite(b))) return a === b;
@@ -202,6 +209,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "mode":
     case "umask":
     case "equation":
+    case "shell":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);

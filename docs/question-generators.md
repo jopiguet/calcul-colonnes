@@ -10,6 +10,7 @@ way in the browser and on the server.
 | `tex.ts` | Exact fractions and LaTeX helpers: `frac`, `sum`, `poly`, `piTex`… |
 | `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts`, `graphs.ts` | The generators, one file per topic |
 | `units.ts`, `gases.ts`, `firstlaw.ts`, `secondlaw.ts` | Physical chemistry: quantities with units and significant figures, constants; the generators of Focuses 1–3 |
+| `linux.ts`, `linux/*.ts`, `linux-output.ts` | Linux: the written questions by topic, the generated permissions, umask and cron, and what a sed, awk or `${f%.*}` command prints |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -354,12 +355,13 @@ structure* (`quantum.ts`, `atoms.ts`). Five mistake types came with them:
 
 ## Linux
 
-The Linux quiz has its own level, `linux`, and seven topics in two groups.
+The Linux quiz has its own level, `linux`, and ten topics in three groups.
 *La ligne de commande*: `linuxFiles`, `linuxText`, `linuxShell`,
-`linuxProcesses`, `linuxSystem`, `linuxNetwork`. *Outils à installer*:
+`linuxProcesses`, `linuxSystem`, `linuxNetwork`. *Scripts, git et vim*
+(6.14.0): `linuxScripting`, `linuxGit`, `linuxVim`. *Outils à installer*:
 `linuxTools`.
 
-Most questions are written, not generated: 167 questions in
+Most questions are written, not generated: 254 questions in
 `shared/quiz/linux/*.ts`, each in French, Spanish and English
 (`L3 = [en, fr, es]`), with one right
 answer, at least three wrong ones and an explanation. A kind is a short list
@@ -372,20 +374,25 @@ of code runs.
 A question about a command missing from a default install carries
 `install: { apt, dnf?, brew? }`. It shows a *📦 apt-name* badge, and its
 explanation ends with the install commands for Debian and Ubuntu, Fedora and
-macOS. 32 questions have one: `plocate`, `unzip`, `at`, `netcat-openbsd`,
-`dnsutils` among the commands, and every question of `linuxTools`.
+macOS. 55 questions have one: `plocate`, `unzip`, `at`, `netcat-openbsd`,
+`dnsutils` among the commands, every question of `linuxTools`, and every
+question of `linuxGit` (git is missing from minimal Debian and Fedora). Vim
+has none: the small `vi` (vim-tiny) is always there.
 
 | Topic | Kinds (questions) |
 |---|---|
 | `linuxFiles` | `navigation` 7, `links` 5, `find` 6, `permissions` 7, `archives` 6, `chmodToSymbolic`, `chmodToOctal`, `umask` |
-| `linuxText` | `grep` 6, `sed` 5, `awk` 4, `columns` 6, `pipelines` 5 |
+| `linuxText` | `grep` 6, `sed` 11, `awk` 11, `columns` 6, `pipelines` 5, `sedSubstitute`, `awkFields` |
 | `linuxShell` | `redirection` 5, `expansion` 6, `control` 7, `environment` 5 |
 | `linuxProcesses` | `listing` 6, `signals` 4, `jobs` 3, `services` 5, `scheduling` 4, `cron` |
 | `linuxSystem` | `storage` 5, `users` 5, `packages` 5, `info` 5 |
 | `linuxNetwork` | `interfaces` 5, `transfer` 5, `ssh` 5, `dns` 3 |
 | `linuxTools` | `search` 5, `viewers` 4, `json` 3, `monitoring` 4, `workflow` 7, `diagnostics` 4 |
+| `linuxScripting` | `tests` 6, `loops` 6, `functions` 5, `arguments` 5, `arrays` 5, `paramExpansion` |
+| `linuxGit` | `commits` 6, `branches` 6, `undo` 5, `remotes` 6 |
+| `linuxVim` | `modes` 6, `motions` 6, `editing` 6, `search` 6 |
 
-Four kinds are generated:
+Seven kinds are generated:
 
 | Id | Asks for | Typical wrong options | Typed |
 |---|---|---|---|
@@ -393,9 +400,18 @@ Four kinds are generated:
 | `linuxFiles.chmodToOctal` | `rwxr-x---` as 750 | the same three slips | ✓ |
 | `linuxFiles.umask` | the modes of a new file and a new directory under a umask | mask added instead of removed, execute kept on files | |
 | `linuxProcesses.cron` | when a crontab line runs | minute and hour swapped, `*/15` read as "at 15", day of month taken for day of week | |
+| `linuxText.sedSubstitute` | what `echo '…' \| sed 's/…/…/…'` prints: no flag, `g`, `2`, `&`, a greedy `.*`, `-E` groups | the `g` or number flag misread, `&` or `\1` taken literally, `.*` stopped early, only the match kept | |
+| `linuxText.awkFields` | what `echo '…' \| awk '…'` prints: `$n`, `-F:` on a passwd line, `NF`, `$NF`, `$1 $3`, `$1, $3` | fields counted from 0 or the neighbour, `NF` for `$NF`, the separator ignored, joined for comma-separated | |
+| `linuxScripting.paramExpansion` | what `${f%.*}`, `${f%%.*}`, `${f#*.}` or `${f##*.}` gives for a file name | shortest for longest, front for back | |
 
 `check:quiz` reads the modes itself (`modeOf`) rather than trusting the
-generator, and checks that the right option is the only right one.
+generator, and checks that the right option is the only right one. For the
+three output kinds (`linux-output.ts`, verify kind `shell`), the option's
+identity is the text printed, and `check:quiz` runs the command shown with
+the real `bash` (and its `sed` and `awk`) and compares. It also checks every
+written Linux question directly, drawn or not: unique ids, three wrong
+answers or more, all different, the same code runs in the three languages,
+and a `since` the app has reached.
 
 **Adding a written question.** Append it to its list with `since: N`, where
 N is the new `QUIZ_VERSION`, and bump the version: a list's length is part of
@@ -751,6 +767,7 @@ after the change. The hashes must match.
 | 1 | First release |
 | 2 | ±∞ compared correctly when removing duplicate options. In version 1 every number counted as equal to ±∞, so questions with an infinite answer were always discarded, and `limits.growth` never appeared. |
 | 3 | No option that is not a number. `gases.rmsSpeed` offered √(3R(T − 273.15)/M) as the °C-for-K slip, which below 0 °C has no square root and showed as −∞. From version 3 that option is left out when T ≤ 273.15 K; earlier versions keep it, so their tests are unchanged. `check:quiz` now fails on any NaN option. |
+| 4 | Linux: six more `sed` and seven more `awk` questions (`since: 4`), and the kinds `linuxText.sedSubstitute` and `linuxText.awkFields` (`from: 4`). The new topics `linuxScripting`, `linuxGit` and `linuxVim` need no version: no older test names them. |
 
 ## Verification
 

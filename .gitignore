@@ -5,5 +5,3 @@ data
 test-results
 playwright-report
 dist-server
-.envrc
-.venv
