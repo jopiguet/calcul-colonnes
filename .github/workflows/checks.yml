@@ -1,6 +1,7 @@
 # Every push to main: type checks, the generator checks, the e2e suite on
 # SQLite and again on PostgreSQL (the engine production uses), and the image
-# build. Nothing is deployed. The release workflow runs the same checks first.
+# build. Nothing is deployed. The release workflow reuses this run when its tag
+# points at a commit that passed it, and runs the same checks otherwise.
 name: Checks
 
 on:

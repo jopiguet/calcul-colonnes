@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.16.0
+
+- **Physical chemistry, Focuses 11–12:** two new topics in a new group, *Spectroscopie*.
+  - **11 · Spectroscopie moléculaire:** ten kinds of calculation: the Beer–Lambert law, a pure rotational line in GHz, a bond length from B̃, a rotational Raman shift, the most populated rotational level, the fundamental and first overtone of a Morse oscillator, its dissociation energy D̃₀, the number of normal modes, the Doppler and lifetime widths of a line.
+  - **12 · Résonance magnétique:** nine: a Larmor frequency, a shift difference in hertz, the lines of an NMR or EPR multiplet, the population excess of a nucleus, a g-value, a spin density from the McConnell equation, a lifetime from coalescence, a linewidth from T₂, T₁ from the null of an inversion recovery.
+  - Six new mistake types: ΔJ = ±1 and ±2 confused; 3N − 5 and 3N − 6 confused; ppm taken as per cent or applied twice; equivalent nuclei split one by one; a spin-1 nucleus taken as spin ½; millitesla used as tesla.
+  - **Question bank:** Topics 11A–12D, core and advanced, in French, Spanish and English: 594 core and 236 advanced questions over 57 units. Re-import it with `npm run quiz:import -- data/atkins-12-concepts.json`.
+  - Every calculation and its correction fit a 360-pixel phone: one given per row, one equality per row.
+- **Tests:** 105 browser tests.
+
 ## 6.15.0
 
 - **Physical chemistry, Focuses 17–18:** two new topics in a new group, *Cinétique*.
@@ -9,6 +19,7 @@
   - **Question bank:** Topics 17A–18E, core and advanced, in French, Spanish and English: 501 core and 199 advanced questions over 46 units. Re-import it with `npm run quiz:import -- data/atkins-12-concepts.json`.
   - Every kinetics calculation and its correction fit a 360-pixel phone: one given per row, one equality per row.
 - **Tests:** 104 browser tests.
+- **Releases don't repeat the checks:** a tag on a commit that already passed *Checks* on `main` skips straight to building the image. The release waits for that run when it is still going, and runs the checks itself when it failed or there is none.
 
 ## 6.14.0
 

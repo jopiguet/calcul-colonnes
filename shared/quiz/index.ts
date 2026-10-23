@@ -32,6 +32,7 @@ import { balancing } from "./balancing";
 import { quantum } from "./quantum";
 import { atoms } from "./atoms";
 import { kinetics, dynamics } from "./kinetics";
+import { spectroscopy, resonance } from "./spectroscopy";
 import { EMPTY_BANK, bankLevelOf, bankSkills, type Bank, type BankLevel } from "./bank";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
@@ -78,6 +79,8 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   linuxVim,
   kinetics,
   dynamics,
+  spectroscopy,
+  resonance,
 };
 
 /** Every kind of question, by id ("topic.name"). */

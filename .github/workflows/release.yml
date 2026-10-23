@@ -1,7 +1,7 @@
 # Release to Cloud Run: on a version tag (npm version minor && git push
 # --follow-tags), or by hand from the Actions tab. See docs/deployment.md#releases.
 #
-#   checks → build the image once → start it and check it → push it
+#   checks (skipped when this commit already passed them on main) → build the image once → start it and check it → push it
 #   → rehearse the migrations on a Neon branch of production (expires in 2 h)
 #   → migrate production (Cloud Run job) → deploy a candidate revision with no
 #   traffic → smoke test its own URL → move all traffic to it.
@@ -42,13 +42,55 @@ env:
   REPOSITORY: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/luma/app
 
 jobs:
-  checks:
+  # The tag usually points at a commit that was just pushed to main, whose
+  # Checks run starts at the same moment. Wait for that run: if it passed,
+  # the checks are not run again; if it failed, or there is none (a tag on
+  # another commit, an expired run), they run here.
+  tested:
     if: ${{ !inputs.promote }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      actions: read
+    outputs:
+      passed: ${{ steps.find.outputs.passed }}
+    steps:
+      - name: Look for a Checks run on this commit
+        id: find
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          query="repos/$GITHUB_REPOSITORY/actions/workflows/checks.yml/runs?head_sha=$GITHUB_SHA&event=push&per_page=20"
+          passed=false
+          # The run on main may not be queued yet: look for up to 2 minutes before
+          # deciding there is none; once found, wait for it to finish.
+          for attempt in $(seq 1 88); do
+            runs=$(gh api "$query")
+            total=$(jq '.workflow_runs | length' <<<"$runs")
+            success=$(jq '[.workflow_runs[] | select(.conclusion == "success")] | length' <<<"$runs")
+            pending=$(jq '[.workflow_runs[] | select(.status != "completed")] | length' <<<"$runs")
+            if [ "$success" -gt 0 ]; then passed=true; break; fi
+            if [ "$total" -gt 0 ] && [ "$pending" -eq 0 ]; then break; fi # finished without success
+            if [ "$total" -eq 0 ] && [ "$attempt" -ge 4 ]; then break; fi # no run for this commit
+            sleep 30
+          done
+          echo "passed=$passed" >> "$GITHUB_OUTPUT"
+          if [ "$passed" = true ]; then
+            url=$(jq -r '[.workflow_runs[] | select(.conclusion == "success")][0].html_url' <<<"$runs")
+            echo "Checks already passed on ${GITHUB_SHA::7}: $url" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No passing Checks run on ${GITHUB_SHA::7}: running the checks." | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
+
+  checks:
+    needs: tested
+    if: ${{ !inputs.promote && needs.tested.outputs.passed != 'true' }}
     uses: ./.github/workflows/checks.yml
 
   release:
-    needs: checks
-    if: ${{ !inputs.promote }}
+    needs: [tested, checks]
+    # Runs when the checks passed here, or were skipped because they had passed on main.
+    if: ${{ !cancelled() && !inputs.promote && needs.tested.result == 'success' && (needs.checks.result == 'success' || needs.checks.result == 'skipped') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     services:

@@ -11,7 +11,7 @@ way in the browser and on the server.
 | `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts`, `graphs.ts` | The generators, one file per topic |
 | `units.ts`, `gases.ts`, `firstlaw.ts`, `secondlaw.ts` | Physical chemistry: quantities with units and significant figures, constants; the generators of Focuses 1–3 |
 | `linux.ts`, `linux/*.ts`, `linux-output.ts` | Linux: the written questions by topic, the generated permissions, umask and cron, and what a sed, awk or `${f%.*}` command prints |
-| `quantum.ts`, `atoms.ts`, `kinetics.ts` | Physical chemistry, Focuses 7–8 and 17–18: quantum theory, atoms, kinetics and reaction dynamics |
+| `quantum.ts`, `atoms.ts`, `spectroscopy.ts`, `kinetics.ts` | Physical chemistry, Focuses 7–8, 11–12 and 17–18: quantum theory, atoms, spectroscopy and magnetic resonance, kinetics and reaction dynamics |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -242,7 +242,8 @@ the interval, so the count never hangs on a tangency.
 Physical chemistry has its own topics, grouped as *Thermodynamics*:
 `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures` and `equilibrium`
 (Atkins, Focuses 1–6), then *Quantum and structure*: `quantum` and `atoms`
-(Focuses 7–8), and *Kinetics*: `kinetics` and `dynamics` (Focuses 17–18).
+(Focuses 7–8), *Spectroscopy*: `spectroscopy` and `resonance` (Focuses 11–12),
+and *Kinetics*: `kinetics` and `dynamics` (Focuses 17–18).
 Two levels.
 At `chemistry` (*Fondamental*), each topic mixes the calculations below with
 the core questions of the [question bank](question-bank.md), one kind per
@@ -385,6 +386,36 @@ calculation and its correction fit a 360-pixel phone.
 | `dynamics.saltEffect` | log k = log k° + 2Az_Az_B√I | eˣ for 10ˣ, I for √I, sign, 2 dropped |
 | `dynamics.isotopeEffect` | e^(−ζ), ζ from the C–H zero-point energy | masses for reduced masses, sign, 2ζ, 2π |
 | `dynamics.marcusBarrier` | (ΔrG° + ΔE_R)²/4ΔE_R | sign, factor 2, ΔE_R/4, cross term dropped |
+
+Focuses 11–12 came as two more topics (6.16.0), grouped as *Spectroscopy*
+(`spectroscopy.ts`: `spectroscopy` and `resonance`). Six mistake types came
+with them: `selectionRuleConfused` (ΔJ = ±1 and ±2), `linearityConfused`
+(3N − 5 and 3N − 6), `ppmConfused` (ppm as per cent, or 10⁶ applied twice),
+`equivalenceIgnored` ((2I + 1)ᴺ lines for equivalent nuclei),
+`nuclearSpinIgnored` (N + 1 lines for spin-1 nuclei) and `fieldUnits` (mT
+for T). Counts (a J_max, a number of modes or lines) are whole numbers.
+
+| Id | Asks for | Typical wrong options |
+|---|---|---|
+| `spectroscopy.beerLambert` | T = 10^(−ε[J]L), in per cent | eˣ for 10ˣ, 1 − T, mmol or cm slips |
+| `spectroscopy.rotationalLine` | ν = 2cB̃(J + 1), in GHz | cm for m, J for J + 1, Raman ΔJ = 2 |
+| `spectroscopy.bondLength` | R from B̃ = ħ/4πcμR² | total mass, h for ħ, square root forgotten |
+| `spectroscopy.ramanShift` | 4B̃(J + 3/2), Stokes | ΔJ = 1, 3/2 dropped, factor 2 |
+| `spectroscopy.mostPopulatedJ` | (kT/2hcB̃)^½ − ½, rounded | factor 2, square root forgotten |
+| `spectroscopy.anharmonicLine` | ν̃ − 2xₑν̃ or 2ν̃ − 6xₑν̃ | harmonic value, factor, sign |
+| `spectroscopy.dissociationEnergy` | D̃₀ = ν̃/4xₑ − G(0) | D̃ₑ, sign of G(0), factor 2, inverted |
+| `spectroscopy.normalModes` | 3N − 5 or 3N − 6 | the other one, 3N, the translations only |
+| `spectroscopy.dopplerWidth` | (2ν/c)(2kT ln 2/m)^½ | g for kg, °C for K, ln 2 dropped, factor 2 |
+| `spectroscopy.lifetimeWidth` | 1/2πcτ | h for ħ, cm for m, inverted, ps left |
+| `resonance.larmorFrequency` | γ𝓑₀/2π, in MHz | ω for ν, factor, inverted |
+| `resonance.shiftInHertz` | Δδ × ν₀ | ppm slips, inverted, sum for difference |
+| `resonance.multiplet` | 2NI + 1 lines (NMR or EPR) | (2I + 1)ᴺ, spin ½ for spin 1, N |
+| `resonance.populationExcess` | γħ𝓑₀/2kT, in ppm | h for ħ, factor 2, °C for K |
+| `resonance.gValue` | hν/μ_B𝓑 | mT for T, ħ for h, inverted |
+| `resonance.spinDensity` | ρ = a/Q (McConnell) | inverted, factor, mT slips |
+| `resonance.coalescence` | τ = 2^½/πδν | 2^½ or π dropped, ms for s |
+| `resonance.t2Linewidth` | 1/πT₂ | π dropped, factor 2, ms for s, inverted |
+| `resonance.inversionRecovery` | T₁ = τ/ln 2 | τ itself, ×ln 2, log₁₀, factor 2 |
 
 ## Linux
 

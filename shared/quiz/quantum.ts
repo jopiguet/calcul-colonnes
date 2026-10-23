@@ -188,7 +188,7 @@ const boxTransition: Generator = (rng) => {
 };
 
 /** Diatomic molecules: masses (mu), force constant (N m⁻¹), bond length (pm). */
-const DIATOMICS: { tex: string; mA: number; mB: number; k: number; R: number }[] = [
+export const DIATOMICS: { tex: string; mA: number; mB: number; k: number; R: number }[] = [
   { tex: "^{1}H^{35}Cl", mA: 1.0078, mB: 34.9688, k: 516.3, R: 127.5 },
   { tex: "^{1}H^{19}F", mA: 1.0078, mB: 18.9984, k: 965.7, R: 91.7 },
   { tex: "^{1}H^{79}Br", mA: 1.0078, mB: 78.9183, k: 411.5, R: 141.4 },
@@ -197,7 +197,7 @@ const DIATOMICS: { tex: string; mA: number; mB: number; k: number; R: number }[]
   { tex: "^{1}H^{127}I", mA: 1.0078, mB: 126.9045, k: 314.2, R: 160.9 },
 ];
 
-const reduced = (mA: number, mB: number): number => (mA * mB) / (mA + mB);
+export const reduced = (mA: number, mB: number): number => (mA * mB) / (mA + mB);
 
 /** Vibrational wavenumber of a diatomic molecule: ν̃ = (1/2πc)(k/μ)^½. */
 const vibrationWavenumber: Generator = (rng) => {

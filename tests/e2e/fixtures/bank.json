@@ -1,604 +1,696 @@
 {
-  "format": 1,
-  "book": {
-    "id": "test-bank",
-    "title": "Questions written for the tests",
-    "source": "Test"
+ "format": 1,
+ "book": {
+  "id": "test-bank",
+  "title": "Questions written for the tests",
+  "source": "Test"
+ },
+ "units": [
+  {
+   "id": "1A",
+   "topic": "gases",
+   "title": {
+    "en": "Gases",
+    "fr": "Les gaz",
+    "es": "Los gases"
+   }
   },
-  "units": [
+  {
+   "id": "2A",
+   "topic": "firstLaw",
+   "title": {
+    "en": "Energy"
+   }
+  },
+  {
+   "id": "3A",
+   "topic": "secondLaw",
+   "title": {
+    "en": "Entropy"
+   }
+  },
+  {
+   "id": "6A",
+   "topic": "equilibrium",
+   "title": {
+    "en": "Equilibrium",
+    "fr": "Équilibre",
+    "es": "Equilibrio"
+   }
+  },
+  {
+   "id": "7A",
+   "topic": "quantum",
+   "title": {
+    "en": "Quanta",
+    "fr": "Les quanta",
+    "es": "Los cuantos"
+   }
+  },
+  {
+   "id": "8A",
+   "topic": "atoms",
+   "title": {
+    "en": "Hydrogen",
+    "fr": "L'hydrogène",
+    "es": "El hidrógeno"
+   }
+  },
+  {
+   "id": "17A",
+   "topic": "kinetics",
+   "title": {
+    "en": "Rates",
+    "fr": "Les vitesses",
+    "es": "Las velocidades"
+   }
+  },
+  {
+   "id": "18A",
+   "topic": "dynamics",
+   "title": {
+    "en": "Collisions",
+    "fr": "Les collisions",
+    "es": "Las colisiones"
+   }
+  },
+  {
+   "id": "11A",
+   "topic": "spectroscopy",
+   "title": {
+    "en": "Light",
+    "fr": "La lumière",
+    "es": "La luz"
+   }
+  },
+  {
+   "id": "12A",
+   "topic": "resonance",
+   "title": {
+    "en": "Spins",
+    "fr": "Les spins",
+    "es": "Los espines"
+   }
+  }
+ ],
+ "questions": [
+  {
+   "id": "1A-01",
+   "unit": "1A",
+   "section": "1A.1",
+   "prompt": {
+    "en": "Which of these properties is intensive?",
+    "fr": "Laquelle de ces propriétés est intensive ?",
+    "es": "¿Cuál de estas propiedades es intensiva?"
+   },
+   "correct": {
+    "en": "Temperature",
+    "fr": "La température",
+    "es": "La temperatura"
+   },
+   "wrong": [
     {
-      "id": "1A",
-      "topic": "gases",
-      "title": {
-        "en": "Gases",
-        "fr": "Les gaz",
-        "es": "Los gases"
-      }
+     "en": "Volume",
+     "fr": "Le volume",
+     "es": "El volumen"
     },
     {
-      "id": "2A",
-      "topic": "firstLaw",
-      "title": {
-        "en": "Energy"
-      }
+     "en": "Mass",
+     "fr": "La masse",
+     "es": "La masa"
     },
     {
-      "id": "3A",
-      "topic": "secondLaw",
-      "title": {
-        "en": "Entropy"
-      }
-    },
-    {
-      "id": "6A",
-      "topic": "equilibrium",
-      "title": {
-        "en": "Equilibrium",
-        "fr": "Équilibre",
-        "es": "Equilibrio"
-      }
-    },
-    {
-      "id": "7A",
-      "topic": "quantum",
-      "title": {
-        "en": "Quanta",
-        "fr": "Les quanta",
-        "es": "Los cuantos"
-      }
-    },
-    {
-      "id": "8A",
-      "topic": "atoms",
-      "title": {
-        "en": "Hydrogen",
-        "fr": "L'hydrogène",
-        "es": "El hidrógeno"
-      }
-    },
-    {
-      "id": "17A",
-      "topic": "kinetics",
-      "title": {
-        "en": "Rates",
-        "fr": "Les vitesses",
-        "es": "Las velocidades"
-      }
-    },
-    {
-      "id": "18A",
-      "topic": "dynamics",
-      "title": {
-        "en": "Collisions",
-        "fr": "Les collisions",
-        "es": "Las colisiones"
-      }
+     "en": "Amount of substance",
+     "fr": "La quantité de matière",
+     "es": "La cantidad de sustancia"
     }
-  ],
-  "questions": [
+   ],
+   "explanation": {
+    "en": "An intensive property does not depend on the size of the sample.",
+    "fr": "Une propriété intensive ne dépend pas de la taille de l'échantillon.",
+    "es": "Una propiedad intensiva no depende del tamaño de la muestra."
+   }
+  },
+  {
+   "id": "1A-02",
+   "unit": "1A",
+   "section": "1A.2",
+   "prompt": {
+    "en": "At constant $n$ and $T$, how does the pressure of a perfect gas depend on its volume?"
+   },
+   "correct": {
+    "en": "$p \\propto 1/V$"
+   },
+   "wrong": [
     {
-      "id": "1A-01",
-      "unit": "1A",
-      "section": "1A.1",
-      "prompt": {
-        "en": "Which of these properties is intensive?",
-        "fr": "Laquelle de ces propriétés est intensive ?",
-        "es": "¿Cuál de estas propiedades es intensiva?"
-      },
-      "correct": {
-        "en": "Temperature",
-        "fr": "La température",
-        "es": "La temperatura"
-      },
-      "wrong": [
-        {
-          "en": "Volume",
-          "fr": "Le volume",
-          "es": "El volumen"
-        },
-        {
-          "en": "Mass",
-          "fr": "La masse",
-          "es": "La masa"
-        },
-        {
-          "en": "Amount of substance",
-          "fr": "La quantité de matière",
-          "es": "La cantidad de sustancia"
-        }
-      ],
-      "explanation": {
-        "en": "An intensive property does not depend on the size of the sample.",
-        "fr": "Une propriété intensive ne dépend pas de la taille de l'échantillon.",
-        "es": "Una propiedad intensiva no depende del tamaño de la muestra."
-      }
+     "en": "$p \\propto V$"
     },
     {
-      "id": "1A-02",
-      "unit": "1A",
-      "section": "1A.2",
-      "prompt": {
-        "en": "At constant $n$ and $T$, how does the pressure of a perfect gas depend on its volume?"
-      },
-      "correct": {
-        "en": "$p \\propto 1/V$"
-      },
-      "wrong": [
-        {
-          "en": "$p \\propto V$"
-        },
-        {
-          "en": "$p \\propto V^{2}$"
-        },
-        {
-          "en": "It does not depend on $V$"
-        }
-      ],
-      "explanation": {
-        "en": "Boyle's law: $pV$ is constant at constant $n$ and $T$."
-      }
+     "en": "$p \\propto V^{2}$"
     },
     {
-      "id": "1A-03",
-      "unit": "1A",
-      "section": "1A.2",
-      "prompt": {
-        "en": "What is the SI unit of pressure?"
-      },
-      "correct": {
-        "en": "The pascal"
-      },
-      "wrong": [
-        {
-          "en": "The bar"
-        },
-        {
-          "en": "The atmosphere"
-        },
-        {
-          "en": "The torr"
-        }
-      ],
-      "explanation": {
-        "en": "$1\\,\\mathrm{Pa} = 1\\,\\mathrm{N\\,m^{-2}}$."
-      }
-    },
-    {
-      "id": "2A-01",
-      "unit": "2A",
-      "section": "2A.1",
-      "prompt": {
-        "en": "An isolated system can exchange…"
-      },
-      "correct": {
-        "en": "neither energy nor matter"
-      },
-      "wrong": [
-        {
-          "en": "energy but not matter"
-        },
-        {
-          "en": "matter but not energy"
-        },
-        {
-          "en": "both energy and matter"
-        }
-      ],
-      "explanation": {
-        "en": "Isolated: no exchange at all; closed: energy only; open: both."
-      }
-    },
-    {
-      "id": "2A-02",
-      "unit": "2A",
-      "section": "2A.2",
-      "prompt": {
-        "en": "Which of these is a state function?"
-      },
-      "correct": {
-        "en": "Internal energy"
-      },
-      "wrong": [
-        {
-          "en": "Heat"
-        },
-        {
-          "en": "Work"
-        },
-        {
-          "en": "Heat plus work along one path"
-        }
-      ],
-      "explanation": {
-        "en": "$U$ depends only on the state; $q$ and $w$ depend on the path."
-      }
-    },
-    {
-      "id": "3A-01",
-      "unit": "3A",
-      "section": "3A.1",
-      "prompt": {
-        "en": "In a spontaneous process in an isolated system, the entropy…"
-      },
-      "correct": {
-        "en": "increases"
-      },
-      "wrong": [
-        {
-          "en": "decreases"
-        },
-        {
-          "en": "stays the same"
-        },
-        {
-          "en": "first decreases, then increases"
-        }
-      ],
-      "explanation": {
-        "en": "The Second Law: $\\Delta S_\\mathrm{tot} > 0$ for a spontaneous change."
-      }
-    },
-    {
-      "id": "3A-02",
-      "unit": "3A",
-      "section": "3A.2",
-      "prompt": {
-        "en": "Which statement is the Third Law?"
-      },
-      "correct": {
-        "en": "The entropy of a perfect crystal is zero at $T = 0$"
-      },
-      "wrong": [
-        {
-          "en": "Energy is conserved"
-        },
-        {
-          "en": "Heat flows from hot to cold"
-        },
-        {
-          "en": "Two bodies in equilibrium with a third are in equilibrium with each other"
-        }
-      ],
-      "explanation": {
-        "en": "With $S(0) = 0$, entropies can be measured absolutely."
-      }
-    },
-    {
-      "id": "1A-A1",
-      "unit": "1A",
-      "level": "advanced",
-      "section": "1A.2",
-      "prompt": {
-        "en": "Two flasks of equal volume at the same temperature hold the same mass of helium and of argon. Which has the higher pressure?",
-        "fr": "Deux ballons de même volume, à la même température, contiennent la même masse d'hélium et d'argon. Lequel a la pression la plus élevée ?",
-        "es": "Dos matraces del mismo volumen, a la misma temperatura, contienen la misma masa de helio y de argón. ¿Cuál tiene mayor presión?"
-      },
-      "correct": {
-        "en": "The helium flask: the same mass is more moles",
-        "fr": "Le ballon d'hélium : la même masse fait plus de moles",
-        "es": "El de helio: la misma masa son más moles"
-      },
-      "wrong": [
-        {
-          "en": "The argon flask: its atoms are heavier",
-          "fr": "Le ballon d'argon : ses atomes sont plus lourds",
-          "es": "El de argón: sus átomos son más pesados"
-        },
-        {
-          "en": "Both: pressure does not depend on the gas",
-          "fr": "Les deux : la pression ne dépend pas du gaz",
-          "es": "Ambos: la presión no depende del gas"
-        },
-        {
-          "en": "It depends on the shape of the flasks",
-          "fr": "Cela dépend de la forme des ballons",
-          "es": "Depende de la forma de los matraces"
-        }
-      ],
-      "explanation": {
-        "en": "$p = nRT/V$ and $n = m/M$: the lighter gas gives more moles.",
-        "fr": "$p = nRT/V$ et $n = m/M$ : le gaz le plus léger donne plus de moles.",
-        "es": "$p = nRT/V$ y $n = m/M$: el gas más ligero da más moles."
-      }
-    },
-    {
-      "id": "1A-A2",
-      "unit": "1A",
-      "level": "advanced",
-      "section": "1A.1",
-      "prompt": {
-        "en": "A sealed rigid container of gas is heated. Which quantity stays the same?",
-        "fr": "On chauffe un récipient rigide et fermé contenant un gaz. Quelle grandeur reste la même ?",
-        "es": "Se calienta un recipiente rígido y cerrado con un gas. ¿Qué magnitud no cambia?"
-      },
-      "correct": {
-        "en": "Its density",
-        "fr": "Sa masse volumique",
-        "es": "Su densidad"
-      },
-      "wrong": [
-        {
-          "en": "Its pressure",
-          "fr": "Sa pression",
-          "es": "Su presión"
-        },
-        {
-          "en": "The mean speed of its molecules",
-          "fr": "La vitesse moyenne de ses molécules",
-          "es": "La velocidad media de sus moléculas"
-        },
-        {
-          "en": "Its internal energy",
-          "fr": "Son énergie interne",
-          "es": "Su energía interna"
-        }
-      ],
-      "explanation": {
-        "en": "Mass and volume are fixed, so the density is too.",
-        "fr": "La masse et le volume sont fixés, donc la masse volumique aussi.",
-        "es": "La masa y el volumen están fijos, así que la densidad también."
-      }
-    },
-    {
-      "id": "2A-A1",
-      "unit": "2A",
-      "level": "advanced",
-      "section": "2A.2",
-      "prompt": {
-        "en": "A gas expands into a vacuum inside an insulated container. Which is zero?",
-        "fr": "Un gaz se détend dans le vide à l'intérieur d'un récipient isolé. Qu'est-ce qui est nul ?",
-        "es": "Un gas se expande en el vacío dentro de un recipiente aislado. ¿Qué es cero?"
-      },
-      "correct": {
-        "en": "$q$, $w$ and $\\Delta U$",
-        "fr": "$q$, $w$ et $\\Delta U$",
-        "es": "$q$, $w$ y $\\Delta U$"
-      },
-      "wrong": [
-        {
-          "en": "$q$ only",
-          "fr": "$q$ seulement",
-          "es": "Solo $q$"
-        },
-        {
-          "en": "$w$ only",
-          "fr": "$w$ seulement",
-          "es": "Solo $w$"
-        },
-        {
-          "en": "$\\Delta S$",
-          "fr": "$\\Delta S$",
-          "es": "$\\Delta S$"
-        }
-      ],
-      "explanation": {
-        "en": "No heat crosses the wall and no work is done against a vacuum.",
-        "fr": "Aucune chaleur ne traverse la paroi et aucun travail n'est fourni contre le vide.",
-        "es": "No pasa calor por la pared y no se hace trabajo contra el vacío."
-      }
-    },
-    {
-      "id": "3A-A1",
-      "unit": "3A",
-      "level": "advanced",
-      "section": "3A.1",
-      "prompt": {
-        "en": "Why can a refrigerator cool its inside without breaking the Second Law?",
-        "fr": "Pourquoi un réfrigérateur peut-il refroidir son intérieur sans violer le deuxième principe ?",
-        "es": "¿Por qué un frigorífico puede enfriar su interior sin violar el segundo principio?"
-      },
-      "correct": {
-        "en": "Work done on it lets it release more heat outside than it takes inside",
-        "fr": "Le travail reçu lui permet de rejeter dehors plus de chaleur qu'il n'en prend dedans",
-        "es": "El trabajo recibido le permite expulsar fuera más calor del que toma dentro"
-      },
-      "wrong": [
-        {
-          "en": "The Second Law does not apply to machines",
-          "fr": "Le deuxième principe ne s'applique pas aux machines",
-          "es": "El segundo principio no se aplica a las máquinas"
-        },
-        {
-          "en": "Its inside is isolated from the room",
-          "fr": "Son intérieur est isolé de la pièce",
-          "es": "Su interior está aislado de la habitación"
-        },
-        {
-          "en": "Cold air has no entropy",
-          "fr": "L'air froid n'a pas d'entropie",
-          "es": "El aire frío no tiene entropía"
-        }
-      ],
-      "explanation": {
-        "en": "The total entropy increases because of the extra heat released outside.",
-        "fr": "L'entropie totale augmente grâce à la chaleur supplémentaire rejetée dehors.",
-        "es": "La entropía total aumenta por el calor extra expulsado fuera."
-      }
-    },
-    {
-      "id": "6A-01",
-      "unit": "6A",
-      "section": "6A.1",
-      "prompt": {
-        "en": "A reaction mixture has $Q < K$. Which way does it go?",
-        "fr": "Un mélange réactionnel a $Q < K$. Dans quel sens évolue-t-il ?",
-        "es": "Una mezcla de reacción tiene $Q < K$. ¿En qué sentido evoluciona?"
-      },
-      "correct": {
-        "en": "Towards the products",
-        "fr": "Vers les produits",
-        "es": "Hacia los productos"
-      },
-      "wrong": [
-        {
-          "en": "Towards the reactants",
-          "fr": "Vers les réactifs",
-          "es": "Hacia los reactivos"
-        },
-        {
-          "en": "It is at equilibrium",
-          "fr": "Il est à l'équilibre",
-          "es": "Está en equilibrio"
-        },
-        {
-          "en": "It depends on the pressure only",
-          "fr": "Cela dépend seulement de la pression",
-          "es": "Depende solo de la presión"
-        }
-      ],
-      "explanation": {
-        "en": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$: the forward reaction is spontaneous.",
-        "fr": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$ : la réaction directe est spontanée.",
-        "es": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$: la reacción directa es espontánea."
-      }
-    },
-    {
-      "id": "7A-01",
-      "unit": "7A",
-      "section": "7A.1",
-      "prompt": {
-        "en": "Light of higher frequency has photons that carry…",
-        "fr": "Une lumière de fréquence plus élevée a des photons qui portent…",
-        "es": "Una luz de mayor frecuencia tiene fotones que llevan…"
-      },
-      "correct": {
-        "en": "More energy each",
-        "fr": "Chacun plus d'énergie",
-        "es": "Cada uno más energía"
-      },
-      "wrong": [
-        {
-          "en": "Less energy each",
-          "fr": "Chacun moins d'énergie",
-          "es": "Cada uno menos energía"
-        },
-        {
-          "en": "No energy at all",
-          "fr": "Aucune énergie",
-          "es": "Ninguna energía"
-        },
-        {
-          "en": "A negative charge",
-          "fr": "Une charge négative",
-          "es": "Una carga negativa"
-        }
-      ],
-      "explanation": {
-        "en": "$E = h\\nu$ grows with $\\nu$.",
-        "fr": "$E = h\\nu$ croît avec $\\nu$.",
-        "es": "$E = h\\nu$ crece con $\\nu$."
-      }
-    },
-    {
-      "id": "8A-01",
-      "unit": "8A",
-      "section": "8A.1",
-      "prompt": {
-        "en": "How many radial nodes has a $\\mathrm{1s}$ orbital?",
-        "fr": "Combien de nœuds radiaux a une orbitale $\\mathrm{1s}$ ?",
-        "es": "¿Cuántos nodos radiales tiene un orbital $\\mathrm{1s}$?"
-      },
-      "correct": {
-        "en": "None",
-        "fr": "Aucun",
-        "es": "Ninguno"
-      },
-      "wrong": [
-        {
-          "en": "One",
-          "fr": "Un",
-          "es": "Uno"
-        },
-        {
-          "en": "Two",
-          "fr": "Deux",
-          "es": "Dos"
-        },
-        {
-          "en": "Three",
-          "fr": "Trois",
-          "es": "Tres"
-        }
-      ],
-      "explanation": {
-        "en": "$n - l - 1 = 0$.",
-        "fr": "$n - l - 1 = 0$.",
-        "es": "$n - l - 1 = 0$."
-      }
-    },
-    {
-      "id": "17A-01",
-      "unit": "17A",
-      "section": "17A.1",
-      "prompt": {
-        "en": "A reaction is followed by the colour of one product. What is measured?",
-        "fr": "On suit une réaction par la couleur d'un produit. Que mesure-t-on ?",
-        "es": "Se sigue una reacción por el color de un producto. ¿Qué se mide?"
-      },
-      "correct": {
-        "en": "How its concentration changes with time",
-        "fr": "Comment sa concentration change avec le temps",
-        "es": "Cómo cambia su concentración con el tiempo"
-      },
-      "wrong": [
-        {
-          "en": "Its melting point",
-          "fr": "Son point de fusion",
-          "es": "Su punto de fusión"
-        },
-        {
-          "en": "Its molar mass",
-          "fr": "Sa masse molaire",
-          "es": "Su masa molar"
-        },
-        {
-          "en": "Its boiling point",
-          "fr": "Son point d'ébullition",
-          "es": "Su punto de ebullición"
-        }
-      ],
-      "explanation": {
-        "en": "The absorbance follows $c$, so its change in time gives the rate.",
-        "fr": "L'absorbance suit $c$ : sa variation dans le temps donne la vitesse.",
-        "es": "La absorbancia sigue a $c$: su cambio en el tiempo da la velocidad."
-      }
-    },
-    {
-      "id": "18A-01",
-      "unit": "18A",
-      "section": "18A.1",
-      "prompt": {
-        "en": "Why do only some collisions lead to reaction?",
-        "fr": "Pourquoi seules certaines collisions mènent-elles à la réaction ?",
-        "es": "¿Por qué solo algunas colisiones llevan a reacción?"
-      },
-      "correct": {
-        "en": "Most have too little energy",
-        "fr": "La plupart ont trop peu d'énergie",
-        "es": "La mayoría tiene poca energía"
-      },
-      "wrong": [
-        {
-          "en": "Most are between identical atoms",
-          "fr": "La plupart ont lieu entre atomes identiques",
-          "es": "La mayoría son entre átomos idénticos"
-        },
-        {
-          "en": "Gases never really collide",
-          "fr": "Les gaz ne se heurtent jamais vraiment",
-          "es": "Los gases nunca chocan de verdad"
-        },
-        {
-          "en": "Collisions destroy the products",
-          "fr": "Les collisions détruisent les produits",
-          "es": "Las colisiones destruyen los productos"
-        }
-      ],
-      "explanation": {
-        "en": "Only a fraction $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ has enough energy.",
-        "fr": "Seule une fraction $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ a assez d'énergie.",
-        "es": "Solo una fracción $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ tiene energía suficiente."
-      }
+     "en": "It does not depend on $V$"
     }
-  ]
+   ],
+   "explanation": {
+    "en": "Boyle's law: $pV$ is constant at constant $n$ and $T$."
+   }
+  },
+  {
+   "id": "1A-03",
+   "unit": "1A",
+   "section": "1A.2",
+   "prompt": {
+    "en": "What is the SI unit of pressure?"
+   },
+   "correct": {
+    "en": "The pascal"
+   },
+   "wrong": [
+    {
+     "en": "The bar"
+    },
+    {
+     "en": "The atmosphere"
+    },
+    {
+     "en": "The torr"
+    }
+   ],
+   "explanation": {
+    "en": "$1\\,\\mathrm{Pa} = 1\\,\\mathrm{N\\,m^{-2}}$."
+   }
+  },
+  {
+   "id": "2A-01",
+   "unit": "2A",
+   "section": "2A.1",
+   "prompt": {
+    "en": "An isolated system can exchange…"
+   },
+   "correct": {
+    "en": "neither energy nor matter"
+   },
+   "wrong": [
+    {
+     "en": "energy but not matter"
+    },
+    {
+     "en": "matter but not energy"
+    },
+    {
+     "en": "both energy and matter"
+    }
+   ],
+   "explanation": {
+    "en": "Isolated: no exchange at all; closed: energy only; open: both."
+   }
+  },
+  {
+   "id": "2A-02",
+   "unit": "2A",
+   "section": "2A.2",
+   "prompt": {
+    "en": "Which of these is a state function?"
+   },
+   "correct": {
+    "en": "Internal energy"
+   },
+   "wrong": [
+    {
+     "en": "Heat"
+    },
+    {
+     "en": "Work"
+    },
+    {
+     "en": "Heat plus work along one path"
+    }
+   ],
+   "explanation": {
+    "en": "$U$ depends only on the state; $q$ and $w$ depend on the path."
+   }
+  },
+  {
+   "id": "3A-01",
+   "unit": "3A",
+   "section": "3A.1",
+   "prompt": {
+    "en": "In a spontaneous process in an isolated system, the entropy…"
+   },
+   "correct": {
+    "en": "increases"
+   },
+   "wrong": [
+    {
+     "en": "decreases"
+    },
+    {
+     "en": "stays the same"
+    },
+    {
+     "en": "first decreases, then increases"
+    }
+   ],
+   "explanation": {
+    "en": "The Second Law: $\\Delta S_\\mathrm{tot} > 0$ for a spontaneous change."
+   }
+  },
+  {
+   "id": "3A-02",
+   "unit": "3A",
+   "section": "3A.2",
+   "prompt": {
+    "en": "Which statement is the Third Law?"
+   },
+   "correct": {
+    "en": "The entropy of a perfect crystal is zero at $T = 0$"
+   },
+   "wrong": [
+    {
+     "en": "Energy is conserved"
+    },
+    {
+     "en": "Heat flows from hot to cold"
+    },
+    {
+     "en": "Two bodies in equilibrium with a third are in equilibrium with each other"
+    }
+   ],
+   "explanation": {
+    "en": "With $S(0) = 0$, entropies can be measured absolutely."
+   }
+  },
+  {
+   "id": "1A-A1",
+   "unit": "1A",
+   "level": "advanced",
+   "section": "1A.2",
+   "prompt": {
+    "en": "Two flasks of equal volume at the same temperature hold the same mass of helium and of argon. Which has the higher pressure?",
+    "fr": "Deux ballons de même volume, à la même température, contiennent la même masse d'hélium et d'argon. Lequel a la pression la plus élevée ?",
+    "es": "Dos matraces del mismo volumen, a la misma temperatura, contienen la misma masa de helio y de argón. ¿Cuál tiene mayor presión?"
+   },
+   "correct": {
+    "en": "The helium flask: the same mass is more moles",
+    "fr": "Le ballon d'hélium : la même masse fait plus de moles",
+    "es": "El de helio: la misma masa son más moles"
+   },
+   "wrong": [
+    {
+     "en": "The argon flask: its atoms are heavier",
+     "fr": "Le ballon d'argon : ses atomes sont plus lourds",
+     "es": "El de argón: sus átomos son más pesados"
+    },
+    {
+     "en": "Both: pressure does not depend on the gas",
+     "fr": "Les deux : la pression ne dépend pas du gaz",
+     "es": "Ambos: la presión no depende del gas"
+    },
+    {
+     "en": "It depends on the shape of the flasks",
+     "fr": "Cela dépend de la forme des ballons",
+     "es": "Depende de la forma de los matraces"
+    }
+   ],
+   "explanation": {
+    "en": "$p = nRT/V$ and $n = m/M$: the lighter gas gives more moles.",
+    "fr": "$p = nRT/V$ et $n = m/M$ : le gaz le plus léger donne plus de moles.",
+    "es": "$p = nRT/V$ y $n = m/M$: el gas más ligero da más moles."
+   }
+  },
+  {
+   "id": "1A-A2",
+   "unit": "1A",
+   "level": "advanced",
+   "section": "1A.1",
+   "prompt": {
+    "en": "A sealed rigid container of gas is heated. Which quantity stays the same?",
+    "fr": "On chauffe un récipient rigide et fermé contenant un gaz. Quelle grandeur reste la même ?",
+    "es": "Se calienta un recipiente rígido y cerrado con un gas. ¿Qué magnitud no cambia?"
+   },
+   "correct": {
+    "en": "Its density",
+    "fr": "Sa masse volumique",
+    "es": "Su densidad"
+   },
+   "wrong": [
+    {
+     "en": "Its pressure",
+     "fr": "Sa pression",
+     "es": "Su presión"
+    },
+    {
+     "en": "The mean speed of its molecules",
+     "fr": "La vitesse moyenne de ses molécules",
+     "es": "La velocidad media de sus moléculas"
+    },
+    {
+     "en": "Its internal energy",
+     "fr": "Son énergie interne",
+     "es": "Su energía interna"
+    }
+   ],
+   "explanation": {
+    "en": "Mass and volume are fixed, so the density is too.",
+    "fr": "La masse et le volume sont fixés, donc la masse volumique aussi.",
+    "es": "La masa y el volumen están fijos, así que la densidad también."
+   }
+  },
+  {
+   "id": "2A-A1",
+   "unit": "2A",
+   "level": "advanced",
+   "section": "2A.2",
+   "prompt": {
+    "en": "A gas expands into a vacuum inside an insulated container. Which is zero?",
+    "fr": "Un gaz se détend dans le vide à l'intérieur d'un récipient isolé. Qu'est-ce qui est nul ?",
+    "es": "Un gas se expande en el vacío dentro de un recipiente aislado. ¿Qué es cero?"
+   },
+   "correct": {
+    "en": "$q$, $w$ and $\\Delta U$",
+    "fr": "$q$, $w$ et $\\Delta U$",
+    "es": "$q$, $w$ y $\\Delta U$"
+   },
+   "wrong": [
+    {
+     "en": "$q$ only",
+     "fr": "$q$ seulement",
+     "es": "Solo $q$"
+    },
+    {
+     "en": "$w$ only",
+     "fr": "$w$ seulement",
+     "es": "Solo $w$"
+    },
+    {
+     "en": "$\\Delta S$",
+     "fr": "$\\Delta S$",
+     "es": "$\\Delta S$"
+    }
+   ],
+   "explanation": {
+    "en": "No heat crosses the wall and no work is done against a vacuum.",
+    "fr": "Aucune chaleur ne traverse la paroi et aucun travail n'est fourni contre le vide.",
+    "es": "No pasa calor por la pared y no se hace trabajo contra el vacío."
+   }
+  },
+  {
+   "id": "3A-A1",
+   "unit": "3A",
+   "level": "advanced",
+   "section": "3A.1",
+   "prompt": {
+    "en": "Why can a refrigerator cool its inside without breaking the Second Law?",
+    "fr": "Pourquoi un réfrigérateur peut-il refroidir son intérieur sans violer le deuxième principe ?",
+    "es": "¿Por qué un frigorífico puede enfriar su interior sin violar el segundo principio?"
+   },
+   "correct": {
+    "en": "Work done on it lets it release more heat outside than it takes inside",
+    "fr": "Le travail reçu lui permet de rejeter dehors plus de chaleur qu'il n'en prend dedans",
+    "es": "El trabajo recibido le permite expulsar fuera más calor del que toma dentro"
+   },
+   "wrong": [
+    {
+     "en": "The Second Law does not apply to machines",
+     "fr": "Le deuxième principe ne s'applique pas aux machines",
+     "es": "El segundo principio no se aplica a las máquinas"
+    },
+    {
+     "en": "Its inside is isolated from the room",
+     "fr": "Son intérieur est isolé de la pièce",
+     "es": "Su interior está aislado de la habitación"
+    },
+    {
+     "en": "Cold air has no entropy",
+     "fr": "L'air froid n'a pas d'entropie",
+     "es": "El aire frío no tiene entropía"
+    }
+   ],
+   "explanation": {
+    "en": "The total entropy increases because of the extra heat released outside.",
+    "fr": "L'entropie totale augmente grâce à la chaleur supplémentaire rejetée dehors.",
+    "es": "La entropía total aumenta por el calor extra expulsado fuera."
+   }
+  },
+  {
+   "id": "6A-01",
+   "unit": "6A",
+   "section": "6A.1",
+   "prompt": {
+    "en": "A reaction mixture has $Q < K$. Which way does it go?",
+    "fr": "Un mélange réactionnel a $Q < K$. Dans quel sens évolue-t-il ?",
+    "es": "Una mezcla de reacción tiene $Q < K$. ¿En qué sentido evoluciona?"
+   },
+   "correct": {
+    "en": "Towards the products",
+    "fr": "Vers les produits",
+    "es": "Hacia los productos"
+   },
+   "wrong": [
+    {
+     "en": "Towards the reactants",
+     "fr": "Vers les réactifs",
+     "es": "Hacia los reactivos"
+    },
+    {
+     "en": "It is at equilibrium",
+     "fr": "Il est à l'équilibre",
+     "es": "Está en equilibrio"
+    },
+    {
+     "en": "It depends on the pressure only",
+     "fr": "Cela dépend seulement de la pression",
+     "es": "Depende solo de la presión"
+    }
+   ],
+   "explanation": {
+    "en": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$: the forward reaction is spontaneous.",
+    "fr": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$ : la réaction directe est spontanée.",
+    "es": "$\\Delta_\\mathrm{r}G = RT\\ln(Q/K) < 0$: la reacción directa es espontánea."
+   }
+  },
+  {
+   "id": "7A-01",
+   "unit": "7A",
+   "section": "7A.1",
+   "prompt": {
+    "en": "Light of higher frequency has photons that carry…",
+    "fr": "Une lumière de fréquence plus élevée a des photons qui portent…",
+    "es": "Una luz de mayor frecuencia tiene fotones que llevan…"
+   },
+   "correct": {
+    "en": "More energy each",
+    "fr": "Chacun plus d'énergie",
+    "es": "Cada uno más energía"
+   },
+   "wrong": [
+    {
+     "en": "Less energy each",
+     "fr": "Chacun moins d'énergie",
+     "es": "Cada uno menos energía"
+    },
+    {
+     "en": "No energy at all",
+     "fr": "Aucune énergie",
+     "es": "Ninguna energía"
+    },
+    {
+     "en": "A negative charge",
+     "fr": "Une charge négative",
+     "es": "Una carga negativa"
+    }
+   ],
+   "explanation": {
+    "en": "$E = h\\nu$ grows with $\\nu$.",
+    "fr": "$E = h\\nu$ croît avec $\\nu$.",
+    "es": "$E = h\\nu$ crece con $\\nu$."
+   }
+  },
+  {
+   "id": "8A-01",
+   "unit": "8A",
+   "section": "8A.1",
+   "prompt": {
+    "en": "How many radial nodes has a $\\mathrm{1s}$ orbital?",
+    "fr": "Combien de nœuds radiaux a une orbitale $\\mathrm{1s}$ ?",
+    "es": "¿Cuántos nodos radiales tiene un orbital $\\mathrm{1s}$?"
+   },
+   "correct": {
+    "en": "None",
+    "fr": "Aucun",
+    "es": "Ninguno"
+   },
+   "wrong": [
+    {
+     "en": "One",
+     "fr": "Un",
+     "es": "Uno"
+    },
+    {
+     "en": "Two",
+     "fr": "Deux",
+     "es": "Dos"
+    },
+    {
+     "en": "Three",
+     "fr": "Trois",
+     "es": "Tres"
+    }
+   ],
+   "explanation": {
+    "en": "$n - l - 1 = 0$.",
+    "fr": "$n - l - 1 = 0$.",
+    "es": "$n - l - 1 = 0$."
+   }
+  },
+  {
+   "id": "17A-01",
+   "unit": "17A",
+   "section": "17A.1",
+   "prompt": {
+    "en": "A reaction is followed by the colour of one product. What is measured?",
+    "fr": "On suit une réaction par la couleur d'un produit. Que mesure-t-on ?",
+    "es": "Se sigue una reacción por el color de un producto. ¿Qué se mide?"
+   },
+   "correct": {
+    "en": "How its concentration changes with time",
+    "fr": "Comment sa concentration change avec le temps",
+    "es": "Cómo cambia su concentración con el tiempo"
+   },
+   "wrong": [
+    {
+     "en": "Its melting point",
+     "fr": "Son point de fusion",
+     "es": "Su punto de fusión"
+    },
+    {
+     "en": "Its molar mass",
+     "fr": "Sa masse molaire",
+     "es": "Su masa molar"
+    },
+    {
+     "en": "Its boiling point",
+     "fr": "Son point d'ébullition",
+     "es": "Su punto de ebullición"
+    }
+   ],
+   "explanation": {
+    "en": "The absorbance follows $c$, so its change in time gives the rate.",
+    "fr": "L'absorbance suit $c$ : sa variation dans le temps donne la vitesse.",
+    "es": "La absorbancia sigue a $c$: su cambio en el tiempo da la velocidad."
+   }
+  },
+  {
+   "id": "18A-01",
+   "unit": "18A",
+   "section": "18A.1",
+   "prompt": {
+    "en": "Why do only some collisions lead to reaction?",
+    "fr": "Pourquoi seules certaines collisions mènent-elles à la réaction ?",
+    "es": "¿Por qué solo algunas colisiones llevan a reacción?"
+   },
+   "correct": {
+    "en": "Most have too little energy",
+    "fr": "La plupart ont trop peu d'énergie",
+    "es": "La mayoría tiene poca energía"
+   },
+   "wrong": [
+    {
+     "en": "Most are between identical atoms",
+     "fr": "La plupart ont lieu entre atomes identiques",
+     "es": "La mayoría son entre átomos idénticos"
+    },
+    {
+     "en": "Gases never really collide",
+     "fr": "Les gaz ne se heurtent jamais vraiment",
+     "es": "Los gases nunca chocan de verdad"
+    },
+    {
+     "en": "Collisions destroy the products",
+     "fr": "Les collisions détruisent les produits",
+     "es": "Las colisiones destruyen los productos"
+    }
+   ],
+   "explanation": {
+    "en": "Only a fraction $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ has enough energy.",
+    "fr": "Seule une fraction $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ a assez d'énergie.",
+    "es": "Solo una fracción $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ tiene energía suficiente."
+   }
+  },
+  {
+   "id": "11A-01",
+   "unit": "11A",
+   "section": "11A.1",
+   "prompt": {
+    "en": "A spectrum is recorded through a coloured filter. What does it show?",
+    "fr": "On enregistre un spectre à travers un filtre coloré. Que montre-t-il ?",
+    "es": "Se registra un espectro a través de un filtro de color. ¿Qué muestra?"
+   },
+   "correct": {
+    "en": "Which colours pass",
+    "fr": "Les couleurs qui passent",
+    "es": "Los colores que pasan"
+   },
+   "wrong": [
+    {
+     "en": "The filter's mass",
+     "fr": "La masse du filtre",
+     "es": "La masa del filtro"
+    },
+    {
+     "en": "The room's pressure",
+     "fr": "La pression de la pièce",
+     "es": "La presión de la sala"
+    },
+    {
+     "en": "The lamp's voltage",
+     "fr": "La tension de la lampe",
+     "es": "La tensión de la lámpara"
+    }
+   ],
+   "explanation": {
+    "en": "Each wavelength is transmitted or not; $T$ tells how much.",
+    "fr": "Chaque longueur d'onde passe ou non ; $T$ dit combien.",
+    "es": "Cada longitud de onda pasa o no; $T$ dice cuánto."
+   }
+  },
+  {
+   "id": "12A-01",
+   "unit": "12A",
+   "section": "12A.1",
+   "prompt": {
+    "en": "A small compass needle sits in a field. What sets how fast it wobbles?",
+    "fr": "Une petite aiguille aimantée est dans un champ. Qu'est-ce qui fixe la vitesse de son oscillation ?",
+    "es": "Una pequeña aguja imantada está en un campo. ¿Qué fija la rapidez de su oscilación?"
+   },
+   "correct": {
+    "en": "The field strength",
+    "fr": "L'intensité du champ",
+    "es": "La intensidad del campo"
+   },
+   "wrong": [
+    {
+     "en": "The needle's colour",
+     "fr": "La couleur de l'aiguille",
+     "es": "El color de la aguja"
+    },
+    {
+     "en": "The time of day",
+     "fr": "L'heure de la journée",
+     "es": "La hora del día"
+    },
+    {
+     "en": "The table's height",
+     "fr": "La hauteur de la table",
+     "es": "La altura de la mesa"
+    }
+   ],
+   "explanation": {
+    "en": "A stronger field $B$ gives a faster wobble.",
+    "fr": "Un champ $B$ plus fort donne une oscillation plus rapide.",
+    "es": "Un campo $B$ más fuerte da una oscilación más rápida."
+   }
+  }
+ ]
 }

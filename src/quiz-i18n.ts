@@ -6,6 +6,7 @@ import { CB_EXPLANATIONS, CB_GROUPS, CB_LEVEL, CB_MISTAKES, CB_PROMPTS, CB_SKILL
 import { EQ_EXPLANATIONS, EQ_MISTAKES, EQ_PROMPTS, EQ_SKILLS } from "./quiz-i18n-equilibria";
 import { QT_EXPLANATIONS, QT_GROUP, QT_MISTAKES, QT_PROMPTS, QT_SKILLS } from "./quiz-i18n-quantum";
 import { KN_EXPLANATIONS, KN_GROUP, KN_MISTAKES, KN_PROMPTS, KN_SKILLS } from "./quiz-i18n-kinetics";
+import { SP_EXPLANATIONS, SP_GROUP, SP_MISTAKES, SP_PROMPTS, SP_SKILLS } from "./quiz-i18n-spectroscopy";
 import { CHEM_ADVANCED, CHEM_EXPLANATIONS, CHEM_GROUP, CHEM_LEVEL, CHEM_MISTAKES, CHEM_PROMPTS, CHEM_SKILLS, CHEM_TEXTS, CHEM_TOPICS } from "./quiz-i18n-chemistry";
 
 /** Texts of the multiple-choice part, in French, Spanish and English. */
@@ -242,9 +243,9 @@ const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
 };
 
 const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
-  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr },
-  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es },
-  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en },
+  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr },
+  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es },
+  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en },
 };
 
 const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
@@ -316,6 +317,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     ...EQ_PROMPTS.fr,
     ...QT_PROMPTS.fr,
     ...KN_PROMPTS.fr,
+    ...SP_PROMPTS.fr,
     ...LX_PROMPTS.fr,
     ...CB_PROMPTS.fr,
     derivative: "Quelle est la dérivée de f ?",
@@ -385,6 +387,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     ...EQ_PROMPTS.es,
     ...QT_PROMPTS.es,
     ...KN_PROMPTS.es,
+    ...SP_PROMPTS.es,
     ...LX_PROMPTS.es,
     ...CB_PROMPTS.es,
     derivative: "¿Cuál es la derivada de f?",
@@ -454,6 +457,7 @@ const PROMPTS: Record<Lang, Record<PromptKey, string>> = {
     ...EQ_PROMPTS.en,
     ...QT_PROMPTS.en,
     ...KN_PROMPTS.en,
+    ...SP_PROMPTS.en,
     ...LX_PROMPTS.en,
     ...CB_PROMPTS.en,
     derivative: "What is the derivative of f?",
@@ -526,6 +530,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     ...EQ_EXPLANATIONS.fr,
     ...QT_EXPLANATIONS.fr,
     ...KN_EXPLANATIONS.fr,
+    ...SP_EXPLANATIONS.fr,
     ...LX_EXPLANATIONS.fr,
     ...CB_EXPLANATIONS.fr,
     powerRule: "Dérivée d'une puissance, terme par terme ; la dérivée d'une constante est nulle.",
@@ -627,6 +632,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     ...EQ_EXPLANATIONS.es,
     ...QT_EXPLANATIONS.es,
     ...KN_EXPLANATIONS.es,
+    ...SP_EXPLANATIONS.es,
     ...LX_EXPLANATIONS.es,
     ...CB_EXPLANATIONS.es,
     powerRule: "Derivada de una potencia, término a término; la derivada de una constante es cero.",
@@ -728,6 +734,7 @@ const EXPLANATIONS: Record<Lang, Record<ExplanationKey, string>> = {
     ...EQ_EXPLANATIONS.en,
     ...QT_EXPLANATIONS.en,
     ...KN_EXPLANATIONS.en,
+    ...SP_EXPLANATIONS.en,
     ...LX_EXPLANATIONS.en,
     ...CB_EXPLANATIONS.en,
     powerRule: "Derivative of a power, term by term; the derivative of a constant is zero.",
@@ -833,6 +840,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...EQ_SKILLS.fr,
     ...QT_SKILLS.fr,
     ...KN_SKILLS.fr,
+    ...SP_SKILLS.fr,
     ...LX_SKILLS.fr,
     ...CB_SKILLS.fr,
     "derivatives.polynomial": "Dérivée d'un polynôme",
@@ -951,6 +959,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...EQ_SKILLS.es,
     ...QT_SKILLS.es,
     ...KN_SKILLS.es,
+    ...SP_SKILLS.es,
     ...LX_SKILLS.es,
     ...CB_SKILLS.es,
     "derivatives.polynomial": "Derivada de un polinomio",
@@ -1069,6 +1078,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...EQ_SKILLS.en,
     ...QT_SKILLS.en,
     ...KN_SKILLS.en,
+    ...SP_SKILLS.en,
     ...LX_SKILLS.en,
     ...CB_SKILLS.en,
     "derivatives.polynomial": "Derivative of a polynomial",
@@ -1191,6 +1201,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...EQ_MISTAKES.fr,
     ...QT_MISTAKES.fr,
     ...KN_MISTAKES.fr,
+    ...SP_MISTAKES.fr,
     ...LX_MISTAKES.fr,
     ...CB_MISTAKES.fr,
     exponentKept: "Exposant non abaissé",
@@ -1301,6 +1312,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...EQ_MISTAKES.es,
     ...QT_MISTAKES.es,
     ...KN_MISTAKES.es,
+    ...SP_MISTAKES.es,
     ...LX_MISTAKES.es,
     ...CB_MISTAKES.es,
     exponentKept: "Exponente sin reducir",
@@ -1411,6 +1423,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...EQ_MISTAKES.en,
     ...QT_MISTAKES.en,
     ...KN_MISTAKES.en,
+    ...SP_MISTAKES.en,
     ...LX_MISTAKES.en,
     ...CB_MISTAKES.en,
     exponentKept: "Exponent not lowered",

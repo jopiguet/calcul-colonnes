@@ -294,7 +294,7 @@ Two GitHub Actions workflows, for one developer working on `main`:
 | Workflow | When | What |
 |---|---|---|
 | [checks.yml](../.github/workflows/checks.yml) | Every push to `main` | Type checks and build, `check:quiz`, `check:vocab`, `check:discover`, `check:physics`, `check:astronomy`, `check:biology`, the e2e suite on SQLite and again on PostgreSQL, the image build. Nothing is deployed. |
-| [release.yml](../.github/workflows/release.yml) | A tag `v*`, or *Run workflow* | The same checks, then the steps below |
+| [release.yml](../.github/workflows/release.yml) | A tag `v*`, or *Run workflow* | The same checks, unless the commit already passed them on `main`; then the steps below |
 
 A release:
 
@@ -304,6 +304,13 @@ npm version minor            # 6.1.0 → 6.2.0: commits and tags v6.2.0
 git push --follow-tags       # the tag starts the release
 ```
 
+0. **Checks, once per commit.** `npm version` and `git push --follow-tags` push the
+   commit and its tag together, so *Checks* (for `main`) and *Release* (for the
+   tag) start at the same time. The release first waits for the *Checks* run on
+   the same commit (up to two minutes for it to appear, then until it ends). If
+   it passed, the checks are not run again; if it failed or there is none (a tag
+   on a commit never pushed to `main`, a run deleted), the release runs them
+   itself. Either way nothing is deployed from a commit that has not passed them.
 1. **Build the image once,** with the tag as build id, start it against a throwaway PostgreSQL, and check `/api/health`, `/version.json` and the page.
 2. **Push it** to Artifact Registry.
 3. **Rehearse the migrations** on a Neon branch of production created for the run, set to expire after two hours, and deleted at the end. A migration that fails on real rows fails here, before production is touched. A branch left by a cancelled run disappears by itself.

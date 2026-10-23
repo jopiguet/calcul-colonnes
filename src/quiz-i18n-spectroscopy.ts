@@ -1,0 +1,210 @@
+/**
+ * Texts of the physical chemistry calculations of Focuses 11–12 (molecular
+ * spectroscopy, magnetic resonance), in French, Spanish and English: merged
+ * into the tables of quiz-i18n.ts.
+ */
+type Lang = "fr" | "es" | "en";
+
+export type SpectroscopyPrompt =
+  | "beerLambert" | "rotationalLine" | "bondLength" | "ramanShift" | "mostPopulatedJ" | "anharmonicFundamental"
+  | "anharmonicOvertone" | "dissociationEnergy" | "normalModes" | "dopplerWidth" | "lifetimeWidth" | "larmorFrequency"
+  | "shiftInHertz" | "multipletNMR" | "multipletEPR" | "populationExcess" | "gValue" | "spinDensity" | "coalescence"
+  | "t2Linewidth" | "inversionRecovery";
+
+export type SpectroscopyExplanation = Exclude<SpectroscopyPrompt, "multipletNMR" | "multipletEPR"> | "multiplet";
+
+export type SpectroscopyMistake = "selectionRuleConfused" | "linearityConfused" | "ppmConfused" | "equivalenceIgnored" | "nuclearSpinIgnored" | "fieldUnits";
+
+export const SP_GROUP: Record<Lang, string> = { fr: "Spectroscopie", es: "Espectroscopía", en: "Spectroscopy" };
+
+export const SP_PROMPTS: Record<Lang, Record<SpectroscopyPrompt, string>> = {
+  fr: {
+    beerLambert: "Pourcentage de la lumière transmise par la solution (loi de Beer–Lambert) :",
+    rotationalLine: "Fréquence de la raie de rotation pure de cette molécule, en rotateur rigide :",
+    bondLength: "Longueur de liaison de la molécule, tirée de sa constante de rotation :",
+    ramanShift: "Raman de rotation : écart de la raie Stokes par rapport à la raie excitatrice.",
+    mostPopulatedJ: "Niveau de rotation le plus peuplé de cette molécule linéaire à la température T :",
+    anharmonicFundamental: "Oscillateur anharmonique (Morse) : nombre d'onde de la bande fondamentale.",
+    anharmonicOvertone: "Oscillateur anharmonique (Morse) : nombre d'onde de la première harmonique.",
+    dissociationEnergy: "Énergie de dissociation D̃₀ d'un oscillateur de Morse :",
+    normalModes: "Nombre de modes normaux de vibration de cette molécule :",
+    dopplerWidth: "Largeur Doppler de la raie émise par ce gaz à la température θ :",
+    lifetimeWidth: "Largeur naturelle d'une raie due à la durée de vie τ de l'état excité :",
+    larmorFrequency: "Fréquence de résonance (de Larmor) de ce noyau dans le champ 𝓑₀ :",
+    shiftInHertz: "Écart en hertz entre ces deux signaux sur le spectromètre indiqué :",
+    multipletNMR: "Nombre de raies du signal RMN d'un proton couplé à ces noyaux équivalents :",
+    multipletEPR: "Nombre de raies hyperfines d'un radical dont l'électron interagit avec ces noyaux équivalents :",
+    populationExcess: "Excès relatif de population du niveau inférieur de ce noyau :",
+    gValue: "Valeur de g d'un radical qui résonne au champ 𝓑 dans un spectromètre de fréquence ν :",
+    spinDensity: "Densité de spin π sur le carbone qui porte ce proton (équation de McConnell) :",
+    coalescence: "Deux raies distantes de δν coalescent : durée de vie de chaque site.",
+    t2Linewidth: "Largeur à mi-hauteur d'une raie dont le temps de relaxation transversale est T₂ :",
+    inversionRecovery: "Inversion-récupération : le signal s'annule au délai τ. Temps de relaxation T₁ :",
+  },
+  es: {
+    beerLambert: "Porcentaje de luz que transmite la disolución (ley de Beer–Lambert):",
+    rotationalLine: "Frecuencia de la línea de rotación pura de esta molécula, como rotor rígido:",
+    bondLength: "Longitud de enlace de la molécula, a partir de su constante de rotación:",
+    ramanShift: "Raman de rotación: desplazamiento de la línea Stokes respecto a la línea excitadora.",
+    mostPopulatedJ: "Nivel de rotación más poblado de esta molécula lineal a la temperatura T:",
+    anharmonicFundamental: "Oscilador anarmónico (Morse): número de onda de la banda fundamental.",
+    anharmonicOvertone: "Oscilador anarmónico (Morse): número de onda del primer sobretono.",
+    dissociationEnergy: "Energía de disociación D̃₀ de un oscilador de Morse:",
+    normalModes: "Número de modos normales de vibración de esta molécula:",
+    dopplerWidth: "Anchura Doppler de la línea emitida por este gas a la temperatura θ:",
+    lifetimeWidth: "Anchura natural de una línea debida al tiempo de vida τ del estado excitado:",
+    larmorFrequency: "Frecuencia de resonancia (de Larmor) de este núcleo en el campo 𝓑₀:",
+    shiftInHertz: "Separación en hercios entre estas dos señales en el espectrómetro indicado:",
+    multipletNMR: "Número de líneas de la señal de RMN de un protón acoplado a estos núcleos equivalentes:",
+    multipletEPR: "Número de líneas hiperfinas de un radical cuyo electrón interactúa con estos núcleos equivalentes:",
+    populationExcess: "Exceso relativo de población del nivel inferior de este núcleo:",
+    gValue: "Valor de g de un radical que resuena en el campo 𝓑 en un espectrómetro de frecuencia ν:",
+    spinDensity: "Densidad de espín π en el carbono que lleva este protón (ecuación de McConnell):",
+    coalescence: "Dos líneas separadas δν coalescen: tiempo de vida de cada sitio.",
+    t2Linewidth: "Anchura a media altura de una línea cuyo tiempo de relajación transversal es T₂:",
+    inversionRecovery: "Inversión-recuperación: la señal se anula con el retardo τ. Tiempo de relajación T₁:",
+  },
+  en: {
+    beerLambert: "Percentage of the light transmitted by the solution (Beer–Lambert law):",
+    rotationalLine: "Frequency of the pure rotational line of this molecule, as a rigid rotor:",
+    bondLength: "Bond length of the molecule, from its rotational constant:",
+    ramanShift: "Rotational Raman: shift of the Stokes line from the exciting line.",
+    mostPopulatedJ: "Most populated rotational level of this linear molecule at temperature T:",
+    anharmonicFundamental: "Anharmonic (Morse) oscillator: wavenumber of the fundamental band.",
+    anharmonicOvertone: "Anharmonic (Morse) oscillator: wavenumber of the first overtone.",
+    dissociationEnergy: "Dissociation energy D̃₀ of a Morse oscillator:",
+    normalModes: "Number of normal modes of vibration of this molecule:",
+    dopplerWidth: "Doppler width of the line emitted by this gas at temperature θ:",
+    lifetimeWidth: "Natural width of a line due to the lifetime τ of the excited state:",
+    larmorFrequency: "Resonance (Larmor) frequency of this nucleus in the field 𝓑₀:",
+    shiftInHertz: "Separation in hertz of these two signals on the spectrometer given:",
+    multipletNMR: "Number of lines in the NMR signal of a proton coupled to these equivalent nuclei:",
+    multipletEPR: "Number of hyperfine lines of a radical whose electron interacts with these equivalent nuclei:",
+    populationExcess: "Relative population excess of the lower level of this nucleus:",
+    gValue: "g-value of a radical resonating at field 𝓑 in a spectrometer of frequency ν:",
+    spinDensity: "π spin density on the carbon bearing this proton (McConnell equation):",
+    coalescence: "Two lines δν apart coalesce: the lifetime of each site.",
+    t2Linewidth: "Width at half height of a line with transverse relaxation time T₂:",
+    inversionRecovery: "Inversion recovery: the signal passes through zero at delay τ. Relaxation time T₁:",
+  },
+};
+
+export const SP_EXPLANATIONS: Record<Lang, Record<SpectroscopyExplanation, string>> = {
+  fr: {
+    beerLambert: "A = ε[J]L, avec la concentration en mol dm⁻³ et L en cm ; T = 10⁻ᴬ, en base 10.",
+    rotationalLine: "ΔJ = +1 : ν̃ = 2B̃(J + 1), puis ν = cν̃ avec c en cm s⁻¹.",
+    bondLength: "B̃ = ħ/4πcI avec I = μR² : la masse réduite, et c en cm s⁻¹.",
+    ramanShift: "ΔJ = +2 en Raman : F(J + 2) − F(J) = 4B̃(J + 3/2), soit 6B̃, 10B̃, 14B̃…",
+    mostPopulatedJ: "N_J ∝ (2J + 1) e^(−hcB̃J(J + 1)/kT) : le maximum, arrondi à l'entier le plus proche.",
+    anharmonicFundamental: "G(v) = (v + ½)ν̃ − (v + ½)²xₑν̃ : la transition 0 → 1 vaut ν̃ − 2xₑν̃.",
+    anharmonicOvertone: "G(v) = (v + ½)ν̃ − (v + ½)²xₑν̃ : la transition 0 → 2 vaut 2ν̃ − 6xₑν̃, un peu moins que deux fois la fondamentale.",
+    dissociationEnergy: "D̃ₑ = ν̃/4xₑ est la profondeur du puits ; la molécule part de G(0) au-dessus du fond.",
+    normalModes: "3N déplacements, moins 3 translations et 3 rotations (2 seulement pour une molécule linéaire).",
+    dopplerWidth: "δν = (2ν/c)(2kT ln 2/m)^½, avec T en kelvins et m la masse d'une molécule en kg.",
+    lifetimeWidth: "δE ≈ ħ/τ, soit δν̃ = 1/2πcτ = 5,31 cm⁻¹/(τ/ps).",
+    larmorFrequency: "ν = γ𝓑₀/2π : ω = γ𝓑₀ est une pulsation, à diviser par 2π.",
+    shiftInHertz: "δ est en millionièmes de la fréquence du spectromètre : 1 ppm à 400 MHz vaut 400 Hz.",
+    multiplet: "N noyaux équivalents de spin I donnent 2NI + 1 raies (N + 1 pour des spins ½).",
+    populationExcess: "ΔE = γħ𝓑₀ ≪ kT : l'excès vaut environ ΔE/2kT, avec T en kelvins.",
+    gValue: "hν = gμ_B𝓑, avec 𝓑 en teslas (1 mT = 10⁻³ T).",
+    spinDensity: "a = Qρ avec Q = 2,25 mT : ρ = a/Q.",
+    coalescence: "À la coalescence, τ = 2^½/πδν ; plus rapide, l'échange donne une seule raie moyenne.",
+    t2Linewidth: "Une raie lorentzienne de largeur à mi-hauteur Δν = 1/πT₂, T₂ en secondes.",
+    inversionRecovery: "Mz = M₀(1 − 2e^(−τ/T₁)) s'annule pour τ = T₁ ln 2.",
+  },
+  es: {
+    beerLambert: "A = ε[J]L, con la concentración en mol dm⁻³ y L en cm; T = 10⁻ᴬ, en base 10.",
+    rotationalLine: "ΔJ = +1: ν̃ = 2B̃(J + 1), y luego ν = cν̃ con c en cm s⁻¹.",
+    bondLength: "B̃ = ħ/4πcI con I = μR²: la masa reducida, y c en cm s⁻¹.",
+    ramanShift: "ΔJ = +2 en Raman: F(J + 2) − F(J) = 4B̃(J + 3/2), es decir 6B̃, 10B̃, 14B̃…",
+    mostPopulatedJ: "N_J ∝ (2J + 1) e^(−hcB̃J(J + 1)/kT): el máximo, redondeado al entero más cercano.",
+    anharmonicFundamental: "G(v) = (v + ½)ν̃ − (v + ½)²xₑν̃: la transición 0 → 1 vale ν̃ − 2xₑν̃.",
+    anharmonicOvertone: "G(v) = (v + ½)ν̃ − (v + ½)²xₑν̃: la transición 0 → 2 vale 2ν̃ − 6xₑν̃, algo menos que el doble de la fundamental.",
+    dissociationEnergy: "D̃ₑ = ν̃/4xₑ es la profundidad del pozo; la molécula parte de G(0) sobre el fondo.",
+    normalModes: "3N desplazamientos, menos 3 traslaciones y 3 rotaciones (solo 2 en una molécula lineal).",
+    dopplerWidth: "δν = (2ν/c)(2kT ln 2/m)^½, con T en kelvin y m la masa de una molécula en kg.",
+    lifetimeWidth: "δE ≈ ħ/τ, es decir δν̃ = 1/2πcτ = 5,31 cm⁻¹/(τ/ps).",
+    larmorFrequency: "ν = γ𝓑₀/2π: ω = γ𝓑₀ es una frecuencia angular, que hay que dividir por 2π.",
+    shiftInHertz: "δ está en millonésimas de la frecuencia del espectrómetro: 1 ppm a 400 MHz son 400 Hz.",
+    multiplet: "N núcleos equivalentes de espín I dan 2NI + 1 líneas (N + 1 para espines ½).",
+    populationExcess: "ΔE = γħ𝓑₀ ≪ kT: el exceso es de unos ΔE/2kT, con T en kelvin.",
+    gValue: "hν = gμ_B𝓑, con 𝓑 en teslas (1 mT = 10⁻³ T).",
+    spinDensity: "a = Qρ con Q = 2,25 mT: ρ = a/Q.",
+    coalescence: "En la coalescencia, τ = 2^½/πδν; más rápido, el intercambio da una sola línea media.",
+    t2Linewidth: "Una línea lorentziana de anchura a media altura Δν = 1/πT₂, T₂ en segundos.",
+    inversionRecovery: "Mz = M₀(1 − 2e^(−τ/T₁)) se anula en τ = T₁ ln 2.",
+  },
+  en: {
+    beerLambert: "A = ε[J]L, with the concentration in mol dm⁻³ and L in cm; T = 10⁻ᴬ, base 10.",
+    rotationalLine: "ΔJ = +1: ν̃ = 2B̃(J + 1), then ν = cν̃ with c in cm s⁻¹.",
+    bondLength: "B̃ = ħ/4πcI with I = μR²: the reduced mass, and c in cm s⁻¹.",
+    ramanShift: "ΔJ = +2 in Raman: F(J + 2) − F(J) = 4B̃(J + 3/2), so 6B̃, 10B̃, 14B̃…",
+    mostPopulatedJ: "N_J ∝ (2J + 1) e^(−hcB̃J(J + 1)/kT): the maximum, rounded to the nearest whole number.",
+    anharmonicFundamental: "G(v) = (v + ½)ν̃ − (v + ½)²xₑν̃: the 0 → 1 transition is ν̃ − 2xₑν̃.",
+    anharmonicOvertone: "G(v) = (v + ½)ν̃ − (v + ½)²xₑν̃: the 0 → 2 transition is 2ν̃ − 6xₑν̃, a little less than twice the fundamental.",
+    dissociationEnergy: "D̃ₑ = ν̃/4xₑ is the depth of the well; the molecule starts from G(0) above the bottom.",
+    normalModes: "3N displacements, minus 3 translations and 3 rotations (only 2 for a linear molecule).",
+    dopplerWidth: "δν = (2ν/c)(2kT ln 2/m)^½, with T in kelvins and m the mass of one molecule in kg.",
+    lifetimeWidth: "δE ≈ ħ/τ, so δν̃ = 1/2πcτ = 5.31 cm⁻¹/(τ/ps).",
+    larmorFrequency: "ν = γ𝓑₀/2π: ω = γ𝓑₀ is an angular frequency, to be divided by 2π.",
+    shiftInHertz: "δ is in millionths of the spectrometer frequency: 1 ppm at 400 MHz is 400 Hz.",
+    multiplet: "N equivalent nuclei of spin I give 2NI + 1 lines (N + 1 for spins ½).",
+    populationExcess: "ΔE = γħ𝓑₀ ≪ kT: the excess is about ΔE/2kT, with T in kelvins.",
+    gValue: "hν = gμ_B𝓑, with 𝓑 in teslas (1 mT = 10⁻³ T).",
+    spinDensity: "a = Qρ with Q = 2.25 mT: ρ = a/Q.",
+    coalescence: "At coalescence τ = 2^½/πδν; faster exchange gives one averaged line.",
+    t2Linewidth: "A Lorentzian line of width at half height Δν = 1/πT₂, T₂ in seconds.",
+    inversionRecovery: "Mz = M₀(1 − 2e^(−τ/T₁)) passes through zero at τ = T₁ ln 2.",
+  },
+};
+
+const SKILLS: Record<string, [string, string, string]> = {
+  "spectroscopy.beerLambert": ["Loi de Beer–Lambert", "Ley de Beer–Lambert", "Beer–Lambert law"],
+  "spectroscopy.rotationalLine": ["Raies de rotation", "Líneas de rotación", "Rotational lines"],
+  "spectroscopy.bondLength": ["Longueur de liaison", "Longitud de enlace", "Bond length"],
+  "spectroscopy.ramanShift": ["Raman de rotation", "Raman de rotación", "Rotational Raman"],
+  "spectroscopy.mostPopulatedJ": ["Niveau le plus peuplé", "Nivel más poblado", "Most populated level"],
+  "spectroscopy.anharmonicLine": ["Anharmonicité", "Anarmonicidad", "Anharmonicity"],
+  "spectroscopy.dissociationEnergy": ["Énergie de dissociation", "Energía de disociación", "Dissociation energy"],
+  "spectroscopy.normalModes": ["Modes normaux", "Modos normales", "Normal modes"],
+  "spectroscopy.dopplerWidth": ["Largeur Doppler", "Anchura Doppler", "Doppler width"],
+  "spectroscopy.lifetimeWidth": ["Largeur naturelle", "Anchura natural", "Natural linewidth"],
+  "resonance.larmorFrequency": ["Fréquence de Larmor", "Frecuencia de Larmor", "Larmor frequency"],
+  "resonance.shiftInHertz": ["Déplacements en hertz", "Desplazamientos en hercios", "Shifts in hertz"],
+  "resonance.multiplet": ["Multiplets", "Multipletes", "Multiplets"],
+  "resonance.populationExcess": ["Excès de population", "Exceso de población", "Population excess"],
+  "resonance.gValue": ["Valeur de g", "Valor de g", "The g-value"],
+  "resonance.spinDensity": ["Densité de spin", "Densidad de espín", "Spin density"],
+  "resonance.coalescence": ["Coalescence", "Coalescencia", "Coalescence"],
+  "resonance.t2Linewidth": ["Largeur et T₂", "Anchura y T₂", "Linewidth and T₂"],
+  "resonance.inversionRecovery": ["Inversion-récupération", "Inversión-recuperación", "Inversion recovery"],
+};
+const skills = (i: 0 | 1 | 2): Record<string, string> => Object.fromEntries(Object.entries(SKILLS).map(([k, v]) => [k, v[i]]));
+export const SP_SKILLS: Record<Lang, Record<string, string>> = { fr: skills(0), es: skills(1), en: skills(2) };
+
+export const SP_MISTAKES: Record<Lang, Record<SpectroscopyMistake, string>> = {
+  fr: {
+    selectionRuleConfused: "Règle de sélection confondue (ΔJ = ±1 et ±2)",
+    linearityConfused: "3N − 5 et 3N − 6 confondus : molécule linéaire ou non",
+    ppmConfused: "ppm confondu avec un pourcentage ou un facteur 10⁶",
+    equivalenceIgnored: "Noyaux équivalents traités comme distincts",
+    nuclearSpinIgnored: "Spin nucléaire pris égal à ½",
+    fieldUnits: "Milliteslas pris pour des teslas, ou l'inverse",
+  },
+  es: {
+    selectionRuleConfused: "Regla de selección confundida (ΔJ = ±1 y ±2)",
+    linearityConfused: "3N − 5 y 3N − 6 confundidos: molécula lineal o no",
+    ppmConfused: "ppm confundido con un porcentaje o un factor 10⁶",
+    equivalenceIgnored: "Núcleos equivalentes tratados como distintos",
+    nuclearSpinIgnored: "Espín nuclear tomado igual a ½",
+    fieldUnits: "Militeslas tomados por teslas, o al revés",
+  },
+  en: {
+    selectionRuleConfused: "Selection rule confused (ΔJ = ±1 and ±2)",
+    linearityConfused: "3N − 5 and 3N − 6 confused: linear or not",
+    ppmConfused: "ppm confused with per cent or a factor of 10⁶",
+    equivalenceIgnored: "Equivalent nuclei treated as distinct",
+    nuclearSpinIgnored: "Nuclear spin taken as ½",
+    fieldUnits: "Milliteslas used as teslas, or the reverse",
+  },
+};
