@@ -16,7 +16,7 @@ export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" 
  * 4 physical transformations, 5 mixtures, 6 chemical equilibrium, 7 quantum
  * theory, 8 atomic structure and spectra.
  */
-export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium" | "quantum" | "atoms";
+export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium" | "quantum" | "atoms" | "kinetics" | "dynamics";
 /** The Linux command line: core commands by area, then tools that need installing. */
 export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools" | "linuxScripting" | "linuxGit" | "linuxVim";
 /** Chemistry and biology basics: balancing equations, first. */
@@ -33,16 +33,16 @@ export type Subject = "maths" | "chemistry" | "linux" | "chembio";
 export const subjectOf = (level: Level): Subject =>
   level === "linux" ? "linux" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
-export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms"];
+export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics"];
 /** The levels offered in the mathematics test's settings. */
 export const MATH_LEVELS: Level[] = ["school", "university"];
 /** The levels offered in the physical chemistry test's settings. */
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -51,6 +51,7 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "probability", topics: ["probability"] },
   { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"] },
   { group: "structure", topics: ["quantum", "atoms"] },
+  { group: "rates", topics: ["kinetics", "dynamics"] },
   { group: "linuxCommands", topics: ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork"] },
   { group: "linuxDev", topics: ["linuxScripting", "linuxGit", "linuxVim"] },
   { group: "linuxInstall", topics: ["linuxTools"] },
@@ -210,7 +211,26 @@ export type PromptKey =
   | "orbitalNodes"
   | "meanRadius"
   | "mostProbableRadius"
-  | "spinOrbitSplitting";
+  | "spinOrbitSplitting"
+  | "firstOrderConcentration"
+  | "firstOrderHalfLife"
+  | "secondOrderConcentration"
+  | "secondOrderHalfLife"
+  | "arrheniusRatio"
+  | "activationEnergy"
+  | "relaxation"
+  | "michaelisMenten"
+  | "polymerization"
+  | "quantumYield"
+  | "fretEfficiency"
+  | "sternVolmer"
+  | "collisionFactor"
+  | "diffusionLimit"
+  | "activationEnthalpy"
+  | "eyringRate"
+  | "saltEffect"
+  | "isotopeEffect"
+  | "marcusBarrier";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -381,7 +401,26 @@ export type ExplanationKey =
   | "orbitalNodes"
   | "meanRadius"
   | "mostProbableRadius"
-  | "spinOrbitSplitting";
+  | "spinOrbitSplitting"
+  | "firstOrderConcentration"
+  | "firstOrderHalfLife"
+  | "secondOrderConcentration"
+  | "secondOrderHalfLife"
+  | "arrheniusRatio"
+  | "activationEnergy"
+  | "relaxation"
+  | "michaelisMenten"
+  | "polymerization"
+  | "quantumYield"
+  | "fretEfficiency"
+  | "sternVolmer"
+  | "collisionFactor"
+  | "diffusionLimit"
+  | "activationEnthalpy"
+  | "eyringRate"
+  | "saltEffect"
+  | "isotopeEffect"
+  | "marcusBarrier";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -538,6 +577,10 @@ export const MISTAKES = [
   "reducedMass", // the total mass (or one atom's) used for the reduced mass
   "nodesConfused", // radial, angular and total nodes confused
   "averagesConfused", // the mean and the most probable value confused
+  "orderConfused", // the integrated law or half-life of another reaction order
+  "halfLifeForTau", // t½ and τ = 1/k confused: a factor of ln 2
+  "timeUnits", // seconds, minutes or hours not converted
+  "distancePower", // the wrong power of a distance (R⁶ in FRET)
   // Linux
   "permissionClassesSwapped",
   "permissionWeights",

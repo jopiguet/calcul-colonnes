@@ -55,6 +55,24 @@
         "fr": "L'hydrogène",
         "es": "El hidrógeno"
       }
+    },
+    {
+      "id": "17A",
+      "topic": "kinetics",
+      "title": {
+        "en": "Rates",
+        "fr": "Les vitesses",
+        "es": "Las velocidades"
+      }
+    },
+    {
+      "id": "18A",
+      "topic": "dynamics",
+      "title": {
+        "en": "Collisions",
+        "fr": "Les collisions",
+        "es": "Las colisiones"
+      }
     }
   ],
   "questions": [
@@ -506,6 +524,80 @@
         "en": "$n - l - 1 = 0$.",
         "fr": "$n - l - 1 = 0$.",
         "es": "$n - l - 1 = 0$."
+      }
+    },
+    {
+      "id": "17A-01",
+      "unit": "17A",
+      "section": "17A.1",
+      "prompt": {
+        "en": "A reaction is followed by the colour of one product. What is measured?",
+        "fr": "On suit une réaction par la couleur d'un produit. Que mesure-t-on ?",
+        "es": "Se sigue una reacción por el color de un producto. ¿Qué se mide?"
+      },
+      "correct": {
+        "en": "How its concentration changes with time",
+        "fr": "Comment sa concentration change avec le temps",
+        "es": "Cómo cambia su concentración con el tiempo"
+      },
+      "wrong": [
+        {
+          "en": "Its melting point",
+          "fr": "Son point de fusion",
+          "es": "Su punto de fusión"
+        },
+        {
+          "en": "Its molar mass",
+          "fr": "Sa masse molaire",
+          "es": "Su masa molar"
+        },
+        {
+          "en": "Its boiling point",
+          "fr": "Son point d'ébullition",
+          "es": "Su punto de ebullición"
+        }
+      ],
+      "explanation": {
+        "en": "The absorbance follows $c$, so its change in time gives the rate.",
+        "fr": "L'absorbance suit $c$ : sa variation dans le temps donne la vitesse.",
+        "es": "La absorbancia sigue a $c$: su cambio en el tiempo da la velocidad."
+      }
+    },
+    {
+      "id": "18A-01",
+      "unit": "18A",
+      "section": "18A.1",
+      "prompt": {
+        "en": "Why do only some collisions lead to reaction?",
+        "fr": "Pourquoi seules certaines collisions mènent-elles à la réaction ?",
+        "es": "¿Por qué solo algunas colisiones llevan a reacción?"
+      },
+      "correct": {
+        "en": "Most have too little energy",
+        "fr": "La plupart ont trop peu d'énergie",
+        "es": "La mayoría tiene poca energía"
+      },
+      "wrong": [
+        {
+          "en": "Most are between identical atoms",
+          "fr": "La plupart ont lieu entre atomes identiques",
+          "es": "La mayoría son entre átomos idénticos"
+        },
+        {
+          "en": "Gases never really collide",
+          "fr": "Les gaz ne se heurtent jamais vraiment",
+          "es": "Los gases nunca chocan de verdad"
+        },
+        {
+          "en": "Collisions destroy the products",
+          "fr": "Les collisions détruisent les produits",
+          "es": "Las colisiones destruyen los productos"
+        }
+      ],
+      "explanation": {
+        "en": "Only a fraction $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ has enough energy.",
+        "fr": "Seule une fraction $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ a assez d'énergie.",
+        "es": "Solo una fracción $\\mathrm{e}^{-E_\\mathrm{a}/RT}$ tiene energía suficiente."
       }
     }
   ]

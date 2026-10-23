@@ -294,6 +294,8 @@ the *Sciences* group: multiple-choice tests on *Atkins' Physical Chemistry*,
 | 6 · L'équilibre chimique | Focus 6 | K and ΔrG°, Le Chatelier and van 't Hoff, cells, the Nernst equation, electrode potentials |
 | 7 · Théorie quantique | Focus 7 | Photons and black bodies, the photoelectric effect, de Broglie, uncertainty, the particle in a box, vibration and rotation, tunnelling |
 | 8 · Structure atomique et spectres | Focus 8 | Hydrogenic atoms and their spectra, orbitals and nodes, many-electron atoms, term symbols and spin–orbit coupling |
+| 17 · Cinétique chimique | Focus 17 | Rate laws and orders, integrated laws and half-lives, relaxation, the Arrhenius equation, mechanisms and the steady state, enzymes, polymers, photochemistry |
+| 18 · Dynamique réactionnelle | Focus 18 | Collision theory, diffusion control, transition-state theory and activation parameters, the kinetic salt and isotope effects, potential energy surfaces, electron transfer |
 
 A test mixes two kinds of question:
 

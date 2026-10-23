@@ -56,11 +56,11 @@ at *lycée / bachillerato* or university level.
 - `chmod`, `umask` and crontab questions are generated, with the usual slips as wrong options; an octal mode can be typed.
 - "What does this print?": `sed` substitutions, `awk` fields and bash's `${f%.*}` on generated input. The wrong outputs are real slips (the `g` flag, fields counted from 0, `#` for `%`), and the check runs every command with the real bash, sed and awk.
 
-**Physical chemistry** — multiple-choice tests from *Atkins' Physical Chemistry* (12th edition), a book you own: Focuses 1 to 6, from gases and the laws of thermodynamics to mixtures and chemical equilibrium.
+**Physical chemistry** — multiple-choice tests from *Atkins' Physical Chemistry* (12th edition), a book you own: Focuses 1 to 8, 17 and 18, from gases and the laws of thermodynamics to quantum theory, atomic spectra, kinetics and reaction dynamics.
 
-- Calculations are generated like the maths questions: 71 kinds, from the perfect gas law to the Nernst equation, photons, a particle in a box and hydrogenic spectra, with data to three significant figures and units in the options. The wrong options are unit slips and real mistakes: °C for K, kJ mixed with J, C_p for C_V, a log₁₀ for a ln, the ions of a salt counted as one particle, electrode potentials weighted by electrons.
-- Concept questions are written from the book, Topic by Topic, and imported from a file kept out of the project: 383 for Topics 1A–8C. Each shows its section of the book ("Atkins 2B.1") and explains the answer.
-- An advanced level of 151 reasoning and derivation questions: free expansion of a van der Waals gas, the Gibbs paradox, entropy of water compressed below 4 °C, a concentration cell, the Harned cell.
+- Calculations are generated like the maths questions: 90 kinds, from the perfect gas law to the Nernst equation, hydrogenic spectra, half-lives, the Arrhenius and Eyring equations and Marcus theory, with data to three significant figures and units in the options. The wrong options are unit slips and real mistakes: °C for K, kJ mixed with J, C_p for C_V, a log₁₀ for a ln, the ions of a salt counted as one particle, electrode potentials weighted by electrons.
+- Concept questions are written from the book, Topic by Topic, and imported from a file kept out of the project: 501 for Topics 1A–8C and 17A–18E. Each shows its section of the book ("Atkins 2B.1") and explains the answer.
+- An advanced level of 199 reasoning and derivation questions: free expansion of a van der Waals gas, the Gibbs paradox, entropy of water compressed below 4 °C, a concentration cell, the Harned cell.
 - In French, Spanish and English: texts are stored per language, never in the code.
 - Any question can be flagged from the corrections, with a note, for the author to check.
 
@@ -169,7 +169,7 @@ Settings are read from `.env` (see `.env.example`):
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
-| [Question generators](docs/question-generators.md) | The 110 maths, 71 chemistry, 53 Linux and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
+| [Question generators](docs/question-generators.md) | The 110 maths, 90 chemistry, 53 Linux and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |

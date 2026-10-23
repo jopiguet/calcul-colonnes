@@ -11,6 +11,7 @@ way in the browser and on the server.
 | `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts`, `graphs.ts` | The generators, one file per topic |
 | `units.ts`, `gases.ts`, `firstlaw.ts`, `secondlaw.ts` | Physical chemistry: quantities with units and significant figures, constants; the generators of Focuses 1–3 |
 | `linux.ts`, `linux/*.ts`, `linux-output.ts` | Linux: the written questions by topic, the generated permissions, umask and cron, and what a sed, awk or `${f%.*}` command prints |
+| `quantum.ts`, `atoms.ts`, `kinetics.ts` | Physical chemistry, Focuses 7–8 and 17–18: quantum theory, atoms, kinetics and reaction dynamics |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -241,7 +242,8 @@ the interval, so the count never hangs on a tangency.
 Physical chemistry has its own topics, grouped as *Thermodynamics*:
 `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures` and `equilibrium`
 (Atkins, Focuses 1–6), then *Quantum and structure*: `quantum` and `atoms`
-(Focuses 7–8). Two levels.
+(Focuses 7–8), and *Kinetics*: `kinetics` and `dynamics` (Focuses 17–18).
+Two levels.
 At `chemistry` (*Fondamental*), each topic mixes the calculations below with
 the core questions of the [question bank](question-bank.md), one kind per
 unit of the book (`gases.concepts1A`). At `chemistryAdvanced` (*Avancé*), it
@@ -352,6 +354,37 @@ structure* (`quantum.ts`, `atoms.ts`). Five mistake types came with them:
 | `atoms.orbitalNodes` | n − l − 1 radial nodes | angular or total nodes, n − l |
 | `atoms.orbitalRadius` | r* = a₀/Z or ⟨r⟩ = 3a₀/2Z, 1s | the other average, Z², a₀Z |
 | `atoms.spinOrbitSplitting` | Δṽ = Ã(l + ½) | Ãl, Ã(l + 1), ½ twice |
+
+Focuses 17–18 came as two more topics (6.15.0), grouped as *Kinetics*
+(`kinetics.ts`: `kinetics` and `dynamics`). Four mistake types came with
+them: `orderConfused` (the integrated law or half-life of another order),
+`halfLifeForTau` (t½ for τ = 1/k, a factor ln 2), `timeUnits` (seconds left
+unconverted) and `distancePower` (the wrong power of a distance). Options
+that a slip makes overflow or vanish (a temperature in °C near 0) are left
+out. The explanations are written one equality per row, so that every
+calculation and its correction fit a 360-pixel phone.
+
+| Id | Asks for | Typical wrong options |
+|---|---|---|
+| `kinetics.firstOrderConcentration` | [A]₀e^(−kt) | 10ˣ for eˣ, second-order law, linear decay, t½ for τ |
+| `kinetics.firstOrderHalfLife` | ln 2/k, in minutes | 1/k, log₁₀ 2, left in seconds |
+| `kinetics.secondOrderConcentration` | [A]₀/(1 + kt[A]₀) | exponential, [A]₀ dropped, 2k, linear |
+| `kinetics.secondOrderHalfLife` | 1/(k[A]₀) | ln 2/k, [A]₀/k, factor 2 |
+| `kinetics.arrheniusRatio` | k₂/k₁ from Eₐ, θ in °C | °C for K, kJ/J, inverted, 10ˣ |
+| `kinetics.activationEnergy` | Eₐ from two rate constants | °C for K, log₁₀, kJ/J, R dropped |
+| `kinetics.relaxation` | k = K/{(1 + K)τ} | k′ for k, 1/τ, Kτ |
+| `kinetics.michaelisMenten` | v_max[S]₀/(K_M + [S]₀) | K_M term dropped, inverted, v_max/2 |
+| `kinetics.polymerization` | ⟨N⟩ = 1/(1 − p) | p/(1 − p), 1/p, square, square root |
+| `kinetics.quantumYield` | moles reacted per mole of photons absorbed | fraction absorbed forgotten or doubled, inverted, nm as m |
+| `kinetics.fretEfficiency` | R₀⁶/(R₀⁶ + R⁶) | R⁶ on top, first or third power |
+| `kinetics.sternVolmer` | k_Q = (1/τ − 1/τ₀)/[Q] | 1/τ₀ dropped, τ₀ dropped, dm³/m³ |
+| `dynamics.collisionFactor` | σ(8kT/πμ)^½ N_A | m³ for dm³, one mass for μ, g for kg, N_A dropped |
+| `dynamics.diffusionLimit` | 8RT/3η | m³ for dm³, 3 dropped, °C for K, k for R |
+| `dynamics.activationEnthalpy` | Eₐ − RT | Eₐ, + RT, − 2RT, °C for K |
+| `dynamics.eyringRate` | (kT/h)e^(−Δ‡G/RT) | 10ˣ, ħ for h, °C for K, kJ/J |
+| `dynamics.saltEffect` | log k = log k° + 2Az_Az_B√I | eˣ for 10ˣ, I for √I, sign, 2 dropped |
+| `dynamics.isotopeEffect` | e^(−ζ), ζ from the C–H zero-point energy | masses for reduced masses, sign, 2ζ, 2π |
+| `dynamics.marcusBarrier` | (ΔrG° + ΔE_R)²/4ΔE_R | sign, factor 2, ΔE_R/4, cross term dropped |
 
 ## Linux
 

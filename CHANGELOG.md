@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.15.0
+
+- **Physical chemistry, Focuses 17–18:** two new topics in a new group, *Cinétique*.
+  - **17 · Cinétique chimique:** twelve kinds of calculation: first- and second-order integrated laws and half-lives, the Arrhenius equation both ways, relaxation after a temperature jump, Michaelis–Menten rates, the degree of polymerization, a quantum yield, FRET efficiency, a Stern–Volmer quenching constant.
+  - **18 · Dynamique réactionnelle:** seven: the collision-theory frequency factor, the diffusion-controlled limit 8RT/3η, Δ‡H = Eₐ − RT, the Eyring equation, the kinetic salt effect, the primary kinetic isotope effect, the Marcus barrier.
+  - Four new mistake types: the law of another order; half-life and time constant confused; times left unconverted; the wrong power of a distance.
+  - **Question bank:** Topics 17A–18E, core and advanced, in French, Spanish and English: 501 core and 199 advanced questions over 46 units. Re-import it with `npm run quiz:import -- data/atkins-12-concepts.json`.
+  - Every kinetics calculation and its correction fit a 360-pixel phone: one given per row, one equality per row.
+- **Tests:** 104 browser tests.
+
 ## 6.14.0
 
 - **Linux: scripts, git and vim.** A new group of topics, *Scripts, git et vim*, in French, Spanish and English.

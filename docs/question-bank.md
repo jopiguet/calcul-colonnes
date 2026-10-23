@@ -62,7 +62,7 @@ hand.
 - **`level`:** `core` (the default) or `advanced`.
 - **Formulas** go between `$…$` and are rendered by KaTeX; an odd number of `$` is refused.
 - **Exactly three wrong answers,** all different from each other and from the right one.
-- **Units** are the book's topics ("1A"). Each belongs to one test topic: `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium`, `quantum` or `atoms` (Focuses 1 to 8). A unit at a level is one kind of question, `topic.conceptsUNIT` or `topic.advancedUNIT` (`gases.concepts1A`, `gases.advanced1A`): its progress and review work like a generator's.
+- **Units** are the book's topics ("1A"). Each belongs to one test topic: `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium`, `quantum`, `atoms`, `kinetics` or `dynamics` (Focuses 1 to 8, 17 and 18). A unit at a level is one kind of question, `topic.conceptsUNIT` or `topic.advancedUNIT` (`gases.concepts1A`, `gases.advanced1A`): its progress and review work like a generator's.
 - **`source`** is shown as a badge on each written question ("Atkins 1A.2").
 
 ## Revisions
@@ -138,3 +138,4 @@ differ between languages (decimal commas and words in `\text{…}` aside).
 | 6.6.0 | The same, in French and Spanish too; advanced level | 155 core, 61 advanced |
 | 6.9.0 | 4A–6D (Focus 4 physical transformations, 5 mixtures, 6 chemical equilibrium) | 291 core, 112 advanced |
 | 6.13.0 | 7A–8C (Focus 7 quantum theory, 8 atomic structure and spectra): 34 units | 383 core, 151 advanced |
+| 6.15.0 | 17A–18E (Focus 17 chemical kinetics, 18 reaction dynamics): 46 units | 501 core, 199 advanced |
