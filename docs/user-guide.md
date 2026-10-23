@@ -296,6 +296,7 @@ the *Sciences* group: multiple-choice tests on *Atkins' Physical Chemistry*,
 | 8 · Structure atomique et spectres | Focus 8 | Hydrogenic atoms and their spectra, orbitals and nodes, many-electron atoms, term symbols and spin–orbit coupling |
 | 11 · Spectroscopie moléculaire | Focus 11 | The Beer–Lambert law and linewidths, rotational and Raman spectra, vibrations and anharmonicity, normal modes, electronic spectra, lasers |
 | 12 · Résonance magnétique | Focus 12 | Nuclear and electron spins in a field, chemical shifts and couplings, multiplets, relaxation and exchange, pulse techniques, EPR g-values and hyperfine structure |
+| 13 · Thermodynamique statistique | Focus 13 | The Boltzmann distribution, partition functions and symmetry numbers, mean energies and equipartition, the canonical ensemble, heat capacities, the Sackur–Tetrode and residual entropies, equilibrium constants from partition functions |
 | 17 · Cinétique chimique | Focus 17 | Rate laws and orders, integrated laws and half-lives, relaxation, the Arrhenius equation, mechanisms and the steady state, enzymes, polymers, photochemistry |
 | 18 · Dynamique réactionnelle | Focus 18 | Collision theory, diffusion control, transition-state theory and activation parameters, the kinetic salt and isotope effects, potential energy surfaces, electron transfer |
 

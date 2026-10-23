@@ -16,7 +16,7 @@ export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" 
  * 4 physical transformations, 5 mixtures, 6 chemical equilibrium, 7 quantum
  * theory, 8 atomic structure and spectra.
  */
-export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium" | "quantum" | "atoms" | "kinetics" | "dynamics" | "spectroscopy" | "resonance";
+export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mixtures" | "equilibrium" | "quantum" | "atoms" | "kinetics" | "dynamics" | "spectroscopy" | "resonance" | "statistical";
 /** The Linux command line: core commands by area, then tools that need installing. */
 export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools" | "linuxScripting" | "linuxGit" | "linuxVim";
 /** Chemistry and biology basics: balancing equations, first. */
@@ -33,16 +33,16 @@ export type Subject = "maths" | "chemistry" | "linux" | "chembio";
 export const subjectOf = (level: Level): Subject =>
   level === "linux" ? "linux" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
-export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance"];
+export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
 export const MATH_LEVELS: Level[] = ["school", "university"];
 /** The levels offered in the physical chemistry test's settings. */
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -52,6 +52,7 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "thermodynamics", topics: ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium"] },
   { group: "structure", topics: ["quantum", "atoms"] },
   { group: "spectra", topics: ["spectroscopy", "resonance"] },
+  { group: "statistics", topics: ["statistical"] },
   { group: "rates", topics: ["kinetics", "dynamics"] },
   { group: "linuxCommands", topics: ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork"] },
   { group: "linuxDev", topics: ["linuxScripting", "linuxGit", "linuxVim"] },
@@ -252,7 +253,20 @@ export type PromptKey =
   | "spinDensity"
   | "coalescence"
   | "t2Linewidth"
-  | "inversionRecovery";
+  | "inversionRecovery"
+  | "boltzmannRatio"
+  | "populationTemperature"
+  | "thermalWavelength"
+  | "translationalPartition"
+  | "rotationalPartition"
+  | "symmetryNumber"
+  | "vibrationalPartition"
+  | "electronicPartition"
+  | "meanVibrationalEnergy"
+  | "twoLevelEnergy"
+  | "vibrationalHeatCapacity"
+  | "sackurTetrode"
+  | "residualEntropy";
 
 /** Explanation sentences; translated by the app. */
 export type ExplanationKey =
@@ -462,7 +476,20 @@ export type ExplanationKey =
   | "coalescence"
   | "t2Linewidth"
   | "inversionRecovery"
-  | "multiplet";
+  | "multiplet"
+  | "boltzmannRatio"
+  | "populationTemperature"
+  | "thermalWavelength"
+  | "translationalPartition"
+  | "rotationalPartition"
+  | "symmetryNumber"
+  | "vibrationalPartition"
+  | "electronicPartition"
+  | "meanVibrationalEnergy"
+  | "twoLevelEnergy"
+  | "vibrationalHeatCapacity"
+  | "sackurTetrode"
+  | "residualEntropy";
 
 /**
  * The mistake a wrong option stands for. Recorded when a player picks it, so
@@ -629,6 +656,11 @@ export const MISTAKES = [
   "equivalenceIgnored", // equivalent nuclei split one after the other: (2I + 1)ᴺ lines
   "nuclearSpinIgnored", // N + 1 lines for nuclei of spin 1
   "fieldUnits", // millitesla used as tesla, or the reverse
+  "degeneracyIgnored", // populations of levels taken as populations of states: g left out
+  "symmetryIgnored", // the symmetry number σ left out
+  "rotationsMiscounted", // reflections counted with the rotations, or rotations missed
+  "zeroPointConfused", // the zero-point energy counted where it is the zero, or the reverse
+  "classicalLimit", // the high-temperature (equipartition) limit used where levels are quantized
   // Linux
   "permissionClassesSwapped",
   "permissionWeights",

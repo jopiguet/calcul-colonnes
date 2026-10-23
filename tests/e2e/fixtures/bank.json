@@ -91,6 +91,15 @@
     "fr": "Les spins",
     "es": "Los espines"
    }
+  },
+  {
+   "id": "13A",
+   "topic": "statistical",
+   "title": {
+    "en": "Counting",
+    "fr": "Compter",
+    "es": "Contar"
+   }
   }
  ],
  "questions": [
@@ -690,6 +699,43 @@
     "en": "A stronger field $B$ gives a faster wobble.",
     "fr": "Un champ $B$ plus fort donne une oscillation plus rapide.",
     "es": "Un campo $B$ más fuerte da una oscilación más rápida."
+   }
+  },
+  {
+   "id": "13A-01",
+   "unit": "13A",
+   "section": "13A.1",
+   "prompt": {
+    "en": "Three coins are tossed. Which outcome is the most likely?",
+    "fr": "On lance trois pièces. Quel résultat est le plus probable ?",
+    "es": "Se lanzan tres monedas. ¿Qué resultado es el más probable?"
+   },
+   "correct": {
+    "en": "Two heads and one tail, or the reverse",
+    "fr": "Deux piles et une face, ou l'inverse",
+    "es": "Dos caras y una cruz, o al revés"
+   },
+   "wrong": [
+    {
+     "en": "Three heads",
+     "fr": "Trois piles",
+     "es": "Tres caras"
+    },
+    {
+     "en": "Three tails",
+     "fr": "Trois faces",
+     "es": "Tres cruces"
+    },
+    {
+     "en": "All outcomes alike",
+     "fr": "Tous les résultats pareils",
+     "es": "Todos los resultados iguales"
+    }
+   ],
+   "explanation": {
+    "en": "A mixed outcome can happen in $3$ ways, a pure one in $1$.",
+    "fr": "Un résultat mixte arrive de $3$ façons, un résultat pur d'une seule.",
+    "es": "Un resultado mixto ocurre de $3$ maneras, uno puro de una sola."
    }
   }
  ]

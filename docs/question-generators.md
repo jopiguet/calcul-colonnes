@@ -11,7 +11,7 @@ way in the browser and on the server.
 | `derivatives.ts`, `integrals.ts`, `trigonometry.ts`, `limits.ts`, `explog.ts`, `probability.ts`, `sequences.ts`, `complex.ts`, `odes.ts`, `linear.ts`, `functions.ts`, `geometry.ts`, `series.ts`, `multivariable.ts`, `graphs.ts` | The generators, one file per topic |
 | `units.ts`, `gases.ts`, `firstlaw.ts`, `secondlaw.ts` | Physical chemistry: quantities with units and significant figures, constants; the generators of Focuses 1–3 |
 | `linux.ts`, `linux/*.ts`, `linux-output.ts` | Linux: the written questions by topic, the generated permissions, umask and cron, and what a sed, awk or `${f%.*}` command prints |
-| `quantum.ts`, `atoms.ts`, `spectroscopy.ts`, `kinetics.ts` | Physical chemistry, Focuses 7–8, 11–12 and 17–18: quantum theory, atoms, spectroscopy and magnetic resonance, kinetics and reaction dynamics |
+| `quantum.ts`, `atoms.ts`, `spectroscopy.ts`, `statistical.ts`, `kinetics.ts` | Physical chemistry, Focuses 7–8, 11–13 and 17–18: quantum theory, atoms, spectroscopy and magnetic resonance, statistical thermodynamics, kinetics and reaction dynamics |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -243,7 +243,7 @@ Physical chemistry has its own topics, grouped as *Thermodynamics*:
 `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures` and `equilibrium`
 (Atkins, Focuses 1–6), then *Quantum and structure*: `quantum` and `atoms`
 (Focuses 7–8), *Spectroscopy*: `spectroscopy` and `resonance` (Focuses 11–12),
-and *Kinetics*: `kinetics` and `dynamics` (Focuses 17–18).
+*Statistical thermodynamics*: `statistical` (Focus 13), and *Kinetics*: `kinetics` and `dynamics` (Focuses 17–18).
 Two levels.
 At `chemistry` (*Fondamental*), each topic mixes the calculations below with
 the core questions of the [question bank](question-bank.md), one kind per
@@ -416,6 +416,32 @@ for T). Counts (a J_max, a number of modes or lines) are whole numbers.
 | `resonance.coalescence` | τ = 2^½/πδν | 2^½ or π dropped, ms for s |
 | `resonance.t2Linewidth` | 1/πT₂ | π dropped, factor 2, ms for s, inverted |
 | `resonance.inversionRecovery` | T₁ = τ/ln 2 | τ itself, ×ln 2, log₁₀, factor 2 |
+
+Focus 13 came as one more topic (6.17.0), its own group *Statistical
+thermodynamics* (`statistical.ts`: `statistical`). Five mistake types came
+with it: `degeneracyIgnored` (levels counted as states), `symmetryIgnored`
+(σ left out), `rotationsMiscounted` (a wrong symmetry number),
+`zeroPointConfused` (the zero-point energy counted where it is the zero) and
+`classicalLimit` (kT, T/θ or R used where the levels are quantized). The
+temperatures are drawn so that βhcν̃ stays between 0.1 and 4: the populations,
+partition functions and heat capacities are then neither 1.00 nor vanishing,
+and the slips stay apart. Partition functions of 10²⁵ are multiple choice only.
+
+| Id | Asks for | Typical wrong options |
+|---|---|---|
+| `statistical.boltzmannRatio` | (g₁/g₀)e^(−hcΔν̃/kT) | g dropped, °C for K, inverted, 10ˣ |
+| `statistical.populationTemperature` | T = hcΔν̃/k ln(N₀/N₁) | log₁₀, °C, 2π, inverted |
+| `statistical.thermalWavelength` | Λ = h/(2πmkT)^½, in pm | g for kg, °C for K, ħ for h, 2π dropped |
+| `statistical.translationalPartition` | q = V/Λ³ | cm³ or dm³ as m³, g for kg, ħ for h |
+| `statistical.rotationalPartition` | kT/σhcB̃ | σ dropped, °C for K, m⁻¹ for cm⁻¹, inverted |
+| `statistical.symmetryNumber` | σ of 12 molecules, H₂O to SF₆ | 1, the principal axis only, reflections counted |
+| `statistical.vibrationalPartition` | 1/(1 − e^(−x)) | T/θᵛ, sign, zero point, 10ˣ |
+| `statistical.electronicPartition` | g₀ + g₁e^(−x) | g dropped, g₀ alone, 10ˣ, 2π |
+| `statistical.meanVibrationalEnergy` | ν̃/(eˣ − 1), in cm⁻¹ | kT/hc, + ½ν̃, eˣ + 1, ν̃e^(−x) |
+| `statistical.twoLevelEnergy` | ε/(eˣ + 1) | eˣ − 1, εe^(−x), ε/2, ε − ⟨ε⟩ |
+| `statistical.vibrationalHeatCapacity` | R x²eˣ/(eˣ − 1)² | R, eˣ dropped, x for x² |
+| `statistical.sackurTetrode` | R ln(kTe^(5/2)/pΛ³) | g for kg, e^(3/2), bar as Pa, log₁₀ |
+| `statistical.residualEntropy` | R ln W (CO, N₂O, CH₃D, FClO₃, CH₂D₂, ice) | log₁₀, RW, k for R |
 
 ## Linux
 

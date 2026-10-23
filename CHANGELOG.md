@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.17.0
+
+- **Physical chemistry, Focus 13:** a new topic in its own group, *Thermodynamique statistique*.
+  - **13 · Thermodynamique statistique:** thirteen kinds of calculation: a Boltzmann population ratio with degeneracies, the temperature that gives a population ratio, the thermal wavelength, the translational partition function in a vessel, the rotational partition function with its symmetry number, the symmetry number of twelve molecules, the vibrational and electronic partition functions, the mean vibrational energy and that of a two-level system, the vibrational heat capacity (Einstein function), the Sackur–Tetrode entropy, residual entropies from CO to ice.
+  - Five new mistake types: degeneracy left out; the symmetry number left out; rotations miscounted; the zero-point energy counted where it is the zero; the classical limit used for quantized levels.
+  - **Question bank:** Topics 13A–13F, core and advanced, in French, Spanish and English: 647 core and 257 advanced questions over 63 units. Re-import it with `npm run quiz:import -- data/atkins-12-concepts.json`.
+  - Every calculation and its correction fit a 360-pixel phone.
+- **Tests:** 106 browser tests.
+
 ## 6.16.0
 
 - **Physical chemistry, Focuses 11–12:** two new topics in a new group, *Spectroscopie*.
