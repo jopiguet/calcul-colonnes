@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.17.1
+
+- **No more jumps:** ticking a topic, changing the level or the number of questions keeps the page where it is and the focus on what was just used; the setup no longer opens scrolled down to *Commencer le test*. In the Discover labs and the logic grids, a key of the pad, *Notes* or a level leaves the page where it is too. Every new screen opens at its top.
+- **Logic grids:** the four levels in one row, aligned, also on a phone; the number pad in one row as wide as the grid, with ⌫ to erase; the rules folded under *Règles* on a phone (open on a large screen); the keyboard line only where there is a keyboard. The grid shrinks with the height of the screen, so that the grid, the pad and the tools fit on a phone; on a large screen the grid sits beside the levels, rules and next grid.
+- **Test setup on a large screen:** the topics in two columns, the number of questions, answers and *Commencer le test* beside them: the page fits the screen. On a phone, *Commencer le test* stays at the bottom of the screen while the topics scroll.
+- **Tests:** 110 browser tests.
+
 ## 6.17.0
 
 - **Physical chemistry, Focus 13:** a new topic in its own group, *Thermodynamique statistique*.

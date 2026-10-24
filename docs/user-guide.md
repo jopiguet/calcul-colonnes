@@ -521,7 +521,8 @@ each column has each one once.
 - **Niveau:**
   - 1 is a 4 × 4 grid with some numbers given;
   - 2 to 4 have cages: the numbers in a cage, with its operation, make the number in its corner (*7+*, *2÷*).
-- **Writing:** tap a square, then a number. On a computer: arrows, digits, Backspace, and N for **Notes** (small numbers, what the square could be).
+- **Writing:** tap a square, then a number of the pad under the grid (⌫ erases). On a computer: arrows, digits, Backspace, and N for **Notes** (small numbers, what the square could be).
+- **Règles:** folded on a phone, so that the grid, the pad and the tools fit the screen; tap to read them.
 - **Red at once:** a number twice in a row or column, or a full cage that is wrong.
 - **Vérifier:** shows which numbers are not the solution's.
 - **Indice:** circles a square and says what to look at. Press again (*Explique*) for the reasoning and the number. If a number written is wrong, the hint says so first.

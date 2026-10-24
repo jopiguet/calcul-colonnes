@@ -154,3 +154,39 @@ test("the same number gives the same grid; each level keeps its own", async ({ p
   await expect(page.locator(".discover-seed")).toHaveText(`Grille n° ${GRID}`);
   await expect(cell(page, free).locator(".cell-value")).toHaveText(String(p.solution[free]));
 });
+
+test("on a phone: the levels and the pad each in one row, the pad as wide as the grid, a key does not scroll the page", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await newPlayer(page, "GridPhone");
+  await openPuzzles(page);
+  await page.click("[data-focus=level-4]");
+  const tops = async (selector: string) => new Set(await page.locator(selector).evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().top))));
+  expect((await tops(".puzzle-levels .segment")).size).toBe(1);
+  expect((await tops(".puzzle-key")).size).toBe(1);
+  await expect(page.locator(".puzzle-key")).toHaveCount(7); // 1 to 6, and ⌫
+  await expect(page.locator("[data-focus=key-erase]")).toHaveAttribute("aria-label", "Effacer");
+  const grid = (await page.locator(".puzzle-grid").boundingBox())!;
+  const pad = (await page.locator(".puzzle-pad").boundingBox())!;
+  expect(Math.abs(pad.width - grid.width)).toBeLessThan(2);
+  // The grid, the pad and the tools fit the screen.
+  expect((await page.locator(".puzzle-tools").boundingBox())!.y + 40).toBeLessThan(844);
+
+  await page.evaluate(() => window.scrollTo(0, 150));
+  const before = await page.evaluate(() => window.scrollY);
+  await page.locator("[data-focus=key-3]").dispatchEvent("click");
+  await page.locator("[data-focus=notes]").dispatchEvent("click");
+  await expect(page.locator("[data-focus=notes]")).toHaveAttribute("aria-pressed", "true");
+  expect(await page.evaluate(() => window.scrollY)).toBe(before);
+});
+
+test("on a large screen: the grid beside the levels and rules, the whole on one screen", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await newPlayer(page, "GridDesk");
+  await openPuzzles(page);
+  await page.click("[data-focus=level-4]");
+  const grid = (await page.locator(".puzzle-grid").boundingBox())!;
+  const levels = (await page.locator(".puzzle-levels").boundingBox())!;
+  expect(levels.x).toBeGreaterThan(grid.x + grid.width);
+  await expect(page.locator(".puzzle-rules")).toHaveAttribute("open", "");
+  expect((await page.locator(".puzzle-tools").boundingBox())!.y + 40).toBeLessThan(720);
+});

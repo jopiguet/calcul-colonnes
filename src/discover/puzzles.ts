@@ -54,6 +54,8 @@ interface State {
   userId: number;
   level: number;
   games: Map<number, Game>;
+  /** The rules shown in full: at first on a large screen, folded on a phone so that the grid fits. */
+  rulesOpen: boolean;
 }
 
 let state: State | null = null;
@@ -93,14 +95,14 @@ export function puzzlesBusy(): boolean {
 }
 
 export function puzzlesView(ctx: { user: User }): HTMLElement {
-  if (!state || state.userId !== ctx.user.id) state = { userId: ctx.user.id, level: 1, games: new Map() };
+  if (!state || state.userId !== ctx.user.id) state = { userId: ctx.user.id, level: 1, games: new Map(), rulesOpen: !matchMedia("(max-width: 40rem)").matches };
   const s = state;
   return mountLab("is-puzzles", (draw) => {
     const g = game(s);
     return [
       labHead(dt("puzzlesTitle"), g.puzzle.seed, dt("gridNumber", { seed: g.puzzle.seed })),
       levelPanel(s, draw),
-      rulesPanel(g),
+      rulesPanel(g, s),
       gridPanel(g, draw),
       ...(g.solvedAt !== null ? [solvedPanel(g)] : []),
       againPanel({
@@ -131,8 +133,8 @@ function levelPanel(s: State, draw: () => void): HTMLElement {
     options: LEVELS.map((l) => {
       const label = el("span", "puzzle-level");
       // Size and operations on separate lines: "6 × 6 + − × ÷" on one line does not fit a quarter of a phone.
-      label.append(el("strong", "", String(l.id)), el("span", "puzzle-level-size", `${l.size} × ${l.size}`));
-      if (OPS_SHOWN[l.id]) label.append(el("span", "puzzle-level-ops", OPS_SHOWN[l.id]!));
+      // Every level has its three lines (level 1's operations line is empty), so the four buttons line up.
+      label.append(el("strong", "", String(l.id)), el("span", "puzzle-level-size", `${l.size} × ${l.size}`), el("span", "puzzle-level-ops", OPS_SHOWN[l.id] || "\u00a0"));
       return { value: l.id, label, aria: `${dt("level", { level: l.id })}, ${l.size} × ${l.size} ${OPS_SHOWN[l.id]}` };
     }),
     chosen: s.level,
@@ -144,8 +146,12 @@ function levelPanel(s: State, draw: () => void): HTMLElement {
   });
 }
 
-function rulesPanel(g: Game): HTMLElement {
-  const box = el("div", "puzzle-rules");
+/** The rules, folded under their title: one tap opens them, and the choice is kept while the page is open. */
+function rulesPanel(g: Game, s: State): HTMLElement {
+  const box = el("details", "puzzle-rules");
+  box.open = s.rulesOpen;
+  box.addEventListener("toggle", () => (s.rulesOpen = box.open));
+  box.append(el("summary", "", dt("rulesTitle")));
   box.append(el("p", "", dt("rulesLatin", { n: g.puzzle.size })));
   if (g.puzzle.cages.length) box.append(el("p", "", dt("rulesCages")));
   box.append(el("p", "hint left", dt("rulesNoGuess")));
@@ -174,8 +180,9 @@ function conflicts(g: Game): Set<number> {
   return bad;
 }
 
+/** Back to the selected square, for the keyboard, without scrolling the page: a key of the pad stays under the finger. */
 const focusCell = (g: Game): void =>
-  void requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-focus="cell-${g.selected}"]`)?.focus());
+  void requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-focus="cell-${g.selected}"]`)?.focus({ preventScroll: true }));
 
 function gridPanel(g: Game, draw: () => void): HTMLElement {
   const { puzzle } = g;
@@ -244,9 +251,14 @@ function gridPanel(g: Game, draw: () => void): HTMLElement {
   box.append(grid);
 
   // The number pad, and the tools.
+  // One row as wide as the grid: the numbers, then ⌫.
   const pad = el("div", "puzzle-pad");
+  pad.style.setProperty("--n", String(n));
   for (let x = 1; x <= n; x++) pad.append(control("ghost puzzle-key", String(x), `key-${x}`, () => write(g, x, draw)));
-  pad.append(control("ghost puzzle-key is-erase", dt("erase"), "key-erase", () => write(g, 0, draw)));
+  const erase = control("ghost puzzle-key is-erase", "⌫", "key-erase", () => write(g, 0, draw));
+  erase.setAttribute("aria-label", dt("erase"));
+  erase.title = dt("erase");
+  pad.append(erase);
   box.append(pad);
 
   const tools = el("div", "puzzle-tools");

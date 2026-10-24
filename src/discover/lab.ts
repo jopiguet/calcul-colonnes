@@ -39,8 +39,12 @@ export function mountLab(cls: string, build: (draw: () => void) => HTMLElement[]
   const wrap = el("section", `sheet discover-lab ${cls}`);
   const draw = (): void => {
     const focused = (document.activeElement as HTMLElement | null)?.dataset?.focus;
+    // The page stays where it is: replacing the content must not move it (the browser may, while laying it out again).
+    const y = window.scrollY;
     wrap.replaceChildren(...build(draw));
-    if (focused) wrap.querySelector<HTMLElement>(`[data-focus="${focused}"]`)?.focus();
+    if (window.scrollY !== y) window.scrollTo(0, y);
+    // The same control again, where it was: the page does not scroll to it.
+    if (focused) wrap.querySelector<HTMLElement>(`[data-focus="${focused}"]`)?.focus({ preventScroll: true });
   };
   draw();
   return wrap;

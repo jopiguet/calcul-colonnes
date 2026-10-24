@@ -124,6 +124,9 @@ function clearEntryHash(): void {
   if (location.hash) history.replaceState(null, "", location.pathname + location.search);
 }
 
+/** The screen last painted: see `paint` in `render`. */
+let lastScreen = "";
+
 async function render(): Promise<void> {
   if (!state.auth?.authenticated) {
     const options = state.options ?? { providers: [], registration: true, publicUrl: location.origin };
@@ -146,9 +149,17 @@ async function render(): Promise<void> {
   // The width changes with the content, once it is ready: the screen being
   // left keeps its own width while the next one loads.
   const wide = Boolean(state.user) && ((state.view === "play" && state.settings.mode === "home") || (state.view === "progress" && progressScope === "all"));
+  // Another screen opens at its top; the same screen redrawn (a choice, an answer) stays where it was.
+  const screenOf = [state.view, state.settings.mode, state.settings.quizSubject, state.settings.discoverActivity, state.settings.vocabBook, progressScope].join("|");
   const paint = (...nodes: Node[]): void => {
     app.classList.toggle("is-wide", wide);
+    // The kind of page counts too: a test's setup, a question and the result are three screens.
+    const screen = [screenOf, ...nodes.map((n) => (n instanceof Element ? n.className : ""))].join("|");
+    const y = window.scrollY;
     app.replaceChildren(...nodes);
+    if (screen !== lastScreen) window.scrollTo(0, 0);
+    else if (window.scrollY !== y) window.scrollTo(0, y);
+    lastScreen = screen;
   };
   try {
     if (state.view === "account" && !playerSession()) {

@@ -236,9 +236,13 @@ function chosenTopics(ctx: QuizContext): Topic[] {
   return chosen.length > 0 ? chosen : available;
 }
 
+/** The control of the setup that had the focus when a choice redrew it: focused again, without scrolling. */
+let refocus: string | null = null;
+
 function setupView(ctx: QuizContext): HTMLElement {
   const { settings } = ctx;
   const save = (change: Partial<Settings>): void => {
+    refocus = (document.activeElement as HTMLElement | null)?.dataset?.focus ?? null;
     Object.assign(settings, change);
     saveSettings(settings);
     ctx.rerender();
@@ -260,6 +264,7 @@ function setupView(ctx: QuizContext): HTMLElement {
     const label = chemistry ? qt(value === "chemistry" ? "chemCore" : "chemAdvanced") : levelName(value);
     const option = button(on ? "segment on" : "segment", label, () => save(chemistry ? { chemLevel: value } : { quizLevel: value }));
     option.setAttribute("aria-pressed", String(on));
+    option.dataset.focus = `level-${value}`;
     level.append(option);
   }
   if (chemistry) level.append(el("p", "hint mode-hint", qt(testLevel === "chemistry" ? "chemCoreHint" : "chemAdvancedHint")));
@@ -279,6 +284,7 @@ function setupView(ctx: QuizContext): HTMLElement {
       const box = el("input");
       box.type = "checkbox";
       box.value = topic;
+      box.dataset.focus = `topic-${topic}`;
       box.checked = effective.includes(topic);
       box.addEventListener("change", () => {
         const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
@@ -303,6 +309,7 @@ function setupView(ctx: QuizContext): HTMLElement {
     const node = button("ghost step", symbol, () => target !== undefined && save({ quizCount: target }));
     node.disabled = target === undefined;
     node.setAttribute("aria-label", name);
+    node.dataset.focus = `count${delta}`;
     return node;
   };
   count.append(
@@ -319,6 +326,7 @@ function setupView(ctx: QuizContext): HTMLElement {
     const on = value === settings.quizMode;
     const option = button(on ? "segment on" : "segment", qt(value === "typed" ? "modeTyped" : "modeChoices"), () => save({ quizMode: value }));
     option.setAttribute("aria-pressed", String(on));
+    option.dataset.focus = `mode-${value}`;
     answerMode.append(option);
   }
   if (settings.quizMode === "typed") answerMode.append(el("p", "hint mode-hint", qt("modeTypedHint")));
@@ -329,6 +337,7 @@ function setupView(ctx: QuizContext): HTMLElement {
   const reviewBox = el("input");
   reviewBox.type = "checkbox";
   reviewBox.checked = settings.quizReview;
+  reviewBox.dataset.focus = "review";
   reviewBox.addEventListener("change", () => save({ quizReview: reviewBox.checked }));
   reviewLabel.append(reviewBox, el("span", undefined, qt("review")));
   const reviewInfo = el("p", "hint review-info");
@@ -355,8 +364,19 @@ function setupView(ctx: QuizContext): HTMLElement {
     return wrap;
   }
   // Linux and chemistry basics have one level: no choice to show.
-  wrap.append(...(linux || chembio ? [] : [level]), topics, count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
-  queueMicrotask(() => go.focus());
+  // What to test on one side, how on the other: side by side on a large screen, Start always in reach on a phone.
+  const what = el("div", "quiz-setup-what");
+  what.append(...(linux || chembio ? [] : [level]), topics);
+  const how = el("div", "quiz-setup-how");
+  go.classList.add("quiz-start");
+  how.append(count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));
+  wrap.append(what, how);
+  // The focus: Start on arrival, else the control just used; the page stays where it was.
+  requestAnimationFrame(() => {
+    const target = refocus ? wrap.querySelector<HTMLElement>(`[data-focus="${refocus}"]`) : go;
+    refocus = null;
+    target?.focus({ preventScroll: true });
+  });
   return wrap;
 }
 

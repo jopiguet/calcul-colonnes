@@ -219,3 +219,31 @@ test("typed answers: the field reads what is typed, and the symbol keys insert w
   await expect(input).toHaveValue("3");
   await expect(page.locator(".choice.on")).toHaveCount(0);
 });
+
+test("the setup opens at its top; a topic ticked keeps the page where it is and the focus on the box; Start stays in reach", async ({ page }) => {
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  await page.evaluate(() => window.scrollTo(0, 300));
+  const box = page.locator(".topics .topic input").nth(4);
+  const name = await box.getAttribute("data-focus");
+  await box.evaluate((input: HTMLInputElement) => {
+    input.focus({ preventScroll: true });
+    input.click();
+  });
+  await expect(box).not.toBeChecked();
+  await expect(page.locator(".topics .topic input").nth(4)).toBeFocused();
+  expect(await page.evaluate(() => (document.activeElement as HTMLElement).dataset.focus)).toBe(name);
+  expect(await page.evaluate(() => window.scrollY)).toBe(300);
+  // On a phone, Start sticks to the bottom of the screen.
+  const start = (await page.locator(".quiz-start").boundingBox())!;
+  expect(start.y + start.height).toBeLessThanOrEqual(900);
+});
+
+test("on a large screen: the topics in two columns, the options and Start beside them", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const topics = (await page.locator(".quiz-setup-what").boundingBox())!;
+  const how = (await page.locator(".quiz-setup-how").boundingBox())!;
+  expect(how.x).toBeGreaterThan(topics.x + topics.width);
+  const lefts = new Set(await page.locator(".topics .topic").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().left))));
+  expect(lefts.size).toBe(2);
+  expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBeLessThanOrEqual(900);
+});

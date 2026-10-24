@@ -605,6 +605,69 @@ button.segment.on {
   border: 0;
 }
 
+/* What to test, and how: two columns on a large screen. */
+.quiz-setup-what,
+.quiz-setup-how {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+/* A phone, or a narrow window: one column, and Start stays at the bottom of the screen while the topics scroll. */
+@media (max-width: 51.99rem) {
+  .quiz-setup-what,
+  .quiz-setup-how {
+    display: contents;
+  }
+
+  .quiz-setup .quiz-start {
+    position: sticky;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    z-index: 2;
+    box-shadow: 0 0 0 0.5rem var(--paper), 0 0.6rem 1.2rem -0.4rem color-mix(in srgb, var(--ink) 35%, transparent);
+  }
+}
+
+@media (min-width: 52rem) {
+  #app:has(.quiz-setup) {
+    max-width: 60rem;
+  }
+
+  .quiz-setup {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    align-items: start;
+    gap: 1.25rem 2rem;
+  }
+
+  .quiz-setup > .title,
+  .quiz-setup > .hint {
+    grid-column: 1 / -1;
+  }
+
+  .quiz-setup-how {
+    position: sticky;
+    top: 1rem;
+  }
+
+  /* The topics in two columns, a group never split. */
+  .quiz-setup .topics {
+    display: block;
+    columns: 2;
+    column-gap: 1rem;
+  }
+
+  .quiz-setup .topic-group {
+    break-inside: avoid;
+    margin: 0 0 0.9rem;
+  }
+
+  .quiz-setup .topic {
+    padding: 0.45rem 0.7rem;
+  }
+}
+
 .topic {
   display: flex;
   align-items: center;
@@ -3339,8 +3402,8 @@ button.choice.is-glyph .choice-text {
 
 .puzzle-levels {
   display: grid;
-  /* minmax(0, …): equal columns, whatever the width of a label. */
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* minmax(0, …): equal columns, whatever the width of a label. One row, also on a phone. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.4rem;
   margin: 0;
   padding: 0;
@@ -3354,13 +3417,7 @@ button.choice.is-glyph .choice-text {
 .puzzle-levels .segment {
   min-height: 3rem;
   min-width: 0;
-  padding: 0.45rem 0.3rem;
-}
-
-@media (min-width: 600px) {
-  .puzzle-levels {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+  padding: 0.35rem 0.2rem;
 }
 
 .puzzle-level {
@@ -3386,6 +3443,16 @@ button.choice.is-glyph .choice-text {
   letter-spacing: -0.02em;
 }
 
+.puzzle-rules summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.puzzle-rules[open] summary {
+  margin-bottom: 0.4rem;
+}
+
 .puzzle-rules p {
   margin: 0 0 0.4rem;
   line-height: 1.5;
@@ -3399,8 +3466,13 @@ button.choice.is-glyph .choice-text {
 }
 
 /* The grid: thin lines between squares, thick walls around cages. */
+.puzzle-grid,
+.puzzle-pad {
+  /* As large as the width allows, and never so tall that the pad falls below the screen. */
+  --cell: min(4rem, calc((100vw - 4.5rem) / var(--n)), max(2.6rem, calc((100dvh - 27rem) / var(--n))));
+}
+
 .puzzle-grid {
-  --cell: min(4rem, calc((100vw - 4.5rem) / var(--n)));
   display: grid;
   border: 3px solid var(--ink);
   border-radius: 0.3rem;
@@ -3502,23 +3574,25 @@ button.choice.is-glyph .choice-text {
   place-items: center;
 }
 
+/* The numbers and ⌫ in one row, exactly as wide as the grid (its cells, lines and border). */
 .puzzle-pad {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(calc(var(--n) + 1), minmax(0, 1fr));
+  gap: 0.3rem;
+  width: max(calc(var(--n) * var(--cell) + var(--n) * 1px + 5px), 15rem);
 }
 
 .puzzle-key {
-  min-width: 2.9rem;
-  min-height: 2.9rem;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0;
   font-family: var(--digits);
   font-size: 1.2rem;
 }
 
 .puzzle-key.is-erase {
   font-family: var(--font);
-  font-size: 0.9rem;
+  font-size: 1.15rem;
 }
 
 .puzzle-tools {
@@ -3561,9 +3635,80 @@ button.choice.is-glyph .choice-text {
   text-align: center;
 }
 
-@media (max-width: 520px) {
-  .puzzle-key {
-    min-width: 2.5rem;
+/* A small phone: less space around, so that the grid, the pad and the tools fit the screen. */
+@media (max-width: 40rem) and (max-height: 760px) {
+  .discover-lab.is-puzzles {
+    padding-top: 1rem;
+    gap: 0.8rem;
+  }
+
+  .is-puzzles .discover-head .title {
+    font-size: 1.35rem;
+  }
+
+  .is-puzzles .puzzle-levels .segment {
+    min-height: 2.6rem;
+    padding: 0.2rem;
+  }
+}
+
+/* The keyboard line is for a keyboard. */
+@media (pointer: coarse) {
+  .puzzle-play > .hint {
+    display: none;
+  }
+}
+
+/* A large screen: the grid on the left, the levels, rules and next grid on the right; the whole fits the height. */
+@media (min-width: 52rem) {
+  #app:has(.discover-lab.is-puzzles) {
+    max-width: 60rem;
+  }
+
+  .discover-lab.is-puzzles {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "head head"
+      "play levels"
+      "play rules"
+      "play solved"
+      "play again";
+    grid-template-rows: auto auto auto auto 1fr;
+    align-items: start;
+    gap: 1rem 2rem;
+  }
+
+  .is-puzzles > .discover-head {
+    grid-area: head;
+  }
+
+  .is-puzzles > .puzzle-levels {
+    grid-area: levels;
+  }
+
+  .is-puzzles > .puzzle-rules {
+    grid-area: rules;
+  }
+
+  .is-puzzles > .puzzle-solved {
+    grid-area: solved;
+  }
+
+  .is-puzzles > .discover-again {
+    grid-area: again;
+  }
+
+  /* As wide as the grid: the message and the keyboard line wrap under it. */
+  .is-puzzles > .puzzle-play {
+    grid-area: play;
+    width: min-content;
+    min-width: 16rem;
+  }
+
+  .is-puzzles .puzzle-grid,
+  .is-puzzles .puzzle-pad {
+    --cell: min(4rem, max(2.6rem, calc((100dvh - 24rem) / var(--n))));
   }
 }
 
