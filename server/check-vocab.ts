@@ -182,6 +182,28 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   expect("review, 2 cards: the due one, then the weakest", order, [1, 2]);
 }
 
+// Learning from a whole book: new entries always come, in the book's order, whatever the section ids.
+{
+  const at = 10 * DAY;
+  const book = { kind: "characters" as const, termLang: "ja", meaningLang: "en", alphabetical: false };
+  // In the book's order, as the database returns them; the section ids of an updated book are not.
+  const list: SessionEntry[] = Array.from({ length: 40 }, (_, i) => ({
+    id: i + 1, sectionId: i < 20 ? 50 - Math.floor(i / 5) : 1 + Math.floor(i / 5), position: i % 5, term: `字${i + 1}`, meaning: `m${i + 1}`,
+    group: "", feminine: false, note: "", reading: "", readings: "", translations: {}, book,
+  }));
+  const learn = (progress: ProgressMap, met?: Set<number>) =>
+    buildSession({ entries: list, pool: list, progress, now: at, size: 15, preference: "choice", purpose: "learn", newOrder: "book", met, random: () => 0.5 });
+  const newIds = (cards: ReturnType<typeof learn>) => cards.filter((c) => c.box === 0 && c.direction === "recognise").map((c) => c.entryId).sort((x, y) => x - y);
+  expect("book order: the book's first 8, not the lowest section ids", newIds(learn(new Map())), [1, 2, 3, 4, 5, 6, 7, 8]);
+  // Twenty entries due: the session still brings 8 new ones, and 7 reviews.
+  const busy: ProgressMap = new Map(Array.from({ length: 20 }, (_, i) => [progressKey(i + 21, "recognise"), { box: 2, dueAt: at - 1, lastAt: at - DAY }] as const));
+  const cards = learn(busy);
+  expect("learn with 20 due: 8 new", newIds(cards), [1, 2, 3, 4, 5, 6, 7, 8]);
+  expect("learn with 20 due: 15 cards", cards.length, 15);
+  // Characters met in the words: half the new ones at most; the book goes on with the rest.
+  expect("met: 4 of them, then the book", newIds(learn(new Map(), new Set([31, 32, 33, 34, 35, 36]))), [1, 2, 3, 4, 31, 32, 33, 34]);
+}
+
 // A definition book: definitions never written; two terms with one meaning are never each other's wrong option.
 {
   const book = { kind: "definition" as const, termLang: "en", meaningLang: "en", alphabetical: true };
@@ -321,7 +343,7 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   const progress: ProgressMap = new Map([[progressKey(11, "recognise"), { box: 2, dueAt: 1e12, lastAt: 0 }]]);
   // More new characters than a session takes: the met ones must be among those taken.
   const more = Array.from({ length: 10 }, (_, i) => kanaEntry(21 + i, "かきくけこさしすせそ"[i]!, `k${i}`));
-  const cards = buildSession({ entries: [...more, ...list], pool: list, progress, now: 0, size: 20, preference: "written", purpose: "learn", newOrder: "book", met: new Set([14, 3]), random: Math.random });
+  const cards = buildSession({ entries: [...list.slice(0, 4), ...more, ...list.slice(4)], pool: list, progress, now: 0, size: 20, preference: "written", purpose: "learn", newOrder: "book", met: new Set([14, 3]), random: Math.random });
   const ready = cards.filter((c) => c.entryId === 11).map((c) => [c.direction, c.mode]).sort();
   expect("characters: recall and reading together, recall by choice", ready, [["read", "written"], ["recall", "choice"]]);
   const fresh = cards.filter((c) => c.box === 0 && c.direction === "recognise").map((c) => c.entryId);
@@ -369,6 +391,17 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
       expect("import: a new book is fine", await refused(book("collins-german", "de", [["der Tag", "day"]])), false);
       await store.import(german, { replace: true });
       expect("import: --replace replaces", (await db.query("SELECT term_lang FROM vocab_books WHERE slug = 'collins-spanish'"))[0]!.term_lang, "de");
+
+      // A book updated with a new section in its first lesson: in the book's order, that section comes before the second lesson.
+      const kana = (id: string, sections: string[][][]): VocabFile => ({
+        book: { id, title: "k", kind: "translation", term: "es", meaning: "en" },
+        lessons: sections.map((secs, l) => ({ title: `L${l}`, subtitle: "", sections: secs.map((words, s) => ({ title: `S${l}${s}`, subtitle: "", entries: words.map((w) => ({ term: w, meaning: `${w} m` })) })) })),
+      });
+      await store.import(kana("ordered", [[["uno", "dos"]], [["tres", "cuatro"]]]));
+      await store.import(kana("ordered", [[["uno", "dos"], ["cinco", "seis"]], [["tres", "cuatro"]]]));
+      const bookId = Number((await db.query("SELECT id FROM vocab_books WHERE slug = 'ordered'"))[0]!.id);
+      const cards = await store.session(user, { kind: "all", id: bookId }, "learn", 4, "choice", 1, "book");
+      expect("book order after an update: the new section in its place", cards.map((c) => c.prompt).sort(), ["cinco", "dos", "seis", "uno"]);
     } finally {
       await db.close();
       rmSync(dir, { recursive: true, force: true });

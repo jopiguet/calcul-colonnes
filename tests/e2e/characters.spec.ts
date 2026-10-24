@@ -110,13 +110,13 @@ test("characters met in the player's words come first, and each book shows the o
     { term: "校", reading: "コウ", meaning: "école", started: false },
   ]);
 
-  // 学 and 校 come last in the book, but first among the new characters.
+  // 学 and 校 come last in the book, but among the first new characters.
   const characters = await bookOf(page, "test-characters");
   const learn = await cardsOf(page, `userId=${user.id}&kind=all&id=${characters.id}&purpose=learn&size=30&mode=choice&order=book&lang=fr`);
   expect(learn.filter((c) => c.met).map((c) => c.prompt).sort()).toEqual(["校", "学"].sort());
 
   await openActivity(page, "vocab-test-characters");
-  await expect(page.locator(".vocab-met-count")).toHaveText("2 caractères de vos mots attendent : ils viennent en premier parmi les nouveaux.");
+  await expect(page.locator(".vocab-met-count")).toHaveText("2 caractères de vos mots attendent : jusqu'à la moitié des nouveaux, le reste suit le livre.");
   await page.click("text=Apprendre dans tout le livre");
   await page.locator(".vocab-card").waitFor();
   for (let i = 0; i < 8; i++) {

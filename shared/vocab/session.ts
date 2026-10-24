@@ -199,7 +199,12 @@ export function buildSession(req: SessionRequest): VocabCard[] {
   }
   due.sort((a, b) => a.state.dueAt - b.state.dueAt);
 
-  for (const d of due) if (picked.length < size) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
+  // Learning: room is kept for new entries, however many reviews are due or
+  // recall cards are ready (a kanji brings two more each), so "learn" always
+  // brings new words while there are any. Reviews take what is left.
+  const newWanted = req.purpose === "learn" ? Math.min(NEW_PER_SESSION, fresh.length, size) : 0;
+  const reviewRoom = size - newWanted;
+  for (const d of due) if (picked.length < reviewRoom) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
   if (req.purpose === "review") {
     // Weakest first, then the longest unseen; random among equals.
     const order = shuffle(ahead, req.random).sort(
@@ -208,15 +213,19 @@ export function buildSession(req: SessionRequest): VocabCard[] {
     for (const d of order) if (picked.length < size) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
   }
   if (req.purpose === "learn") {
-    for (const r of ready) if (picked.length < size) picked.push({ ...r, box: 0 });
-    const ordered =
-      req.newOrder === "random" ? shuffle(fresh, req.random) : fresh.sort((a, b) => a.sectionId - b.sectionId || a.position - b.position);
-    // Characters met in the player's words first, in the same order.
+    for (const r of ready) if (picked.length < reviewRoom) picked.push({ ...r, box: 0 });
+    // The book's order is the order of the entries given (lesson, section, position):
+    // section ids follow the imports, not the book, once a book has been updated.
+    const ordered = req.newOrder === "random" ? shuffle(fresh, req.random) : fresh;
+    // Characters met in the player's words: up to half the new ones; the rest
+    // follow the book (or the draw), so the book's order goes on too.
     const met = req.met;
-    const first = met ? [...ordered.filter((e) => met.has(e.id)), ...ordered.filter((e) => !met.has(e.id))] : ordered;
-    for (const entry of first.slice(0, NEW_PER_SESSION)) {
-      if (picked.length < size) picked.push({ entry, direction: "recognise", box: 0 });
-    }
+    const metFirst = met ? ordered.filter((e) => met.has(e.id)).slice(0, Math.ceil(newWanted / 2)) : [];
+    const rest = ordered.filter((e) => !metFirst.includes(e));
+    for (const entry of [...metFirst, ...rest].slice(0, newWanted)) picked.push({ entry, direction: "recognise", box: 0 });
+    // Fewer new entries than room: more reviews, then more recall cards.
+    for (const d of due) if (picked.length < size && !picked.some((p) => p.entry === d.entry && p.direction === d.direction)) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
+    for (const r of ready) if (picked.length < size && !picked.some((p) => p.entry === r.entry && p.direction === r.direction)) picked.push({ ...r, box: 0 });
   }
 
   // Reviews and new cards mixed, so a session does not end with all the new words.

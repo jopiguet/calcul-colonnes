@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.17.2
+
+- **Learning from the whole book always brings new words.** A learning session first kept every review due and every recall card ready, and only then took new words: with many reviews due, or in *Kanji et kana*, where each kanji learnt adds a reading card and a writing card, *Apprendre dans tout le livre* could bring no new character at all. The room for the new words (up to 8) is now kept first; reviews fill the rest.
+- **The book's order is the book's.** *Dans l'ordre du livre* sorted the new words by the database's section numbers, which follow the imports: after a book was updated with new sections (the kanji, grade by grade), those came out of place. The order is now lesson, section and place, as in the book.
+- **Kanji met in your words** make up to half the new characters of a session; the rest follow the book, so the book's order goes on instead of being pushed back by them.
+
 ## 6.17.1
 
 - **No more jumps:** ticking a topic, changing the level or the number of questions keeps the page where it is and the focus on what was just used; the setup no longer opens scrolled down to *Commencer le test*. In the Discover labs and the logic grids, a key of the pad, *Notes* or a level leaves the page where it is too. Every new screen opens at its top.

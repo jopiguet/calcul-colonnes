@@ -46,7 +46,7 @@ That makes 2,359 characters. Within a grade, the most frequent kanji come first.
 
 The Characters book and the Japanese word books (such as *Japanese vocabulary for English speakers*) feed each other:
 
-- **Characters met in your words come first.** Once you have started a word in a Japanese word book, the kana and kanji it uses are *met*. Among the new characters of a session, met ones are introduced first, in the book's order. The Characters home screen says how many are waiting, and their cards carry the badge *seen in your words*.
+- **Characters met in your words come first.** Once you have started a word in a Japanese word book, the kana and kanji it uses are *met*. They make up to half the new characters of a session (four of eight); the rest follow the book (or the draw, in random order), so the book goes on too. The Characters home screen says how many are waiting, and their cards carry the badge *seen in your words*.
 - **A character shows your words.** After a character's card: up to three words you have started that use it, with their rōmaji and meaning.
 - **A word shows its kanji.** After a word's card in a Japanese word book: its kanji with their meanings. The ones you have not started yet are highlighted.
 

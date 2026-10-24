@@ -275,13 +275,14 @@ section, a whole lesson or the whole book:
 
 | Session | Button | Cards |
 |---|---|---|
-| Learn | *Apprendre*, *Continuer* (section); *Apprendre la leçon*; *Apprendre au hasard dans tout le livre* | 1. cards due, oldest first; 2. recall cards that just became available; 3. new entries, at most 8, at random or in the book's order (*Nouveaux mots*) |
+| Learn | *Apprendre*, *Continuer* (section); *Apprendre la leçon*; *Apprendre dans tout le livre* (*… au hasard …* in random order) | New entries, at most 8, at random or in the book's order (*Nouveaux mots*): their room is kept first. The rest: 1. cards due, oldest first; 2. recall cards that just became available. However many reviews are due, a learning session brings new entries while there are any. |
 | Review | *Réviser* (section); *Réviser la leçon*; *Réviser tout le vocabulaire* | Only cards already started, due or not: those due first, then the weakest (lowest box), then those unseen for the longest time. No new entries. |
 | Due | *Réviser maintenant* | Only the cards due, across the whole book |
 
 **New words at random or in order.** The *Nouveaux mots* setting, per book:
 *Au hasard* draws the new words at random among those not started; *Dans
-l'ordre du livre* takes them in order. The default is random for an
+l'ordre du livre* takes them in order: lesson, section and place in the section,
+as the book has them (also after a book has been updated with new sections). The default is random for an
 alphabetical book (*Vocabulary 4000*: learning all the *a* words first makes
 no sense) and the book's order otherwise (Collins: by theme). With *Apprendre
 au hasard dans tout le livre*, a session draws its new words from the whole
