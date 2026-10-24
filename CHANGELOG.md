@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.18.0
+
+- **Past tests, with their corrections.** Each subject's progress page (*📈 Mes progrès* in the QCM, Chimie physique, Linux, Chimie de base) starts with *🗂️ Mes tests*: the last tests, newest first, with date, level, topics and score. One opens its corrections as at the end of the test: the answers given (typed ones as typed), the right ones, the mistakes and the explanations. Nothing new is stored: a test is rebuilt exactly from its seed, its version and, in physical chemistry, the bank revision it was taken with. *Refaire ce test* takes the same questions again. A parent's account the player is shared with sees them too.
+- **API:** `GET /api/users/:id/tests?subject=…`.
+- **Tests:** 112 browser tests.
+
 ## 6.17.2
 
 - **Learning from the whole book always brings new words.** A learning session first kept every review due and every recall card ready, and only then took new words: with many reviews due, or in *Kanji et kana*, where each kanji learnt adds a reading card and a writing card, *Apprendre dans tout le livre* could bring no new character at all. The room for the new words (up to 8) is now kept first; reviews fill the rest.

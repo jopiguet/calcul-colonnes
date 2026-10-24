@@ -262,3 +262,29 @@ test("Focus 13: a vibrational partition function typed, a written question of th
   expect(server.correct).toBeGreaterThanOrEqual(1);
   await expect(page.locator(".review-item").first()).toHaveClass(/good/);
 });
+
+test("a past chemistry test, typed, with written questions: rebuilt from its bank revision, the typed answers shown", async ({ page }) => {
+  await chooseTopics(page, ["13 · Thermodynamique statistique"]);
+  await page.click("text=Au clavier");
+  await page.locator(".count button").first().click(); // 5 questions
+  const topics = ["statistical"] as const;
+  let seed = 1;
+  let quiz: Question[] = [];
+  for (; ; seed++) {
+    quiz = generateQuiz({ seed, level: "chemistry", topics: [...topics], count: 5, bank: 1 });
+    if (quiz[0]!.skill === "statistical.vibrationalPartition" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "statistical.concepts13A")) break;
+  }
+  await fixSeed(page, seed);
+  await page.click("text=Commencer le test");
+  const right = quiz[0]!.options[quiz[0]!.correct]!.tex;
+  const { server, typedAt } = await takeMixedQuiz(page, (i) => (i === 0 ? right.replace(".", ",") : "7"), () => 1);
+  const prompts = await page.locator(".review-item .quiz-prompt").allInnerTexts();
+
+  await page.locator(".quiz-result .actions").getByText("📈 Mes progrès").click();
+  await page.locator(".past-open").first().click();
+  await expect(page.locator(".big-score")).toHaveText(`${server.correct} / 5`);
+  expect(await page.locator(".review-item .quiz-prompt").allInnerTexts()).toEqual(prompts);
+  await expect(page.locator(".review-item").first()).toHaveClass(/good/);
+  await expect(page.locator(".review-item .badge.is-typed")).toHaveCount(typedAt.length);
+  if (typedAt.length > 1) await expect(page.locator(".review-item.bad .typed-given").first()).toContainText("7");
+});

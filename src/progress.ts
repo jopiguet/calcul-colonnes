@@ -1,11 +1,12 @@
-import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
+import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type AnswerMode, type Level, type QuizSpec, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
 import type { Profile, SkillProgress } from "../shared/types";
 import { button, el } from "./dom";
 import { bookTitle, statusBar } from "./vocab";
 import { vocabBooks } from "./home";
 import { prt } from "./progress-i18n";
-import { mistakeName, qt, skillName, statusName, topicName } from "./quiz-i18n";
-import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from "./store";
+import { pastTestView, testDate } from "./quiz";
+import { levelName, mistakeName, qt, skillName, statusName, topicName } from "./quiz-i18n";
+import { store, vocab, type PastTest, type User, type VocabBookInfo, type VocabProgress } from "./store";
 
 /**
  * Progress pages. The overview shows every activity of a player at a glance,
@@ -158,6 +159,58 @@ export interface ProgressContext {
   onBook?(book: VocabBookInfo): void;
   /** The overview the page was opened from: its Back button then says so. */
   fromOverview: boolean;
+  /** Takes a past test again; absent when it is another player's progress. */
+  onReplay?(spec: QuizSpec, mode: AnswerMode): void;
+  /** Draws the page again (a past test opened or closed). */
+  rerender(): void;
+}
+
+/** The past test open on a subject's page, and whether the whole list is shown. */
+let openTest: { userId: number; subject: Subject; test: PastTest } | null = null;
+let allTests = false;
+
+/** Tests shown before "Show the others". */
+const TESTS_SHOWN = 5;
+
+/**
+ * The player's last tests in this subject, newest first: date, level,
+ * topics, score. Each opens its corrections, rebuilt exactly.
+ */
+async function testsSection(ctx: ProgressContext, subject: Subject, mine: boolean): Promise<HTMLElement> {
+  const box = el("section", "past-tests");
+  box.append(el("h2", "subtitle", mine ? qt("pastTests") : qt("pastTestsOf", { name: ctx.user.name })));
+  const tests = await store.pastTests(ctx.user.id, subject).catch(() => null);
+  if (!tests || tests.length === 0) {
+    box.append(el("p", "empty", qt("pastNone")));
+    return box;
+  }
+  const list = el("ul", "past-list");
+  for (const test of allTests ? tests : tests.slice(0, TESTS_SHOWN)) {
+    const item = el("li", "past-item");
+    const open = button("past-open", "", () => {
+      openTest = { userId: ctx.user.id, subject, test };
+      ctx.rerender();
+    });
+    open.dataset.test = String(test.id);
+    open.setAttribute("aria-label", `${qt("pastOpen")} · ${testDate(test.at)}`);
+    const topics = test.topics.length === 1 ? topicName(test.topics[0] as Topic) : qt("pastTopics", { count: test.topics.length });
+    const what = el("span", "past-what");
+    what.append(el("span", "past-date", testDate(test.at)), el("span", "past-detail", `${levelName(test.level as Level)} · ${topics}${test.mode === "typed" ? ` · ${qt("modeTyped")}` : ""}`));
+    const good = test.correct * 2 >= test.count;
+    open.append(what, el("span", `past-score ${good ? "good" : "bad"}`, `${test.correct}/${test.count}`));
+    item.append(open);
+    list.append(item);
+  }
+  box.append(list);
+  if (!allTests && tests.length > TESTS_SHOWN) {
+    box.append(
+      button("ghost small", qt("pastMore", { count: tests.length - TESTS_SHOWN }), () => {
+        allTests = true;
+        ctx.rerender();
+      }),
+    );
+  }
+  return box;
 }
 
 /** One activity in the overview: its name, a bar, a line, and its details. */
@@ -252,6 +305,26 @@ async function overview(ctx: ProgressContext, profile: Profile): Promise<HTMLEle
 }
 
 export async function progressView(ctx: ProgressContext): Promise<HTMLElement> {
+  // A past test opened from this page: its corrections, with a way back to the list.
+  if (openTest && (openTest.userId !== ctx.user.id || openTest.subject !== ctx.scope)) openTest = null;
+  if (openTest) {
+    const replay = ctx.onReplay;
+    return pastTestView({
+      viewer: ctx.user,
+      test: openTest.test,
+      onBack: () => {
+        openTest = null;
+        ctx.rerender();
+      },
+      onReplay: replay
+        ? (spec, mode) => {
+            openTest = null;
+            replay(spec, mode);
+          }
+        : undefined,
+    });
+  }
+  if (ctx.scope === "all" || ctx.scope === "columns") allTests = false;
   const profile = await store.profile(ctx.user.id);
   const wrap = el("section", `sheet progress-page is-${ctx.scope}`);
   wrap.append(el("h1", "title", `📈 ${qt("progressOf", { name: ctx.user.name })}`));
@@ -260,7 +333,7 @@ export async function progressView(ctx: ProgressContext): Promise<HTMLElement> {
   } else if (ctx.scope === "columns") {
     wrap.append(el("h2", "subtitle", qt("arithmetic")), ...columnsSection(profile));
   } else {
-    wrap.append(el("h2", "subtitle", SUBJECT_TITLES[ctx.scope]()), ...subjectSection(profile, ctx.scope));
+    wrap.append(el("h2", "subtitle", SUBJECT_TITLES[ctx.scope]()), await testsSection(ctx, ctx.scope, Boolean(ctx.onReplay)), ...subjectSection(profile, ctx.scope));
   }
   wrap.append(button("primary", ctx.fromOverview ? prt("backOverview") : qt("back"), ctx.onBack));
   return wrap;

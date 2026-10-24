@@ -5024,3 +5024,83 @@ code.inline-code {
   height: auto;
   margin: 0 auto;
 }
+
+/* ------------------------------------------------------------- past tests */
+
+.past-tests {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+  align-self: stretch;
+}
+
+.past-tests > .subtitle {
+  margin: 0;
+}
+
+.past-tests > button {
+  align-self: center;
+}
+
+.past-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* One test: when, what, and the score; the whole row opens its corrections. */
+.past-open {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.past-open:hover {
+  border-color: var(--accent);
+}
+
+.past-what {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.past-date {
+  font-weight: 600;
+}
+
+.past-detail {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.past-score {
+  flex: none;
+  font-family: var(--digits);
+  font-weight: 700;
+}
+
+.past-score.good {
+  color: var(--good);
+}
+
+.past-score.bad {
+  color: var(--bad);
+}

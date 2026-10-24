@@ -98,6 +98,26 @@ export interface OperatorProgress {
   todayCorrect: number;
 }
 
+/**
+ * A test taken, as stored: everything needed to rebuild it exactly (the
+ * seed, the kinds brought back, the generator version and the bank revision)
+ * and the answers as given (an option index, −1 blank, or the text typed).
+ */
+export interface PastTest {
+  id: number;
+  at: number;
+  level: string;
+  topics: string[];
+  seed: number;
+  count: number;
+  correct: number;
+  answers: (number | string)[];
+  focus: string[];
+  version: number;
+  mode: "choices" | "typed";
+  bank: number | null;
+}
+
 export interface Profile {
   user: User;
   skills: SkillProgress[];

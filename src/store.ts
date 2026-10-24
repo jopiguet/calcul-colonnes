@@ -3,6 +3,7 @@ import type {
   AuthState,
   NewAttempt,
   NewQuizResult,
+  PastTest,
   Profile,
   SignInMethod,
   User,
@@ -17,9 +18,9 @@ import type {
   VocabProgress,
   VocabStats,
 } from "../shared/types";
-import type { Bank } from "../shared/quiz";
+import type { Bank, Subject } from "../shared/quiz";
 
-export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, PlayerShare, Profile, SignInMethod, User, UserStats };
+export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, PastTest, PlayerShare, Profile, SignInMethod, User, UserStats };
 export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabLessonWords, VocabProgress, VocabStats };
 
 /**
@@ -104,6 +105,8 @@ export const store = {
   stats: (): Promise<UserStats[]> => call(`/stats?since=${startOfToday()}`),
   /** Progress of one player: kinds of question met in tests, column arithmetic. */
   profile: (userId: number): Promise<Profile> => call(`/users/${userId}/profile?since=${startOfToday()}`),
+  /** A player's last tests in one subject, newest first, to rebuild and read again. */
+  pastTests: (userId: number, subject: Subject): Promise<PastTest[]> => call(`/users/${userId}/tests?subject=${subject}`),
 };
 
 export const quizBank = {

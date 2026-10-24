@@ -7,6 +7,7 @@ import {
   richParts,
   CHEMBIO_TOPICS,
   CHEMISTRY_LEVELS,
+  LEVELS,
   isChemistry,
   subjectOf,
   LINUX_TOPICS,
@@ -41,7 +42,7 @@ import { drawGraph } from "./graph";
 import { currentLang } from "./i18n";
 import { explanationText, groupName, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
 import { saveSettings, type Settings } from "./settings";
-import { quizBank, store, type User } from "./store";
+import { quizBank, store, type PastTest, type User } from "./store";
 
 /**
  * Multiple-choice tests. Three screens: settings, one question at a time,
@@ -570,7 +571,7 @@ function submit(ctx: QuizContext, done: Run): void {
  * "Report this question": a wrong answer, an unclear text. Sent with an
  * optional note; the author reads them with `npm run quiz:flags`.
  */
-function flagControl(ctx: QuizContext, q: Question): HTMLElement {
+function flagControl(userId: number, q: Question): HTMLElement {
   const box = el("div", "flag");
   const open = button("ghost small flag-open", qt("flagQuestion"), () => {
     open.hidden = true;
@@ -595,7 +596,7 @@ function flagControl(ctx: QuizContext, q: Question): HTMLElement {
     // A written question by its id; a generated one by its formula.
     const question = q.prompt.id && q.verify.kind === "choice" ? q.prompt.id : q.prompt.tex || q.prompt.id || q.skill;
     quizBank
-      .flag({ userId: ctx.user.id, skill: q.skill, question: question.slice(0, 2000), note: note.value.trim() })
+      .flag({ userId, skill: q.skill, question: question.slice(0, 2000), note: note.value.trim() })
       .then(() => {
         form.hidden = true;
         status.textContent = qt("flagThanks");
@@ -611,7 +612,6 @@ function flagControl(ctx: QuizContext, q: Question): HTMLElement {
 
 function resultView(ctx: QuizContext, done: Result): HTMLElement {
   const { questions, answers, spec, mode } = done.run;
-  const resolved = resolveAnswers(questions, answers, mode);
   const wrap = el("section", "sheet quiz-result");
 
   const percent = Math.round((100 * done.correct) / questions.length);
@@ -643,8 +643,13 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
     }),
     button("ghost", qt("progress"), ctx.showProgress),
   );
-  wrap.append(actions);
+  wrap.append(actions, corrections(ctx.user.id, questions, answers, mode));
+  return wrap;
+}
 
+/** Each question with the answer given, the right one, the mistake behind a wrong one, and why. */
+function corrections(userId: number, questions: Question[], answers: GivenAnswer[], mode: AnswerMode): HTMLElement {
+  const resolved = resolveAnswers(questions, answers, mode);
   const list = el("ol", "review");
   questions.forEach((q, i) => {
     const given = resolved[i]!;
@@ -679,9 +684,74 @@ function resultView(ctx: QuizContext, done: Result): HTMLElement {
     const why = el("div", "explanation");
     if (q.explanation.text) why.append(rich(q.explanation.text, "", "p"));
     else why.append(el("p", undefined, explanationText(q.explanation.key)), math(q.explanation.tex, true));
-    item.append(why, flagControl(ctx, q));
+    item.append(why, flagControl(userId, q));
     list.append(item);
   });
-  wrap.append(list);
+  return list;
+}
+
+// ------------------------------------------------------------- past tests
+
+/**
+ * A test taken before, rebuilt exactly from what was stored: its seed, the
+ * kinds brought back, its generator version and its bank revision. Null when
+ * that is no longer possible (a level or a topic since removed).
+ */
+export function rebuildPast(t: PastTest): { spec: QuizSpec; questions: Question[]; answers: GivenAnswer[]; mode: AnswerMode } | null {
+  try {
+    if (!(LEVELS as string[]).includes(t.level)) return null;
+    const spec: QuizSpec = {
+      seed: t.seed,
+      level: t.level as Level,
+      topics: t.topics as Topic[],
+      count: t.count,
+      focus: t.focus,
+      version: t.version,
+      ...(t.bank !== null ? { bank: t.bank } : {}),
+    };
+    const questions = generateQuiz(spec);
+    if (questions.length !== t.count) return null;
+    const answers: GivenAnswer[] = questions.map((_, i) => t.answers[i] ?? -1);
+    return { spec, questions, answers, mode: t.mode };
+  } catch {
+    return null;
+  }
+}
+
+/** When a test was taken, in the player's language. */
+export const testDate = (at: number): string =>
+  new Intl.DateTimeFormat(currentLang(), { dateStyle: "medium", timeStyle: "short" }).format(new Date(at));
+
+/**
+ * The corrections of a past test, as at the end of it, for the player or an
+ * account that follows them. "Take this test again" only for the player's own.
+ */
+export function pastTestView(opts: { viewer: User; test: PastTest; onBack(): void; onReplay?(spec: QuizSpec, mode: AnswerMode): void }): HTMLElement {
+  const wrap = el("section", "sheet quiz-result is-past");
+  wrap.append(el("h1", "title", qt("pastTitle", { date: testDate(opts.test.at) })));
+  const rebuilt = rebuildPast(opts.test);
+  const actions = el("div", "actions wrap");
+  if (rebuilt && opts.onReplay) {
+    const replay = opts.onReplay;
+    actions.append(button("primary", qt("replayTest"), () => replay(rebuilt.spec, rebuilt.mode)));
+  }
+  actions.append(button(rebuilt && opts.onReplay ? "ghost" : "primary", qt("backToTests"), opts.onBack));
+  if (!rebuilt) {
+    wrap.append(el("p", "note", qt("pastGone")), actions);
+    return wrap;
+  }
+  const percent = Math.round((100 * opts.test.correct) / opts.test.count);
+  wrap.append(
+    el("p", "big-score", `${opts.test.correct} / ${opts.test.count}`),
+    el("p", "percent", `${percent} %`),
+    el("p", "status", `${levelName(rebuilt.spec.level)} · ${rebuilt.spec.topics.length === 1 ? topicName(rebuilt.spec.topics[0]!) : qt("pastTopics", { count: rebuilt.spec.topics.length })}`),
+    actions,
+    corrections(opts.viewer.id, rebuilt.questions, rebuilt.answers, rebuilt.mode),
+  );
   return wrap;
+}
+
+/** Starts a test again from its spec (the same questions): the quiz page then shows it. */
+export function replayTest(spec: QuizSpec, mode: AnswerMode): void {
+  start(spec, mode);
 }

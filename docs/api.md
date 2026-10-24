@@ -14,6 +14,7 @@ from the app's own origin.
 | `POST` | [`/api/users`](#post-apiusers) | Add a player |
 | `DELETE` | [`/api/users/:id`](#delete-apiusersid) | Delete a player and all their results |
 | `GET` | [`/api/users/:id/profile`](#get-apiusersidprofile) | Progress of one player |
+| `GET` | [`/api/users/:id/tests`](#get-apiusersidtests) | A player's last tests in one subject, to see their corrections again |
 | `POST` | [`/api/attempts`](#post-apiattempts) | Record a column-arithmetic answer |
 | `POST` | [`/api/quizzes`](#post-apiquizzes) | Record a finished test |
 | `GET` | [`/api/stats`](#get-apistats) | Totals of every player |
@@ -196,6 +197,40 @@ Case, spaces and dashes are ignored. `201` with the player (with
 - **`mistakes`:** every mistake type the player has made in tests, most frequent first. `skills` lists the kinds of question where it occurred, most recent first.
 - **`operators`:** in the order `+ − × ÷`, only those practised. Operators use the display symbols `+ − × ÷`.
 - **`quizToday`:** test answers since `since`, every subject together.
+
+## `GET /api/users/:id/tests`
+
+| Query | |
+|---|---|
+| `subject` | `maths`, `chemistry`, `linux` or `chembio`: the levels of that subject |
+
+`200`: the player's last 50 tests in that subject, newest first, as stored:
+
+```json
+[
+  {
+    "id": 12,
+    "at": 1792337328999,
+    "level": "university",
+    "topics": ["integrals", "limits"],
+    "seed": 3735928559,
+    "count": 10,
+    "correct": 7,
+    "answers": [2, 0, -1, "1,57", 3, 1, 0, 2, 2, 1],
+    "focus": ["limits.growth"],
+    "version": 4,
+    "mode": "typed",
+    "bank": null
+  }
+]
+```
+
+Everything to rebuild the test exactly (`generateQuiz` with the seed, level,
+topics, count, `focus`, `version` and, for physical chemistry, the bank
+revision `bank`), and the answers as given: an option index, `-1` for a
+blank, or the text typed. The browser rebuilds it to show the corrections.
+Allowed for the player's own account and the accounts it is shared with
+(`404 unknown user` otherwise); `400` for a bad id or subject.
 
 ## `POST /api/attempts`
 

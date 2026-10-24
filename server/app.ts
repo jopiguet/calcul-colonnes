@@ -11,11 +11,15 @@ import {
   TOPICS,
   isSkill,
   bankRevision,
+  subjectOf,
   type AnswerMode,
   type Level,
   type Topic,
 } from "../shared/quiz/index.ts";
 import type { NewAttempt, NewQuizResult } from "../shared/types.ts";
+
+/** Past tests listed per subject: the most recent. */
+const PAST_TESTS = 50;
 import type { AuthConfig } from "./auth/config.ts";
 import { loadSession, originCheck, requireAccount, requireSession, type AppEnv } from "./auth/middleware.ts";
 import type { Provider } from "./auth/providers.ts";
@@ -188,6 +192,17 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
     if (!attempt) return c.json({ error: "invalid attempt" }, 400);
     if (!(await repository.getUser(attempt.userId, scope(c)))) return c.json({ error: "unknown user" }, 404);
     return c.json(await repository.addAttempt(attempt), 201);
+  });
+
+  // A player's past tests in one subject, to see their corrections again.
+  data.get("/users/:id/tests", async (c) => {
+    const id = Number(c.req.param("id"));
+    if (!isInt(id, 1, Number.MAX_SAFE_INTEGER)) return c.json({ error: "invalid id" }, 400);
+    const subject = c.req.query("subject");
+    if (subject !== "maths" && subject !== "chemistry" && subject !== "linux" && subject !== "chembio") return c.json({ error: "invalid subject" }, 400);
+    const user = await repository.getUser(id, scope(c));
+    if (!user) return c.json({ error: "unknown user" }, 404);
+    return c.json(await repository.pastTests(id, LEVELS.filter((l) => subjectOf(l) === subject), PAST_TESTS));
   });
 
   data.get("/users/:id/profile", async (c) => {

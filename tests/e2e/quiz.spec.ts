@@ -247,3 +247,38 @@ test("on a large screen: the topics in two columns, the options and Start beside
   expect(lefts.size).toBe(2);
   expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBeLessThanOrEqual(900);
 });
+
+test("past tests: listed on the progress page, their corrections rebuilt exactly, and taken again", async ({ page }) => {
+  await chooseTopics(page, ["Dérivées", "Intégrales"]);
+  await page.click("text=Commencer le test");
+  const first = await takeQuiz(page, (i) => (i * 3) % 4);
+  const firstPrompts = await page.locator(".review-item .quiz-prompt").allInnerTexts();
+  await page.click("text=Nouveau test");
+  const second = await takeQuiz(page, () => 0);
+
+  // The progress page lists them, newest first.
+  await page.locator(".quiz-result .actions").getByText("📈 Mes progrès").click();
+  await expect(page.locator(".past-tests h2")).toHaveText("🗂️ Mes tests");
+  await expect(page.locator(".past-open")).toHaveCount(2);
+  await expect(page.locator(".past-score").nth(0)).toHaveText(`${second.server.correct}/${second.body.count}`);
+  await expect(page.locator(".past-score").nth(1)).toHaveText(`${first.server.correct}/${first.body.count}`);
+
+  // The older one: the same questions, the same marks, the answers given.
+  await page.locator(".past-open").nth(1).click();
+  await expect(page.locator(".quiz-result.is-past .title")).toContainText("Test du");
+  await expect(page.locator(".big-score")).toHaveText(`${first.server.correct} / ${first.body.count}`);
+  await expect(page.locator(".review-item")).toHaveCount(first.body.count);
+  await expect(page.locator(".review-item.good")).toHaveCount(first.server.correct);
+  expect(await page.locator(".review-item .quiz-prompt").allInnerTexts()).toEqual(firstPrompts);
+
+  // Back to the list, then the same test again: the same first question.
+  await page.click("text=Retour aux tests");
+  await expect(page.locator(".past-open")).toHaveCount(2);
+  await page.locator(".past-open").nth(1).click();
+  await page.click("text=Refaire ce test");
+  await page.locator(".choices").waitFor();
+  await expect(page.locator(".quiz-count")).toHaveText(new RegExp(`Question 1 / ${first.body.count}`));
+  const again = await takeQuiz(page, (i) => (i * 3) % 4);
+  expect(again.body.seed).toBe(first.body.seed);
+  expect(again.server.correct).toBe(first.server.correct);
+});

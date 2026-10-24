@@ -398,6 +398,7 @@ The settings screen says how many kinds will be reviewed before the test starts.
 Chimie physique and in Linux (on the settings screen and with a test's
 results) opens that subject's page:
 
+- **🗂️ Mes tests:** the last tests, newest first: date, level, topics and score (five shown, *Voir les autres* for up to 50). One opens its corrections as at the end of the test: each question, the answer given (typed ones as typed), the right one, the mistake behind a wrong one and the explanation. The test is rebuilt exactly, from the same seed and, in Chimie physique, the bank as it was then. *Refaire ce test* takes the same questions again. An account the player is shared with sees the list and the corrections too (*Tests de Léa*), without *Refaire ce test*.
 - **Each kind met in tests:** its status, its last five answers (oldest on the left) and its total.
 - **Frequent mistakes:** the six mistakes the player makes most often in that subject's tests, with how many times and in which kinds of question. A mistake keeps its count after the kind is mastered: it shows the habits to watch, not what is still to review.
 

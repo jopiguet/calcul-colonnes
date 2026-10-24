@@ -17,6 +17,7 @@ import type {
   NewQuizResult,
   Operator,
   OperatorProgress,
+  PastTest,
   PlayerShare,
   Profile,
   SkillProgress,
@@ -395,6 +396,39 @@ export class Repository {
   }
 
   /** Progress of one player: every kind of question met in tests, and the column arithmetic. */
+  /** A player's tests at these levels, newest first. */
+  async pastTests(userId: number, levels: Level[], limit: number): Promise<PastTest[]> {
+    const rows = await this.db.query(
+      `SELECT id, at, level, topics, seed, question_count, correct, answers, focus, version, mode, bank
+         FROM quiz_results WHERE user_id = $1 AND level IN (${levels.map((_, i) => `$${i + 2}`).join(", ")})
+        ORDER BY at DESC, id DESC LIMIT ${Math.trunc(limit)}`,
+      [userId, ...levels],
+    );
+    return rows.map((row) => {
+      let answers: (number | string)[] = [];
+      try {
+        const parsed: unknown = JSON.parse(String(row.answers));
+        if (Array.isArray(parsed)) answers = parsed.filter((a): a is number | string => typeof a === "number" || typeof a === "string");
+      } catch {
+        // an unreadable row: shown without answers
+      }
+      return {
+        id: Number(row.id),
+        at: Number(row.at),
+        level: String(row.level),
+        topics: String(row.topics).split(",").filter(Boolean),
+        seed: Number(row.seed),
+        count: Number(row.question_count),
+        correct: Number(row.correct),
+        answers,
+        focus: String(row.focus ?? "").split(",").filter(Boolean),
+        version: Number(row.version ?? 1),
+        mode: row.mode === "typed" ? "typed" : "choices",
+        bank: row.bank === null || row.bank === undefined ? null : Number(row.bank),
+      };
+    });
+  }
+
   async profile(user: User, since: number): Promise<Profile> {
     const answers = await this.db.query(
       `SELECT skill, topic, correct, at FROM quiz_answers WHERE user_id = $1 ORDER BY at DESC, id DESC`,

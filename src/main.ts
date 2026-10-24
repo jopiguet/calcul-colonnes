@@ -24,7 +24,8 @@ import "@fontsource/atkinson-hyperlegible-mono/latin-400.css";
 import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
-import { loadBank, quizView } from "./quiz";
+import { loadBank, quizView, replayTest } from "./quiz";
+import { subjectOf } from "../shared/quiz";
 import { activityBar, activityId, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
 import { showVocabStats, vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
@@ -218,6 +219,15 @@ async function render(): Promise<void> {
                 show("play");
               }
             : undefined,
+          // A past test taken again: the same questions, on the test's page.
+          onReplay: mine
+            ? (spec, mode) => {
+                replayTest(spec, mode);
+                updateSettings({ mode: "quiz", quizSubject: subjectOf(spec.level) });
+                show("play");
+              }
+            : undefined,
+          rerender: () => void render(),
         }),
       );
     } else if (state.settings.mode !== "home" && (await hiddenNow(state.user))) {
