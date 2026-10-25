@@ -22,6 +22,7 @@ import { graphs } from "./graphs";
 import { multivariable } from "./multivariable";
 import { series } from "./series";
 import { gases } from "./gases";
+import { tsBasics, tsFunctions, tsObjects, tsNarrowing, tsGenerics, tsTypeLevel, tsRuntime, tsTooling } from "./typescript";
 import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
 import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
 import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools, linuxScripting, linuxGit, linuxVim } from "./linux";
@@ -101,6 +102,14 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   rustConcurrency,
   rustCargo,
   rustUnsafe,
+  tsBasics,
+  tsFunctions,
+  tsObjects,
+  tsNarrowing,
+  tsGenerics,
+  tsTypeLevel,
+  tsRuntime,
+  tsTooling,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -238,6 +247,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "shell":
     case "sql":
     case "rust":
+    case "ts":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);
@@ -354,5 +364,7 @@ export { LINUX_QUESTIONS, symbolic, triplet } from "./linux";
 export { SQL_QUESTIONS } from "./sql";
 export { RUST_QUESTIONS } from "./rust";
 export { RUST_LINE_MAX } from "./rust-output";
+export { TS_QUESTIONS } from "./typescript";
+export { TS_LINE_MAX } from "./ts-output";
 export { formatRows } from "./sql-output";
 export type { LinuxQuestion } from "./linux/types";

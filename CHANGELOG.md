@@ -1,5 +1,17 @@
 # Changelog
 
+## 6.22.0
+
+- **A new test, 🔷 TypeScript**, in the *Informatique* group next to Linux, SQL and Rust, at four levels, *Débutant* to *Expert*, like Rust (see [Question generators › TypeScript](docs/question-generators.md#typescript)). Eight topics in two groups, *Le langage et ses types* and *Exécution et outillage*; each level offers those it has.
+  - **Débutant:** inference, `any` and `unknown`, `null` and `undefined`, arrays, tuples and records, typed functions, interfaces, unions and assertions, `===`, `let`/`const`, falsy values, destructuring, `tsc`, `strict`, `.d.ts` and `@types`.
+  - **Intermédiaire:** `as const`, enums, `never`, `satisfies`, overloads, `this`, rest parameters, assertion functions, classes (`private` and `#`, parameter properties, `abstract`), discriminated unions and exhaustiveness, type predicates, `catch` as `unknown`, generics and `keyof`, promises, `Promise.all`, floating promises, ESM and CommonJS, `import type`, `nodenext` paths.
+  - **Avancé:** closures, structural typing, `{}`, `Object.keys`, brands, control-flow analysis, `!`, utility types, mapped types and key remapping, conditional types, distribution, `infer`, JavaScript pitfalls (`map(parseInt)`, `for…in`, `JSON.parse`, dates, NaN), strict options (`noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `verbatimModuleSyntax`, `strictFunctionTypes`).
+  - **Expert:** class fields and `useDefineForClassFields`, standard decorators, `using`, `accessor`, `override`, `const` type parameters, `NoInfer`, variance annotations, recursion limits, the unsound corners (array covariance, method bivariance, `any`), microtask starvation, `WeakMap`, `structuredClone`, generators, symbols, TypeScript 7 (the Go port), Node's type stripping and `erasableSyntaxOnly`, `isolatedDeclarations`, project references, typescript-eslint.
+  - 135 written questions, and nine generated kinds: a short program, *Qu'affiche ce programme ?*, with the slips a misconception predicts: `sort()` sorting numbers as text, `push`'s return value, `slice` and `splice`, `??` and `||`, `typeof null`, timers before promises, `var` in closures, floating point, `Number` and `parseInt`, rounding negatives, shallow copies, `await` blocking the caller, class fields set before the base constructor. Sixteen new mistake types.
+- **Checks:** `check:quiz` type-checks every program shown with `tsc` in strict mode (none may fail), then runs it and compares what it logs with the options.
+- **Database:** migration `022_typescript_levels`.
+- **Tests:** 125 browser tests; the TypeScript test checks the levels and their topics, that a program fits a 360 px screen, and the event loop.
+
 ## 6.21.0
 
 - **A new test, 🦀 Rust**, in the *Informatique* group next to Linux and SQL, at four levels, *Débutant*, *Intermédiaire*, *Avancé* and *Expert*, chosen like the maths levels (see [Question generators › Rust](docs/question-generators.md#rust)). Eight topics in two groups; each level offers those it has.

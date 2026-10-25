@@ -13,7 +13,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
@@ -189,6 +189,54 @@ function runRustPrograms(programs: string[]): Map<string, string> {
   }
 }
 
+/**
+ * TypeScript programs, likewise checked after the loop: every distinct program
+ * is type-checked by tsc in strict mode (one file each, in one project), then
+ * run, one after the other, and what it logs is compared with the options.
+ */
+const tsPending: { program: string; printed: string; right: boolean; where: string }[] = [];
+let tsWhere = "";
+
+function typeCheckTs(programs: string[]): Map<string, string> {
+  const dir = mkdtempSync(join(tmpdir(), "luma-ts-"));
+  try {
+    writeFileSync(join(dir, "tsconfig.json"), JSON.stringify({ compilerOptions: { strict: true, noEmit: true, target: "ES2022", lib: ["ES2023", "DOM"], module: "ESNext", moduleResolution: "Bundler", types: [] }, include: ["*.ts"] }));
+    // Each program is a module of its own (its names do not clash with the others').
+    programs.forEach((p, i) => writeFileSync(join(dir, `p${i}.ts`), `${p}\nexport {};\n`));
+    const errors = new Map<string, string>();
+    try {
+      execFileSync(join(process.cwd(), "node_modules", ".bin", "tsc"), ["-p", dir], { encoding: "utf8" });
+    } catch (error) {
+      const printed = String((error as { stdout?: string }).stdout ?? "");
+      if (!printed.trim()) throw error;
+      for (const line of printed.split("\n")) {
+        const m = /^p(\d+)\.ts\(/.exec(line);
+        if (m) errors.set(programs[Number(m[1])]!, line);
+      }
+    }
+    return errors;
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+/** Runs a program (types stripped by esbuild) in a fresh context; what it logs, lines joined by spaces. */
+async function runTs(program: string): Promise<string> {
+  const { transformSync } = await import("esbuild");
+  const vm = await import("node:vm");
+  const lines: string[] = [];
+  const context = vm.createContext({
+    console: { log: (...args: unknown[]) => lines.push(args.map(String).join(" ")) },
+    setTimeout,
+    queueMicrotask,
+    structuredClone,
+  });
+  vm.runInContext(transformSync(program, { loader: "ts" }).code, context);
+  // Let its promise callbacks and zero-delay timers run.
+  await new Promise((resolve) => setTimeout(resolve, 5));
+  return lines.join(" ");
+}
+
 function isRight(q: Question, o: Option): boolean {
   const v = q.verify;
   switch (v.kind) {
@@ -359,6 +407,11 @@ function isRight(q: Question, o: Option): boolean {
       return o.tex === run(v.command); // what the real bash, sed and awk print
     case "sql":
       return o.tex === runSql(v.setup, v.query); // what SQLite returns
+    case "ts": {
+      const right = o === q.options[q.correct];
+      tsPending.push({ program: v.program, printed: o.tex, right, where: tsWhere });
+      return right; // checked after the loop, type-checked and run
+    }
     case "rust": {
       const right = o === q.options[q.correct];
       rustPending.push({ program: v.program, printed: o.tex, right, where: rustWhere });
@@ -563,6 +616,12 @@ for (const level of LEVELS) {
           });
           if (matchTyped(q, "") !== -1) throw new Error("blank typed answer not blank");
         }
+        if (q.verify.kind === "ts") {
+          tsWhere = where;
+          const long = q.verify.program.split("\n").find((line) => [...line].length > TS_LINE_MAX);
+          if (long) throw new Error(`program line longer than ${TS_LINE_MAX} characters: ${long}`);
+          if (q.prompt.code !== q.verify.program) throw new Error("the program shown is not the one checked");
+        }
         if (q.verify.kind === "rust") {
           rustWhere = where;
           const long = q.verify.program.split("\n").find((line) => [...line].length > RUST_LINE_MAX);
@@ -641,6 +700,25 @@ if (rustPending.length > 0) {
     failures.push(`rust: cannot compile or run the programs (is rustc installed?): ${(error as Error).message.slice(0, 2000)}`);
   }
 } else console.log(`${rustWritten} written Rust questions checked`);
+
+const tsWritten = checkWritten("ts", "ts-", TS_QUESTIONS);
+if (tsPending.length > 0) {
+  const programs = [...new Set(tsPending.map((p) => p.program))];
+  try {
+    const errors = typeCheckTs(programs);
+    const outputs = new Map<string, string>();
+    for (const p of programs) outputs.set(p, errors.has(p) ? "" : await runTs(p));
+    for (const p of tsPending) {
+      const error = errors.get(p.program);
+      if (error) failures.push(`${p.where}: the program does not type-check: ${error}`);
+      else if (p.right && outputs.get(p.program) !== p.printed) failures.push(`${p.where}: marked answer is wrong: ${p.printed}, the program logs ${outputs.get(p.program)}`);
+      else if (!p.right && outputs.get(p.program) === p.printed) failures.push(`${p.where}: wrong option is also right: ${p.printed}`);
+    }
+    console.log(`${tsWritten} written TypeScript questions checked; ${programs.length} programs type-checked with tsc and run`);
+  } catch (error) {
+    failures.push(`ts: cannot type-check or run the programs: ${(error as Error).message.slice(0, 2000)}`);
+  }
+} else console.log(`${tsWritten} written TypeScript questions checked`);
 
 // The generated SQL is meant to be portable: with CHECK_SQL_POSTGRES set to a database URL,
 // every query shown is run again on PostgreSQL (in a schema rolled back) and must return the same.

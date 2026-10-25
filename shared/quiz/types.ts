@@ -9,7 +9,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -25,9 +25,11 @@ export type ChemBioTopic = "balancing";
 export type SqlTopic = "sqlSelect" | "sqlAggregate" | "sqlJoins" | "sqlModify" | "sqlPostgres" | "sqlSqlite" | "sqlMysql" | "sqlPractice";
 /** Rust: the language, then systems work (concurrency, Cargo, unsafe); each at up to four levels. */
 export type RustTopic = "rustBasics" | "rustOwnership" | "rustTypes" | "rustErrors" | "rustCollections" | "rustConcurrency" | "rustCargo" | "rustUnsafe";
-export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic;
+/** TypeScript: the language and its types, then the JavaScript runtime and the tooling; each at up to four levels. */
+export type TsTopic = "tsBasics" | "tsFunctions" | "tsObjects" | "tsNarrowing" | "tsGenerics" | "tsTypeLevel" | "tsRuntime" | "tsTooling";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert"];
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
@@ -39,10 +41,15 @@ export const RUST_TOPICS: RustTopic[] = ["rustBasics", "rustOwnership", "rustTyp
 /** The levels offered in the Rust test's settings, easiest first. */
 export const RUST_LEVELS: Level[] = ["rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert"];
 export const isRust = (level: Level): boolean => RUST_LEVELS.includes(level);
+/** Topics of the TypeScript test; each level has some of them (topicsFor). */
+export const TS_TOPICS: TsTopic[] = ["tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling"];
+/** The levels offered in the TypeScript test's settings, easiest first. */
+export const TS_LEVELS: Level[] = ["tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert"];
+export const isTypeScript = (level: Level): boolean => TS_LEVELS.includes(level);
 /** The subjects of the tests, each with its own levels and topics. */
-export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust";
+export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts";
 export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
@@ -51,9 +58,9 @@ export const MATH_LEVELS: Level[] = ["school", "university"];
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -73,6 +80,8 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "sqlEngines", topics: ["sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice"] },
   { group: "rustLanguage", topics: ["rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections"] },
   { group: "rustSystems", topics: ["rustConcurrency", "rustCargo", "rustUnsafe"] },
+  { group: "tsLanguage", topics: ["tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel"] },
+  { group: "tsPlatform", topics: ["tsRuntime", "tsTooling"] },
 ];
 
 /**
@@ -727,6 +736,23 @@ export const MISTAKES = [
   "rustDropOrder", // values dropped in declaration order, or fields in reverse
   "rustLetUnderscore", // let _ = taken to keep the value until the end of the scope
   "rustShadowDrop", // a shadowed value taken to be dropped at once
+  // TypeScript (and the JavaScript it runs as)
+  "tsSortStrings", // sort() without a comparator taken to sort numbers as numbers
+  "tsMutatingMethod", // what a method changes and returns confused: sort, push, splice, slice
+  "tsSliceEnd", // slice's end taken as included, or splice's count as an end
+  "tsNullishOr", // ?? and || confused: 0 and "" are not nullish
+  "tsOptionalChain", // ?. taken to throw, or to give null
+  "tsTypeof", // typeof null, arrays, NaN, functions and classes
+  "tsMicrotaskOrder", // a timer taken to run before promise callbacks
+  "tsAsyncSync", // callbacks or an async function's start taken to run in another order than they do
+  "tsAwaitOrder", // await taken to block the caller
+  "tsVarCapture", // var in a loop taken to give each closure its own variable, or let the reverse
+  "tsFloat", // binary floating point and toFixed
+  "tsParseNumber", // Number() and parseInt() confused
+  "tsRounding", // Math.round on halves, floor and trunc on negatives
+  "tsShallowCopy", // a spread or Object.assign taken to copy deeply, or structuredClone to share
+  "tsReferenceEquality", // a copy taken to be the same object, or === to compare contents
+  "tsFieldInitOrder", // class fields taken to be set before the base constructor runs
   // balancing equations
   "subscriptChanged", // a formula's subscript changed instead of a coefficient: another substance
   "notLowestTerms", // balanced, but not in the smallest whole numbers
@@ -827,6 +853,8 @@ export type Verify =
   /** A written question from the question bank: options are texts, nothing to compute. */
   | { kind: "choice" }
   | { kind: "shell"; command: string } // the option is what bash prints for the command
+  /** The option (its formula) is what the TypeScript `program` logs, lines joined by spaces; it must type-check in strict mode. */
+  | { kind: "ts"; program: string }
   /** The option (its formula) is what the Rust `program` prints, trimmed. */
   | { kind: "rust"; program: string }
   /** The option (its formula, as `formatRows` writes it) is what `query` returns after `setup`, on SQLite. */

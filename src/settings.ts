@@ -1,4 +1,4 @@
-import { RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 import { isDiscoverActivity, type DiscoverActivity } from "./discover/activities";
@@ -36,6 +36,8 @@ export interface Settings {
   sqlTopics: Topic[];
   rustTopics: Topic[];
   rustLevel: Level;
+  tsTopics: Topic[];
+  tsLevel: Level;
   quizCount: number;
   /** Mix the player's recent mistakes into new tests. */
   quizReview: boolean;
@@ -112,7 +114,7 @@ export function loadSettings(): Settings {
     discoverActivity: isDiscoverActivity(saved.discoverActivity) ? saved.discoverActivity : "dice",
     quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
-    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" ? saved.quizSubject : "maths",
+    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" ? saved.quizSubject : "maths",
     chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
     linuxTopics: Array.isArray(saved.linuxTopics) && LINUX_TOPICS.some((t) => (saved.linuxTopics as unknown[]).includes(t))
       ? LINUX_TOPICS.filter((t) => (saved.linuxTopics as unknown[]).includes(t))
@@ -127,6 +129,10 @@ export function loadSettings(): Settings {
       ? RUST_TOPICS.filter((t) => (saved.rustTopics as unknown[]).includes(t))
       : [...RUST_TOPICS],
     rustLevel: RUST_LEVELS.includes(saved.rustLevel as Level) ? (saved.rustLevel as Level) : "rustBeginner",
+    tsTopics: Array.isArray(saved.tsTopics) && TS_TOPICS.some((t) => (saved.tsTopics as unknown[]).includes(t))
+      ? TS_TOPICS.filter((t) => (saved.tsTopics as unknown[]).includes(t))
+      : [...TS_TOPICS],
+    tsLevel: TS_LEVELS.includes(saved.tsLevel as Level) ? (saved.tsLevel as Level) : "tsBeginner",
     chemLevel: CHEMISTRY_LEVELS.includes(saved.chemLevel as Level) ? (saved.chemLevel as Level) : "chemistry",
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,

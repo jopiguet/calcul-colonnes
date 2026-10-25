@@ -14,6 +14,7 @@ way in the browser and on the server.
 | `quantum.ts`, `atoms.ts`, `spectroscopy.ts`, `statistical.ts`, `kinetics.ts` | Physical chemistry, Focuses 7–8, 11–13 and 17–18: quantum theory, atoms, spectroscopy and magnetic resonance, statistical thermodynamics, kinetics and reaction dynamics |
 | `sql.ts`, `sql/*.ts`, `sql-output.ts` | SQL: the written questions (the language, PostgreSQL, SQLite, MySQL, good practice), and what a query returns on two generated tables |
 | `rust.ts`, `rust/*.ts`, `rust-output.ts` | Rust: the written questions of the four levels, and what a short program prints |
+| `typescript.ts`, `ts/*.ts`, `ts-output.ts` | TypeScript: the written questions of the four levels, and what a short program logs |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -503,7 +504,7 @@ identity is the text printed, and `check:quiz` runs the command shown with
 the real `bash` (and its `sed` and `awk`) and compares. It also checks every
 written Linux question directly, drawn or not: unique ids, three wrong
 answers or more, all different, the same number of code runs in the three languages,
-and a `since` the app has reached. The written SQL and Rust questions get the same checks.
+and a `since` the app has reached. The written SQL, Rust and TypeScript questions get the same checks.
 
 **Adding a written question.** Append it to its list with `since: N`, where
 N is the new `QUIZ_VERSION`, and bump the version: a list's length is part of
@@ -569,6 +570,61 @@ The right option must be exactly what is printed, no wrong one may be. About
 GitHub's runners; `RUSTC` names another one).
 
 Eighteen mistake types, `rustIntegerDivision` to `rustShadowDrop`.
+
+## TypeScript
+
+The TypeScript test (6.22.0), *🔷 TypeScript* in the home page's
+*Informatique* group, has four levels, `tsBeginner`, `tsIntermediate`,
+`tsAdvanced` and `tsExpert`, and eight topics in two groups. *Le langage et
+ses types*: `tsBasics`, `tsFunctions`, `tsObjects`, `tsNarrowing`,
+`tsGenerics`, `tsTypeLevel`. *Exécution et outillage*: `tsRuntime` (the
+JavaScript that actually runs) and `tsTooling`.
+
+| Topic | Débutant | Intermédiaire | Avancé | Expert |
+|---|---|---|---|---|
+| `tsBasics` | `primitives` 5, `collections` 5, `arrayMethods` | `literals` 5 | | |
+| `tsFunctions` | `functions` 5 | `signatures` 5 | `closures` 5, `closureLoop` | |
+| `tsObjects` | `interfaces` 5 | `classes` 5 | `structural` 5 | `classSemantics` 5, `initOrder` |
+| `tsNarrowing` | `unions` 5 | `guards` 5, `typeofValues` | `controlFlow` 5 | |
+| `tsGenerics` | | `genericsBasics` 5 | `utility` 5 | |
+| `tsTypeLevel` | | | `mapped` 5, `conditional` 5 | `advancedTypes` 5, `soundness` 5 |
+| `tsRuntime` | `jsBasics` 5, `nullish` | `async` 5, `eventLoop` | `pitfalls` 5, `numbers`, `copies` | `engine` 5, `asyncOrder` |
+| `tsTooling` | `setup` 5 | `modules` 5 | `strictness` 5 | `ecosystem` 5 |
+
+135 written questions in `shared/quiz/ts/beginner.ts` to `expert.ts`, ids
+`ts-…`. Versions are named where they matter (`satisfies` 4.9, `const` type
+parameters and standard decorators 5.0, `using` 5.2, `NoInfer` 5.4,
+`isolatedDeclarations` and inferred type predicates 5.5,
+`erasableSyntaxOnly` 5.8), up to TypeScript 7, the compiler ported to Go,
+and Node's type stripping.
+
+Nine kinds are generated (`ts-output.ts`): a short program, *Qu'affiche ce
+programme ?*, shown as a block of code like the Rust ones. Most are about
+what the types do not change: the JavaScript underneath.
+
+| Id | Level | Asks for | Typical wrong options |
+|---|---|---|---|
+| `tsBasics.arrayMethods` | Débutant | `sort()` without a comparator; what `push` returns; `slice` against `splice` | numeric order, `sort` not in place, `push` returning the item, `slice`'s end included, `splice`'s count read as an end |
+| `tsRuntime.nullish` | Débutant | `??` against `\|\|` on 0 and the empty string; `?.` on a missing object | `\|\|` for `??`, `?.` throwing or giving `null` |
+| `tsNarrowing.typeofValues` | Intermédiaire | `typeof` of `null`, an array, NaN, a function, a class, a bigint | "null", "array", "NaN", "class" |
+| `tsRuntime.eventLoop` | Intermédiaire | the order of logs from sync code, promise callbacks and timers | timers before promises, source order |
+| `tsFunctions.closureLoop` | Avancé | closures created in a `for` over `var` or `let` | each closure keeping its own `var`, the reverse |
+| `tsRuntime.numbers` | Avancé | `0.1 + 0.2` and `toFixed`; `parseInt` against `Number`; `Math.round`, `floor`, `trunc` on negatives | exact floats, `Number` reading digits, halves rounded away from zero |
+| `tsRuntime.copies` | Avancé | a spread or `Object.assign`, `structuredClone`, `===` on a nested object | deep spread, shared clone, `===` comparing contents |
+| `tsRuntime.asyncOrder` | Expert | two async calls interleaving at `await`; an `await` continuation against a `then` and a timer | `await` blocking the caller, async bodies deferred |
+| `tsObjects.initOrder` | Expert | a base constructor calling an override that reads a subclass field | the field already set, the base method called |
+
+No program logs a lone integer, so none is typed. Lines are at most 36
+characters (`TS_LINE_MAX`). `check:quiz` checks every distinct program
+twice: it **type-checks** them all with the project's `tsc` in strict mode
+(one file each, `export {}` appended, one project, `lib: ES2023, DOM`), so
+no question shows code that does not compile; then it **runs** each one,
+its types stripped by esbuild, in a fresh `vm` context whose
+`console.log` is captured, waiting 5 ms for its promise callbacks and
+timers. The right option must be exactly what is logged (lines joined by
+spaces), no wrong one may be. About 2,700 programs take some 20 seconds.
+
+Sixteen mistake types, `tsSortStrings` to `tsFieldInitOrder`.
 
 ## Balancing equations
 
@@ -921,6 +977,22 @@ keep the label they were stored with.
 | `rustDropOrder` | Dropped in declaration order, or fields reversed | rustOwnership |
 | `rustLetUnderscore` | `let _ =` taken to keep the value | rustOwnership |
 | `rustShadowDrop` | A shadowed value taken to be dropped at once | rustOwnership |
+| `tsSortStrings` | `sort()` without a comparator taken to sort numbers | tsBasics |
+| `tsMutatingMethod` | What `sort`, `push`, `splice`, `slice` change or return | tsBasics |
+| `tsSliceEnd` | `slice`'s end included, or `splice`'s count as an end | tsBasics |
+| `tsNullishOr` | `??` and `\|\|` confused | tsRuntime |
+| `tsOptionalChain` | `?.` taken to throw or give `null` | tsRuntime |
+| `tsTypeof` | `typeof` misremembered | tsNarrowing |
+| `tsMicrotaskOrder` | A timer before a promise callback | tsRuntime |
+| `tsAsyncSync` | Async code in the order written | tsRuntime |
+| `tsAwaitOrder` | `await` blocking the caller | tsRuntime |
+| `tsVarCapture` | `var` and `let` confused in a loop | tsFunctions |
+| `tsFloat` | Floating point or `toFixed` misread | tsRuntime |
+| `tsParseNumber` | `Number()` and `parseInt()` confused | tsRuntime |
+| `tsRounding` | Rounding of halves or negatives | tsRuntime |
+| `tsShallowCopy` | Shallow and deep copies confused | tsRuntime |
+| `tsReferenceEquality` | Identity and contents confused | tsRuntime |
+| `tsFieldInitOrder` | Fields set before the base constructor | tsObjects |
 | `signError` | Sign error | complex, derivatives, explog, functions, geometry, graphs, integrals, limits, linear, multivariable, odes, probability, sequences, series, trigonometry |
 
 Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
@@ -1029,6 +1101,7 @@ mistakes to review. It then checks:
 - **Wrong options:** none of them is also right.
 - **Options:** exactly four, with distinct LaTeX; every wrong option carries a known mistake type, and every type in `MISTAKES` occurs somewhere.
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
+- **TypeScript:** every program shown type-checked with `tsc` in strict mode and run, its output compared with the options (see [TypeScript](#typescript)); every written TypeScript question checked like the Linux ones.
 - **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.
 - **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).

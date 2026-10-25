@@ -138,7 +138,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced` or `rustExpert` |
+| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced` or `tsExpert` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -241,6 +241,7 @@ runs: add tables and columns, rename or drop later.
 | `019_family` | The family release: `accounts.role`, `vocab_books.visibility`, `app_settings`, `account_invites`, `auth_flows.invite`, `feedback` |
 | `020_sql_level` | `quiz_results.level` accepts `sql`, the SQL test. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `021_rust_levels` | `quiz_results.level` accepts the four Rust levels. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `022_typescript_levels` | `quiz_results.level` accepts the four TypeScript levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 

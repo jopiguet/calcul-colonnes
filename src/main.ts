@@ -272,7 +272,7 @@ async function render(): Promise<void> {
       if (subject === "chemistry") await loadBank();
       paint(
         topBar(),
-        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : "modeQuiz"), goHome),
+        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : subject === "ts" ? "modeTs" : "modeQuiz"), goHome),
         quizView({
           user,
           subject,

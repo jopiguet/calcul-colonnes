@@ -112,7 +112,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
-| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust | Kinds of question to review, for each |
+| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript | Kinds of question to review, for each |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
@@ -414,6 +414,25 @@ an iterator chain, a `match`, `Option` methods, `dedup` and `sort`, the
 order in which values are dropped. The wrong answers are the usual slips.
 A sum printed by an iterator chain can be typed with *Au clavier*. Every
 program has been compiled and run to check its answer.
+
+## TypeScript
+
+Activity **🔷 TypeScript**, in the *Informatique* group: multiple-choice
+tests on TypeScript at four levels, *Débutant* to *Expert*, chosen as in
+the Rust test. Each level offers the topics it has:
+
+| Level | Topics |
+|---|---|
+| Débutant | types and inference, arrays and objects, functions, interfaces, unions, the JavaScript basics (`===`, `let`/`const`, falsy values), setting up a project |
+| Intermédiaire | literal types and `as const`, overloads and `this`, classes, type guards and discriminated unions, generics, promises and async, modules |
+| Avancé | closures, structural typing, control-flow analysis, utility types, mapped and conditional types, JavaScript pitfalls, strict options |
+| Expert | class fields and decorators, `const` type parameters, `NoInfer`, variance and brands, where the type system is unsound, the engine (microtasks, `WeakMap`, generators), TypeScript 7 and Node's type stripping |
+
+Some questions show a short program and ask what it logs: `sort` without a
+comparator, `??` and `||`, `typeof`, the order of the event loop, closures
+over `var`, floating point and rounding, shallow copies, `async` and
+`await`, a class's initialization order. Every program has been
+type-checked in strict mode and run to check its answer.
 
 ## Chemical equations
 

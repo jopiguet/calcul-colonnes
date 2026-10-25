@@ -22,6 +22,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.22.0",
+    fr: ["🔷 TypeScript : un nouveau QCM en quatre niveaux, des types au JavaScript qui tourne dessous, avec des programmes dont il faut prédire l'affichage."],
+    es: ["🔷 TypeScript: un nuevo test en cuatro niveles, de los tipos al JavaScript que se ejecuta debajo, con programas cuya salida hay que predecir."],
+    en: ["🔷 TypeScript: a new test at four levels, from the types to the JavaScript running underneath, with programs whose output you predict."],
+  },
+  {
     version: "6.21.0",
     fr: ["🦀 Rust : un nouveau QCM en quatre niveaux, de Débutant à Expert, avec des programmes dont il faut prédire l'affichage."],
     es: ["🦀 Rust: un nuevo test en cuatro niveles, de Principiante a Experto, con programas cuya salida hay que predecir."],
