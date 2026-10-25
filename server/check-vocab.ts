@@ -36,6 +36,28 @@ const cases: [string, string, AnswerLang, Verdict][] = [
   ["täglich", "täglich", "de", "right"],
   ["taeglich", "täglich", "de", "right"],
   ["eine Partnerin", "einen Partner / eine Partnerin", "de", "right"],
+  // German printed with its plural or its forms (Lernwortschatz): the word alone is enough
+  ["die Ehre", "die Ehre, -n", "de", "right"],
+  ["Ehre", "die Ehre, -n", "de", "article"],
+  ["der Wunsch", "der Wunsch, ¨e", "de", "right"],
+  ["der Gedanke", "der Gedanke, -ns, -n", "de", "right"],
+  ["die Täterin", "der Täter, - / die Täterin", "de", "right"],
+  ["finden", "finden, findet, fand, hat gefunden", "de", "right"],
+  ["finden, findet, fand, hat gefunden", "finden, findet, fand, hat gefunden", "de", "right"],
+  ["gelingen", "gelingen, gelingt, gelang, ist gelungen + D", "de", "right"],
+  ["diskutieren über", "diskutieren über + A", "de", "right"],
+  ["ansehen", "(sich) an|sehen (sieht … an, sah … an, hat angesehen)", "de", "right"],
+  ["sich ansehen", "(sich) an|sehen (sieht … an, sah … an, hat angesehen)", "de", "right"],
+  ["einen Beruf", "einen Beruf, das Wort, ein Buch ergreifen", "de", "wrong"],
+  // French answers: the article is optional, elided or not
+  ["patience", "la patience", "fr", "right"],
+  ["la patience", "la patience", "fr", "right"],
+  ["honneur", "l'honneur", "fr", "right"],
+  ["l’honneur", "l'honneur", "fr", "right"],
+  ["patiente", "patient / patiente", "fr", "right"],
+  ["tranquilite", "le calme / la tranquillité / le repos", "fr", "typo"],
+  ["eclat", "l'éclat", "fr", "accent"],
+  ["courage", "la patience", "fr", "wrong"],
   // Spanish answers
   ["la llave", "la llave", "es", "right"],
   ["La Llave.", "la llave", "es", "right"],
@@ -140,6 +162,7 @@ for (const [given, expected, reading, verdict] of arabic) {
 
 expect("writable short", writable("el coche"), true);
 expect("writable long", writable("¿Puedo preguntarle qué edad tiene?"), false);
+expect("writable: a German verb by its infinitive", [writable("finden, findet, fand, hat gefunden", "de"), writable("finden, findet, fand, hat gefunden")], [true, false]);
 
 // Leitner boxes
 const now = 1_000_000;
@@ -402,6 +425,33 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
       const bookId = Number((await db.query("SELECT id FROM vocab_books WHERE slug = 'ordered'"))[0]!.id);
       const cards = await store.session(user, { kind: "all", id: bookId }, "learn", 4, "choice", 1, "book");
       expect("book order after an update: the new section in its place", cards.map((c) => c.prompt).sort(), ["cinco", "dos", "seis", "uno"]);
+
+      // A list that evolves (a file added, lines corrected): progress and skips stay with the words.
+      const evolving = (sections: [string, string][][]): VocabFile => ({
+        book: { id: "evolving", title: "e", kind: "translation", term: "de", meaning: "fr" },
+        lessons: [{ title: "1", subtitle: "", sections: sections.map((words, i) => ({ title: `1.${i}`, subtitle: "", entries: words.map(([t, m]) => ({ term: t, meaning: m })) })) }],
+      });
+      await store.import(evolving([[["die Ruhe", "le calme"], ["ruhig", "calme"]], [["der Mut", "le courage"], ["mutig", "courageux"]]]));
+      const idOf = async (term: string): Promise<number> => Number((await db.query("SELECT id FROM vocab_entries WHERE term = $1", [term]))[0]?.id ?? 0);
+      const courage = await idOf("der Mut");
+      const brave = await idOf("mutig");
+      const calm = await idOf("ruhig");
+      await db.query("INSERT INTO vocab_progress (user_id, entry_id, direction, box, due_at, last_at) VALUES ($1, $2, 'recognise', 4, 0, 0)", [user, courage]);
+      await store.setSkipped(user, calm, true, 0);
+      // A section inserted before, a meaning corrected, a term corrected in its section.
+      const report = await store.import(evolving([
+        [["die Ruhe", "le calme / la tranquillité"], ["ruhig", "calme"]],
+        [["die Geduld", "la patience"]],
+        [["der Mut", "le courage"], ["muthig", "courageux"]],
+      ]));
+      expect("evolving list: report", [report.added, report.removed, report.changed], [1, 0, 2]);
+      expect("evolving list: a word in a moved section keeps its id and progress", [await idOf("der Mut"), Number((await db.query("SELECT box FROM vocab_progress WHERE entry_id = $1", [courage]))[0]?.box)], [courage, 4]);
+      expect("evolving list: a corrected term keeps its id", await idOf("muthig"), brave);
+      expect("evolving list: a skip stays", Number((await db.query("SELECT COUNT(*) AS n FROM vocab_skips WHERE entry_id = $1", [calm]))[0]?.n), 1);
+      expect("evolving list: sections in the file's order", (await db.query("SELECT s.title FROM vocab_sections s JOIN vocab_lessons l ON l.id = s.lesson_id JOIN vocab_books b ON b.id = l.book_id WHERE b.slug = 'evolving' ORDER BY s.position")).map((r) => r.title), ["1.0", "1.1", "1.2"]);
+      // A section dropped: its words go, the others stay.
+      const shrunk = await store.import(evolving([[["die Ruhe", "le calme / la tranquillité"], ["ruhig", "calme"]], [["der Mut", "le courage"], ["muthig", "courageux"]]]), { replace: true });
+      expect("evolving list: a section removed", [shrunk.removed, await idOf("der Mut"), await idOf("die Geduld")], [1, courage, 0]);
     } finally {
       await db.close();
       rmSync(dir, { recursive: true, force: true });
@@ -415,7 +465,7 @@ if (file) {
   const vocab = parseVocabFile(JSON.parse(readFileSync(file, "utf8")));
   let entries = 0;
   let written = 0;
-  const lang = (code: string): AnswerLang => (code === "es" || code === "de" || code === "ja" || code === "ar" ? code : "en");
+  const lang = (code: string): AnswerLang => (code === "es" || code === "de" || code === "ja" || code === "ar" || code === "fr" ? code : "en");
   const termLang = lang(vocab.book.term);
   const meaningLang = lang(vocab.book.meaning);
   for (const lesson of vocab.lessons) {

@@ -63,6 +63,8 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `vocab-extract.py` | Collins *3000 words and phrases* PDF → vocabulary file |
 | `vocab-extract-4000.py` | *Vocabulary 4000* PDF → vocabulary file |
 | `vocab-extract-japanese.py` | *Japanese vocabulary for English speakers* EPUB → vocabulary file (standard library only) |
+| `vocab-extract-lernwortschatz.py` | *Lernwortschatz* word lists (Markdown tables, a folder or a zip) → vocabulary file (standard library only) |
+| `vocab-extract-nietzsche.py` | Nietzsche vocabulary CSV → vocabulary file (standard library only) |
 
 ### `public/` — copied as is into the build
 
@@ -97,6 +99,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `migrations/` | Schema, see [Database](database.md#migrations) |
 | `check-quiz.ts` | Verification of the generators (`npm run check:quiz`) |
 | `check-gcp.ts` | The Google Cloud answers computed again for `check:quiz` (IAM, firewalls, subnets, Cloud Run, availability) |
+| `check-econ.ts` | The economics answers computed again for `check:quiz` (incidence, areas, Pigou, Samuelson, Gini, monopsony, insurance…) |
 | `quiz-bank.ts` | Question bank storage, import, flags; `/api/quiz/bank`, `/api/quiz/flags`. See [Question bank](question-bank.md). |
 | `quiz-import.ts`, `quiz-flags.ts` | `npm run quiz:import`, `npm run quiz:flags` |
 | `vocab.ts` | Vocabulary storage, import, sessions, answers; `/api/vocab` |
@@ -194,6 +197,7 @@ server; each signs up its own account.
 | `auth.spec.ts` | Sign-up, sign-in, sign-out; cookie attributes; 401 without a session; cross-site refusal; isolation between accounts; rate limit; provider sign-up and sign-in, email takeover refused, cancel; linking a provider and the last method; players' own sign-in by username and by provider; signing out other devices |
 | `landing.spec.ts` | Landing page to sign-up and sign-in and back; translations; returning browsers open on sign-in |
 | `vocab.spec.ts` | Lessons from the file; a multiple-choice session with a wrong answer asked again and boxes on the server; written answers with accents, articles and the Spanish letters; reviews; the English definition book (definitions chosen, words written, same-meaning roots, examples); scope |
+| `shelves.spec.ts` | A language with two books: one card, sessions across the books ticked (cards naming their book, wrong options from it), a book left out, opened and back, the books apart on the home page; a section skipped and put back, a word skipped from its card; German forms and French articles in written answers |
 | `players.spec.ts` | Creating, remembering, switching and deleting players; duplicate names; cascade delete |
 | `arithmetic.spec.ts` | Units-first typing and server grading, carries, refused answers, two-digit multiplication lines, division with remainder, remembered settings, the PDF worksheet |
 | `quiz.spec.ts` | A test graded identically by the browser, the server and an independent rebuild from its seed; keyboard; language change mid-test; blanks; replay; giving up |

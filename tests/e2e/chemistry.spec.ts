@@ -1,12 +1,13 @@
 import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import { generateQuiz, localized, registerBank, topicsFor, typeable, type Level, type Question } from "../../shared/quiz/index.ts";
-import { parseBankFile, toBank } from "../../shared/quiz/bank-file.ts";
+import { parseBankFile } from "../../shared/quiz/bank-file.ts";
+import { serverBank } from "./bank";
 import { chooseTopics, newPlayer, openActivity, profileOf, rebuild, takeMixedQuiz, takeQuiz } from "./helpers";
 
-/** The invented bank the server imported at startup (playwright.config.ts): revision 1. */
+/** The invented banks the server imported at startup (playwright.config.ts): chemistry at revision 1. */
 const fixture = parseBankFile(JSON.parse(readFileSync("tests/e2e/fixtures/bank.json", "utf8")));
-registerBank(toBank(fixture, 1));
+registerBank(serverBank());
 
 /** A seed whose test of `count` questions starts with a written question. */
 function seedStartingWritten(count: number, level: Level = "chemistry"): { seed: number; first: Question } {
@@ -71,7 +72,7 @@ test("physical chemistry: its own topics and levels; calculations and written qu
 
   const { body, server } = await takeQuiz(page, (i) => i % 4);
   expect(body.level).toBe("chemistry");
-  expect(body.bank).toBe(1);
+  expect(body.bank).toBe(2);
   expect(body.seed).toBe(seed);
   expect(server.correct).toBe(rebuild(body).correct);
   await expect(page.locator("#quiz-status")).toHaveText("✓ Résultat enregistré");
@@ -127,7 +128,7 @@ test("the advanced level: written questions only, in the app's language, its own
   const wrong = (first.correct + 1) % 4;
   const { body, server } = await takeQuiz(page, (i) => (i === 0 ? wrong : 0));
   expect(body.level).toBe("chemistryAdvanced");
-  expect(body.bank).toBe(1);
+  expect(body.bank).toBe(2);
   expect(server.correct).toBe(rebuild(body).correct);
   expect(rebuild(body).questions.every((q) => q.verify.kind === "choice")).toBe(true);
 

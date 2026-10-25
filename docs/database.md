@@ -140,7 +140,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert` |
+| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -202,8 +202,9 @@ account once shared, `app_settings.bank_visibility`). See
 
 | Table | Content |
 |---|---|
-| `quiz_bank_meta` | key/value: `book`, `title`, `source`, `revision` |
-| `quiz_bank_units` | `id` ("1A"), `topic`, `position`, `title` (JSON by language) |
+| `quiz_bank_meta` | key/value: `revision` |
+| `quiz_bank_books` | `id` ("atkins-12", "gruber"), `title`, `source` (the badge, "Gruber"), `position` |
+| `quiz_bank_units` | `id` ("1A", "GR07"), `book`, `topic`, `position`, `title` (JSON by language) |
 | `quiz_bank` | `id`, `unit`, `level` (`core` or `advanced`), `section`, `position`; `prompt`, `correct`, `wrong`, `explanation` as JSON by language; `from_revision`, `until_revision` (null while in the file) |
 | `quiz_flags` | `id`, `user_id`, `at`, `skill`, `question` (bank id or formula), `note`, `resolved` |
 
@@ -247,6 +248,8 @@ runs: add tables and columns, rename or drop later.
 | `023_onboarding` | `accounts.onboarded_at`, `users.onboarded_at`; set to `0` for the accounts and players already there, who do not get the tour on their next visit. |
 | `024_react_levels` | `quiz_results.level` accepts the four React levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `025_gcp_levels` | `quiz_results.level` accepts the four Google Cloud levels. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `026_bank_books` | The bank holds several books: `quiz_bank_books`, filled from the old `book`, `title`, `source` meta keys (then removed); `book` on `quiz_bank_units`. |
+| `027_econ_levels` | `quiz_results.level` accepts `econ` and `econAdvanced`. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 

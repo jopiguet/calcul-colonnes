@@ -26,6 +26,13 @@
  * German: capitals are not checked (nouns are capitalised, a phone may not
  * be); ß may be written ss (as in Switzerland) and ä, ö, ü as ae, oe, ue:
  * both are right. A plain vowel for an umlaut (Mutter for Mütter) is "accent".
+ * A word printed with its plural ("die Ehre, -n", "der Plan, ¨e") or a verb
+ * with its forms ("finden, findet, fand, hat gefunden") is right on its own:
+ * "die Ehre", "finden"; the case it governs ("+ D") is optional. A separable
+ * verb's bar ("an|sehen") is not typed: "ansehen".
+ *
+ * French and English answers (the language of the meanings): an article is
+ * optional ("la patience" or "patience", "l'honneur" or "honneur").
  *
  * Arabic answers are written in Arabic script or in the book's transliteration
  * (the entry's reading). Vowel marks are optional: كتاب and كِتاب are both
@@ -43,7 +50,7 @@
 import { hasKana, kanaToRomaji } from "./kana";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "es" | "de" | "ja" | "ar";
+export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar";
 
 export const COUNTS_AS_RIGHT: ReadonlySet<Verdict> = new Set(["right", "accent", "typo"]);
 
@@ -52,6 +59,8 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   de: ["der", "die", "das", "den", "dem", "des", "ein", "eine", "einen", "einem", "einer", "eines"],
   // English entries have no article ("key"), but "the key" and "to walk" are fine.
   en: ["the", "a", "an", "to"],
+  // French, answered in one's own language: an article is optional ("l'" is elided, see withoutArticle).
+  fr: ["le", "la", "les", "un", "une", "des", "du"],
   ja: [],
   ar: [],
 };
@@ -67,6 +76,8 @@ export function normalise(text: string): string {
     .normalize("NFC")
     .toLowerCase()
     .replace(/[’`´]/g, "'")
+    // A separable verb's bar: "an|sehen" is typed "ansehen".
+    .replace(/(\p{L})\|(\p{L})/gu, "$1$2")
     .replace(/\.\.\.|…/g, " ")
     .replace(/[¿?¡!.,;:"«»“”()؟،؛]/g, " ")
     .replace(/\s*\/\s*/g, " / ")
@@ -163,8 +174,46 @@ function distance(a: string, b: string, limit = 2): number {
 }
 
 function withoutArticle(text: string, lang: AnswerLang): string {
+  if (lang === "fr" && /^[ld]'\p{L}/u.test(text)) return text.slice(2);
   const words = text.split(" ");
   return words.length > 1 && ARTICLES[lang].includes(words[0]!) ? words.slice(1).join(" ") : text;
+}
+
+/** A plural after a German noun: "-n", "¨e", "-", "-ns", "die Charaktere". */
+const PLURAL = /^(?:-\S*|¨\S*|"\S*|(?:der|die|das)\s+\S+)$/;
+/** The last form of a German verb: "hat gefunden", "ist gelungen + D". */
+const PERFECT = /^(?:\(?sich\)?\s+)?(?:hat|ist)\s/;
+
+/**
+ * The German word without what the book prints with it: its plural ("die
+ * Ehre, -n" → "die Ehre"), its forms ("finden, findet, fand, hat gefunden" →
+ * "finden"), the case it governs ("+ D"). [] when there is nothing to leave out.
+ */
+export function germanHeads(expected: string): string[] {
+  const heads = new Set<string>();
+  const alternatives = expected.split(/\s+\/\s+/);
+  for (const printed of alternatives) {
+    // Brackets holding forms or a case ("(sieht … an, sah … an, hat angesehen)", "(+ D)") are left out;
+    // others stay optional, as everywhere ("(sich) an|sehen").
+    const alternative = printed.replace(/\s*\([^()]*[,+][^()]*\)/g, "").trim();
+    const parts = alternative.split(/,\s*/).map((p) => p.trim()).filter(Boolean);
+    let head = alternative;
+    if (parts.length >= 2) {
+      const rest = parts.slice(1).map((p) => p.replace(/\s*\+\s*[DAG]\b.*$/, "").trim());
+      if (rest.every((p) => PLURAL.test(p)) || (rest.length >= 2 && PERFECT.test(rest[rest.length - 1]!))) head = parts[0]!;
+    }
+    head = head.replace(/\s*\(?\+\s*[DAG]\)?/g, "").trim();
+    // Each side of " / " on its own too: "der Täter, - / die Täterin".
+    if (head && (head !== printed.trim() || alternatives.length > 1)) heads.add(head);
+  }
+  return [...heads];
+}
+
+/** Every form accepted in this language: as printed, and for German the word alone. */
+function formsFor(expected: string, lang: AnswerLang): string[] {
+  const forms = acceptedForms(expected);
+  if (lang !== "de") return forms;
+  return [...new Set([...forms, ...germanHeads(expected).flatMap(acceptedForms)])];
 }
 
 /** Japanese text: full-width forms folded (ＣＤ → CD, （ → (), Japanese punctuation and spaces dropped. */
@@ -269,11 +318,12 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   if (lang === "ar") return gradeArabic(given, expected, reading);
   const answer = normalise(given);
   if (!answer) return "wrong";
-  const forms = acceptedForms(expected);
+  const forms = formsFor(expected, lang);
 
-  // English: an article or "to" is optional on either side.
-  const candidates = lang === "en" ? forms.flatMap((f) => [f, withoutArticle(f, "en")]) : forms;
-  const tried = lang === "en" ? [answer, withoutArticle(answer, "en")] : [answer];
+  // English and French: an article (or "to") is optional on either side.
+  const optional = lang === "en" || lang === "fr";
+  const candidates = optional ? forms.flatMap((f) => [f, withoutArticle(f, lang)]) : forms;
+  const tried = optional ? [answer, withoutArticle(answer, lang)] : [answer];
 
   if (candidates.some((f) => tried.includes(f))) return "right";
   if (lang === "de" && candidates.some((f) => tried.some((t) => germanFold(t) === germanFold(f)))) return "right";
@@ -295,8 +345,10 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
 /** Written answers are asked only for short entries; long phrases stay multiple choice. */
 export const MAX_WRITTEN_WORDS = 4;
 
-export function writable(expected: string): boolean {
-  const single = acceptedForms(expected).filter((f) => !f.includes("/"));
+export function writable(expected: string, lang = ""): boolean {
+  // German printed with its forms: the word alone is what is typed.
+  const heads = lang === "de" ? germanHeads(expected) : [];
+  const single = (heads.length ? heads.flatMap(acceptedForms) : acceptedForms(expected)).filter((f) => !f.includes("/"));
   const longest = Math.max(...single.map((f) => f.split(" ").length));
   return longest <= MAX_WRITTEN_WORDS;
 }

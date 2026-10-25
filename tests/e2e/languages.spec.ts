@@ -39,7 +39,7 @@ for (const lang of LANGUAGES) {
     await page.locator(".choice").first().click();
     await page.locator(".vocab-verdict").waitFor();
     await expectClean(page);
-    await page.locator(".vocab-card .actions button.ghost").click();
+    await page.locator(".vocab-card .actions button.ghost:not(.vocab-skip-card)").click();
     await page.locator(".vocab-done").waitFor();
     await expectClean(page);
 

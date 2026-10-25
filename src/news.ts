@@ -23,6 +23,30 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.27.0",
+    fr: [
+      "📚 Les livres d'une même langue se rangent ensemble : une carte « Vocabulaire allemand » pour Collins, Lernwortschatz et Nietzsche, des séances sur les livres cochés, et chaque livre toujours ouvrable seul.",
+      "Devoirs : « Passer toute la section » dans la liste des mots, et « Passer ce mot » sur une carte.",
+      "Allemand : « die Ehre » suffit pour « die Ehre, -n », « finden » pour un verbe avec ses formes. En français, l'article est facultatif.",
+    ],
+    es: [
+      "📚 Los libros de un mismo idioma se agrupan: una tarjeta «Vocabulario de alemán» para Collins, Lernwortschatz y Nietzsche, sesiones con los libros marcados, y cada libro se sigue abriendo solo.",
+      "Deberes: «Saltar toda la sección» en la lista de palabras, y «Saltar esta palabra» en una tarjeta.",
+      "Alemán: «die Ehre» basta para «die Ehre, -n», «finden» para un verbo con sus formas. En francés, el artículo es opcional.",
+    ],
+    en: [
+      "📚 Books of one language are shelved together: one \"German vocabulary\" card for Collins, Lernwortschatz and Nietzsche, sessions across the books ticked, and each book still opens on its own.",
+      "Homework: \"Skip the whole section\" in the word list, and \"Skip this word\" on a card.",
+      "German: \"die Ehre\" is enough for \"die Ehre, -n\", \"finden\" for a verb with its forms. In French, the article is optional.",
+    ],
+  },
+  {
+    version: "6.26.0",
+    fr: ["🏛️ Économie publique : un nouveau QCM sur la fiscalité, le bien-être, l'assurance sociale et le travail, avec des questions sur des graphiques (aires, courbes de Lorenz, monopsone…)."],
+    es: ["🏛️ Economía pública: un nuevo test sobre impuestos, bienestar, seguro social y trabajo, con preguntas sobre gráficos (áreas, curvas de Lorenz, monopsonio…)."],
+    en: ["🏛️ Public economics: a new test on taxation, welfare, social insurance and labour, with questions on charts (areas, Lorenz curves, monopsony…)."],
+  },
+  {
     version: "6.25.0",
     fr: ["☁️ Google Cloud : un nouveau QCM en quatre niveaux, centré sur IAM et l'infrastructure, avec des stratégies d'accès et des règles de pare-feu à évaluer."],
     es: ["☁️ Google Cloud: un nuevo test en cuatro niveles, centrado en IAM y la infraestructura, con políticas de acceso y reglas de firewall que evaluar."],

@@ -28,7 +28,7 @@ import { loadBank, quizView, replayTest } from "./quiz";
 import { privacyView } from "./privacy";
 import { subjectOf } from "../shared/quiz";
 import { activityBar, activityId, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
-import { showVocabStats, vocabBusy, vocabView } from "./vocab";
+import { shelvesOf, showVocabStats, vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
@@ -182,7 +182,7 @@ async function render(): Promise<void> {
   // left keeps its own width while the next one loads.
   const wide = Boolean(state.user) && ((state.view === "play" && state.settings.mode === "home") || (state.view === "progress" && progressScope === "all"));
   // Another screen opens at its top; the same screen redrawn (a choice, an answer) stays where it was.
-  const screenOf = [state.view, state.settings.mode, state.settings.quizSubject, state.settings.discoverActivity, state.settings.vocabBook, progressScope].join("|");
+  const screenOf = [state.view, state.settings.mode, state.settings.quizSubject, state.settings.discoverActivity, state.settings.vocabBook, state.settings.vocabShelf, progressScope].join("|");
   const paint = (...nodes: Node[]): void => {
     app.classList.toggle("is-wide", wide);
     // The kind of page counts too: a test's setup, a question and the result are three screens.
@@ -246,7 +246,7 @@ async function render(): Promise<void> {
           onBook: mine
             ? (book) => {
                 showVocabStats(book.id);
-                updateSettings({ mode: "vocab", vocabBook: book.id });
+                updateSettings({ mode: "vocab", vocabBook: book.id, vocabShelf: null });
                 show("play");
               }
             : undefined,
@@ -274,13 +274,32 @@ async function render(): Promise<void> {
       state.user = fresh;
       paint(topBar(), await homeView({ user: fresh, open, showProgress: () => openProgress(fresh, "play", "all") }));
     } else if (state.settings.mode === "vocab") {
-      const books = await vocabBooks();
-      const book = books.find((b) => b.id === state.settings.vocabBook) ?? books[0];
-      if (!book) return goHome();
+      // The player's books: those the account hides are not on its shelves either.
+      const hidden = state.user.hidden ?? [];
+      const books = (await vocabBooks()).filter((b) => !hidden.includes(`vocab-${b.slug}`));
+      const shelves = shelvesOf(books);
+      const onShelf = shelves.find((s) => s.lang === state.settings.vocabShelf) ?? null;
+      // A book, or its shelf's page when a shelf is open without one.
+      const book = books.find((b) => b.id === state.settings.vocabBook) ?? (onShelf ? null : books[0]);
+      if (!book && !onShelf) return goHome();
+      const shelf = book ? (shelves.find((s) => s.lang === book.term && s.books.includes(book)) ?? null) : onShelf;
       paint(
         topBar(),
         activityBar("", goHome), // the book's page has its own title
-        await vocabView({ user: state.user, book, rerender: () => void render() }),
+        await vocabView({
+          user: state.user,
+          book: book ?? null,
+          shelf,
+          openBook: (id) => {
+            updateSettings({ vocabBook: id, ...(id === null ? {} : { vocabShelf: shelf?.lang ?? null }) });
+            void render();
+          },
+          openShelf: (lang) => {
+            updateSettings({ vocabShelf: lang, vocabBook: null });
+            void render();
+          },
+          rerender: () => void render(),
+        }),
       );
     } else if (state.settings.mode === "discover") {
       const physics = PHYSICS_LABS.includes(state.settings.discoverActivity);
@@ -291,10 +310,10 @@ async function render(): Promise<void> {
       const user = state.user;
       const subject = state.settings.quizSubject;
       // Physical chemistry: the written questions are part of the tests, on both sides.
-      if (subject === "chemistry") await loadBank();
+      if (subject === "chemistry" || subject === "econ") await loadBank();
       paint(
         topBar(),
-        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : subject === "ts" ? "modeTs" : subject === "react" ? "modeReact" : subject === "gcp" ? "modeGcp" : "modeQuiz"), goHome),
+        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : subject === "ts" ? "modeTs" : subject === "react" ? "modeReact" : subject === "gcp" ? "modeGcp" : subject === "econ" ? "modeEcon" : "modeQuiz"), goHome),
         quizView({
           user,
           subject,
@@ -365,7 +384,7 @@ function next(): void {
 async function hiddenNow(user: User): Promise<boolean> {
   const hidden = user.hidden ?? [];
   if (hidden.length === 0) return false;
-  const { mode, quizSubject, discoverActivity, vocabBook } = state.settings;
+  const { mode, quizSubject, discoverActivity, vocabBook, vocabShelf } = state.settings;
   const activity: Activity | null =
     mode === "columns"
       ? { mode: "columns" }
@@ -374,7 +393,9 @@ async function hiddenNow(user: User): Promise<boolean> {
         : mode === "discover"
           ? { mode: "discover", activity: discoverActivity }
           : mode === "vocab"
-            ? { mode: "vocab", book: vocabBook ?? (await vocabBooks())[0]?.id ?? -1 }
+            ? vocabShelf && vocabBook === null
+              ? { mode: "shelf", lang: vocabShelf }
+              : { mode: "vocab", book: vocabBook ?? (await vocabBooks())[0]?.id ?? -1 }
             : null;
   if (!activity) return false;
   const id = activityId(activity, activity.mode === "vocab" ? await vocabBooks() : []);
@@ -383,7 +404,8 @@ async function hiddenNow(user: User): Promise<boolean> {
 
 /** Opens an activity from the home page. */
 function open(activity: Activity): void {
-  if (activity.mode === "vocab") updateSettings({ mode: "vocab", vocabBook: activity.book });
+  if (activity.mode === "vocab") updateSettings({ mode: "vocab", vocabBook: activity.book, vocabShelf: null });
+  else if (activity.mode === "shelf") updateSettings({ mode: "vocab", vocabBook: null, vocabShelf: activity.lang });
   else if (activity.mode === "discover") updateSettings({ mode: "discover", discoverActivity: activity.activity });
   else if (activity.mode === "quiz") updateSettings({ mode: "quiz", quizSubject: activity.subject ?? "maths" });
   else updateSettings({ mode: activity.mode });

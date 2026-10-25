@@ -17,12 +17,20 @@
  *
  * Every text is an object by language: "en" is required, "fr" and "es" may be
  * added later without changing anything else. Inline formulas go between $…$.
+ *
+ * Format 2 holds several books: "books" lists them, and each unit names its
+ * book ("book": "gruber-3"); everything else is the same.
+ *
+ * { "format": 2,
+ *   "books": [ { "id": "gruber-3", "title": "…", "source": "Gruber" }, … ],
+ *   "units": [ { "id": "GR07", "book": "gruber-3", "topic": "econMarketFailure", "title": { "en": "Public goods" } } ],
+ *   "questions": [ … ] }
  */
-import { BANK_LEVELS, type Bank, type BankLevel, type BankQuestion, type BankUnit } from "./bank";
-import { CHEMISTRY_TOPICS, type ChemistryTopic, type Localized } from "./types";
+import { BANK_LEVELS, BANK_TOPICS, type Bank, type BankBook, type BankLevel, type BankQuestion, type BankTopic, type BankUnit } from "./bank";
+import type { Localized } from "./types";
 
 export interface BankFile {
-  book: { id: string; title: string; source: string };
+  books: BankBook[];
   units: BankUnit[];
   questions: Omit<BankQuestion, "topic" | "from" | "until">[];
 }
@@ -49,13 +57,21 @@ const text = (value: unknown, max: number): string | null =>
 /** Validates a parsed bank file; throws with the place of the first problem. */
 export function parseBankFile(data: unknown): BankFile {
   const root = (data ?? {}) as Record<string, unknown>;
-  if (root.format !== 1) throw new Error('unsupported file: "format" must be 1');
-  const b = (root.book ?? {}) as Record<string, unknown>;
-  const id = text(b.id, 60);
-  const title = text(b.title, 200);
-  const source = text(b.source, 60);
-  if (!id || !/^[a-z0-9][a-z0-9-]*$/.test(id)) throw new Error('book: "id" must be lower-case letters, digits and "-"');
-  if (!title || !source) throw new Error('book: "title" and "source" are required');
+  if (root.format !== 1 && root.format !== 2) throw new Error('unsupported file: "format" must be 1 or 2');
+  const rawBooks = root.format === 1 ? [root.book] : root.books;
+  if (!Array.isArray(rawBooks) || rawBooks.length === 0) throw new Error('"books" must be a non-empty list');
+  const books: BankBook[] = rawBooks.map((raw, i) => {
+    const b = (raw ?? {}) as Record<string, unknown>;
+    const where = root.format === 1 ? "book" : `book ${i + 1}`;
+    const id = text(b.id, 60);
+    const title = text(b.title, 200);
+    const source = text(b.source, 60);
+    if (!id || !/^[a-z0-9][a-z0-9-]*$/.test(id)) throw new Error(`${where}: "id" must be lower-case letters, digits and "-"`);
+    if (!title || !source) throw new Error(`${where}: "title" and "source" are required`);
+    return { id, title, source };
+  });
+  const bookIds = new Set(books.map((b) => b.id));
+  if (bookIds.size !== books.length) throw new Error("two books with the same id");
   if (!Array.isArray(root.units) || root.units.length === 0) throw new Error('"units" must be a non-empty list');
   if (!Array.isArray(root.questions) || root.questions.length === 0) throw new Error('"questions" must be a non-empty list');
 
@@ -64,8 +80,10 @@ export function parseBankFile(data: unknown): BankFile {
     const where = `unit ${i + 1}`;
     const unitId = text(u.id, 20);
     if (!unitId || !/^[0-9A-Za-z]+$/.test(unitId)) throw new Error(`${where}: "id" must be letters and digits ("1A")`);
-    if (!CHEMISTRY_TOPICS.includes(u.topic as ChemistryTopic)) throw new Error(`${where}: "topic" must be one of ${CHEMISTRY_TOPICS.join(", ")}`);
-    return { id: unitId, topic: u.topic as ChemistryTopic, title: localizedText(u.title, where) };
+    if (!BANK_TOPICS.includes(u.topic as BankTopic)) throw new Error(`${where}: "topic" must be one of ${BANK_TOPICS.join(", ")}`);
+    const book = root.format === 1 ? books[0]!.id : text(u.book, 60);
+    if (!book || !bookIds.has(book)) throw new Error(`${where}: "book" must be one of the books`);
+    return { id: unitId, book, topic: u.topic as BankTopic, title: localizedText(u.title, where) };
   });
   const unitIds = new Set(units.map((u) => u.id));
   if (unitIds.size !== units.length) throw new Error("two units with the same id");
@@ -100,16 +118,18 @@ export function parseBankFile(data: unknown): BankFile {
       explanation: localizedText(q.explanation, `${where}, explanation`),
     };
   });
-  return { book: { id, title, source }, units, questions };
+  return { books, units, questions };
 }
 
-/** A file as a bank at one revision, every question available from it (tests and checks). */
-export function toBank(file: BankFile, revision: number): Bank {
-  const topicOf = new Map(file.units.map((u) => [u.id, u.topic]));
+/** Files as a bank at one revision, every question available from it (tests and checks). */
+export function toBank(files: BankFile | BankFile[], revision: number): Bank {
+  const all = Array.isArray(files) ? files : [files];
+  const units = all.flatMap((f) => f.units);
+  const topicOf = new Map(units.map((u) => [u.id, u.topic]));
   return {
     revision,
-    source: file.book.source,
-    units: file.units,
-    questions: file.questions.map((q) => ({ ...q, topic: topicOf.get(q.unit)!, from: revision })),
+    books: all.flatMap((f) => f.books),
+    units,
+    questions: all.flatMap((f) => f.questions.map((q) => ({ ...q, topic: topicOf.get(q.unit)!, from: revision }))),
   };
 }

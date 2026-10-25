@@ -1,0 +1,31 @@
+{
+ "format": 2,
+ "book": { "id": "test-german-school", "title": "School words", "kind": "translation", "term": "de", "meaning": "fr" },
+ "lessons": [
+  {
+   "title": "Kapitel 1", "subtitle": "Chapitre 1",
+   "sections": [
+    {
+     "title": "1.1", "subtitle": "die Geduld",
+     "entries": [
+      { "term": "die Geduld", "meaning": "la patience" },
+      { "term": "die Ehre, -n", "meaning": "l'honneur" },
+      { "term": "finden, findet, fand, hat gefunden", "meaning": "trouver" },
+      { "term": "(sich) an|sehen (sieht … an, sah … an, hat angesehen)", "meaning": "regarder" },
+      { "term": "Sie hat keine Geduld.", "meaning": "Elle n'a pas de patience.", "group": "Beispiele" }
+     ]
+    },
+    {
+     "title": "1.2", "subtitle": "der Mut",
+     "entries": [
+      { "term": "der Mut", "meaning": "le courage" },
+      { "term": "mutig", "meaning": "courageux / courageuse" },
+      { "term": "ruhig", "meaning": "calme / tranquille" },
+      { "term": "der Plan, ¨e", "meaning": "le plan" },
+      { "term": "lebhaft", "meaning": "vif / animé" }
+     ]
+    }
+   ]
+  }
+ ]
+}

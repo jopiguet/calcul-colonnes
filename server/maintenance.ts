@@ -23,14 +23,17 @@ export async function maintain(db: Database): Promise<void> {
   const applied = await migrate(db);
   if (applied.length > 0) log.info(`migrations applied: ${applied.join(", ")}`);
 
-  // QUIZ_BANK_FILE: imported when the server has no bank yet; later changes: npm run quiz:import.
+  // QUIZ_BANK_FILE: one or more files, comma-separated, imported when the server
+  // has no bank yet; later changes: npm run quiz:import.
   const bank = new BankStore(db);
-  const bankFile = process.env.QUIZ_BANK_FILE?.trim();
-  if (bankFile && (await bank.revision()) === 0) {
-    if (existsSync(bankFile)) {
-      const report = await importBankFile(db, bankFile);
-      log.info(`question bank imported from ${bankFile}: ${report.questions} questions, revision ${report.revision}`);
-    } else log.warn(`question bank: QUIZ_BANK_FILE ${bankFile} not found`);
+  const bankFiles = (process.env.QUIZ_BANK_FILE ?? "").split(",").map((f) => f.trim()).filter((f) => f !== "");
+  if (bankFiles.length > 0 && (await bank.revision()) === 0) {
+    for (const bankFile of bankFiles) {
+      if (existsSync(bankFile)) {
+        const report = await importBankFile(db, bankFile);
+        log.info(`question bank imported from ${bankFile}: ${report.questions} questions, revision ${report.revision}`);
+      } else log.warn(`question bank: QUIZ_BANK_FILE ${bankFile} not found`);
+    }
   }
   // Tests rebuilt below may draw from the bank.
   await bank.refresh();

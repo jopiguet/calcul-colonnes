@@ -196,6 +196,8 @@ export interface VocabCard {
   script?: "kana" | "kanji";
   /** Characters book: met in a word the player has started in another Japanese book. */
   met?: boolean;
+  /** A session across a shelf's books: the title of the word's book. */
+  source?: string;
 }
 
 export interface VocabSectionInfo {

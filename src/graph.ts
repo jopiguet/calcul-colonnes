@@ -1,9 +1,10 @@
-import type { Graph } from "../shared/quiz";
+import type { Chart, Graph } from "../shared/quiz";
 
 /**
  * Draws the graphs of the QCM as inline SVG: curves on a grid with one line
- * per unit, or a plane in space through its three intercepts (cavalier
- * projection). Colours come from CSS classes, so light and dark themes apply.
+ * per unit, a plane in space through its three intercepts (cavalier
+ * projection), or an economic diagram (labelled axes, named curves, shaded
+ * areas). Colours come from CSS classes, so light and dark themes apply.
  */
 
 const NS = "http://www.w3.org/2000/svg";
@@ -19,8 +20,101 @@ function node<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string
 const fmt = (v: number): string => (Math.round(v * 100) / 100).toString();
 
 export function drawGraph(graph: Graph, label: string, size: "large" | "small" = "large"): SVGSVGElement {
-  return graph.type === "curves" ? curves(graph, label, size) : plane(graph, label, size);
+  return graph.type === "curves" ? curves(graph, label, size) : graph.type === "chart" ? chart(graph, label, size) : plane(graph, label, size);
 }
+
+/** An economic diagram, scaled to a fixed frame whatever its units. */
+function chart(g: Chart, label: string, size: "large" | "small"): SVGSVGElement {
+  const width = 300;
+  const height = 220;
+  const left = 36;
+  const right = 22;
+  const top = 16;
+  const bottom = 26;
+  const [x0, x1] = g.x;
+  const [y0, y1] = g.y;
+  const px = (x: number): number => left + ((x - x0) / (x1 - x0)) * (width - left - right);
+  const py = (y: number): number => height - bottom - ((y - y0) / (y1 - y0)) * (height - top - bottom);
+  const svg = node("svg", { viewBox: `0 0 ${width} ${height}`, class: `graph chart ${size}`, role: "img", "aria-label": label });
+  const id = `graph-clip-${++clipIds}`;
+  const defs = node("defs", {});
+  const clip = node("clipPath", { id });
+  clip.append(node("rect", { x: px(x0), y: py(y1), width: px(x1) - px(x0), height: py(y0) - py(y1) }));
+  const hatch = node("pattern", { id: `${id}-hatch`, width: 6, height: 6, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" });
+  hatch.append(node("line", { x1: 0, y1: 0, x2: 0, y2: 6, class: "c-hatch" }));
+  defs.append(clip, hatch);
+  svg.append(defs);
+
+  // Areas first, under everything.
+  for (const a of g.areas ?? []) {
+    const pts = a.points.map(([x, y]) => `${fmt(px(x))},${fmt(py(y))}`).join(" ");
+    svg.append(node("polygon", { points: pts, class: `c-area c-${a.style}` }));
+    if (a.style === "loss") svg.append(node("polygon", { points: pts, fill: `url(#${id}-hatch)`, class: "c-area-hatch" }));
+  }
+
+  // Axes from the origin of the frame, with arrows, names and values.
+  const ax = px(x0);
+  const ay = py(y0);
+  svg.append(node("line", { x1: ax, y1: ay, x2: px(x1) + 10, y2: ay, class: "c-axis" }));
+  svg.append(node("line", { x1: ax, y1: ay, x2: ax, y2: py(y1) - 10, class: "c-axis" }));
+  svg.append(node("path", { d: `M${fmt(px(x1) + 10)} ${fmt(ay)} l-6 -3 v6 z`, class: "c-arrow" }));
+  svg.append(node("path", { d: `M${fmt(ax)} ${fmt(py(y1) - 10)} l-3 6 h6 z`, class: "c-arrow" }));
+  svg.append(node("text", { x: px(x1) + 12, y: ay + 16, class: "c-axis-label", "text-anchor": "end" }, g.xLabel));
+  svg.append(node("text", { x: ax + 7, y: py(y1) - 4, class: "c-axis-label", "text-anchor": "start" }, g.yLabel));
+  for (const t of g.xTicks ?? []) {
+    svg.append(node("line", { x1: px(t), y1: ay, x2: px(t), y2: ay + 3, class: "c-axis" }));
+    svg.append(node("text", { x: px(t), y: ay + 13, class: "c-tick", "text-anchor": "middle" }, fmtTick(t)));
+  }
+  for (const t of g.yTicks ?? []) {
+    svg.append(node("line", { x1: ax - 3, y1: py(t), x2: ax, y2: py(t), class: "c-axis" }));
+    svg.append(node("text", { x: ax - 5, y: py(t) + 3.5, class: "c-tick", "text-anchor": "end" }, fmtTick(t)));
+  }
+
+  for (const d of g.drops ?? []) {
+    svg.append(node("path", { d: `M${fmt(px(d.x))} ${fmt(ay)} V${fmt(py(d.y))} H${fmt(ax)}`, class: "c-drop" }));
+  }
+
+  // Curves, clipped to the frame; each label at its last visible point.
+  const layer = node("g", { "clip-path": `url(#${id})` });
+  const labels: { x: number; y: number; text: string; style: string }[] = [];
+  for (const c of g.curves) {
+    let pts: [number, number][] = c.points ?? [];
+    if (c.fn) {
+      pts = [];
+      for (let i = 0; i <= 240; i++) {
+        const x = x0 + ((x1 - x0) * i) / 240;
+        const y = c.fn(x);
+        if (Number.isFinite(y)) pts.push([x, y]);
+      }
+    }
+    const inside = pts.filter(([x, y]) => x >= x0 && x <= x1 && y >= y0 && y <= y1);
+    if (pts.length < 2) continue;
+    const d = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"}${fmt(px(x))} ${fmt(py(Math.max(y0 - (y1 - y0), Math.min(y1 + (y1 - y0), y))))}`).join("");
+    layer.append(node("path", { d, class: c.style === "guide" ? "c-guide" : c.style === "alt" ? "c-curve c-alt" : "c-curve" }));
+    const end = inside[inside.length - 1];
+    if (c.label && end) labels.push({ x: px(end[0]), y: py(end[1]), text: c.label, style: c.style ?? "main" });
+  }
+  svg.append(layer);
+  for (const l of labels) {
+    const x = Math.min(width - 2, l.x + 3);
+    const y = Math.max(10, Math.min(ay - 4, l.y - 3));
+    svg.append(node("text", { x, y, class: `c-label c-label-${l.style}`, "text-anchor": l.x > width - 30 ? "end" : "start" }, l.text));
+  }
+
+  for (const a of g.areas ?? []) {
+    if (!a.label) continue;
+    const cx = a.points.reduce((s, [x]) => s + x, 0) / a.points.length;
+    const cy = a.points.reduce((s, [, y]) => s + y, 0) / a.points.length;
+    svg.append(node("text", { x: px(cx), y: py(cy) + 4, class: "c-area-label", "text-anchor": "middle" }, a.label));
+  }
+  for (const p of g.points ?? []) {
+    svg.append(node("circle", { cx: px(p.x), cy: py(p.y), r: 3, class: "g-point" }));
+    if (p.label) svg.append(node("text", { x: px(p.x) + 5, y: py(p.y) - 5, class: "c-label" }, p.label));
+  }
+  return svg;
+}
+
+const fmtTick = (v: number): string => (Number.isInteger(v) ? String(v) : String(Math.round(v * 100) / 100));
 
 function curves(g: Extract<Graph, { type: "curves" }>, label: string, size: "large" | "small"): SVGSVGElement {
   const unit = 20;

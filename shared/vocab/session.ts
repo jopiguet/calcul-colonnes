@@ -42,6 +42,8 @@ export interface SessionEntry {
 
 /** How a book is studied. */
 export interface BookInfo {
+  /** The book's id: wrong options come from the same book (a shelf session mixes books). */
+  id?: number;
   /**
    * translation: meaning in another language; definition: meaning explained
    * in the same language; characters: kana and kanji (docs/characters.md).
@@ -91,7 +93,8 @@ export function sides(entry: SessionEntry, direction: Direction): { prompt: stri
 export function canWrite(entry: SessionEntry, direction: Direction): boolean {
   if (direction === "recognise" && entry.book.kind === "definition") return false;
   if (entry.book.kind === "characters") return direction === "read" || writable(entry.meaning) && direction === "recognise";
-  return writable(sides(entry, direction).answer);
+  const { answer, lang } = sides(entry, direction);
+  return writable(answer, lang);
 }
 
 function shuffle<T>(items: T[], random: () => number): T[] {
@@ -122,12 +125,14 @@ export function distractors(entry: SessionEntry, direction: Direction, pool: Ses
   // alphabetical list it gives look-alikes (abase, abash, abate): the whole
   // book is used instead, keeping only an explicit group (prefixes with prefixes).
   // Characters: kana with kana, kanji with kanji, meanings in the same language.
+  // A shelf session mixes books: options in the same book, so in the same languages.
+  const own = entry.book.id === undefined ? pool : pool.filter((e) => e.book.id === undefined || e.book.id === entry.book.id);
   const kin =
     entry.book.kind === "characters"
-      ? pool.filter(
+      ? own.filter(
           (e) => Boolean(e.readings) === Boolean(entry.readings) && (direction !== "recognise" || e.book.meaningLang === entry.book.meaningLang),
         )
-      : pool;
+      : own;
   const tiers = entry.book.alphabetical
     ? [entry.group ? kin.filter((e) => e.group === entry.group) : [], kin]
     : [

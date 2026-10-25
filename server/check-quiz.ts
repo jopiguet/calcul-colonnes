@@ -15,17 +15,22 @@ import katex from "katex";
 import {
   generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, REACT_QUESTIONS, REACT_LINE_MAX, REACT_IMPORTS, GCP_QUESTIONS, GCP_LINE_MAX, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
+  type Chart,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
 import { parseBankFile, toBank } from "../shared/quiz/bank-file.ts";
 import { gcpAnswer, validNewSubnet } from "./check-gcp.ts";
+import { econAnswer } from "./check-econ.ts";
 
 // The invented test bank (never a book's content): written questions are checked
 // like the others. `--bank FILE` checks a real bank file instead (kept in data/).
-const bankArg = process.argv.indexOf("--bank");
-const bankFile = bankArg >= 0 ? process.argv[bankArg + 1] : "tests/e2e/fixtures/bank.json";
-if (!bankFile) throw new Error("usage: npm run check:quiz -- [seeds] [--bank FILE]");
-registerBank(toBank(parseBankFile(JSON.parse(readFileSync(bankFile, "utf8"))), 1));
+// Several books: `--bank A --bank B` (the chemistry and the economics banks).
+const bankFiles = process.argv.flatMap((a, i) => (a === "--bank" ? [process.argv[i + 1]] : []));
+if (bankFiles.some((f) => !f)) throw new Error("usage: npm run check:quiz -- [seeds] [--bank FILE]…");
+const banks = (bankFiles.length > 0 ? (bankFiles as string[]) : ["tests/e2e/fixtures/bank.json", "tests/e2e/fixtures/econ-bank.json"]).map((f) =>
+  parseBankFile(JSON.parse(readFileSync(f, "utf8"))),
+);
+registerBank(toBank(banks, 1));
 
 const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
 const near = (a: number, b: number, tol: number): boolean =>
@@ -502,6 +507,9 @@ function isRight(q: Question, o: Option): boolean {
     case "gcp":
       // Google Cloud: the answer computed again by an evaluator of the checks' own.
       return v.model.type === "subnetNew" ? validNewSubnet(v.model.existing, o.tex) : o.tex === gcpAnswer(v.model);
+    case "econ":
+      // Economics: the answer computed again by an evaluator of the checks' own.
+      return econAnswer(v.model, o.tex);
     case "react": {
       const right = o === q.options[q.correct];
       const run = { program: v.program, clicks: v.clicks, show: v.show, strict: v.strict ?? false };
@@ -604,6 +612,17 @@ function checkGraphs(q: Question): void {
   if (prompt?.type === "curves") {
     for (const c of prompt.curves) if (share(prompt, visible(prompt, c.fn)) < 0.3) throw new Error("prompt curve mostly outside its window");
   }
+  if (prompt?.type === "chart") {
+    const [x0, x1] = prompt.x;
+    for (const c of prompt.curves) {
+      if (!c.fn) continue;
+      const ys = Array.from({ length: SAMPLES_X + 1 }, (_, i) => c.fn!(x0 + ((x1 - x0) * i) / SAMPLES_X));
+      if (ys.filter((y) => Number.isFinite(y) && y >= prompt.y[0] && y <= prompt.y[1]).length / ys.length < 0.1) throw new Error(`chart curve ${c.label ?? ""} mostly outside its window`);
+    }
+    const inside = (x: number, y: number): boolean => x >= prompt.x[0] - 1e-9 && x <= prompt.x[1] + 1e-9 && y >= prompt.y[0] - 1e-9 && y <= prompt.y[1] + 1e-9;
+    for (const p of [...(prompt.points ?? []), ...(prompt.drops ?? [])]) if (!inside(p.x, p.y)) throw new Error("chart point outside its window");
+    for (const a of prompt.areas ?? []) if (a.points.some(([x, y]) => !inside(x, y))) throw new Error("chart area outside its window");
+  }
   const graphs = q.options.map((o) => o.graph);
   if (graphs.every((g) => g === undefined)) return;
   if (graphs.some((g) => g === undefined)) throw new Error("some options drawn, some not");
@@ -621,6 +640,10 @@ function checkGraphs(q: Question): void {
         const gap = Math.max(0, ...drawn[i]!.map((y, k) => Math.abs(clip(y) - clip(drawn[j]![k]!))).filter(Number.isFinite));
         if (gap < 0.5) throw new Error(`options ${i} and ${j} look the same`);
       }
+  } else if (first.type === "chart") {
+    const all = graphs as Chart[];
+    if (all.some((g) => g.type !== "chart" || g.x.join() !== first.x.join() || g.y.join() !== first.y.join())) throw new Error("charts in different windows");
+    if (new Set(all.map((g) => JSON.stringify(g.curves.map((c) => c.points ?? [])))).size !== all.length) throw new Error("two charts drawn alike");
   } else {
     const all = graphs as Extract<Graph, { type: "plane" }>[];
     if (all.some((g) => g.type !== "plane" || g.extent !== first.extent)) throw new Error("planes on different axes");

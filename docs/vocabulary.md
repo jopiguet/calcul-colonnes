@@ -13,6 +13,9 @@ Two kinds of book are supported:
 | | | *key* | the Spanish: *la llave* |
 | translation | *German 3000 words and phrases* | *die Straße* | its meaning: *street* |
 | | | *street* | the German: *die Straße* or *die Strasse* |
+| translation | *Lernwortschatz* (German–French) | *die Ehre, -n* | its meaning: *l'honneur* or *honneur* |
+| | | *l'honneur* | the German: *die Ehre* |
+| translation | *Nietzsche: the vocabulary of six works* | *der Abgrund* | its meaning: *abyss* or *gulf* |
 | translation | *Arabic 3000 words and phrases* | الأُسبوع *al usbou’* | its meaning: *week* |
 | | | *week* | the Arabic: الأُسبوع, الأسبوع or *al usbou’* |
 | translation | *Japanese vocabulary for English speakers* | 猫 *neko* | its meaning: *cat* |
@@ -28,6 +31,7 @@ extracted from a book, and works with the Japanese word books: see
 
 - [Content and copyright](#content-and-copyright)
 - [Importing a book](#importing-a-book)
+- [Shelves: several books of one language](#shelves)
 - [The file format](#the-file-format)
 - [The learning method](#the-learning-method)
 - [How answers are graded](#how-answers-are-graded)
@@ -42,8 +46,8 @@ own, and stay in your database:
 - **Storage:** the import puts the entries in your database (SQLite or Neon). They are never part of the project, a build or a release.
 - **Access:** keep the app behind its sign-in, with `REGISTRATION=invite` (or `closed`) if the server is reachable from the internet. A book is imported *private*: only the owner's account (the first one) sees it, whoever else has an account. The owner can share a book under an open licence from the Account page (see [Authentication › Family release](authentication.md#family-release)).
 
-The tests use six invented books (`tests/e2e/fixtures/`): 27 Spanish
-entries, 5 German ones, 5 Arabic ones, 20 English ones, 13 Japanese ones and 17 characters.
+The tests use seven invented books (`tests/e2e/fixtures/`): 27 Spanish
+entries, two German books (5 German–English entries, 10 German–French ones), 5 Arabic ones, 20 English ones, 13 Japanese ones and 17 characters.
 
 ## Importing a book
 
@@ -65,16 +69,25 @@ python3 tools/vocab-extract-4000.py "Vocabulary 4000.pdf" > data/vocab-english.j
 # Japanese vocabulary for English speakers, 5000 words (EPUB; no pip install needed)
 python3 tools/vocab-extract-japanese.py "Japanese vocabulary.epub" > data/vocab-japanese.json
 
+# Lernwortschatz: a folder (or a zip) of word lists, one Markdown table per section
+python3 tools/vocab-extract-lernwortschatz.py Lernwortschatz/ > data/vocab-lernwortschatz.json
+
+# Nietzsche: the cumulative CSV kept by hand
+python3 tools/vocab-extract-nietzsche.py nietzsche_vocabulary_cumulative.csv > data/vocab-nietzsche.json
+
 npm run check:vocab -- data/vocab-english.json   # optional: every entry can be asked and graded
 npm run vocab:import -- data/vocab-spanish.json  # into the database of .env
 npm run vocab:import -- data/vocab-german.json
 npm run vocab:import -- data/vocab-arabic.json
 npm run vocab:import -- data/vocab-english.json
 npm run vocab:import -- data/vocab-japanese.json
+npm run vocab:import -- data/vocab-lernwortschatz.json
+npm run vocab:import -- data/vocab-nietzsche.json
 ```
 
 Each file holds one book, identified by its id (`collins-spanish`,
-`collins-german`, `collins-arabic`, `english-4000`, `japanese-5000`). Importing a file updates that book only. The
+`collins-german`, `collins-arabic`, `english-4000`, `japanese-5000`,
+`lernwortschatz`, `nietzsche`). Importing a file updates that book only. The
 Spanish book keeps the id of its first version, so progress carries over; it
 is shown by its title, *3000 words and phrases*.
 
@@ -96,11 +109,18 @@ nothing changed, when the file's book id is already on the server:
 `npm run vocab:import -- file.json --replace` imports it anyway.
 
 **Importing again** (after a new extraction, or a corrected file) keeps every
-player's progress on the entries that did not change. An entry is the same
-when it is in the same lesson and section, with the same term and meaning.
-Entries no longer in the file are removed, with their progress. The import
-runs in one transaction, and takes a second or two for a whole book, on Neon
-too.
+player's progress, and the words they skipped, on the entries still there,
+wherever they moved. A book that grows (a file added, a section inserted, a
+line corrected) loses nothing. An entry of the file is matched to one already
+imported, in this order (`matchEntries` in `server/vocab.ts`):
+
+1. the same term and meaning, anywhere in the book;
+2. the same term: its meaning was corrected;
+3. the same meaning in the same section: its term was corrected.
+
+Entries no longer in the file are removed, with their progress. The report
+counts them: `(12 new, 3 corrected, 1 removed)`. The import runs in one
+transaction, and takes a second or two for a whole book, on Neon too.
 
 ### *Spanish 3000 words and phrases* (Collins)
 
@@ -135,6 +155,49 @@ Arabic needs rebuilding:
 - **Brackets** come out in either glyph. In reading order they are made to open, then close.
 - **Headings:** the Arabic half sits on the heading's line, or on the next one when a long English title ends with "|".
 - **Transliteration:** the small Latin lines under each entry. A line ending in "-" goes on without a space.
+
+### *Lernwortschatz* (German–French)
+
+A school book whose word lists are kept as one file per section: a
+two-column Markdown table, often with a `.txt` name, as exported for the
+quiz apps. The lists grow: add a file or correct a line, and run the two
+commands again. `tools/vocab-extract-lernwortschatz.py` reads a folder or a
+zip, with the standard library only:
+
+| In the files | In the app |
+|---|---|
+| A file's name: `…-01-3.txt`; `…-16-1--16-6.txt` | Section 1.3 of lesson 1 (*Kapitel 1*); one section 16.1–16.6. Sorted by number, whatever the prefix. A `titles.txt` beside the lists can name them: `1 = Der Mensch`, `1.3 = Charakter`. |
+| The header (`Deutsch`, `German`, `Allemand` / `Français`) | Which column is the German: some lists put the French first |
+| A row | An entry, German studied, French meanings |
+| `## Prépositions` inside a file | The group of the words under it (wrong options come from the group) |
+| A sentence (ending in . ! ?, or a lower-case phrase of four words or more) | An entry of its own, in the group *Beispiele* |
+| `(1)`, `(2)` after a word (paired synonyms) | Dropped. Two words with the same meaning are both right when it is asked. |
+| `an/sehen` (separable verb) | `an\|sehen`: the app reads `/` as a choice. The bar is not typed. |
+| `patient, patiente`; `1. cher ; 2. gentil` | `patient / patiente`, `cher / gentil`: either is right |
+| A legend line ("Abréviations : A = accusatif…") | Skipped |
+
+The plural (`die Ehre, -n`, `der Plan, ¨e`, `der Charakter, die Charaktere`)
+and the forms of a verb (`finden, findet, fand, hat gefunden`) stay on the
+card, as in the book. In a written answer the word alone is right: see
+[German answers](#how-answers-are-graded).
+
+The first lists given (26 files) make 10 lessons, 26 sections, 2,086 entries,
+431 of them example sentences.
+
+### *Nietzsche: the vocabulary of six works* (German–English)
+
+A list kept by hand, as a CSV (the spreadsheet beside it has the same rows;
+the CSV is read, by its column names). `tools/vocab-extract-nietzsche.py`:
+
+| Column | In the app |
+|---|---|
+| *Topic* ("4. Psychology, drives and character") | Lesson, in the topics' order, without the number |
+| *Grammatical / lexical type* | Section: nouns by gender (*Maskulina (der)*, *Feminina (die)*, *Neutra (das)*), *Verben*, *Adjektive und Adverbien*, *Wendungen*. Nouns of one gender together make the article what is learnt; sections do not move as rows are added. |
+| *German*, *English equivalent(s)* | The entry; English synonyms separated by ";" written with "/" |
+| *Study note*, *Exact-form occurrences*, *Corpus example / fragment* | The note shown after the answer: the study note when it is not the list's standard caution, how often the word occurs, then the fragment, cut at whole words |
+
+687 rows: 12 lessons, 42 sections. The book carries a credit line saying what
+the list is.
 
 ### *Vocabulary 4000*
 
@@ -184,6 +247,27 @@ The app has no Japanese font of its own: Japanese text is marked `lang="ja"`
 and uses the system's Japanese fonts (Hiragino on Apple devices, Yu Gothic on
 Windows, Noto Sans CJK on Android and Linux), so kanji take their Japanese
 forms.
+
+## Shelves
+
+A language with two books or more (German: Collins, Lernwortschatz and
+Nietzsche) has one **shelf**: one card on the home page (*📚 Vocabulaire
+allemand*), and a page of its own. Nothing to set up: the books are grouped by
+the language studied (`book.term`). The Characters book stays apart.
+
+| On the shelf's page | |
+|---|---|
+| *Réviser maintenant*, *Apprendre dans les livres cochés*, *Réviser tout le vocabulaire* | Sessions across the books ticked (`GET /api/vocab/session?kind=books&books=3,7,9`). Each card says which book its word comes from, and its wrong options come from that book. |
+| *Livres des séances* | Each book with its progress: a box to take it in or out of the sessions, *Ouvrir* to open it on its own page (lessons, word lists, statistics) |
+| *Nouveaux mots* | *Au hasard* across the books, or *Livre après livre* |
+| *Sur l'accueil* | *Regroupés* (default): one card for the shelf. *Séparés*: each book its own card, as before. |
+
+A book of a shelf links to its shelf's page (*📚 Vocabulaire allemand : les 3
+livres*), so the shelf is one tap away when the books are apart too. The
+choices are remembered in the browser (`localStorage`), per shelf.
+
+A book the player's account hides is not on the shelf; a shelf left with one
+book is shown as that book.
 
 ## The file format
 
@@ -324,7 +408,11 @@ so neither is a wrong option for the other.
 ## Skipping words
 
 A player can skip a word from a lesson's word list (*📖 Voir les mots*,
-`GET /api/vocab/lessons/:id/words`). A skipped word:
+`GET /api/vocab/lessons/:id/words`), a whole section there (*Passer toute la
+section*, *Tout remettre*: `PUT /api/vocab/skips` with `entryIds`), or a word
+from its card once answered (*Passer ce mot*: it leaves the session too). This
+is how homework is followed: the sections not asked for are skipped, and put
+back the week they are. A skipped word:
 
 - **never comes up in a session:** learning, reviewing or due, whatever its boxes say (`VocabStore.session` leaves it out; it can still be a wrong option for another word);
 - **is counted apart:** `skipped` in each section's progress, not `new`, and its cards are never due;
@@ -345,6 +433,9 @@ spacing are ignored.
 | accent | Right letters, missing or wrong accent or tilde (*el lapiz*, *el nino*, *eclat*) | right, with the spelling shown |
 | typo | One letter off, in a word of at least 5 letters | right, with the spelling shown |
 | article | Spanish or German: right word, missing or wrong article (*lápiz*, *la lápiz*; *Straße*, *der Straße*) | **wrong**: the gender is part of the word |
+
+In English and French answers (the language of the meanings) the article is
+optional: *key*, *the key*; *patience*, *la patience*; *honneur*, *l'honneur*.
 | wrong | Anything else | wrong |
 
 **Another entry with the same prompt is right too.** If the answer is wrong
@@ -389,7 +480,22 @@ keyboard may not. *ß* may be written *ss*, as in Switzerland, and *ä*, *ö*, *
 as *ae*, *oe*, *ue*: both are right. A plain vowel for an umlaut (*die Kuche*)
 counts as an accent slip: right, with the spelling shown. The articles are
 *der*, *die*, *das* and their cases, and *ein*, *eine* and theirs. Buttons
-under the field add *ä ö ü ß Ä Ö Ü*.
+under the field add *ä ö ü ß Ä Ö Ü* (and *é è ê à â ç ô î û ù œ* for French
+answers).
+
+A word printed with what a school book adds to it is right on its own
+(`germanHeads` in `shared/vocab/grade.ts`):
+
+| Printed | Right |
+|---|---|
+| `die Ehre, -n`, `der Plan, ¨e`, `der Gedanke, -ns, -n`, `der Charakter, die Charaktere` | *die Ehre*, *der Plan*, *der Gedanke*, *der Charakter* (*Ehre*: article) |
+| `finden, findet, fand, hat gefunden`; `will, wollte, hat gewollt` | *finden*; *will* |
+| `der Täter, - / die Täterin` | *der Täter*, *die Täterin* |
+| `gelingen, gelingt, gelang, ist gelungen + D`; `diskutieren über + A` | *gelingen*; *diskutieren über* (the case is not typed) |
+| `(sich) an\|sehen (sieht … an, sah … an, hat angesehen)` | *ansehen*, *sich ansehen* |
+
+Typed out in full, as printed, is right too. Such a word is asked in writing
+when the word alone has four words or fewer, whatever the length of its forms.
 
 **Japanese answers** (`shared/vocab/grade.ts`, `shared/vocab/kana.ts`):
 
@@ -407,9 +513,11 @@ as printed, while *konnichiha* is a typo for *konnichiwa*.
 
 A multiple-choice answer is compared with the option as printed.
 
-`npm run check:vocab` runs 93 grading cases (21 of them Japanese, 16 Arabic, 12 German), the
-scheduling rules, the three kinds of session, the rules of definition books
-and the rōmaji on Japanese cards. With a file, it also
+`npm run check:vocab` runs 113 grading cases (21 of them Japanese, 16 Arabic, 24 German, 8 French), the
+scheduling rules, the three kinds of session, the rules of definition books,
+the rōmaji on Japanese cards, and imports of a list that evolves (a section
+inserted, a meaning and a term corrected, a section dropped: progress and
+skips stay with the words). With a file, it also
 checks that every entry is accepted when typed as printed, in both
 directions.
 
@@ -420,6 +528,8 @@ directions.
 | `tools/vocab-extract.py` | Collins PDF → JSON |
 | `tools/vocab-extract-4000.py` | *Vocabulary 4000* PDF → JSON |
 | `tools/vocab-extract-japanese.py` | Japanese EPUB → JSON |
+| `tools/vocab-extract-lernwortschatz.py` | *Lernwortschatz* word lists (Markdown tables) → JSON |
+| `tools/vocab-extract-nietzsche.py` | Nietzsche CSV → JSON |
 | `shared/vocab/format.ts` | File formats 1 and 2, and their validation |
 | `shared/vocab/grade.ts` | Grading of written answers |
 | `shared/vocab/kana.ts` | Kana → rōmaji, for Japanese answers typed in kana |
@@ -429,10 +539,10 @@ directions.
 | `server/vocab.ts` | Storage, import, sessions, answers; the `/api/vocab` routes |
 | `server/vocab-import.ts` | `npm run vocab:import` |
 | `server/check-vocab.ts` | `npm run check:vocab` |
-| `src/vocab.ts`, `src/vocab-i18n.ts` | A book's page: lessons, cards, summary; texts in three languages |
+| `src/vocab.ts`, `src/vocab-i18n.ts` | A book's page and a shelf's: lessons, cards, summary; texts in three languages |
 | `src/vocab-stats.ts` | A book's statistics page |
 | `src/home.ts` | The home page, with the books and what is due in each |
-| `tests/e2e/vocab.spec.ts` | Browser tests, on the invented books |
+| `tests/e2e/vocab.spec.ts`, `tests/e2e/shelves.spec.ts` | Browser tests, on the invented books |
 
 To change the intervals, the number of new words per session or when written
 answers start, edit the constants in `shared/vocab/schedule.ts`. They apply

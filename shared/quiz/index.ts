@@ -24,6 +24,7 @@ import { series } from "./series";
 import { gases } from "./gases";
 import { tsBasics, tsFunctions, tsObjects, tsNarrowing, tsGenerics, tsTypeLevel, tsRuntime, tsTooling } from "./typescript";
 import { reactComponents, reactState, reactEffects, reactRendering, reactData, reactTyping, reactTooling, reactTesting } from "./react";
+import { econWelfare, econMarketFailure, econPublicChoice, econIncidence, econOptimalTax, econTaxDesign, econSocialInsurance, econRedistribution, econLabour } from "./econ";
 import { gcpHierarchy, gcpIam, gcpServiceAccounts, gcpSecurity, gcpNetworking, gcpCompute, gcpStorage, gcpOperations } from "./gcp";
 import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
 import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
@@ -39,7 +40,7 @@ import { atoms } from "./atoms";
 import { kinetics, dynamics } from "./kinetics";
 import { spectroscopy, resonance } from "./spectroscopy";
 import { statistical } from "./statistical";
-import { EMPTY_BANK, bankLevelOf, bankSkills, type Bank, type BankLevel } from "./bank";
+import { EMPTY_BANK, bankLevelOf, bankSkills, bankTopicsOf, type Bank, type BankLevel } from "./bank";
 import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 
 export * from "./types";
@@ -128,6 +129,15 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   gcpCompute,
   gcpStorage,
   gcpOperations,
+  econWelfare,
+  econMarketFailure,
+  econPublicChoice,
+  econIncidence,
+  econOptimalTax,
+  econTaxDesign,
+  econSocialInsurance,
+  econRedistribution,
+  econLabour,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -194,7 +204,8 @@ export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION,
   });
   const tier = bankLevelOf(level);
   if (tier === null) return generated;
-  return [...generated, ...[...bankKinds(revision, tier)].filter(([, k]) => topics.includes(k.topic)).map(([id]) => id)];
+  const own = bankTopicsOf(level) as readonly Topic[];
+  return [...generated, ...[...bankKinds(revision, tier)].filter(([, k]) => topics.includes(k.topic) && own.includes(k.topic)).map(([id]) => id)];
 }
 
 /** Share of a test given to review questions, and how often one kind may come back in a test. */
@@ -268,6 +279,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "ts":
     case "react":
     case "gcp":
+    case "econ":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);
@@ -329,7 +341,8 @@ export function generateQuiz({ seed, level, topics: asked, count, focus = [], ve
   const rng = createRng(seed);
   if (revision > bank.revision) throw new Error(`question bank revision ${revision} is not loaded (${bank.revision} is)`);
   const tier = bankLevelOf(level);
-  const fromBank = tier !== null ? bankKinds(revision, tier) : new Map<string, { topic: Topic; generator: Generator }>();
+  const own = bankTopicsOf(level) as readonly Topic[];
+  const fromBank = tier !== null ? new Map([...bankKinds(revision, tier)].filter(([, k]) => own.includes(k.topic))) : new Map<string, { topic: Topic; generator: Generator }>();
   // Topics without a kind of question at this level are left out (every topic
   // of version 2 and before has both levels, so no saved test changes).
   const topics = asked.filter((topic) => skillsFor(level, [topic], version, revision).length > 0);
@@ -391,5 +404,6 @@ export { REACT_IMPORTS, REACT_LINE_MAX } from "./react-output";
 export { GCP_QUESTIONS } from "./gcp";
 export { GCP_LINE_MAX } from "./gcp-output";
 export type { GcpModel } from "./gcp-model";
+export type { EconModel } from "./econ-model";
 export { formatRows } from "./sql-output";
 export type { LinuxQuestion } from "./linux/types";

@@ -8,14 +8,15 @@ import { appFooter, newsBanner } from "./news";
 import { currentLang, type Lang } from "./i18n";
 import { qt } from "./quiz-i18n";
 import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from "./store";
-import { bookTitle } from "./vocab";
+import { bookTitle, shelfApart, shelvesOf } from "./vocab";
+import { langName, vt } from "./vocab-i18n";
 import { dt } from "./discover/i18n";
 import { pt } from "./discover/physics-i18n";
 import { at } from "./discover/astro-i18n";
 import { bt } from "./discover/bio-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
-import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
+import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -44,6 +45,8 @@ const texts = {
     tsText: "Les types, et le JavaScript qui tourne dessous, en quatre niveaux",
     reactText: "Composants, état, effets, et la pile autour : Vite, tests, déploiement",
     gcpText: "IAM, comptes de service, réseau et pare-feu, en quatre niveaux",
+    economics: "Économie",
+    econText: "Fiscalité, bien-être, assurance sociale, travail : notions et graphiques",
     nothingShown: "Aucune activité n'est ouverte pour ce joueur. Elles se choisissent sur la page Compte.",
     chemistryText: "Chimie physique : calculs et notions, Focus par Focus",
     home: "Accueil",
@@ -74,6 +77,8 @@ const texts = {
     tsText: "Los tipos, y el JavaScript que se ejecuta debajo, en cuatro niveles",
     reactText: "Componentes, estado, efectos, y la pila alrededor: Vite, tests, despliegue",
     gcpText: "IAM, cuentas de servicio, red y firewall, en cuatro niveles",
+    economics: "Economía",
+    econText: "Impuestos, bienestar, seguro social, trabajo: conceptos y gráficos",
     nothingShown: "No hay ninguna actividad abierta para este jugador. Se eligen en la página Cuenta.",
     chemistryText: "Química física: cálculos y conceptos, Focus por Focus",
     home: "Inicio",
@@ -104,6 +109,8 @@ const texts = {
     tsText: "The types, and the JavaScript running underneath, in four levels",
     reactText: "Components, state, effects, and the stack around them: Vite, tests, deployment",
     gcpText: "IAM, service accounts, networking and firewalls, in four levels",
+    economics: "Economics",
+    econText: "Taxation, welfare, social insurance, labour: concepts and charts",
     nothingShown: "No activity is open for this player. They are chosen on the Account page.",
     chemistryText: "Physical chemistry: calculations and concepts, Focus by Focus",
     home: "Home",
@@ -118,6 +125,8 @@ export type Activity =
   | { mode: "columns" }
   | { mode: "quiz"; subject?: Subject }
   | { mode: "vocab"; book: number }
+  /** The books of one language studied, together (src/vocab.ts, shelvesOf). */
+  | { mode: "shelf"; lang: string }
   | { mode: "discover"; activity: DiscoverActivity };
 
 export interface HomeContext {
@@ -150,13 +159,16 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "columns":
       return "columns";
     case "quiz":
-      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : activity.subject === "ts" ? "ts" : activity.subject === "react" ? "react" : activity.subject === "gcp" ? "gcp" : "quiz";
+      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : activity.subject === "ts" ? "ts" : activity.subject === "react" ? "react" : activity.subject === "gcp" ? "gcp" : activity.subject === "econ" ? "econ" : "quiz";
     case "discover":
       return `discover-${activity.activity}`;
     case "vocab": {
       const book = books.find((b) => b.id === activity.book);
       return book ? `vocab-${book.slug}` : null;
     }
+    case "shelf":
+      // Not hidden on its own: it holds the player's books that are not.
+      return null;
   }
 }
 
@@ -176,6 +188,7 @@ export function activityCatalog(books: VocabBookInfo[]): { group: string; activi
       ],
     },
     { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }, { id: "rust", title: qt("modeRust") }, { id: "ts", title: qt("modeTs") }, { id: "react", title: qt("modeReact") }, { id: "gcp", title: qt("modeGcp") }] },
+    { group: ht("economics"), activities: [{ id: "econ", title: qt("modeEcon") }] },
     {
       group: ht("languages"),
       activities: books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
@@ -259,7 +272,9 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
                   ? "react"
                   : (GCP_TOPICS as string[]).includes(topic)
                     ? "gcp"
-                    : "maths";
+                    : (ECON_TOPICS as string[]).includes(topic)
+                      ? "econ"
+                      : "maths";
   const toReview = (subject: Subject): number =>
     profile ? profile.skills.filter((s) => s.status === "review" && subjectOfTopic(s.topic) === subject).length : 0;
   const reviewStatus = (n: number): { text: string; waiting: boolean } | null =>
@@ -318,10 +333,39 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   );
   computing.append(shell);
 
+  // Public economics: concept questions from the books, and calculations on the classic diagrams.
+  const economics = el("div", "activity-group");
+  economics.append(el("h2", "activity-group-title", ht("economics")));
+  const desk = el("div", "activity-grid");
+  desk.append(card("econ", qt("modeEcon"), ht("econText"), reviewStatus(toReview("econ")), () => ctx.open({ mode: "quiz", subject: "econ" })));
+  economics.append(desk);
+
   const languages = el("div", "activity-group");
   languages.append(el("h2", "activity-group-title", ht("languages")));
   const shelf = el("div", "activity-grid");
+  // A language with several books: one card for them all (its page opens each), unless the player keeps them apart.
+  const hiddenBooks = new Set(ctx.user.hidden ?? []);
+  const shown = books.filter((b) => !hiddenBooks.has(`vocab-${b.slug}`));
+  const grouped = new Map(shelvesOf(shown).filter((s) => !shelfApart(s.lang)).map((s) => [s.lang, s]));
+  const placed = new Set<string>();
   for (const book of books) {
+    const together = book.kind !== "characters" && !hiddenBooks.has(`vocab-${book.slug}`) ? grouped.get(book.term) : undefined;
+    if (together) {
+      if (placed.has(together.lang)) continue;
+      placed.add(together.lang);
+      const due = together.books.reduce((sum, b) => sum + (progress?.books[b.id]?.due ?? 0), 0);
+      const started = together.books.some((b) => (progress?.books[b.id]?.started ?? 0) > 0);
+      const words = together.books.reduce((sum, b) => sum + b.entries, 0);
+      const status = due > 0
+        ? { text: due === 1 ? ht("oneWordDue") : ht("wordsDue", { count: due }), waiting: true }
+        : started ? { text: ht("upToDate"), waiting: false } : { text: ht("notStarted", { count: words }), waiting: false };
+      shelf.append(
+        card(`vocab-shelf-${together.lang}`, `📚 ${vt("title", { lang: langName(together.lang) })}`, together.books.map((b) => b.title).join(" · "), status, () =>
+          ctx.open({ mode: "shelf", lang: together.lang }),
+        ),
+      );
+      continue;
+    }
     const mine = progress?.books[book.id];
     const signs = book.kind === "characters";
     const status =
@@ -380,7 +424,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const hidden = new Set(ctx.user.hidden ?? []);
   // On a wide screen, groups sit side by side, each as wide as its cards need.
   const groups = el("div", "home-groups");
-  for (const group of [maths, sciences, computing, chembio, languages, discover, physics, astronomy]) {
+  for (const group of [maths, sciences, computing, economics, chembio, languages, discover, physics, astronomy]) {
     for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
       if (hidden.has(node.dataset.activity!)) node.remove();
     }

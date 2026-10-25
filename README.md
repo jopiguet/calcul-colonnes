@@ -66,6 +66,8 @@ at *lycée / bachillerato* or university level.
 - `chmod`, `umask` and crontab questions are generated, with the usual slips as wrong options; an octal mode can be typed.
 - "What does this print?": `sed` substitutions, `awk` fields and bash's `${f%.*}` on generated input. The wrong outputs are real slips (the `g` flag, fields counted from 0, `#` for `%`), and the check runs every command with the real bash, sed and awk.
 
+**Public economics** — multiple-choice tests at two levels on public and labour economics: welfare economics and social choice, externalities and public goods, public choice, tax incidence, optimal taxation, tax design, social insurance and pensions, inequality and benefits, the labour market. Concept questions are written from eight textbooks you own (kept out of the project, like the Atkins bank); thirteen kinds of question are generated on economic charts (incidence, lettered surplus areas, Pigou, Samuelson, Lorenz curves as answers, monopsony…), each answer computed again by an independent evaluator.
+
 **Physical chemistry** — multiple-choice tests from *Atkins' Physical Chemistry* (12th edition), a book you own: Focuses 1 to 8, 11 to 13, 17 and 18, from gases and the laws of thermodynamics to quantum theory, atomic and molecular spectra, NMR and EPR, statistical thermodynamics, kinetics and reaction dynamics.
 
 - Calculations are generated like the maths questions: 122 kinds, from the perfect gas law to the Nernst equation, hydrogenic spectra, rotational lines, Larmor frequencies, partition functions, half-lives, the Arrhenius and Eyring equations and Marcus theory, with data to three significant figures and units in the options. The wrong options are unit slips and real mistakes: °C for K, kJ mixed with J, C_p for C_V, a log₁₀ for a ln, the ions of a salt counted as one particle, electrode potentials weighted by electrons.
@@ -181,7 +183,7 @@ Settings are read from `.env` (see `.env.example`):
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
-| [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust, 36 TypeScript, 44 React, 40 Google Cloud and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
+| [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust, 36 TypeScript, 44 React, 40 Google Cloud, 13 economics and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |

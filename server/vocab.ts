@@ -40,7 +40,7 @@ const n = (value: unknown): number => Number(value);
 
 /** Entries with their book's kind and languages, for grading and sessions. */
 const ENTRY_COLUMNS = `e.id, e.section_id, e.position, e.term, e.meaning, e.grp, e.feminine, e.note, e.reading,
-  e.readings, e.translations, b.kind, b.term_lang, b.meaning_lang, b.ordering`;
+  e.readings, e.translations, b.id AS entry_book, b.kind, b.term_lang, b.meaning_lang, b.ordering`;
 const ENTRY_JOINS = `FROM vocab_entries e
   JOIN vocab_sections s ON s.id = e.section_id
   JOIN vocab_lessons l ON l.id = s.lesson_id
@@ -88,6 +88,7 @@ function toEntry(row: Row): SessionEntry {
     readings: String(row.readings ?? ""),
     translations: translationsOf(row.translations),
     book: {
+      id: n(row.entry_book),
       kind: bookKind(row.kind),
       termLang: String(row.term_lang),
       meaningLang: String(row.meaning_lang),
@@ -96,8 +97,8 @@ function toEntry(row: Row): SessionEntry {
   };
 }
 
-/** Grading knows Spanish articles, English "the/a/to" and Japanese rōmaji; other languages are graded as plain text. */
-const answerLang = (lang: string): AnswerLang => (lang === "es" || lang === "de" || lang === "ja" || lang === "ar" ? lang : "en");
+/** Grading knows Spanish and German articles, optional French and English ones, Japanese rōmaji and Arabic; other languages are graded as plain text. */
+const answerLang = (lang: string): AnswerLang => (lang === "es" || lang === "de" || lang === "ja" || lang === "ar" || lang === "fr" ? lang : "en");
 
 /** An import that would overwrite another book, or most of one: nothing was changed. */
 export class ImportRefused extends Error {}
@@ -112,6 +113,83 @@ export interface ImportReport {
   entries: number;
   added: number;
   removed: number;
+  /** Kept with their progress, their term or meaning corrected. */
+  changed: number;
+}
+
+/** An entry already in the database, with its place in the book. */
+export interface StoredEntry {
+  id: number;
+  term: string;
+  meaning: string;
+  lesson: number;
+  section: number;
+  sectionId: number;
+  position: number;
+  group: string;
+  feminine: number;
+  note: string;
+  reading: string;
+  readings: string;
+  translations: string;
+}
+
+/** An entry of the file, with its place in the book (positions of lesson, section and entry). */
+export interface PlacedEntry {
+  entry: { term: string; meaning: string };
+  lesson: number;
+  section: number;
+  position: number;
+}
+
+/**
+ * Which stored entry each entry of the file is, so that it keeps its id (and
+ * the players' progress) when the book changes: lines added, sections
+ * inserted, a meaning or a term corrected. In turn, among entries not yet
+ * matched, in the book's order:
+ *
+ * 1. the same term and meaning, anywhere in the book;
+ * 2. the same term (the meaning was corrected), anywhere in the book;
+ * 3. the same meaning in the same section (the term was corrected): the
+ *    stored section most of the file section's other words come from.
+ *
+ * The stored entries left over are the ones the file no longer has.
+ */
+export function matchEntries(stored: StoredEntry[], placed: PlacedEntry[]): { matches: (StoredEntry | undefined)[]; unmatched: StoredEntry[] } {
+  const matches: (StoredEntry | undefined)[] = placed.map(() => undefined);
+  const used = new Set<number>();
+  const pass = (keyOfStored: (s: StoredEntry) => string, keyOfPlaced: (p: PlacedEntry) => string): void => {
+    const free = new Map<string, StoredEntry[]>();
+    for (const row of stored) {
+      if (used.has(row.id)) continue;
+      const key = keyOfStored(row);
+      free.set(key, [...(free.get(key) ?? []), row]);
+    }
+    for (const [i, item] of placed.entries()) {
+      if (matches[i]) continue;
+      const row = free.get(keyOfPlaced(item))?.shift();
+      if (row) {
+        matches[i] = row;
+        used.add(row.id);
+      }
+    }
+  };
+  pass((s) => `${s.term}\u0000${s.meaning}`, (p) => `${p.entry.term}\u0000${p.entry.meaning}`);
+  pass((s) => s.term, (p) => p.entry.term);
+  // Where each section of the file was: the stored section most of its matched words come from.
+  const origin = new Map<string, number>();
+  const votes = new Map<string, Map<number, number>>();
+  for (const [i, item] of placed.entries()) {
+    const row = matches[i];
+    if (!row) continue;
+    const key = `${item.lesson}:${item.section}`;
+    const count = votes.get(key) ?? new Map<number, number>();
+    count.set(row.sectionId, (count.get(row.sectionId) ?? 0) + 1);
+    votes.set(key, count);
+  }
+  for (const [key, count] of votes) origin.set(key, [...count].sort((a, b) => b[1] - a[1])[0]![0]);
+  pass((s) => `${s.sectionId}\u0000${s.meaning}`, (p) => `${origin.get(`${p.lesson}:${p.section}`) ?? -1}\u0000${p.entry.meaning}`);
+  return { matches, unmatched: stored.filter((row) => !used.has(row.id)) };
 }
 
 export class VocabStore {
@@ -138,7 +216,7 @@ export class VocabStore {
     if (!options.replace) await this.checkImport(file);
     return this.db.transaction(async (tx) => {
       const { book } = file;
-      const report: ImportReport = { book: book.id, lessons: 0, sections: 0, entries: 0, added: 0, removed: 0 };
+      const report: ImportReport = { book: book.id, lessons: 0, sections: 0, entries: 0, added: 0, removed: 0, changed: 0 };
 
       const found = await tx.query("SELECT id FROM vocab_books WHERE slug = $1", [book.id]);
       let bookId: number;
@@ -159,6 +237,8 @@ export class VocabStore {
         bookId = n(inserted[0]!.id);
       }
 
+      // 1. Lessons and sections, by their place in the book.
+      const sectionIds: number[][] = [];
       for (const [l, lesson] of file.lessons.entries()) {
         const existing = await tx.query("SELECT id FROM vocab_lessons WHERE book_id = $1 AND position = $2", [bookId, l]);
         let lessonId: number;
@@ -173,99 +253,116 @@ export class VocabStore {
           lessonId = n(inserted[0]!.id);
         }
         report.lessons++;
-
+        const ids: number[] = [];
         for (const [s, section] of lesson.sections.entries()) {
           const present = await tx.query("SELECT id FROM vocab_sections WHERE lesson_id = $1 AND position = $2", [lessonId, s]);
-          let sectionId: number;
           if (present[0]) {
-            sectionId = n(present[0].id);
-            await tx.query("UPDATE vocab_sections SET title = $1, subtitle = $2 WHERE id = $3", [section.title, section.subtitle, sectionId]);
+            ids.push(n(present[0].id));
+            await tx.query("UPDATE vocab_sections SET title = $1, subtitle = $2 WHERE id = $3", [section.title, section.subtitle, n(present[0].id)]);
           } else {
             const inserted = await tx.query(
               "INSERT INTO vocab_sections (lesson_id, position, title, subtitle) VALUES ($1, $2, $3, $4) RETURNING id",
               [lessonId, s, section.title, section.subtitle],
             );
-            sectionId = n(inserted[0]!.id);
+            ids.push(n(inserted[0]!.id));
           }
           report.sections++;
-
-          // Entries matched by their text; the first match wins for duplicates.
-          const rows = await tx.query(
-            "SELECT id, term, meaning, position, grp, feminine, note, reading, readings, translations FROM vocab_entries WHERE section_id = $1 ORDER BY position",
-            [sectionId],
-          );
-          const free = new Map<string, Row[]>();
-          for (const row of rows) {
-            const key = `${row.term}\u0000${row.meaning}`;
-            free.set(key, [...(free.get(key) ?? []), row]);
-          }
-          // New entries go in one statement per section: a few hundred round
-          // trips for a whole book, which matters on a remote database (Neon).
-          const fresh: Param[][] = [];
-          for (const [e, entry] of section.entries.entries()) {
-            const row = free.get(`${entry.term}\u0000${entry.meaning}`)?.shift();
-            const values = [
-              e, entry.group ?? "", entry.feminine ? 1 : 0, entry.note ?? "", entry.reading ?? "",
-              entry.readings ?? "", storedTranslations(entry.translations),
-            ] as const;
-            if (row) {
-              const same =
-                n(row.position) === values[0] &&
-                String(row.grp) === values[1] &&
-                n(row.feminine) === values[2] &&
-                String(row.note ?? "") === values[3] &&
-                String(row.reading ?? "") === values[4] &&
-                String(row.readings ?? "") === values[5] &&
-                String(row.translations ?? "") === values[6];
-              if (!same) {
-                await tx.query(
-                  `UPDATE vocab_entries SET position = $1, grp = $2, feminine = $3, note = $4, reading = $5, readings = $6, translations = $7
-                    WHERE id = $8`,
-                  [...values, n(row.id)],
-                );
-              }
-            } else {
-              fresh.push([sectionId, e, entry.term, entry.meaning, ...values.slice(1)]);
-            }
-            report.entries++;
-          }
-          if (fresh.length > 0) {
-            // At most 100 rows a statement: 1,000 parameters, well below either engine's limit.
-            const width = 10;
-            for (let start = 0; start < fresh.length; start += 100) {
-              const rows = fresh.slice(start, start + 100);
-              const placeholders = rows.map((_, i) => `(${Array.from({ length: width }, (_, k) => `$${i * width + k + 1}`).join(", ")})`);
-              await tx.query(
-                `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations)
-                 VALUES ${placeholders.join(", ")}`,
-                rows.flat(),
-              );
-            }
-            report.added += fresh.length;
-          }
-          for (const left of free.values()) {
-            for (const row of left) {
-              await tx.query("DELETE FROM vocab_entries WHERE id = $1", [n(row.id)]);
-              report.removed++;
-            }
-          }
         }
-        const gone = await tx.query(
-          "SELECT COUNT(*) AS n FROM vocab_entries WHERE section_id IN (SELECT id FROM vocab_sections WHERE lesson_id = $1 AND position >= $2)",
-          [lessonId, lesson.sections.length],
-        );
-        report.removed += n(gone[0]?.n);
-        await tx.query("DELETE FROM vocab_sections WHERE lesson_id = $1 AND position >= $2", [lessonId, lesson.sections.length]);
+        sectionIds.push(ids);
       }
-      const gone = await tx.query(
-        `SELECT COUNT(*) AS n FROM vocab_entries WHERE section_id IN (
-           SELECT s.id FROM vocab_sections s JOIN vocab_lessons l ON l.id = s.lesson_id WHERE l.book_id = $1 AND l.position >= $2)`,
-        [bookId, file.lessons.length],
+
+      // 2. Entries, matched across the whole book (matchEntries): a word keeps
+      // its id, and so the players' progress and skips, wherever it moved.
+      const old = await this.bookEntries(tx, bookId);
+      const placed = file.lessons.flatMap((lesson, l) =>
+        lesson.sections.flatMap((section, s) => section.entries.map((entry, e) => ({ entry, lesson: l, section: s, position: e }))),
       );
-      report.removed += n(gone[0]?.n);
+      const { matches, unmatched } = matchEntries(old, placed);
+      const fresh: Param[][] = [];
+      for (const [i, item] of placed.entries()) {
+        const { entry } = item;
+        const sectionId = sectionIds[item.lesson]![item.section]!;
+        const values = [
+          sectionId, item.position, entry.term, entry.meaning, entry.group ?? "", entry.feminine ? 1 : 0, entry.note ?? "",
+          entry.reading ?? "", entry.readings ?? "", storedTranslations(entry.translations),
+        ] as const;
+        const row = matches[i];
+        if (!row) {
+          fresh.push([...values]);
+          continue;
+        }
+        if (row.term !== entry.term || row.meaning !== entry.meaning) report.changed++;
+        const same =
+          row.sectionId === sectionId &&
+          row.position === item.position &&
+          row.term === entry.term &&
+          row.meaning === entry.meaning &&
+          row.group === values[4] &&
+          row.feminine === values[5] &&
+          row.note === values[6] &&
+          row.reading === values[7] &&
+          row.readings === values[8] &&
+          row.translations === values[9];
+        if (!same) {
+          await tx.query(
+            `UPDATE vocab_entries SET section_id = $1, position = $2, term = $3, meaning = $4, grp = $5, feminine = $6, note = $7,
+                    reading = $8, readings = $9, translations = $10
+              WHERE id = $11`,
+            [...values, row.id],
+          );
+        }
+      }
+      report.entries = placed.length;
+      // New entries: one statement per hundred, a few round trips for a whole book (matters on Neon).
+      const width = 10;
+      for (let start = 0; start < fresh.length; start += 100) {
+        const rows = fresh.slice(start, start + 100);
+        const placeholders = rows.map((_, i) => `(${Array.from({ length: width }, (_, k) => `$${i * width + k + 1}`).join(", ")})`);
+        await tx.query(
+          `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations)
+           VALUES ${placeholders.join(", ")}`,
+          rows.flat(),
+        );
+      }
+      report.added = fresh.length;
+      for (const row of unmatched) await tx.query("DELETE FROM vocab_entries WHERE id = $1", [row.id]);
+      report.removed = unmatched.length;
+
+      // 3. Sections and lessons past the file's end, now empty.
+      for (const [l, lesson] of file.lessons.entries()) {
+        await tx.query(
+          "DELETE FROM vocab_sections WHERE position >= $1 AND lesson_id = (SELECT id FROM vocab_lessons WHERE book_id = $2 AND position = $3)",
+          [lesson.sections.length, bookId, l],
+        );
+      }
       await tx.query("DELETE FROM vocab_lessons WHERE book_id = $1 AND position >= $2", [bookId, file.lessons.length]);
       return report;
     });
+  }
+
+  /** A book's entries as stored, with their place in the book. */
+  private async bookEntries(db: Pick<Database, "query">, bookId: number): Promise<StoredEntry[]> {
+    const rows = await db.query(
+      `SELECT e.id, e.term, e.meaning, e.section_id, e.position, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations,
+              l.position AS lesson_position, s.position AS section_position
+         ${ENTRY_JOINS} WHERE b.id = $1 ORDER BY l.position, s.position, e.position`,
+      [bookId],
+    );
+    return rows.map((row) => ({
+      id: n(row.id),
+      term: String(row.term),
+      meaning: String(row.meaning),
+      lesson: n(row.lesson_position),
+      section: n(row.section_position),
+      sectionId: n(row.section_id),
+      position: n(row.position),
+      group: String(row.grp ?? ""),
+      feminine: n(row.feminine),
+      note: String(row.note ?? ""),
+      reading: String(row.reading ?? ""),
+      readings: String(row.readings ?? ""),
+      translations: String(row.translations ?? ""),
+    }));
   }
 
   private async checkImport(file: VocabFile): Promise<void> {
@@ -279,13 +376,18 @@ export class VocabStore {
           `not imported. Check the file's book id; to replace the book anyway, add --replace.`,
       );
     }
-    const rows = await this.db.query(
-      `SELECT e.term, e.meaning, (SELECT COUNT(*) FROM vocab_progress p WHERE p.entry_id = e.id) AS cards ${ENTRY_JOINS} WHERE b.id = $1`,
-      [n(known.id)],
+    const rows = await this.bookEntries(this.db, n(known.id));
+    const placed = file.lessons.flatMap((lesson, l) =>
+      lesson.sections.flatMap((section, s) => section.entries.map((entry, e) => ({ entry, lesson: l, section: s, position: e }))),
     );
-    const kept = new Set(file.lessons.flatMap((l) => l.sections.flatMap((s) => s.entries.map((e) => `${e.term}\u0000${e.meaning}`))));
-    const gone = rows.filter((r) => !kept.has(`${r.term}\u0000${r.meaning}`));
-    const withProgress = gone.filter((r) => n(r.cards) > 0).length;
+    const gone = matchEntries(rows, placed).unmatched;
+    const started = new Set(
+      (await this.db.query(
+        `SELECT DISTINCT p.entry_id ${ENTRY_JOINS.replace("FROM vocab_entries e", "FROM vocab_progress p JOIN vocab_entries e ON e.id = p.entry_id")} WHERE b.id = $1`,
+        [n(known.id)],
+      )).map((r) => n(r.entry_id)),
+    );
+    const withProgress = gone.filter((r) => started.has(r.id)).length;
     if (rows.length > 0 && gone.length > rows.length * MAX_REMOVED_SHARE && withProgress > 0) {
       throw new ImportRefused(
         `importing this file would remove ${gone.length} of the ${rows.length} entries of "${book.id}", ` +
@@ -358,7 +460,8 @@ export class VocabStore {
   }
 
   private async entries(where: string, params: Param[]): Promise<SessionEntry[]> {
-    const rows = await this.db.query(`SELECT ${ENTRY_COLUMNS} ${ENTRY_JOINS} WHERE ${where} ORDER BY l.position, s.position, e.position`, params);
+    // In the book's order; across books (a shelf), book after book.
+    const rows = await this.db.query(`SELECT ${ENTRY_COLUMNS} ${ENTRY_JOINS} WHERE ${where} ORDER BY b.position, l.position, s.position, e.position`, params);
     return rows.map(toEntry);
   }
 
@@ -412,6 +515,35 @@ export class VocabStore {
       await this.db.query("DELETE FROM vocab_skips WHERE user_id = $1 AND entry_id = $2", [userId, entryId]);
     }
     return true;
+  }
+
+  /** Skips several words, or puts them back (a whole section): false if one is unknown, and then nothing changes. */
+  async setSkippedMany(userId: number, entryIds: number[], skipped: boolean, now: number): Promise<boolean> {
+    const ids = [...new Set(entryIds.map(Number))];
+    const found = await this.db.query(`SELECT COUNT(*) AS n FROM vocab_entries WHERE id IN (${ids.join(",") || "0"})`);
+    if (n(found[0]?.n) !== ids.length) return false;
+    await this.db.transaction(async (tx) => {
+      for (const id of ids) {
+        if (skipped) {
+          await tx.query(
+            "INSERT INTO vocab_skips (user_id, entry_id, at) VALUES ($1, $2, $3) ON CONFLICT (user_id, entry_id) DO NOTHING",
+            [userId, id, now],
+          );
+        } else {
+          await tx.query("DELETE FROM vocab_skips WHERE user_id = $1 AND entry_id = $2", [userId, id]);
+        }
+      }
+    });
+    return true;
+  }
+
+  /** The books these entries belong to (to check each is visible). */
+  async booksOf(entryIds: number[]): Promise<number[]> {
+    const rows = await this.db.query(
+      `SELECT DISTINCT l.book_id FROM vocab_entries e JOIN vocab_sections s ON s.id = e.section_id JOIN vocab_lessons l ON l.id = s.lesson_id
+        WHERE e.id IN (${entryIds.map(Number).join(",") || "0"})`,
+    );
+    return rows.map((r) => n(r.book_id));
   }
 
   /** A lesson's words for a player: what each is, how far it is learnt, whether it is skipped. */
@@ -547,7 +679,7 @@ export class VocabStore {
 
   async session(
     userId: number,
-    target: { kind: "section" | "lesson" | "all"; id: number },
+    target: { kind: "section" | "lesson" | "all"; id: number } | { kind: "books"; ids: number[] },
     purpose: SessionPurpose,
     size: number,
     preference: ModePreference,
@@ -555,17 +687,19 @@ export class VocabStore {
     newOrder: NewOrder = "book",
     lang?: TranslationLang,
   ) {
-    // The whole book: only the entries the session can use, not all 4,000.
+    // The whole book, or several books of a shelf: only the entries the session can use, not all 4,000.
+    const books = target.kind === "books" ? target.ids.filter((id) => Number.isInteger(id)) : target.kind === "all" ? [target.id] : [];
+    const inBooks = `l.book_id IN (${books.map(Number).join(",") || "0"})`;
     const entries =
       target.kind === "section"
         ? await this.entries("e.section_id = $1", [target.id])
         : target.kind === "lesson"
           ? await this.entries("l.id = $1", [target.id])
           : purpose === "learn"
-            ? await this.entries("l.book_id = $1", [target.id])
+            ? await this.entries(inBooks, [])
             : await this.entries(
-                `l.book_id = $1 AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $2${purpose === "due" ? " AND due_at <= $3" : ""})`,
-                purpose === "due" ? [target.id, userId, now] : [target.id, userId],
+                `${inBooks} AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1${purpose === "due" ? " AND due_at <= $2" : ""})`,
+                purpose === "due" ? [userId, now] : [userId],
               );
     // Wrong options come from the same lessons; for an alphabetical list, from
     // the whole book (neighbouring words look alike but mean unrelated things).
@@ -598,7 +732,7 @@ export class VocabStore {
     }
     // Skipped words stay out of practice (they may still serve as wrong options).
     const skipped = await this.skipped(userId);
-    return buildSession({
+    const cards = buildSession({
       entries: entries.filter((e) => !skipped.has(e.id)).map((e) => localise(e, lang)),
       pool: pool.map((e) => localise(e, lang)),
       met,
@@ -610,6 +744,18 @@ export class VocabStore {
       newOrder,
       random: Math.random,
     });
+    // Across a shelf's books: each card says which book its word is from.
+    if (target.kind === "books" && books.length > 1) {
+      const titles = new Map(
+        (await this.db.query(`SELECT id, title FROM vocab_books WHERE id IN (${books.map(Number).join(",")})`)).map((r) => [n(r.id), String(r.title)]),
+      );
+      const bookOf = new Map(entries.map((e) => [e.id, e.book.id ?? 0]));
+      for (const card of cards) {
+        const title = titles.get(bookOf.get(card.entryId) ?? 0);
+        if (title) card.source = title;
+      }
+    }
+    return cards;
   }
 
   async answer(answer: VocabAnswer, now: number): Promise<VocabAnswerResult | null> {
@@ -734,6 +880,10 @@ export class VocabStore {
 const isId = (v: unknown): v is number => typeof v === "number" && Number.isInteger(v) && v > 0;
 const PREFERENCES: ModePreference[] = ["mixed", "choice", "written"];
 export const MAX_SESSION = 60;
+/** Words skipped or put back in one request: a section's. */
+export const MAX_SKIPS = 500;
+/** Books in one shelf session. */
+const MAX_SHELF = 12;
 const PURPOSES: SessionPurpose[] = ["learn", "review", "due"];
 
 export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c: never) => Scope): Hono<AppEnv> {
@@ -783,7 +933,16 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
 
   routes.put("/skips", async (c) => {
     const body = ((await c.req.json().catch(() => null)) ?? {}) as Record<string, unknown>;
-    const { userId, entryId, skipped } = body;
+    const { userId, entryId, entryIds, skipped } = body;
+    // Several at once: a section's words (at most MAX_SKIPS).
+    if (Array.isArray(entryIds)) {
+      if (!isId(userId) || entryIds.length === 0 || entryIds.length > MAX_SKIPS || !entryIds.every(isId) || typeof skipped !== "boolean") {
+        return c.json({ error: "invalid skip" }, 400);
+      }
+      if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+      for (const book of await store.booksOf(entryIds)) if (await hidden(c, "book", book)) return c.json({ error: "unknown entry" }, 404);
+      return (await store.setSkippedMany(userId, entryIds, skipped, Date.now())) ? c.body(null, 204) : c.json({ error: "unknown entry" }, 404);
+    }
     if (!isId(userId) || !isId(entryId) || typeof skipped !== "boolean") return c.json({ error: "invalid skip" }, 400);
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
     if (await hidden(c, "entry", entryId)) return c.json({ error: "unknown entry" }, 404);
@@ -794,8 +953,9 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     const userId = Number(c.req.query("userId"));
     const kind = c.req.query("kind");
     const purpose = (c.req.query("purpose") ?? "learn") as SessionPurpose;
-    // section or lesson id; for "all", the book id.
+    // section or lesson id; for "all", the book id; for "books" (a shelf), the books' ids in "books".
     const id = Number(c.req.query("id") ?? 0);
+    const books = (c.req.query("books") ?? "").split(",").filter(Boolean).map(Number);
     const size = Number(c.req.query("size") ?? 20);
     const mode = (c.req.query("mode") ?? "mixed") as ModePreference;
     const order = (c.req.query("order") ?? "book") as NewOrder;
@@ -804,8 +964,8 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
       (lang !== undefined && !isLang(lang)) ||
       !isId(userId) ||
       (order !== "book" && order !== "random") ||
-      (kind !== "section" && kind !== "lesson" && kind !== "all") ||
-      !isId(id) ||
+      (kind !== "section" && kind !== "lesson" && kind !== "all" && kind !== "books") ||
+      (kind === "books" ? books.length === 0 || books.length > MAX_SHELF || !books.every(isId) : !isId(id)) ||
       !PURPOSES.includes(purpose) ||
       !Number.isInteger(size) || size < 1 || size > MAX_SESSION ||
       !PREFERENCES.includes(mode)
@@ -813,8 +973,11 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
       return c.json({ error: "invalid session" }, 400);
     }
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
-    if (await hidden(c, kind === "all" ? "book" : kind, id)) return c.json({ error: "unknown book" }, 404);
-    return c.json(await store.session(userId, { kind, id }, purpose, size, mode, Date.now(), order, lang as TranslationLang | undefined));
+    if (kind === "books") {
+      for (const book of books) if (await hidden(c, "book", book)) return c.json({ error: "unknown book" }, 404);
+    } else if (await hidden(c, kind === "all" ? "book" : kind, id)) return c.json({ error: "unknown book" }, 404);
+    const target = kind === "books" ? { kind: "books" as const, ids: books } : { kind: kind as "section" | "lesson" | "all", id };
+    return c.json(await store.session(userId, target, purpose, size, mode, Date.now(), order, lang as TranslationLang | undefined));
   });
 
   routes.post("/answers", async (c) => {

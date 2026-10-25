@@ -1,6 +1,7 @@
 import type { Rng } from "./rng";
 import type { Fn } from "./tex";
 import type { GcpModel } from "./gcp-model";
+import type { EconModel } from "./econ-model";
 
 export type Fn2 = (x: number, y: number) => number;
 
@@ -10,7 +11,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "econ" | "econAdvanced";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -32,9 +33,16 @@ export type TsTopic = "tsBasics" | "tsFunctions" | "tsObjects" | "tsNarrowing" |
 export type ReactTopic = "reactComponents" | "reactState" | "reactEffects" | "reactRendering" | "reactData" | "reactTyping" | "reactTooling" | "reactTesting";
 /** Google Cloud: identity and access (the hierarchy, IAM, service accounts, security), then the infrastructure; each at up to four levels. */
 export type GcpTopic = "gcpHierarchy" | "gcpIam" | "gcpServiceAccounts" | "gcpSecurity" | "gcpNetworking" | "gcpCompute" | "gcpStorage" | "gcpOperations";
-export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic;
+/**
+ * Public and labour economics: welfare economics, market failure, political
+ * economy; incidence, optimal taxation, tax design; social insurance,
+ * redistribution, the labour market. Concepts come from the question bank
+ * (books the user owns), diagrams and calculations from generators.
+ */
+export type EconTopic = "econWelfare" | "econMarketFailure" | "econPublicChoice" | "econIncidence" | "econOptimalTax" | "econTaxDesign" | "econSocialInsurance" | "econRedistribution" | "econLabour";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic | EconTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced"];
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
@@ -61,10 +69,15 @@ export const GCP_TOPICS: GcpTopic[] = ["gcpHierarchy", "gcpIam", "gcpServiceAcco
 /** The levels offered in the Google Cloud test's settings, easiest first. */
 export const GCP_LEVELS: Level[] = ["gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert"];
 export const isGcp = (level: Level): boolean => GCP_LEVELS.includes(level);
+/** Topics of the economics test. */
+export const ECON_TOPICS: EconTopic[] = ["econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour"];
+/** The levels offered in the economics test's settings: core, and advanced reasoning. */
+export const ECON_LEVELS: Level[] = ["econ", "econAdvanced"];
+export const isEcon = (level: Level): boolean => ECON_LEVELS.includes(level);
 /** The subjects of the tests, each with its own levels and topics. */
-export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp";
+export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ";
 export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : isEcon(level) ? "econ" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
@@ -72,10 +85,12 @@ export const MATH_LEVELS: Level[] = ["school", "university"];
 /** The levels offered in the physical chemistry test's settings. */
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
+/** Tests that draw from the question bank, and so record the bank revision they drew from. */
+export const usesBank = (level: Level): boolean => isChemistry(level) || level === "econ" || level === "econAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations", "econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure" | "econTheory" | "econTaxation" | "econWelfareState";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -101,6 +116,9 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "reactStack", topics: ["reactData", "reactTyping", "reactTooling", "reactTesting"] },
   { group: "gcpIdentity", topics: ["gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity"] },
   { group: "gcpInfrastructure", topics: ["gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations"] },
+  { group: "econTheory", topics: ["econWelfare", "econMarketFailure", "econPublicChoice"] },
+  { group: "econTaxation", topics: ["econIncidence", "econOptimalTax", "econTaxDesign"] },
+  { group: "econWelfareState", topics: ["econSocialInsurance", "econRedistribution", "econLabour"] },
 ];
 
 /**
@@ -812,6 +830,49 @@ export const MISTAKES = [
   "gcpMinInstancesAdded", // minimum instances added on top of those needed
   "gcpAvailabilityLayout", // series and redundant components confused
   "gcpAvailabilityMin", // the whole taken to be as available as one part
+  // public economics
+  "econStatutoryIncidence", // the tax taken to fall on whoever pays it to the state
+  "econIncidenceInverted", // the more elastic side taken to bear more
+  "econEqualSplit", // the tax taken to be shared half and half
+  "econDwlRectangle", // the deadweight loss taken as the rectangle t × ΔQ
+  "econDwlRevenue", // the revenue taken as the deadweight loss
+  "econAreaRevenue", // the revenue rectangle taken for another area
+  "econAreaSurplus", // a side's loss of surplus taken for another area
+  "econAreaDwl", // the deadweight triangle taken for another area
+  "econAreaPart", // only part of the asked area counted
+  "econPigouAtMarket", // the external cost taxed at the market quantity, not the efficient one
+  "econPigouPrice", // the tax taken to be the efficient price
+  "econExternalityIgnored", // the market quantity taken as efficient
+  "econMarginalCurves", // the wrong marginal curves set equal
+  "econHorizontalSum", // a public good's demands added horizontally
+  "econFreeRider", // the quantity one person would buy alone taken as efficient
+  "econLindahlShare", // the cost split taken to change the efficient quantity
+  "econGiniHalf", // the Gini taken as the area A, not A over A + B
+  "econGiniArea", // the Gini taken from the area under the Lorenz curve
+  "econGiniTopShare", // the Gini taken as the top quintile's share
+  "econLorenzReading", // a Lorenz curve further from the diagonal taken as more equal
+  "econEmtrPartial", // the effective marginal rate taken as the tax or the taper alone
+  "econEmtrMultiply", // the tax and the taper combined by multiplying
+  "econBreakEven", // where a benefit ends computed without the taper or the wage
+  "econRamseyInverted", // the elastic good taxed more
+  "econRamseyUniform", // uniform rates taken as optimal
+  "econRamseyPartial", // the Ramsey ratio applied with one elasticity only
+  "econSaezNoPareto", // the top rate computed without the Pareto parameter
+  "econSaezInverted", // the top-rate formula turned around
+  "econMonopsonyWage", // the monopsonist taken to pay the marginal revenue product
+  "econMonopsonyCompetitive", // the monopsonist taken to hire as a competitive market
+  "econMinWageCompetitive", // employment under a minimum wage read on labour demand
+  "econMinWageNoEffect", // a minimum wage taken to leave monopsony employment unchanged
+  "econMarginalAverage", // the marginal rate taken as the average rate
+  "econBracketMisapplied", // a band's rate applied to income outside the band
+  "econAverageBase", // the average rate computed on taxable income above the allowance
+  "econMedianMean", // the mean voter taken to decide
+  "econMedianExtreme", // an extreme or off-centre voter taken to decide
+  "econSwfConfused", // one social welfare function taken for another
+  "econParetoDominated", // a Pareto-dominated allocation chosen
+  "econRiskNeutral", // the willingness to pay taken as the expected loss
+  "econRiskWhole", // the willingness to pay taken as the whole loss
+  "econRiskPremiumOnly", // the risk premium alone taken as the willingness to pay
   // balancing equations
   "subscriptChanged", // a formula's subscript changed instead of a coefficient: another substance
   "notLowestTerms", // balanced, but not in the smallest whole numbers
@@ -844,7 +905,33 @@ export type Graph =
       intercepts: [number, number, number];
       /** The axes are drawn from −extent to extent: the same for every option. */
       extent: number;
-    };
+    }
+  | Chart;
+
+/**
+ * An economic diagram: two labelled axes from the origin, named curves (a
+ * function or a polyline), shaded areas with a letter, points, and dashed
+ * drops from a point to the axes. Labels are symbols (Q, P, S, D, MSC) that
+ * read the same in every language.
+ */
+export interface Chart {
+  type: "chart";
+  x: [number, number];
+  y: [number, number];
+  /** Axis names, shown at their ends. */
+  xLabel: string;
+  yLabel: string;
+  /** Values written along the axes. */
+  xTicks?: number[];
+  yTicks?: number[];
+  /** "main" and "alt" solid in two colours, "guide" dashed. A label is written at the curve's right end. */
+  curves: { fn?: Fn; points?: [number, number][]; label?: string; style?: "main" | "alt" | "guide" }[];
+  /** Shaded polygons: "loss" hatched, "revenue", "gain" and "plain" tinted; their label at the centre. */
+  areas?: { points: [number, number][]; style: "loss" | "revenue" | "gain" | "plain"; label?: string }[];
+  points?: { x: number; y: number; label?: string }[];
+  /** Dashed lines from a point down to the x axis and across to the y axis. */
+  drops?: { x: number; y: number }[];
+}
 
 export interface Option {
   /** Its formula: shown in the corrections under a graph, and unique within a question. */
@@ -922,6 +1009,8 @@ export type Verify =
   | { kind: "react"; program: string; clicks: number; show: "page" | "log"; strict?: boolean }
   /** The option (its formula) is the answer to a Google Cloud model: an IAM evaluation, a firewall decision, a subnet, Cloud Run's scaling, an availability. */
   | { kind: "gcp"; model: GcpModel }
+  /** The option (its formula) is the answer to a small economic model: incidence, areas, Pigou, Samuelson, Gini, Ramsey, Saez, monopsony… */
+  | { kind: "econ"; model: EconModel }
   /** The option (its formula) is what the Rust `program` prints, trimmed. */
   | { kind: "rust"; program: string }
   /** The option (its formula, as `formatRows` writes it) is what `query` returns after `setup`, on SQLite. */

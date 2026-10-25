@@ -3747,6 +3747,113 @@ svg.graph.large {
   max-width: 300px;
 }
 
+/* Economic diagrams: wider frame, named curves, tinted areas. */
+svg.graph.chart.large {
+  max-width: 420px;
+}
+
+svg.graph .c-axis {
+  stroke: var(--ink);
+  stroke-width: 1.3;
+}
+
+svg.graph .c-arrow {
+  fill: var(--ink);
+}
+
+svg.graph .c-axis-label {
+  fill: var(--ink);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+svg.graph .c-tick {
+  fill: var(--muted);
+  font-family: var(--digits);
+  font-size: 9px;
+}
+
+svg.graph .c-curve {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+svg.graph .c-curve.c-alt {
+  stroke: var(--ball);
+}
+
+svg.graph .c-guide {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.6;
+  stroke-dasharray: 5 4;
+}
+
+svg.graph .c-drop {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+svg.graph .c-label {
+  fill: var(--ink);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+svg.graph .c-label-alt {
+  fill: var(--ball);
+}
+
+svg.graph .c-label-main {
+  fill: var(--accent);
+}
+
+svg.graph .c-area {
+  stroke: none;
+}
+
+svg.graph .c-loss {
+  fill: color-mix(in srgb, var(--bad) 22%, transparent);
+}
+
+svg.graph .c-revenue {
+  fill: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+svg.graph .c-gain {
+  fill: color-mix(in srgb, var(--good) 22%, transparent);
+}
+
+svg.graph .c-plain {
+  fill: color-mix(in srgb, var(--muted) 16%, transparent);
+  stroke: color-mix(in srgb, var(--muted) 45%, transparent);
+  stroke-width: 0.8;
+}
+
+svg.graph .c-hatch {
+  stroke: var(--bad);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+svg.graph .c-area-label {
+  fill: var(--ink);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+}
+
 svg.graph .g-grid {
   stroke: var(--line);
   stroke-width: 0.6;
@@ -5462,4 +5569,88 @@ button.danger {
 
 .auth .privacy-link {
   align-self: center;
+}
+
+/* ------------------------------------------------- vocabulary shelves (docs/vocabulary.md#shelves) */
+
+.vocab-shelf-link {
+  align-self: flex-start;
+}
+
+.vocab-shelf-books {
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.vocab-shelf-books > legend {
+  padding: 0 0.4rem;
+  margin-left: 0.6rem;
+}
+
+.vocab-shelf-book {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.7rem 0.9rem;
+}
+
+.vocab-shelf-book + .vocab-shelf-book {
+  border-top: 1px solid var(--line);
+}
+
+.vocab-shelf-tick {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  min-width: 0;
+  flex: 1;
+  cursor: pointer;
+}
+
+.vocab-shelf-tick input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.15rem 0 0;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+.vocab-shelf-book-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.vocab-shelf-book-title {
+  font-weight: 700;
+}
+
+.vocab-shelf-book-text .vocab-bar {
+  max-width: 12rem;
+}
+
+.vocab-shelf-book button {
+  flex-shrink: 0;
+}
+
+.vocab-source-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+}
+
+.vocab-skip-section {
+  align-self: flex-start;
+}
+
+.vocab-skipped-note {
+  margin: 0;
 }

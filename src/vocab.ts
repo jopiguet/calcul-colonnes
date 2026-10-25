@@ -35,6 +35,16 @@ interface Preferences {
   order: Record<number, "book" | "random">;
   /** Japanese rōmaji, per book id: shown with the question, or only after the answer. */
   romaji: Record<number, "always" | "after">;
+  /** Per shelf (language studied): books left out of its sessions, its cards apart on the home page, order of new words. */
+  shelves: Record<string, ShelfPreferences>;
+}
+
+interface ShelfPreferences {
+  /** Books not in the shelf's sessions. */
+  off: number[];
+  /** Each book its own card on the home page, rather than one card for the shelf. */
+  apart: boolean;
+  order?: "book" | "random";
 }
 
 const PREFERENCES_KEY = "calcul-colonnes.vocab";
@@ -57,9 +67,19 @@ function loadPreferences(): Preferences {
           ([, v]) => v === "always" || v === "after",
         ),
       ) as Preferences["romaji"],
+      shelves: Object.fromEntries(
+        Object.entries(typeof saved.shelves === "object" && saved.shelves ? saved.shelves : {}).map(([lang, v]) => {
+          const raw = (v ?? {}) as Partial<ShelfPreferences>;
+          return [lang, {
+            off: Array.isArray(raw.off) ? raw.off.filter((id): id is number => typeof id === "number") : [],
+            apart: raw.apart === true,
+            ...(raw.order === "book" || raw.order === "random" ? { order: raw.order } : {}),
+          }];
+        }),
+      ),
     };
   } catch {
-    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romaji: {} };
+    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romaji: {}, shelves: {} };
   }
 }
 
@@ -75,12 +95,15 @@ const prefs = loadPreferences();
 
 // ---------------------------------------------------------------- session
 
-/** What a session covers (a section, a lesson, everything) and what for. */
-type Target = { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due"; label: string };
+/** What a session covers (a section, a lesson, a book, books of a shelf) and what for. */
+type Target =
+  | { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due"; label: string }
+  | { kind: "books"; ids: number[]; purpose: "learn" | "review" | "due"; label: string };
 
 interface Session {
   userId: number;
-  bookId: number;
+  /** "book:12", or "shelf:de" for a session across a shelf's books. */
+  scope: string;
   target: Target;
   cards: VocabCard[];
   index: number;
@@ -100,11 +123,47 @@ let statsOf: number | null = null;
 /** The lesson whose word list is open, if any (with its book). */
 let wordsOf: { book: number; lesson: number } | null = null;
 
+/** The books of one language studied, shown together (docs/vocabulary.md#shelves). */
+export interface Shelf {
+  lang: string;
+  books: VocabBookInfo[];
+}
+
 export interface VocabContext {
   user: User;
-  book: VocabBookInfo;
+  /** The book open; null on its shelf's page. */
+  book: VocabBookInfo | null;
+  /** The shelf of the book's language, when there is one (two books or more). */
+  shelf: Shelf | null;
+  /** Opens a book of the shelf, or its page (null). */
+  openBook(id: number | null): void;
+  openShelf(lang: string): void;
   rerender(): void;
 }
+
+/**
+ * Shelves: the books of a language studied, when it has two or more (Collins,
+ * Lernwortschatz and Nietzsche for German). The Characters book stays apart.
+ */
+export function shelvesOf(books: VocabBookInfo[]): Shelf[] {
+  const byLang = new Map<string, VocabBookInfo[]>();
+  for (const book of books) {
+    if (book.kind === "characters") continue;
+    byLang.set(book.term, [...(byLang.get(book.term) ?? []), book]);
+  }
+  return [...byLang].filter(([, list]) => list.length > 1).map(([lang, list]) => ({ lang, books: list }));
+}
+
+/** A shelf's preferences, created on first use. */
+const shelfPrefs = (lang: string): ShelfPreferences => (prefs.shelves[lang] ??= { off: [], apart: false });
+
+/** On the home page, a shelf's books each have their own card. */
+export const shelfApart = (lang: string): boolean => prefs.shelves[lang]?.apart === true;
+
+/** The books of the shelf in its sessions: all but those unticked (at least one). */
+const shelfChosen = (shelf: Shelf): VocabBookInfo[] => shelf.books.filter((b) => !shelfPrefs(shelf.lang).off.includes(b.id));
+
+const scopeOf = (ctx: VocabContext): string => (ctx.book ? `book:${ctx.book.id}` : `shelf:${ctx.shelf?.lang ?? ""}`);
 
 /** Order of new words for this book: the player's choice, or the book's default. */
 const newOrder = (book: VocabBookInfo): "book" | "random" =>
@@ -118,16 +177,17 @@ export const bookTitle = (book: VocabBookInfo): string =>
 const countOf = (book: VocabBookInfo, count: number): string => vt(book.kind === "characters" ? "characters" : "words", { count });
 
 export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
-  // Another player or another book: not the previous session.
-  const other = (s: Session | null) => s && (s.userId !== ctx.user.id || s.bookId !== ctx.book.id);
+  // Another player, another book or shelf: not the previous session.
+  const other = (s: Session | null) => s && (s.userId !== ctx.user.id || s.scope !== scopeOf(ctx));
   if (other(session)) session = null;
   if (other(finished)) finished = null;
   if (session) return cardView(ctx, session);
   if (finished) return doneView(ctx, finished);
+  if (!ctx.book) return shelfView(ctx);
   if (statsOf === ctx.book.id) {
     return statsView({
       user: ctx.user,
-      book: ctx.book,
+      book: ctx.book!,
       onBack: () => {
         statsOf = null;
         ctx.rerender();
@@ -152,15 +212,16 @@ export function vocabBusy(): boolean {
 }
 
 /** Japanese rōmaji with the question, or only after the answer. */
-const romajiAlways = (book: VocabBookInfo): boolean => (prefs.romaji[book.id] ?? "always") === "always";
+const romajiAlways = (book: VocabBookInfo | null): boolean => !book || (prefs.romaji[book.id] ?? "always") === "always";
 
 async function start(ctx: VocabContext, target: Target): Promise<void> {
-  // The whole book: the server takes the book's id.
-  const query = target.kind === "all" ? { ...target, id: ctx.book.id } : target;
-  const cards = await vocab.session(ctx.user.id, query, prefs.size, prefs.mode, newOrder(ctx.book), currentLang());
+  // The whole book: the server takes the book's id. A shelf: the books ticked.
+  const query = target.kind === "all" && ctx.book ? { ...target, id: ctx.book.id } : target;
+  const order = ctx.book ? newOrder(ctx.book) : (shelfPrefs(ctx.shelf!.lang).order ?? "random");
+  const cards = await vocab.session(ctx.user.id, query, prefs.size, prefs.mode, order, currentLang());
   finished = null;
   const fresh: Session = {
-    userId: ctx.user.id, bookId: ctx.book.id, target, cards, index: 0, retried: new Set(),
+    userId: ctx.user.id, scope: scopeOf(ctx), target, cards, index: 0, retried: new Set(),
     result: null, right: 0, answered: 0, missed: new Map(), saveFailed: false,
   };
   // Nothing left to practise there: the summary says so.
@@ -195,9 +256,47 @@ export function statusBar(p: { new: number; learning: number; known: number; mas
   return bar;
 }
 
+/** Cards per session and how questions are asked: the same for every book. */
+function sessionSettings(ctx: VocabContext): HTMLElement[] {
+  // Cards per session.
+  const size = el("fieldset", "segmented vocab-size");
+  size.append(el("legend", "field-label", vt("sizeTitle")));
+  for (const value of SIZES) {
+    const on = prefs.size === value;
+    const option = button(on ? "segment on" : "segment", String(value), () => {
+      prefs.size = value;
+      savePreferences();
+      ctx.rerender();
+    });
+    option.setAttribute("aria-pressed", String(on));
+    size.append(option);
+  }
+
+  // How questions are asked.
+  const how = el("fieldset", "segmented vocab-how");
+  how.append(el("legend", "field-label", vt("howTitle")));
+  for (const [mode, key] of [["mixed", "howMixed"], ["choice", "howChoice"], ["written", "howWritten"]] as const) {
+    const on = prefs.mode === mode;
+    const option = button(on ? "segment on" : "segment", vt(key), () => {
+      prefs.mode = mode;
+      savePreferences();
+      ctx.rerender();
+    });
+    option.setAttribute("aria-pressed", String(on));
+    how.append(option);
+  }
+  return [size, how, el("p", "hint left", vt("howHint"))];
+}
+
 async function homeView(ctx: VocabContext): Promise<HTMLElement> {
-  const { book } = ctx;
+  const book = ctx.book!;
   const wrap = el("section", "sheet vocab-home");
+  // The book is one of its language's: the way to the others, and to sessions across them.
+  if (ctx.shelf) {
+    const shelf = ctx.shelf;
+    const link = button("ghost small vocab-shelf-link", vt("shelfLink", { lang: langName(shelf.lang), count: shelf.books.length }), () => ctx.openShelf(shelf.lang));
+    wrap.append(link);
+  }
   wrap.append(
     el("h1", "title", bookTitle(book)),
     el("p", "vocab-source", `${book.title} · ${countOf(book, book.entries)}`),
@@ -244,35 +343,8 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   if (mine.met) due.append(el("p", "hint vocab-met-count", mine.met === 1 ? vt("metOne") : vt("metMany", { count: mine.met })));
   wrap.append(due);
 
-  // Cards per session.
-  const size = el("fieldset", "segmented vocab-size");
-  size.append(el("legend", "field-label", vt("sizeTitle")));
-  for (const value of SIZES) {
-    const on = prefs.size === value;
-    const option = button(on ? "segment on" : "segment", String(value), () => {
-      prefs.size = value;
-      savePreferences();
-      ctx.rerender();
-    });
-    option.setAttribute("aria-pressed", String(on));
-    size.append(option);
-  }
-  wrap.append(size);
+  wrap.append(...sessionSettings(ctx));
 
-  // How questions are asked.
-  const how = el("fieldset", "segmented vocab-how");
-  how.append(el("legend", "field-label", vt("howTitle")));
-  for (const [mode, key] of [["mixed", "howMixed"], ["choice", "howChoice"], ["written", "howWritten"]] as const) {
-    const on = prefs.mode === mode;
-    const option = button(on ? "segment on" : "segment", vt(key), () => {
-      prefs.mode = mode;
-      savePreferences();
-      ctx.rerender();
-    });
-    option.setAttribute("aria-pressed", String(on));
-    how.append(option);
-  }
-  wrap.append(how, el("p", "hint left", vt("howHint")));
 
   // Which new words come first.
   const order = el("fieldset", "segmented vocab-order");
@@ -383,6 +455,117 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   return wrap;
 }
 
+// ----------------------------------------------------------------- shelves
+
+/** A shelf's page: sessions across the books ticked, and each book to open on its own. */
+async function shelfView(ctx: VocabContext): Promise<HTMLElement> {
+  const shelf = ctx.shelf!;
+  const own = shelfPrefs(shelf.lang);
+  const chosen = shelfChosen(shelf);
+  const progress: VocabProgress = await vocab.progress(ctx.user.id);
+  const words = shelf.books.reduce((sum, b) => sum + b.entries, 0);
+  const wrap = el("section", "sheet vocab-home vocab-shelf");
+  wrap.append(
+    el("h1", "title", vt("title", { lang: langName(shelf.lang) })),
+    el("p", "vocab-source", vt("shelfSource", { books: shelf.books.length, words: vt("words", { count: words }) })),
+  );
+
+  // Sessions across the books ticked.
+  const due = chosen.reduce((sum, b) => sum + (progress.books[b.id]?.due ?? 0), 0);
+  const started = chosen.reduce((sum, b) => sum + (progress.books[b.id]?.started ?? 0), 0);
+  const ids = chosen.map((b) => b.id);
+  const label = chosen.length === shelf.books.length ? vt("shelfAll") : chosen.map((b) => b.title).join(" · ");
+  const actions = el("div", "vocab-due");
+  if (chosen.length === 0) {
+    actions.append(el("p", "vocab-due-count quiet", vt("shelfNone")));
+  } else {
+    if (due > 0) {
+      actions.append(
+        el("p", "vocab-due-count", due === 1 ? vt("dueOne") : vt("dueNow", { count: due })),
+        button("primary", vt("reviewNow"), () => void start(ctx, { kind: "books", ids, purpose: "due", label: vt("reviewNow") })),
+      );
+    } else actions.append(el("p", "vocab-due-count quiet", vt("nothingDue")));
+    actions.append(
+      button(due > 0 || started > 0 ? "ghost" : "primary", vt("learnShelf"), () => void start(ctx, { kind: "books", ids, purpose: "learn", label })),
+    );
+    if (started > 0) {
+      actions.append(button(due > 0 ? "ghost" : "primary", vt("reviewAll"), () => void start(ctx, { kind: "books", ids, purpose: "review", label })));
+    }
+    if (progress.today.answers > 0) actions.append(el("p", "hint", vt("today", progress.today)));
+  }
+  wrap.append(actions);
+
+  // The books: ticked for the sessions above, and each opened on its own.
+  const list = el("fieldset", "vocab-shelf-books");
+  list.append(el("legend", "field-label", vt("shelfBooks")));
+  for (const book of shelf.books) {
+    const mine = progress.books[book.id] ?? { due: 0, started: 0 };
+    const sum = { new: 0, learning: 0, known: 0, mastered: 0 };
+    for (const lesson of book.lessons) {
+      for (const section of lesson.sections) {
+        const p = progress.sections[section.id];
+        if (p) for (const k of Object.keys(sum) as (keyof typeof sum)[]) sum[k] += p[k];
+        else sum.new += section.entries;
+      }
+    }
+    const row = el("div", "vocab-shelf-book");
+    row.dataset.book = book.slug;
+    const tick = el("label", "vocab-shelf-tick");
+    const box = el("input");
+    box.type = "checkbox";
+    box.checked = !own.off.includes(book.id);
+    box.setAttribute("aria-label", vt("shelfInclude", { title: book.title }));
+    box.addEventListener("change", () => {
+      own.off = box.checked ? own.off.filter((id) => id !== book.id) : [...own.off, book.id];
+      savePreferences();
+      ctx.rerender();
+    });
+    const text = el("span", "vocab-shelf-book-text");
+    text.append(el("span", "vocab-shelf-book-title", book.title), el("span", "vocab-section-meta", countOf(book, book.entries)));
+    if (mine.due > 0) text.append(el("span", "vocab-section-due", vt("sectionDue", { count: mine.due })));
+    text.append(statusBar(sum));
+    tick.append(box, text);
+    const openIt = button("ghost small", vt("shelfOpen"), () => ctx.openBook(book.id));
+    openIt.setAttribute("aria-label", vt("shelfOpenAria", { title: book.title }));
+    row.append(tick, openIt);
+    list.append(row);
+  }
+  wrap.append(list, el("p", "hint left", vt("shelfHint")));
+
+  wrap.append(...sessionSettings(ctx));
+
+  // New words: mixed across the books, or book after book.
+  const order = el("fieldset", "segmented vocab-order");
+  order.append(el("legend", "field-label", vt("orderTitle")));
+  for (const [value, key] of [["random", "orderRandom"], ["book", "shelfOrderBook"]] as const) {
+    const on = (own.order ?? "random") === value;
+    const option = button(on ? "segment on" : "segment", vt(key), () => {
+      own.order = value;
+      savePreferences();
+      ctx.rerender();
+    });
+    option.setAttribute("aria-pressed", String(on));
+    order.append(option);
+  }
+  wrap.append(order);
+
+  // The home page: one card for the shelf, or one per book.
+  const home = el("fieldset", "segmented vocab-shelf-home");
+  home.append(el("legend", "field-label", vt("shelfHomeTitle")));
+  for (const [apart, key] of [[false, "shelfTogether"], [true, "shelfApart"]] as const) {
+    const on = own.apart === apart;
+    const option = button(on ? "segment on" : "segment", vt(key), () => {
+      own.apart = apart;
+      savePreferences();
+      ctx.rerender();
+    });
+    option.setAttribute("aria-pressed", String(on));
+    home.append(option);
+  }
+  wrap.append(home, el("p", "hint left", vt("shelfHomeHint", { lang: langName(shelf.lang) })));
+  return wrap;
+}
+
 // ------------------------------------------------------------ word lists
 
 const WORD_STATUS: Record<VocabWord["status"], VocabKey> = { new: "wordNew", learning: "wordLearning", known: "wordKnown", mastered: "wordMastered" };
@@ -393,7 +576,7 @@ function wordRow(ctx: VocabContext, word: VocabWord): HTMLElement {
   row.dataset.entry = String(word.id);
   const text = el("div", "vocab-word-text");
   const term = el("span", "vocab-word-term", word.term);
-  term.lang = ctx.book.term;
+  term.lang = ctx.book?.term ?? "";
   term.dir = "auto";
   text.append(term);
   if (word.reading) text.append(el("span", "vocab-word-reading", word.reading));
@@ -427,7 +610,7 @@ function wordRow(ctx: VocabContext, word: VocabWord): HTMLElement {
 }
 
 async function wordsView(ctx: VocabContext, lessonId: number): Promise<HTMLElement> {
-  const { book } = ctx;
+  const book = ctx.book!;
   const data = await vocab.lessonWords(ctx.user.id, lessonId, currentLang());
   const wrap = el("section", "sheet vocab-words-page");
   const back = (): void => {
@@ -442,6 +625,22 @@ async function wordsView(ctx: VocabContext, lessonId: number): Promise<HTMLEleme
     const head = el("h2", "vocab-words-section-title");
     head.append(titleBlock(section.title, section.subtitle, "vocab-section-title"));
     block.append(head);
+    // A whole section at once: homework covers some sections, not others.
+    const all = section.words.length > 0 && section.words.every((w) => w.skipped);
+    const bulk = button(`ghost small vocab-skip-section${all ? " on" : ""}`, vt(all ? "unskipSection" : "skipSection"), async () => {
+      bulk.disabled = true;
+      try {
+        await vocab.setSkippedMany(ctx.user.id, section.words.map((w) => w.id), !all);
+        ctx.rerender();
+      } catch (error) {
+        if (error instanceof SignedOutError) throw error;
+        bulk.disabled = false;
+        block.querySelector(".vocab-skip-failed")?.remove();
+        bulk.after(el("p", "vocab-skip-failed", vt("skipFailed")));
+      }
+    });
+    bulk.setAttribute("aria-label", vt(all ? "unskipSectionAria" : "skipSectionAria", { name: section.title }));
+    block.append(bulk);
     const list = el("ul", "vocab-words");
     list.append(...section.words.map((w) => wordRow(ctx, w)));
     block.append(list);
@@ -484,6 +683,7 @@ function installCardKeys(): void {
 const LETTERS: Record<string, string[]> = {
   es: ["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"],
   de: ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"],
+  fr: ["é", "è", "ê", "à", "â", "ç", "ô", "î", "û", "ù", "œ"],
 };
 
 function boxDots(box: number): HTMLElement {
@@ -590,6 +790,8 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   if (card.feminine) notes.append(el("span", "vocab-fem", `f · ${vt("feminine")}`));
   if (card.met && !s.result) notes.append(el("span", "vocab-met", vt("metBadge")));
   if (card.group) notes.append(el("span", "vocab-group", card.group));
+  // A shelf session: the book the word comes from.
+  if (card.source) notes.append(el("span", "vocab-source-tag", card.source));
   notes.append(boxDots(s.result ? s.result.box : card.box));
   question.append(notes);
   wrap.append(question);
@@ -747,6 +949,20 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     const next = button("primary", s.index + 1 >= s.cards.length ? vt("finish") : vt("next"), advance);
     actions.append(next);
     afterRender(() => next.focus());
+    // Not to be learnt (not in the homework): out of this session and the next ones.
+    const skip = button("ghost small vocab-skip-card", vt("skipCard"), async () => {
+      skip.disabled = true;
+      try {
+        await vocab.setSkipped(s.userId, card.entryId, true);
+        s.cards = s.cards.filter((c, i) => i <= s.index || c.entryId !== card.entryId);
+        skip.replaceWith(el("p", "hint vocab-skipped-note", vt("skipCardDone")));
+      } catch (error) {
+        if (error instanceof SignedOutError) throw error;
+        skip.disabled = false;
+        skip.after(el("p", "vocab-skip-failed", vt("skipFailed")));
+      }
+    });
+    actions.append(skip);
   }
   actions.append(
     button("ghost small", vt("quit"), () => {

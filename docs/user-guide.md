@@ -137,10 +137,11 @@ home page: **Que fait-on, Léa ?**
 | Group | Activities | Shows |
 |---|---|---|
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM | For the QCM, how many kinds of question are to review |
-| Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
+| Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche) | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
 | Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud | Kinds of question to review, for each |
+| Économie | 🏛️ Économie publique | Kinds of question to review |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
@@ -505,6 +506,26 @@ addresses; how many Cloud Run instances a load needs; the availability of
 components in series or in two zones. Each answer has been computed twice,
 by two independent programs.
 
+## Public economics
+
+Activity **🏛️ Économie publique**, in the *Économie* group (*Economía*,
+*Economics*): multiple-choice tests on public and labour economics at two
+levels, *Fondamentaux* and *Avancé*. Nine topics in three groups:
+
+| Group | Topics |
+|---|---|
+| Théorie du bien-être et choix publics | social welfare and justice (Pareto, welfare theorems, Arrow, Rawls); externalities and public goods (Pigou, Coase, Samuelson, clubs, Tiebout); voting, rent-seeking and federalism |
+| Fiscalité | incidence and deadweight loss; optimal taxation (Ramsey, Mirrlees, Atkinson–Stiglitz, top rates); tax design (VAT, carbon, savings, land, corporate tax, evasion) |
+| État-providence et travail | social insurance and pensions; inequality, poverty and benefits; labour economics (demand, supply, monopsony, human capital, discrimination, unions, unemployment) |
+
+Two kinds of question:
+
+- **Concept questions** from eight textbooks (Gruber, Stiglitz, Barr, *Tax by Design*, Hindriks–Myles, Kaplow, Ehrenberg–Smith, Tresch), each with its source as a badge ("Gruber 19.1"). They come from the [question bank](question-bank.md), visible to the owner's account and to those it is shared with.
+- **Questions on a chart:** who bears a tax, which lettered areas are the deadweight loss, the Pigouvian tax, a public good's efficient level, the median voter, which allocation a welfare function picks, a benefit's withdrawal, a tax schedule, a monopsonist's wage, what insurance is worth, the Ramsey and Saez rules. One asks which of four Lorenz curves is the most equal: the answers are the curves themselves. Every answer has been computed twice, by two independent programs.
+
+Without the bank, the tests hold the chart questions only, and the settings
+say so.
+
 ## Chemical equations
 
 Activity **⚗️ Équations chimiques**, in the *Chimie et biologie* group
@@ -577,11 +598,22 @@ One activity per book imported on the server (see
 - **Vocabulaire japonais** (*Themed vocabulary*): Japanese words by theme with their English meaning. The rōmaji is shown under the Japanese, and under each Japanese option. To write a Japanese word, type it in kanji or kana with a Japanese keyboard, or in rōmaji with a normal one: *gakkō*, *gakko* and *gakkou* are all right for 学校.
 - **Vocabulaire allemand** (*3000 words and phrases*): German words and phrases with their English meaning, in the same chapters as the Spanish book. Nouns come with their article, which is part of the answer. *Strasse* is as right as *Straße*, *Kueche* as *Küche*; buttons under the field add *ä ö ü ß*.
 - **Vocabulaire arabe** (*3000 words and phrases*): Arabic words and phrases with their English meaning, right to left, the transliteration under each word. To write an Arabic word, type it with an Arabic keyboard, vowel marks optional, or in transliteration with a normal one: الأسبوع and *al usbou’* are both right for الأُسبوع. *Transcription › Après la réponse* hides the transliteration until the answer.
+- **Lernwortschatz** (German–French): the school book's word lists, chapter by chapter, with the example sentences. Plurals and verb forms are printed as in the book (*die Ehre, -n*; *finden, findet, fand, hat gefunden*); in a written answer the word alone is enough (*die Ehre*, *finden*). The French meaning can be typed with or without its article (*patience*, *la patience*).
+- **Nietzsche** (German–English): the vocabulary of six works, by topic, nouns grouped by gender. After each answer, a line from the works where the word appears.
 - **Vocabulaire anglais** (*Vocabulary 4000*): demanding English words with a short English definition, plus prefixes, roots and suffixes. Here the definition is always chosen from four; the word itself can be written. After each answer about a word part, an example is shown (*corp* → *corporeal*).
 
 - **Kanji et kana** (*Kana and jōyō kanji*): hiragana, katakana, then the kanji grade by grade as in Japanese schools. A kana is asked by its sound; a kanji by its meaning, by its reading (one is enough, in kana or rōmaji) and from its meaning. The character is shown large; when it must be found, four characters are offered. After a kanji: its readings (on and kun), example words made only of kanji already learnt, and the player's own words that use it. Characters met in the Japanese words make up to half the new ones; the rest follow the book. See [Kanji and kana](characters.md).
 
 Each book's page works the same way.
+
+**Several books of one language: the shelf.** When a language has two books
+or more (German: Collins, Lernwortschatz, Nietzsche), the home page shows one
+card for them, *📚 Vocabulaire allemand*. Its page has:
+
+- **Réviser maintenant, Apprendre dans les livres cochés, Réviser tout le vocabulaire:** the same sessions as in a book, with the words of the books ticked below. Each card says which book its word is from.
+- **Livres des séances:** each book with its progress. Untick one to leave it out of these sessions (Nietzsche on school days, say). *Ouvrir* opens the book on its own page, with its lessons, word lists and statistics.
+- **Nouveaux mots:** *Au hasard* across the books, or *Livre après livre*.
+- **Sur l'accueil:** *Regroupés* (one card) or *Séparés* (one card per book, as before). Either way, each book's page has a link to the shelf, *📚 Vocabulaire allemand : les 3 livres*.
 
 **The screen**
 
@@ -603,6 +635,12 @@ player already knows, or does not want: it no longer comes up in lessons or
 reviews, from any of the book's buttons. It is crossed out in the list and
 counted apart under its section (*2 passés*); *Remettre* puts it back, with
 the progress it had.
+
+**Following the homework.** In the word list, *Passer toute la section*
+takes a whole section out at once, and *Tout remettre* brings it back when it
+is set as homework. During a session, once a card is answered, *Passer ce
+mot* takes that word out (it leaves the session too), for the words the
+teacher left out.
 
 **📊 Statistiques**, under the book's title, opens the player's statistics
 for this book:
@@ -628,7 +666,7 @@ word answered wrong goes back to the start.
   - The word shown (*la llave*, *abase*): find its meaning (*key*, *degrade*).
   - The meaning shown: give the word. This comes once the word is recognised.
 - **Multiple choice:** click an option, or press 1–4 or A–D.
-- **Written:** type the answer and press Enter. For Spanish answers, buttons under the field add *á é í ó ú ü ñ ¿ ¡*.
+- **Written:** type the answer and press Enter. For Spanish answers, buttons under the field add *á é í ó ú ü ñ ¿ ¡*; for French ones, *é è ê à â ç ô î û ù œ*.
   - A missing accent or a single slip in a long word is counted right, and the correct spelling is shown.
   - A missing or wrong article (*lápiz* for *el lápiz*) is counted wrong: the gender belongs to the word.
 - **After each answer:** Enter goes on. The six dots show the word's box. A wrong answer comes back at the end of the session.

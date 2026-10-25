@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import {
   LEVELS,
-  isChemistry,
+  usesBank,
   MAX_QUESTIONS,
   ANSWER_MODES,
   OPTION_COUNT,
@@ -76,7 +76,7 @@ function parseQuiz(body: unknown): ValidQuiz | null {
   if (!topics.some((t) => topicsFor(level as Level, typeof version === "number" ? version : QUIZ_VERSION).includes(t as Topic))) return null;
   // The bank revision the browser drew from: the server's, or an older one (a test begun before an import).
   if (bank !== null && !isInt(bank, 0, bankRevision())) return null;
-  if (!isChemistry(level as Level) && bank !== null) return null;
+  if (!usesBank(level as Level) && bank !== null) return null;
   if (!Array.isArray(answers) || answers.length !== count) return null;
   if (!ANSWER_MODES.includes(mode as AnswerMode)) return null;
   // An option index, or in a typed test a short text (matched against the options when graded).
@@ -204,7 +204,7 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
     const id = Number(c.req.param("id"));
     if (!isInt(id, 1, Number.MAX_SAFE_INTEGER)) return c.json({ error: "invalid id" }, 400);
     const subject = c.req.query("subject");
-    if (subject !== "maths" && subject !== "chemistry" && subject !== "linux" && subject !== "chembio" && subject !== "sql" && subject !== "rust" && subject !== "ts" && subject !== "react" && subject !== "gcp") return c.json({ error: "invalid subject" }, 400);
+    if (subject !== "maths" && subject !== "chemistry" && subject !== "linux" && subject !== "chembio" && subject !== "sql" && subject !== "rust" && subject !== "ts" && subject !== "react" && subject !== "gcp" && subject !== "econ") return c.json({ error: "invalid subject" }, 400);
     const user = await repository.getUser(id, scope(c));
     if (!user) return c.json({ error: "unknown user" }, 404);
     return c.json(await repository.pastTests(id, LEVELS.filter((l) => subjectOf(l) === subject), PAST_TESTS));

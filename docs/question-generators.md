@@ -15,6 +15,7 @@ way in the browser and on the server.
 | `sql.ts`, `sql/*.ts`, `sql-output.ts` | SQL: the written questions (the language, PostgreSQL, SQLite, MySQL, good practice), and what a query returns on two generated tables |
 | `rust.ts`, `rust/*.ts`, `rust-output.ts` | Rust: the written questions of the four levels, and what a short program prints |
 | `typescript.ts`, `ts/*.ts`, `ts-output.ts` | TypeScript: the written questions of the four levels, and what a short program logs |
+| `econ.ts`, `econ-output.ts`, `econ-model.ts` | Public economics: the kinds by topic and level, the generated questions drawn as charts, and their models |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -680,6 +681,52 @@ permissions. The right option must equal it and no wrong one may.
 
 Twenty mistake types, `gcpReservedAddresses` to `gcpAvailabilityMin`.
 
+## Economics
+
+The public economics test (6.26.0), *🏛️ Économie publique* in the home
+page's *Économie* group, has two levels, `econ` (*Fondamentaux*) and
+`econAdvanced` (*Avancé*), and nine topics in three groups. *Théorie du
+bien-être et choix publics*: `econWelfare`, `econMarketFailure`,
+`econPublicChoice`. *Fiscalité*: `econIncidence`, `econOptimalTax`,
+`econTaxDesign`. *État-providence et travail*: `econSocialInsurance`,
+`econRedistribution`, `econLabour`.
+
+Like physical chemistry, it mixes two sources: concept questions from the
+[question bank](question-bank.md), written from eight textbooks (one unit
+per chapter, never shipped), and thirteen generated kinds (`econ-output.ts`)
+that put numbers on the classic diagrams. Most are drawn as an economic chart
+(`Chart` in `types.ts`, drawn by `src/graph.ts`): labelled axes from the
+origin, named curves, lettered and shaded areas, points and dashed drops. In
+French and Spanish, numbers in the text and options take a decimal comma.
+
+| Id | Levels | Asks for | Typical wrong options |
+|---|---|---|---|
+| `econIncidence.taxIncidence` | both | buyers' share of a per-unit tax levied on sellers or buyers, or its deadweight loss (chart: D, S, S + t or D − t) | statutory incidence, the shares inverted, half each; the rectangle t × ΔQ, the revenue |
+| `econIncidence.surplusAreas` | Fondamentaux | which lettered areas A–F make the deadweight loss, the revenue, or each side's loss | another side's areas, part of the area |
+| `econMarketFailure.pigou` | both | the Pigouvian tax, or the efficient quantity, with a rising marginal external cost (MB, MPC, MSC, MEC) | external cost taxed at the market quantity, the efficient price, the market quantity |
+| `econMarketFailure.samuelson` | both | efficient level of a public good for two people (MB₁, MB₂, MC) | horizontal sum, one person alone, a cost share |
+| `econPublicChoice.medianVoter` | both | the majority winner among single-peaked voters (their utility curves) | the mean, an extreme, the voter next to the median |
+| `econWelfare.swfChoice` | both | the allocation a utilitarian, Rawlsian or Nash function picks (points in utility space) | another criterion's choice, a Pareto-dominated point |
+| `econRedistribution.giniLorenz` | both | the Gini of quintile shares (Lorenz curve, areas A and B), or **which of four Lorenz curves is most equal** (the options are charts) | A alone, 1 − 2A, the top share; a curve further from the diagonal |
+| `econRedistribution.benefitTrap` | both | effective marginal rate while a benefit is withdrawn, or the hours where it ends (budget line) | the tax or the taper alone, rates multiplied; the taper or the wage forgotten |
+| `econTaxDesign.taxSchedule` | both | tax owed or average rate under a bracket schedule (shown as a block) | top rate on all income, a band's rate outside it |
+| `econLabour.monopsony` | both | a monopsonist's employment and wage (MRP, S, MRC), or employment under a minimum wage | wage = MRP, the competitive outcome, employment read on demand |
+| `econSocialInsurance.insurancePremium` | both | most a log-utility person pays for full insurance (utility curve, chord) | the expected loss, the whole loss, the risk premium alone |
+| `econOptimalTax.ramsey` | both | the Ramsey rate on a second good with independent demands | the rule inverted, uniform rates, one elasticity |
+| `econOptimalTax.saezTopRate` | Avancé | revenue-maximising top rate 1/(1 + a·e) | without a, the formula turned around |
+
+Each question carries its model (`econ-model.ts`), and `check:quiz` computes
+the answer again with an evaluator of its own (`server/check-econ.ts`): the
+equilibria by bisection on the curves, the lettered areas by the shoelace
+formula (and checked to tile the surpluses before the tax), the Gini by the
+mean absolute difference instead of trapezoids, a monopsonist's choice by
+searching its profit, the median voter as the Condorcet winner, the tax
+band by band, the certainty equivalent by bisection. The right option must
+match within its rounding, and no wrong one may. Charts are checked to stay
+in their window, and option charts to share it.
+
+Forty-two mistake types, `econStatutoryIncidence` to `econRiskPremiumOnly`.
+
 ## React
 
 The React test (6.24.0), *⚛️ React* in the home page's *Informatique* group,
@@ -1225,6 +1272,7 @@ mistakes to review. It then checks:
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
 - **TypeScript:** every program shown type-checked with `tsc` in strict mode and run, its output compared with the options (see [TypeScript](#typescript)); every written TypeScript question checked like the Linux ones.
 - **React:** every component shown type-checked with `tsc` (JSX for React 19) and rendered with React DOM in jsdom, its page or console compared with the options, any React warning a failure (see [React](#react)); every written React question checked like the Linux ones.
+- **Economics:** every generated answer computed again by `server/check-econ.ts` (see [Economics](#economics)); every chart inside its window.
 - **Google Cloud:** every generated answer computed again by `server/check-gcp.ts` (see [Google Cloud](#google-cloud)), policy lines at most 36 characters; every written Google Cloud question checked like the Linux ones.
 - **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.

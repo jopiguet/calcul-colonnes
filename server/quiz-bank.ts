@@ -6,13 +6,13 @@ import { Hono } from "hono";
 import type { Database, Row } from "./db/index.ts";
 import type { AppEnv } from "./auth/middleware.ts";
 import type { Repository, Scope } from "./repository.ts";
-import { bankRevision, registerBank, EMPTY_BANK, isSkill, type Bank, type BankQuestion, type ChemistryTopic, type Localized } from "../shared/quiz/index.ts";
+import { bankRevision, registerBank, EMPTY_BANK, isSkill, type Bank, type BankQuestion, type BankTopic, type Localized } from "../shared/quiz/index.ts";
 import type { BankFile } from "../shared/quiz/bank-file.ts";
 
 const n = (v: unknown): number => Number(v);
 const json = <T>(v: unknown): T => JSON.parse(String(v)) as T;
 
-/** An import that would mix two books, move a unit to another topic or bring back a removed id: nothing changed. */
+/** An import that would move a unit to another topic or book, or bring back a removed id: nothing changed. */
 export class BankImportRefused extends Error {}
 
 export interface BankImportReport {
@@ -33,14 +33,19 @@ export class BankStore {
     return rows[0] ? n(rows[0].value) : 0;
   }
 
-  /** The whole bank, removed questions included (old tests are rebuilt from them). */
+  /** The whole bank, every book, removed questions included (old tests are rebuilt from them). */
   async load(): Promise<Bank> {
-    const meta = new Map((await this.db.query("SELECT key, value FROM quiz_bank_meta")).map((r) => [String(r.key), String(r.value)]));
-    const revision = Number(meta.get("revision") ?? 0);
+    const revision = await this.revision();
     if (revision === 0) return EMPTY_BANK;
-    const units = (await this.db.query("SELECT id, topic, title FROM quiz_bank_units ORDER BY position")).map((r) => ({
+    const books = (await this.db.query("SELECT id, title, source FROM quiz_bank_books ORDER BY position, id")).map((r) => ({
       id: String(r.id),
-      topic: String(r.topic) as ChemistryTopic,
+      title: String(r.title),
+      source: String(r.source),
+    }));
+    const units = (await this.db.query("SELECT id, book, topic, title FROM quiz_bank_units ORDER BY position, id")).map((r) => ({
+      id: String(r.id),
+      book: String(r.book),
+      topic: String(r.topic) as BankTopic,
       title: json<Localized>(r.title),
     }));
     const topicOf = new Map(units.map((u) => [u.id, u.topic]));
@@ -59,7 +64,7 @@ export class BankStore {
         ...(r.until_revision === null || r.until_revision === undefined ? {} : { until: n(r.until_revision) }),
       }),
     );
-    return { revision, source: meta.get("source") ?? "", units, questions };
+    return { revision, books, units, questions };
   }
 
   /** Registers the bank with the test engine when the database has a newer revision. */
@@ -68,37 +73,51 @@ export class BankStore {
   }
 
   /**
-   * Replaces the bank's content with the file's, in one transaction. New
-   * questions are available from the next revision; those no longer in the
-   * file are kept, removed from it; changed texts are updated in place. A file
+   * Replaces the content of the file's books with the file's, in one
+   * transaction; other books are left as they are. New questions are available
+   * from the next revision; those of these books no longer in the file are
+   * kept, removed from it; changed texts are updated in place. A file
    * identical to the bank changes nothing, not even the revision.
    */
   async import(file: BankFile, options: { replace?: boolean } = {}): Promise<BankImportReport> {
     return this.db.transaction(async (tx) => {
-      const meta = new Map((await tx.query("SELECT key, value FROM quiz_bank_meta")).map((r) => [String(r.key), String(r.value)]));
-      const current = Number(meta.get("revision") ?? 0);
+      const current = Number((await tx.query("SELECT value FROM quiz_bank_meta WHERE key = 'revision'"))[0]?.value ?? 0);
       const next = current + 1;
-      if (meta.get("book") && meta.get("book") !== file.book.id && !options.replace) {
-        throw new BankImportRefused(
-          `the bank holds the book "${meta.get("book")}", this file is "${file.book.id}": not imported. To replace that book's questions, add --replace.`,
-        );
-      }
-      const units = new Map((await tx.query("SELECT id, topic, title, position FROM quiz_bank_units")).map((r) => [String(r.id), r]));
+      const fileBooks = new Set(file.books.map((b) => b.id));
+      const units = new Map((await tx.query("SELECT id, book, topic, title, position FROM quiz_bank_units")).map((r) => [String(r.id), r]));
       for (const u of file.units) {
         const known = units.get(u.id);
+        if (known && String(known.book) !== u.book) {
+          throw new BankImportRefused(`unit ${u.id} belongs to the book "${String(known.book)}", the file puts it in "${u.book}": not imported. Give the unit another id.`);
+        }
         if (known && String(known.topic) !== u.topic && !options.replace) {
           throw new BankImportRefused(`unit ${u.id} is in "${String(known.topic)}", the file puts it in "${u.topic}": not imported (its tests would change).`);
         }
       }
+      const bookOf = new Map([...units].map(([id, r]) => [id, String(r.book)]));
       const rows = new Map((await tx.query("SELECT * FROM quiz_bank")).map((r) => [String(r.id), r]));
       let changed = false;
-      const report: BankImportReport = { book: file.book.id, revision: current, units: file.units.length, questions: file.questions.length, added: 0, updated: 0, removed: 0 };
+      const report: BankImportReport = { book: file.books.map((b) => b.id).join(", "), revision: current, units: file.units.length, questions: file.questions.length, added: 0, updated: 0, removed: 0 };
+
+      const books = new Map((await tx.query("SELECT id, title, source, position FROM quiz_bank_books")).map((r) => [String(r.id), r]));
+      let bookPosition = books.size;
+      for (const b of file.books) {
+        const known = books.get(b.id);
+        if (!known) {
+          await tx.query("INSERT INTO quiz_bank_books (id, title, source, position) VALUES ($1, $2, $3, $4)", [b.id, b.title, b.source, bookPosition++]);
+          changed = true;
+        } else if (String(known.title) !== b.title || String(known.source) !== b.source) {
+          await tx.query("UPDATE quiz_bank_books SET title = $1, source = $2 WHERE id = $3", [b.title, b.source, b.id]);
+          changed = true;
+        }
+      }
 
       for (const [position, u] of file.units.entries()) {
         const known = units.get(u.id);
         const title = JSON.stringify(u.title);
         if (!known) {
-          await tx.query("INSERT INTO quiz_bank_units (id, topic, position, title) VALUES ($1, $2, $3, $4)", [u.id, u.topic, position, title]);
+          await tx.query("INSERT INTO quiz_bank_units (id, book, topic, position, title) VALUES ($1, $2, $3, $4, $5)", [u.id, u.book, u.topic, position, title]);
+          bookOf.set(u.id, u.book);
           changed = true;
         } else if (String(known.title) !== title || n(known.position) !== position || String(known.topic) !== u.topic) {
           await tx.query("UPDATE quiz_bank_units SET topic = $1, position = $2, title = $3 WHERE id = $4", [u.topic, position, title, u.id]);
@@ -111,6 +130,9 @@ export class BankStore {
         inFile.add(q.id);
         const values = [q.unit, q.level, q.section, position, JSON.stringify(q.prompt), JSON.stringify(q.correct), JSON.stringify(q.wrong), JSON.stringify(q.explanation)];
         const row = rows.get(q.id);
+        if (row && !fileBooks.has(bookOf.get(String(row.unit)) ?? "")) {
+          throw new BankImportRefused(`question ${q.id} already belongs to the book "${bookOf.get(String(row.unit))}": give it another id.`);
+        }
         if (!row) {
           await tx.query(
             `INSERT INTO quiz_bank (id, unit, level, section, position, prompt, correct, wrong, explanation, from_revision)
@@ -141,19 +163,16 @@ export class BankStore {
         }
       }
       for (const [id, row] of rows) {
+        // Only this file's books: another book's questions are not this file's to remove.
+        if (!fileBooks.has(bookOf.get(String(row.unit)) ?? "")) continue;
         if (inFile.has(id) || (row.until_revision !== null && row.until_revision !== undefined)) continue;
         await tx.query("UPDATE quiz_bank SET until_revision = $1 WHERE id = $2", [next, id]);
         report.removed++;
         changed = true;
       }
-      for (const [key, value] of [["book", file.book.id], ["title", file.book.title], ["source", file.book.source]] as const) {
-        if (meta.get(key) !== value) changed = true;
-      }
       if (!changed) return report;
-      for (const [key, value] of [["book", file.book.id], ["title", file.book.title], ["source", file.book.source], ["revision", String(next)]] as const) {
-        await tx.query("DELETE FROM quiz_bank_meta WHERE key = $1", [key]);
-        await tx.query("INSERT INTO quiz_bank_meta (key, value) VALUES ($1, $2)", [key, value]);
-      }
+      await tx.query("DELETE FROM quiz_bank_meta WHERE key = 'revision'");
+      await tx.query("INSERT INTO quiz_bank_meta (key, value) VALUES ('revision', $1)", [String(next)]);
       report.revision = next;
       return report;
     });

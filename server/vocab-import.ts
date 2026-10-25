@@ -51,7 +51,7 @@ if (/vocab-import\.[jt]s$/.test(main) && main === fileURLToPath(import.meta.url)
     });
     console.log(
       `${db.label}, book "${r.book}": ${r.lessons} lessons, ${r.sections} sections, ${r.entries} entries ` +
-        `(${r.added} new, ${r.removed} removed)`,
+        `(${r.added} new, ${r.changed} corrected, ${r.removed} removed)`,
     );
   } finally {
     await db.close();

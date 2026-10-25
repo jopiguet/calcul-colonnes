@@ -429,8 +429,11 @@ async function englishBookId(page: Page): Promise<number> {
 test("the German book: articles required, ß as ss and umlauts as ae, oe, ue accepted, letters to type them", async ({ page }) => {
   const name = await newPlayer(page, "Deu");
   const user = await userByName(page.request, name);
-  await openActivity(page, "vocab-test-german");
+  // Two German books: one card for both, each book opened from its page.
+  await openActivity(page, "vocab-shelf-de");
+  await page.click("[data-book='test-german'] >> text=Ouvrir");
   await expect(page.locator(".vocab-home h1")).toHaveText("Vocabulaire allemand");
+  await expect(page.locator(".vocab-source")).toContainText("Test words");
 
   const books = (await (await page.request.get("/api/vocab/books")).json()) as { slug: string; lessons: { id: number }[] }[];
   const german = books.find((b) => b.slug === "test-german")!;

@@ -160,8 +160,10 @@ export const vocab = {
    */
   session: (
     userId: number,
-    /** For "all", id is the book's. */
-    target: { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due" },
+    /** For "all", id is the book's; "books": several books of a shelf. */
+    target:
+      | { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due" }
+      | { kind: "books"; ids: number[]; purpose: "learn" | "review" | "due" },
     size: number,
     mode: "mixed" | "choice" | "written",
     order: "book" | "random" = "book",
@@ -169,7 +171,9 @@ export const vocab = {
     lang?: string,
   ): Promise<VocabCard[]> =>
     call(
-      `/vocab/session?userId=${userId}&kind=${target.kind}&id=${target.id}&purpose=${target.purpose}&size=${size}&mode=${mode}&order=${order}` +
+      `/vocab/session?userId=${userId}&kind=${target.kind}&` +
+        (target.kind === "books" ? `books=${target.ids.join(",")}` : `id=${target.id}`) +
+        `&purpose=${target.purpose}&size=${size}&mode=${mode}&order=${order}` +
         (lang ? `&lang=${lang}` : ""),
     ),
   /** A lesson's words, with how far each is learnt and whether it is skipped. */
@@ -178,6 +182,9 @@ export const vocab = {
   /** Skips a word, or puts it back. */
   setSkipped: (userId: number, entryId: number, skipped: boolean): Promise<void> =>
     call("/vocab/skips", { method: "PUT", body: JSON.stringify({ userId, entryId, skipped }) }),
+  /** Skips several words at once (a section's), or puts them back. */
+  setSkippedMany: (userId: number, entryIds: number[], skipped: boolean): Promise<void> =>
+    call("/vocab/skips", { method: "PUT", body: JSON.stringify({ userId, entryIds, skipped }) }),
   /** A player's statistics on one book; days are counted in the browser's time zone. */
   stats: (userId: number, bookId: number): Promise<VocabStats> =>
     call(`/vocab/stats?userId=${userId}&book=${bookId}&tz=${-new Date().getTimezoneOffset()}`),

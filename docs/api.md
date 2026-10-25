@@ -225,7 +225,7 @@ Case, spaces and dashes are ignored. `201` with the player (with
 
 | Query | |
 |---|---|
-| `subject` | `maths`, `chemistry`, `linux`, `chembio`, `sql`, `rust`, `ts`, `react` or `gcp`: the levels of that subject |
+| `subject` | `maths`, `chemistry`, `linux`, `chembio`, `sql`, `rust`, `ts`, `react`, `gcp` or `econ`: the levels of that subject |
 
 `200`: the player's last 50 tests in that subject, newest first, as stored:
 
@@ -249,7 +249,7 @@ Case, spaces and dashes are ignored. `201` with the player (with
 ```
 
 Everything to rebuild the test exactly (`generateQuiz` with the seed, level,
-topics, count, `focus`, `version` and, for physical chemistry, the bank
+topics, count, `focus`, `version` and, for physical chemistry and economics, the bank
 revision `bank`), and the answers as given: an option index, `-1` for a
 blank, or the text typed. The browser rebuilds it to show the corrections.
 Allowed for the player's own account and the accounts it is shared with
@@ -301,14 +301,14 @@ right.
 | Field | |
 |---|---|
 | `seed` | 0 … 2³² − 1 |
-| `level` | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert` |
-| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium` for `chemistry` and `chemistryAdvanced`; `linuxFiles`, `linuxText`, `linuxShell`, `linuxProcesses`, `linuxSystem`, `linuxNetwork`, `linuxTools` for `linux`; `balancing` for `chembio`; `sqlSelect`, `sqlAggregate`, `sqlJoins`, `sqlModify`, `sqlPostgres`, `sqlSqlite`, `sqlMysql`, `sqlPractice` for `sql`; for the Rust levels, those of `rustBasics`, `rustOwnership`, `rustTypes`, `rustErrors`, `rustCollections`, `rustConcurrency`, `rustCargo`, `rustUnsafe` that the level has; for the TypeScript levels, those of `tsBasics`, `tsFunctions`, `tsObjects`, `tsNarrowing`, `tsGenerics`, `tsTypeLevel`, `tsRuntime`, `tsTooling` that the level has; for the React levels, those of `reactComponents`, `reactState`, `reactEffects`, `reactRendering`, `reactData`, `reactTyping`, `reactTooling`, `reactTesting` that the level has; for the Google Cloud levels, those of `gcpHierarchy`, `gcpIam`, `gcpServiceAccounts`, `gcpSecurity`, `gcpNetworking`, `gcpCompute`, `gcpStorage`, `gcpOperations` that the level has |
+| `level` | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced` |
+| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium` for `chemistry` and `chemistryAdvanced`; `linuxFiles`, `linuxText`, `linuxShell`, `linuxProcesses`, `linuxSystem`, `linuxNetwork`, `linuxTools` for `linux`; `balancing` for `chembio`; `sqlSelect`, `sqlAggregate`, `sqlJoins`, `sqlModify`, `sqlPostgres`, `sqlSqlite`, `sqlMysql`, `sqlPractice` for `sql`; for the Rust levels, those of `rustBasics`, `rustOwnership`, `rustTypes`, `rustErrors`, `rustCollections`, `rustConcurrency`, `rustCargo`, `rustUnsafe` that the level has; for the TypeScript levels, those of `tsBasics`, `tsFunctions`, `tsObjects`, `tsNarrowing`, `tsGenerics`, `tsTypeLevel`, `tsRuntime`, `tsTooling` that the level has; for the React levels, those of `reactComponents`, `reactState`, `reactEffects`, `reactRendering`, `reactData`, `reactTyping`, `reactTooling`, `reactTesting` that the level has; for the Google Cloud levels, those of `gcpHierarchy`, `gcpIam`, `gcpServiceAccounts`, `gcpSecurity`, `gcpNetworking`, `gcpCompute`, `gcpStorage`, `gcpOperations` that the level has; `econWelfare`, `econMarketFailure`, `econPublicChoice`, `econIncidence`, `econOptimalTax`, `econTaxDesign`, `econSocialInsurance`, `econRedistribution`, `econLabour` for `econ` and `econAdvanced` |
 | `count` | 1 … 30 (the app offers 5, 10, 15, 20) |
 | `focus` | Kinds of question brought back for review; known ids, without duplicates. Optional, default `[]`. |
 | `version` | Generator version; must equal the server's `QUIZ_VERSION`. Optional, default the server's. |
 | `answers` | `count` integers, each an option index 0–3, or `-1` for a blank; in a typed test, texts |
 | `mode` | `choices` or `typed`. Optional, default `choices`. |
-| `bank` | Physical chemistry only: the [question bank](question-bank.md) revision the test drew from, at most the server's. Optional; omitted, the test has no written question. |
+| `bank` | Physical chemistry and economics only: the [question bank](question-bank.md) revision the test drew from, at most the server's. Optional; omitted, the test has no written question. |
 
 The server regenerates the test from `seed`, `level`, `topics`, `count`,
 `focus`, `version` and `bank`, grades it, and stores the test and one row per
@@ -333,9 +333,12 @@ imported.
 
 ```json
 {
-  "revision": 1,
-  "source": "Atkins",
-  "units": [{ "id": "1A", "topic": "gases", "title": { "en": "The perfect gas" } }],
+  "revision": 2,
+  "books": [
+    { "id": "atkins-12", "title": "Atkins' Physical Chemistry, 12th edition", "source": "Atkins" },
+    { "id": "gruber", "title": "Gruber, Public Finance and Public Policy", "source": "Gruber" }
+  ],
+  "units": [{ "id": "1A", "book": "atkins-12", "topic": "gases", "title": { "en": "The perfect gas" } }],
   "questions": [
     {
       "id": "1A-01", "unit": "1A", "topic": "gases", "level": "core", "section": "1A.2",
@@ -474,8 +477,13 @@ rōmaji or transliteration, or a kanji's readings.
 { "userId": 1, "entryId": 17, "skipped": true }
 ```
 
+```json
+{ "userId": 1, "entryIds": [17, 18, 19], "skipped": true }
+```
+
 `204`. Skips the word for the player (`skipped: true`) or puts it back
-(`false`); its boxes are kept either way. `400` for a malformed body, `404`
+(`false`); its boxes are kept either way. `entryIds` (1 … 500 ids) does
+several at once, a section's: all or none. `400` for a malformed body, `404`
 for an unknown player or entry. See
 [Vocabulary › Skipping words](vocabulary.md#skipping-words).
 
@@ -513,8 +521,9 @@ Errors: `invalid query` (400), `unknown user`, `unknown book` (404).
 | Query | |
 |---|---|
 | `userId` | The player |
-| `kind` | `section`, `lesson` or `all` (a whole book) |
+| `kind` | `section`, `lesson`, `all` (a whole book) or `books` (several books of a shelf) |
 | `id` | Section, lesson or book id |
+| `books` | For `kind=books`: the books' ids, comma-separated (1 … 12), each visible to the account |
 | `purpose` | `learn` (default): cards due, recall cards just available, new entries. `review`: cards already started, due or not, weakest first. `due`: cards due only. |
 | `size` | 1 … 60 cards |
 | `mode` | `mixed` (default), `choice` or `written` |
@@ -537,7 +546,9 @@ Errors: `invalid query` (400), `unknown user`, `unknown book` (404).
 ]
 ```
 
-`options` is present for `choice` cards only. `feminine: true` marks a
+`options` is present for `choice` cards only. With `kind=books` and more than
+one book, each card has `source`, the title of its word's book, and its wrong
+options come from that book (see [Vocabulary › Shelves](vocabulary.md#shelves)). `feminine: true` marks a
 feminine noun taking *el*, on recognise cards. The recognise card of a
 definition book (word shown, definition asked) is always `choice`. In a book
 with readings (Japanese), `promptReading` is the rōmaji of the word shown on a
