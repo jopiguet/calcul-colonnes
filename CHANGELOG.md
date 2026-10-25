@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.20.0
+
+- **A new test, 🗄️ SQL**, in the *Informatique* group next to Linux, with its own level, `sql`, and eight topics in two groups (see [Question generators › SQL](docs/question-generators.md#sql)).
+  - **Le langage SQL:** reading (filters, NULL and three-valued logic, sorting and paging, expressions), aggregating (aggregates, `GROUP BY` and `HAVING`, window functions), joining (joins, subqueries, `EXISTS` and CTEs, `UNION` and `EXCEPT`), changing (`INSERT`, `UPDATE`, `DELETE`, schemas and constraints, transactions and isolation, indexes).
+  - **PostgreSQL, SQLite, MySQL:** each engine with its client: psql's meta-commands, `\copy`, `pg_dump`, roles, `RETURNING`, `ON CONFLICT`, JSONB, `EXPLAIN ANALYZE`, `VACUUM`; the sqlite3 shell, type affinity and `STRICT`, rowid, `PRAGMA foreign_keys`, WAL and locks; the mysql client, `\G`, `mysqldump`, accounts `'user'@'host'`, `utf8mb4`, InnoDB, `ON DUPLICATE KEY UPDATE`, MariaDB. Where the engines differ, the question says how. Each question names the client to install.
+  - **Bonnes pratiques:** table design, SQL injection and parameters (`$1`, `?`, `%s`), passwords and secrets, N+1 queries, sargable conditions, connection pools, backups, migrations, a fix by hand in production.
+  - 131 written questions, and seven generated kinds: two small tables with a few NULLs and a query, *Que renvoie cette requête ?* The wrong results are the usual slips: `>` read as `>=`, NULL compared with `=` or `NOT IN`, OR before AND, LIMIT and OFFSET, `COUNT(*)` for `COUNT(kind)`, AVG and NULL, HAVING forgotten, the NULL group, a LEFT JOIN read as an inner one, the Cartesian product. Thirteen new mistake types.
+- **Checks:** `check:quiz` runs every generated query on a real SQLite database and compares the result with the options; with `CHECK_SQL_POSTGRES` set, on PostgreSQL too (every query returns the same). It now also renders the formula of a question that has a written sentence: a table header in bold typewriter, which KaTeX cannot draw, was caught that way.
+- **Database:** migration `020_sql_level` (`quiz_results.level` accepts `sql`).
+- **Tests:** 119 browser tests; the SQL test checks that the tables of a join fit a 360 px screen. The home-page layout test now expects Sciences beside Mathématiques (Informatique has two cards). *A test survives a change of language* failed when its second question was drawn as a graph alone, with no formula to compare: it now runs on derivatives.
+
 ## 6.19.0
 
 Opening Luma to friends and family (see [Authentication › Family release](docs/authentication.md#family-release)).

@@ -11,7 +11,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, LINUX_QUESTIONS, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
@@ -127,6 +127,36 @@ function run(command: string): string {
     outputs.set(command, printed);
   }
   return printed;
+}
+
+/**
+ * What a query returns on a fresh in-memory SQLite database after its setup,
+ * written as the options write it. Each (setup, query) pair is run once, and
+ * kept for the PostgreSQL replay below.
+ */
+type SqliteDb = { exec(sql: string): void; prepare(sql: string): { raw(on: boolean): { all(): unknown[][] } }; close(): void };
+let openSqlite: ((path: string) => SqliteDb) | null = null;
+try {
+  openSqlite = ((await import("better-sqlite3")) as unknown as { default: new (path: string) => SqliteDb }).default as unknown as (path: string) => SqliteDb;
+} catch {
+  openSqlite = null;
+}
+const sqlResults = new Map<string, { setup: string; query: string; shown: string }>();
+function runSql(setup: string, query: string): string {
+  const key = `${setup}\n--\n${query}`;
+  const known = sqlResults.get(key);
+  if (known) return known.shown;
+  if (!openSqlite) throw new Error("better-sqlite3 is not installed: SQL questions cannot be checked");
+  const Sqlite = openSqlite as unknown as new (path: string) => SqliteDb;
+  const db = new Sqlite(":memory:");
+  try {
+    db.exec(setup);
+    const shown = formatRows(db.prepare(query).raw(true).all() as (string | number | null)[][]);
+    sqlResults.set(key, { setup, query, shown });
+    return shown;
+  } finally {
+    db.close();
+  }
 }
 
 function isRight(q: Question, o: Option): boolean {
@@ -297,6 +327,8 @@ function isRight(q: Question, o: Option): boolean {
       return o.tex.endsWith(":0"); // a bank question's right answer is its first text
     case "shell":
       return o.tex === run(v.command); // what the real bash, sed and awk print
+    case "sql":
+      return o.tex === runSql(v.setup, v.query); // what SQLite returns
     case "mode":
       return modeOf(o.tex) === v.mode;
     case "umask": {
@@ -475,6 +507,8 @@ for (const level of LEVELS) {
             if (!text) throw new Error("written question without its text");
             checkText(text);
           }
+          // A written sentence may come with a formula too (the tables of an SQL question).
+          if (q.prompt.tex) render(q.prompt.tex, where);
         } else {
           render(q.prompt.tex, where);
           render(q.explanation.tex, where);
@@ -510,35 +544,70 @@ for (const level of LEVELS) {
   }
 }
 
-// Every written Linux question, drawn or not: a unique id, three wrong answers or more, all different,
+// Every written Linux and SQL question, drawn or not: a unique id, three wrong answers or more, all different,
 // as many code runs in each language, formulas that render, and a version the app has reached.
-const linuxIds = new Set<string>();
-let linuxWritten = 0;
-for (const [file, lists] of Object.entries(LINUX_QUESTIONS)) {
-  for (const [kind, list] of Object.entries(lists)) {
-    for (const q of list) {
-      linuxWritten += 1;
-      const where = `linux ${file}.${kind} ${q.id}`;
-      try {
-        if (linuxIds.has(q.id)) throw new Error("id used twice");
-        linuxIds.add(q.id);
-        if (q.w.length < 3) throw new Error("fewer than three wrong answers");
-        if ((q.since ?? 2) > QUIZ_VERSION) throw new Error(`since ${q.since} is after version ${QUIZ_VERSION}`);
-        if (new Set([q.a[0], ...q.w.map((w) => w[0])]).size !== q.w.length + 1) throw new Error("two answers alike");
-        for (const text of [q.q, q.a, ...q.w, q.e]) {
-          const runs = codeRuns(text[0]).length;
-          text.forEach((shown, i) => {
-            if (codeRuns(shown).length !== runs) throw new Error(`code runs differ in ${["en", "fr", "es"][i]}: ${shown}`);
-            for (const part of richParts(shown)) if (part.kind === "math") render(part.value, where);
-          });
+const writtenIds = new Set<string>();
+function checkWritten(subject: string, prefix: string, all: typeof LINUX_QUESTIONS): number {
+  let count = 0;
+  for (const [file, lists] of Object.entries(all)) {
+    for (const [kind, list] of Object.entries(lists)) {
+      for (const q of list) {
+        count += 1;
+        const where = `${subject} ${file}.${kind} ${q.id}`;
+        try {
+          if (writtenIds.has(q.id)) throw new Error("id used twice");
+          writtenIds.add(q.id);
+          if (!q.id.startsWith(prefix)) throw new Error(`id does not start with ${prefix}`);
+          if (q.w.length < 3) throw new Error("fewer than three wrong answers");
+          if ((q.since ?? 2) > QUIZ_VERSION) throw new Error(`since ${q.since} is after version ${QUIZ_VERSION}`);
+          if (new Set([q.a[0], ...q.w.map((w) => w[0])]).size !== q.w.length + 1) throw new Error("two answers alike");
+          for (const text of [q.q, q.a, ...q.w, q.e]) {
+            // As many code runs in every language (a placeholder such as `nom` may be translated).
+            const runs = codeRuns(text[0]).length;
+            text.forEach((shown, i) => {
+              if (codeRuns(shown).length !== runs) throw new Error(`code runs differ in ${["en", "fr", "es"][i]}: ${shown}`);
+              for (const part of richParts(shown)) if (part.kind === "math") render(part.value, where);
+            });
+          }
+        } catch (error) {
+          failures.push(`${where}: ${(error as Error).message}`);
         }
-      } catch (error) {
-        failures.push(`${where}: ${(error as Error).message}`);
       }
     }
   }
+  return count;
 }
+const linuxWritten = checkWritten("linux", "lx-", LINUX_QUESTIONS);
 console.log(`${linuxWritten} written Linux questions checked; ${outputs.size} commands run with bash`);
+const sqlWritten = checkWritten("sql", "sq-", SQL_QUESTIONS);
+console.log(`${sqlWritten} written SQL questions checked; ${sqlResults.size} queries run with SQLite`);
+
+// The generated SQL is meant to be portable: with CHECK_SQL_POSTGRES set to a database URL,
+// every query shown is run again on PostgreSQL (in a schema rolled back) and must return the same.
+if (process.env.CHECK_SQL_POSTGRES) {
+  const { default: pg } = await import("pg");
+  const client = new pg.Client({ connectionString: process.env.CHECK_SQL_POSTGRES });
+  await client.connect();
+  const cell = (v: unknown): string | number | null => (v === null ? null : typeof v === "number" ? v : /^-?\d+(\.\d+)?$/.test(String(v)) ? Number(v) : String(v));
+  try {
+    for (const { setup, query, shown } of sqlResults.values()) {
+      await client.query("BEGIN; CREATE SCHEMA luma_check; SET LOCAL search_path TO luma_check;");
+      try {
+        await client.query(setup);
+        const result = await client.query({ text: query, rowMode: "array" });
+        const onPostgres = formatRows((result.rows as unknown[][]).map((r) => r.map(cell)));
+        if (onPostgres !== shown) failures.push(`sql: PostgreSQL returns ${onPostgres}, SQLite ${shown}: ${query}`);
+      } catch (error) {
+        failures.push(`sql on PostgreSQL: ${(error as Error).message}: ${query}`);
+      } finally {
+        await client.query("ROLLBACK");
+      }
+    }
+    console.log(`${sqlResults.size} queries run again on PostgreSQL`);
+  } finally {
+    await client.end();
+  }
+}
 
 for (const [key, n] of [...prompts].sort()) console.log(`${key.padEnd(40)} ${n}`);
 console.log(`\n${typedCount.size} kinds can be typed; ${[...typedCount.values()].reduce((a, b) => a + b, 0)} questions were`);

@@ -11,6 +11,7 @@ import {
   isChemistry,
   subjectOf,
   LINUX_TOPICS,
+  SQL_TOPICS,
   type Subject,
   OPTION_COUNT,
   QUIZ_COUNTS,
@@ -154,7 +155,7 @@ const promptView = (q: Question): HTMLElement =>
 
 /** The level of this subject's tests. */
 const levelOf = (ctx: QuizContext): Level =>
-  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.subject === "chembio" ? "chembio" : ctx.settings.quizLevel;
+  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.subject === "chembio" ? "chembio" : ctx.subject === "sql" ? "sql" : ctx.settings.quizLevel;
 
 /** Spanish writes sen and arcsen. */
 const macros = (): Record<string, string> =>
@@ -232,7 +233,9 @@ function chosenTopics(ctx: QuizContext): Topic[] {
         ? ctx.settings.linuxTopics
         : ctx.subject === "chembio"
           ? ctx.settings.chembioTopics
-          : ctx.settings.quizTopics;
+          : ctx.subject === "sql"
+            ? ctx.settings.sqlTopics
+            : ctx.settings.quizTopics;
   const chosen = saved.filter((t) => available.includes(t));
   return chosen.length > 0 ? chosen : available;
 }
@@ -254,7 +257,8 @@ function setupView(ctx: QuizContext): HTMLElement {
   const wrap = el("section", "sheet quiz-setup");
   const linux = ctx.subject === "linux";
   const chembio = ctx.subject === "chembio";
-  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : "setupTitle")));
+  const sql = ctx.subject === "sql";
+  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : sql ? "sqlSetupTitle" : "setupTitle")));
   if (chemistry && bankRevision() === 0) wrap.append(el("p", "hint", qt("noBank")));
 
   // Mathematics: lycée or university. Physical chemistry: core or advanced.
@@ -288,12 +292,12 @@ function setupView(ctx: QuizContext): HTMLElement {
       box.dataset.focus = `topic-${topic}`;
       box.checked = effective.includes(topic);
       box.addEventListener("change", () => {
-        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
+        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : sql ? SQL_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
         if (chosen.length === 0) {
           box.checked = true; // at least one topic stays selected
           return;
         }
-        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : { quizTopics: chosen });
+        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : sql ? { sqlTopics: chosen } : { quizTopics: chosen });
       });
       label.append(box, el("span", undefined, topicName(topic)));
       block.append(label);
@@ -364,10 +368,10 @@ function setupView(ctx: QuizContext): HTMLElement {
     wrap.append(level, el("p", "hint", qt("noAdvanced")), button("ghost small", qt("progress"), ctx.showProgress));
     return wrap;
   }
-  // Linux and chemistry basics have one level: no choice to show.
+  // Linux, chemistry basics and SQL have one level: no choice to show.
   // What to test on one side, how on the other: side by side on a large screen, Start always in reach on a phone.
   const what = el("div", "quiz-setup-what");
-  what.append(...(linux || chembio ? [] : [level]), topics);
+  what.append(...(linux || chembio || sql ? [] : [level]), topics);
   const how = el("div", "quiz-setup-how");
   go.classList.add("quiz-start");
   how.append(count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));

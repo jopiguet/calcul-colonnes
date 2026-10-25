@@ -22,6 +22,7 @@ import { graphs } from "./graphs";
 import { multivariable } from "./multivariable";
 import { series } from "./series";
 import { gases } from "./gases";
+import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
 import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools, linuxScripting, linuxGit, linuxVim } from "./linux";
 import { firstLaw } from "./firstlaw";
 import { secondLaw } from "./secondlaw";
@@ -83,6 +84,14 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   spectroscopy,
   resonance,
   statistical,
+  sqlSelect,
+  sqlAggregate,
+  sqlJoins,
+  sqlModify,
+  sqlPostgres,
+  sqlSqlite,
+  sqlMysql,
+  sqlPractice,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -218,6 +227,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "umask":
     case "equation":
     case "shell":
+    case "sql":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);
@@ -331,4 +341,6 @@ export function gradeQuiz(questions: Question[], answers: number[]): number {
   return questions.reduce((n, q, i) => n + (answers[i] === q.correct ? 1 : 0), 0);
 }
 export { LINUX_QUESTIONS, symbolic, triplet } from "./linux";
+export { SQL_QUESTIONS } from "./sql";
+export { formatRows } from "./sql-output";
 export type { LinuxQuestion } from "./linux/types";

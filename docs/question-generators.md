@@ -12,6 +12,7 @@ way in the browser and on the server.
 | `units.ts`, `gases.ts`, `firstlaw.ts`, `secondlaw.ts` | Physical chemistry: quantities with units and significant figures, constants; the generators of Focuses 1–3 |
 | `linux.ts`, `linux/*.ts`, `linux-output.ts` | Linux: the written questions by topic, the generated permissions, umask and cron, and what a sed, awk or `${f%.*}` command prints |
 | `quantum.ts`, `atoms.ts`, `spectroscopy.ts`, `statistical.ts`, `kinetics.ts` | Physical chemistry, Focuses 7–8, 11–13 and 17–18: quantum theory, atoms, spectroscopy and magnetic resonance, statistical thermodynamics, kinetics and reaction dynamics |
+| `sql.ts`, `sql/*.ts`, `sql-output.ts` | SQL: the written questions (the language, PostgreSQL, SQLite, MySQL, good practice), and what a query returns on two generated tables |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -500,8 +501,8 @@ three output kinds (`linux-output.ts`, verify kind `shell`), the option's
 identity is the text printed, and `check:quiz` runs the command shown with
 the real `bash` (and its `sed` and `awk`) and compares. It also checks every
 written Linux question directly, drawn or not: unique ids, three wrong
-answers or more, all different, the same code runs in the three languages,
-and a `since` the app has reached.
+answers or more, all different, the same number of code runs in the three languages,
+and a `since` the app has reached. The written SQL questions get the same checks.
 
 **Adding a written question.** Append it to its list with `since: N`, where
 N is the new `QUIZ_VERSION`, and bump the version: a list's length is part of
@@ -563,6 +564,70 @@ element balanced, coefficients without a common factor, and that the
 element-by-substance matrix has rank one less than the number of substances
 (only one way to balance). A coefficient question's coefficients pass the
 same checks before the option is compared with them.
+
+## SQL
+
+The SQL test (6.20.0), *🗄️ SQL* in the home page's *Informatique* group,
+has its own level, `sql`, and eight topics in two groups. *Le langage SQL*:
+`sqlSelect`, `sqlAggregate`, `sqlJoins`, `sqlModify`. *PostgreSQL, SQLite,
+MySQL*: `sqlPostgres`, `sqlSqlite`, `sqlMysql`, `sqlPractice`.
+
+It works like Linux. 131 written questions in `shared/quiz/sql/*.ts`
+(`language.ts`, `engines.ts`, `practice.ts`), ids `sq-…`, in the Linux
+format (`LinuxQuestion`, drawn by `written(list)` from `linux.ts`). Where
+PostgreSQL, SQLite and MySQL differ, the question or its explanation says
+how, with versions where it matters (`RETURNING` in SQLite 3.35, windows in
+MySQL 8.0). Every question of an engine's topic carries its client to
+install: `postgresql-client`, `sqlite3`, `default-mysql-client` (Debian's
+MariaDB client), with the Fedora and Homebrew names: 42 questions.
+
+| Topic | Kinds (questions) |
+|---|---|
+| `sqlSelect` | `filtering` 5, `nulls` 5, `sorting` 5, `expressions` 5, `filterRows`, `nullRows`, `orderLimit` |
+| `sqlAggregate` | `aggregates` 5, `grouping` 5, `windows` 5, `countValues`, `averageAge`, `groupCount` |
+| `sqlJoins` | `joins` 5, `subqueries` 5, `sets` 4, `joinRows` |
+| `sqlModify` | `changes` 5, `schema` 5, `transactions` 5, `indexes` 5 |
+| `sqlPostgres` | `psql` 5, `pgFeatures` 6, `pgAdmin` 5 |
+| `sqlSqlite` | `sqliteShell` 5, `sqliteTypes` 5, `sqliteRuntime` 5 |
+| `sqlMysql` | `mysqlClient` 5, `mysqlSpecifics` 6 |
+| `sqlPractice` | `design` 5, `safety` 5, `performance` 5, `operations` 5 |
+
+Seven kinds are generated (`sql-output.ts`): two small tables drawn from
+the seed, `owners (id, name)` and `pets (name, kind, age, owner)`, and a
+query; *Que renvoie cette requête ?* Three owners, one without a pet; five
+or six pets, with one NULL kind, one NULL age and one pet without an owner;
+ages all different, so no `ORDER BY` has ties. The tables are shown in
+KaTeX, small (`\footnotesize`), and stacked for a join: at 360 px the pets
+table only just fits, which is why pet names have four letters at
+most and the column is `owner`, not `owner_id` (the browser test checks the
+width). A result is written as the options show it (`formatRows`): one
+value; rows as `a | b, c | d`; *(aucune ligne)* for none.
+
+| Id | Asks for | Typical wrong options | Typed |
+|---|---|---|---|
+| `sqlSelect.filterRows` | `WHERE age > k` with a pet exactly at k; `a OR b AND c`; `NOT IN` with a NULL | `>` read as `>=`, NULL kept, OR before AND | |
+| `sqlSelect.nullRows` | `= NULL`, `IS NULL`, `<>` | NULL compared as a value | |
+| `sqlSelect.orderLimit` | `ORDER BY age [DESC] LIMIT n OFFSET m` | OFFSET ignored or swapped with LIMIT, ASC for DESC | |
+| `sqlAggregate.countValues` | `COUNT(*)`, `COUNT(kind)`, `COUNT(DISTINCT kind)` | NULLs counted or not, DISTINCT applied or not | ✓ |
+| `sqlAggregate.averageAge` | `AVG(age)`; `SUM(age), COUNT(age)` | NULL counted as 0, SUM for AVG, a NULL sum | ✓ (AVG) |
+| `sqlAggregate.groupCount` | `GROUP BY kind` with `HAVING`, or with `WHERE` first | HAVING ignored, the NULL group kept, `>` read as `>=` | |
+| `sqlJoins.joinRows` | how many rows an inner or LEFT JOIN gives; owners without a pet (`LEFT JOIN … WHERE p.name IS NULL`) | inner for outer, the Cartesian product, only the owners | ✓ |
+
+Only portable SQL is generated: no NULL in an `ORDER BY` (engines sort it
+differently), no integer division, no `LIKE` (case rules differ). For these
+kinds (verify kind `sql`, with the setup and the query), `check:quiz` creates
+the tables on an in-memory SQLite database (`better-sqlite3`), runs the
+query and compares its `formatRows` with the options: the right one must
+match, no wrong one may. With `CHECK_SQL_POSTGRES` set to a database URL,
+it runs every query again on PostgreSQL, in a schema it rolls back, and
+fails if the result differs:
+
+```sh
+CHECK_SQL_POSTGRES="postgresql://postgres@localhost:5433/postgres?host=/tmp/pg" npm run check:quiz
+```
+
+Thirteen mistake types, `sqlBoundary` to `sqlCrossProduct`. The written
+lists grow like Linux's: a new question gets `since: N` with a version bump.
 
 ## Anatomy of a generator
 
@@ -767,6 +832,19 @@ keep the label they were stored with.
 | `notLowestTerms` | Balanced, not in the smallest whole numbers | balancing |
 | `elementUnbalanced` | An element left unbalanced | balancing |
 | `diatomicForgotten` | O₂, H₂, N₂ or Cl₂ written as one atom | balancing |
+| `sqlBoundary` | `>` read as `>=`: the row on the boundary on the wrong side | sqlSelect, sqlAggregate |
+| `sqlNullCompared` | NULL compared with `=`, `<>` or `NOT IN` as a value | sqlSelect |
+| `sqlPrecedence` | OR taken before AND | sqlSelect |
+| `sqlLimitOffset` | LIMIT and OFFSET swapped, or OFFSET ignored | sqlSelect |
+| `sqlSortDirection` | ASC and DESC confused | sqlSelect |
+| `sqlCountNulls` | `COUNT(*)` and `COUNT(column)` confused | sqlAggregate |
+| `sqlDistinct` | DISTINCT applied or forgotten | sqlAggregate |
+| `sqlAvgNulls` | AVG or SUM counting NULL as 0, or becoming NULL | sqlAggregate |
+| `sqlAggregateConfused` | SUM, AVG and COUNT confused | sqlAggregate |
+| `sqlHavingIgnored` | HAVING (or WHERE) not applied | sqlAggregate |
+| `sqlNullGroup` | The NULL group kept or lost wrongly | sqlAggregate |
+| `sqlJoinKind` | Inner and outer joins confused | sqlJoins |
+| `sqlCrossProduct` | Every row with every row | sqlJoins |
 | `signError` | Sign error | complex, derivatives, explog, functions, geometry, graphs, integrals, limits, linear, multivariable, odes, probability, sequences, series, trigonometry |
 
 Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
@@ -875,6 +953,7 @@ mistakes to review. It then checks:
 - **Wrong options:** none of them is also right.
 - **Options:** exactly four, with distinct LaTeX; every wrong option carries a known mistake type, and every type in `MISTAKES` occurs somewhere.
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
+- **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.
 - **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).
 - **Graphs:** every drawn curve is at least 30 % inside its window (25 % for an option); option curves differ by half a grid square somewhere; all options of a question share their window or axes; plane intercepts are non-zero and distinct.
 - **Typed answers:** for every question that can be typed, each option's value written to 4 and 10 decimals (and with a comma) is read as that option, and a blank as a blank.

@@ -3,6 +3,7 @@ import { currentLang, type Lang } from "./i18n";
 import { bankSkillParts, currentBank, localized } from "../shared/quiz";
 import { LX_EXPLANATIONS, LX_GROUPS, LX_LEVEL, LX_MISTAKES, LX_PROMPTS, LX_SKILLS, LX_TEXTS, LX_TOPICS } from "./quiz-i18n-linux";
 import { CB_EXPLANATIONS, CB_GROUPS, CB_LEVEL, CB_MISTAKES, CB_PROMPTS, CB_SKILLS, CB_TEXTS, CB_TOPICS } from "./quiz-i18n-chembio";
+import { SQ_GROUPS, SQ_LEVEL, SQ_MISTAKES, SQ_SKILLS, SQ_TEXTS, SQ_TOPICS } from "./quiz-i18n-sql";
 import { EQ_EXPLANATIONS, EQ_MISTAKES, EQ_PROMPTS, EQ_SKILLS } from "./quiz-i18n-equilibria";
 import { QT_EXPLANATIONS, QT_GROUP, QT_MISTAKES, QT_PROMPTS, QT_SKILLS } from "./quiz-i18n-quantum";
 import { KN_EXPLANATIONS, KN_GROUP, KN_MISTAKES, KN_PROMPTS, KN_SKILLS } from "./quiz-i18n-kinetics";
@@ -92,6 +93,7 @@ const fr = {
   ...CHEM_TEXTS.fr,
     ...LX_TEXTS.fr,
     ...CB_TEXTS.fr,
+    ...SQ_TEXTS.fr,
 };
 
 type QuizKey = keyof typeof fr;
@@ -176,6 +178,7 @@ const es: Record<QuizKey, string> = {
   ...CHEM_TEXTS.es,
     ...LX_TEXTS.es,
     ...CB_TEXTS.es,
+    ...SQ_TEXTS.es,
 };
 
 const en: Record<QuizKey, string> = {
@@ -258,11 +261,12 @@ const en: Record<QuizKey, string> = {
   ...CHEM_TEXTS.en,
     ...LX_TEXTS.en,
     ...CB_TEXTS.en,
+    ...SQ_TEXTS.en,
 };
 
 const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
-  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr, chembio: CB_LEVEL.fr },
-  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es, chembio: CB_LEVEL.es },
+  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr, chembio: CB_LEVEL.fr, sql: SQ_LEVEL.fr },
+  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es, chembio: CB_LEVEL.es, sql: SQ_LEVEL.es },
   en: {
     school: "High school",
     university: "University",
@@ -270,13 +274,14 @@ const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
     chemistryAdvanced: CHEM_ADVANCED.en,
     linux: LX_LEVEL.en,
     chembio: CB_LEVEL.en,
+    sql: SQ_LEVEL.en,
   },
 };
 
 const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
-  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr },
-  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, statistics: ST_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es },
-  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, statistics: ST_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en },
+  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr, ...SQ_GROUPS.fr },
+  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, statistics: ST_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es, ...SQ_GROUPS.es },
+  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, statistics: ST_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en, ...SQ_GROUPS.en },
 };
 
 const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
@@ -284,6 +289,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...CHEM_TOPICS.fr,
     ...LX_TOPICS.fr,
     ...CB_TOPICS.fr,
+    ...SQ_TOPICS.fr,
     derivatives: "Dérivées",
     integrals: "Intégrales",
     trigonometry: "Trigonométrie",
@@ -304,6 +310,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...CHEM_TOPICS.es,
     ...LX_TOPICS.es,
     ...CB_TOPICS.es,
+    ...SQ_TOPICS.es,
     derivatives: "Derivadas",
     integrals: "Integrales",
     trigonometry: "Trigonometría",
@@ -324,6 +331,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...CHEM_TOPICS.en,
     ...LX_TOPICS.en,
     ...CB_TOPICS.en,
+    ...SQ_TOPICS.en,
     derivatives: "Derivatives",
     integrals: "Integrals",
     trigonometry: "Trigonometry",
@@ -881,6 +889,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...ST_SKILLS.fr,
     ...LX_SKILLS.fr,
     ...CB_SKILLS.fr,
+    ...SQ_SKILLS.fr,
     "derivatives.polynomial": "Dérivée d'un polynôme",
     "derivatives.trig": "Dérivée de sin(bx), cos(bx)",
     "derivatives.exponential": "Dérivée de e^(ax+b)",
@@ -1001,6 +1010,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...ST_SKILLS.es,
     ...LX_SKILLS.es,
     ...CB_SKILLS.es,
+    ...SQ_SKILLS.es,
     "derivatives.polynomial": "Derivada de un polinomio",
     "derivatives.trig": "Derivada de sen(bx), cos(bx)",
     "derivatives.exponential": "Derivada de e^(ax+b)",
@@ -1121,6 +1131,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...ST_SKILLS.en,
     ...LX_SKILLS.en,
     ...CB_SKILLS.en,
+    ...SQ_SKILLS.en,
     "derivatives.polynomial": "Derivative of a polynomial",
     "derivatives.trig": "Derivative of sin(bx), cos(bx)",
     "derivatives.exponential": "Derivative of e^(ax+b)",
@@ -1245,6 +1256,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...ST_MISTAKES.fr,
     ...LX_MISTAKES.fr,
     ...CB_MISTAKES.fr,
+    ...SQ_MISTAKES.fr,
     exponentKept: "Exposant non abaissé",
     coefficientMissing: "Exposant non descendu en facteur",
     constantKept: "Dérivée d'une constante non nulle",
@@ -1357,6 +1369,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...ST_MISTAKES.es,
     ...LX_MISTAKES.es,
     ...CB_MISTAKES.es,
+    ...SQ_MISTAKES.es,
     exponentKept: "Exponente sin reducir",
     coefficientMissing: "Exponente no bajado como factor",
     constantKept: "Derivada de una constante distinta de cero",
@@ -1469,6 +1482,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...ST_MISTAKES.en,
     ...LX_MISTAKES.en,
     ...CB_MISTAKES.en,
+    ...SQ_MISTAKES.en,
     exponentKept: "Exponent not lowered",
     coefficientMissing: "Exponent not brought down as a factor",
     constantKept: "Derivative of a constant not zero",

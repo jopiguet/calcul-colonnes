@@ -112,6 +112,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
+| Informatique | 🐧 Linux, 🗄️ SQL | Kinds of question to review, for each |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
@@ -362,6 +363,35 @@ the modes left by a `umask`, when a crontab line runs, and what a command
 prints: a `sed` substitution or an `awk` program on a line of text, or
 bash's `${f%.*}` on a file name. An octal mode can be typed with
 *Au clavier*.
+
+## SQL
+
+Activity **🗄️ SQL**, in the *Informatique* group, next to Linux:
+multiple-choice tests on SQL and databases. Settings, keys, typed answers
+and results work as for the [QCM](#multiple-choice-tests); there is one
+level.
+
+| Group | Topic | Content |
+|---|---|---|
+| Le langage SQL | Lire : filtres, NULL, tri | `WHERE`, `BETWEEN`, `LIKE`, `DISTINCT`; NULL and three-valued logic; `ORDER BY`, `LIMIT`, paging; `CASE`, `CAST`, division |
+| | Agréger et regrouper | `COUNT`, `SUM`, `AVG`, `string_agg`; `GROUP BY`, `HAVING`; window functions |
+| | Jointures et sous-requêtes | inner, outer and self joins; subqueries, `EXISTS`, `WITH`; `UNION`, `EXCEPT` |
+| | Modifier : données, schéma, transactions | `INSERT`, `UPDATE`, `DELETE`; types, keys and constraints; transactions and isolation; indexes |
+| PostgreSQL, SQLite, MySQL | PostgreSQL et psql | `\d`, `\c`, `\x`, `\copy`; `RETURNING`, `ON CONFLICT`, identity columns, JSONB; `pg_dump`, roles, `EXPLAIN ANALYZE`, `VACUUM` |
+| | SQLite et sqlite3 | `.tables`, `.schema`, `.import`, `.backup`; type affinity, `STRICT`, rowid; `PRAGMA foreign_keys`, WAL, locks |
+| | MySQL et MariaDB | `SHOW`, `USE`, `DESCRIBE`, `\G`; `mysqldump`, accounts `'user'@'host'`; `utf8mb4`, backticks, InnoDB, `ON DUPLICATE KEY UPDATE` |
+| | Bonnes pratiques | table design; SQL injection and parameters; N+1 queries, `EXPLAIN`, connection pools; backups, migrations |
+
+Where the three engines differ, the question says so. A question on an
+engine shows its client as *📦 postgresql-client*, *📦 sqlite3* or
+*📦 default-mysql-client*, and its explanation ends with the install
+commands.
+
+Some questions are generated each time: two small tables, *owners* and
+*pets*, with a few NULLs, and a query: *Que renvoie cette requête ?* The
+wrong results are the usual slips: `>` read as `>=`, NULL compared with `=`,
+OR before AND, `COUNT(*)` for `COUNT(kind)`, HAVING forgotten, a LEFT JOIN
+read as an inner one. A count or an average can be typed with *Au clavier*.
 
 ## Chemical equations
 

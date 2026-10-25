@@ -15,7 +15,7 @@ import { at } from "./discover/astro-i18n";
 import { bt } from "./discover/bio-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
-import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, type Subject } from "../shared/quiz";
+import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, SQL_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -39,6 +39,7 @@ const texts = {
     chembioText: "Équilibrer les équations : combustions, sels, déplacements",
     computing: "Informatique",
     linuxText: "La ligne de commande, des bases aux outils à installer",
+    sqlText: "Requêtes, jointures, transactions ; psql, sqlite3 et mysql",
     nothingShown: "Aucune activité n'est ouverte pour ce joueur. Elles se choisissent sur la page Compte.",
     chemistryText: "Chimie physique : calculs et notions, Focus par Focus",
     home: "Accueil",
@@ -64,6 +65,7 @@ const texts = {
     chembioText: "Ajustar ecuaciones: combustiones, sales, desplazamientos",
     computing: "Informática",
     linuxText: "La línea de órdenes, de lo básico a las herramientas que instalar",
+    sqlText: "Consultas, uniones, transacciones; psql, sqlite3 y mysql",
     nothingShown: "No hay ninguna actividad abierta para este jugador. Se eligen en la página Cuenta.",
     chemistryText: "Química física: cálculos y conceptos, Focus por Focus",
     home: "Inicio",
@@ -89,6 +91,7 @@ const texts = {
     chembioText: "Balancing equations: combustions, salts, displacements",
     computing: "Computing",
     linuxText: "The command line, from the basics to tools worth installing",
+    sqlText: "Queries, joins, transactions; psql, sqlite3 and mysql",
     nothingShown: "No activity is open for this player. They are chosen on the Account page.",
     chemistryText: "Physical chemistry: calculations and concepts, Focus by Focus",
     home: "Home",
@@ -135,7 +138,7 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "columns":
       return "columns";
     case "quiz":
-      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : "quiz";
+      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : "quiz";
     case "discover":
       return `discover-${activity.activity}`;
     case "vocab": {
@@ -160,7 +163,7 @@ export function activityCatalog(books: VocabBookInfo[]): { group: string; activi
         { id: "discover-ecology", title: bt("ecologyTitle") },
       ],
     },
-    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }] },
+    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }] },
     {
       group: ht("languages"),
       activities: books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
@@ -234,7 +237,9 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
         ? "linux"
         : (CHEMBIO_TOPICS as string[]).includes(topic)
           ? "chembio"
-          : "maths";
+          : (SQL_TOPICS as string[]).includes(topic)
+            ? "sql"
+            : "maths";
   const toReview = (subject: Subject): number =>
     profile ? profile.skills.filter((s) => s.status === "review" && subjectOfTopic(s.topic) === subject).length : 0;
   const reviewStatus = (n: number): { text: string; waiting: boolean } | null =>
@@ -284,7 +289,9 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const computing = el("div", "activity-group");
   computing.append(el("h2", "activity-group-title", ht("computing")));
   const shell = el("div", "activity-grid");
-  shell.append(card("linux", qt("modeLinux"), ht("linuxText"), reviewStatus(toReview("linux")), () => ctx.open({ mode: "quiz", subject: "linux" })));
+  shell.append(card("linux", qt("modeLinux"), ht("linuxText"), reviewStatus(toReview("linux")), () => ctx.open({ mode: "quiz", subject: "linux" })),
+    card("sql", qt("modeSql"), ht("sqlText"), reviewStatus(toReview("sql")), () => ctx.open({ mode: "quiz", subject: "sql" })),
+  );
   computing.append(shell);
 
   const languages = el("div", "activity-group");

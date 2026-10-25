@@ -22,6 +22,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.20.0",
+    fr: ["🗄️ SQL : un nouveau QCM, du SELECT aux transactions, avec PostgreSQL, SQLite et MySQL, et les bonnes pratiques."],
+    es: ["🗄️ SQL: un nuevo test, del SELECT a las transacciones, con PostgreSQL, SQLite y MySQL, y las buenas prácticas."],
+    en: ["🗄️ SQL: a new test, from SELECT to transactions, with PostgreSQL, SQLite and MySQL, and good practice."],
+  },
+  {
     version: "6.19.0",
     fr: [
       "Luma s'ouvre à la famille et aux amis, sur invitation.",

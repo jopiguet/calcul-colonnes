@@ -9,7 +9,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -21,17 +21,21 @@ export type ChemistryTopic = "gases" | "firstLaw" | "secondLaw" | "phases" | "mi
 export type LinuxTopic = "linuxFiles" | "linuxText" | "linuxShell" | "linuxProcesses" | "linuxSystem" | "linuxNetwork" | "linuxTools" | "linuxScripting" | "linuxGit" | "linuxVim";
 /** Chemistry and biology basics: balancing equations, first. */
 export type ChemBioTopic = "balancing";
-export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic;
+/** SQL: the language, then the engines (PostgreSQL, SQLite, MySQL) and good practice. */
+export type SqlTopic = "sqlSelect" | "sqlAggregate" | "sqlJoins" | "sqlModify" | "sqlPostgres" | "sqlSqlite" | "sqlMysql" | "sqlPractice";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql"];
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
 export const LINUX_TOPICS: LinuxTopic[] = ["linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "linuxScripting", "linuxGit", "linuxVim"];
-/** The three subjects of the tests, each with its own levels and topics. */
-export type Subject = "maths" | "chemistry" | "linux" | "chembio";
+/** Topics of the SQL test. */
+export const SQL_TOPICS: SqlTopic[] = ["sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice"];
+/** The subjects of the tests, each with its own levels and topics. */
+export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql";
 export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+  level === "linux" ? "linux" : level === "sql" ? "sql" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
@@ -40,9 +44,9 @@ export const MATH_LEVELS: Level[] = ["school", "university"];
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -58,6 +62,8 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "linuxDev", topics: ["linuxScripting", "linuxGit", "linuxVim"] },
   { group: "linuxInstall", topics: ["linuxTools"] },
   { group: "reactions", topics: ["balancing"] },
+  { group: "sqlLanguage", topics: ["sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify"] },
+  { group: "sqlEngines", topics: ["sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice"] },
 ];
 
 /**
@@ -679,6 +685,20 @@ export const MISTAKES = [
   "awkConcat", // $1 $2 (joined) and $1, $2 (with OFS) confused
   "expansionLongest", // # and ##, or % and %%: shortest and longest match confused
   "expansionSide", // # (front) and % (back) confused
+  // SQL
+  "sqlBoundary", // > read as >=, or the row on the boundary left on the wrong side
+  "sqlNullCompared", // NULL compared with =, <> or NOT IN as if it were a value
+  "sqlPrecedence", // OR taken before AND
+  "sqlLimitOffset", // LIMIT and OFFSET swapped, or OFFSET ignored
+  "sqlSortDirection", // ASC and DESC confused
+  "sqlCountNulls", // COUNT(*) and COUNT(column) confused: NULLs counted or not
+  "sqlDistinct", // DISTINCT applied or forgotten
+  "sqlAvgNulls", // AVG or SUM taken to count NULL as 0, or to become NULL
+  "sqlAggregateConfused", // SUM, AVG and COUNT confused
+  "sqlHavingIgnored", // HAVING (or WHERE) not applied to the groups
+  "sqlNullGroup", // the NULL group kept or lost wrongly
+  "sqlJoinKind", // an inner join read as an outer one, or the reverse
+  "sqlCrossProduct", // every row paired with every row: the join condition ignored
   // balancing equations
   "subscriptChanged", // a formula's subscript changed instead of a coefficient: another substance
   "notLowestTerms", // balanced, but not in the smallest whole numbers
@@ -779,6 +799,8 @@ export type Verify =
   /** A written question from the question bank: options are texts, nothing to compute. */
   | { kind: "choice" }
   | { kind: "shell"; command: string } // the option is what bash prints for the command
+  /** The option (its formula, as `formatRows` writes it) is what `query` returns after `setup`, on SQLite. */
+  | { kind: "sql"; setup: string; query: string }
   /** Unix permissions: options are octal modes ("754") or symbolic ones ("rwxr-xr-x") in their formula; the right one is `mode`. */
   | { kind: "mode"; mode: number }
   /** umask: options are "file/directory" octal modes ("640/750") in their formula. */

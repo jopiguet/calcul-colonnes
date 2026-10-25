@@ -6,19 +6,20 @@ async function noSidewaysScroll(page: Page, width: number): Promise<void> {
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
 }
 
-test("the home page uses a wide screen: single-card subjects side by side; one column on a phone", async ({ page }) => {
+test("the home page uses a wide screen: small groups side by side; one column on a phone", async ({ page }) => {
   await page.setViewportSize({ width: 1400, height: 900 });
   await newPlayer(page, "Wid");
   await goHome(page);
   const top = async (title: string): Promise<number> =>
     (await page.locator(".activity-group", { has: page.locator(".activity-group-title", { hasText: title }) }).boundingBox())!.y;
-  // Sciences and Computing, one card each, on the same row.
-  expect(Math.abs((await top("Sciences")) - (await top("Informatique")))).toBeLessThan(2);
+  // Mathematics (two cards) and Sciences (one) on the same row; Computing (Linux, SQL) on the next.
+  expect(Math.abs((await top("Mathématiques")) - (await top("Sciences")))).toBeLessThan(2);
+  expect(await top("Informatique")).toBeGreaterThan(await top("Sciences"));
   expect(await page.locator("#app").evaluate((a) => a.getBoundingClientRect().width)).toBeGreaterThan(1000);
   await noSidewaysScroll(page, 1400);
 
   await page.setViewportSize({ width: 360, height: 740 });
-  expect(await top("Informatique")).toBeGreaterThan(await top("Sciences"));
+  expect(await top("Sciences")).toBeGreaterThan(await top("Mathématiques"));
   await noSidewaysScroll(page, 360);
   // Other pages keep the narrow column.
   await openActivity(page, "columns");

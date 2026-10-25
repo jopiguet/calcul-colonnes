@@ -42,6 +42,8 @@ test("every question shows four rendered options and the keyboard works", async 
 });
 
 test("a test survives a change of language", async ({ page }) => {
+  // Derivatives always show a formula (a graph question may have none to compare).
+  await chooseTopics(page, ["Dérivées"]);
   await page.click("text=Commencer le test");
   await page.locator(".choice").nth(1).click();
   await page.keyboard.press("ArrowRight");

@@ -138,7 +138,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux` or `chembio` |
+| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio` or `sql` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -238,6 +238,8 @@ runs: add tables and columns, rename or drop later.
 | `016_linux_level` | `quiz_results.level` accepts `linux`. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `017_vocab_skips` | `vocab_skips`: the words each player skipped (common SQL, one file) |
 | `018_chembio_level` | `quiz_results.level` accepts `chembio`, the balancing test. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `019_family` | The family release: `accounts.role`, `vocab_books.visibility`, `app_settings`, `account_invites`, `auth_flows.invite`, `feedback` |
+| `020_sql_level` | `quiz_results.level` accepts `sql`, the SQL test. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 

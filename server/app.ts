@@ -204,7 +204,7 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
     const id = Number(c.req.param("id"));
     if (!isInt(id, 1, Number.MAX_SAFE_INTEGER)) return c.json({ error: "invalid id" }, 400);
     const subject = c.req.query("subject");
-    if (subject !== "maths" && subject !== "chemistry" && subject !== "linux" && subject !== "chembio") return c.json({ error: "invalid subject" }, 400);
+    if (subject !== "maths" && subject !== "chemistry" && subject !== "linux" && subject !== "chembio" && subject !== "sql") return c.json({ error: "invalid subject" }, 400);
     const user = await repository.getUser(id, scope(c));
     if (!user) return c.json({ error: "unknown user" }, 404);
     return c.json(await repository.pastTests(id, LEVELS.filter((l) => subjectOf(l) === subject), PAST_TESTS));
