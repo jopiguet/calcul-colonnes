@@ -1,4 +1,4 @@
-import { REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 import { isDiscoverActivity, type DiscoverActivity } from "./discover/activities";
@@ -40,6 +40,8 @@ export interface Settings {
   tsLevel: Level;
   reactTopics: Topic[];
   reactLevel: Level;
+  gcpTopics: Topic[];
+  gcpLevel: Level;
   quizCount: number;
   /** Mix the player's recent mistakes into new tests. */
   quizReview: boolean;
@@ -116,7 +118,7 @@ export function loadSettings(): Settings {
     discoverActivity: isDiscoverActivity(saved.discoverActivity) ? saved.discoverActivity : "dice",
     quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
-    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" || saved.quizSubject === "react" ? saved.quizSubject : "maths",
+    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" || saved.quizSubject === "react" || saved.quizSubject === "gcp" ? saved.quizSubject : "maths",
     chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
     linuxTopics: Array.isArray(saved.linuxTopics) && LINUX_TOPICS.some((t) => (saved.linuxTopics as unknown[]).includes(t))
       ? LINUX_TOPICS.filter((t) => (saved.linuxTopics as unknown[]).includes(t))
@@ -139,6 +141,10 @@ export function loadSettings(): Settings {
       ? REACT_TOPICS.filter((t) => (saved.reactTopics as unknown[]).includes(t))
       : [...REACT_TOPICS],
     reactLevel: REACT_LEVELS.includes(saved.reactLevel as Level) ? (saved.reactLevel as Level) : "reactBeginner",
+    gcpTopics: Array.isArray(saved.gcpTopics) && GCP_TOPICS.some((t) => (saved.gcpTopics as unknown[]).includes(t))
+      ? GCP_TOPICS.filter((t) => (saved.gcpTopics as unknown[]).includes(t))
+      : [...GCP_TOPICS],
+    gcpLevel: GCP_LEVELS.includes(saved.gcpLevel as Level) ? (saved.gcpLevel as Level) : "gcpBeginner",
     chemLevel: CHEMISTRY_LEVELS.includes(saved.chemLevel as Level) ? (saved.chemLevel as Level) : "chemistry",
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,

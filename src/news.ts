@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.25.0",
+    fr: ["☁️ Google Cloud : un nouveau QCM en quatre niveaux, centré sur IAM et l'infrastructure, avec des stratégies d'accès et des règles de pare-feu à évaluer."],
+    es: ["☁️ Google Cloud: un nuevo test en cuatro niveles, centrado en IAM y la infraestructura, con políticas de acceso y reglas de firewall que evaluar."],
+    en: ["☁️ Google Cloud: a new test at four levels, focused on IAM and infrastructure, with access policies and firewall rules to evaluate."],
+  },
+  {
     version: "6.24.0",
     fr: ["⚛️ React : un nouveau QCM en quatre niveaux, des composants à la pile qui les entoure (Vite, tests, déploiement), avec des composants dont il faut prédire l'affichage."],
     es: ["⚛️ React: un nuevo test en cuatro niveles, de los componentes a la pila que los rodea (Vite, tests, despliegue), con componentes cuya salida hay que predecir."],

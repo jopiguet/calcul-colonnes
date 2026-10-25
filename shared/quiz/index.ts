@@ -24,6 +24,7 @@ import { series } from "./series";
 import { gases } from "./gases";
 import { tsBasics, tsFunctions, tsObjects, tsNarrowing, tsGenerics, tsTypeLevel, tsRuntime, tsTooling } from "./typescript";
 import { reactComponents, reactState, reactEffects, reactRendering, reactData, reactTyping, reactTooling, reactTesting } from "./react";
+import { gcpHierarchy, gcpIam, gcpServiceAccounts, gcpSecurity, gcpNetworking, gcpCompute, gcpStorage, gcpOperations } from "./gcp";
 import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
 import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
 import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools, linuxScripting, linuxGit, linuxVim } from "./linux";
@@ -119,6 +120,14 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   reactTyping,
   reactTooling,
   reactTesting,
+  gcpHierarchy,
+  gcpIam,
+  gcpServiceAccounts,
+  gcpSecurity,
+  gcpNetworking,
+  gcpCompute,
+  gcpStorage,
+  gcpOperations,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -258,6 +267,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "rust":
     case "ts":
     case "react":
+    case "gcp":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);
@@ -378,5 +388,8 @@ export { TS_QUESTIONS } from "./typescript";
 export { TS_LINE_MAX } from "./ts-output";
 export { REACT_QUESTIONS } from "./react";
 export { REACT_IMPORTS, REACT_LINE_MAX } from "./react-output";
+export { GCP_QUESTIONS } from "./gcp";
+export { GCP_LINE_MAX } from "./gcp-output";
+export type { GcpModel } from "./gcp-model";
 export { formatRows } from "./sql-output";
 export type { LinuxQuestion } from "./linux/types";

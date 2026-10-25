@@ -1,5 +1,6 @@
 import type { Rng } from "./rng";
 import type { Fn } from "./tex";
+import type { GcpModel } from "./gcp-model";
 
 export type Fn2 = (x: number, y: number) => number;
 
@@ -9,7 +10,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -29,9 +30,11 @@ export type RustTopic = "rustBasics" | "rustOwnership" | "rustTypes" | "rustErro
 export type TsTopic = "tsBasics" | "tsFunctions" | "tsObjects" | "tsNarrowing" | "tsGenerics" | "tsTypeLevel" | "tsRuntime" | "tsTooling";
 /** React: components, state, effects and rendering, then the stack around it (data, types, tooling, tests); each at up to four levels. */
 export type ReactTopic = "reactComponents" | "reactState" | "reactEffects" | "reactRendering" | "reactData" | "reactTyping" | "reactTooling" | "reactTesting";
-export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic;
+/** Google Cloud: identity and access (the hierarchy, IAM, service accounts, security), then the infrastructure; each at up to four levels. */
+export type GcpTopic = "gcpHierarchy" | "gcpIam" | "gcpServiceAccounts" | "gcpSecurity" | "gcpNetworking" | "gcpCompute" | "gcpStorage" | "gcpOperations";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert"];
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
@@ -53,10 +56,15 @@ export const REACT_TOPICS: ReactTopic[] = ["reactComponents", "reactState", "rea
 /** The levels offered in the React test's settings, easiest first. */
 export const REACT_LEVELS: Level[] = ["reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert"];
 export const isReact = (level: Level): boolean => REACT_LEVELS.includes(level);
+/** Topics of the Google Cloud test; each level has some of them (topicsFor). */
+export const GCP_TOPICS: GcpTopic[] = ["gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations"];
+/** The levels offered in the Google Cloud test's settings, easiest first. */
+export const GCP_LEVELS: Level[] = ["gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert"];
+export const isGcp = (level: Level): boolean => GCP_LEVELS.includes(level);
 /** The subjects of the tests, each with its own levels and topics. */
-export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react";
+export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp";
 export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
@@ -65,9 +73,9 @@ export const MATH_LEVELS: Level[] = ["school", "university"];
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -91,6 +99,8 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "tsPlatform", topics: ["tsRuntime", "tsTooling"] },
   { group: "reactCore", topics: ["reactComponents", "reactState", "reactEffects", "reactRendering"] },
   { group: "reactStack", topics: ["reactData", "reactTyping", "reactTooling", "reactTesting"] },
+  { group: "gcpIdentity", topics: ["gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity"] },
+  { group: "gcpInfrastructure", topics: ["gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations"] },
 ];
 
 /**
@@ -781,6 +791,27 @@ export const MISTAKES = [
   "reactMemoProps", // memo taken to skip with a new object or function, or to re-render with equal props
   "reactStrictOnce", // StrictMode's double render and effect re-run in development forgotten
   "reactLayoutOrder", // useLayoutEffect taken to run after useEffect, or interleaved with it
+  // Google Cloud
+  "gcpReservedAddresses", // a subnet's four reserved addresses miscounted
+  "gcpPrefixSize", // a prefix length read one bit off
+  "gcpCidrOverlap", // a range overlapping a subnet of the VPC taken as free
+  "gcpSubnetTooSmall", // a subnet smaller than /29 taken as allowed
+  "gcpCidrProhibited", // a prohibited range (loopback, link-local) taken as allowed
+  "gcpFirewallOrder", // firewall rules taken in listed order, or the highest number first
+  "gcpFirewallTie", // allow taken to win over deny at the same priority
+  "gcpFirewallTargets", // a rule's target tags ignored
+  "gcpFirewallImplied", // ingress taken to be allowed when no rule matches
+  "gcpFirewallHierarchy", // firewall policies and VPC rules evaluated in the wrong order
+  "gcpGotoNext", // goto_next taken as allow
+  "gcpIamInheritance", // allow policies taken not to inherit, or a lower grant to replace a higher one
+  "gcpIamGroups", // a role granted to a group taken not to reach its members
+  "gcpDenyOrder", // a deny ignored, or beaten by an allow
+  "gcpDenyExceptions", // a deny rule's exception principals ignored
+  "gcpRoundDown", // instances counted by rounding down
+  "gcpConcurrencyIgnored", // one request per instance, or concurrency added instead of multiplied
+  "gcpMinInstancesAdded", // minimum instances added on top of those needed
+  "gcpAvailabilityLayout", // series and redundant components confused
+  "gcpAvailabilityMin", // the whole taken to be as available as one part
   // balancing equations
   "subscriptChanged", // a formula's subscript changed instead of a coefficient: another substance
   "notLowestTerms", // balanced, but not in the smallest whole numbers
@@ -889,6 +920,8 @@ export type Verify =
    * development, and its first button clicked `clicks` times; it must type-check in strict mode.
    */
   | { kind: "react"; program: string; clicks: number; show: "page" | "log"; strict?: boolean }
+  /** The option (its formula) is the answer to a Google Cloud model: an IAM evaluation, a firewall decision, a subnet, Cloud Run's scaling, an availability. */
+  | { kind: "gcp"; model: GcpModel }
   /** The option (its formula) is what the Rust `program` prints, trimmed. */
   | { kind: "rust"; program: string }
   /** The option (its formula, as `formatRows` writes it) is what `query` returns after `setup`, on SQLite. */

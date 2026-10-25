@@ -626,6 +626,60 @@ spaces), no wrong one may be. About 2,700 programs take some 20 seconds.
 
 Sixteen mistake types, `tsSortStrings` to `tsFieldInitOrder`.
 
+## Google Cloud
+
+The Google Cloud test (6.25.0), *☁️ Google Cloud* in the home page's
+*Informatique* group, has four levels, `gcpBeginner`, `gcpIntermediate`,
+`gcpAdvanced` and `gcpExpert`, and eight topics in two groups, with identity
+and access first. *Identité et accès*: `gcpHierarchy` (the resource
+hierarchy, organisation policies), `gcpIam`, `gcpServiceAccounts`,
+`gcpSecurity`. *Infrastructure*: `gcpNetworking`, `gcpCompute`, `gcpStorage`,
+`gcpOperations` (gcloud, Terraform, reliability, costs).
+
+| Topic | Débutant | Intermédiaire | Avancé | Expert |
+|---|---|---|---|---|
+| `gcpHierarchy` | `resourceBasics` 5 | `orgPolicies` 4 | `landingZone` 4 | `governance` 3 |
+| `gcpIam` | `iamBasics` 6 | `iamPractice` 6, `iamInheritance` | `iamAdvanced` 5, `iamDeny` | `iamExpert` 4, `iamDeny` |
+| `gcpServiceAccounts` | `saBasics` 4 | `impersonation` 5 | `federation` 5 | `saExpert` 3 |
+| `gcpSecurity` | `securityBasics` 3 | `audit` 4 | `perimeters` 4 | `securityExpert` 3 |
+| `gcpNetworking` | `vpcBasics` 5, `subnetAddresses` | `connectivity` 5, `subnetNew`, `firewallRules` | `loadBalancing` 5, `firewallRules` | `networkingExpert` 4, `firewallPolicies` |
+| `gcpCompute` | `computeBasics` 4, `runScaling` | `computeOps` 4, `runScaling` | `gke` 4 | `computeExpert` 3 |
+| `gcpStorage` | `storageBasics` 3 | `storageAccess` 4 | `dataProtection` 3 | `storageExpert` 3 |
+| `gcpOperations` | `toolsBasics` 4 | `terraform` 4 | `reliability` 4, `availability` | `operationsExpert` 3 |
+
+130 written questions in `shared/quiz/gcp/beginner.ts` to `expert.ts`, ids
+`gc-…`. Facts that change were checked against Google's documentation in
+October 2026: the order of principal access boundary, deny and allow
+policies; the firewall evaluation order (hierarchical policies, VPC rules,
+network policies, `AFTER_CLASSIC_FIREWALL`); a subnet's four reserved
+addresses and the /29 minimum; the constraints enforced on secure-by-default
+organisations (May 2024); audit log types; the roles for attaching and
+impersonating service accounts; Deployment Manager's end of support (2026);
+the new basic roles in Preview; GitHub providers needing an attribute
+condition.
+
+Eight kinds are generated (`gcp-output.ts`). Policies and rules are shown as
+a block of lines of 36 characters at most (`GCP_LINE_MAX`).
+
+| Id | Level | Asks for | Typical wrong options |
+|---|---|---|---|
+| `gcpNetworking.subnetAddresses` | Débutant | usable addresses in a primary range, or the first and last a VM can get | two reserved (as on premises), none, a prefix one bit off |
+| `gcpCompute.runScaling` | Débutant, Intermédiaire | instances for a load (concurrency, minimum instances), or requests served at the maximum | rounding down, one request per instance, minimum instances added on top |
+| `gcpNetworking.subnetNew` | Intermédiaire | which range can be a new subnet in a VPC with three subnets in three regions | a range overlapping another region's subnet, a /30, link-local or loopback |
+| `gcpNetworking.firewallRules` | Intermédiaire, Avancé | a packet against VPC firewall rules with priorities, sources, ports and target tags | listed order, highest number first, allow winning a tie, tags ignored, ingress allowed by default |
+| `gcpIam.iamInheritance` | Intermédiaire | which of `get`, `list`, `create`, `delete` Alice has on a bucket's objects, with roles granted at the organisation, folder, project and bucket, to her or her group | no inheritance, the lowest grant replacing the others, group grants ignored |
+| `gcpIam.iamDeny` | Avancé, Expert | the same with a deny policy (v2 permissions, a group or everyone, exception principals) | the deny ignored, an allow below it winning, exceptions ignored |
+| `gcpOperations.availability` | Avancé | two components in series, or two independent zones | series and parallel swapped, the weakest part, the average, two zones halving downtime |
+| `gcpNetworking.firewallPolicies` | Expert | a packet through an organisation policy, a folder policy, VPC rules and a global network policy, with `goto_next` | the wrong order of steps, `goto_next` as allow, implied allow |
+
+Each question carries its model (`gcp-model.ts`), and `check:quiz` computes
+the answer again with an evaluator of its own (`server/check-gcp.ts`):
+subnets with BigInt arithmetic and Node's `net.BlockList`, firewalls by
+sorting every matching rule, IAM by building the principal's set of
+permissions. The right option must equal it and no wrong one may.
+
+Twenty mistake types, `gcpReservedAddresses` to `gcpAvailabilityMin`.
+
 ## React
 
 The React test (6.24.0), *⚛️ React* in the home page's *Informatique* group,
@@ -1156,7 +1210,7 @@ after the change. The hashes must match.
 ## Verification
 
 ```sh
-npm run check:quiz          # 400 seeds per level: 152,000 questions, about two minutes
+npm run check:quiz          # 400 seeds per level: 184,000 questions, about two minutes
 npm run check:quiz -- 1500  # 60,000 questions
 npm run check:quiz -- --bank data/atkins-12-concepts.json  # with a real question bank
 ```
@@ -1171,6 +1225,7 @@ mistakes to review. It then checks:
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
 - **TypeScript:** every program shown type-checked with `tsc` in strict mode and run, its output compared with the options (see [TypeScript](#typescript)); every written TypeScript question checked like the Linux ones.
 - **React:** every component shown type-checked with `tsc` (JSX for React 19) and rendered with React DOM in jsdom, its page or console compared with the options, any React warning a failure (see [React](#react)); every written React question checked like the Linux ones.
+- **Google Cloud:** every generated answer computed again by `server/check-gcp.ts` (see [Google Cloud](#google-cloud)), policy lines at most 36 characters; every written Google Cloud question checked like the Linux ones.
 - **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.
 - **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).

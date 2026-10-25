@@ -13,11 +13,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, REACT_QUESTIONS, REACT_LINE_MAX, REACT_IMPORTS, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, REACT_QUESTIONS, REACT_LINE_MAX, REACT_IMPORTS, GCP_QUESTIONS, GCP_LINE_MAX, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
 import { parseBankFile, toBank } from "../shared/quiz/bank-file.ts";
+import { gcpAnswer, validNewSubnet } from "./check-gcp.ts";
 
 // The invented test bank (never a book's content): written questions are checked
 // like the others. `--bank FILE` checks a real bank file instead (kept in data/).
@@ -498,6 +499,9 @@ function isRight(q: Question, o: Option): boolean {
       tsPending.push({ program: v.program, printed: o.tex, right, where: tsWhere });
       return right; // checked after the loop, type-checked and run
     }
+    case "gcp":
+      // Google Cloud: the answer computed again by an evaluator of the checks' own.
+      return v.model.type === "subnetNew" ? validNewSubnet(v.model.existing, o.tex) : o.tex === gcpAnswer(v.model);
     case "react": {
       const right = o === q.options[q.correct];
       const run = { program: v.program, clicks: v.clicks, show: v.show, strict: v.strict ?? false };
@@ -714,6 +718,10 @@ for (const level of LEVELS) {
           if (long) throw new Error(`program line longer than ${TS_LINE_MAX} characters: ${long}`);
           if (q.prompt.code !== q.verify.program) throw new Error("the program shown is not the one checked");
         }
+        if (q.verify.kind === "gcp" && q.prompt.code) {
+          const long = q.prompt.code.split("\n").find((line) => [...line].length > GCP_LINE_MAX);
+          if (long) throw new Error(`policy line longer than ${GCP_LINE_MAX} characters: ${long}`);
+        }
         if (q.verify.kind === "react") {
           reactWhere = where;
           const long = q.verify.program.split("\n").find((line) => [...line].length > REACT_LINE_MAX);
@@ -818,6 +826,7 @@ if (tsPending.length > 0) {
   }
 } else console.log(`${tsWritten} written TypeScript questions checked`);
 
+console.log(`${checkWritten("gcp", "gc-", GCP_QUESTIONS)} written Google Cloud questions checked`);
 const reactWritten = checkWritten("react", "re-", REACT_QUESTIONS);
 if (reactPending.length > 0) {
   const cases = [...new Map(reactPending.map((p) => [p.key, p.run])).values()];

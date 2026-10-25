@@ -1,0 +1,277 @@
+/** Texts of the Google Cloud test, in French, Spanish and English; merged into quiz-i18n.ts. */
+import type { GcpTopic } from "../shared/quiz";
+
+type Lang = "fr" | "es" | "en";
+type Tri = Record<Lang, string>;
+
+export const GCP_TEXTS = {
+  fr: { modeGcp: "☁️ Google Cloud", gcpSetupTitle: "QCM : Google Cloud" },
+  es: { modeGcp: "☁️ Google Cloud", gcpSetupTitle: "Test: Google Cloud" },
+  en: { modeGcp: "☁️ Google Cloud", gcpSetupTitle: "Test: Google Cloud" },
+} satisfies Record<Lang, Record<string, string>>;
+
+export const GCP_LEVEL_NAMES: Record<"gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert", Tri> = {
+  gcpBeginner: { fr: "Débutant", es: "Principiante", en: "Beginner" },
+  gcpIntermediate: { fr: "Intermédiaire", es: "Intermedio", en: "Intermediate" },
+  gcpAdvanced: { fr: "Avancé", es: "Avanzado", en: "Advanced" },
+  gcpExpert: { fr: "Expert", es: "Experto", en: "Expert" },
+};
+
+export const GCP_GROUPS: Record<Lang, { gcpIdentity: string; gcpInfrastructure: string }> = {
+  fr: { gcpIdentity: "Identité et accès", gcpInfrastructure: "Infrastructure" },
+  es: { gcpIdentity: "Identidad y acceso", gcpInfrastructure: "Infraestructura" },
+  en: { gcpIdentity: "Identity and access", gcpInfrastructure: "Infrastructure" },
+};
+
+export const GCP_TOPIC_NAMES: Record<Lang, Record<GcpTopic, string>> = {
+  fr: {
+    gcpHierarchy: "Hiérarchie et règles d'administration",
+    gcpIam: "IAM : rôles, conditions, refus",
+    gcpServiceAccounts: "Comptes de service et fédération",
+    gcpSecurity: "Sécurité, clés et audit",
+    gcpNetworking: "Réseau VPC et pare-feu",
+    gcpCompute: "Calcul : VM, Cloud Run, GKE",
+    gcpStorage: "Stockage et bases de données",
+    gcpOperations: "Outils, Terraform, fiabilité",
+  },
+  es: {
+    gcpHierarchy: "Jerarquía y políticas de organización",
+    gcpIam: "IAM: roles, condiciones, denegaciones",
+    gcpServiceAccounts: "Cuentas de servicio y federación",
+    gcpSecurity: "Seguridad, claves y auditoría",
+    gcpNetworking: "Red VPC y firewall",
+    gcpCompute: "Cómputo: VM, Cloud Run, GKE",
+    gcpStorage: "Almacenamiento y bases de datos",
+    gcpOperations: "Herramientas, Terraform, fiabilidad",
+  },
+  en: {
+    gcpHierarchy: "Hierarchy and organisation policies",
+    gcpIam: "IAM: roles, conditions, deny",
+    gcpServiceAccounts: "Service accounts and federation",
+    gcpSecurity: "Security, keys and audit",
+    gcpNetworking: "VPC networking and firewalls",
+    gcpCompute: "Compute: VMs, Cloud Run, GKE",
+    gcpStorage: "Storage and databases",
+    gcpOperations: "Tools, Terraform, reliability",
+  },
+};
+
+export const GCP_SKILLS: Record<Lang, Record<string, string>> = {
+  fr: {
+    "gcpHierarchy.resourceBasics": "Organisation, dossiers, projets, régions",
+    "gcpHierarchy.orgPolicies": "Règles d'administration",
+    "gcpHierarchy.landingZone": "Landing zone, tags, localisation",
+    "gcpHierarchy.governance": "Contraintes personnalisées et gérées",
+    "gcpIam.iamBasics": "Principaux, rôles, liaisons",
+    "gcpIam.iamPractice": "Rôles personnalisés, conditions, etag",
+    "gcpIam.iamAdvanced": "Refus, limites d'accès, PAM, fédération des employés",
+    "gcpIam.iamExpert": "Nouveaux rôles de base, Owner, agents de service",
+    "gcpIam.iamInheritance": "L'accès hérité à travers la hiérarchie",
+    "gcpIam.iamDeny": "L'accès avec des stratégies de refus",
+    "gcpServiceAccounts.saBasics": "Comptes de service et clés",
+    "gcpServiceAccounts.impersonation": "actAs et emprunt d'identité",
+    "gcpServiceAccounts.federation": "Fédération d'identité de charge de travail",
+    "gcpServiceAccounts.saExpert": "Délégation, élévation, restauration",
+    "gcpSecurity.securityBasics": "Secrets, chiffrement, Admin Activity",
+    "gcpSecurity.audit": "Journaux d'audit",
+    "gcpSecurity.perimeters": "VPC Service Controls, KMS, IAP, Cloud Armor",
+    "gcpSecurity.securityExpert": "Access Transparency, Confidential VM, règles d'entrée",
+    "gcpNetworking.vpcBasics": "VPC, sous-réseaux, règles implicites, Cloud NAT",
+    "gcpNetworking.subnetAddresses": "Les adresses d'un sous-réseau",
+    "gcpNetworking.connectivity": "Shared VPC, appairage, IAP, Private Google Access",
+    "gcpNetworking.subnetNew": "La plage d'un nouveau sous-réseau",
+    "gcpNetworking.firewallRules": "Ce que décident les règles de pare-feu",
+    "gcpNetworking.loadBalancing": "Équilibrage, HA VPN, PSC, DNS",
+    "gcpNetworking.networkingExpert": "Tags sécurisés, goto_next, ordre d'application",
+    "gcpNetworking.firewallPolicies": "Stratégies hiérarchiques et règles VPC",
+    "gcpCompute.computeBasics": "Cloud Run, Spot, Artifact Registry",
+    "gcpCompute.runScaling": "Les instances de Cloud Run",
+    "gcpCompute.computeOps": "MIG, révisions, Autopilot, appel authentifié",
+    "gcpCompute.gke": "Sécurité de GKE",
+    "gcpCompute.computeExpert": "Travail en arrière-plan, mises à jour, auto-réparation",
+    "gcpStorage.storageBasics": "Classes de stockage, buckets, Cloud SQL",
+    "gcpStorage.storageAccess": "Accès uniforme, URL signées, Auth Proxy",
+    "gcpStorage.dataProtection": "Rétention, haute disponibilité, coffres",
+    "gcpStorage.storageExpert": "Spanner, Bigtable, cohérence",
+    "gcpOperations.toolsBasics": "gcloud, ADC, budgets",
+    "gcpOperations.terraform": "Terraform et IAM",
+    "gcpOperations.reliability": "SLO, alertes, coûts",
+    "gcpOperations.availability": "La disponibilité d'un ensemble",
+    "gcpOperations.operationsExpert": "Import, incidents, politique sous forme de code",
+  },
+  es: {
+    "gcpHierarchy.resourceBasics": "Organización, carpetas, proyectos, regiones",
+    "gcpHierarchy.orgPolicies": "Políticas de organización",
+    "gcpHierarchy.landingZone": "Landing zone, tags, ubicaciones",
+    "gcpHierarchy.governance": "Restricciones personalizadas y gestionadas",
+    "gcpIam.iamBasics": "Principales, roles, vinculaciones",
+    "gcpIam.iamPractice": "Roles personalizados, condiciones, etag",
+    "gcpIam.iamAdvanced": "Denegaciones, límites de acceso, PAM, federación de personal",
+    "gcpIam.iamExpert": "Nuevos roles básicos, Owner, agentes de servicio",
+    "gcpIam.iamInheritance": "El acceso heredado por la jerarquía",
+    "gcpIam.iamDeny": "El acceso con políticas de denegación",
+    "gcpServiceAccounts.saBasics": "Cuentas de servicio y claves",
+    "gcpServiceAccounts.impersonation": "actAs y suplantación",
+    "gcpServiceAccounts.federation": "Federación de identidades de cargas de trabajo",
+    "gcpServiceAccounts.saExpert": "Delegación, escalada, restauración",
+    "gcpSecurity.securityBasics": "Secretos, cifrado, Admin Activity",
+    "gcpSecurity.audit": "Registros de auditoría",
+    "gcpSecurity.perimeters": "VPC Service Controls, KMS, IAP, Cloud Armor",
+    "gcpSecurity.securityExpert": "Access Transparency, Confidential VM, reglas de entrada",
+    "gcpNetworking.vpcBasics": "VPC, subredes, reglas implícitas, Cloud NAT",
+    "gcpNetworking.subnetAddresses": "Las direcciones de una subred",
+    "gcpNetworking.connectivity": "Shared VPC, peering, IAP, Private Google Access",
+    "gcpNetworking.subnetNew": "El rango de una subred nueva",
+    "gcpNetworking.firewallRules": "Lo que deciden las reglas de firewall",
+    "gcpNetworking.loadBalancing": "Balanceo, HA VPN, PSC, DNS",
+    "gcpNetworking.networkingExpert": "Tags seguros, goto_next, orden de aplicación",
+    "gcpNetworking.firewallPolicies": "Políticas jerárquicas y reglas de VPC",
+    "gcpCompute.computeBasics": "Cloud Run, Spot, Artifact Registry",
+    "gcpCompute.runScaling": "Las instancias de Cloud Run",
+    "gcpCompute.computeOps": "MIG, revisiones, Autopilot, llamada autenticada",
+    "gcpCompute.gke": "Seguridad de GKE",
+    "gcpCompute.computeExpert": "Trabajo en segundo plano, actualizaciones, autorreparación",
+    "gcpStorage.storageBasics": "Clases de almacenamiento, buckets, Cloud SQL",
+    "gcpStorage.storageAccess": "Acceso uniforme, URL firmadas, Auth Proxy",
+    "gcpStorage.dataProtection": "Retención, alta disponibilidad, bóvedas",
+    "gcpStorage.storageExpert": "Spanner, Bigtable, consistencia",
+    "gcpOperations.toolsBasics": "gcloud, ADC, presupuestos",
+    "gcpOperations.terraform": "Terraform e IAM",
+    "gcpOperations.reliability": "SLO, alertas, costes",
+    "gcpOperations.availability": "La disponibilidad de un conjunto",
+    "gcpOperations.operationsExpert": "Importación, incidentes, políticas como código",
+  },
+  en: {
+    "gcpHierarchy.resourceBasics": "Organisation, folders, projects, regions",
+    "gcpHierarchy.orgPolicies": "Organisation policies",
+    "gcpHierarchy.landingZone": "Landing zones, tags, locations",
+    "gcpHierarchy.governance": "Custom and managed constraints",
+    "gcpIam.iamBasics": "Principals, roles, bindings",
+    "gcpIam.iamPractice": "Custom roles, conditions, etags",
+    "gcpIam.iamAdvanced": "Deny, access boundaries, PAM, workforce federation",
+    "gcpIam.iamExpert": "New basic roles, Owner, service agents",
+    "gcpIam.iamInheritance": "Access inherited through the hierarchy",
+    "gcpIam.iamDeny": "Access with deny policies",
+    "gcpServiceAccounts.saBasics": "Service accounts and keys",
+    "gcpServiceAccounts.impersonation": "actAs and impersonation",
+    "gcpServiceAccounts.federation": "Workload Identity Federation",
+    "gcpServiceAccounts.saExpert": "Delegation, escalation, recovery",
+    "gcpSecurity.securityBasics": "Secrets, encryption, Admin Activity",
+    "gcpSecurity.audit": "Audit logs",
+    "gcpSecurity.perimeters": "VPC Service Controls, KMS, IAP, Cloud Armor",
+    "gcpSecurity.securityExpert": "Access Transparency, Confidential VMs, ingress rules",
+    "gcpNetworking.vpcBasics": "VPCs, subnets, implied rules, Cloud NAT",
+    "gcpNetworking.subnetAddresses": "A subnet's addresses",
+    "gcpNetworking.connectivity": "Shared VPC, peering, IAP, Private Google Access",
+    "gcpNetworking.subnetNew": "A new subnet's range",
+    "gcpNetworking.firewallRules": "What firewall rules decide",
+    "gcpNetworking.loadBalancing": "Load balancing, HA VPN, PSC, DNS",
+    "gcpNetworking.networkingExpert": "Secure tags, goto_next, enforcement order",
+    "gcpNetworking.firewallPolicies": "Hierarchical policies and VPC rules",
+    "gcpCompute.computeBasics": "Cloud Run, Spot, Artifact Registry",
+    "gcpCompute.runScaling": "Cloud Run's instances",
+    "gcpCompute.computeOps": "MIGs, revisions, Autopilot, authenticated calls",
+    "gcpCompute.gke": "GKE security",
+    "gcpCompute.computeExpert": "Background work, upgrades, autohealing",
+    "gcpStorage.storageBasics": "Storage classes, buckets, Cloud SQL",
+    "gcpStorage.storageAccess": "Uniform access, signed URLs, Auth Proxy",
+    "gcpStorage.dataProtection": "Retention, high availability, vaults",
+    "gcpStorage.storageExpert": "Spanner, Bigtable, consistency",
+    "gcpOperations.toolsBasics": "gcloud, ADC, budgets",
+    "gcpOperations.terraform": "Terraform and IAM",
+    "gcpOperations.reliability": "SLOs, alerts, costs",
+    "gcpOperations.availability": "The availability of a whole",
+    "gcpOperations.operationsExpert": "Imports, incidents, policy as code",
+  },
+};
+
+type GcpMistake =
+  | "gcpReservedAddresses"
+  | "gcpPrefixSize"
+  | "gcpCidrOverlap"
+  | "gcpSubnetTooSmall"
+  | "gcpCidrProhibited"
+  | "gcpFirewallOrder"
+  | "gcpFirewallTie"
+  | "gcpFirewallTargets"
+  | "gcpFirewallImplied"
+  | "gcpFirewallHierarchy"
+  | "gcpGotoNext"
+  | "gcpIamInheritance"
+  | "gcpIamGroups"
+  | "gcpDenyOrder"
+  | "gcpDenyExceptions"
+  | "gcpRoundDown"
+  | "gcpConcurrencyIgnored"
+  | "gcpMinInstancesAdded"
+  | "gcpAvailabilityLayout"
+  | "gcpAvailabilityMin";
+
+export const GCP_MISTAKES: Record<Lang, Record<GcpMistake, string>> = {
+  fr: {
+    gcpReservedAddresses: "Les quatre adresses réservées mal comptées",
+    gcpPrefixSize: "Taille d'un préfixe décalée d'un bit",
+    gcpCidrOverlap: "Plage qui chevauche un sous-réseau prise pour libre",
+    gcpSubnetTooSmall: "Sous-réseau plus petit que /29 pris pour permis",
+    gcpCidrProhibited: "Plage interdite prise pour permise",
+    gcpFirewallOrder: "Règles prises dans l'ordre affiché, ou numéro le plus haut d'abord",
+    gcpFirewallTie: "allow pris pour gagnant face à deny à priorité égale",
+    gcpFirewallTargets: "Tags cibles d'une règle ignorés",
+    gcpFirewallImplied: "Entrée prise pour autorisée sans règle",
+    gcpFirewallHierarchy: "Stratégies et règles VPC évaluées dans le mauvais ordre",
+    gcpGotoNext: "goto_next pris pour allow",
+    gcpIamInheritance: "Héritage IAM oublié, ou attribution basse prise pour remplaçante",
+    gcpIamGroups: "Rôle d'un groupe pris pour ne pas atteindre ses membres",
+    gcpDenyOrder: "Refus ignoré, ou battu par une autorisation",
+    gcpDenyExceptions: "Exceptions d'une règle de refus ignorées",
+    gcpRoundDown: "Nombre d'instances arrondi vers le bas",
+    gcpConcurrencyIgnored: "Concurrence ignorée ou additionnée",
+    gcpMinInstancesAdded: "Instances minimum ajoutées en plus",
+    gcpAvailabilityLayout: "Série et redondance confondues",
+    gcpAvailabilityMin: "L'ensemble pris pour aussi disponible qu'une partie",
+  },
+  es: {
+    gcpReservedAddresses: "Las cuatro direcciones reservadas mal contadas",
+    gcpPrefixSize: "Tamaño de un prefijo desplazado un bit",
+    gcpCidrOverlap: "Rango que se solapa con una subred tomado como libre",
+    gcpSubnetTooSmall: "Subred menor que /29 tomada como permitida",
+    gcpCidrProhibited: "Rango prohibido tomado como permitido",
+    gcpFirewallOrder: "Reglas tomadas en el orden mostrado, o el número más alto primero",
+    gcpFirewallTie: "allow tomado como ganador frente a deny con igual prioridad",
+    gcpFirewallTargets: "Etiquetas de destino de una regla ignoradas",
+    gcpFirewallImplied: "Entrada tomada como permitida sin regla",
+    gcpFirewallHierarchy: "Políticas y reglas de VPC evaluadas en mal orden",
+    gcpGotoNext: "goto_next tomado como allow",
+    gcpIamInheritance: "Herencia de IAM olvidada, o concesión baja tomada como sustituta",
+    gcpIamGroups: "Rol de un grupo tomado como que no llega a sus miembros",
+    gcpDenyOrder: "Denegación ignorada, o vencida por un permiso",
+    gcpDenyExceptions: "Excepciones de una regla de denegación ignoradas",
+    gcpRoundDown: "Número de instancias redondeado hacia abajo",
+    gcpConcurrencyIgnored: "Concurrencia ignorada o sumada",
+    gcpMinInstancesAdded: "Instancias mínimas sumadas aparte",
+    gcpAvailabilityLayout: "Serie y redundancia confundidas",
+    gcpAvailabilityMin: "El conjunto tomado como tan disponible como una parte",
+  },
+  en: {
+    gcpReservedAddresses: "The four reserved addresses miscounted",
+    gcpPrefixSize: "A prefix's size one bit off",
+    gcpCidrOverlap: "A range overlapping a subnet taken as free",
+    gcpSubnetTooSmall: "A subnet smaller than /29 taken as allowed",
+    gcpCidrProhibited: "A prohibited range taken as allowed",
+    gcpFirewallOrder: "Rules taken in listed order, or the highest number first",
+    gcpFirewallTie: "allow taken to beat deny at equal priority",
+    gcpFirewallTargets: "A rule's target tags ignored",
+    gcpFirewallImplied: "Ingress taken as allowed with no rule",
+    gcpFirewallHierarchy: "Policies and VPC rules evaluated in the wrong order",
+    gcpGotoNext: "goto_next taken as allow",
+    gcpIamInheritance: "IAM inheritance forgotten, or a lower grant taken to replace",
+    gcpIamGroups: "A group's role taken not to reach its members",
+    gcpDenyOrder: "A deny ignored, or beaten by an allow",
+    gcpDenyExceptions: "A deny rule's exceptions ignored",
+    gcpRoundDown: "Instances rounded down",
+    gcpConcurrencyIgnored: "Concurrency ignored or added",
+    gcpMinInstancesAdded: "Minimum instances added on top",
+    gcpAvailabilityLayout: "Series and redundancy confused",
+    gcpAvailabilityMin: "The whole taken to be as available as one part",
+  },
+};

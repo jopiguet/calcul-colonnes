@@ -225,7 +225,7 @@ Case, spaces and dashes are ignored. `201` with the player (with
 
 | Query | |
 |---|---|
-| `subject` | `maths`, `chemistry`, `linux`, `chembio`, `sql`, `rust`, `ts` or `react`: the levels of that subject |
+| `subject` | `maths`, `chemistry`, `linux`, `chembio`, `sql`, `rust`, `ts`, `react` or `gcp`: the levels of that subject |
 
 `200`: the player's last 50 tests in that subject, newest first, as stored:
 
@@ -301,8 +301,8 @@ right.
 | Field | |
 |---|---|
 | `seed` | 0 … 2³² − 1 |
-| `level` | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced` or `reactExpert` |
-| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium` for `chemistry` and `chemistryAdvanced`; `linuxFiles`, `linuxText`, `linuxShell`, `linuxProcesses`, `linuxSystem`, `linuxNetwork`, `linuxTools` for `linux`; `balancing` for `chembio`; `sqlSelect`, `sqlAggregate`, `sqlJoins`, `sqlModify`, `sqlPostgres`, `sqlSqlite`, `sqlMysql`, `sqlPractice` for `sql`; for the Rust levels, those of `rustBasics`, `rustOwnership`, `rustTypes`, `rustErrors`, `rustCollections`, `rustConcurrency`, `rustCargo`, `rustUnsafe` that the level has; for the TypeScript levels, those of `tsBasics`, `tsFunctions`, `tsObjects`, `tsNarrowing`, `tsGenerics`, `tsTypeLevel`, `tsRuntime`, `tsTooling` that the level has; for the React levels, those of `reactComponents`, `reactState`, `reactEffects`, `reactRendering`, `reactData`, `reactTyping`, `reactTooling`, `reactTesting` that the level has |
+| `level` | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert` |
+| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium` for `chemistry` and `chemistryAdvanced`; `linuxFiles`, `linuxText`, `linuxShell`, `linuxProcesses`, `linuxSystem`, `linuxNetwork`, `linuxTools` for `linux`; `balancing` for `chembio`; `sqlSelect`, `sqlAggregate`, `sqlJoins`, `sqlModify`, `sqlPostgres`, `sqlSqlite`, `sqlMysql`, `sqlPractice` for `sql`; for the Rust levels, those of `rustBasics`, `rustOwnership`, `rustTypes`, `rustErrors`, `rustCollections`, `rustConcurrency`, `rustCargo`, `rustUnsafe` that the level has; for the TypeScript levels, those of `tsBasics`, `tsFunctions`, `tsObjects`, `tsNarrowing`, `tsGenerics`, `tsTypeLevel`, `tsRuntime`, `tsTooling` that the level has; for the React levels, those of `reactComponents`, `reactState`, `reactEffects`, `reactRendering`, `reactData`, `reactTyping`, `reactTooling`, `reactTesting` that the level has; for the Google Cloud levels, those of `gcpHierarchy`, `gcpIam`, `gcpServiceAccounts`, `gcpSecurity`, `gcpNetworking`, `gcpCompute`, `gcpStorage`, `gcpOperations` that the level has |
 | `count` | 1 … 30 (the app offers 5, 10, 15, 20) |
 | `focus` | Kinds of question brought back for review; known ids, without duplicates. Optional, default `[]`. |
 | `version` | Generator version; must equal the server's `QUIZ_VERSION`. Optional, default the server's. |

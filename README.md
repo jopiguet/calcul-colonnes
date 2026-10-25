@@ -59,6 +59,8 @@ at *lycée / bachillerato* or university level.
 
 **React** — multiple-choice tests at four levels, on React 19 and the stack around it: components and JSX, state and events, effects and refs, rendering and performance (the React Compiler, transitions, `<Activity>`), data (Actions, `use`, server components, streaming), React with TypeScript, Vite and deployment, and tests with Vitest, Testing Library and Playwright. Questions on what a short component shows on the page or in the console are generated, type-checked with tsc and rendered with React DOM.
 
+**Google Cloud** — multiple-choice tests at four levels, focused on identity and access and on infrastructure: the resource hierarchy and organisation policies, IAM (roles, conditions, deny policies, principal access boundaries, Privileged Access Manager), service accounts, impersonation and federation, audit logs, VPC Service Controls and KMS, VPC networks, firewalls and load balancing, Cloud Run and GKE, storage, Terraform and reliability. Questions on IAM through the hierarchy, firewall rules and policies, subnets, Cloud Run's scaling and availability are generated, each answer computed again by an independent evaluator.
+
 - 254 questions written for the app, in French, Spanish and English, from `find` and `sed` to `systemctl`, `ssh`, `rsync` and `dig`, `git rebase` and vim's text objects.
 - Tools missing from a default install (`ripgrep`, `fzf`, `jq`, `tmux`, `hyperfine`, `shellcheck`, `nmap`…) are marked with their package and the install command for Debian, Fedora and macOS.
 - `chmod`, `umask` and crontab questions are generated, with the usual slips as wrong options; an octal mode can be typed.
@@ -179,7 +181,7 @@ Settings are read from `.env` (see `.env.example`):
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
-| [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust, 36 TypeScript, 44 React and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
+| [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust, 36 TypeScript, 44 React, 40 Google Cloud and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |

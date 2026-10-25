@@ -140,7 +140,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
-| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React | Kinds of question to review, for each |
+| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud | Kinds of question to review, for each |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
@@ -483,6 +483,27 @@ shows once it is rendered, sometimes after clicks on its button: several
 renders and effects, batching, keys, refs, cleanups, `memo`, StrictMode,
 layout effects. Every program has been type-checked and rendered with React
 to check its answer.
+
+## Google Cloud
+
+Activity **☁️ Google Cloud**, in the *Informatique* group: multiple-choice
+tests on Google Cloud at four levels, *Débutant* to *Expert*, with a focus on
+identity and access and on the infrastructure. The topics come in two
+groups, *Identité et accès* and *Infrastructure*:
+
+| Level | Topics |
+|---|---|
+| Débutant | the resource hierarchy, IAM's vocabulary, service accounts and their keys, Secret Manager, VPC networks and implied rules, Cloud NAT, Cloud Run, Cloud Storage, gcloud and credentials, budgets |
+| Intermédiaire | organisation policies, custom roles and conditions, safe policy changes, actAs and impersonation, audit logs, Shared VPC, peering, IAP, Private Google Access, MIGs, Cloud Run revisions, uniform bucket access, Terraform and IAM |
+| Avancé | landing zones and tags, deny policies, principal access boundaries, Privileged Access Manager, workforce and workload identity federation, VPC Service Controls, KMS, load balancing, HA VPN, Private Service Connect, GKE security, retention, SLOs |
+| Expert | custom and managed constraints, the new basic roles, service agents, signing and delegation, Access Transparency, secure tags and firewall policies, background work on Cloud Run, Spanner and Bigtable, imports and incidents |
+
+Some questions are computed: which permissions Alice ends up with on a
+bucket given policies at every level of the hierarchy, deny policies
+included; what firewall rules or policies do to a packet; a subnet's
+addresses; how many Cloud Run instances a load needs; the availability of
+components in series or in two zones. Each answer has been computed twice,
+by two independent programs.
 
 ## Chemical equations
 
