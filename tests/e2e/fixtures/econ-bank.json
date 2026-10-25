@@ -1,0 +1,310 @@
+{
+ "format": 2,
+ "books": [
+  {
+   "id": "test-econ-a",
+   "title": "Economics questions written for the tests",
+   "source": "Test A"
+  },
+  {
+   "id": "test-econ-b",
+   "title": "More economics questions for the tests",
+   "source": "Test B"
+  }
+ ],
+ "units": [
+  {
+   "id": "T1",
+   "book": "test-econ-a",
+   "topic": "econIncidence",
+   "title": {
+    "en": "Who pays a tax",
+    "fr": "Qui paie un impôt",
+    "es": "Quién paga un impuesto"
+   }
+  },
+  {
+   "id": "T2",
+   "book": "test-econ-a",
+   "topic": "econMarketFailure",
+   "title": {
+    "en": "Externalities",
+    "fr": "Les externalités",
+    "es": "Las externalidades"
+   }
+  },
+  {
+   "id": "U1",
+   "book": "test-econ-b",
+   "topic": "econRedistribution",
+   "title": {
+    "en": "Inequality",
+    "fr": "Les inégalités",
+    "es": "La desigualdad"
+   }
+  }
+ ],
+ "questions": [
+  {
+   "id": "T1-01",
+   "unit": "T1",
+   "section": "1.1",
+   "prompt": {
+    "en": "A tax is levied on sellers of a good with perfectly inelastic demand. Who bears it?",
+    "fr": "Une taxe est prélevée sur les vendeurs d'un bien à demande parfaitement inélastique. Qui la supporte ?",
+    "es": "Se cobra un impuesto a los vendedores de un bien con demanda perfectamente inelástica. ¿Quién lo soporta?"
+   },
+   "correct": {
+    "en": "The buyers",
+    "fr": "Les acheteurs",
+    "es": "Los compradores"
+   },
+   "wrong": [
+    {
+     "en": "The sellers",
+     "fr": "Les vendeurs",
+     "es": "Los vendedores"
+    },
+    {
+     "en": "Half each",
+     "fr": "Moitié chacun",
+     "es": "La mitad cada uno"
+    },
+    {
+     "en": "Nobody",
+     "fr": "Personne",
+     "es": "Nadie"
+    }
+   ],
+   "explanation": {
+    "en": "Buyers do not reduce their purchases, so the price rises by the full tax.",
+    "fr": "Les acheteurs ne réduisent pas leurs achats : le prix monte de toute la taxe.",
+    "es": "Los compradores no reducen sus compras: el precio sube todo el impuesto."
+   }
+  },
+  {
+   "id": "T1-02",
+   "unit": "T1",
+   "section": "1.2",
+   "prompt": {
+    "en": "Doubling a small per-unit tax multiplies its deadweight loss by about…",
+    "fr": "Doubler une petite taxe unitaire multiplie sa perte sèche par environ…",
+    "es": "Duplicar un impuesto pequeño por unidad multiplica su pérdida irrecuperable por aproximadamente…"
+   },
+   "correct": {
+    "en": "4",
+    "fr": "4",
+    "es": "4"
+   },
+   "wrong": [
+    {
+     "en": "2",
+     "fr": "2",
+     "es": "2"
+    },
+    {
+     "en": "1",
+     "fr": "1",
+     "es": "1"
+    },
+    {
+     "en": "8",
+     "fr": "8",
+     "es": "8"
+    }
+   ],
+   "explanation": {
+    "en": "With linear curves the loss grows with the square of the tax.",
+    "fr": "Avec des droites, la perte croît comme le carré de la taxe.",
+    "es": "Con rectas, la pérdida crece con el cuadrado del impuesto."
+   }
+  },
+  {
+   "id": "T1-03",
+   "unit": "T1",
+   "section": "1.3",
+   "prompt": {
+    "en": "In a test market, what does the general-equilibrium view of a tax add?",
+    "fr": "Dans un marché de test, qu'ajoute la vue d'équilibre général d'une taxe ?",
+    "es": "En un mercado de prueba, ¿qué añade la visión de equilibrio general de un impuesto?"
+   },
+   "correct": {
+    "en": "Effects on other markets and factor prices",
+    "fr": "Les effets sur les autres marchés et les prix des facteurs",
+    "es": "Los efectos en otros mercados y en los precios de los factores"
+   },
+   "wrong": [
+    {
+     "en": "Nothing",
+     "fr": "Rien",
+     "es": "Nada"
+    },
+    {
+     "en": "Only the revenue",
+     "fr": "Seulement la recette",
+     "es": "Solo la recaudación"
+    },
+    {
+     "en": "Only statutory incidence",
+     "fr": "Seulement l'incidence légale",
+     "es": "Solo la incidencia legal"
+    }
+   ],
+   "explanation": {
+    "en": "A tax in one market can shift burdens through prices elsewhere.",
+    "fr": "Une taxe sur un marché peut déplacer la charge par les prix ailleurs.",
+    "es": "Un impuesto en un mercado puede trasladar la carga por los precios de otros."
+   },
+   "level": "advanced"
+  },
+  {
+   "id": "T2-01",
+   "unit": "T2",
+   "section": "2.1",
+   "prompt": {
+    "en": "A test factory's smoke harms neighbours. What is this?",
+    "fr": "La fumée d'une usine de test gêne les voisins. Qu'est-ce que c'est ?",
+    "es": "El humo de una fábrica de prueba perjudica a los vecinos. ¿Qué es esto?"
+   },
+   "correct": {
+    "en": "A negative externality",
+    "fr": "Une externalité négative",
+    "es": "Una externalidad negativa"
+   },
+   "wrong": [
+    {
+     "en": "A public good",
+     "fr": "Un bien public",
+     "es": "Un bien público"
+    },
+    {
+     "en": "A positive externality",
+     "fr": "Une externalité positive",
+     "es": "Una externalidad positiva"
+    },
+    {
+     "en": "A transfer",
+     "fr": "Un transfert",
+     "es": "Una transferencia"
+    }
+   ],
+   "explanation": {
+    "en": "A cost borne by others than the producer, outside any market.",
+    "fr": "Un coût supporté par d'autres que le producteur, hors de tout marché.",
+    "es": "Un coste soportado por otros distintos del productor, fuera de todo mercado."
+   }
+  },
+  {
+   "id": "T2-02",
+   "unit": "T2",
+   "section": "2.2",
+   "prompt": {
+    "en": "When can bargaining settle an externality without the state, in the test story?",
+    "fr": "Quand la négociation peut-elle régler une externalité sans l'État, dans l'histoire de test ?",
+    "es": "¿Cuándo puede la negociación resolver una externalidad sin el Estado, en la historia de prueba?"
+   },
+   "correct": {
+    "en": "When rights are clear and bargaining costs low",
+    "fr": "Quand les droits sont clairs et la négociation peu coûteuse",
+    "es": "Cuando los derechos están claros y negociar cuesta poco"
+   },
+   "wrong": [
+    {
+     "en": "Never",
+     "fr": "Jamais",
+     "es": "Nunca"
+    },
+    {
+     "en": "Only with a tax",
+     "fr": "Seulement avec une taxe",
+     "es": "Solo con un impuesto"
+    },
+    {
+     "en": "Only with many parties",
+     "fr": "Seulement avec beaucoup de parties",
+     "es": "Solo con muchas partes"
+    }
+   ],
+   "explanation": {
+    "en": "Clear rights and cheap bargaining let the parties reach the efficient outcome.",
+    "fr": "Des droits clairs et une négociation bon marché permettent d'atteindre l'issue efficace.",
+    "es": "Derechos claros y una negociación barata permiten llegar al resultado eficiente."
+   },
+   "level": "advanced"
+  },
+  {
+   "id": "U1-01",
+   "unit": "U1",
+   "section": "3.1",
+   "prompt": {
+    "en": "A test Lorenz curve lies on the diagonal. What is the Gini coefficient?",
+    "fr": "Une courbe de Lorenz de test est sur la diagonale. Quel est le coefficient de Gini ?",
+    "es": "Una curva de Lorenz de prueba está sobre la diagonal. ¿Cuál es el coeficiente de Gini?"
+   },
+   "correct": {
+    "en": "0",
+    "fr": "0",
+    "es": "0"
+   },
+   "wrong": [
+    {
+     "en": "1",
+     "fr": "1",
+     "es": "1"
+    },
+    {
+     "en": "0.5",
+     "fr": "0,5",
+     "es": "0,5"
+    },
+    {
+     "en": "It depends on the mean",
+     "fr": "Cela dépend de la moyenne",
+     "es": "Depende de la media"
+    }
+   ],
+   "explanation": {
+    "en": "The diagonal is perfect equality.",
+    "fr": "La diagonale est l'égalité parfaite.",
+    "es": "La diagonal es la igualdad perfecta."
+   }
+  },
+  {
+   "id": "U1-02",
+   "unit": "U1",
+   "section": "3.2",
+   "prompt": {
+    "en": "Which test measure counts how far the poor fall below the line, not just how many?",
+    "fr": "Quelle mesure de test compte de combien les pauvres sont sous le seuil, pas seulement combien ils sont ?",
+    "es": "¿Qué medida de prueba cuenta cuánto quedan los pobres por debajo del umbral, no solo cuántos son?"
+   },
+   "correct": {
+    "en": "The poverty gap",
+    "fr": "L'écart de pauvreté",
+    "es": "La brecha de pobreza"
+   },
+   "wrong": [
+    {
+     "en": "The headcount",
+     "fr": "Le taux de pauvreté",
+     "es": "La tasa de pobreza"
+    },
+    {
+     "en": "The mean income",
+     "fr": "Le revenu moyen",
+     "es": "La renta media"
+    },
+    {
+     "en": "The top share",
+     "fr": "La part du haut",
+     "es": "La parte de arriba"
+    }
+   ],
+   "explanation": {
+    "en": "The gap adds up each shortfall below the line.",
+    "fr": "L'écart additionne chaque manque sous le seuil.",
+    "es": "La brecha suma cada déficit por debajo del umbral."
+   }
+  }
+ ]
+}

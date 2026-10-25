@@ -1,0 +1,3 @@
+-- Economics (docs/question-generators.md#economics): a core and an advanced level.
+ALTER TABLE quiz_results DROP CONSTRAINT IF EXISTS quiz_results_level_check;
+ALTER TABLE quiz_results ADD CONSTRAINT quiz_results_level_check CHECK (level IN ('school', 'university', 'chemistry', 'chemistryAdvanced', 'linux', 'chembio', 'sql', 'rustBeginner', 'rustIntermediate', 'rustAdvanced', 'rustExpert', 'tsBeginner', 'tsIntermediate', 'tsAdvanced', 'tsExpert', 'reactBeginner', 'reactIntermediate', 'reactAdvanced', 'reactExpert', 'gcpBeginner', 'gcpIntermediate', 'gcpAdvanced', 'gcpExpert', 'econ', 'econAdvanced'));
