@@ -137,6 +137,7 @@ npm start          # http://localhost:8787
 | `npm run quiz:import -- data/atkins-12-concepts.json` | Imports the question bank written from a textbook, keeping old tests exact (see [Question bank](docs/question-bank.md)) |
 | `npm run quiz:flags` | Lists the questions players flagged; `-- --resolve N` closes one |
 | `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |
+| `npm run check:family` | Checks sign-up by invitation, the owner's page, content other accounts may not see, export and account deletion (see [Authentication › Family release](docs/authentication.md#family-release)) |
 | `npm run characters:build` | Builds the kanji and kana book from the EDRDG dictionaries in `data/` (see [Kanji and kana](docs/characters.md)) |
 | `npm run check:discover` | Checks the Discover engines: exact probabilities and streak formulas, the generator on millions of trials, 1,200 logic grids (see [Discover](docs/discover.md#checks-and-tests)) |
 | `npm run check:physics` | Checks the physics playground: every simulation against its exact solution, energy that does not drift, Kirchhoff's laws (see [Discover](docs/discover.md#physics-checks)) |

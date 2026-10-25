@@ -259,7 +259,42 @@ To go back to the home server, point the record at the tunnel again.
 ### Checks after the first release
 
 - **Visitor address.** Rate limits read the last `X-Forwarded-For` entry (`TRUST_PROXY=true`, set by the setup script). To confirm that Cloud Run puts the visitor's address there: set `AUTH_ATTEMPTS_PER_ADDRESS=3` on the service, make four sign-in attempts from a phone on mobile data, and check that the phone is refused while your computer is not. Then remove the variable.
-- **Cold start.** After 20 minutes without use, time the first page load. A few seconds is expected (container start, then Neon waking up). To remove it, keep one instance warm: `--min-instances=1`, about $10 a month.
+- **Cold start.** After 20 minutes without use, time the first page load. A few seconds is expected (container start, then Neon waking up). To remove it, keep one instance warm (below).
+
+### One warm instance
+
+Before opening the app to friends and family, keep one instance running, so
+nobody waits for a cold start:
+
+```sh
+gcloud run services update luma --region=europe-west1 --min 1
+# or: MIN_INSTANCES=1 PROJECT=… GITHUB_REPO=… deploy/setup-gcp.sh
+```
+
+- **Service-level** (`--min`), not per revision (`--min-instances`): a release's candidate revision, tagged without traffic, would otherwise get a warm instance of its own. Releases keep the setting.
+- **Cost:** an idle instance is billed at the lower idle rate; with 512 MiB and request-based billing, about $10 a month. `--min 0` (or `default`) stops it.
+- **Still one instance at most** (`--max-instances=1`): the rate limits are kept in memory. Enough for a few families.
+- **Neon:** a warm instance does not keep the database awake; on a paid plan, raise or turn off *suspend after inactivity* on the compute so the first query is quick too.
+
+### Alerts
+
+- **Budget:** *Billing › Budgets & alerts*: a monthly budget (say $20) with e-mails at 50 %, 90 % and 100 %.
+- **Errors:** *Logging › Logs-based metrics*: a counter on `resource.type="cloud_run_revision" AND resource.labels.service_name="luma" AND severity>=ERROR`, then *Monitoring › Alerting*: more than 5 in 10 minutes, by e-mail.
+- **Uptime:** *Monitoring › Uptime checks* on `https://<your domain>/api/health`, every 5 minutes.
+
+### Staging
+
+A Neon branch of production is a free copy to try a release on, with real
+data, before `main`:
+
+```sh
+neonctl branches create --name staging --parent main --project-id <project id>
+neonctl connection-string staging --project-id <project id>
+```
+
+Run the new version locally (or as a second Cloud Run service, `luma-staging`,
+with `DATABASE_URL` from that branch) and click through; reset the branch to
+production with `neonctl branches reset staging --parent` before the next try.
 
 ### Day to day
 
@@ -293,7 +328,7 @@ Two GitHub Actions workflows, for one developer working on `main`:
 
 | Workflow | When | What |
 |---|---|---|
-| [checks.yml](../.github/workflows/checks.yml) | Every push to `main` | Type checks and build, `check:quiz`, `check:vocab`, `check:discover`, `check:physics`, `check:astronomy`, `check:biology`, the e2e suite on SQLite and again on PostgreSQL, the image build. Nothing is deployed. |
+| [checks.yml](../.github/workflows/checks.yml) | Every push to `main` | Type checks and build, `check:quiz`, `check:vocab`, `check:family`, `check:discover`, `check:physics`, `check:astronomy`, `check:biology`, the e2e suite on SQLite and again on PostgreSQL, the image build. Nothing is deployed. |
 | [release.yml](../.github/workflows/release.yml) | A tag `v*`, or *Run workflow* | The same checks, unless the commit already passed them on `main`; then the steps below |
 
 A release:

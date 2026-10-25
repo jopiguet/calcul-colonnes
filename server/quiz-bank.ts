@@ -179,6 +179,11 @@ export class BankStore {
 
 // ------------------------------------------------------------------- routes
 
+/** Whether an account sees the bank's written questions: the owner, or everyone once shared. */
+export async function bankVisible(repository: Repository, owner: boolean): Promise<boolean> {
+  return owner || (await repository.setting("bank_visibility")) === "shared";
+}
+
 const isId = (v: unknown): v is number => typeof v === "number" && Number.isInteger(v) && v > 0;
 export const FLAG_NOTE_MAX = 500;
 export const FLAG_QUESTION_MAX = 2000;
@@ -186,9 +191,15 @@ export const FLAG_QUESTION_MAX = 2000;
 export function bankRoutes(bank: BankStore, repository: Repository, scope: (c: never) => Scope): Hono<AppEnv> {
   const routes = new Hono<AppEnv>();
 
-  /** The bank for the browser: it generates the tests too. */
+  /**
+   * The bank for the browser: it generates the tests too. Its questions are
+   * written from a book you own: the owner's account only, unless the owner
+   * shares them (docs/authentication.md#family-release). Others get an empty
+   * bank, and their chemistry tests are calculations only.
+   */
   routes.get("/bank", async (c) => {
     await bank.refresh();
+    if (!(await bankVisible(repository, c.get("session")?.owner === true))) return c.json(EMPTY_BANK);
     return c.json(await bank.load());
   });
 

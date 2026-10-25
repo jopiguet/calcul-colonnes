@@ -396,6 +396,86 @@ export class Repository {
   }
 
   /** Progress of one player: every kind of question met in tests, and the column arithmetic. */
+  /**
+   * Everything stored about an account and its own players, for the account
+   * to download (GDPR): no secrets (password hashes, session tokens).
+   */
+  async exportAccount(accountId: number): Promise<Record<string, unknown>> {
+    const one = async (sql: string, params: number[]) => (await this.db.query(sql, params))[0] ?? null;
+    const all = (sql: string, params: number[]) => this.db.query(sql, params);
+    const account = await one("SELECT id, email, name, role, created_at FROM accounts WHERE id = $1", [accountId]);
+    const methods = await all(
+      "SELECT type, provider, label, player_id, created_at, last_used_at FROM credentials WHERE account_id = $1 ORDER BY id",
+      [accountId],
+    );
+    const players = [];
+    for (const p of await all("SELECT id, name, created_at, hidden FROM users WHERE account_id = $1 ORDER BY id", [accountId])) {
+      const id = Number(p.id);
+      players.push({
+        ...p,
+        sharedWith: await all("SELECT a.name, a.email, s.created_at FROM player_shares s JOIN accounts a ON a.id = s.account_id WHERE s.user_id = $1", [id]),
+        attempts: await all("SELECT * FROM attempts WHERE user_id = $1 ORDER BY id", [id]),
+        tests: await all("SELECT * FROM quiz_results WHERE user_id = $1 ORDER BY id", [id]),
+        testAnswers: await all("SELECT * FROM quiz_answers WHERE user_id = $1 ORDER BY id", [id]),
+        questionsReported: await all("SELECT at, skill, question, note FROM quiz_flags WHERE user_id = $1 ORDER BY id", [id]),
+        vocabularyProgress: await all(
+          "SELECT p.*, e.term, e.meaning FROM vocab_progress p JOIN vocab_entries e ON e.id = p.entry_id WHERE p.user_id = $1 ORDER BY p.entry_id",
+          [id],
+        ),
+        vocabularyAnswers: await all("SELECT * FROM vocab_answers WHERE user_id = $1 ORDER BY at", [id]),
+        vocabularySkipped: await all("SELECT * FROM vocab_skips WHERE user_id = $1", [id]),
+      });
+    }
+    const sharedWithMe = await all(
+      "SELECT u.name, o.name AS owner, s.created_at FROM player_shares s JOIN users u ON u.id = s.user_id JOIN accounts o ON o.id = u.account_id WHERE s.account_id = $1",
+      [accountId],
+    );
+    const feedback = await all("SELECT at, page, version, text FROM feedback WHERE account_id = $1 ORDER BY at", [accountId]);
+    return { format: "luma-export", exportedAt: new Date().toISOString(), account, signInMethods: methods, players, sharedWithMe, feedback };
+  }
+
+  // ------------------------------------------------------------- feedback
+
+  async addFeedback(f: { accountId: number; playerId: number | null; page: string; version: string; text: string }): Promise<void> {
+    await this.db.query("INSERT INTO feedback (account_id, player_id, at, page, version, text) VALUES ($1, $2, $3, $4, $5, $6)", [
+      f.accountId,
+      f.playerId,
+      Date.now(),
+      f.page,
+      f.version,
+      f.text,
+    ]);
+  }
+
+  async feedback(limit: number): Promise<{ id: number; at: number; account: string | null; player: string | null; page: string; version: string; text: string }[]> {
+    const rows = await this.db.query(
+      `SELECT f.id, f.at, f.page, f.version, f.text, a.name AS account, u.name AS player
+         FROM feedback f LEFT JOIN accounts a ON a.id = f.account_id LEFT JOIN users u ON u.id = f.player_id
+        ORDER BY f.at DESC LIMIT ${Math.trunc(limit)}`,
+    );
+    return rows.map((r) => ({
+      id: Number(r.id),
+      at: Number(r.at),
+      account: r.account === null || r.account === undefined ? null : String(r.account),
+      player: r.player === null || r.player === undefined ? null : String(r.player),
+      page: String(r.page),
+      version: String(r.version),
+      text: String(r.text),
+    }));
+  }
+
+  // ------------------------------------------------------------- settings
+
+  async setting(key: string): Promise<string | null> {
+    const rows = await this.db.query("SELECT value FROM app_settings WHERE key = $1", [key]);
+    return rows[0] ? String(rows[0].value) : null;
+  }
+
+  async setSetting(key: string, value: string): Promise<void> {
+    await this.db.query("DELETE FROM app_settings WHERE key = $1", [key]);
+    await this.db.query("INSERT INTO app_settings (key, value) VALUES ($1, $2)", [key, value]);
+  }
+
   /** A player's tests at these levels, newest first. */
   async pastTests(userId: number, levels: Level[], limit: number): Promise<PastTest[]> {
     const rows = await this.db.query(

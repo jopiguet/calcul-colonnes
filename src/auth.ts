@@ -4,6 +4,7 @@ import { at, errorText, type AuthKey } from "./auth-i18n";
 import { button, el } from "./dom";
 import { currentLang, t } from "./i18n";
 import { ApiError, auth, store } from "./store";
+import { dataSection, familySection } from "./family";
 
 /**
  * Sign-in screen and account page. Sign-in with a provider is a full-page
@@ -61,6 +62,48 @@ export function takeRedirectMessage(options: AuthOptions | null): { ok: boolean;
   return { ok: false, text: errorText(error!, { provider }) };
 }
 
+// ------------------------------------------------------------- invitations
+
+const INVITE_KEY = "luma-invite";
+
+/**
+ * An invitation link (…/#join=<code>) opens the sign-up form: the code is
+ * kept for this tab (also through a provider's round trip) and the address
+ * becomes #sign-up. Returns whether there was one.
+ */
+export function takeInviteFromAddress(): boolean {
+  const match = /^#join=([A-Za-z0-9_-]{8,100})$/.exec(location.hash);
+  if (!match) return false;
+  try {
+    sessionStorage.setItem(INVITE_KEY, match[1]!);
+  } catch {
+    // private browsing: the code is kept in memory below
+  }
+  memoryInvite = match[1]!;
+  history.replaceState(null, "", "#sign-up");
+  return true;
+}
+
+let memoryInvite: string | null = null;
+
+/** The invitation this tab came with, if any. */
+export function pendingInvite(): string | null {
+  try {
+    return sessionStorage.getItem(INVITE_KEY) ?? memoryInvite;
+  } catch {
+    return memoryInvite;
+  }
+}
+
+function forgetInvite(): void {
+  memoryInvite = null;
+  try {
+    sessionStorage.removeItem(INVITE_KEY);
+  } catch {
+    // nothing kept
+  }
+}
+
 // ------------------------------------------------------------- sign-in screen
 
 export function signInView(
@@ -78,6 +121,18 @@ export function signInView(
     if (notice) (notice.ok ? showOk : showError)(status, notice.text);
 
     const form = el("form", "auth-form");
+    const invite = pendingInvite();
+    // Sign-up by invitation only, and no invitation: say so instead of a form that would be refused.
+    const noInvite = mode === "signUp" && options.invite === true && !invite;
+    if (noInvite) {
+      form.hidden = true;
+      showError(status, at("inviteOnly"));
+    } else if (mode === "signUp" && options.invite && invite) {
+      void auth.inviteUsable(invite).then(
+        (r) => (r.usable ? showOk : showError)(status, at(r.usable ? "inviteOk" : "error.invite_invalid")),
+        () => undefined,
+      );
+    }
     if (mode === "signUp") {
       form.append(
         field(at("name"), "text", "name", "name"),
@@ -99,7 +154,8 @@ export function signInView(
       submit.disabled = true;
       try {
         if (mode === "signIn") await auth.login(value(form, "identifier"), value(form, "password"));
-        else await auth.register(value(form, "name"), value(form, "email"), value(form, "password"));
+        else await auth.register(value(form, "name"), value(form, "email"), value(form, "password"), invite ?? undefined);
+        if (mode === "signUp") forgetInvite();
         notice = null;
         onSignedIn();
       } catch (e) {
@@ -109,9 +165,10 @@ export function signInView(
     });
 
     const parts: HTMLElement[] = [title, status, form];
-    if (options.providers.length > 0) {
+    if (options.providers.length > 0 && !noInvite) {
       const list = el("div", "providers");
-      for (const p of options.providers) list.append(providerLink(p.id, p.name, auth.providerUrl(p.id, "login"), "continueWith"));
+      // Signing up with a provider takes the invitation along (signing in ignores it).
+      for (const p of options.providers) list.append(providerLink(p.id, p.name, auth.providerUrl(p.id, "login", undefined, invite ?? undefined), "continueWith"));
       parts.push(el("p", "or", at("or")), list);
     }
     if (options.registration) {
@@ -127,7 +184,9 @@ export function signInView(
     }
     const home = el("a", "back-home", at("aboutApp"));
     home.href = "#about";
-    parts.push(home);
+    const privacy = el("a", "privacy-link", at("privacyLink"));
+    privacy.href = "#privacy";
+    parts.push(home, privacy);
     wrap.replaceChildren(...parts);
     queueMicrotask(() => form.querySelector("input")?.focus());
   };
@@ -401,6 +460,10 @@ export async function accountView(ctx: AccountContext): Promise<HTMLElement> {
       ctx.onSignedOut();
     }),
   );
-  wrap.append(devices, button("primary", t("back"), ctx.onBack));
+  wrap.append(devices);
+
+  // ---- the account's data; the owner's family and friends
+  wrap.append(...dataSection({ state, onDeleted: ctx.onSignedOut }), ...(await familySection(state)));
+  wrap.append(button("primary", t("back"), ctx.onBack));
   return wrap;
 }

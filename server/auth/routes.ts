@@ -66,6 +66,9 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
 
   const registrationOpen = async (): Promise<boolean> =>
     config.registration === "open" || (await store.accountCount()) === 0;
+  /** Sign-up with an invitation only: REGISTRATION=invite, once the owner's account exists. */
+  const inviteNeeded = async (): Promise<boolean> => config.registration === "invite" && (await store.accountCount()) > 0;
+  const inviteCode = (raw: unknown): string => (typeof raw === "string" ? raw.trim().slice(0, 100) : "");
 
   // ------------------------------------------------------------- state
 
@@ -78,7 +81,7 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
       session.playerId === null ? null : { id: session.playerId, name: (await store.playerName(session.playerId)) ?? "" };
     return c.json({
       authenticated: true,
-      account: { id: account.id, name: account.name, email: account.email },
+      account: { id: account.id, name: account.name, email: account.email, owner: account.role === "owner" },
       player,
     } satisfies AuthState);
   });
@@ -86,10 +89,21 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
   auth.get("/options", async (c) =>
     c.json({
       providers: [...providers.values()].map((p) => ({ id: p.id, name: p.name })),
-      registration: await registrationOpen(),
+      registration: (await registrationOpen()) || (await inviteNeeded()),
+      invite: await inviteNeeded(),
       publicUrl: config.publicUrl.origin,
+      ...(config.privacyHosting ? { hosting: config.privacyHosting } : {}),
+      ...(config.privacyContact ? { contact: config.privacyContact } : {}),
     } satisfies AuthOptions),
   );
+
+  /** Whether an invitation can still be used: the sign-up form says so before it is filled. */
+  auth.get("/invites/:code", async (c) => {
+    const address = clientAddress(c);
+    if (!perAddress.allowed(address)) return c.json({ error: "too_many_attempts" }, 429);
+    perAddress.hit(address);
+    return c.json({ usable: await store.inviteUsable(c.req.param("code")) });
+  });
 
   // ----------------------------------------------------- email + password
 
@@ -97,7 +111,8 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
     const address = clientAddress(c);
     if (!perAddress.allowed(address)) return c.json({ error: "too_many_attempts" }, 429);
     perAddress.hit(address);
-    if (!(await registrationOpen())) return c.json({ error: "registration_closed" }, 403);
+    const invited = await inviteNeeded();
+    if (!(await registrationOpen()) && !invited) return c.json({ error: "registration_closed" }, 403);
 
     const input = await body(c);
     const name = cleanName(input.name);
@@ -109,8 +124,12 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
     if ((await store.accountByEmail(email)) || (await store.findCredential("password", "", email))) {
       return c.json({ error: "email_in_use" }, 409);
     }
+    // The invitation is used once everything else is right, and only once.
+    const invite = inviteCode(input.invite);
+    if (invited && !(invite && (await store.claimInvite(invite)))) return c.json({ error: "invite_invalid" }, 403);
 
     const { account, claimed } = await store.createAccount(email, name);
+    if (invited) await store.inviteUsedBy(invite, account.id);
     await store.addCredential({
       accountId: account.id,
       playerId: null,
@@ -122,7 +141,7 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
     });
     if (claimed > 0) log.info(`account ${account.id} took over ${claimed} existing player(s)`);
     await startSession(c, store, config, account.id, null);
-    return c.json({ authenticated: true, account: { id: account.id, name, email }, player: null } satisfies AuthState, 201);
+    return c.json({ authenticated: true, account: { id: account.id, name, email, owner: account.role === "owner" }, player: null } satisfies AuthState, 201);
   });
 
   auth.post("/login", async (c) => {
@@ -158,6 +177,24 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
   auth.post("/logout-all", requireAccount, async (c) => {
     const session = c.get("session")!;
     await store.deleteSessionsOf(session.accountId, session.id);
+    return c.body(null, 204);
+  });
+
+  /**
+   * Deletes the account and everything it owns: its players and all their
+   * results, its sign-in methods, sessions, shares and invitations. The owner
+   * cannot while other accounts exist: they depend on the server it runs.
+   */
+  auth.delete("/account", requireAccount, async (c) => {
+    const session = c.get("session")!;
+    const input = await body(c);
+    if (input.confirm !== "delete-account") return c.json({ error: "not_confirmed" }, 400);
+    const account = await store.getAccount(session.accountId);
+    if (!account) return c.json({ error: "not_signed_in" }, 401);
+    if (account.role === "owner" && (await store.accountCount()) > 1) return c.json({ error: "owner_with_members" }, 409);
+    await store.deleteAccount(account.id);
+    await endSession(c, store, config, null);
+    log.info(`account ${account.id} deleted by its owner`);
     return c.body(null, 204);
   });
 
@@ -289,6 +326,7 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
       accountId: intent === "login" ? null : session!.accountId,
       playerId,
       createdAt: Date.now(),
+      invite: intent === "login" ? inviteCode(c.req.query("invite")) || null : null,
     });
     // Binds the flow to this browser: the callback must come back with the same state.
     setCookie(c, flowCookieName(config), state, cookieOptions(config, FLOW_LIFETIME / 1000));
@@ -352,11 +390,14 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
       // First sign-in with this provider account: a new account. An existing
       // account with the same email is never taken over silently: its owner
       // signs in and links the provider from the account page.
-      if (!(await registrationOpen())) return back(c, "auth_error=registration_closed");
+      const invited = await inviteNeeded();
+      if (!(await registrationOpen()) && !invited) return back(c, "auth_error=registration_closed");
       const email = profile.emailVerified ? profile.email : null;
       if (profile.email && (await store.accountByEmail(profile.email))) return back(c, "auth_error=email_in_use");
+      if (invited && !(flow.invite && (await store.claimInvite(flow.invite)))) return back(c, "auth_error=invite_invalid");
       const name = (profile.name ?? profile.email ?? provider.name).slice(0, NAME_LENGTH);
       const { account, claimed } = await store.createAccount(email, name);
+      if (invited && flow.invite) await store.inviteUsedBy(flow.invite, account.id);
       if (claimed > 0) log.info(`account ${account.id} took over ${claimed} existing player(s)`);
       await store.addCredential({
         accountId: account.id,

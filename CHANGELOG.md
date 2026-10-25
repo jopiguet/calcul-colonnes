@@ -1,5 +1,19 @@
 # Changelog
 
+## 6.19.0
+
+Opening Luma to friends and family (see [Authentication › Family release](docs/authentication.md#family-release)).
+
+- **Sign-up by invitation:** `REGISTRATION=invite`. The owner (the first account) creates single-use links on its Account page, with a note for whom; a link opens the sign-up form (password or provider). The list shows which were used and by whom. Without an invitation, the sign-up form says how accounts are created.
+- **Your books stay yours:** every vocabulary book is *private* (the owner's account only) or *shared*, and so are the written physical chemistry questions. Books are imported private, except the kanji and kana (open licences). Other accounts do not see a private book, and the server refuses its sessions, lessons, statistics and answers; their chemistry tests are calculations only. The owner chooses on its Account page.
+- **Your data:** *Télécharger mes données* (everything about the account and its players, as JSON) and *Supprimer mon compte* (the account, its players and all their results, at once). A privacy page, *🔒 Confidentialité*, linked from the sign-in screen, the landing page, the account page and the home page; `PRIVACY_HOSTING` and `PRIVACY_CONTACT` complete it.
+- **Feedback:** *💬 Envoyer un avis* at the bottom of the home page; the owner reads it on its Account page, with who, where and which version.
+- **Version and news:** the version and *Nouveautés* at the bottom of the home page, and once after an update, what is new.
+- **Never indexed:** `robots.txt`, `X-Robots-Tag` and a meta tag.
+- **One warm instance:** `gcloud run services update luma --min 1`, or `MIN_INSTANCES=1` with `deploy/setup-gcp.sh` (service-level, so a release's candidate revision gets none). Budget, error and uptime alerts, and a Neon staging branch, in [Deployment](docs/deployment.md#one-warm-instance).
+- **Checks:** `npm run check:family` (invitations, roles, private content, export, deletion), in CI. The test server creates an owner account and shares the invented books, so every test's own account is a member.
+- **Tests:** 116 browser tests. The alphabetical-book test failed about 1 time in 20: when the random session drew 8 of the 15 words of the first two lessons, the next new word in the book's order is the third lesson's first, which the test did not expect. It now checks the whole session against the book's first 8 unseen words.
+
 ## 6.18.0
 
 - **Past tests, with their corrections.** Each subject's progress page (*📈 Mes progrès* in the QCM, Chimie physique, Linux, Chimie de base) starts with *🗂️ Mes tests*: the last tests, newest first, with date, level, topics and score. One opens its corrections as at the end of the test: the answers given (typed ones as typed), the right ones, the mistakes and the explanations. Nothing new is stored: a test is rebuilt exactly from its seed, its version and, in physical chemistry, the bank revision it was taken with. *Refaire ce test* takes the same questions again. A parent's account the player is shared with sees them too.

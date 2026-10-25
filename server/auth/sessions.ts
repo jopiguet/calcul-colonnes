@@ -14,6 +14,8 @@ export interface Session {
   accountId: number;
   /** Set when a player signed in with their own login: access limited to them. */
   playerId: number | null;
+  /** The owner's account (or one of its players): sees every book and the written questions. */
+  owner: boolean;
 }
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -59,7 +61,7 @@ export async function startSession(
     userAgent: c.req.header("user-agent")?.slice(0, 200) ?? null,
   });
   setCookie(c, sessionCookieName(config), token, cookieOptions(config, config.sessionDays * 24 * 60 * 60));
-  return { id, accountId, playerId };
+  return { id, accountId, playerId, owner: (await store.getAccount(accountId))?.role === "owner" };
 }
 
 /** The session of this request, or null. Renews it when it is used. */
@@ -73,7 +75,7 @@ export async function readSession(c: Context, store: AuthStore, config: AuthConf
     await store.extendSession(row.id, now, now + config.sessionDays * DAY);
     setCookie(c, sessionCookieName(config), token, cookieOptions(config, config.sessionDays * 24 * 60 * 60));
   }
-  return { id: row.id, accountId: row.accountId, playerId: row.playerId };
+  return { id: row.id, accountId: row.accountId, playerId: row.playerId, owner: row.owner === true };
 }
 
 export async function endSession(c: Context, store: AuthStore, config: AuthConfig, session: Session | null): Promise<void> {

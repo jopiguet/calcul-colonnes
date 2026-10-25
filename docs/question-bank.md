@@ -3,7 +3,7 @@
 The physical chemistry tests mix two sources:
 
 - **Calculations,** generated like the maths questions: one generator per kind, in `shared/quiz/gases.ts`, `firstlaw.ts`, `secondlaw.ts`, `phases.ts`, `mixtures.ts` and `equilibrium.ts`. See [Question generators](question-generators.md#physical-chemistry).
-- **Concept questions,** written from a textbook: the *question bank*. They are not in the project. They come from a file the author keeps in `data/`, imported into the database like a vocabulary book.
+- **Concept questions,** written from a textbook: the *question bank*. They are not in the project. They come from a file the author keeps in `data/`, imported into the database like a vocabulary book. Only the owner's account (the first one) sees them, unless the owner shares them from the Account page; other accounts get an empty bank, and their chemistry tests are calculations only (see [Authentication › Family release](authentication.md#family-release)).
 
 The bank has two levels. **Core** questions join the calculations in the
 *Fondamental* test (level `chemistry`). **Advanced** questions, reasoning and

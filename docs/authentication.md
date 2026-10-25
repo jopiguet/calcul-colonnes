@@ -37,6 +37,19 @@ An account may have several methods: for example a password plus Google. The
 last method of an account cannot be removed. Player methods can always be
 removed, since the account keeps control.
 
+## Family release
+
+The app opened to friends and family, by invitation, without giving away
+content that comes from books you own.
+
+- **The owner** is the first account (the one that set up the server, `accounts.role = 'owner'`). Its Account page has a *👪 Famille et amis* section. To make another account the owner: `UPDATE accounts SET role = 'owner' WHERE email = '…'` (and `'member'` for the old one).
+- **Invitations** (`REGISTRATION=invite`): the owner creates a link (`…/#join=<code>`, single use, two weeks, an optional note saying for whom) and sends it. The link opens the sign-up form; the account is created with email and password or with a provider, and the invitation is used then. The list shows which invitations were used, and by whom. Only the code's SHA-256 is stored. Without an invitation, the sign-up form says that accounts are created by invitation.
+- **What other accounts see:** each vocabulary book is *Moi seulement* (`private`) or *Tous les comptes* (`shared`), and so are the written questions of the question bank. A new book is private, except the characters (JMdict and KANJIDIC are under open licences). A private book is not listed, and its sessions, lessons, statistics and answers are refused (404) for other accounts; for them, the bank is empty, so their physical chemistry tests are calculations only and the advanced level has no test. A player's own login counts as its account (the owner's children see everything).
+- **Their data:** the Account page has *Télécharger mes données* (everything stored about the account and its players, as JSON, no password hash) and *Supprimer mon compte* (the account's name typed again; the account, its players and all their results, its sign-in methods, sessions, shares and invitations are deleted at once). The owner cannot delete its account while other accounts exist.
+- **The privacy page** (`#privacy`, linked from the sign-in screen, the landing page, the account page and the home page): what is stored, who sees it, for how long, the user's rights. `PRIVACY_HOSTING` and `PRIVACY_CONTACT` add where it runs and whom to ask.
+- **Feedback:** *💬 Envoyer un avis* at the bottom of the home page; the owner reads it on its Account page, with the account, the player, the page and the version.
+- **Never indexed:** `robots.txt` disallows everything, every response has `X-Robots-Tag: noindex, nofollow`, and the page has the same meta tag.
+
 ## Sharing a player
 
 A player belongs to the account that created it, and that account can share

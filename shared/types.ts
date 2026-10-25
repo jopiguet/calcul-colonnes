@@ -133,7 +133,8 @@ export interface Profile {
 /** Who is signed in. A player session (own login of a child) is limited to that player. */
 export interface AuthState {
   authenticated: boolean;
-  account?: { id: number; name: string; email: string | null };
+  /** `owner`: the account that runs the server (invitations, content, feedback). */
+  account?: { id: number; name: string; email: string | null; owner?: boolean };
   player?: { id: number; name: string } | null;
 }
 
@@ -142,6 +143,11 @@ export interface AuthOptions {
   providers: { id: string; name: string }[];
   /** New accounts may be created (always true while there is no account yet). */
   registration: boolean;
+  /** New accounts need an invitation from the owner. */
+  invite?: boolean;
+  /** For the privacy page: where the server and database run, and whom to ask (PRIVACY_HOSTING, PRIVACY_CONTACT). */
+  hosting?: string;
+  contact?: string;
   /** PUBLIC_URL: the address the app expects to be opened at. */
   publicUrl: string;
 }
@@ -218,6 +224,8 @@ export interface VocabBookInfo {
   order: "book" | "alphabetical";
   /** Where the content comes from (a licence's attribution), "" when nothing to say. */
   credit: string;
+  /** "private": seen by the owner's account only (a book you own); "shared": by every account. */
+  visibility: "private" | "shared";
   entries: number;
   lessons: VocabLessonInfo[];
 }

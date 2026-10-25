@@ -304,10 +304,14 @@ test("an alphabetical book: new words at random across the book by default, or i
   await expect(page.locator(".vocab-order .segment.on")).toHaveText("Dans l'ordre du livre");
   await page.click("text=Apprendre dans tout le livre");
   await page.locator(".vocab-card").waitFor();
-  const unseenFirst = firstLesson.filter((w) => !random.includes(w));
-  const prompt = await page.locator(".vocab-prompt").innerText();
-  // The session mixes its cards, but every new one is among the book's first unseen words.
-  expect([...unseenFirst, ...["jovial", "keen", "lofty", "meek", "nimble", "odd", "placid"]]).toContain(prompt);
+  // The 8 new words are the book's first 8 not seen yet. When the random draw
+  // took 8 of the 15 words of the first two lessons (1 time in 20), the 8th is
+  // the first word of the third lesson.
+  const book = [...firstLesson, "jovial", "keen", "lofty", "meek", "nimble", "odd", "placid", "macro", "magn", "bene", "chron", "mono"];
+  const next = book.filter((w) => !random.includes(w)).slice(0, 8);
+  const ordered = await prompts();
+  // The session mixes its cards, but every new one is among them, and all of them come.
+  expect([...ordered].sort()).toEqual([...next].sort());
 });
 
 test("the Japanese book: rōmaji under the word, and accepted as an answer, like kana and kanji", async ({ page }) => {

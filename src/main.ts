@@ -14,7 +14,7 @@ import {
   saveUserId,
   type Settings,
 } from "./settings";
-import { accountView, signInView, takeRedirectMessage } from "./auth";
+import { accountView, signInView, takeInviteFromAddress, takeRedirectMessage } from "./auth";
 import { at, errorText } from "./auth-i18n";
 import { landingView } from "./landing";
 import "@fontsource/atkinson-hyperlegible-next/latin-400.css";
@@ -25,6 +25,7 @@ import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { loadBank, quizView, replayTest } from "./quiz";
+import { privacyView } from "./privacy";
 import { subjectOf } from "../shared/quiz";
 import { activityBar, activityId, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
 import { showVocabStats, vocabBusy, vocabView } from "./vocab";
@@ -129,6 +130,14 @@ function clearEntryHash(): void {
 let lastScreen = "";
 
 async function render(): Promise<void> {
+  // The privacy page, signed in or not; its button goes back where it came from.
+  if (location.hash === "#privacy") {
+    app.classList.remove("is-landing", "is-wide");
+    app.replaceChildren(topBar(), privacyView(state.options, () => (history.length > 1 ? history.back() : (location.hash = ""))));
+    window.scrollTo(0, 0);
+    lastScreen = "privacy";
+    return;
+  }
   if (!state.auth?.authenticated) {
     const options = state.options ?? { providers: [], registration: true, publicUrl: location.origin };
     const where = entry();
@@ -825,6 +834,8 @@ async function enter(justSignedIn = false): Promise<void> {
 }
 
 async function start(): Promise<void> {
+  // An invitation link: the sign-up form, with the code kept for this tab.
+  takeInviteFromAddress();
   try {
     state.options = await auth.options();
   } catch {
@@ -836,8 +847,9 @@ async function start(): Promise<void> {
 }
 
 // Landing page ↔ sign-in screen, and the browser's Back button between them.
+// The privacy page, from anywhere and back.
 window.addEventListener("hashchange", () => {
-  if (!state.auth?.authenticated) void render();
+  if (!state.auth?.authenticated || location.hash === "#privacy" || lastScreen === "privacy") void render();
 });
 
 void start();

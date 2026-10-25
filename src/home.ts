@@ -4,6 +4,7 @@
  * from the ← link of every activity.
  */
 import { button, el } from "./dom";
+import { appFooter, newsBanner } from "./news";
 import { currentLang, type Lang } from "./i18n";
 import { qt } from "./quiz-i18n";
 import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from "./store";
@@ -359,6 +360,10 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   }
   if (groups.childElementCount === 0) wrap.append(el("p", "empty", ht("nothingShown")));
   else wrap.append(groups);
+  // The release news once, then the foot: version, news, feedback, privacy.
+  const news = newsBanner();
+  if (news) head.after(news);
+  wrap.append(appFooter("home"));
   return wrap;
 }
 

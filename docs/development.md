@@ -38,7 +38,10 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `quiz.ts` | Multiple-choice screens: settings, question, results; review focus |
 | `progress.ts` | Progress page of a player |
 | `store.ts` | API calls; `auth` calls; `SignedOutError` when the session has ended |
-| `auth.ts` | Sign-in screen and Account page |
+| `auth.ts` | Sign-in screen (and invitation links) and Account page |
+| `family.ts` | The Account page's last sections: the account's data (download, deletion), and the owner's family and friends (invitations, content visibility, feedback) |
+| `privacy.ts` | The privacy page (`#privacy`), in the three languages |
+| `news.ts` | Version, release news (shown once after an update) and *Envoyer un avis*, at the bottom of the home page |
 | `landing.ts` | Landing page for first visits, with its texts in the three languages |
 | `home.ts` | A player's home page: activities by subject, what is waiting in each; the *← Accueil* bar of activities |
 | `vocab.ts`, `vocab-i18n.ts` | A vocabulary book's page: lessons, cards, summary, settings (rōmaji included), and their texts |
@@ -83,6 +86,9 @@ folder to start from scratch. To develop against PostgreSQL, set
 |---|---|
 | `index.ts` | Startup: `.env`, database, migrations, backfill, HTTP server, static files |
 | `app.ts` | Middleware order, data routes and input validation |
+| `admin.ts` | The owner's routes (`/api/admin`): invitations, content visibility, feedback |
+| `version.ts` | The app's version, recorded with feedback |
+| `check-family.ts` | `npm run check:family` |
 | `auth/` | Sign-in: settings, passwords, sessions, providers, routes. See [Authentication](authentication.md#code). |
 | `repository.ts` | Every SQL query; grading of attempts and tests; progress |
 | `db/index.ts` | `Database` interface; choice of engine from the environment |
@@ -152,6 +158,7 @@ Automated checks:
 |---|---|---|
 | `npm run check:quiz` | The question generators: correctness, distinct options, mistake labels, rendering, determinism. See [verification](question-generators.md#verification). | about a minute |
 | `npm run check:vocab` | Vocabulary grading and scheduling; with a file, every entry. See [Vocabulary](vocabulary.md#how-answers-are-graded). | a second |
+| `npm run check:family` | Invitations (`REGISTRATION=invite`), the owner's role, private books and bank, export, account deletion, `robots.txt`, through the real routes on a fresh SQLite file. See [Authentication › Family release](authentication.md#family-release). | a second |
 | `npm run check:discover` | The Discover engines: exact formulas against brute force, the generator on millions of trials, 1,200 logic grids. See [Discover](discover.md#checks-and-tests). | under 10 seconds |
 | `npm run check:physics` | The physics playground: every simulation against its exact solution and the conservation laws. See [Discover](discover.md#physics-checks). | about 15 seconds |
 | `npm run check:astronomy` | The astronomy models against an integration, Newton's gravity and centuries of eclipses. See [Discover](discover.md#astronomy-checks). | a few seconds |

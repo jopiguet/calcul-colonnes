@@ -59,7 +59,20 @@ others. See [Authentication › Sharing a player](authentication.md#sharing-a-pl
 | `id` | integer | primary key |
 | `email` | text, unique, nullable | lower-cased; `NULL` for an account created through a provider that gave no verified email |
 | `name` | text | |
+| `role` | text | `owner` (the first account: invitations, content, feedback) or `member` |
 | `created_at` | bigint | |
+
+### `account_invites`, `app_settings`, `feedback`
+
+The family release ([Authentication › Family release](authentication.md#family-release)).
+
+| Table | Content |
+|---|---|
+| `account_invites` | `id` (SHA-256 of the code), `created_by`, `note`, `created_at`, `expires_at` (two weeks), `used_at`, `used_by` |
+| `app_settings` | key/value set by the owner: `bank_visibility` (`private` or `shared`) |
+| `feedback` | `id`, `account_id`, `player_id` (null when the account sent it), `at`, `page`, `version`, `text` |
+
+`auth_flows.invite` carries an invitation through a provider's sign-up.
 
 ### `credentials`
 
@@ -162,12 +175,12 @@ Indexes: `(user_id, skill, at)`, `(quiz_id)`.
 
 ### Vocabulary
 
-The imported phrase book, shared by every account, and each player's
-progress. See [Vocabulary](vocabulary.md).
+The imported books, seen by the owner's account (and by every account once
+shared), and each player's progress. See [Vocabulary](vocabulary.md).
 
 | Table | Rows | Key columns |
 |---|---|---|
-| `vocab_books` | one per book | `slug` (the file's book id), `position`, `title`, `kind` (`translation`, `definition` or `characters`), `term_lang`, `meaning_lang`, `ordering` (`book` or `alphabetical`), `credit` (attribution shown with the book) |
+| `vocab_books` | one per book | `slug` (the file's book id), `position`, `title`, `kind` (`translation`, `definition` or `characters`), `term_lang`, `meaning_lang`, `ordering` (`book` or `alphabetical`), `credit` (attribution shown with the book), `visibility` (`private`: the owner's account only; `shared`: every account) |
 | `vocab_lessons` | one per lesson (chapter) | `book_id`, `position` (unique per book), `title`, `subtitle` |
 | `vocab_sections` | one per section | `lesson_id`, `position`, `title`, `subtitle` |
 | `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji), `readings` (a kanji's on and kun readings), `translations` (JSON: the meaning in French, Spanish) |
@@ -181,7 +194,8 @@ an entry deletes its progress.
 
 ### Question bank
 
-Written questions from a textbook, shared by every account. See
+Written questions from a textbook, seen by the owner's account (and by every
+account once shared, `app_settings.bank_visibility`). See
 [Question bank](question-bank.md).
 
 | Table | Content |

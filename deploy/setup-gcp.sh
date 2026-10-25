@@ -4,7 +4,9 @@
 #
 #   PROJECT=luma-prod GITHUB_REPO=owner/calcul-colonnes deploy/setup-gcp.sh
 #
-# Optional: REGION (default europe-west1), PUBLIC_URL (default: the service's
+# Optional: MIN_INSTANCES (1: one warm instance), REGISTRATION (invite for
+# friends and family), PRIVACY_HOSTING and PRIVACY_CONTACT (the privacy page),
+# REGION (default europe-west1), PUBLIC_URL (default: the service's
 # run.app address, until the domain is mapped), and the sign-in providers'
 # client ids (GOOGLE_CLIENT_ID, MICROSOFT_CLIENT_ID, GITHUB_CLIENT_ID,
 # OIDC_CLIENT_ID with OIDC_ISSUER, OIDC_ID, OIDC_NAME): their secrets are asked
@@ -84,7 +86,7 @@ for provider in GOOGLE MICROSOFT GITHUB OIDC; do
     ENV_VARS="$ENV_VARS,$id_var=${!id_var}"
   fi
 done
-for var in OIDC_ISSUER OIDC_ID OIDC_NAME OIDC_SCOPES MICROSOFT_TENANT REGISTRATION SESSION_DAYS; do
+for var in OIDC_ISSUER OIDC_ID OIDC_NAME OIDC_SCOPES MICROSOFT_TENANT REGISTRATION SESSION_DAYS PRIVACY_HOSTING PRIVACY_CONTACT; do
   [ -n "${!var:-}" ] && ENV_VARS="$ENV_VARS,$var=${!var}"
 done
 
@@ -117,6 +119,12 @@ elif [ "$created" = true ]; then
 fi
 gcloud run services update luma --region "$REGION" --quiet \
   --update-secrets="$SECRETS" --update-env-vars="$ENV_VARS" >/dev/null
+# MIN_INSTANCES=1 keeps one instance warm (no cold start, about $10 a month).
+# Service-level (--min), not per revision: a release's tagged candidate
+# revision does not get a warm instance of its own. 0 (or "default") stops it.
+if [ -n "${MIN_INSTANCES:-}" ]; then
+  gcloud run services update luma --region "$REGION" --quiet --min "$MIN_INSTANCES" >/dev/null
+fi
 if ! exists gcloud run jobs describe luma-maintenance --region "$REGION"; then
   gcloud run jobs create luma-maintenance --image "$PLACEHOLDER" --region "$REGION" \
     --service-account "$RUNTIME" --set-secrets="DATABASE_URL=database-url:latest" \

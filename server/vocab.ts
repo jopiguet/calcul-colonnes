@@ -151,9 +151,10 @@ export class VocabStore {
       } else {
         const last = await tx.query("SELECT COALESCE(MAX(position), -1) AS p FROM vocab_books");
         const inserted = await tx.query(
-          `INSERT INTO vocab_books (slug, position, title, kind, term_lang, meaning_lang, ordering, credit)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
-          [book.id, n(last[0]?.p) + 1, book.title, book.kind, book.term, book.meaning, book.order ?? "book", book.credit ?? ""],
+          `INSERT INTO vocab_books (slug, position, title, kind, term_lang, meaning_lang, ordering, credit, visibility)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+          // A new book is the owner's only, except the characters (open licences); the owner can share it later.
+          [book.id, n(last[0]?.p) + 1, book.title, book.kind, book.term, book.meaning, book.order ?? "book", book.credit ?? "", book.kind === "characters" ? "shared" : "private"],
         );
         bookId = n(inserted[0]!.id);
       }
@@ -293,8 +294,12 @@ export class VocabStore {
     }
   }
 
-  async books(): Promise<VocabBookInfo[]> {
-    const books = await this.db.query("SELECT id, slug, title, kind, term_lang, meaning_lang, ordering, credit FROM vocab_books ORDER BY position");
+  /** The books an account sees: all for the owner, the shared ones for the others. */
+  async books(owner = true): Promise<VocabBookInfo[]> {
+    const books = await this.db.query(
+      `SELECT id, slug, title, kind, term_lang, meaning_lang, ordering, credit, visibility FROM vocab_books
+        ${owner ? "" : "WHERE visibility = 'shared'"} ORDER BY position`,
+    );
     const lessons = await this.db.query("SELECT id, book_id, title, subtitle FROM vocab_lessons ORDER BY position");
     const sections = await this.db.query(
       `SELECT s.id, s.lesson_id, s.title, s.subtitle, COUNT(e.id) AS entries
@@ -323,11 +328,33 @@ export class VocabStore {
           meaning: String(b.meaning_lang),
           order: (b.ordering === "alphabetical" ? "alphabetical" : "book") as VocabBookInfo["order"],
           credit: String(b.credit ?? ""),
+          visibility: (b.visibility === "shared" ? "shared" : "private") as VocabBookInfo["visibility"],
           entries: own.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.entries, 0), 0),
           lessons: own,
         };
       })
       .filter((b) => b.entries > 0);
+  }
+
+  /**
+   * Whether an account may see what belongs to this book, lesson, section or
+   * entry: the owner always; another account only in a shared book.
+   */
+  async visible(kind: "book" | "lesson" | "section" | "entry", id: number, owner: boolean): Promise<boolean> {
+    if (owner) return true;
+    const from = {
+      book: "vocab_books b WHERE b.id = $1",
+      lesson: "vocab_lessons l JOIN vocab_books b ON b.id = l.book_id WHERE l.id = $1",
+      section: "vocab_sections s JOIN vocab_lessons l ON l.id = s.lesson_id JOIN vocab_books b ON b.id = l.book_id WHERE s.id = $1",
+      entry: `vocab_entries e JOIN vocab_sections s ON s.id = e.section_id JOIN vocab_lessons l ON l.id = s.lesson_id
+              JOIN vocab_books b ON b.id = l.book_id WHERE e.id = $1`,
+    }[kind];
+    const rows = await this.db.query(`SELECT b.visibility FROM ${from}`, [id]);
+    return rows[0]?.visibility === "shared";
+  }
+
+  async setVisibility(bookId: number, visibility: "private" | "shared"): Promise<boolean> {
+    return (await this.db.query("UPDATE vocab_books SET visibility = $1 WHERE id = $2 RETURNING id", [visibility, bookId])).length > 0;
   }
 
   private async entries(where: string, params: Param[]): Promise<SessionEntry[]> {
@@ -714,7 +741,12 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
   const allowed = async (c: unknown, userId: number): Promise<boolean> =>
     Boolean(await repository.getUser(userId, scope(c as never)));
 
-  routes.get("/books", async (c) => c.json(await store.books()));
+  // A book you own is the owner's only (docs/authentication.md#family-release).
+  const owner = (c: { get(key: "session"): AppEnv["Variables"]["session"] }): boolean => c.get("session")?.owner === true;
+  const hidden = (c: Parameters<typeof owner>[0], kind: "book" | "lesson" | "section" | "entry", id: number) =>
+    store.visible(kind, id, owner(c)).then((ok) => !ok);
+
+  routes.get("/books", async (c) => c.json(await store.books(owner(c))));
 
   routes.get("/progress", async (c) => {
     const userId = Number(c.req.query("userId"));
@@ -733,6 +765,7 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
       return c.json({ error: "invalid query" }, 400);
     }
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+    if (await hidden(c, "book", bookId)) return c.json({ error: "unknown book" }, 404);
     const stats = await store.stats(userId, bookId, Date.now(), tz);
     return stats ? c.json(stats) : c.json({ error: "unknown book" }, 404);
   });
@@ -743,6 +776,7 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     const lang = c.req.query("lang");
     if (!isId(userId) || !isId(lessonId) || (lang !== undefined && !isLang(lang))) return c.json({ error: "invalid query" }, 400);
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+    if (await hidden(c, "lesson", lessonId)) return c.json({ error: "unknown lesson" }, 404);
     const words = await store.lessonWords(userId, lessonId, lang as TranslationLang | undefined);
     return words ? c.json(words) : c.json({ error: "unknown lesson" }, 404);
   });
@@ -752,6 +786,7 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     const { userId, entryId, skipped } = body;
     if (!isId(userId) || !isId(entryId) || typeof skipped !== "boolean") return c.json({ error: "invalid skip" }, 400);
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+    if (await hidden(c, "entry", entryId)) return c.json({ error: "unknown entry" }, 404);
     return (await store.setSkipped(userId, entryId, skipped, Date.now())) ? c.body(null, 204) : c.json({ error: "unknown entry" }, 404);
   });
 
@@ -778,6 +813,7 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
       return c.json({ error: "invalid session" }, 400);
     }
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+    if (await hidden(c, kind === "all" ? "book" : kind, id)) return c.json({ error: "unknown book" }, 404);
     return c.json(await store.session(userId, { kind, id }, purpose, size, mode, Date.now(), order, lang as TranslationLang | undefined));
   });
 
@@ -801,6 +837,7 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
       return c.json({ error: "invalid answer" }, 400);
     }
     if (!(await allowed(c, answer.userId))) return c.json({ error: "unknown user" }, 404);
+    if (await hidden(c, "entry", answer.entryId)) return c.json({ error: "unknown entry" }, 404);
     const result = await store.answer(answer, Date.now());
     return result ? c.json(result, 201) : c.json({ error: "unknown entry" }, 404);
   });

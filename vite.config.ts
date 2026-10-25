@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const port = Number(env.PORT) || 8787;
   return {
-    define: { __BUILD_ID__: JSON.stringify(mode === "production" ? buildId : "dev") },
+    define: { __BUILD_ID__: JSON.stringify(mode === "production" ? buildId : "dev"), __APP_VERSION__: JSON.stringify(version) },
     plugins: [versionFile()],
     server: {
       // `npm run dev`: the app is served by Vite, /api goes to the API server.

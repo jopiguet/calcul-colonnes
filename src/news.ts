@@ -1,0 +1,158 @@
+import { at } from "./auth-i18n";
+import { button, el } from "./dom";
+import { currentLang } from "./i18n";
+import { sendFeedback } from "./store";
+
+/**
+ * What a user sees of the releases: the version, a few lines of news per
+ * release in their language (the CHANGELOG is the developer's), a banner
+ * once after an update, and "Send feedback" for the owner to read.
+ */
+
+declare const __APP_VERSION__: string;
+export const APP_VERSION = typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "dev";
+
+interface News {
+  version: string;
+  fr: string[];
+  es: string[];
+  en: string[];
+}
+
+/** Newest first. A release with nothing a user would notice has no entry. */
+export const NEWS: News[] = [
+  {
+    version: "6.19.0",
+    fr: [
+      "Luma s'ouvre à la famille et aux amis, sur invitation.",
+      "Page Compte : télécharger vos données, ou supprimer votre compte.",
+      "💬 Envoyer un avis, en bas de la page d'accueil.",
+    ],
+    es: [
+      "Luma se abre a la familia y los amigos, por invitación.",
+      "Página Cuenta: descargar tus datos, o eliminar tu cuenta.",
+      "💬 Enviar una opinión, al pie de la página de inicio.",
+    ],
+    en: [
+      "Luma opens to family and friends, by invitation.",
+      "Account page: download your data, or delete your account.",
+      "💬 Send feedback, at the bottom of the home page.",
+    ],
+  },
+  {
+    version: "6.18.0",
+    fr: ["🗂️ Mes tests : chaque test passé, avec ses corrections, sur la page Mes progrès de chaque matière. Refaire ce test redonne les mêmes questions."],
+    es: ["🗂️ Mis tests: cada test hecho, con sus correcciones, en la página Mi progreso de cada materia. Repetir este test da las mismas preguntas."],
+    en: ["🗂️ My tests: every test taken, with its corrections, on each subject's progress page. Take this test again gives the same questions."],
+  },
+  {
+    version: "6.17.2",
+    fr: ["Vocabulaire : apprendre dans tout le livre apporte toujours de nouveaux mots, dans l'ordre du livre."],
+    es: ["Vocabulario: aprender en todo el libro siempre trae palabras nuevas, en el orden del libro."],
+    en: ["Vocabulary: learning from the whole book always brings new words, in the book's order."],
+  },
+  {
+    version: "6.17.0",
+    fr: ["Chimie physique : la thermodynamique statistique (Focus 13). Grilles logiques et réglages des tests plus compacts, sans sauts de page."],
+    es: ["Química física: la termodinámica estadística (Focus 13). Rejillas lógicas y ajustes de los tests más compactos, sin saltos de página."],
+    en: ["Physical chemistry: statistical thermodynamics (Focus 13). Logic grids and test settings more compact, without page jumps."],
+  },
+];
+
+const SEEN_KEY = "luma-news-seen";
+
+const linesOf = (n: News): string[] => (currentLang() === "es" ? n.es : currentLang() === "en" ? n.en : n.fr);
+
+/** The release news not seen yet on this device, once: null when there is none. */
+export function newsBanner(): HTMLElement | null {
+  let seen: string | null = null;
+  try {
+    seen = localStorage.getItem(SEEN_KEY);
+  } catch {
+    return null;
+  }
+  const latest = NEWS[0];
+  if (!latest || latest.version !== APP_VERSION || seen === latest.version) return null;
+  // A first visit: nothing is "new" yet; the news start with the next release.
+  if (seen === null) {
+    try {
+      localStorage.setItem(SEEN_KEY, latest.version);
+    } catch {
+      // nothing kept
+    }
+    return null;
+  }
+  const box = el("aside", "news-banner");
+  box.setAttribute("role", "status");
+  const list = el("ul");
+  for (const line of linesOf(latest)) list.append(el("li", undefined, line));
+  box.append(
+    el("strong", "news-title", `✨ ${at("newsBanner", { version: latest.version })}`),
+    list,
+    button("ghost small", at("newsClose"), () => {
+      try {
+        localStorage.setItem(SEEN_KEY, latest.version);
+      } catch {
+        // shown again next time
+      }
+      box.remove();
+    }),
+  );
+  return box;
+}
+
+/** The foot of the home page: version and news, feedback, privacy. */
+export function appFooter(page: string): HTMLElement {
+  const foot = el("footer", "app-footer");
+  const line = el("div", "app-footer-line");
+  const version = el("span", "app-version", at("version", { version: APP_VERSION }));
+  const newsPanel = el("div", "news-panel");
+  newsPanel.hidden = true;
+  const toggleNews = button("link", at("whatsNew"), () => {
+    if (newsPanel.childElementCount === 0) {
+      for (const n of NEWS) {
+        newsPanel.append(el("h3", "news-version", n.version));
+        const list = el("ul");
+        for (const l of linesOf(n)) list.append(el("li", undefined, l));
+        newsPanel.append(list);
+      }
+    }
+    newsPanel.hidden = !newsPanel.hidden;
+  });
+  const privacy = el("a", "privacy-link", at("privacyLink"));
+  privacy.href = "#privacy";
+
+  const form = el("form", "feedback-form");
+  form.hidden = true;
+  const text = el("textarea", "feedback-text");
+  text.maxLength = 2000;
+  text.rows = 4;
+  text.placeholder = at("feedbackPlaceholder");
+  text.setAttribute("aria-label", at("feedbackOpen"));
+  const send = el("button", "primary small", at("feedbackSend"));
+  send.type = "submit";
+  const said = el("p", "feedback-status");
+  said.setAttribute("role", "status");
+  form.append(text, send);
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!text.value.trim()) return;
+    send.disabled = true;
+    sendFeedback(text.value.trim(), page)
+      .then(() => {
+        form.hidden = true;
+        text.value = "";
+        said.textContent = at("feedbackThanks");
+      })
+      .catch(() => (said.textContent = at("feedbackFailed")))
+      .finally(() => (send.disabled = false));
+  });
+  const open = button("ghost small feedback-open", at("feedbackOpen"), () => {
+    form.hidden = !form.hidden;
+    said.textContent = "";
+    if (!form.hidden) text.focus();
+  });
+  line.append(version, el("span", "app-footer-dot", "·"), toggleNews, el("span", "app-footer-dot", "·"), privacy);
+  foot.append(open, form, said, line, newsPanel);
+  return foot;
+}

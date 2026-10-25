@@ -1,12 +1,29 @@
+import { createHash, randomBytes } from "node:crypto";
 import type { Database, Row } from "../db/index.ts";
 
+const hashCode = (code: string): string => createHash("sha256").update(code.trim()).digest("hex");
+
 /** Accounts, sign-in methods, sessions and OAuth flows in the database. */
+
+export type Role = "owner" | "member";
 
 export interface Account {
   id: number;
   email: string | null;
   name: string;
+  /** The owner runs the server (invitations, content, feedback); every other account is a member. */
+  role: Role;
   createdAt: number;
+}
+
+/** An invitation to create an account, as the owner sees it. */
+export interface Invite {
+  id: string;
+  note: string;
+  createdAt: number;
+  expiresAt: number;
+  usedAt: number | null;
+  usedBy: string | null;
 }
 
 export type CredentialType = "password" | "oauth" | "passkey" | "email_link";
@@ -30,6 +47,7 @@ export interface SessionRow {
   playerId: number | null;
   expiresAt: number;
   lastSeenAt: number;
+  owner?: boolean;
 }
 
 export interface Flow {
@@ -40,6 +58,8 @@ export interface Flow {
   accountId: number | null;
   playerId: number | null;
   createdAt: number;
+  /** An invitation code, for a sign-up with this provider. */
+  invite?: string | null;
 }
 
 const num = (v: unknown): number | null => (v === null || v === undefined ? null : Number(v));
@@ -48,6 +68,7 @@ const toAccount = (r: Row): Account => ({
   id: Number(r.id),
   email: (r.email as string | null) ?? null,
   name: String(r.name),
+  role: r.role === "owner" ? "owner" : "member",
   createdAt: Number(r.created_at),
 });
 
@@ -89,9 +110,10 @@ export class AuthStore {
    */
   async createAccount(email: string | null, name: string): Promise<{ account: Account; claimed: number }> {
     const first = (await this.accountCount()) === 0;
+    // The first account runs the server.
     const rows = await this.db.query(
-      "INSERT INTO accounts (email, name, created_at) VALUES ($1, $2, $3) RETURNING *",
-      [email, name, Date.now()],
+      "INSERT INTO accounts (email, name, role, created_at) VALUES ($1, $2, $3, $4) RETURNING *",
+      [email, name, first ? "owner" : "member", Date.now()],
     );
     const account = toAccount(rows[0]!);
     let claimed = 0;
@@ -106,6 +128,70 @@ export class AuthStore {
       ]);
     }
     return { account, claimed };
+  }
+
+  /**
+   * Deletes an account and everything it owns: its players with all their
+   * results, its sign-in methods and sessions, its shares and invitations.
+   */
+  async deleteAccount(id: number): Promise<void> {
+    // Players' rows go with them (ON DELETE CASCADE from users); then the account's own.
+    await this.db.query("DELETE FROM users WHERE account_id = $1", [id]);
+    await this.db.query("DELETE FROM accounts WHERE id = $1", [id]);
+  }
+
+  // ------------------------------------------------------------- invitations
+
+  /** A new invitation; returns the code (only its SHA-256 is stored). */
+  async createInvite(createdBy: number, note: string, lifetime: number): Promise<{ code: string; invite: Invite }> {
+    const code = randomBytes(18).toString("base64url");
+    const now = Date.now();
+    await this.db.query(
+      "INSERT INTO account_invites (id, created_by, note, created_at, expires_at) VALUES ($1, $2, $3, $4, $5)",
+      [hashCode(code), createdBy, note, now, now + lifetime],
+    );
+    return { code, invite: { id: hashCode(code), note, createdAt: now, expiresAt: now + lifetime, usedAt: null, usedBy: null } };
+  }
+
+  /** Whether a code can still be used (to say so before the sign-up form is filled). */
+  async inviteUsable(code: string): Promise<boolean> {
+    const rows = await this.db.query("SELECT 1 AS ok FROM account_invites WHERE id = $1 AND used_at IS NULL AND expires_at > $2", [
+      hashCode(code),
+      Date.now(),
+    ]);
+    return rows.length > 0;
+  }
+
+  /** Uses an invitation, once: false when unknown, used or expired. */
+  async claimInvite(code: string): Promise<boolean> {
+    const rows = await this.db.query(
+      "UPDATE account_invites SET used_at = $1 WHERE id = $2 AND used_at IS NULL AND expires_at > $1 RETURNING id",
+      [Date.now(), hashCode(code)],
+    );
+    return rows.length > 0;
+  }
+
+  async inviteUsedBy(code: string, accountId: number): Promise<void> {
+    await this.db.query("UPDATE account_invites SET used_by = $1 WHERE id = $2", [accountId, hashCode(code)]);
+  }
+
+  async invites(): Promise<Invite[]> {
+    const rows = await this.db.query(
+      `SELECT i.id, i.note, i.created_at, i.expires_at, i.used_at, a.name AS used_name
+         FROM account_invites i LEFT JOIN accounts a ON a.id = i.used_by ORDER BY i.created_at DESC`,
+    );
+    return rows.map((r) => ({
+      id: String(r.id),
+      note: String(r.note ?? ""),
+      createdAt: Number(r.created_at),
+      expiresAt: Number(r.expires_at),
+      usedAt: num(r.used_at),
+      usedBy: r.used_name === null || r.used_name === undefined ? null : String(r.used_name),
+    }));
+  }
+
+  async deleteInvite(id: string): Promise<boolean> {
+    return (await this.db.query("DELETE FROM account_invites WHERE id = $1 RETURNING id", [id])).length > 0;
   }
 
   async setAccountEmail(id: number, email: string): Promise<void> {
@@ -177,7 +263,7 @@ export class AuthStore {
   }
 
   async getSession(id: string): Promise<SessionRow | null> {
-    const rows = await this.db.query("SELECT * FROM sessions WHERE id = $1", [id]);
+    const rows = await this.db.query("SELECT s.*, a.role FROM sessions s JOIN accounts a ON a.id = s.account_id WHERE s.id = $1", [id]);
     const r = rows[0];
     if (!r) return null;
     return {
@@ -186,6 +272,7 @@ export class AuthStore {
       playerId: num(r.player_id),
       expiresAt: Number(r.expires_at),
       lastSeenAt: Number(r.last_seen_at),
+      owner: r.role === "owner",
     };
   }
 
@@ -219,9 +306,9 @@ export class AuthStore {
 
   async saveFlow(f: Flow): Promise<void> {
     await this.db.query(
-      `INSERT INTO auth_flows (state, provider, verifier, intent, account_id, player_id, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [f.state, f.provider, f.verifier, f.intent, f.accountId, f.playerId, f.createdAt],
+      `INSERT INTO auth_flows (state, provider, verifier, intent, account_id, player_id, created_at, invite)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [f.state, f.provider, f.verifier, f.intent, f.accountId, f.playerId, f.createdAt, f.invite ?? null],
     );
   }
 
@@ -239,6 +326,7 @@ export class AuthStore {
       accountId: num(r.account_id),
       playerId: num(r.player_id),
       createdAt: Number(r.created_at),
+      invite: (r.invite as string | null) ?? null,
     };
   }
 }

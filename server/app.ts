@@ -20,6 +20,8 @@ import type { NewAttempt, NewQuizResult } from "../shared/types.ts";
 
 /** Past tests listed per subject: the most recent. */
 const PAST_TESTS = 50;
+/** Feedback: a few paragraphs at most, 20 messages per account in 15 minutes. */
+export const FEEDBACK_MAX = 2000;
 import type { AuthConfig } from "./auth/config.ts";
 import { loadSession, originCheck, requireAccount, requireSession, type AppEnv } from "./auth/middleware.ts";
 import type { Provider } from "./auth/providers.ts";
@@ -29,7 +31,9 @@ import type { Database } from "./db/index.ts";
 import { ACTIVITY_ID, HIDDEN_MAX, Repository, normalizeCode, type Scope } from "./repository.ts";
 import { RateLimit } from "./auth/rate-limit.ts";
 import { VocabStore, vocabRoutes } from "./vocab.ts";
-import { BankStore, bankRoutes } from "./quiz-bank.ts";
+import { BankStore, bankRoutes, bankVisible } from "./quiz-bank.ts";
+import { adminRoutes } from "./admin.ts";
+import { APP_VERSION } from "./version.ts";
 import { log } from "./runtime.ts";
 
 const NAME_LENGTH = 20;
@@ -98,6 +102,7 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
   const repository = new Repository(db);
   // Wrong share codes per account: 20 in 15 minutes, on top of their 50 bits.
   const shareLimit = new RateLimit(20, 15 * 60_000);
+  const feedbackLimit = new RateLimit(20, 15 * 60_000);
   const bank = new BankStore(db);
   const store = new AuthStore(db);
   const api = new Hono<AppEnv>();
@@ -219,6 +224,8 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
     await bank.refresh(); // a bank imported since the server started
     const quiz = parseQuiz(await c.req.json().catch(() => null));
     if (!quiz) return c.json({ error: "invalid quiz" }, 400);
+    // Written questions only for an account that sees the bank.
+    if (quiz.bank && !(await bankVisible(repository, c.get("session")!.owner))) return c.json({ error: "invalid quiz" }, 400);
     if (!(await repository.getUser(quiz.userId, scope(c)))) return c.json({ error: "unknown user" }, 404);
     return c.json(await repository.addQuiz(quiz), 201);
   });
@@ -229,7 +236,31 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
     return c.json(await repository.stats(Math.trunc(since), scope(c)));
   });
 
-  data.route("/vocab", vocabRoutes(new VocabStore(db), repository, scope as (c: never) => Scope));
+  const vocabStore = new VocabStore(db);
+  data.route("/vocab", vocabRoutes(vocabStore, repository, scope as (c: never) => Scope));
+
+  // "Send feedback": a few lines for the owner, with the page and the version.
+  data.post("/feedback", async (c) => {
+    const body = ((await c.req.json().catch(() => null)) ?? {}) as Record<string, unknown>;
+    const text = typeof body.text === "string" ? body.text.trim() : "";
+    const page = typeof body.page === "string" ? body.page.slice(0, 100) : "";
+    if (!text || text.length > FEEDBACK_MAX) return c.json({ error: "invalid feedback" }, 400);
+    const session = c.get("session")!;
+    if (!feedbackLimit.allowed(String(session.accountId))) return c.json({ error: "too_many_attempts" }, 429);
+    feedbackLimit.hit(String(session.accountId));
+    await repository.addFeedback({ accountId: session.accountId, playerId: session.playerId, page, version: APP_VERSION, text });
+    return c.body(null, 204);
+  });
+
+  // Everything stored about the account and its players, to download.
+  data.get("/export", requireAccount, async (c) => {
+    const account = scope(c).accountId;
+    c.header("Content-Disposition", `attachment; filename="luma-${new Date().toISOString().slice(0, 10)}.json"`);
+    return c.json(await repository.exportAccount(account));
+  });
+
+  // The owner's page: invitations, who sees which content, feedback.
+  data.route("/admin", adminRoutes({ store, repository, vocab: vocabStore, publicUrl: authConfig.publicUrl, registration: authConfig.registration }));
   data.route("/quiz", bankRoutes(bank, repository, scope as (c: never) => Scope));
 
   api.route("/", data);
@@ -241,6 +272,12 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
   });
 
   const app = new Hono<AppEnv>();
+  // A family app: never listed by a search engine (docs/authentication.md#family-release).
+  app.use("*", async (c, next) => {
+    await next();
+    c.res.headers.set("X-Robots-Tag", "noindex, nofollow");
+  });
+  app.get("/robots.txt", (c) => c.text("User-agent: *\nDisallow: /\n"));
   // Answers are per account and change with every answer: never kept by a
   // browser or a proxy (Cloudflare).
   app.use("/api/*", async (c, next) => {

@@ -71,8 +71,21 @@ session).
 - **Devices:**
   - **Sign out other devices:** for a lost phone or a shared computer.
   - **Sign out:** this device only.
+- **Vos données:**
+  - **Télécharger mes données:** everything stored about the account and its players, as a JSON file.
+  - **Supprimer mon compte:** after typing the account's name, deletes the account, its players with all their results, its sign-ins and shares, at once and for good.
+  - **🔒 Confidentialité:** what is stored, who sees it, for how long.
+- **👪 Famille et amis** (the owner's account only, the first one on the server):
+  - **Invitations:** *Créer une invitation*, with a note saying for whom, gives a link valid once for two weeks; send it, and it opens the sign-up form. The list says which were used, and by whom.
+  - **Ce que voient les autres comptes:** each vocabulary book, and the written physical chemistry questions: *Moi seulement* or *Tous les comptes*. A book you own stays *Moi seulement*; the kanji (open licences) can be shared.
+  - **Avis reçus:** what the others sent with *💬 Envoyer un avis*.
 
 In a player's own session, the 🚪 button at the top signs out.
+
+**At the bottom of the home page:** *💬 Envoyer un avis* (a few lines to the
+owner of the server), the version with *Nouveautés* (what each release brought,
+in a few lines), and *🔒 Confidentialité*. After an update, the home page shows
+once what is new.
 
 ## Players
 

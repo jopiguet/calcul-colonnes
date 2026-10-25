@@ -67,8 +67,12 @@ function startOfToday(): number {
 export const auth = {
   session: (): Promise<AuthState> => call("/auth/session"),
   options: (): Promise<AuthOptions> => call("/auth/options"),
-  register: (name: string, email: string, password: string): Promise<AuthState> =>
-    post("/auth/register", { name, email, password }),
+  register: (name: string, email: string, password: string, invite?: string): Promise<AuthState> =>
+    post("/auth/register", { name, email, password, ...(invite ? { invite } : {}) }),
+  /** Whether an invitation can still be used. */
+  inviteUsable: (code: string): Promise<{ usable: boolean }> => call(`/auth/invites/${encodeURIComponent(code)}`),
+  /** Deletes the account and everything it owns. */
+  deleteAccount: (): Promise<void> => call("/auth/account", { method: "DELETE", body: JSON.stringify({ confirm: "delete-account" }) }),
   login: (identifier: string, password: string): Promise<void> => post("/auth/login", { identifier, password }),
   logout: (): Promise<void> => post("/auth/logout"),
   logoutOthers: (): Promise<void> => post("/auth/logout-all"),
@@ -79,9 +83,37 @@ export const auth = {
   setPlayerPassword: (playerId: number, username: string, password: string): Promise<SignInMethod> =>
     post(`/auth/players/${playerId}/password`, { username, password }),
   /** Full-page navigation to the provider (OAuth). */
-  providerUrl: (provider: string, intent: "login" | "link" | "link-player", player?: number): string =>
-    `/api/auth/oauth/${encodeURIComponent(provider)}/start?intent=${intent}${player ? `&player=${player}` : ""}`,
+  providerUrl: (provider: string, intent: "login" | "link" | "link-player", player?: number, invite?: string): string =>
+    `/api/auth/oauth/${encodeURIComponent(provider)}/start?intent=${intent}${player ? `&player=${player}` : ""}${invite ? `&invite=${encodeURIComponent(invite)}` : ""}`,
 };
+
+/** What the owner's page shows (server/admin.ts). */
+export interface AdminState {
+  registration: "open" | "invite" | "closed";
+  invites: { id: string; note: string; createdAt: number; expiresAt: number; usedAt: number | null; usedBy: string | null }[];
+  books: { id: number; title: string; kind: string; term: string; visibility: "private" | "shared" }[];
+  bank: "private" | "shared";
+  feedback: { id: number; at: number; account: string | null; player: string | null; page: string; version: string; text: string }[];
+}
+
+export const admin = {
+  state: (): Promise<AdminState> => call("/admin"),
+  invite: (note: string): Promise<{ code: string; link: string; invite: AdminState["invites"][number] }> => post("/admin/invites", { note }),
+  removeInvite: (id: string): Promise<void> => call(`/admin/invites/${id}`, { method: "DELETE" }),
+  bookVisibility: (id: number, visibility: "private" | "shared"): Promise<void> =>
+    call(`/admin/books/${id}`, { method: "PUT", body: JSON.stringify({ visibility }) }),
+  bankVisibility: (visibility: "private" | "shared"): Promise<void> => call("/admin/bank", { method: "PUT", body: JSON.stringify({ visibility }) }),
+};
+
+/** "Send feedback": a few lines for the owner. */
+export const sendFeedback = (text: string, page: string): Promise<void> => post("/feedback", { text, page });
+
+/** Everything stored about the account, as a JSON file to save. */
+export async function exportData(): Promise<Blob> {
+  const response = await fetch("/api/export", { credentials: "same-origin" });
+  if (!response.ok) throw new ApiError(response.status, "export_failed");
+  return response.blob();
+}
 
 export const store = {
   listUsers: (): Promise<User[]> => call("/users"),

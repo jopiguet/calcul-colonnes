@@ -40,7 +40,7 @@ own, and stay in your database:
 
 - **Extraction:** the scripts in `tools/` read your copy of a PDF or EPUB and write a JSON file to `data/`, which is ignored by version control.
 - **Storage:** the import puts the entries in your database (SQLite or Neon). They are never part of the project, a build or a release.
-- **Access:** keep the app behind its sign-in, and set `REGISTRATION=closed` if the server is reachable from the internet. Only your accounts then see the content.
+- **Access:** keep the app behind its sign-in, with `REGISTRATION=invite` (or `closed`) if the server is reachable from the internet. A book is imported *private*: only the owner's account (the first one) sees it, whoever else has an account. The owner can share a book under an open licence from the Account page (see [Authentication › Family release](authentication.md#family-release)).
 
 The tests use six invented books (`tests/e2e/fixtures/`): 27 Spanish
 entries, 5 German ones, 5 Arabic ones, 20 English ones, 13 Japanese ones and 17 characters.

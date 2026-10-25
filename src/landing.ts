@@ -36,6 +36,8 @@ const texts = {
     privacy: "Pas de publicité, pas de traceur, aucune ressource chargée depuis un autre site.",
     languages: "En français, en espagnol et en anglais.",
     closed: "Les inscriptions sont fermées sur ce serveur.",
+    byInvite: "Sur invitation : le lien reçu ouvre la création du compte.",
+    privacyLink: "🔒 Confidentialité",
   },
   es: {
     signIn: "Iniciar sesión",
@@ -61,6 +63,8 @@ const texts = {
     privacy: "Sin publicidad, sin rastreadores, ningún recurso cargado desde otro sitio.",
     languages: "En francés, español e inglés.",
     closed: "El registro está cerrado en este servidor.",
+    byInvite: "Por invitación: el enlace recibido abre la creación de la cuenta.",
+    privacyLink: "🔒 Privacidad",
   },
   en: {
     signIn: "Sign in",
@@ -86,6 +90,8 @@ const texts = {
     privacy: "No ads, no trackers, nothing loaded from another site.",
     languages: "In French, Spanish and English.",
     closed: "Registration is closed on this server.",
+    byInvite: "By invitation: the link you received opens the sign-up.",
+    privacyLink: "🔒 Privacy",
   },
 } satisfies Record<Lang, Record<string, string>>;
 
@@ -182,7 +188,12 @@ export function landingView({ options, topBar }: LandingContext): HTMLElement {
   const hero = el("section", "hero");
   const text = el("div", "hero-text");
   const cta = el("div", "hero-cta");
-  if (options.registration) {
+  if (options.invite) {
+    // By invitation: the link received opens the sign-up form; here, sign in.
+    const only = el("a", "button primary", lt("signIn"));
+    only.href = "#sign-in";
+    cta.append(only, el("p", "hero-note", lt("byInvite")));
+  } else if (options.registration) {
     const signUp = el("a", "button primary", lt("signUp"));
     signUp.href = "#sign-up";
     const have = el("a", "button quiet", lt("haveAccount"));
@@ -217,7 +228,9 @@ export function landingView({ options, topBar }: LandingContext): HTMLElement {
   family.append(el("h2", "feature-title", lt("familyTitle")), el("p", undefined, lt("familyText")));
 
   const foot = el("footer", "landing-foot");
-  foot.append(el("p", undefined, lt("privacy")), el("p", undefined, lt("languages")));
+  const privacy = el("a", "landing-privacy", lt("privacyLink"));
+  privacy.href = "#privacy";
+  foot.append(el("p", undefined, lt("privacy")), el("p", undefined, lt("languages")), privacy);
 
   page.append(head, hero, features, family, foot);
   return page;

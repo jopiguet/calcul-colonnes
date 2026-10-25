@@ -24,6 +24,9 @@ from the app's own origin.
 | `PUT` | [`/api/vocab/skips`](#put-apivocabskips) | Skip a word, or put it back |
 | `GET` | [`/api/vocab/session`](#get-apivocabsession) | Cards for a practice session |
 | `POST` | [`/api/vocab/answers`](#post-apivocabanswers) | Record an answer; the server grades it |
+| `POST` | [`/api/feedback`](#family-release) | Send feedback to the owner |
+| `GET` | [`/api/export`](#family-release) | Everything stored about the account (account sessions only) |
+| `GET` `POST` `DELETE` `PUT` | [`/api/admin/…`](#family-release) | The owner's page: invitations, content visibility, feedback |
 
 The [authentication routes](#authentication) are under `/api/auth`.
 
@@ -37,7 +40,27 @@ What a session sees:
 | Player (their own sign-in) | That player only | `POST /api/users`, `DELETE /api/users/:id` and the account routes of `/api/auth` answer `403 account_only` |
 
 A player outside the scope answers `404 unknown user`, like one that does not
-exist.
+exist. A vocabulary book the account may not see (private, and not the
+owner's account) answers `404` like one that does not exist, and the question
+bank is empty for it (see [Family release](#family-release)).
+
+## Family release
+
+See [Authentication › Family release](authentication.md#family-release).
+
+| Method | Path | Body | |
+|---|---|---|---|
+| `GET` | `/api/auth/invites/:code` | | `{ "usable": true }`: an invitation can still be used |
+| `POST` | `/api/auth/register` | `invite` added | With `REGISTRATION=invite`, required once the owner exists: `403 invite_invalid` otherwise |
+| `GET` | `/api/auth/oauth/:provider/start?intent=login&invite=…` | | The invitation for a provider's sign-up |
+| `DELETE` | `/api/auth/account` | `{ "confirm": "delete-account" }` | Deletes the account and everything it owns. `409 owner_with_members` for the owner while other accounts exist |
+| `GET` | `/api/export` | | The account, its sign-in methods (no secret), its players with all their results, shares and feedback, as a file |
+| `POST` | `/api/feedback` | `{ "text": "…", "page": "home" }` | At most 2,000 characters; 20 per account in 15 minutes |
+| `GET` | `/api/admin` | | Owner only (`403 owner_only` otherwise): registration mode, invitations, books with their visibility, the bank's, the last 100 feedback messages |
+| `POST` | `/api/admin/invites` | `{ "note": "Tante Rosa" }` | `{ code, link, invite }`: the link is shown once |
+| `DELETE` | `/api/admin/invites/:id` | | |
+| `PUT` | `/api/admin/books/:id` | `{ "visibility": "shared" }` | `private` or `shared` |
+| `PUT` | `/api/admin/bank` | `{ "visibility": "shared" }` | The written questions |
 
 ## Errors
 
