@@ -13,7 +13,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, REACT_QUESTIONS, REACT_LINE_MAX, REACT_IMPORTS, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
@@ -237,6 +237,92 @@ async function runTs(program: string): Promise<string> {
   return lines.join(" ");
 }
 
+/**
+ * React programs, likewise after the loop: every distinct program is
+ * type-checked by tsc (strict, JSX for React 19, the hooks imported as the
+ * question says), then rendered with React DOM in jsdom, in development, its
+ * first button clicked as many times as the question says; the page's text
+ * (spaces collapsed) or the console's lines (joined by spaces) are compared
+ * with the options.
+ */
+type ReactCase = { program: string; clicks: number; show: "page" | "log"; strict: boolean };
+const reactPending: { run: ReactCase; key: string; printed: string; right: boolean; where: string }[] = [];
+let reactWhere = "";
+const reactKey = (r: ReactCase): string => JSON.stringify([r.program, r.clicks, r.show, r.strict]);
+
+function typeCheckReact(programs: string[]): Map<string, string> {
+  const dir = mkdtempSync(join(process.cwd(), ".react-check-"));
+  try {
+    writeFileSync(join(dir, "tsconfig.json"), JSON.stringify({ compilerOptions: { strict: true, noEmit: true, target: "ES2022", lib: ["ES2023", "DOM"], module: "ESNext", moduleResolution: "Bundler", jsx: "react-jsx", types: [], skipLibCheck: true }, include: ["*.tsx"] }));
+    programs.forEach((p, i) => writeFileSync(join(dir, `p${i}.tsx`), `${REACT_IMPORTS}\n${p}\nexport { App };\n`));
+    const errors = new Map<string, string>();
+    try {
+      execFileSync(join(process.cwd(), "node_modules", ".bin", "tsc"), ["-p", dir], { encoding: "utf8" });
+    } catch (error) {
+      const printed = String((error as { stdout?: string }).stdout ?? "");
+      if (!printed.trim()) throw error;
+      for (const line of printed.split("\n")) {
+        const m = /^p(\d+)\.tsx\(/.exec(line);
+        if (m) errors.set(programs[Number(m[1])]!, line);
+      }
+    }
+    return errors;
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+/** Renders the programs with React DOM in one jsdom window; what each shows. */
+async function runReact(cases: ReactCase[]): Promise<Map<string, string>> {
+  const { JSDOM } = await import("jsdom");
+  const { transformSync } = await import("esbuild");
+  const { createRequire } = await import("node:module");
+  const load = createRequire(join(process.cwd(), "package.json"));
+  const dom = new JSDOM("<!doctype html><body></body>");
+  const g = globalThis as Record<string, unknown>;
+  g.window = dom.window;
+  g.document = dom.window.document;
+  g.HTMLElement = dom.window.HTMLElement;
+  g.Node = dom.window.Node;
+  g.IS_REACT_ACT_ENVIRONMENT = true;
+  Object.defineProperty(globalThis, "navigator", { value: dom.window.navigator, configurable: true });
+  const React = load("react") as typeof import("react");
+  const { createRoot } = load("react-dom/client") as typeof import("react-dom/client");
+  const shown = new Map<string, string>();
+  for (const c of cases) {
+    const code = transformSync(`${REACT_IMPORTS}\n${c.program}\nexport { App };`, { loader: "tsx", jsx: "automatic", format: "cjs" }).code;
+    const lines: string[] = [];
+    const mod = { exports: {} as { App?: () => unknown } };
+    const warnings: string[] = [];
+    const quiet = { error: console.error, warn: console.warn };
+    console.error = (...a: unknown[]) => void warnings.push(a.map(String).join(" "));
+    console.warn = console.error;
+    const container = dom.window.document.createElement("div");
+    dom.window.document.body.append(container);
+    const root = createRoot(container);
+    try {
+      new Function("require", "module", "exports", "console", code)(load, mod, mod.exports, { log: (...a: unknown[]) => void lines.push(a.map(String).join(" ")) });
+      const app = React.createElement(mod.exports.App as () => null);
+      await React.act(async () => root.render(c.strict ? React.createElement(React.StrictMode, null, app) : app));
+      for (let i = 0; i < c.clicks; i++) {
+        const target = container.querySelector("button");
+        if (!target) throw new Error("no button to click");
+        await React.act(async () => target.click());
+      }
+      const result = c.show === "page" ? (container.textContent ?? "").replace(/\s+/g, " ").trim() : lines.join(" ");
+      shown.set(reactKey(c), warnings.length > 0 ? `WARNING ${warnings[0]!.slice(0, 200)}` : result);
+    } catch (error) {
+      shown.set(reactKey(c), `ERROR ${(error as Error).message}`);
+    } finally {
+      await React.act(async () => root.unmount());
+      container.remove();
+      console.error = quiet.error;
+      console.warn = quiet.warn;
+    }
+  }
+  return shown;
+}
+
 function isRight(q: Question, o: Option): boolean {
   const v = q.verify;
   switch (v.kind) {
@@ -411,6 +497,12 @@ function isRight(q: Question, o: Option): boolean {
       const right = o === q.options[q.correct];
       tsPending.push({ program: v.program, printed: o.tex, right, where: tsWhere });
       return right; // checked after the loop, type-checked and run
+    }
+    case "react": {
+      const right = o === q.options[q.correct];
+      const run = { program: v.program, clicks: v.clicks, show: v.show, strict: v.strict ?? false };
+      reactPending.push({ run, key: reactKey(run), printed: o.tex, right, where: reactWhere });
+      return right; // checked after the loop, type-checked and rendered
     }
     case "rust": {
       const right = o === q.options[q.correct];
@@ -622,6 +714,12 @@ for (const level of LEVELS) {
           if (long) throw new Error(`program line longer than ${TS_LINE_MAX} characters: ${long}`);
           if (q.prompt.code !== q.verify.program) throw new Error("the program shown is not the one checked");
         }
+        if (q.verify.kind === "react") {
+          reactWhere = where;
+          const long = q.verify.program.split("\n").find((line) => [...line].length > REACT_LINE_MAX);
+          if (long) throw new Error(`program line longer than ${REACT_LINE_MAX} characters: ${long}`);
+          if (q.prompt.code !== q.verify.program) throw new Error("the program shown is not the one checked");
+        }
         if (q.verify.kind === "rust") {
           rustWhere = where;
           const long = q.verify.program.split("\n").find((line) => [...line].length > RUST_LINE_MAX);
@@ -719,6 +817,27 @@ if (tsPending.length > 0) {
     failures.push(`ts: cannot type-check or run the programs: ${(error as Error).message.slice(0, 2000)}`);
   }
 } else console.log(`${tsWritten} written TypeScript questions checked`);
+
+const reactWritten = checkWritten("react", "re-", REACT_QUESTIONS);
+if (reactPending.length > 0) {
+  const cases = [...new Map(reactPending.map((p) => [p.key, p.run])).values()];
+  const programs = [...new Set(cases.map((c) => c.program))];
+  try {
+    const errors = typeCheckReact(programs);
+    const shown = await runReact(cases.filter((c) => !errors.has(c.program)));
+    for (const p of reactPending) {
+      const error = errors.get(p.run.program);
+      const got = shown.get(p.key);
+      if (error) failures.push(`${p.where}: the program does not type-check: ${error}`);
+      else if (got === undefined || got.startsWith("ERROR") || got.startsWith("WARNING")) failures.push(`${p.where}: the program did not render cleanly: ${got}`);
+      else if (p.right && got !== p.printed) failures.push(`${p.where}: marked answer is wrong: ${p.printed}, React shows ${got}`);
+      else if (!p.right && got === p.printed) failures.push(`${p.where}: wrong option is also right: ${p.printed}`);
+    }
+    console.log(`${reactWritten} written React questions checked; ${programs.length} programs type-checked with tsc, ${cases.length} renders with React DOM`);
+  } catch (error) {
+    failures.push(`react: cannot type-check or render the programs: ${(error as Error).message.slice(0, 2000)}`);
+  }
+} else console.log(`${reactWritten} written React questions checked`);
 
 // The generated SQL is meant to be portable: with CHECK_SQL_POSTGRES set to a database URL,
 // every query shown is run again on PostgreSQL (in a schema rolled back) and must return the same.

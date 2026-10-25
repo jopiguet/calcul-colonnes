@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.24.0",
+    fr: ["⚛️ React : un nouveau QCM en quatre niveaux, des composants à la pile qui les entoure (Vite, tests, déploiement), avec des composants dont il faut prédire l'affichage."],
+    es: ["⚛️ React: un nuevo test en cuatro niveles, de los componentes a la pila que los rodea (Vite, tests, despliegue), con componentes cuya salida hay que predecir."],
+    en: ["⚛️ React: a new test at four levels, from components to the stack around them (Vite, tests, deployment), with components whose output you predict."],
+  },
+  {
     version: "6.23.0",
     fr: ["🧭 Visite guidée : quelques pages pour faire le tour de Luma, à retrouver en bas de la page d'accueil."],
     es: ["🧭 Visita guiada: unas páginas para recorrer Luma, disponible al pie de la página de inicio."],

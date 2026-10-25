@@ -208,7 +208,7 @@ compiled in by `vite.config.ts` and published as `/version.json`.
 
 ## Internationalisation
 
-- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 400 kinds of question and of the 218 mistake types (with `quiz-i18n-chemistry.ts`, `quiz-i18n-equilibria.ts`, `quiz-i18n-quantum.ts`, `quiz-i18n-kinetics.ts`, `quiz-i18n-spectroscopy.ts`, `quiz-i18n-statistical.ts`, `quiz-i18n-linux.ts`, `quiz-i18n-chembio.ts`, `quiz-i18n-sql.ts`, `quiz-i18n-rust.ts` and `quiz-i18n-ts.ts` merged into it). Every dictionary is typed against the French one, so a missing translation is a compile error.
+- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 444 kinds of question and of the 236 mistake types (with `quiz-i18n-chemistry.ts`, `quiz-i18n-equilibria.ts`, `quiz-i18n-quantum.ts`, `quiz-i18n-kinetics.ts`, `quiz-i18n-spectroscopy.ts`, `quiz-i18n-statistical.ts`, `quiz-i18n-linux.ts`, `quiz-i18n-chembio.ts`, `quiz-i18n-sql.ts`, `quiz-i18n-rust.ts`, `quiz-i18n-ts.ts` and `quiz-i18n-react.ts` merged into it). Every dictionary is typed against the French one, so a missing translation is a compile error.
 - **Generated questions:** the generators produce only LaTeX plus *keys* for the sentence around it (`PromptKey`, `ExplanationKey`), so they contain no language.
 - **Spanish notation:** KaTeX macros render `\sin` as *sen* and `\arcsin` as *arcsen*.
 
@@ -227,3 +227,4 @@ See [Development › Adding a language](development.md#adding-a-language).
 | `tsx` | server | Runs the TypeScript server without a build step |
 | `vite`, `typescript`, `concurrently` | development | Build, type checking, dev servers |
 | `@playwright/test` | development | Browser tests |
+| `react`, `react-dom`, `jsdom` (and their types) | development, check script | Only for `check:quiz`, which renders the React test's programs to check their answers; the app does not use React |

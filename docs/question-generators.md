@@ -626,6 +626,74 @@ spaces), no wrong one may be. About 2,700 programs take some 20 seconds.
 
 Sixteen mistake types, `tsSortStrings` to `tsFieldInitOrder`.
 
+## React
+
+The React test (6.24.0), *⚛️ React* in the home page's *Informatique* group,
+has four levels, `reactBeginner`, `reactIntermediate`, `reactAdvanced` and
+`reactExpert`, and eight topics in two groups. *Composants, état et rendu*:
+`reactComponents`, `reactState`, `reactEffects`, `reactRendering`. *La pile :
+données, types, outils, tests*: `reactData` (loading data, forms and Actions,
+server components, streaming), `reactTyping` (React with TypeScript),
+`reactTooling` (Vite, builds, deployment) and `reactTesting` (Vitest, Testing
+Library, Playwright). The stack is the one Luma itself is built with, minus
+React: Vite, TypeScript, a Hono API, SQLite and PostgreSQL, Playwright,
+Cloud Run.
+
+| Topic | Débutant | Intermédiaire | Avancé | Expert |
+|---|---|---|---|---|
+| `reactComponents` | `jsx` 6, `conditionalRender`, `defaultProps` | `composition` 4 | `patterns` 4 | `internals` 3 |
+| `reactState` | `useStateBasics` 5, `clickCounter` | `stateDesign` 5, `staleLog` | `externalState` 4, `keyReset` | `concurrency` 3 |
+| `reactEffects` | `effectsIntro` 3 | `effectsInPractice` 5, `effectOrder` | `effectsAdvanced` 4, `cleanupOrder`, `refCounter` | `effectsExpert` 3, `strictEffects`, `layoutEffects` |
+| `reactRendering` | `listsKeys` 3 | `renderRules` 4, `batching` | `performance` 5, `memoChild` | `reconciliation` 4 |
+| `reactData` | `fetching` 3 | `formsActions` 5 | `serverData` 5 | `streaming` 4 |
+| `reactTyping` | `propsTypes` 4 | `eventsHooks` 4 | `advancedTypes` 4 | `typesExpert` 3 |
+| `reactTooling` | `viteSetup` 5 | `devWorkflow` 4 | `buildDeploy` 4 | `platform` 3 |
+| `reactTesting` | `testingIntro` 3 | `componentTests` 4 | `e2eTests` 4 | `testStrategy` 3 |
+
+127 written questions in `shared/quiz/react/beginner.ts` to `expert.ts`, ids
+`re-…`. They follow React 19: `ref` as a prop, Actions (`<form action>`,
+`useActionState`, `useFormStatus`, `useOptimistic`), `use`, document
+metadata, ref cleanups, the types' `React.JSX`; and 19.2: `<Activity>`,
+`useEffectEvent`, `cacheSignal`, partial pre-rendering, the `_r_` format of
+`useId`. Also the React Compiler 1.0, Create React App's end, Vite 8 and
+Rolldown, TanStack Query, Hono's typed client, MSW.
+
+Twelve kinds are generated (`react-output.ts`): a short component, shown as a
+block of code, and *Qu'affiche la page ?* (its text) or *Qu'affiche la
+console ?* (its `console.log` lines joined by spaces), once `App` is
+rendered, sometimes after clicks on its button. The hooks and `memo` are used
+without imports (`REACT_IMPORTS`, added by the checks).
+
+| Id | Level | Asks for | Typical wrong options |
+|---|---|---|---|
+| `reactState.clickCounter` | Débutant | the count after clicks, with `setN(n + k)` or `setN(v => v + k)` called several times | every call adding, updaters reading the render's value, the screen one step off |
+| `reactComponents.conditionalRender` | Débutant | `{n && "x"}`, `{ok && "y"}`, `{name}` with 0, `false`, `null` | nothing for 0, `false` or `null` as text, JSX line breaks dropped |
+| `reactComponents.defaultProps` | Débutant | a default prop with the prop missing, `undefined`, `null` or `""` | the default replacing `null` or `""`, or not `undefined` |
+| `reactState.staleLog` | Intermédiaire | what a handler logs after `setN` | the new value, always 0, two `setN(n + 1)` adding 2 |
+| `reactEffects.effectOrder` | Intermédiaire | the order of renders and effects of a parent and its children | parent's effect first, effects right after each render, children rendered first |
+| `reactRendering.batching` | Intermédiaire | renders logged after clicks setting two states | one render per setter |
+| `reactState.keyReset` | Avancé | `useState(p.v)` in a child with a changing key, a constant key or none | the initial value following props, a new key keeping state |
+| `reactEffects.refCounter` | Avancé | a ref incremented in a handler, with or without a state change | the ref rendering, or lagging |
+| `reactEffects.cleanupOrder` | Avancé | start and stop logs of an effect with `[n]`, `[]` or no list, after clicks | cleanup after the new effect, with the new value, `[]` re-running |
+| `reactRendering.memoChild` | Avancé | renders of a child with or without `memo`, given a string, a new object, a `useMemo` object or a new function | `memo` skipping a new object, children before their parent |
+| `reactEffects.strictEffects` | Expert | `<StrictMode>` in development: initialisers, renders, mount and cleanup | one render, one effect, cleanup forgotten |
+| `reactEffects.layoutEffects` | Expert | `useLayoutEffect` and `useEffect` in a parent and a child | effects before layout effects, source order, parent first |
+
+No answer is typed. Lines are at most 36 characters (`REACT_LINE_MAX`).
+`check:quiz` checks every distinct program twice: it **type-checks** them
+all with the project's `tsc` (strict, `jsx: react-jsx`, `@types/react`), in
+`.tsx` files written next to `node_modules` so the types resolve; then it
+**renders** each case with React DOM 19 in one jsdom window, in development
+(so StrictMode does what the question says), `IS_REACT_ACT_ENVIRONMENT` set
+and every step in `act`: render, then as many clicks on the first `button` as
+the question says. The page's text (whitespace collapsed) or the captured
+`console.log` lines must equal the right option, and no wrong one; any React
+warning fails the check. About 500 renders take a few seconds. React, React
+DOM and jsdom are development dependencies, used by the checks only: the app
+itself does not use React.
+
+Eighteen mistake types, `reactUpdaterQueue` to `reactLayoutOrder`.
+
 ## Balancing equations
 
 The test *⚗️ Équations chimiques*, in the home page's *Chimie et biologie*
@@ -1088,7 +1156,7 @@ after the change. The hashes must match.
 ## Verification
 
 ```sh
-npm run check:quiz          # 400 seeds per level: 16,000 questions, about a minute
+npm run check:quiz          # 400 seeds per level: 152,000 questions, about two minutes
 npm run check:quiz -- 1500  # 60,000 questions
 npm run check:quiz -- --bank data/atkins-12-concepts.json  # with a real question bank
 ```
@@ -1102,6 +1170,7 @@ mistakes to review. It then checks:
 - **Options:** exactly four, with distinct LaTeX; every wrong option carries a known mistake type, and every type in `MISTAKES` occurs somewhere.
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
 - **TypeScript:** every program shown type-checked with `tsc` in strict mode and run, its output compared with the options (see [TypeScript](#typescript)); every written TypeScript question checked like the Linux ones.
+- **React:** every component shown type-checked with `tsc` (JSX for React 19) and rendered with React DOM in jsdom, its page or console compared with the options, any React warning a failure (see [React](#react)); every written React question checked like the Linux ones.
 - **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.
 - **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).

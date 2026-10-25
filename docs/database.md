@@ -140,7 +140,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced` or `tsExpert` |
+| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced` or `reactExpert` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -245,6 +245,7 @@ runs: add tables and columns, rename or drop later.
 | `021_rust_levels` | `quiz_results.level` accepts the four Rust levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `022_typescript_levels` | `quiz_results.level` accepts the four TypeScript levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `023_onboarding` | `accounts.onboarded_at`, `users.onboarded_at`; set to `0` for the accounts and players already there, who do not get the tour on their next visit. |
+| `024_react_levels` | `quiz_results.level` accepts the four React levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 

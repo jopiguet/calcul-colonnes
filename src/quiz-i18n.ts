@@ -6,6 +6,7 @@ import { CB_EXPLANATIONS, CB_GROUPS, CB_LEVEL, CB_MISTAKES, CB_PROMPTS, CB_SKILL
 import { SQ_GROUPS, SQ_LEVEL, SQ_MISTAKES, SQ_SKILLS, SQ_TEXTS, SQ_TOPICS } from "./quiz-i18n-sql";
 import { RS_GROUPS, RS_LEVELS, RS_MISTAKES, RS_SKILLS, RS_TEXTS, RS_TOPICS } from "./quiz-i18n-rust";
 import { TS_GROUPS, TS_LEVEL_NAMES, TS_MISTAKES, TS_SKILLS, TS_TEXTS, TS_TOPIC_NAMES } from "./quiz-i18n-ts";
+import { REACT_GROUPS, REACT_LEVEL_NAMES, REACT_MISTAKES, REACT_SKILLS, REACT_TEXTS, REACT_TOPIC_NAMES } from "./quiz-i18n-react";
 import { EQ_EXPLANATIONS, EQ_MISTAKES, EQ_PROMPTS, EQ_SKILLS } from "./quiz-i18n-equilibria";
 import { QT_EXPLANATIONS, QT_GROUP, QT_MISTAKES, QT_PROMPTS, QT_SKILLS } from "./quiz-i18n-quantum";
 import { KN_EXPLANATIONS, KN_GROUP, KN_MISTAKES, KN_PROMPTS, KN_SKILLS } from "./quiz-i18n-kinetics";
@@ -98,6 +99,7 @@ const fr = {
     ...SQ_TEXTS.fr,
     ...RS_TEXTS.fr,
     ...TS_TEXTS.fr,
+    ...REACT_TEXTS.fr,
 };
 
 type QuizKey = keyof typeof fr;
@@ -185,6 +187,7 @@ const es: Record<QuizKey, string> = {
     ...SQ_TEXTS.es,
     ...RS_TEXTS.es,
     ...TS_TEXTS.es,
+    ...REACT_TEXTS.es,
 };
 
 const en: Record<QuizKey, string> = {
@@ -270,11 +273,12 @@ const en: Record<QuizKey, string> = {
     ...SQ_TEXTS.en,
     ...RS_TEXTS.en,
     ...TS_TEXTS.en,
+    ...REACT_TEXTS.en,
 };
 
 const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
-  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr, chembio: CB_LEVEL.fr, sql: SQ_LEVEL.fr, rustBeginner: RS_LEVELS.rustBeginner.fr, rustIntermediate: RS_LEVELS.rustIntermediate.fr, rustAdvanced: RS_LEVELS.rustAdvanced.fr, rustExpert: RS_LEVELS.rustExpert.fr, tsBeginner: TS_LEVEL_NAMES.tsBeginner.fr, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.fr, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.fr, tsExpert: TS_LEVEL_NAMES.tsExpert.fr },
-  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es, chembio: CB_LEVEL.es, sql: SQ_LEVEL.es, rustBeginner: RS_LEVELS.rustBeginner.es, rustIntermediate: RS_LEVELS.rustIntermediate.es, rustAdvanced: RS_LEVELS.rustAdvanced.es, rustExpert: RS_LEVELS.rustExpert.es, tsBeginner: TS_LEVEL_NAMES.tsBeginner.es, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.es, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.es, tsExpert: TS_LEVEL_NAMES.tsExpert.es },
+  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr, chembio: CB_LEVEL.fr, sql: SQ_LEVEL.fr, rustBeginner: RS_LEVELS.rustBeginner.fr, rustIntermediate: RS_LEVELS.rustIntermediate.fr, rustAdvanced: RS_LEVELS.rustAdvanced.fr, rustExpert: RS_LEVELS.rustExpert.fr, tsBeginner: TS_LEVEL_NAMES.tsBeginner.fr, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.fr, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.fr, tsExpert: TS_LEVEL_NAMES.tsExpert.fr, reactBeginner: REACT_LEVEL_NAMES.reactBeginner.fr, reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.fr, reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.fr, reactExpert: REACT_LEVEL_NAMES.reactExpert.fr },
+  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es, chembio: CB_LEVEL.es, sql: SQ_LEVEL.es, rustBeginner: RS_LEVELS.rustBeginner.es, rustIntermediate: RS_LEVELS.rustIntermediate.es, rustAdvanced: RS_LEVELS.rustAdvanced.es, rustExpert: RS_LEVELS.rustExpert.es, tsBeginner: TS_LEVEL_NAMES.tsBeginner.es, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.es, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.es, tsExpert: TS_LEVEL_NAMES.tsExpert.es, reactBeginner: REACT_LEVEL_NAMES.reactBeginner.es, reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.es, reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.es, reactExpert: REACT_LEVEL_NAMES.reactExpert.es },
   en: {
     school: "High school",
     university: "University",
@@ -291,13 +295,17 @@ const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
     tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.en,
     tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.en,
     tsExpert: TS_LEVEL_NAMES.tsExpert.en,
+    reactBeginner: REACT_LEVEL_NAMES.reactBeginner.en,
+    reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.en,
+    reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.en,
+    reactExpert: REACT_LEVEL_NAMES.reactExpert.en,
   },
 };
 
 const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
-  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr, ...SQ_GROUPS.fr, ...RS_GROUPS.fr, ...TS_GROUPS.fr },
-  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, statistics: ST_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es, ...SQ_GROUPS.es, ...RS_GROUPS.es, ...TS_GROUPS.es },
-  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, statistics: ST_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en, ...SQ_GROUPS.en, ...RS_GROUPS.en, ...TS_GROUPS.en },
+  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr, ...SQ_GROUPS.fr, ...RS_GROUPS.fr, ...TS_GROUPS.fr, ...REACT_GROUPS.fr },
+  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, statistics: ST_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es, ...SQ_GROUPS.es, ...RS_GROUPS.es, ...TS_GROUPS.es, ...REACT_GROUPS.es },
+  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, statistics: ST_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en, ...SQ_GROUPS.en, ...RS_GROUPS.en, ...TS_GROUPS.en, ...REACT_GROUPS.en },
 };
 
 const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
@@ -308,6 +316,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...SQ_TOPICS.fr,
     ...RS_TOPICS.fr,
     ...TS_TOPIC_NAMES.fr,
+    ...REACT_TOPIC_NAMES.fr,
     derivatives: "Dérivées",
     integrals: "Intégrales",
     trigonometry: "Trigonométrie",
@@ -331,6 +340,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...SQ_TOPICS.es,
     ...RS_TOPICS.es,
     ...TS_TOPIC_NAMES.es,
+    ...REACT_TOPIC_NAMES.es,
     derivatives: "Derivadas",
     integrals: "Integrales",
     trigonometry: "Trigonometría",
@@ -354,6 +364,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...SQ_TOPICS.en,
     ...RS_TOPICS.en,
     ...TS_TOPIC_NAMES.en,
+    ...REACT_TOPIC_NAMES.en,
     derivatives: "Derivatives",
     integrals: "Integrals",
     trigonometry: "Trigonometry",
@@ -914,6 +925,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...SQ_SKILLS.fr,
     ...RS_SKILLS.fr,
     ...TS_SKILLS.fr,
+    ...REACT_SKILLS.fr,
     "derivatives.polynomial": "Dérivée d'un polynôme",
     "derivatives.trig": "Dérivée de sin(bx), cos(bx)",
     "derivatives.exponential": "Dérivée de e^(ax+b)",
@@ -1037,6 +1049,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...SQ_SKILLS.es,
     ...RS_SKILLS.es,
     ...TS_SKILLS.es,
+    ...REACT_SKILLS.es,
     "derivatives.polynomial": "Derivada de un polinomio",
     "derivatives.trig": "Derivada de sen(bx), cos(bx)",
     "derivatives.exponential": "Derivada de e^(ax+b)",
@@ -1160,6 +1173,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...SQ_SKILLS.en,
     ...RS_SKILLS.en,
     ...TS_SKILLS.en,
+    ...REACT_SKILLS.en,
     "derivatives.polynomial": "Derivative of a polynomial",
     "derivatives.trig": "Derivative of sin(bx), cos(bx)",
     "derivatives.exponential": "Derivative of e^(ax+b)",
@@ -1287,6 +1301,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...SQ_MISTAKES.fr,
     ...RS_MISTAKES.fr,
     ...TS_MISTAKES.fr,
+    ...REACT_MISTAKES.fr,
     exponentKept: "Exposant non abaissé",
     coefficientMissing: "Exposant non descendu en facteur",
     constantKept: "Dérivée d'une constante non nulle",
@@ -1402,6 +1417,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...SQ_MISTAKES.es,
     ...RS_MISTAKES.es,
     ...TS_MISTAKES.es,
+    ...REACT_MISTAKES.es,
     exponentKept: "Exponente sin reducir",
     coefficientMissing: "Exponente no bajado como factor",
     constantKept: "Derivada de una constante distinta de cero",
@@ -1517,6 +1533,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...SQ_MISTAKES.en,
     ...RS_MISTAKES.en,
     ...TS_MISTAKES.en,
+    ...REACT_MISTAKES.en,
     exponentKept: "Exponent not lowered",
     coefficientMissing: "Exponent not brought down as a factor",
     constantKept: "Derivative of a constant not zero",

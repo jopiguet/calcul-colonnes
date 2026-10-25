@@ -140,7 +140,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
-| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript | Kinds of question to review, for each |
+| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React | Kinds of question to review, for each |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
@@ -461,6 +461,28 @@ comparator, `??` and `||`, `typeof`, the order of the event loop, closures
 over `var`, floating point and rounding, shallow copies, `async` and
 `await`, a class's initialization order. Every program has been
 type-checked in strict mode and run to check its answer.
+
+## React
+
+Activity **⚛️ React**, in the *Informatique* group: multiple-choice tests on
+React and the stack around it, at four levels, *Débutant* to *Expert*,
+chosen as in the Rust test. The topics come in two groups, *Composants, état
+et rendu* and *La pile : données, types, outils, tests*; each level offers
+those it has:
+
+| Level | Topics |
+|---|---|
+| Débutant | components, JSX and props, `useState`, a first effect, lists and keys, loading data and the Vite proxy, typing props, a Vite project, a first test |
+| Intermédiaire | context, custom hooks and portals, designing state, effects in practice (races, keys), the rules of rendering, forms and Actions, TanStack Query, typing events and refs, Fast Refresh and the build, component tests |
+| Avancé | `ref` as a prop, error boundaries, `lazy`, external stores and the URL, `useEffectEvent`, `useLayoutEffect`, `<Activity>`, the React Compiler, transitions, `use`, server components and functions, hydration, generic components, Hono's typed client, deploying, end-to-end tests |
+| Expert | portals and events, the render and commit phases, tearing, Actions after `await`, `useInsertionEffect`, bailouts and `useId`, streaming and pre-rendering, React 19's types, CSP and deployments, fake timers and `act` |
+
+Some questions show a short component and ask what the page or the console
+shows once it is rendered, sometimes after clicks on its button: several
+`setN` in one click, `0 &&`, default props, what a handler sees, the order of
+renders and effects, batching, keys, refs, cleanups, `memo`, StrictMode,
+layout effects. Every program has been type-checked and rendered with React
+to check its answer.
 
 ## Chemical equations
 
