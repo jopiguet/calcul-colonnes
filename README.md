@@ -53,6 +53,8 @@ at *lycée / bachillerato* or university level.
 
 **SQL** — multiple-choice tests on SQL and databases: reading, aggregating and joining, changing data and schemas, transactions and indexes; PostgreSQL with psql, SQLite with sqlite3, MySQL and MariaDB with mysql; and good practice (design, injection, performance, backups and migrations). Questions on what a query returns are generated on random tables and checked on a real SQLite database, and on PostgreSQL.
 
+**Rust** — multiple-choice tests at four levels, from a first program to async and unsafe: variables and types, ownership, borrowing and lifetimes, structs, enums and traits, errors, collections, iterators and closures, threads and async, Cargo, modules and tests, macros, unsafe and FFI. Questions on what a short program prints are generated and checked by compiling and running them with rustc.
+
 - 254 questions written for the app, in French, Spanish and English, from `find` and `sed` to `systemctl`, `ssh`, `rsync` and `dig`, `git rebase` and vim's text objects.
 - Tools missing from a default install (`ripgrep`, `fzf`, `jq`, `tmux`, `hyperfine`, `shellcheck`, `nmap`…) are marked with their package and the install command for Debian, Fedora and macOS.
 - `chmod`, `umask` and crontab questions are generated, with the usual slips as wrong options; an octal mode can be typed.
@@ -172,7 +174,7 @@ Settings are read from `.env` (see `.env.example`):
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
-| [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
+| [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |

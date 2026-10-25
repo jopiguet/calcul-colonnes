@@ -13,6 +13,7 @@ way in the browser and on the server.
 | `linux.ts`, `linux/*.ts`, `linux-output.ts` | Linux: the written questions by topic, the generated permissions, umask and cron, and what a sed, awk or `${f%.*}` command prints |
 | `quantum.ts`, `atoms.ts`, `spectroscopy.ts`, `statistical.ts`, `kinetics.ts` | Physical chemistry, Focuses 7–8, 11–13 and 17–18: quantum theory, atoms, spectroscopy and magnetic resonance, statistical thermodynamics, kinetics and reaction dynamics |
 | `sql.ts`, `sql/*.ts`, `sql-output.ts` | SQL: the written questions (the language, PostgreSQL, SQLite, MySQL, good practice), and what a query returns on two generated tables |
+| `rust.ts`, `rust/*.ts`, `rust-output.ts` | Rust: the written questions of the four levels, and what a short program prints |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -502,7 +503,7 @@ identity is the text printed, and `check:quiz` runs the command shown with
 the real `bash` (and its `sed` and `awk`) and compares. It also checks every
 written Linux question directly, drawn or not: unique ids, three wrong
 answers or more, all different, the same number of code runs in the three languages,
-and a `since` the app has reached. The written SQL questions get the same checks.
+and a `since` the app has reached. The written SQL and Rust questions get the same checks.
 
 **Adding a written question.** Append it to its list with `since: N`, where
 N is the new `QUIZ_VERSION`, and bump the version: a list's length is part of
@@ -511,6 +512,63 @@ what a seed draws, so a seed from an older test must still see the old list.
 version. Rewording a question, or fixing a translation, needs no bump. The
 level came after version 2, with no saved test, so the first 167 questions
 have no `since`.
+
+## Rust
+
+The Rust test (6.21.0), *🦀 Rust* in the home page's *Informatique* group,
+has four levels, `rustBeginner`, `rustIntermediate`, `rustAdvanced` and
+`rustExpert` (*Débutant* to *Expert*, chosen like the maths levels), and
+eight topics in two groups. *Le langage*: `rustBasics`, `rustOwnership`,
+`rustTypes`, `rustErrors`, `rustCollections`. *Concurrence, Cargo, unsafe*:
+`rustConcurrency`, `rustCargo`, `rustUnsafe`. A topic has its own kinds at
+each level where it makes sense, so each level offers only some topics
+(`topicsFor`):
+
+| Topic | Débutant | Intermédiaire | Avancé | Expert |
+|---|---|---|---|---|
+| `rustBasics` | `variables` 5, `types` 5, `control` 5, `integerOps`, `shadowing` | `strings` 5, `numbers` 5, `stringLength` | | |
+| `rustOwnership` | `moves` 5 | `borrowing` 5 | `lifetimes` 5, `smartPointers` 5 | `interior` 5, `dropOrder` |
+| `rustTypes` | `structsEnums` 5 | `traits` 5, `matchArms` | `traitObjects` 5, `optionCombinators` | `advancedTraits` 5 |
+| `rustErrors` | `panics` 5 | `propagation` 5 | `errorDesign` 5 | |
+| `rustCollections` | `vectors` 5 | `iterators` 5, `hashmaps` 5, `iteratorChain` | `closures` 5, `sortDedup` | |
+| `rustConcurrency` | | `threads` 5 | `sharing` 5 | `async` 6 |
+| `rustCargo` | `cargoBasics` 5 | `modules` 5, `testing` 5 | `features` 5 | `buildTooling` 5 |
+| `rustUnsafe` | | | `macros` 5 | `unsafeRust` 5, `ffi` 5 |
+
+161 written questions in `shared/quiz/rust/beginner.ts`, `intermediate.ts`,
+`advanced.ts` and `expert.ts`, ids `rs-…`, in the Linux format. Facts that
+changed with a release name it (scoped threads 1.63, GATs 1.65, `async fn`
+in traits 1.75, aborting on a panic out of `extern "C"` 1.81); the 2024
+edition's rules are the ones described (`unsafe extern`,
+`#[unsafe(no_mangle)]`, `static_mut_refs`).
+
+Eight kinds are generated (`rust-output.ts`): a short program, *Qu'affiche
+ce programme ?*, shown as a block of code (`prompt.code`, drawn in a
+`pre.quiz-code` under the sentence and in the corrections). Each wrong
+output is what a misconception predicts, computed by modelling it: the drop
+order is simulated under the real rules and under each misconception.
+
+| Id | Level | Asks for | Typical wrong options | Typed |
+|---|---|---|---|---|
+| `rustBasics.integerOps` | Débutant | `a / b` and `a % b` for a negative `a`; `as u8` from an integer and a float; `wrapping_add`, `saturating_add`, `checked_add` | division rounded down, `%` Euclidean, `as` clamping integers, wrapping floats, the three additions swapped | |
+| `rustBasics.shadowing` | Débutant | a `let` shadow inside a block, or an assignment to a `mut` | the shadow outliving the block, the assignment ending with it, a `let` skipped | |
+| `rustBasics.stringLength` | Intermédiaire | `s.len()` and `s.chars().count()` for café, 日本, 🦀rust… | one byte per character, two (UTF-16), a terminating zero | |
+| `rustTypes.matchArms` | Intermédiaire | which arm a `match` with a guard and a range takes | the most specific arm, the last one, `1..=n` read as excluding `n` | |
+| `rustCollections.iteratorChain` | Intermédiaire | `filter`/`map`/`sum`, `skip`/`take`, `rev`/`step_by` | `a..b` including `b`, adapters in another order, `filter` inverted | ✓ (sums) |
+| `rustTypes.optionCombinators` | Avancé | `map`, `filter`, `unwrap_or`, `ok_or` on an `Option` | `filter` inverted, the default used when it should not be, `Some` kept | |
+| `rustCollections.sortDedup` | Avancé | `dedup` then `sort`; a stable `sort_by_key` | every duplicate removed, ties reordered | |
+| `rustOwnership.dropOrder` | Expert | the order in which values with a printing `Drop` go: locals, a block, `let _`, a shadow, a struct's fields, `drop(v)` | declaration order, fields reversed, `let _` kept, the shadowed value dropped at once | |
+
+A program's lines are at most 36 characters (`RUST_LINE_MAX`), so it fits a
+360 px screen without scrolling; the browser test checks it. `check:quiz`
+checks the line length, that the program shown is the one checked, and runs
+them: every distinct program becomes a module of one crate, compiled once
+with `rustc --edition 2024` and run once, each case under `catch_unwind`.
+The right option must be exactly what is printed, no wrong one may be. About
+2,400 programs take some 30 seconds. `rustc` must be on the path (it is on
+GitHub's runners; `RUSTC` names another one).
+
+Eighteen mistake types, `rustIntegerDivision` to `rustShadowDrop`.
 
 ## Balancing equations
 
@@ -845,6 +903,24 @@ keep the label they were stored with.
 | `sqlNullGroup` | The NULL group kept or lost wrongly | sqlAggregate |
 | `sqlJoinKind` | Inner and outer joins confused | sqlJoins |
 | `sqlCrossProduct` | Every row with every row | sqlJoins |
+| `rustIntegerDivision` | Integer division rounded down, not toward zero | rustBasics |
+| `rustRemainderSign` | `%` taken as Euclidean | rustBasics |
+| `rustCastSaturates` | An integer `as` cast taken to clamp | rustBasics |
+| `rustCastWraps` | A float `as` cast taken to wrap or round | rustBasics |
+| `rustWrapping` | `wrapping_`, `saturating_`, `checked_` confused | rustBasics |
+| `rustShadowScope` | Shadowing and assignment confused around a block | rustBasics |
+| `rustShadowIgnored` | A shadowing `let` skipped | rustBasics |
+| `rustBytesChars` | Bytes and characters confused | rustBasics |
+| `rustRangeEnd` | A range's end included or left out wrongly | rustCollections, rustTypes |
+| `rustIteratorOrder` | Adapters applied in another order | rustCollections, rustTypes |
+| `rustFilterInverted` | `filter` taken to drop what passes | rustCollections, rustTypes |
+| `rustMatchOrder` | The most specific arm instead of the first | rustTypes |
+| `rustUnwrapOr` | `unwrap_or`'s default at the wrong time | rustTypes |
+| `rustDedupConsecutive` | `dedup` taken to remove every duplicate | rustCollections |
+| `rustSortStable` | `sort_by_key` taken to reorder ties | rustCollections |
+| `rustDropOrder` | Dropped in declaration order, or fields reversed | rustOwnership |
+| `rustLetUnderscore` | `let _ =` taken to keep the value | rustOwnership |
+| `rustShadowDrop` | A shadowed value taken to be dropped at once | rustOwnership |
 | `signError` | Sign error | complex, derivatives, explog, functions, geometry, graphs, integrals, limits, linear, multivariable, odes, probability, sequences, series, trigonometry |
 
 Names shown to players are in `MISTAKE_NAMES` (`src/quiz-i18n.ts`), in the
@@ -953,6 +1029,7 @@ mistakes to review. It then checks:
 - **Wrong options:** none of them is also right.
 - **Options:** exactly four, with distinct LaTeX; every wrong option carries a known mistake type, and every type in `MISTAKES` occurs somewhere.
 - **Rendering:** the question, the options and the explanation all render in KaTeX with `throwOnError`.
+- **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.
 - **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).
 - **Graphs:** every drawn curve is at least 30 % inside its window (25 % for an option); option curves differ by half a grid square somewhere; all options of a question share their window or axes; plane intercepts are non-zero and distinct.

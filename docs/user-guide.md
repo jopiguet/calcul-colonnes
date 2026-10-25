@@ -112,7 +112,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*… | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
-| Informatique | 🐧 Linux, 🗄️ SQL | Kinds of question to review, for each |
+| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust | Kinds of question to review, for each |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
@@ -392,6 +392,28 @@ Some questions are generated each time: two small tables, *owners* and
 wrong results are the usual slips: `>` read as `>=`, NULL compared with `=`,
 OR before AND, `COUNT(*)` for `COUNT(kind)`, HAVING forgotten, a LEFT JOIN
 read as an inner one. A count or an average can be typed with *Au clavier*.
+
+## Rust
+
+Activity **🦀 Rust**, in the *Informatique* group: multiple-choice tests on
+Rust at four levels, *Débutant*, *Intermédiaire*, *Avancé* and *Expert*
+(*Principiante* to *Experto*, *Beginner* to *Expert*). Settings, keys,
+typed answers and results work as for the [QCM](#multiple-choice-tests).
+Each level offers the topics it has:
+
+| Level | Topics |
+|---|---|
+| Débutant | Bases (variables, types, `if`, `loop`, `for`), Possession (moves and copies), Structs et enums, Erreurs (panics, `Result`), Collections (`Vec`), Cargo et rustup |
+| Intermédiaire | Bases (`String` and `&str`, conversions), Emprunts, Traits et génériques, L'opérateur `?`, Itérateurs et `HashMap`, Threads et canaux, Modules et tests |
+| Avancé | Durées de vie, `Box`/`Rc`/`RefCell`, `dyn Trait`, Concevoir ses erreurs, Closures, `Send`/`Sync`/`Mutex`/atomiques, Features et espaces de travail, Macros |
+| Expert | Mutabilité intérieure et variance, Cohérence/GAT/`?Sized`, async et tokio, `build.rs`/MSRV/CI/publication, `unsafe`, FFI |
+
+Some questions show a short program and ask what it prints: `/` and `%` on
+a negative number, `as` casts, a shadow in a block, bytes and characters,
+an iterator chain, a `match`, `Option` methods, `dedup` and `sort`, the
+order in which values are dropped. The wrong answers are the usual slips.
+A sum printed by an iterator chain can be typed with *Au clavier*. Every
+program has been compiled and run to check its answer.
 
 ## Chemical equations
 

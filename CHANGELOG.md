@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.21.0
+
+- **A new test, 🦀 Rust**, in the *Informatique* group next to Linux and SQL, at four levels, *Débutant*, *Intermédiaire*, *Avancé* and *Expert*, chosen like the maths levels (see [Question generators › Rust](docs/question-generators.md#rust)). Eight topics in two groups; each level offers those it has.
+  - **Débutant:** variables, `mut` and shadowing, simple types, `if`/`loop`/`for`, moves and copies, structs, enums and `match`, `Option`, panics and `Result`, `Vec`, Cargo and rustup.
+  - **Intermédiaire:** `String` and `&str`, conversions and overflow, borrowing, traits and generics, `?`, iterators, `HashMap` and `HashSet`, threads and channels, modules and visibility, tests and doctests.
+  - **Avancé:** lifetimes, `Box`/`Rc`/`RefCell`/`Weak`, `dyn Trait` and associated types, designing errors (`thiserror`, `anyhow`), closures and `Fn`/`FnMut`/`FnOnce`, `Send`/`Sync`/`Mutex`/atomics, features, workspaces, editions and profiles, macros.
+  - **Expert:** `Cell`/`UnsafeCell`, `PhantomData` and variance, coherence, GATs, higher-ranked bounds, `?Sized`, `async fn` in traits, futures, tokio, blocking and `Send` across `.await`, `Pin`, `build.rs`, MSRV, cross-compiling, CI, `cargo yank`, `unsafe` and undefined behaviour, Miri, `static mut` in 2024, FFI (`unsafe extern`, `repr(C)`, `CString`, `#[unsafe(no_mangle)]`, panics across `extern "C"`).
+  - 161 written questions, and eight generated kinds: a short program, *Qu'affiche ce programme ?*, with the slips a misconception predicts: integer division rounded down, `%` Euclidean, `as` clamping, a shadow leaking out of its block, bytes for characters, `a..b` including `b`, adapters reordered, the most specific `match` arm, `dedup` removing every duplicate, ties reordered, values dropped in declaration order, `let _` keeping its value. Eighteen new mistake types.
+- **Programs in questions:** shown as a block of code under the sentence and in the corrections, with lines short enough for a phone.
+- **Checks:** `check:quiz` compiles every program shown with `rustc` (one crate, one run) and compares what it prints with the options; it also checks the line length.
+- **Database:** migration `021_rust_levels`.
+- **Tests:** 122 browser tests; the Rust test checks the four levels and their topics, that a program fits a 360 px screen, and a typed answer.
+
 ## 6.20.0
 
 - **A new test, 🗄️ SQL**, in the *Informatique* group next to Linux, with its own level, `sql`, and eight topics in two groups (see [Question generators › SQL](docs/question-generators.md#sql)).

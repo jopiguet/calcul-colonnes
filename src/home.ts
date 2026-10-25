@@ -15,7 +15,7 @@ import { at } from "./discover/astro-i18n";
 import { bt } from "./discover/bio-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
-import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, SQL_TOPICS, type Subject } from "../shared/quiz";
+import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, RUST_TOPICS, SQL_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -40,6 +40,7 @@ const texts = {
     computing: "Informatique",
     linuxText: "La ligne de commande, des bases aux outils à installer",
     sqlText: "Requêtes, jointures, transactions ; psql, sqlite3 et mysql",
+    rustText: "Du premier programme à l'async et l'unsafe, en quatre niveaux",
     nothingShown: "Aucune activité n'est ouverte pour ce joueur. Elles se choisissent sur la page Compte.",
     chemistryText: "Chimie physique : calculs et notions, Focus par Focus",
     home: "Accueil",
@@ -66,6 +67,7 @@ const texts = {
     computing: "Informática",
     linuxText: "La línea de órdenes, de lo básico a las herramientas que instalar",
     sqlText: "Consultas, uniones, transacciones; psql, sqlite3 y mysql",
+    rustText: "Del primer programa al async y el unsafe, en cuatro niveles",
     nothingShown: "No hay ninguna actividad abierta para este jugador. Se eligen en la página Cuenta.",
     chemistryText: "Química física: cálculos y conceptos, Focus por Focus",
     home: "Inicio",
@@ -92,6 +94,7 @@ const texts = {
     computing: "Computing",
     linuxText: "The command line, from the basics to tools worth installing",
     sqlText: "Queries, joins, transactions; psql, sqlite3 and mysql",
+    rustText: "From a first program to async and unsafe, in four levels",
     nothingShown: "No activity is open for this player. They are chosen on the Account page.",
     chemistryText: "Physical chemistry: calculations and concepts, Focus by Focus",
     home: "Home",
@@ -138,7 +141,7 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "columns":
       return "columns";
     case "quiz":
-      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : "quiz";
+      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : "quiz";
     case "discover":
       return `discover-${activity.activity}`;
     case "vocab": {
@@ -163,7 +166,7 @@ export function activityCatalog(books: VocabBookInfo[]): { group: string; activi
         { id: "discover-ecology", title: bt("ecologyTitle") },
       ],
     },
-    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }] },
+    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }, { id: "rust", title: qt("modeRust") }] },
     {
       group: ht("languages"),
       activities: books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
@@ -239,7 +242,9 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
           ? "chembio"
           : (SQL_TOPICS as string[]).includes(topic)
             ? "sql"
-            : "maths";
+            : (RUST_TOPICS as string[]).includes(topic)
+              ? "rust"
+              : "maths";
   const toReview = (subject: Subject): number =>
     profile ? profile.skills.filter((s) => s.status === "review" && subjectOfTopic(s.topic) === subject).length : 0;
   const reviewStatus = (n: number): { text: string; waiting: boolean } | null =>
@@ -291,6 +296,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const shell = el("div", "activity-grid");
   shell.append(card("linux", qt("modeLinux"), ht("linuxText"), reviewStatus(toReview("linux")), () => ctx.open({ mode: "quiz", subject: "linux" })),
     card("sql", qt("modeSql"), ht("sqlText"), reviewStatus(toReview("sql")), () => ctx.open({ mode: "quiz", subject: "sql" })),
+    card("rust", qt("modeRust"), ht("rustText"), reviewStatus(toReview("rust")), () => ctx.open({ mode: "quiz", subject: "rust" })),
   );
   computing.append(shell);
 

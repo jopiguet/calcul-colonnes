@@ -1,4 +1,4 @@
-import { SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type AnswerMode, type Level, type QuizSpec, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
+import { RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type AnswerMode, type Level, type QuizSpec, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
 import type { Profile, SkillProgress } from "../shared/types";
 import { button, el } from "./dom";
 import { bookTitle, statusBar } from "./vocab";
@@ -35,7 +35,9 @@ export const subjectOfTopic = (topic: Topic | string): Subject =>
         ? "chembio"
         : (SQL_TOPICS as string[]).includes(topic)
           ? "sql"
-          : "maths";
+          : (RUST_TOPICS as string[]).includes(topic)
+            ? "rust"
+            : "maths";
 
 const SUBJECT_TITLES: Record<Subject, () => string> = {
   maths: () => qt("modeQuiz"),
@@ -43,8 +45,9 @@ const SUBJECT_TITLES: Record<Subject, () => string> = {
   linux: () => qt("modeLinux"),
   chembio: () => qt("modeChemBio"),
   sql: () => qt("modeSql"),
+  rust: () => qt("modeRust"),
 };
-const SUBJECT_ACTIVITY: Record<Subject, string> = { maths: "quiz", chemistry: "chemistry", linux: "linux", chembio: "chembio", sql: "sql" };
+const SUBJECT_ACTIVITY: Record<Subject, string> = { maths: "quiz", chemistry: "chemistry", linux: "linux", chembio: "chembio", sql: "sql", rust: "rust" };
 
 function dots(recent: boolean[]): HTMLElement {
   const line = el("span", "dots");
@@ -261,7 +264,7 @@ async function overview(ctx: ProgressContext, profile: Profile): Promise<HTMLEle
       }),
     );
   }
-  for (const subject of ["maths", "chemistry", "linux", "chembio", "sql"] as const) {
+  for (const subject of ["maths", "chemistry", "linux", "chembio", "sql", "rust"] as const) {
     if (hidden.has(SUBJECT_ACTIVITY[subject])) continue;
     const skills = profile.skills.filter((s) => subjectOfTopic(s.topic) === subject);
     grid.append(

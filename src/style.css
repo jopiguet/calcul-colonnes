@@ -3975,6 +3975,39 @@ code.inline-code {
   box-decoration-break: clone;
 }
 
+/* A program under a question (Rust): as written, lines kept short enough for a phone. */
+pre.quiz-code {
+  margin: 0.2rem 0 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-family: var(--digits);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  overflow-x: auto;
+  text-align: left;
+  align-self: stretch;
+  tab-size: 4;
+}
+
+/* Four levels (Rust): two by two on a phone, one row when there is room. */
+.segmented.levels-four {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.segmented.levels-four > legend {
+  grid-column: 1 / -1;
+}
+.segmented.levels-four > .segment {
+  width: 100%;
+}
+@media (min-width: 40rem) {
+  .segmented.levels-four {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 /* ------------------------------------------------------------- physics playground */
 
 .discover-choices {

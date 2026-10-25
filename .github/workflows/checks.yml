@@ -42,6 +42,7 @@ jobs:
       - name: Question, vocabulary and Discover checks
         env:
           # The generated SQL questions are run on SQLite and, here, on PostgreSQL too.
+          # The generated Rust programs are compiled with the runner's rustc (preinstalled).
           CHECK_SQL_POSTGRES: postgresql://postgres:postgres@localhost:5432/postgres
         run: npm run check:quiz && npm run check:vocab && npm run check:family && npm run check:discover && npm run check:physics && npm run check:astronomy && npm run check:biology
 

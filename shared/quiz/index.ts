@@ -22,6 +22,7 @@ import { graphs } from "./graphs";
 import { multivariable } from "./multivariable";
 import { series } from "./series";
 import { gases } from "./gases";
+import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
 import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
 import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools, linuxScripting, linuxGit, linuxVim } from "./linux";
 import { firstLaw } from "./firstlaw";
@@ -92,6 +93,14 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   sqlSqlite,
   sqlMysql,
   sqlPractice,
+  rustBasics,
+  rustOwnership,
+  rustTypes,
+  rustErrors,
+  rustCollections,
+  rustConcurrency,
+  rustCargo,
+  rustUnsafe,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -228,6 +237,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "equation":
     case "shell":
     case "sql":
+    case "rust":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);
@@ -342,5 +352,7 @@ export function gradeQuiz(questions: Question[], answers: number[]): number {
 }
 export { LINUX_QUESTIONS, symbolic, triplet } from "./linux";
 export { SQL_QUESTIONS } from "./sql";
+export { RUST_QUESTIONS } from "./rust";
+export { RUST_LINE_MAX } from "./rust-output";
 export { formatRows } from "./sql-output";
 export type { LinuxQuestion } from "./linux/types";

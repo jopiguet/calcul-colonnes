@@ -8,10 +8,12 @@
  *   npm run check:quiz [-- seeds]
  */
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
@@ -156,6 +158,34 @@ function runSql(setup: string, query: string): string {
     return shown;
   } finally {
     db.close();
+  }
+}
+
+/**
+ * Rust programs are checked after the loop, all at once: each distinct program
+ * becomes a module of one crate, compiled once with rustc and run once.
+ * Meanwhile an option counts as right if it is marked so, and is recorded.
+ */
+const rustPending: { program: string; printed: string; right: boolean; where: string }[] = [];
+let rustWhere = "";
+
+function runRustPrograms(programs: string[]): Map<string, string> {
+  const dir = mkdtempSync(join(tmpdir(), "luma-rust-"));
+  try {
+    const modules = programs.map((p, i) => `mod c${i} {\n${p.replace(/^fn main\(\)/m, "pub fn main()")}\n}`);
+    const runs = programs.map((_, i) => `    println!("\\u{1}${i}");\n    if std::panic::catch_unwind(c${i}::main).is_err() { print!("PANIC"); }\n    println!();`);
+    const crate = ["#![allow(warnings)]", ...modules, "fn main() {", "    std::panic::set_hook(Box::new(|_| {}));", ...runs, "}"].join("\n");
+    writeFileSync(join(dir, "cases.rs"), crate);
+    execFileSync(process.env.RUSTC ?? "rustc", ["--edition", "2024", "-o", join(dir, "cases"), join(dir, "cases.rs")], { stdio: ["ignore", "ignore", "pipe"] });
+    const printed = execFileSync(join(dir, "cases"), { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+    const outputs = new Map<string, string>();
+    for (const part of printed.split("\u0001").slice(1)) {
+      const newline = part.indexOf("\n");
+      outputs.set(programs[Number(part.slice(0, newline))]!, part.slice(newline + 1).trim());
+    }
+    return outputs;
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
   }
 }
 
@@ -329,6 +359,11 @@ function isRight(q: Question, o: Option): boolean {
       return o.tex === run(v.command); // what the real bash, sed and awk print
     case "sql":
       return o.tex === runSql(v.setup, v.query); // what SQLite returns
+    case "rust": {
+      const right = o === q.options[q.correct];
+      rustPending.push({ program: v.program, printed: o.tex, right, where: rustWhere });
+      return right; // checked after the loop, compiled
+    }
     case "mode":
       return modeOf(o.tex) === v.mode;
     case "umask": {
@@ -528,6 +563,12 @@ for (const level of LEVELS) {
           });
           if (matchTyped(q, "") !== -1) throw new Error("blank typed answer not blank");
         }
+        if (q.verify.kind === "rust") {
+          rustWhere = where;
+          const long = q.verify.program.split("\n").find((line) => [...line].length > RUST_LINE_MAX);
+          if (long) throw new Error(`program line longer than ${RUST_LINE_MAX} characters: ${long}`);
+          if (q.prompt.code !== q.verify.program) throw new Error("the program shown is not the one checked");
+        }
         q.options.forEach((o, i) => {
           const right = isRight(q, o);
           if (i === q.correct && !right) throw new Error(`marked answer is wrong: ${o.tex}`);
@@ -581,6 +622,25 @@ const linuxWritten = checkWritten("linux", "lx-", LINUX_QUESTIONS);
 console.log(`${linuxWritten} written Linux questions checked; ${outputs.size} commands run with bash`);
 const sqlWritten = checkWritten("sql", "sq-", SQL_QUESTIONS);
 console.log(`${sqlWritten} written SQL questions checked; ${sqlResults.size} queries run with SQLite`);
+const rustWritten = checkWritten("rust", "rs-", RUST_QUESTIONS);
+
+// The Rust programs shown: compiled and run once, then every option compared with what was printed.
+if (rustPending.length > 0) {
+  const programs = [...new Set(rustPending.map((p) => p.program))];
+  try {
+    const outputs = runRustPrograms(programs);
+    for (const p of rustPending) {
+      const printed = outputs.get(p.program);
+      if (printed === undefined) failures.push(`${p.where}: the program printed nothing we could read`);
+      else if (printed === "PANIC" || printed.endsWith("PANIC")) failures.push(`${p.where}: the program panicked`);
+      else if (p.right && printed !== p.printed) failures.push(`${p.where}: marked answer is wrong: ${p.printed}, the program prints ${printed}`);
+      else if (!p.right && printed === p.printed) failures.push(`${p.where}: wrong option is also right: ${p.printed}`);
+    }
+    console.log(`${rustWritten} written Rust questions checked; ${programs.length} programs compiled and run with rustc`);
+  } catch (error) {
+    failures.push(`rust: cannot compile or run the programs (is rustc installed?): ${(error as Error).message.slice(0, 2000)}`);
+  }
+} else console.log(`${rustWritten} written Rust questions checked`);
 
 // The generated SQL is meant to be portable: with CHECK_SQL_POSTGRES set to a database URL,
 // every query shown is run again on PostgreSQL (in a schema rolled back) and must return the same.
@@ -615,5 +675,5 @@ const unused = MISTAKES.filter((m) => !mistakesSeen.has(m));
 if (unused.length > 0) failures.push(`mistake types never shown: ${unused.join(", ")}`);
 console.log(`\n${mistakesSeen.size} of ${MISTAKES.length} mistake types shown`);
 console.log(`${checked} questions checked, ${failures.length} failures`);
-for (const f of [...new Set(failures)].slice(0, 25)) console.log("  ✗", f);
+for (const f of [...new Set(failures)].slice(0, Number(process.env.CHECK_SHOW ?? 25))) console.log("  ✗", f);
 process.exit(failures.length === 0 ? 0 : 1);

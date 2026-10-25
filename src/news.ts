@@ -22,6 +22,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.21.0",
+    fr: ["🦀 Rust : un nouveau QCM en quatre niveaux, de Débutant à Expert, avec des programmes dont il faut prédire l'affichage."],
+    es: ["🦀 Rust: un nuevo test en cuatro niveles, de Principiante a Experto, con programas cuya salida hay que predecir."],
+    en: ["🦀 Rust: a new test at four levels, from Beginner to Expert, with programs whose output you predict."],
+  },
+  {
     version: "6.20.0",
     fr: ["🗄️ SQL : un nouveau QCM, du SELECT aux transactions, avec PostgreSQL, SQLite et MySQL, et les bonnes pratiques."],
     es: ["🗄️ SQL: un nuevo test, del SELECT a las transacciones, con PostgreSQL, SQLite y MySQL, y las buenas prácticas."],

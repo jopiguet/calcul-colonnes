@@ -12,6 +12,8 @@ import {
   subjectOf,
   LINUX_TOPICS,
   SQL_TOPICS,
+  RUST_LEVELS,
+  RUST_TOPICS,
   type Subject,
   OPTION_COUNT,
   QUIZ_COUNTS,
@@ -155,7 +157,7 @@ const promptView = (q: Question): HTMLElement =>
 
 /** The level of this subject's tests. */
 const levelOf = (ctx: QuizContext): Level =>
-  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.subject === "chembio" ? "chembio" : ctx.subject === "sql" ? "sql" : ctx.settings.quizLevel;
+  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.subject === "chembio" ? "chembio" : ctx.subject === "sql" ? "sql" : ctx.subject === "rust" ? ctx.settings.rustLevel : ctx.settings.quizLevel;
 
 /** Spanish writes sen and arcsen. */
 const macros = (): Record<string, string> =>
@@ -176,6 +178,12 @@ function givens(q: Question): HTMLElement[] {
     shown.push(box);
   }
   if (q.prompt.tex !== "") shown.push(math(q.prompt.tex, true));
+  // A program (Rust): shown as it is written, in a block of code.
+  if (q.prompt.code) {
+    const block = el("pre", "quiz-code");
+    block.append(el("code", undefined, q.prompt.code));
+    shown.push(block);
+  }
   return shown;
 }
 
@@ -235,7 +243,9 @@ function chosenTopics(ctx: QuizContext): Topic[] {
           ? ctx.settings.chembioTopics
           : ctx.subject === "sql"
             ? ctx.settings.sqlTopics
-            : ctx.settings.quizTopics;
+            : ctx.subject === "rust"
+              ? ctx.settings.rustTopics
+              : ctx.settings.quizTopics;
   const chosen = saved.filter((t) => available.includes(t));
   return chosen.length > 0 ? chosen : available;
 }
@@ -258,16 +268,17 @@ function setupView(ctx: QuizContext): HTMLElement {
   const linux = ctx.subject === "linux";
   const chembio = ctx.subject === "chembio";
   const sql = ctx.subject === "sql";
-  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : sql ? "sqlSetupTitle" : "setupTitle")));
+  const rust = ctx.subject === "rust";
+  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : sql ? "sqlSetupTitle" : rust ? "rustSetupTitle" : "setupTitle")));
   if (chemistry && bankRevision() === 0) wrap.append(el("p", "hint", qt("noBank")));
 
-  // Mathematics: lycée or university. Physical chemistry: core or advanced.
-  const level = el("fieldset", "segmented");
+  // Mathematics: lycée or university. Physical chemistry: core or advanced. Rust: four levels.
+  const level = el("fieldset", rust ? "segmented levels-four" : "segmented");
   level.append(el("legend", "field-label", qt("level")));
-  for (const value of chemistry ? CHEMISTRY_LEVELS : MATH_LEVELS) {
+  for (const value of chemistry ? CHEMISTRY_LEVELS : rust ? RUST_LEVELS : MATH_LEVELS) {
     const on = value === testLevel;
     const label = chemistry ? qt(value === "chemistry" ? "chemCore" : "chemAdvanced") : levelName(value);
-    const option = button(on ? "segment on" : "segment", label, () => save(chemistry ? { chemLevel: value } : { quizLevel: value }));
+    const option = button(on ? "segment on" : "segment", label, () => save(chemistry ? { chemLevel: value } : rust ? { rustLevel: value } : { quizLevel: value }));
     option.setAttribute("aria-pressed", String(on));
     option.dataset.focus = `level-${value}`;
     level.append(option);
@@ -292,12 +303,12 @@ function setupView(ctx: QuizContext): HTMLElement {
       box.dataset.focus = `topic-${topic}`;
       box.checked = effective.includes(topic);
       box.addEventListener("change", () => {
-        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : sql ? SQL_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
+        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : sql ? SQL_TOPICS : rust ? RUST_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
         if (chosen.length === 0) {
           box.checked = true; // at least one topic stays selected
           return;
         }
-        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : sql ? { sqlTopics: chosen } : { quizTopics: chosen });
+        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : sql ? { sqlTopics: chosen } : rust ? { rustTopics: chosen } : { quizTopics: chosen });
       });
       label.append(box, el("span", undefined, topicName(topic)));
       block.append(label);
@@ -598,7 +609,7 @@ function flagControl(userId: number, q: Question): HTMLElement {
     event.preventDefault();
     send.disabled = true;
     // A written question by its id; a generated one by its formula.
-    const question = q.prompt.id && q.verify.kind === "choice" ? q.prompt.id : q.prompt.tex || q.prompt.id || q.skill;
+    const question = q.prompt.id && q.verify.kind === "choice" ? q.prompt.id : q.prompt.code || q.prompt.tex || q.prompt.id || q.skill;
     quizBank
       .flag({ userId, skill: q.skill, question: question.slice(0, 2000), note: note.value.trim() })
       .then(() => {
