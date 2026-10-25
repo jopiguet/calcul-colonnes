@@ -247,6 +247,21 @@ export class AuthStore {
     return rows[0] ? num(rows[0].account_id) : null;
   }
 
+  /** Whether the guided tour was seen: by the account, or by one of its players on their own login. */
+  async onboarded(accountId: number, playerId: number | null): Promise<boolean> {
+    const rows =
+      playerId === null
+        ? await this.db.query("SELECT onboarded_at FROM accounts WHERE id = $1", [accountId])
+        : await this.db.query("SELECT onboarded_at FROM users WHERE id = $1 AND account_id = $2", [playerId, accountId]);
+    return rows[0]?.onboarded_at !== null && rows[0]?.onboarded_at !== undefined;
+  }
+
+  /** The guided tour seen (finished or skipped); the first time is kept. */
+  async markOnboarded(accountId: number, playerId: number | null, at: number): Promise<void> {
+    if (playerId === null) await this.db.query("UPDATE accounts SET onboarded_at = $1 WHERE id = $2 AND onboarded_at IS NULL", [at, accountId]);
+    else await this.db.query("UPDATE users SET onboarded_at = $1 WHERE id = $2 AND account_id = $3 AND onboarded_at IS NULL", [at, playerId, accountId]);
+  }
+
   async playerName(playerId: number): Promise<string | null> {
     const rows = await this.db.query("SELECT name FROM users WHERE id = $1", [playerId]);
     return rows[0] ? String(rows[0].name) : null;

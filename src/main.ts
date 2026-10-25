@@ -38,6 +38,7 @@ import { at as astroText } from "./discover/astro-i18n";
 import { bt as bioText } from "./discover/bio-i18n";
 import { dt } from "./discover/i18n";
 import { progressView, type ProgressScope } from "./progress";
+import { resetTour, tourView } from "./tour";
 
 const NAME_LENGTH = 20;
 
@@ -126,6 +127,19 @@ function clearEntryHash(): void {
   if (location.hash) history.replaceState(null, "", location.pathname + location.search);
 }
 
+/**
+ * Leaves the guided tour (#tour), however it is left: its buttons, the top
+ * bar or the browser's back button. The tour is then seen and no longer opens
+ * by itself (docs/user-guide.md#guided-tour).
+ */
+function leaveTour(): void {
+  if (location.hash === "#tour") history.replaceState(null, "", location.pathname + location.search);
+  if (state.auth?.authenticated && state.auth.onboarded === false) {
+    state.auth.onboarded = true;
+    void auth.onboarded().catch(() => undefined); // offline: it opens again next time, nothing lost
+  }
+}
+
 /** The screen last painted: see `paint` in `render`. */
 let lastScreen = "";
 
@@ -138,6 +152,14 @@ async function render(): Promise<void> {
     lastScreen = "privacy";
     return;
   }
+  if (state.auth?.authenticated && location.hash === "#tour") {
+    app.classList.remove("is-landing", "is-wide");
+    if (lastScreen !== "tour") window.scrollTo(0, 0);
+    app.replaceChildren(topBar(), tourView({ playerSession: playerSession(), onDone: () => (leaveTour(), goHome()) }));
+    lastScreen = "tour";
+    return;
+  }
+  if (lastScreen === "tour") leaveTour(); // left by the back button or a link
   if (!state.auth?.authenticated) {
     const options = state.options ?? { providers: [], registration: true, publicUrl: location.origin };
     const where = entry();
@@ -328,6 +350,7 @@ function openProgress(user: User, back: View, scope: ProgressScope = "all"): voi
 }
 
 function show(view: View): void {
+  leaveTour();
   state.view = view;
   void render();
 }
@@ -369,6 +392,7 @@ function open(activity: Activity): void {
 }
 
 function goHome(): void {
+  leaveTour();
   updateSettings({ mode: "home" });
   applyPendingUpdate();
   void render();
@@ -811,7 +835,13 @@ async function enter(justSignedIn = false): Promise<void> {
       return void render();
     }
     markReturning();
+    // The tour: after the first sign-in, or kept on a reload while it is open.
+    const tour = location.hash === "#tour" || state.auth.onboarded === false;
     clearEntryHash();
+    if (tour) {
+      resetTour();
+      history.replaceState(null, "", "#tour");
+    }
     const users = await store.listUsers();
     if (state.auth.player) {
       // A player's own login: that player, nobody else.
@@ -849,7 +879,8 @@ async function start(): Promise<void> {
 // Landing page ↔ sign-in screen, and the browser's Back button between them.
 // The privacy page, from anywhere and back.
 window.addEventListener("hashchange", () => {
-  if (!state.auth?.authenticated || location.hash === "#privacy" || lastScreen === "privacy") void render();
+  if (location.hash === "#tour") resetTour();
+  if (!state.auth?.authenticated || location.hash === "#privacy" || lastScreen === "privacy" || location.hash === "#tour" || lastScreen === "tour") void render();
 });
 
 void start();

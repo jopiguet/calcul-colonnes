@@ -83,7 +83,16 @@ export function authRoutes(store: AuthStore, config: AuthConfig, providers: Map<
       authenticated: true,
       account: { id: account.id, name: account.name, email: account.email, owner: account.role === "owner" },
       player,
+      onboarded: await store.onboarded(account.id, session.playerId),
     } satisfies AuthState);
+  });
+
+  /** The guided tour was finished or skipped: it no longer opens by itself. */
+  auth.post("/onboarded", async (c) => {
+    const session = c.get("session");
+    if (!session) return c.json({ error: "unauthenticated" }, 401);
+    await store.markOnboarded(session.accountId, session.playerId, Date.now());
+    return c.body(null, 204);
   });
 
   auth.get("/options", async (c) =>

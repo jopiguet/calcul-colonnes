@@ -189,6 +189,13 @@ the data routes, which require a session.
 The test in progress lives in `src/quiz.ts` (`run`, `result`), so it survives
 re-renders such as a language change, but not a page reload.
 
+Two pages sit on the address rather than in `state`: `#privacy` and `#tour`,
+the [guided tour](user-guide.md#guided-tour) (`src/tour.ts`, its texts in
+`src/tour-texts.ts`, without the DOM so that `check:tour` reads them).
+`render()` draws them first; `enter()` sets `#tour` after sign-in while the
+session says `onboarded: false`, and `leaveTour()` (in `show`, `goHome`, and
+on a hash change away from it) marks it seen.
+
 That is why `src/update.ts` reloads for a new build only between activities
 (the home page, the list of players, the sign-in screens) and when nothing is
 under way: no vocabulary session (`vocabBusy()`), no test (`quizBusy()`), no

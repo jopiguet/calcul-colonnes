@@ -75,6 +75,8 @@ export const auth = {
   deleteAccount: (): Promise<void> => call("/auth/account", { method: "DELETE", body: JSON.stringify({ confirm: "delete-account" }) }),
   login: (identifier: string, password: string): Promise<void> => post("/auth/login", { identifier, password }),
   logout: (): Promise<void> => post("/auth/logout"),
+  /** The guided tour finished or skipped: it no longer opens by itself. */
+  onboarded: (): Promise<void> => post("/auth/onboarded"),
   logoutOthers: (): Promise<void> => post("/auth/logout-all"),
   methods: (): Promise<SignInMethod[]> => call("/auth/methods"),
   removeMethod: (id: number): Promise<void> => call(`/auth/methods/${id}`, { method: "DELETE" }),

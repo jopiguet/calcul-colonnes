@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import type { SignInMethod, User } from "../../shared/types.ts";
-import { PASSWORD, newPlayer, signIn, signUp, uniqueEmail, uniqueName } from "./helpers";
+import { PASSWORD, afterSignIn, newPlayer, signIn, signUp, uniqueEmail, uniqueName } from "./helpers";
 
 const COOKIE = "cc_session";
 
@@ -13,6 +13,7 @@ async function viaMock(page: Page, who: { sub: string; email?: string; name?: st
   await page.fill("input[name=name]", who.name ?? "Mock User");
   await page.click(`button[value=${decision}]`);
   await page.waitForURL(/localhost:8799\//);
+  if (decision === "allow") await afterSignIn(page);
 }
 
 /** A fresh load of the sign-in screen (a hash change alone would not reload the app). */

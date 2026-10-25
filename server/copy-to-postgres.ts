@@ -67,8 +67,8 @@ try {
   try {
     await target.exec(
       "BEGIN;\n" +
-        insert("accounts", ["id", "email", "name", "created_at"], accounts) +
-        insert("users", ["id", "name", "name_key", "created_at", "account_id", "hidden"], users) +
+        insert("accounts", ["id", "email", "name", "created_at", "role", "onboarded_at"], accounts) +
+        insert("users", ["id", "name", "name_key", "created_at", "account_id", "hidden", "onboarded_at"], users) +
         insert("player_shares", ["user_id", "account_id", "created_at"], shares) +
         insert(
           "credentials",

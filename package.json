@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "6.22.0",
+  "version": "6.23.0",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -27,7 +27,8 @@
     "check:physics": "tsx server/check-physics.ts",
     "test:e2e:postgres": "node -e \"if(!process.env.E2E_DATABASE_URL){console.error('set E2E_DATABASE_URL to a database that may be emptied');process.exit(2)}\" && playwright test",
     "check:astronomy": "tsx server/check-astronomy.ts",
-    "check:biology": "tsx server/check-biology.ts"
+    "check:biology": "tsx server/check-biology.ts",
+    "check:tour": "tsx server/check-tour.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

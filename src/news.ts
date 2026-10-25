@@ -2,6 +2,7 @@ import { at } from "./auth-i18n";
 import { button, el } from "./dom";
 import { currentLang } from "./i18n";
 import { sendFeedback } from "./store";
+import { tourLink } from "./tour";
 
 /**
  * What a user sees of the releases: the version, a few lines of news per
@@ -21,6 +22,12 @@ interface News {
 
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
+  {
+    version: "6.23.0",
+    fr: ["🧭 Visite guidée : quelques pages pour faire le tour de Luma, à retrouver en bas de la page d'accueil."],
+    es: ["🧭 Visita guiada: unas páginas para recorrer Luma, disponible al pie de la página de inicio."],
+    en: ["🧭 Guided tour: a few pages around Luma, at the bottom of the home page whenever you want it."],
+  },
   {
     version: "6.22.0",
     fr: ["🔷 TypeScript : un nouveau QCM en quatre niveaux, des types au JavaScript qui tourne dessous, avec des programmes dont il faut prédire l'affichage."],
@@ -171,6 +178,8 @@ export function appFooter(page: string): HTMLElement {
     if (!form.hidden) text.focus();
   });
   line.append(version, el("span", "app-footer-dot", "·"), toggleNews, el("span", "app-footer-dot", "·"), privacy);
+  // The guided tour, opened again: on the home page, where the tour says it is.
+  if (page === "home") line.append(el("span", "app-footer-dot", "·"), tourLink());
   foot.append(open, form, said, line, newsPanel);
   return foot;
 }

@@ -403,13 +403,13 @@ export class Repository {
   async exportAccount(accountId: number): Promise<Record<string, unknown>> {
     const one = async (sql: string, params: number[]) => (await this.db.query(sql, params))[0] ?? null;
     const all = (sql: string, params: number[]) => this.db.query(sql, params);
-    const account = await one("SELECT id, email, name, role, created_at FROM accounts WHERE id = $1", [accountId]);
+    const account = await one("SELECT id, email, name, role, created_at, onboarded_at FROM accounts WHERE id = $1", [accountId]);
     const methods = await all(
       "SELECT type, provider, label, player_id, created_at, last_used_at FROM credentials WHERE account_id = $1 ORDER BY id",
       [accountId],
     );
     const players = [];
-    for (const p of await all("SELECT id, name, created_at, hidden FROM users WHERE account_id = $1 ORDER BY id", [accountId])) {
+    for (const p of await all("SELECT id, name, created_at, hidden, onboarded_at FROM users WHERE account_id = $1 ORDER BY id", [accountId])) {
       const id = Number(p.id);
       players.push({
         ...p,

@@ -593,6 +593,7 @@ the end of this section. Redirects from provider sign-in carry them as
 | `POST` | `/api/auth/login` | none | Sign in with email or username and password |
 | `POST` | `/api/auth/logout` | any | End this session |
 | `POST` | `/api/auth/logout-all` | account | End every other session of the account |
+| `POST` | `/api/auth/onboarded` | any | The guided tour was finished or skipped |
 | `POST` | `/api/auth/password` | account | Change or add the account password |
 | `GET` | `/api/auth/methods` | account | Ways to sign in, of the account and its players |
 | `DELETE` | `/api/auth/methods/:id` | account | Remove one |
@@ -606,12 +607,17 @@ the end of this section. Redirects from provider sign-in carry them as
 {
   "authenticated": true,
   "account": { "id": 1, "name": "Joachim", "email": "joachim@example.ch" },
-  "player": null
+  "player": null,
+  "onboarded": true
 }
 ```
 
 `player` is `{ "id": 3, "name": "Léa" }` for a player's own session. Signed
 out: `{ "authenticated": false }`.
+
+`onboarded` is `false` until the [guided tour](user-guide.md#guided-tour) is
+finished or skipped: by the account on its own session, by the player on a
+player's own session. The app then opens the tour after signing in.
 
 ### `GET /api/auth/options`
 
@@ -645,6 +651,13 @@ receives the players created before version 4. Errors: `invalid_name`,
 ### `POST /api/auth/logout`, `POST /api/auth/logout-all`
 
 `204`. `logout` clears the cookie. `logout-all` keeps the current session.
+
+### `POST /api/auth/onboarded`
+
+No body. `204`; marks the guided tour as seen for the account, or for the
+player on a player's own session (`accounts.onboarded_at` or
+`users.onboarded_at`). The first time is kept: opening the tour again from the
+footer changes nothing. `401` signed out.
 
 ### `POST /api/auth/password`
 

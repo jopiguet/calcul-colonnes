@@ -41,6 +41,7 @@ this because the server enables `PRAGMA foreign_keys`.
 | `created_at` | bigint | |
 | `account_id` | integer, nullable | owning account; `NULL` only for players created before version 4, until the first account claims them |
 | `hidden` | text | JSON list of activities taken off the player's home page; `[]` shows everything, and new activities show |
+| `onboarded_at` | bigint, nullable | when the player first finished or skipped the [guided tour](user-guide.md#guided-tour) on their own login; `NULL` until then |
 
 ### `player_shares`, `player_invites`
 
@@ -61,6 +62,7 @@ others. See [Authentication › Sharing a player](authentication.md#sharing-a-pl
 | `name` | text | |
 | `role` | text | `owner` (the first account: invitations, content, feedback) or `member` |
 | `created_at` | bigint | |
+| `onboarded_at` | bigint, nullable | when the account first finished or skipped the [guided tour](user-guide.md#guided-tour); `NULL` until then, so it opens after sign-in |
 
 ### `account_invites`, `app_settings`, `feedback`
 
@@ -242,6 +244,7 @@ runs: add tables and columns, rename or drop later.
 | `020_sql_level` | `quiz_results.level` accepts `sql`, the SQL test. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `021_rust_levels` | `quiz_results.level` accepts the four Rust levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `022_typescript_levels` | `quiz_results.level` accepts the four TypeScript levels. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `023_onboarding` | `accounts.onboarded_at`, `users.onboarded_at`; set to `0` for the accounts and players already there, who do not get the tour on their next visit. |
 
 **File names.**
 

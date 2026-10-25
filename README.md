@@ -149,6 +149,7 @@ npm start          # http://localhost:8787
 | `npm run check:physics` | Checks the physics playground: every simulation against its exact solution, energy that does not drift, Kirchhoff's laws (see [Discover](docs/discover.md#physics-checks)) |
 | `npm run check:astronomy` | Checks the astronomy models: the Moon's lit fraction and shadow, the seasons' sunlight, centuries of eclipses, Kepler against Newton (see [Discover](docs/discover.md#astronomy-checks)) |
 | `npm run check:biology` | Checks the chemistry and biology labs: unique bonds, Punnett squares and chi-square, diffusion, Lotka–Volterra (see [Discover](docs/discover.md#biology-checks)) |
+| `npm run check:tour` | Checks the guided tour: the session flag, migration 023, the pages in every language, the chips against the app's labels (see [User guide › Guided tour](docs/user-guide.md#guided-tour)) |
 | `npm run test:e2e:postgres` | The same browser tests on PostgreSQL, with `E2E_DATABASE_URL` naming a database that may be emptied |
 | `npm run maintenance` | Migrations, backfills, new vocabulary books and session purge, then exit: what a Cloud Run release runs as a job |
 | `npm run build:server` | Bundles the server into `dist-server/` for the container image |

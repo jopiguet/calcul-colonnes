@@ -136,6 +136,8 @@ export interface AuthState {
   /** `owner`: the account that runs the server (invitations, content, feedback). */
   account?: { id: number; name: string; email: string | null; owner?: boolean };
   player?: { id: number; name: string } | null;
+  /** The guided tour was seen by this account (or, on a player's own login, this player). */
+  onboarded?: boolean;
 }
 
 /** How one can sign in on this server. */

@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.23.0
+
+- **A guided tour for new users** (see [User guide › Guided tour](docs/user-guide.md#guided-tour)): nine short pages, opened after an account's first sign-in, on players and sharing, the home page, tests and their keys, review and progress, languages, the labs, and the account and its data. Each page shows the labels of the buttons it names, as chips.
+  - *Suivant* / *Précédent* or the ← → keys; *Passer la visite* at any time. Finished, skipped or left by the top bar or the back button, it no longer opens by itself, on any device.
+  - Opened again from *🧭 Visite guidée* at the bottom of the home page.
+  - A player's own login gets its own version once, without the account's pages.
+  - Accounts and players from before this release are not interrupted.
+- **API:** `GET /api/auth/session` returns `onboarded`; `POST /api/auth/onboarded` marks the tour as seen.
+- **Database:** migration `023_onboarding` (`accounts.onboarded_at`, `users.onboarded_at`). The data export includes both.
+- **Fix:** `db:copy-to-postgres` now copies `accounts.role`, which it left at its default.
+- **Checks:** `check:tour` (in CI) checks the session flag, the player's own flag, the migration of existing accounts, that every language has the same pages, and that every chip is a label the app really shows.
+- **Tests:** 129 browser tests; the tour is followed page by page, skipped, reopened from the footer, left by the back button and the top bar, on a phone, and on a player's own login.
+
 ## 6.22.0
 
 - **A new test, 🔷 TypeScript**, in the *Informatique* group next to Linux, SQL and Rust, at four levels, *Débutant* to *Expert*, like Rust (see [Question generators › TypeScript](docs/question-generators.md#typescript)). Eight topics in two groups, *Le langage et ses types* and *Exécution et outillage*; each level offers those it has.

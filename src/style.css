@@ -5256,6 +5256,121 @@ pre.quiz-code {
   font-size: 0.9rem;
 }
 
+/* The guided tour (#tour): one page at a time, the real labels as chips. */
+.tour {
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.tour-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.tour-count {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tour-dots {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.tour-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.tour-dot.done {
+  background: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.tour-dot.current {
+  background: var(--accent);
+  transform: scale(1.25);
+}
+
+.tour-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 15rem;
+}
+
+.tour-icon {
+  font-size: 2.6rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.tour-title {
+  text-align: center;
+  margin: 0;
+}
+
+.tour-text {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.tour-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.tour-chip {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.tour-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.tour-nav button {
+  flex: 1 1 0;
+}
+
+.tour-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.tour-keys {
+  margin-left: auto;
+}
+
+@media (hover: none) {
+  .tour-keys {
+    display: none;
+  }
+}
+
+.tour-link {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 /* The account page: deleting is the one red button. */
 button.danger {
   border-color: color-mix(in srgb, var(--bad) 50%, var(--line));

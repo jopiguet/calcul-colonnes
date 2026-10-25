@@ -140,6 +140,7 @@ usable sessions.
 - **Expired sessions** are purged at startup and every hour.
 - **`__Host-` prefix:** with HTTPS, the browser accepts the cookie only if it is `Secure`, has `Path=/` and no `Domain`. This prevents a sub-domain from setting or overwriting it.
 - **The page's JavaScript cannot read the session** (`HttpOnly`). The app asks `GET /api/auth/session` who is signed in.
+- **The guided tour:** the session state carries `onboarded`, kept per account and, on a player's own login, per player (`accounts.onboarded_at`, `users.onboarded_at`). It is server-side, so a tour finished on one device does not open on another. See [User guide › Guided tour](user-guide.md#guided-tour).
 
 ## Protection against abuse
 

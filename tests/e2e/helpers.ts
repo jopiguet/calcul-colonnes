@@ -18,26 +18,46 @@ export function uniqueEmail(base = "parent"): string {
   return `${base}.${counter}.${Date.now()}@example.test`.toLowerCase();
 }
 
-/** Opens the sign-up form and creates an account; ends on "Who's playing?". */
-export async function signUp(page: Page, email = uniqueEmail(), password = PASSWORD): Promise<string> {
+/**
+ * The first screen after signing in is drawn (the guided tour, or the screen
+ * behind it); a tour shown is skipped, unless `keep`. The sign-in form is gone
+ * by then: enter() draws once, after the session and the players arrive.
+ */
+export async function afterSignIn(page: Page, keep = false): Promise<void> {
+  await page.locator("#app > section").first().waitFor();
+  if (!keep && (await page.locator(".tour").count()) > 0) {
+    await page.click(".tour-skip");
+    await page.locator(".tour").waitFor({ state: "detached" });
+  }
+}
+
+/** Opens the sign-up form and creates an account; ends on "Who's playing?" (the tour skipped, unless `tour: "keep"`). */
+export async function signUp(page: Page, email = uniqueEmail(), password = PASSWORD, tour: "skip" | "keep" = "skip"): Promise<string> {
   await page.goto("/#sign-up");
   await page.locator(".auth").waitFor();
   await page.fill("input[name=name]", "Parent");
   await page.fill("input[name=email]", email);
   await page.fill("input[name=password]", password);
   await page.click(".auth-form button[type=submit]");
+  if (tour === "keep") {
+    await page.locator(".tour").waitFor();
+    return email;
+  }
+  await page.locator(".tour").waitFor();
+  await page.click(".tour-skip");
   await page.locator(".new-player input").waitFor();
   return email;
 }
 
-/** Signs in on the sign-in screen with an email or a username. */
-export async function signIn(page: Page, identifier: string, password = PASSWORD): Promise<void> {
+/** Signs in on the sign-in screen with an email or a username; a tour shown (a player's first own login) is skipped, unless `keep`. */
+export async function signIn(page: Page, identifier: string, password = PASSWORD, keep = false): Promise<void> {
   await page.goto("/#sign-in");
   await page.locator(".auth").waitFor();
   await page.fill("input[name=identifier]", identifier);
   await page.fill("input[name=password]", password);
   await page.click(".auth-form button[type=submit]");
   await page.locator(".auth").waitFor({ state: "detached" });
+  await afterSignIn(page, keep);
 }
 
 /**

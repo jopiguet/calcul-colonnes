@@ -84,8 +84,36 @@ In a player's own session, the 🚪 button at the top signs out.
 
 **At the bottom of the home page:** *💬 Envoyer un avis* (a few lines to the
 owner of the server), the version with *Nouveautés* (what each release brought,
-in a few lines), and *🔒 Confidentialité*. After an update, the home page shows
+in a few lines), *🔒 Confidentialité*, and *🧭 Visite guidée* (the
+[guided tour](#guided-tour)). After an update, the home page shows
 once what is new.
+
+## Guided tour
+
+The first time an account signs in, the app opens the **guided tour**
+(`#tour`) before anything else: a few pages on how Luma is laid out, each with
+the labels of the buttons it talks about.
+
+| Page | What it shows |
+|---|---|
+| 👋 Bienvenue | What Luma trains; the tour can be found again |
+| 👥 Un compte, plusieurs joueurs | *Qui joue ?*, the 👤 chip, *Scores*, a player's own login and sharing in ⚙️ |
+| 🏠 La page d'accueil | The groups of activities, the badges of what is due |
+| 📝 Les tests | Level, topics, number of questions, *4 choix* or *Au clavier*, keys 1 to 4 and ← →, the corrections |
+| 📈 Révisions et progrès | Missed kinds come back; *📈 Mes progrès*, *🗂️ Mes tests*, *Refaire ce test* |
+| 🗣️ Les langues | *Apprendre* and *Réviser*, spaced review, the scripts |
+| 🔭 Découvrir | The interactive labs |
+| ⚙️ Le compte et les données | *Activités affichées*, export and deletion, *🔒 Confidentialité*, *💬 Envoyer un avis*, the language |
+| 🚀 C'est parti | Where to start |
+
+- **Moving:** *Suivant →* and *← Précédent*, or the ← → keys; the dots show where you are. *Commencer* on the last page closes it.
+- **Skipping:** *Passer la visite*, a button of the top bar, or the browser's back button. The tour counts as seen and does not open by itself again, on any device.
+- **Again, later:** *🧭 Visite guidée* at the bottom of the home page opens it on its first page, at any time.
+- **A player's own login:** the player gets the tour once on their own, without the pages on players and the account, and with a page on their own login and 🚪.
+- **Accounts from before 6.23:** not shown the tour; the link is there for them too.
+
+The tour follows the language chosen at the top right, and stays on its page
+when the language changes.
 
 ## Players
 
