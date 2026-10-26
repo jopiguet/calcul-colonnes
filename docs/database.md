@@ -140,7 +140,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced` |
+| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced`, `calc`, `calcAdvanced` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -250,6 +250,7 @@ runs: add tables and columns, rename or drop later.
 | `025_gcp_levels` | `quiz_results.level` accepts the four Google Cloud levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `026_bank_books` | The bank holds several books: `quiz_bank_books`, filled from the old `book`, `title`, `source` meta keys (then removed); `book` on `quiz_bank_units`. |
 | `027_econ_levels` | `quiz_results.level` accepts `econ` and `econAdvanced`. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `028_calc_levels` | `quiz_results.level` accepts `calc` and `calcAdvanced`. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 

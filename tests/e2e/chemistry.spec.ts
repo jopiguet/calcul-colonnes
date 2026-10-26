@@ -72,7 +72,7 @@ test("physical chemistry: its own topics and levels; calculations and written qu
 
   const { body, server } = await takeQuiz(page, (i) => i % 4);
   expect(body.level).toBe("chemistry");
-  expect(body.bank).toBe(2);
+  expect(body.bank).toBe(serverBank().revision);
   expect(body.seed).toBe(seed);
   expect(server.correct).toBe(rebuild(body).correct);
   await expect(page.locator("#quiz-status")).toHaveText("✓ Résultat enregistré");
@@ -128,7 +128,7 @@ test("the advanced level: written questions only, in the app's language, its own
   const wrong = (first.correct + 1) % 4;
   const { body, server } = await takeQuiz(page, (i) => (i === 0 ? wrong : 0));
   expect(body.level).toBe("chemistryAdvanced");
-  expect(body.bank).toBe(2);
+  expect(body.bank).toBe(serverBank().revision);
   expect(server.correct).toBe(rebuild(body).correct);
   expect(rebuild(body).questions.every((q) => q.verify.kind === "choice")).toBe(true);
 

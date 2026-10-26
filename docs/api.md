@@ -225,7 +225,7 @@ Case, spaces and dashes are ignored. `201` with the player (with
 
 | Query | |
 |---|---|
-| `subject` | `maths`, `chemistry`, `linux`, `chembio`, `sql`, `rust`, `ts`, `react`, `gcp` or `econ`: the levels of that subject |
+| `subject` | `maths`, `chemistry`, `linux`, `chembio`, `sql`, `rust`, `ts`, `react`, `gcp`, `econ` or `calc`: the levels of that subject |
 
 `200`: the player's last 50 tests in that subject, newest first, as stored:
 
@@ -249,7 +249,7 @@ Case, spaces and dashes are ignored. `201` with the player (with
 ```
 
 Everything to rebuild the test exactly (`generateQuiz` with the seed, level,
-topics, count, `focus`, `version` and, for physical chemistry and economics, the bank
+topics, count, `focus`, `version` and, for physical chemistry, economics and calculus, the bank
 revision `bank`), and the answers as given: an option index, `-1` for a
 blank, or the text typed. The browser rebuilds it to show the corrections.
 Allowed for the player's own account and the accounts it is shared with
@@ -301,14 +301,14 @@ right.
 | Field | |
 |---|---|
 | `seed` | 0 … 2³² − 1 |
-| `level` | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced` |
-| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium` for `chemistry` and `chemistryAdvanced`; `linuxFiles`, `linuxText`, `linuxShell`, `linuxProcesses`, `linuxSystem`, `linuxNetwork`, `linuxTools` for `linux`; `balancing` for `chembio`; `sqlSelect`, `sqlAggregate`, `sqlJoins`, `sqlModify`, `sqlPostgres`, `sqlSqlite`, `sqlMysql`, `sqlPractice` for `sql`; for the Rust levels, those of `rustBasics`, `rustOwnership`, `rustTypes`, `rustErrors`, `rustCollections`, `rustConcurrency`, `rustCargo`, `rustUnsafe` that the level has; for the TypeScript levels, those of `tsBasics`, `tsFunctions`, `tsObjects`, `tsNarrowing`, `tsGenerics`, `tsTypeLevel`, `tsRuntime`, `tsTooling` that the level has; for the React levels, those of `reactComponents`, `reactState`, `reactEffects`, `reactRendering`, `reactData`, `reactTyping`, `reactTooling`, `reactTesting` that the level has; for the Google Cloud levels, those of `gcpHierarchy`, `gcpIam`, `gcpServiceAccounts`, `gcpSecurity`, `gcpNetworking`, `gcpCompute`, `gcpStorage`, `gcpOperations` that the level has; `econWelfare`, `econMarketFailure`, `econPublicChoice`, `econIncidence`, `econOptimalTax`, `econTaxDesign`, `econSocialInsurance`, `econRedistribution`, `econLabour` for `econ` and `econAdvanced` |
+| `level` | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced`, `calc`, `calcAdvanced` |
+| `topics` | Non-empty, without duplicates: maths topics for `school` and `university` (`derivatives`, `integrals`…), `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium` for `chemistry` and `chemistryAdvanced`; `linuxFiles`, `linuxText`, `linuxShell`, `linuxProcesses`, `linuxSystem`, `linuxNetwork`, `linuxTools` for `linux`; `balancing` for `chembio`; `sqlSelect`, `sqlAggregate`, `sqlJoins`, `sqlModify`, `sqlPostgres`, `sqlSqlite`, `sqlMysql`, `sqlPractice` for `sql`; for the Rust levels, those of `rustBasics`, `rustOwnership`, `rustTypes`, `rustErrors`, `rustCollections`, `rustConcurrency`, `rustCargo`, `rustUnsafe` that the level has; for the TypeScript levels, those of `tsBasics`, `tsFunctions`, `tsObjects`, `tsNarrowing`, `tsGenerics`, `tsTypeLevel`, `tsRuntime`, `tsTooling` that the level has; for the React levels, those of `reactComponents`, `reactState`, `reactEffects`, `reactRendering`, `reactData`, `reactTyping`, `reactTooling`, `reactTesting` that the level has; for the Google Cloud levels, those of `gcpHierarchy`, `gcpIam`, `gcpServiceAccounts`, `gcpSecurity`, `gcpNetworking`, `gcpCompute`, `gcpStorage`, `gcpOperations` that the level has; `econWelfare`, `econMarketFailure`, `econPublicChoice`, `econIncidence`, `econOptimalTax`, `econTaxDesign`, `econSocialInsurance`, `econRedistribution`, `econLabour` for `econ` and `econAdvanced`; `calcLimits`, `calcDerivatives`, `calcApplications`, `calcIntegrals`, `calcTranscendental`, `calcTechniques`, `calcOde`, `calcParametric`, `calcSeries`, `calcVectors`, `calcMultivariable`, `calcVectorCalculus`, `calcStochastic` for `calc` and `calcAdvanced` |
 | `count` | 1 … 30 (the app offers 5, 10, 15, 20) |
 | `focus` | Kinds of question brought back for review; known ids, without duplicates. Optional, default `[]`. |
 | `version` | Generator version; must equal the server's `QUIZ_VERSION`. Optional, default the server's. |
 | `answers` | `count` integers, each an option index 0–3, or `-1` for a blank; in a typed test, texts |
 | `mode` | `choices` or `typed`. Optional, default `choices`. |
-| `bank` | Physical chemistry and economics only: the [question bank](question-bank.md) revision the test drew from, at most the server's. Optional; omitted, the test has no written question. |
+| `bank` | Physical chemistry, economics and calculus only: the [question bank](question-bank.md) revision the test drew from, at most the server's. Optional; omitted, the test has no written question. |
 
 The server regenerates the test from `seed`, `level`, `topics`, `count`,
 `focus`, `version` and `bank`, grades it, and stores the test and one row per

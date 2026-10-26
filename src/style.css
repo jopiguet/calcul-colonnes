@@ -5654,3 +5654,44 @@ button.danger {
 .vocab-skipped-note {
   margin: 0;
 }
+
+/* Calculus charts: hollow points, slope and vector fields, vectors. */
+svg.graph.chart.square.large {
+  max-width: 340px;
+}
+
+svg.graph .g-point-open {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.6;
+}
+
+svg.graph .c-field-line {
+  stroke: color-mix(in srgb, var(--muted) 75%, transparent);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+svg.graph .c-field-head,
+svg.graph .c-field-dot {
+  fill: color-mix(in srgb, var(--muted) 75%, transparent);
+}
+
+svg.graph .c-vector {
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+svg.graph .c-vector.c-alt {
+  stroke: var(--ball);
+}
+
+svg.graph .c-vector-head {
+  stroke: none;
+  fill: var(--accent);
+}
+
+svg.graph .c-vector-head.c-alt {
+  fill: var(--ball);
+}

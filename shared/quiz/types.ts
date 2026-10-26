@@ -2,6 +2,7 @@ import type { Rng } from "./rng";
 import type { Fn } from "./tex";
 import type { GcpModel } from "./gcp-model";
 import type { EconModel } from "./econ-model";
+import type { CalcModel } from "./calc-model";
 
 export type Fn2 = (x: number, y: number) => number;
 
@@ -11,7 +12,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "econ" | "econAdvanced";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "econ" | "econAdvanced" | "calc" | "calcAdvanced";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -40,9 +41,19 @@ export type GcpTopic = "gcpHierarchy" | "gcpIam" | "gcpServiceAccounts" | "gcpSe
  * (books the user owns), diagrams and calculations from generators.
  */
 export type EconTopic = "econWelfare" | "econMarketFailure" | "econPublicChoice" | "econIncidence" | "econOptimalTax" | "econTaxDesign" | "econSocialInsurance" | "econRedistribution" | "econLabour";
-export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic | EconTopic;
+/**
+ * Calculus, in the order of Stewart's chapters: limits, derivatives, their
+ * applications, integrals, inverse functions and l'Hospital, techniques of
+ * integration, differential equations, parametric and polar curves, series,
+ * vectors, several variables, vector calculus, and stochastic calculus.
+ * Concepts come from the question bank (books the user owns), graphs and
+ * computations from generators. Apart from the mathematics test, which drills
+ * technique.
+ */
+export type CalcTopic = "calcLimits" | "calcDerivatives" | "calcApplications" | "calcIntegrals" | "calcTranscendental" | "calcTechniques" | "calcOde" | "calcParametric" | "calcSeries" | "calcVectors" | "calcMultivariable" | "calcVectorCalculus" | "calcStochastic";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic | EconTopic | CalcTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced", "calc", "calcAdvanced"];
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
@@ -74,10 +85,15 @@ export const ECON_TOPICS: EconTopic[] = ["econWelfare", "econMarketFailure", "ec
 /** The levels offered in the economics test's settings: core, and advanced reasoning. */
 export const ECON_LEVELS: Level[] = ["econ", "econAdvanced"];
 export const isEcon = (level: Level): boolean => ECON_LEVELS.includes(level);
+/** Topics of the calculus test. */
+export const CALC_TOPICS: CalcTopic[] = ["calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques", "calcOde", "calcParametric", "calcSeries", "calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic"];
+/** The levels offered in the calculus test's settings: core, and advanced. */
+export const CALC_LEVELS: Level[] = ["calc", "calcAdvanced"];
+export const isCalc = (level: Level): boolean => CALC_LEVELS.includes(level);
 /** The subjects of the tests, each with its own levels and topics. */
-export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ";
+export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc";
 export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : isEcon(level) ? "econ" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : isEcon(level) ? "econ" : isCalc(level) ? "calc" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
@@ -86,11 +102,11 @@ export const MATH_LEVELS: Level[] = ["school", "university"];
 export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
 export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
 /** Tests that draw from the question bank, and so record the bank revision they drew from. */
-export const usesBank = (level: Level): boolean => isChemistry(level) || level === "econ" || level === "econAdvanced";
+export const usesBank = (level: Level): boolean => isChemistry(level) || isEcon(level) || isCalc(level);
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations", "econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations", "econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour", "calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques", "calcOde", "calcParametric", "calcSeries", "calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure" | "econTheory" | "econTaxation" | "econWelfareState";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure" | "econTheory" | "econTaxation" | "econWelfareState" | "calcOneVariable" | "calcFurther" | "calcSeveral";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -119,6 +135,9 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "econTheory", topics: ["econWelfare", "econMarketFailure", "econPublicChoice"] },
   { group: "econTaxation", topics: ["econIncidence", "econOptimalTax", "econTaxDesign"] },
   { group: "econWelfareState", topics: ["econSocialInsurance", "econRedistribution", "econLabour"] },
+  { group: "calcOneVariable", topics: ["calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques"] },
+  { group: "calcFurther", topics: ["calcOde", "calcParametric", "calcSeries"] },
+  { group: "calcSeveral", topics: ["calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic"] },
 ];
 
 /**
@@ -873,6 +892,91 @@ export const MISTAKES = [
   "econRiskNeutral", // the willingness to pay taken as the expected loss
   "econRiskWhole", // the willingness to pay taken as the whole loss
   "econRiskPremiumOnly", // the risk premium alone taken as the willingness to pay
+  // calculus
+  "calcOneSided", // the limit from the other side taken
+  "calcValueIsLimit", // a one-sided value, or f(a), taken for the two-sided limit
+  "calcLimitIsValue", // f(a) taken for the limit
+  "calcLimitExists", // a limit taken to exist across a jump (or not to exist when it does)
+  "calcDeltaTimes", // δ taken as ε times the slope
+  "calcDeltaSlope", // δ taken equal to ε, the slope ignored
+  "calcDeltaHalf", // δ off by a factor two
+  "calcSecantTangent", // the tangent's slope at one end taken for the secant's
+  "calcSecantRun", // the rise taken without dividing by the run
+  "calcSecantInverted", // run over rise
+  "calcTangentIntercept", // f(a) taken as the intercept
+  "calcTangentSign", // the line's constant with the wrong sign, or the slope's
+  "calcTangentSlopeValue", // f(a) taken as the slope
+  "calcMaxMin", // a maximum and a minimum confused, or another zero of f′ taken
+  "calcInflection", // where f′ turns (an inflection point of f) taken as an extremum
+  "calcNewtonSign", // x + f/f′ instead of x − f/f′
+  "calcNewtonInverted", // f′/f instead of f/f′
+  "calcNewtonSteps", // one iteration too many or too few
+  "calcNewtonExact", // the root itself given for the iterate
+  "calcRiemannMethod", // left, right and midpoint sums confused
+  "calcRiemannExact", // the exact integral given for an approximation
+  "calcRiemannWidth", // the heights added without multiplying by Δx
+  "calcNetTotal", // net (signed) and total area confused
+  "calcAreaBelow", // the part below the axis left out, or counted wrong
+  "calcFtcConfused", // g(c) and g′(c) = f(c) confused
+  "calcFtcDerivative", // g′ taken as the slope of f
+  "calcFtcConstant", // g′ taken as zero
+  "calcFtcBounds", // the area up to the wrong bound
+  "calcHalfLifeMean", // 1/k (the mean lifetime) taken for the half-life
+  "calcHalfLifeLinear", // the decay taken as linear
+  "calcHalfLifeInverted", // k·ln 2 instead of ln 2/k
+  "calcLhopitalInverted", // the ratio of derivatives turned upside down
+  "calcLimitZeroOverZero", // 0/0 taken as 0 or 1
+  "calcLhopitalQuotient", // the derivatives multiplied
+  "calcNumericRule", // trapezoid, midpoint and Simpson confused
+  "calcNumericWeights", // the rule's weights or its h/2, h/3 factor wrong
+  "calcImproperP", // the convergence condition p > 1 turned around
+  "calcImproperPower", // the antiderivative's power off by one
+  "calcImproperTail", // a divergent integral taken as zero
+  "calcEulerSteps", // one step short
+  "calcEulerExact", // the exact solution given for Euler's approximation
+  "calcEulerSlope", // the slope taken at the wrong point
+  "calcFieldReading", // a slope field read wrong
+  "calcStabilityUnstable", // the unstable equilibrium taken as stable
+  "calcHarvestIgnored", // the carrying capacity given, harvesting ignored
+  "calcMaxGrowth", // K/2, where growth is fastest, taken as the equilibrium
+  "calcPolarSinCos", // r = cos(kθ) and r = sin(kθ) confused
+  "calcPetals", // the number of petals of a rose miscounted (k against 2k)
+  "calcParamInverted", // dx/dy instead of dy/dx
+  "calcParamDt", // dy/dt or dx/dt taken as the slope
+  "calcParamRatio", // y/x taken as the slope
+  "calcGeometricSign", // a/(1 + r) instead of a/(1 − r)
+  "calcGeometricFirst", // the first term left out, or a/r
+  "calcGeometricDiverges", // a convergent series taken as divergent
+  "calcTaylorDegree", // a term too few
+  "calcTaylorSign", // the signs of a series confused
+  "calcTaylorFactorial", // f⁽ᵏ⁾(0) without dividing by k!
+  "calcTaylorConstant", // the constant term wrong
+  "calcAngleSupplement", // 180° − θ: a sign lost in the dot product
+  "calcAngleComplement", // 90° − θ
+  "calcAngleReflex", // 360° − θ
+  "calcCrossHalf", // the parallelogram and the triangle confused
+  "calcCrossDot", // the dot product taken for the area
+  "calcCrossNorms", // |u||v| taken for the area, the angle forgotten
+  "calcDirectionalUnit", // the direction not made a unit vector
+  "calcDirectionalGradient", // |∇f| taken for the derivative in any direction
+  "calcDirectionalPartial", // one partial derivative taken
+  "calcSecondTestCross", // the mixed derivative f_xy forgotten in D
+  "calcSecondTestSign", // the sign of D or of f_xx read wrong
+  "calcGreenCurl", // ∂Q/∂x − ∂P/∂y computed with a wrong sign, or halved
+  "calcGreenPerimeter", // the perimeter used instead of the area
+  "calcGreenRadius", // πR instead of πR²
+  "calcBrownianProduct", // E[W_s W_t] taken as s·t
+  "calcBrownianMax", // max(s, t) instead of min(s, t)
+  "calcBrownianIndependent", // W_s and W_t taken as independent, or E[W²] as 0
+  "calcBrownianIncrement", // Var(W_t − W_s) taken as t + s or t
+  "calcBrownianSd", // variance and standard deviation confused
+  "calcItoJensen", // E[e^X] taken as e^E[X]
+  "calcItoHalf", // the ½ of Itô's correction forgotten
+  "calcItoNoDrift", // the ordinary chain rule: no dt term
+  "calcItoPower", // the dt term's power of W off by one
+  "calcGbmMedianMean", // the mean and the median of a lognormal confused
+  "calcGbmDrift", // +σ²/2 instead of −σ²/2
+  "calcGbmLinear", // growth taken as linear
   // balancing equations
   "subscriptChanged", // a formula's subscript changed instead of a coefficient: another substance
   "notLowestTerms", // balanced, but not in the smallest whole numbers
@@ -928,9 +1032,24 @@ export interface Chart {
   curves: { fn?: Fn; points?: [number, number][]; label?: string; style?: "main" | "alt" | "guide" }[];
   /** Shaded polygons: "loss" hatched, "revenue", "gain" and "plain" tinted; their label at the centre. */
   areas?: { points: [number, number][]; style: "loss" | "revenue" | "gain" | "plain"; label?: string }[];
-  points?: { x: number; y: number; label?: string }[];
+  /** A point; `open`: a hollow dot (a hole in a graph, the value not taken). */
+  points?: { x: number; y: number; label?: string; open?: boolean }[];
   /** Dashed lines from a point down to the x axis and across to the y axis. */
   drops?: { x: number; y: number }[];
+  /** "frame" (default): axes along the bottom and left of the window. "origin": through (0, 0), for graphs on both sides of zero. */
+  axes?: "frame" | "origin";
+  /** The same scale on both axes (angles, circles, polar curves). */
+  square?: boolean;
+  /** Faint grid lines every `grid` units. */
+  grid?: number;
+  /**
+   * A field drawn on a grid of `count` × `count` points: short segments in the
+   * direction of `fn(x, y)` (a slope field gives [1, slope]), with arrowheads
+   * when `arrows` (a vector field).
+   */
+  field?: { fn: (x: number, y: number) => [number, number]; arrows?: boolean; count?: number };
+  /** Vectors, drawn as arrows from `from` to `to`, labelled at their tip. */
+  vectors?: { from: [number, number]; to: [number, number]; label?: string; style?: "main" | "alt" }[];
 }
 
 export interface Option {
@@ -1011,6 +1130,8 @@ export type Verify =
   | { kind: "gcp"; model: GcpModel }
   /** The option (its formula) is the answer to a small economic model: incidence, areas, Pigou, Samuelson, Gini, Ramsey, Saez, monopsony… */
   | { kind: "econ"; model: EconModel }
+  /** The option (its formula) is the answer to a small calculus model: a limit on a graph, a Riemann sum, Euler's method, a directional derivative… */
+  | { kind: "calc"; model: CalcModel }
   /** The option (its formula) is what the Rust `program` prints, trimmed. */
   | { kind: "rust"; program: string }
   /** The option (its formula, as `formatRows` writes it) is what `query` returns after `setup`, on SQLite. */

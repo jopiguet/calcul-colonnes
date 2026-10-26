@@ -100,6 +100,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `check-quiz.ts` | Verification of the generators (`npm run check:quiz`) |
 | `check-gcp.ts` | The Google Cloud answers computed again for `check:quiz` (IAM, firewalls, subnets, Cloud Run, availability) |
 | `check-econ.ts` | The economics answers computed again for `check:quiz` (incidence, areas, Pigou, Samuelson, Gini, monopsony, insurance…) |
+| `check-calc.ts` | The calculus answers computed again for `check:quiz` (limits, slopes, Newton, Riemann and Simpson sums, Euler, Taylor, Green, Brownian moments…) |
 | `quiz-bank.ts` | Question bank storage, import, flags; `/api/quiz/bank`, `/api/quiz/flags`. See [Question bank](question-bank.md). |
 | `quiz-import.ts`, `quiz-flags.ts` | `npm run quiz:import`, `npm run quiz:flags` |
 | `vocab.ts` | Vocabulary storage, import, sessions, answers; `/api/vocab` |

@@ -24,6 +24,7 @@ import { series } from "./series";
 import { gases } from "./gases";
 import { tsBasics, tsFunctions, tsObjects, tsNarrowing, tsGenerics, tsTypeLevel, tsRuntime, tsTooling } from "./typescript";
 import { reactComponents, reactState, reactEffects, reactRendering, reactData, reactTyping, reactTooling, reactTesting } from "./react";
+import { calcLimits, calcDerivatives, calcApplications, calcIntegrals, calcTranscendental, calcTechniques, calcOde, calcParametric, calcSeries, calcVectors, calcMultivariable, calcVectorCalculus, calcStochastic } from "./calc";
 import { econWelfare, econMarketFailure, econPublicChoice, econIncidence, econOptimalTax, econTaxDesign, econSocialInsurance, econRedistribution, econLabour } from "./econ";
 import { gcpHierarchy, gcpIam, gcpServiceAccounts, gcpSecurity, gcpNetworking, gcpCompute, gcpStorage, gcpOperations } from "./gcp";
 import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
@@ -138,6 +139,19 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   econSocialInsurance,
   econRedistribution,
   econLabour,
+  calcLimits,
+  calcDerivatives,
+  calcApplications,
+  calcIntegrals,
+  calcTranscendental,
+  calcTechniques,
+  calcOde,
+  calcParametric,
+  calcSeries,
+  calcVectors,
+  calcMultivariable,
+  calcVectorCalculus,
+  calcStochastic,
 };
 
 /** Every kind of question, by id ("topic.name"). */
@@ -280,6 +294,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "react":
     case "gcp":
     case "econ":
+    case "calc":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
     default:
       return close(a.num!, b.num!, version);
@@ -405,5 +420,6 @@ export { GCP_QUESTIONS } from "./gcp";
 export { GCP_LINE_MAX } from "./gcp-output";
 export type { GcpModel } from "./gcp-model";
 export type { EconModel } from "./econ-model";
+export type { CalcModel } from "./calc-model";
 export { formatRows } from "./sql-output";
 export type { LinuxQuestion } from "./linux/types";

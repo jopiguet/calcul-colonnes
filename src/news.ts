@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.28.0",
+    fr: ["∫ Analyse : un nouveau QCM d'analyse, des limites au calcul stochastique, avec des questions sur des graphiques (tangentes, sommes de Riemann, champs de pentes, polynômes de Taylor…). Le QCM de maths reste là."],
+    es: ["∫ Cálculo: un nuevo test de cálculo, de los límites al cálculo estocástico, con preguntas sobre gráficas (tangentes, sumas de Riemann, campos de pendientes, polinomios de Taylor…). El test de matemáticas sigue ahí."],
+    en: ["∫ Calculus: a new test, from limits to stochastic calculus, with questions on graphs (tangents, Riemann sums, slope fields, Taylor polynomials…). The maths QCM stays."],
+  },
+  {
     version: "6.27.0",
     fr: [
       "📚 Les livres d'une même langue se rangent ensemble : une carte « Vocabulaire allemand » pour Collins, Lernwortschatz et Nietzsche, des séances sur les livres cochés, et chaque livre toujours ouvrable seul.",

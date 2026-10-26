@@ -1,4 +1,5 @@
 import type { Chart, Graph } from "../shared/quiz";
+import { currentLang } from "./i18n";
 
 /**
  * Draws the graphs of the QCM as inline SVG: curves on a grid with one line
@@ -25,17 +26,20 @@ export function drawGraph(graph: Graph, label: string, size: "large" | "small" =
 
 /** An economic diagram, scaled to a fixed frame whatever its units. */
 function chart(g: Chart, label: string, size: "large" | "small"): SVGSVGElement {
-  const width = 300;
-  const height = 220;
   const left = 36;
   const right = 22;
   const top = 16;
   const bottom = 26;
   const [x0, x1] = g.x;
   const [y0, y1] = g.y;
-  const px = (x: number): number => left + ((x - x0) / (x1 - x0)) * (width - left - right);
-  const py = (y: number): number => height - bottom - ((y - y0) / (y1 - y0)) * (height - top - bottom);
-  const svg = node("svg", { viewBox: `0 0 ${width} ${height}`, class: `graph chart ${size}`, role: "img", "aria-label": label });
+  // A fixed frame, or the same scale on both axes (angles, circles, polar curves).
+  const plotW = g.square ? 240 : 300 - left - right;
+  const plotH = g.square ? Math.min(300, Math.max(120, (plotW * (y1 - y0)) / (x1 - x0))) : 220 - top - bottom;
+  const width = left + plotW + right;
+  const height = top + plotH + bottom;
+  const px = (x: number): number => left + ((x - x0) / (x1 - x0)) * plotW;
+  const py = (y: number): number => height - bottom - ((y - y0) / (y1 - y0)) * plotH;
+  const svg = node("svg", { viewBox: `0 0 ${width} ${height}`, class: `graph chart ${size}${g.square ? " square" : ""}`, role: "img", "aria-label": label });
   const id = `graph-clip-${++clipIds}`;
   const defs = node("defs", {});
   const clip = node("clipPath", { id });
@@ -45,18 +49,27 @@ function chart(g: Chart, label: string, size: "large" | "small"): SVGSVGElement 
   defs.append(clip, hatch);
   svg.append(defs);
 
-  // Areas first, under everything.
+  // A faint grid, under everything.
+  if (g.grid && g.grid > 0) {
+    const step = g.grid;
+    for (let x = Math.ceil(x0 / step) * step; x <= x1 + 1e-9; x += step) svg.append(node("line", { x1: px(x), y1: py(y0), x2: px(x), y2: py(y1), class: "g-grid" }));
+    for (let y = Math.ceil(y0 / step) * step; y <= y1 + 1e-9; y += step) svg.append(node("line", { x1: px(x0), y1: py(y), x2: px(x1), y2: py(y), class: "g-grid" }));
+  }
+
+  // Areas first, under the curves.
   for (const a of g.areas ?? []) {
     const pts = a.points.map(([x, y]) => `${fmt(px(x))},${fmt(py(y))}`).join(" ");
     svg.append(node("polygon", { points: pts, class: `c-area c-${a.style}` }));
     if (a.style === "loss") svg.append(node("polygon", { points: pts, fill: `url(#${id}-hatch)`, class: "c-area-hatch" }));
   }
 
-  // Axes from the origin of the frame, with arrows, names and values.
-  const ax = px(x0);
-  const ay = py(y0);
-  svg.append(node("line", { x1: ax, y1: ay, x2: px(x1) + 10, y2: ay, class: "c-axis" }));
-  svg.append(node("line", { x1: ax, y1: ay, x2: ax, y2: py(y1) - 10, class: "c-axis" }));
+  // Axes with arrows, names and values: along the frame, or through the origin.
+  const origin = g.axes === "origin";
+  const clamp = (v: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, v));
+  const ax = px(origin ? clamp(0, x0, x1) : x0);
+  const ay = py(origin ? clamp(0, y0, y1) : y0);
+  svg.append(node("line", { x1: px(x0), y1: ay, x2: px(x1) + 10, y2: ay, class: "c-axis" }));
+  svg.append(node("line", { x1: ax, y1: py(y0), x2: ax, y2: py(y1) - 10, class: "c-axis" }));
   svg.append(node("path", { d: `M${fmt(px(x1) + 10)} ${fmt(ay)} l-6 -3 v6 z`, class: "c-arrow" }));
   svg.append(node("path", { d: `M${fmt(ax)} ${fmt(py(y1) - 10)} l-3 6 h6 z`, class: "c-arrow" }));
   svg.append(node("text", { x: px(x1) + 12, y: ay + 16, class: "c-axis-label", "text-anchor": "end" }, g.xLabel));
@@ -74,6 +87,42 @@ function chart(g: Chart, label: string, size: "large" | "small"): SVGSVGElement 
     svg.append(node("path", { d: `M${fmt(px(d.x))} ${fmt(ay)} V${fmt(py(d.y))} H${fmt(ax)}`, class: "c-drop" }));
   }
 
+  // A slope field or a vector field: short segments of one length on a grid.
+  if (g.field) {
+    const count = g.field.count ?? 9;
+    const cellX = plotW / count;
+    const cellY = plotH / count;
+    const half = 0.36 * Math.min(cellX, cellY);
+    const field = node("g", { class: g.field.arrows ? "c-field is-vectors" : "c-field" });
+    for (let i = 0; i < count; i++) {
+      for (let j = 0; j < count; j++) {
+        const x = x0 + ((i + 0.5) * (x1 - x0)) / count;
+        const y = y0 + ((j + 0.5) * (y1 - y0)) / count;
+        const [dx, dy] = g.field.fn(x, y);
+        // In screen units: the direction as drawn, whatever the scales.
+        const sx = (dx * plotW) / (x1 - x0);
+        const sy = (-dy * plotH) / (y1 - y0);
+        const norm = Math.hypot(sx, sy);
+        if (!Number.isFinite(norm) || norm === 0) {
+          field.append(node("circle", { cx: fmt(px(x)), cy: fmt(py(y)), r: 1, class: "c-field-dot" }));
+          continue;
+        }
+        const ux = (sx / norm) * half;
+        const uy = (sy / norm) * half;
+        const cx = px(x);
+        const cy = py(y);
+        if (g.field.arrows) {
+          field.append(node("line", { x1: fmt(cx - ux), y1: fmt(cy - uy), x2: fmt(cx + ux), y2: fmt(cy + uy), class: "c-field-line" }));
+          const angle = (Math.atan2(uy, ux) * 180) / Math.PI;
+          field.append(node("path", { d: "M0 0 l-4 -2.2 v4.4 z", transform: `translate(${fmt(cx + ux)} ${fmt(cy + uy)}) rotate(${fmt(angle)})`, class: "c-field-head" }));
+        } else {
+          field.append(node("line", { x1: fmt(cx - ux), y1: fmt(cy - uy), x2: fmt(cx + ux), y2: fmt(cy + uy), class: "c-field-line" }));
+        }
+      }
+    }
+    svg.append(field);
+  }
+
   // Curves, clipped to the frame; each label at its last visible point.
   const layer = node("g", { "clip-path": `url(#${id})` });
   const labels: { x: number; y: number; text: string; style: string }[] = [];
@@ -89,7 +138,13 @@ function chart(g: Chart, label: string, size: "large" | "small"): SVGSVGElement 
     }
     const inside = pts.filter(([x, y]) => x >= x0 && x <= x1 && y >= y0 && y <= y1);
     if (pts.length < 2) continue;
-    const d = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"}${fmt(px(x))} ${fmt(py(Math.max(y0 - (y1 - y0), Math.min(y1 + (y1 - y0), y))))}`).join("");
+    // A jump (a gap in x, or an undefined value between samples) breaks the line.
+    let d = "";
+    pts.forEach(([x, y], i) => {
+      const prev = pts[i - 1];
+      const gap = !prev || (c.fn !== undefined && x - prev[0] > (1.5 * (x1 - x0)) / 240);
+      d += `${gap ? "M" : "L"}${fmt(px(x))} ${fmt(py(Math.max(y0 - (y1 - y0), Math.min(y1 + (y1 - y0), y))))}`;
+    });
     layer.append(node("path", { d, class: c.style === "guide" ? "c-guide" : c.style === "alt" ? "c-curve c-alt" : "c-curve" }));
     const end = inside[inside.length - 1];
     if (c.label && end) labels.push({ x: px(end[0]), y: py(end[1]), text: c.label, style: c.style ?? "main" });
@@ -97,8 +152,24 @@ function chart(g: Chart, label: string, size: "large" | "small"): SVGSVGElement 
   svg.append(layer);
   for (const l of labels) {
     const x = Math.min(width - 2, l.x + 3);
-    const y = Math.max(10, Math.min(ay - 4, l.y - 3));
+    const y = Math.max(10, Math.min(height - bottom - 4, l.y - 3));
     svg.append(node("text", { x, y, class: `c-label c-label-${l.style}`, "text-anchor": l.x > width - 30 ? "end" : "start" }, l.text));
+  }
+
+  // Vectors: arrows with their name at the tip.
+  for (const v of g.vectors ?? []) {
+    const [ax0, ay0] = [px(v.from[0]), py(v.from[1])];
+    const [ax1, ay1] = [px(v.to[0]), py(v.to[1])];
+    const angle = (Math.atan2(ay1 - ay0, ax1 - ax0) * 180) / Math.PI;
+    const cls = v.style === "alt" ? "c-vector c-alt" : "c-vector";
+    svg.append(node("line", { x1: fmt(ax0), y1: fmt(ay0), x2: fmt(ax1), y2: fmt(ay1), class: cls }));
+    svg.append(node("path", { d: "M0 0 l-8 -4 v8 z", transform: `translate(${fmt(ax1)} ${fmt(ay1)}) rotate(${fmt(angle)})`, class: `${cls} c-vector-head` }));
+    if (v.label) {
+      const dx = ax1 - ax0;
+      const dy = ay1 - ay0;
+      const n = Math.hypot(dx, dy) || 1;
+      svg.append(node("text", { x: fmt(ax1 + (dx / n) * 10), y: fmt(ay1 + (dy / n) * 10 + 4), class: `c-label c-label-${v.style ?? "main"}`, "text-anchor": "middle" }, v.label));
+    }
   }
 
   for (const a of g.areas ?? []) {
@@ -108,13 +179,17 @@ function chart(g: Chart, label: string, size: "large" | "small"): SVGSVGElement 
     svg.append(node("text", { x: px(cx), y: py(cy) + 4, class: "c-area-label", "text-anchor": "middle" }, a.label));
   }
   for (const p of g.points ?? []) {
-    svg.append(node("circle", { cx: px(p.x), cy: py(p.y), r: 3, class: "g-point" }));
+    svg.append(node("circle", { cx: px(p.x), cy: py(p.y), r: p.open ? 3.4 : 3, class: p.open ? "g-point g-point-open" : "g-point" }));
     if (p.label) svg.append(node("text", { x: px(p.x) + 5, y: py(p.y) - 5, class: "c-label" }, p.label));
   }
   return svg;
 }
 
-const fmtTick = (v: number): string => (Number.isInteger(v) ? String(v) : String(Math.round(v * 100) / 100));
+/** A tick label, with a decimal comma in French and Spanish. */
+const fmtTick = (v: number): string => {
+  const text = Number.isInteger(v) ? String(v) : String(Math.round(v * 100) / 100);
+  return currentLang() === "en" ? text : text.replace(".", ",");
+};
 
 function curves(g: Extract<Graph, { type: "curves" }>, label: string, size: "large" | "small"): SVGSVGElement {
   const unit = 20;

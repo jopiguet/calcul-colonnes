@@ -16,7 +16,7 @@ import { at } from "./discover/astro-i18n";
 import { bt } from "./discover/bio-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
-import { CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
+import { CALC_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -47,6 +47,7 @@ const texts = {
     gcpText: "IAM, comptes de service, réseau et pare-feu, en quatre niveaux",
     economics: "Économie",
     econText: "Fiscalité, bien-être, assurance sociale, travail : notions et graphiques",
+    calcText: "Limites, dérivées, intégrales, séries, plusieurs variables, Itô : notions et graphiques",
     nothingShown: "Aucune activité n'est ouverte pour ce joueur. Elles se choisissent sur la page Compte.",
     chemistryText: "Chimie physique : calculs et notions, Focus par Focus",
     home: "Accueil",
@@ -79,6 +80,7 @@ const texts = {
     gcpText: "IAM, cuentas de servicio, red y firewall, en cuatro niveles",
     economics: "Economía",
     econText: "Impuestos, bienestar, seguro social, trabajo: conceptos y gráficos",
+    calcText: "Límites, derivadas, integrales, series, varias variables, Itô: conceptos y gráficas",
     nothingShown: "No hay ninguna actividad abierta para este jugador. Se eligen en la página Cuenta.",
     chemistryText: "Química física: cálculos y conceptos, Focus por Focus",
     home: "Inicio",
@@ -111,6 +113,7 @@ const texts = {
     gcpText: "IAM, service accounts, networking and firewalls, in four levels",
     economics: "Economics",
     econText: "Taxation, welfare, social insurance, labour: concepts and charts",
+    calcText: "Limits, derivatives, integrals, series, several variables, Itô: concepts and graphs",
     nothingShown: "No activity is open for this player. They are chosen on the Account page.",
     chemistryText: "Physical chemistry: calculations and concepts, Focus by Focus",
     home: "Home",
@@ -159,7 +162,7 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "columns":
       return "columns";
     case "quiz":
-      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : activity.subject === "ts" ? "ts" : activity.subject === "react" ? "react" : activity.subject === "gcp" ? "gcp" : activity.subject === "econ" ? "econ" : "quiz";
+      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : activity.subject === "ts" ? "ts" : activity.subject === "react" ? "react" : activity.subject === "gcp" ? "gcp" : activity.subject === "econ" ? "econ" : activity.subject === "calc" ? "calc" : "quiz";
     case "discover":
       return `discover-${activity.activity}`;
     case "vocab": {
@@ -175,7 +178,7 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
 /** Every activity of the home page, by group: what an account can show or hide for a player. */
 export function activityCatalog(books: VocabBookInfo[]): { group: string; activities: { id: string; title: string }[] }[] {
   return [
-    { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }] },
+    { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }, { id: "calc", title: qt("modeCalc") }] },
     { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
     {
       group: ht("chembio"),
@@ -274,7 +277,9 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
                     ? "gcp"
                     : (ECON_TOPICS as string[]).includes(topic)
                       ? "econ"
-                      : "maths";
+                      : (CALC_TOPICS as string[]).includes(topic)
+                        ? "calc"
+                        : "maths";
   const toReview = (subject: Subject): number =>
     profile ? profile.skills.filter((s) => s.status === "review" && subjectOfTopic(s.topic) === subject).length : 0;
   const reviewStatus = (n: number): { text: string; waiting: boolean } | null =>
@@ -290,6 +295,8 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
       review > 0 ? { text: review === 1 ? ht("oneToReview") : ht("toReview", { count: review }), waiting: true } : null,
       () => ctx.open({ mode: "quiz", subject: "maths" }),
     ),
+    // Calculus: concept questions from the books, and questions read on graphs (docs/question-generators.md#calculus).
+    card("calc", qt("modeCalc"), ht("calcText"), reviewStatus(toReview("calc")), () => ctx.open({ mode: "quiz", subject: "calc" })),
   );
   maths.append(grid);
 

@@ -1,4 +1,4 @@
-import { ECON_LEVELS, ECON_TOPICS, GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { CALC_LEVELS, CALC_TOPICS, ECON_LEVELS, ECON_TOPICS, GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 import { isDiscoverActivity, type DiscoverActivity } from "./discover/activities";
@@ -46,6 +46,9 @@ export interface Settings {
   gcpLevel: Level;
   econTopics: Topic[];
   econLevel: Level;
+  /** Calculus: topics chosen, and level (core or advanced). */
+  calcTopics: Topic[];
+  calcLevel: Level;
   quizCount: number;
   /** Mix the player's recent mistakes into new tests. */
   quizReview: boolean;
@@ -123,7 +126,7 @@ export function loadSettings(): Settings {
     discoverActivity: isDiscoverActivity(saved.discoverActivity) ? saved.discoverActivity : "dice",
     quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
-    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" || saved.quizSubject === "react" || saved.quizSubject === "gcp" || saved.quizSubject === "econ" ? saved.quizSubject : "maths",
+    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" || saved.quizSubject === "react" || saved.quizSubject === "gcp" || saved.quizSubject === "econ" || saved.quizSubject === "calc" ? saved.quizSubject : "maths",
     chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
     linuxTopics: Array.isArray(saved.linuxTopics) && LINUX_TOPICS.some((t) => (saved.linuxTopics as unknown[]).includes(t))
       ? LINUX_TOPICS.filter((t) => (saved.linuxTopics as unknown[]).includes(t))
@@ -154,6 +157,10 @@ export function loadSettings(): Settings {
       ? ECON_TOPICS.filter((t) => (saved.econTopics as unknown[]).includes(t))
       : [...ECON_TOPICS],
     econLevel: ECON_LEVELS.includes(saved.econLevel as Level) ? (saved.econLevel as Level) : "econ",
+    calcTopics: Array.isArray(saved.calcTopics) && CALC_TOPICS.some((t) => (saved.calcTopics as unknown[]).includes(t))
+      ? CALC_TOPICS.filter((t) => (saved.calcTopics as unknown[]).includes(t))
+      : [...CALC_TOPICS],
+    calcLevel: CALC_LEVELS.includes(saved.calcLevel as Level) ? (saved.calcLevel as Level) : "calc",
     chemLevel: CHEMISTRY_LEVELS.includes(saved.chemLevel as Level) ? (saved.chemLevel as Level) : "chemistry",
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,

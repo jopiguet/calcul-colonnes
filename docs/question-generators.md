@@ -16,6 +16,7 @@ way in the browser and on the server.
 | `rust.ts`, `rust/*.ts`, `rust-output.ts` | Rust: the written questions of the four levels, and what a short program prints |
 | `typescript.ts`, `ts/*.ts`, `ts-output.ts` | TypeScript: the written questions of the four levels, and what a short program logs |
 | `econ.ts`, `econ-output.ts`, `econ-model.ts` | Public economics: the kinds by topic and level, the generated questions drawn as charts, and their models |
+| `calc.ts`, `calc-output.ts`, `calc-model.ts` | Calculus: the kinds by topic and level, the generated questions read on graphs, and their models |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
@@ -727,6 +728,77 @@ in their window, and option charts to share it.
 
 Forty-two mistake types, `econStatutoryIncidence` to `econRiskPremiumOnly`.
 
+## Calculus
+
+The calculus test (6.28.0), *∫ Analyse* in the home page's *Mathématiques*
+group, next to the maths QCM (which it does not replace), has two levels,
+`calc` (*Fondamentaux*) and `calcAdvanced` (*Avancé*), and thirteen topics
+in three groups, following the chapters of Stewart's *Calculus*. *Une
+variable*: `calcLimits`, `calcDerivatives`, `calcApplications`,
+`calcIntegrals`, `calcTranscendental`, `calcTechniques`. *Équations
+différentielles, courbes, séries*: `calcOde`, `calcParametric`,
+`calcSeries`. *Plusieurs variables et calcul stochastique*: `calcVectors`,
+`calcMultivariable`, `calcVectorCalculus`, `calcStochastic`.
+
+Like economics, it mixes two sources: concept questions from the
+[question bank](question-bank.md), written from six books (Stewart as the
+spine, with Foerster, Brokate–Manchanda–Siddiqi, Stewart & Day's
+*Biocalculus*, Gründers' *Math Made Clear* and Baldi's *Stochastic
+Calculus*; one unit per chapter, never shipped), and 28 generated kinds
+(`calc-output.ts`), most read on a graph drawn as a `Chart`. Calculus
+charts add what economics did not need: axes through the origin
+(`axes: "origin"`), a square frame for geometry (`square`), a unit grid
+(`grid`), arrows (`vectors`), hollow points for a value not taken, and slope
+or vector fields (`field`). Tick labels take a decimal comma in French and
+Spanish.
+
+| Id | Levels | Asks for | Typical wrong options |
+|---|---|---|---|
+| `calcLimits.limitGraph` | both | a limit read on a graph with a jump, a hole or a removable point | f(a), a one-sided limit, a limit across a jump |
+| `calcLimits.epsilonDelta` | Avancé | the largest δ for a line and an ε (the band L ± ε drawn) | δ = ε, ε times the slope, off by two |
+| `calcDerivatives.secantSlope` | both | the slope of PQ on a parabola | the tangent's slope, the rise alone, run over rise |
+| `calcDerivatives.tangentLine` | both | the tangent at a point of a cubic | f(a) as intercept or slope, a sign |
+| `calcApplications.extremaFromDerivative` | both | where f has a local maximum or minimum, from the graph of f′ | max and min swapped, an inflection point |
+| `calcApplications.newtonMethod` | both | the second Newton iterate (tangent drawn) | x + f/f′, f′/f, a step too many, the root |
+| `calcIntegrals.riemannSum` | both | a left, right or midpoint sum (rectangles drawn) | another method, the integral, Δx forgotten |
+| `calcIntegrals.netArea` | both | net or total area of a broken line, areas shaded by sign | net for total, the part below the axis |
+| `calcIntegrals.areaFunction` | both | g(c) or g′(c) for g(x) = ∫₀ˣ f | g and g′ confused, the wrong bound |
+| `calcTranscendental.halfLife` | both | the half-life of y₀e^{−kt} | 1/k, k ln 2, linear decay |
+| `calcTranscendental.lhopital` | both | a 0/0 limit of eᵃˣ − 1, sin ax or ln(1 + ax) over bx | b/a, 0 or 1, derivatives multiplied |
+| `calcTechniques.numericIntegral` | both | the trapezoid or Simpson value | the other rule, the midpoint, the weights, the exact integral |
+| `calcTechniques.improperIntegral` | both | ∫₁^∞ x⁻ᵖ, or that it diverges | p > 1 turned around, the power off by one |
+| `calcOde.eulerMethod` | both | Euler's approximation after three steps (field and steps drawn) | a step short, the exact solution, the slope at the wrong point |
+| `calcOde.slopeField` | both | which equation has the field drawn | another field |
+| `calcOde.logisticHarvest` | both | the stable equilibrium of logistic growth with harvesting (dN/dt against N) | the unstable one, K, K/2 |
+| `calcParametric.polarRose` | both | the polar equation of a rose | cos and sin, k against 2k petals |
+| `calcParametric.parametricSlope` | both | dy/dx at a parameter value (tangent drawn) | dy/dt, y/x, dx/dy |
+| `calcSeries.geometricSeries` | both | a geometric sum, its partial sums drawn | a/(1 + r), a/r, "diverges" |
+| `calcSeries.taylorGraph` | both | which graph is the Taylor polynomial (**the options are graphs**, the function dashed) | a term short, signs, factorials, the constant |
+| `calcVectors.vectorAngle` | both | the angle between two plane vectors (drawn) | 180° − θ, 90° − θ, 360° − θ |
+| `calcVectors.crossArea` | both | a triangle's area from two vectors in space | the parallelogram, the dot product, &#124;u&#124;&#124;v&#124; |
+| `calcMultivariable.directionalDerivative` | both | D_v f at a point (level curves and v drawn) | &#124;∇f&#124;, one partial, v not normalised |
+| `calcMultivariable.classifyCritical` | both | minimum, maximum, saddle or inconclusive (level curves drawn) | D's sign, f_xy forgotten |
+| `calcVectorCalculus.greenCirculation` | both | ∮ F·dr round a circle, by Green (field drawn) | the curl's sign or half, πR, the perimeter |
+| `calcStochastic.brownianMoments` | both | E, Var, E[W_s W_t] or E[e^{σW}] (a path drawn) | min and max, s·t, the ½ of Itô forgotten |
+| `calcStochastic.itoFormula` | Avancé | the dt term of d(W_tⁿ) | no dt term, the ½ forgotten, the power off |
+| `calcStochastic.geometricBrownian` | Avancé | the mean or median of S_t (a path drawn) | mean and median, +σ²/2, linear growth |
+
+Each question carries its model (`calc-model.ts`), and `check:quiz`
+computes the answer again with an evaluator of its own
+(`server/check-calc.ts`): limits just either side of a, the largest δ by
+bisection, slopes by numerical differences, the sign of f′ scanned for its
+extrema, Newton and Euler stepped again, Riemann, trapezoid and Simpson sums
+taken again, improper integrals by quadrature plus the tail, the half-life
+and the stable equilibrium by bisection, angles by `atan2`, areas from the
+dot product, critical points by the Hessian's eigenvalues, Green's
+circulation as the line integral itself, and the Brownian moments and the
+mean of a geometric Brownian motion by Gaussian quadrature. The
+right option must match within its rounding (absolute, plus 10⁻⁷ of the
+value), and no wrong one may. Charts are checked to stay in their window,
+and two option charts may not be drawn alike.
+
+83 mistake types, `calcOneSided` to `calcGbmLinear`.
+
 ## React
 
 The React test (6.24.0), *⚛️ React* in the home page's *Informatique* group,
@@ -1273,6 +1345,7 @@ mistakes to review. It then checks:
 - **TypeScript:** every program shown type-checked with `tsc` in strict mode and run, its output compared with the options (see [TypeScript](#typescript)); every written TypeScript question checked like the Linux ones.
 - **React:** every component shown type-checked with `tsc` (JSX for React 19) and rendered with React DOM in jsdom, its page or console compared with the options, any React warning a failure (see [React](#react)); every written React question checked like the Linux ones.
 - **Economics:** every generated answer computed again by `server/check-econ.ts` (see [Economics](#economics)); every chart inside its window.
+- **Calculus:** every generated answer computed again by `server/check-calc.ts` (see [Calculus](#calculus)); every chart inside its window, no two option charts alike.
 - **Google Cloud:** every generated answer computed again by `server/check-gcp.ts` (see [Google Cloud](#google-cloud)), policy lines at most 36 characters; every written Google Cloud question checked like the Linux ones.
 - **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.

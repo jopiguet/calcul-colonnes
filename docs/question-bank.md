@@ -1,23 +1,26 @@
 # Question bank
 
-The physical chemistry and public economics tests mix two sources:
+The physical chemistry, public economics and calculus tests mix two sources:
 
 - **Calculations,** generated like the maths questions: one generator per kind, in `shared/quiz/gases.ts`, `firstlaw.ts`, `secondlaw.ts`, `phases.ts`, `mixtures.ts` and `equilibrium.ts`. See [Question generators](question-generators.md#physical-chemistry).
-  For economics, `shared/quiz/econ-output.ts`: see [Question generators › Economics](question-generators.md#economics).
-- **Concept questions,** written from textbooks: the *question bank*. It holds several books (6.26.0): Atkins for chemistry, eight books for economics. They are not in the project. They come from a file the author keeps in `data/`, imported into the database like a vocabulary book. Only the owner's account (the first one) sees them, unless the owner shares them from the Account page; other accounts get an empty bank, and their chemistry tests are calculations only (see [Authentication › Family release](authentication.md#family-release)).
+  For economics, `shared/quiz/econ-output.ts`: see [Question generators › Economics](question-generators.md#economics). For calculus, `shared/quiz/calc-output.ts`: see [Question generators › Calculus](question-generators.md#calculus).
+- **Concept questions,** written from textbooks: the *question bank*. It holds several books (6.26.0): Atkins for chemistry, eight books for economics, six for calculus (6.28.0). They are not in the project. They come from a file the author keeps in `data/`, imported into the database like a vocabulary book. Only the owner's account (the first one) sees them, unless the owner shares them from the Account page; other accounts get an empty bank, and their chemistry tests are calculations only (see [Authentication › Family release](authentication.md#family-release)).
 
 The bank has two levels. **Core** questions join the calculations in the
 *Fondamental* test (level `chemistry`). **Advanced** questions, reasoning and
 derivations a step beyond the course, make the *Avancé* test (level
 `chemistryAdvanced`) on their own: it has no calculations. Economics works
 the same way with `econ` and `econAdvanced`, except that its advanced test
-keeps generated questions too. A test draws only units of its own subject
-(`bankTopicsOf`): a chemistry test never gets an economics unit.
+keeps generated questions too; so does calculus, with `calc` and
+`calcAdvanced`. A test draws only units of its own subject
+(`bankTopicsOf`): a chemistry test never gets an economics unit, an
+economics test never a calculus one.
 
 The book's text and the bank file are never committed or shipped: `data/` is
 excluded from the repository and from every archive. Tests use an invented
-banks, `tests/e2e/fixtures/bank.json` (chemistry) and
-`tests/e2e/fixtures/econ-bank.json` (two invented economics books).
+banks, `tests/e2e/fixtures/bank.json` (chemistry),
+`tests/e2e/fixtures/econ-bank.json` (two invented economics books) and
+`tests/e2e/fixtures/calc-bank.json` (two invented calculus books).
 
 | File | Content |
 |---|---|
@@ -32,6 +35,7 @@ banks, `tests/e2e/fixtures/bank.json` (chemistry) and
 ```sh
 npm run quiz:import -- data/atkins-12-concepts.json            # into the database of .env
 npm run quiz:import -- data/econ-concepts.json                  # the economics books, next to Atkins
+npm run quiz:import -- data/calc-concepts.json                  # the calculus books, next to both
 npm run quiz:import -- data/atkins-12-concepts.json --replace  # a unit moved to another topic or book
 npm run quiz:flags                                              # questions players flagged
 npm run quiz:flags -- --resolve 12                              # mark flag 12 as dealt with
@@ -43,7 +47,7 @@ comma-separated, that the maintenance job imports when the database has no
 bank yet. Later imports are always run by hand.
 
 An import concerns the books of its file only: questions of other books are
-left alone, so the Atkins file and the economics file are imported
+left alone, so the Atkins, economics and calculus files are imported
 separately, in any order. A unit or a question id already belonging to
 another book is refused.
 
@@ -92,8 +96,8 @@ unit says its `book`.
 - **`level`:** `core` (the default) or `advanced`.
 - **Formulas** go between `$…$` and are rendered by KaTeX; an odd number of `$` is refused.
 - **Exactly three wrong answers,** all different from each other and from the right one.
-- **Units** are the book's topics ("1A"). Each belongs to one test topic: `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium`, `quantum`, `atoms`, `spectroscopy`, `resonance`, `statistical`, `kinetics` or `dynamics` (Focuses 1 to 8, 11 to 13, 17 and 18); for economics `econWelfare`, `econMarketFailure`, `econPublicChoice`, `econIncidence`, `econOptimalTax`, `econTaxDesign`, `econSocialInsurance`, `econRedistribution` or `econLabour`. A unit at a level is one kind of question, `topic.conceptsUNIT` or `topic.advancedUNIT` (`gases.concepts1A`, `gases.advanced1A`): its progress and review work like a generator's.
-- **`source`** is shown as a badge on each written question ("Atkins 1A.2", "Gruber 7.1").
+- **Units** are the book's topics ("1A"). Each belongs to one test topic: `gases`, `firstLaw`, `secondLaw`, `phases`, `mixtures`, `equilibrium`, `quantum`, `atoms`, `spectroscopy`, `resonance`, `statistical`, `kinetics` or `dynamics` (Focuses 1 to 8, 11 to 13, 17 and 18); for economics `econWelfare`, `econMarketFailure`, `econPublicChoice`, `econIncidence`, `econOptimalTax`, `econTaxDesign`, `econSocialInsurance`, `econRedistribution` or `econLabour`; for calculus the thirteen `calc…` topics, `calcLimits` to `calcStochastic` (see [Question generators › Calculus](question-generators.md#calculus)). Unit ids are unique across books: the calculus file uses `SW` (Stewart), `FO`, `BK`, `BC`, `MC` and `BD` (Baldi). A unit at a level is one kind of question, `topic.conceptsUNIT` or `topic.advancedUNIT` (`gases.concepts1A`, `gases.advanced1A`): its progress and review work like a generator's.
+- **`source`** is shown as a badge on each written question ("Atkins 1A.2", "Gruber 7.1", "Stewart 14.6").
 
 ## Revisions
 
@@ -131,7 +135,7 @@ answer. Correct the file, import it, then resolve the flag.
 ## Checking a bank file
 
 ```sh
-npm run check:quiz -- --bank data/atkins-12-concepts.json --bank data/econ-concepts.json   # 400 seeds per level with these banks
+npm run check:quiz -- --bank data/atkins-12-concepts.json --bank data/econ-concepts.json --bank data/calc-concepts.json   # 400 seeds per level with these banks
 ```
 
 The usual verification (see [Question generators](question-generators.md#verification)),
@@ -191,3 +195,20 @@ the `balance*.py` files lengthen wrong answers until that is close to chance.
 | Release | Units | Questions |
 |---|---|---|
 | 6.26.0 | 58 units from 8 books, 9 topics | 165 core, 62 advanced |
+
+## The calculus bank
+
+Written in 6.28.0 from six books, Stewart's chapters as the outline and the
+others filling in, one unit per chapter used, ids by book: `SW` Stewart,
+*Calculus* (8th ed.); `FO` Foerster, *Calculus: Concepts and Applications*;
+`BK` Brokate, Manchanda and Siddiqi, *Calculus for Scientists and
+Engineers*; `BC` Stewart and Day, *Biocalculus*; `MC` Gründers, *Math Made
+Clear*; `BD` Baldi, *Stochastic Calculus*. The books' text is extracted into
+`data/calc-text/`; the questions are written in `data/calc-bank/` (one file
+per group of topics, plus `extra*.py` and `balance.py`), and
+`python3 data/calc-bank/assemble.py` builds `data/calc-concepts.json` with
+the same checks as the economics bank.
+
+| Release | Units | Questions |
+|---|---|---|
+| 6.28.0 | 45 units from 6 books, 13 topics | 180 core, 48 advanced |

@@ -310,10 +310,10 @@ async function render(): Promise<void> {
       const user = state.user;
       const subject = state.settings.quizSubject;
       // Physical chemistry: the written questions are part of the tests, on both sides.
-      if (subject === "chemistry" || subject === "econ") await loadBank();
+      if (subject === "chemistry" || subject === "econ" || subject === "calc") await loadBank();
       paint(
         topBar(),
-        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : subject === "ts" ? "modeTs" : subject === "react" ? "modeReact" : subject === "gcp" ? "modeGcp" : subject === "econ" ? "modeEcon" : "modeQuiz"), goHome),
+        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : subject === "ts" ? "modeTs" : subject === "react" ? "modeReact" : subject === "gcp" ? "modeGcp" : subject === "econ" ? "modeEcon" : subject === "calc" ? "modeCalc" : "modeQuiz"), goHome),
         quizView({
           user,
           subject,

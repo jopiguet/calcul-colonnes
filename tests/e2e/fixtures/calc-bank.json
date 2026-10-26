@@ -1,0 +1,310 @@
+{
+ "format": 2,
+ "books": [
+  {
+   "id": "test-calc-a",
+   "title": "Calculus questions written for the tests",
+   "source": "Test C"
+  },
+  {
+   "id": "test-calc-b",
+   "title": "Stochastic questions written for the tests",
+   "source": "Test D"
+  }
+ ],
+ "units": [
+  {
+   "id": "K1",
+   "book": "test-calc-a",
+   "topic": "calcDerivatives",
+   "title": {
+    "en": "Slopes",
+    "fr": "Pentes",
+    "es": "Pendientes"
+   }
+  },
+  {
+   "id": "K2",
+   "book": "test-calc-a",
+   "topic": "calcIntegrals",
+   "title": {
+    "en": "Areas",
+    "fr": "Aires",
+    "es": "Áreas"
+   }
+  },
+  {
+   "id": "K3",
+   "book": "test-calc-b",
+   "topic": "calcStochastic",
+   "title": {
+    "en": "Random walks",
+    "fr": "Marches aléatoires",
+    "es": "Paseos aleatorios"
+   }
+  }
+ ],
+ "questions": [
+  {
+   "id": "K1-01",
+   "unit": "K1",
+   "section": "1.1",
+   "prompt": {
+    "en": "A line rises 6 for every 2 across. What is its slope?",
+    "fr": "Une droite monte de 6 pour 2 en avant. Quelle est sa pente ?",
+    "es": "Una recta sube 6 por cada 2 de avance. ¿Cuál es su pendiente?"
+   },
+   "correct": {
+    "en": "3",
+    "fr": "3",
+    "es": "3"
+   },
+   "wrong": [
+    {
+     "en": "12",
+     "fr": "12",
+     "es": "12"
+    },
+    {
+     "en": "4",
+     "fr": "4",
+     "es": "4"
+    },
+    {
+     "en": "1/3",
+     "fr": "1/3",
+     "es": "1/3"
+    }
+   ],
+   "explanation": {
+    "en": "Rise over run: 6/2.",
+    "fr": "Montée sur avancée : 6/2.",
+    "es": "Subida entre avance: 6/2."
+   }
+  },
+  {
+   "id": "K1-02",
+   "unit": "K1",
+   "section": "1.1",
+   "prompt": {
+    "en": "A constant function has which derivative?",
+    "fr": "Quelle est la dérivée d'une fonction constante ?",
+    "es": "¿Cuál es la derivada de una función constante?"
+   },
+   "correct": {
+    "en": "Zero",
+    "fr": "Zéro",
+    "es": "Cero"
+   },
+   "wrong": [
+    {
+     "en": "One",
+     "fr": "Un",
+     "es": "Uno"
+    },
+    {
+     "en": "The constant",
+     "fr": "La constante",
+     "es": "La constante"
+    },
+    {
+     "en": "None",
+     "fr": "Aucune",
+     "es": "Ninguna"
+    }
+   ],
+   "explanation": {
+    "en": "Its graph is flat.",
+    "fr": "Son graphe est plat.",
+    "es": "Su gráfica es plana."
+   }
+  },
+  {
+   "id": "K1-03",
+   "unit": "K1",
+   "section": "1.1",
+   "prompt": {
+    "en": "Which test-only rule pairs slopes of a curve and its mirror image?",
+    "fr": "Quelle règle d'essai associe les pentes d'une courbe et de son reflet ?",
+    "es": "¿Qué regla de prueba asocia las pendientes de una curva y su reflejo?"
+   },
+   "correct": {
+    "en": "They are reciprocals",
+    "fr": "Elles sont inverses",
+    "es": "Son inversas"
+   },
+   "wrong": [
+    {
+     "en": "They are equal",
+     "fr": "Elles sont égales",
+     "es": "Son iguales"
+    },
+    {
+     "en": "They are opposite",
+     "fr": "Elles sont opposées",
+     "es": "Son opuestas"
+    },
+    {
+     "en": "They add to one",
+     "fr": "Leur somme vaut un",
+     "es": "Suman uno"
+    }
+   ],
+   "explanation": {
+    "en": "Mirroring swaps rise and run.",
+    "fr": "Le reflet échange montée et avancée.",
+    "es": "El reflejo intercambia subida y avance."
+   },
+   "level": "advanced"
+  },
+  {
+   "id": "K2-01",
+   "unit": "K2",
+   "section": "1.1",
+   "prompt": {
+    "en": "A rectangle 3 wide and 2 high has which area?",
+    "fr": "Un rectangle de 3 de large et 2 de haut a quelle aire ?",
+    "es": "¿Qué área tiene un rectángulo de 3 de ancho y 2 de alto?"
+   },
+   "correct": {
+    "en": "6",
+    "fr": "6",
+    "es": "6"
+   },
+   "wrong": [
+    {
+     "en": "5",
+     "fr": "5",
+     "es": "5"
+    },
+    {
+     "en": "10",
+     "fr": "10",
+     "es": "10"
+    },
+    {
+     "en": "9",
+     "fr": "9",
+     "es": "9"
+    }
+   ],
+   "explanation": {
+    "en": "Width times height.",
+    "fr": "Largeur fois hauteur.",
+    "es": "Ancho por alto."
+   }
+  },
+  {
+   "id": "K2-02",
+   "unit": "K2",
+   "section": "1.1",
+   "prompt": {
+    "en": "An area below the axis counts how in a signed sum?",
+    "fr": "Comment compte une aire sous l'axe dans une somme signée ?",
+    "es": "¿Cómo cuenta un área bajo el eje en una suma con signo?"
+   },
+   "correct": {
+    "en": "Negatively",
+    "fr": "Négativement",
+    "es": "Negativamente"
+   },
+   "wrong": [
+    {
+     "en": "Positively",
+     "fr": "Positivement",
+     "es": "Positivamente"
+    },
+    {
+     "en": "Not at all",
+     "fr": "Pas du tout",
+     "es": "Nada"
+    },
+    {
+     "en": "Twice",
+     "fr": "Deux fois",
+     "es": "Dos veces"
+    }
+   ],
+   "explanation": {
+    "en": "Heights below the axis are negative.",
+    "fr": "Les hauteurs sous l'axe sont négatives.",
+    "es": "Las alturas bajo el eje son negativas."
+   }
+  },
+  {
+   "id": "K3-01",
+   "unit": "K3",
+   "section": "1.1",
+   "prompt": {
+    "en": "A fair coin walk starts at 0. What is its expected position later?",
+    "fr": "Une marche à pile ou face part de 0. Quelle est sa position moyenne ensuite ?",
+    "es": "Un paseo con moneda justa empieza en 0. ¿Cuál es su posición media después?"
+   },
+   "correct": {
+    "en": "0",
+    "fr": "0",
+    "es": "0"
+   },
+   "wrong": [
+    {
+     "en": "1",
+     "fr": "1",
+     "es": "1"
+    },
+    {
+     "en": "The number of steps",
+     "fr": "Le nombre de pas",
+     "es": "El número de pasos"
+    },
+    {
+     "en": "−1",
+     "fr": "−1",
+     "es": "−1"
+    }
+   ],
+   "explanation": {
+    "en": "Each step averages zero.",
+    "fr": "Chaque pas est nul en moyenne.",
+    "es": "Cada paso tiene media cero."
+   }
+  },
+  {
+   "id": "K3-02",
+   "unit": "K3",
+   "section": "1.1",
+   "prompt": {
+    "en": "How does the spread of such a walk grow with n steps?",
+    "fr": "Comment croît la dispersion d'une telle marche avec n pas ?",
+    "es": "¿Cómo crece la dispersión de ese paseo con n pasos?"
+   },
+   "correct": {
+    "en": "Like √n",
+    "fr": "Comme √n",
+    "es": "Como √n"
+   },
+   "wrong": [
+    {
+     "en": "Like n",
+     "fr": "Comme n",
+     "es": "Como n"
+    },
+    {
+     "en": "Like n²",
+     "fr": "Comme n²",
+     "es": "Como n²"
+    },
+    {
+     "en": "It stays fixed",
+     "fr": "Elle reste fixe",
+     "es": "Se mantiene fija"
+    }
+   ],
+   "explanation": {
+    "en": "Variances add: n, so the spread is √n.",
+    "fr": "Les variances s'ajoutent : n, d'où √n.",
+    "es": "Las varianzas se suman: n, de ahí √n."
+   },
+   "level": "advanced"
+  }
+ ]
+}

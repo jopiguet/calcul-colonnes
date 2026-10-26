@@ -136,7 +136,7 @@ home page: **Que fait-on, Léa ?**
 
 | Group | Activities | Shows |
 |---|---|---|
-| Mathématiques | 🧮 Calcul en colonnes, 📐 QCM | For the QCM, how many kinds of question are to review |
+| Mathématiques | 🧮 Calcul en colonnes, 📐 QCM, ∫ Analyse | For the QCM and calculus, how many kinds of question are to review |
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche) | Words due today, *À jour*, or the book's number of words if not started |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
@@ -505,6 +505,27 @@ included; what firewall rules or policies do to a packet; a subnet's
 addresses; how many Cloud Run instances a load needs; the availability of
 components in series or in two zones. Each answer has been computed twice,
 by two independent programs.
+
+## Calculus
+
+Activity **∫ Analyse** (*∫ Cálculo*, *∫ Calculus*), in the *Mathématiques*
+group next to the QCM, which it does not replace: multiple-choice tests on
+calculus at two levels, *Fondamentaux* and *Avancé*. Thirteen topics in
+three groups, following the chapters of Stewart's *Calculus*:
+
+| Group | Topics |
+|---|---|
+| Une variable | functions, limits and continuity; derivatives; applications of the derivative (extrema, optimisation, Newton's method); integrals and their applications (areas, volumes, average value, work); exponential, logarithmic and inverse functions (growth and decay, l'Hospital); techniques of integration (parts, substitution, partial fractions, numerical and improper integrals) |
+| Équations différentielles, courbes, séries | differential equations (slope fields, Euler, separable and linear equations, logistic growth, predators and prey, second order); parametric curves and polar coordinates; sequences and series (convergence tests, power series, Taylor) |
+| Plusieurs variables et calcul stochastique | vectors and the geometry of space; partial derivatives and multiple integrals (gradient, Lagrange, polar and spherical coordinates); vector calculus (line integrals, Green, Stokes, divergence); stochastic calculus (Brownian motion, martingales, the Itô integral and formula, stochastic differential equations, Black–Scholes) |
+
+Two kinds of question:
+
+- **Concept questions** from six books: Stewart as the spine, with Foerster, Brokate–Manchanda–Siddiqi, *Biocalculus* (applications to biology and medicine), *Math Made Clear* and Baldi's *Stochastic Calculus*, each with its source as a badge ("Stewart 14.6"). They come from the [question bank](question-bank.md), visible to the owner's account and to those it is shared with.
+- **Questions on a graph:** a limit read where the graph jumps, the slope of a secant or a tangent, where f has a maximum from the graph of f′, a Newton step, a Riemann sum with its rectangles, signed areas, a half-life, a slope field to match with its equation, Euler's method on the field, a polar rose, partial sums of a series, level curves and a gradient, Green's circulation on a vector field, a Brownian path. One asks which graph is a Taylor polynomial: the answers are the graphs themselves. Every answer has been computed twice, by two independent programs.
+
+Without the bank, the tests hold the graph questions only, and the settings
+say so.
 
 ## Public economics
 

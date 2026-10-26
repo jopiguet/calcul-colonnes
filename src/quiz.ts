@@ -22,6 +22,8 @@ import {
   GCP_TOPICS,
   ECON_LEVELS,
   ECON_TOPICS,
+  CALC_LEVELS,
+  CALC_TOPICS,
   currentBank,
   type Subject,
   OPTION_COUNT,
@@ -166,7 +168,7 @@ const promptView = (q: Question): HTMLElement =>
 
 /** The level of this subject's tests. */
 const levelOf = (ctx: QuizContext): Level =>
-  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.subject === "chembio" ? "chembio" : ctx.subject === "sql" ? "sql" : ctx.subject === "rust" ? ctx.settings.rustLevel : ctx.subject === "ts" ? ctx.settings.tsLevel : ctx.subject === "react" ? ctx.settings.reactLevel : ctx.subject === "gcp" ? ctx.settings.gcpLevel : ctx.subject === "econ" ? ctx.settings.econLevel : ctx.settings.quizLevel;
+  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.subject === "chembio" ? "chembio" : ctx.subject === "sql" ? "sql" : ctx.subject === "rust" ? ctx.settings.rustLevel : ctx.subject === "ts" ? ctx.settings.tsLevel : ctx.subject === "react" ? ctx.settings.reactLevel : ctx.subject === "gcp" ? ctx.settings.gcpLevel : ctx.subject === "econ" ? ctx.settings.econLevel : ctx.subject === "calc" ? ctx.settings.calcLevel : ctx.settings.quizLevel;
 
 /** Spanish writes sen and arcsen. */
 const macros = (): Record<string, string> =>
@@ -262,7 +264,9 @@ function chosenTopics(ctx: QuizContext): Topic[] {
                     ? ctx.settings.gcpTopics
                     : ctx.subject === "econ"
                       ? ctx.settings.econTopics
-                      : ctx.settings.quizTopics;
+                      : ctx.subject === "calc"
+                        ? ctx.settings.calcTopics
+                        : ctx.settings.quizTopics;
   const chosen = saved.filter((t) => available.includes(t));
   return chosen.length > 0 ? chosen : available;
 }
@@ -290,25 +294,28 @@ function setupView(ctx: QuizContext): HTMLElement {
   const react = ctx.subject === "react";
   const gcp = ctx.subject === "gcp";
   const econ = ctx.subject === "econ";
-  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : sql ? "sqlSetupTitle" : rust ? "rustSetupTitle" : ts ? "tsSetupTitle" : react ? "reactSetupTitle" : gcp ? "gcpSetupTitle" : econ ? "econSetupTitle" : "setupTitle")));
+  const calc = ctx.subject === "calc";
+  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : sql ? "sqlSetupTitle" : rust ? "rustSetupTitle" : ts ? "tsSetupTitle" : react ? "reactSetupTitle" : gcp ? "gcpSetupTitle" : econ ? "econSetupTitle" : calc ? "calcSetupTitle" : "setupTitle")));
   // No concept questions for this subject in the bank loaded: say so (docs/question-bank.md).
   const banked = (topics: readonly string[]): boolean => bankRevision() > 0 && currentBank().units.some((u) => topics.includes(u.topic));
   if (chemistry && !banked(CHEMISTRY_TOPICS)) wrap.append(el("p", "hint", qt("noBank")));
   if (econ && !banked(ECON_TOPICS)) wrap.append(el("p", "hint", qt("econNoBank")));
+  if (calc && !banked(CALC_TOPICS)) wrap.append(el("p", "hint", qt("calcNoBank")));
 
   // Mathematics: lycée or university. Physical chemistry: core or advanced. Rust: four levels.
   const level = el("fieldset", rust || ts || react || gcp ? "segmented levels-four" : "segmented");
   level.append(el("legend", "field-label", qt("level")));
-  for (const value of chemistry ? CHEMISTRY_LEVELS : rust ? RUST_LEVELS : ts ? TS_LEVELS : react ? REACT_LEVELS : gcp ? GCP_LEVELS : econ ? ECON_LEVELS : MATH_LEVELS) {
+  for (const value of chemistry ? CHEMISTRY_LEVELS : rust ? RUST_LEVELS : ts ? TS_LEVELS : react ? REACT_LEVELS : gcp ? GCP_LEVELS : econ ? ECON_LEVELS : calc ? CALC_LEVELS : MATH_LEVELS) {
     const on = value === testLevel;
     const label = chemistry ? qt(value === "chemistry" ? "chemCore" : "chemAdvanced") : levelName(value);
-    const option = button(on ? "segment on" : "segment", label, () => save(chemistry ? { chemLevel: value } : rust ? { rustLevel: value } : ts ? { tsLevel: value } : react ? { reactLevel: value } : gcp ? { gcpLevel: value } : econ ? { econLevel: value } : { quizLevel: value }));
+    const option = button(on ? "segment on" : "segment", label, () => save(chemistry ? { chemLevel: value } : rust ? { rustLevel: value } : ts ? { tsLevel: value } : react ? { reactLevel: value } : gcp ? { gcpLevel: value } : econ ? { econLevel: value } : calc ? { calcLevel: value } : { quizLevel: value }));
     option.setAttribute("aria-pressed", String(on));
     option.dataset.focus = `level-${value}`;
     level.append(option);
   }
   if (chemistry) level.append(el("p", "hint mode-hint", qt(testLevel === "chemistry" ? "chemCoreHint" : "chemAdvancedHint")));
   if (econ) level.append(el("p", "hint mode-hint", qt(testLevel === "econ" ? "econCoreHint" : "econAdvancedHint")));
+  if (calc) level.append(el("p", "hint mode-hint", qt(testLevel === "calc" ? "calcCoreHint" : "calcAdvancedHint")));
 
   // Topics by group, those of the chosen level only (some exist at one level).
   const available = topicsFor(testLevel);
@@ -328,12 +335,12 @@ function setupView(ctx: QuizContext): HTMLElement {
       box.dataset.focus = `topic-${topic}`;
       box.checked = effective.includes(topic);
       box.addEventListener("change", () => {
-        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : sql ? SQL_TOPICS : rust ? RUST_TOPICS : ts ? TS_TOPICS : react ? REACT_TOPICS : gcp ? GCP_TOPICS : econ ? ECON_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
+        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : sql ? SQL_TOPICS : rust ? RUST_TOPICS : ts ? TS_TOPICS : react ? REACT_TOPICS : gcp ? GCP_TOPICS : econ ? ECON_TOPICS : calc ? CALC_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
         if (chosen.length === 0) {
           box.checked = true; // at least one topic stays selected
           return;
         }
-        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : sql ? { sqlTopics: chosen } : rust ? { rustTopics: chosen } : ts ? { tsTopics: chosen } : react ? { reactTopics: chosen } : gcp ? { gcpTopics: chosen } : econ ? { econTopics: chosen } : { quizTopics: chosen });
+        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : sql ? { sqlTopics: chosen } : rust ? { rustTopics: chosen } : ts ? { tsTopics: chosen } : react ? { reactTopics: chosen } : gcp ? { gcpTopics: chosen } : econ ? { econTopics: chosen } : calc ? { calcTopics: chosen } : { quizTopics: chosen });
       });
       label.append(box, el("span", undefined, topicName(topic)));
       block.append(label);
