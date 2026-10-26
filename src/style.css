@@ -5695,3 +5695,340 @@ svg.graph .c-vector-head {
 svg.graph .c-vector-head.c-alt {
   fill: var(--ball);
 }
+
+/* ---- workbook exercises (src/workbook.ts) ---- */
+
+#app.is-sheet {
+  max-width: 60rem;
+}
+
+.workbook-home,
+.workbook-unit-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.workbook-meta,
+.workbook-progress,
+.workbook-hint {
+  margin: 0;
+  color: var(--muted);
+}
+
+.workbook-progress {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.workbook-continue {
+  align-self: flex-start;
+}
+
+.workbook-units {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 0.5rem;
+}
+
+button.workbook-unit {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  gap: 0 0.5rem;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--paper);
+  border-color: var(--line);
+}
+
+button.workbook-unit:hover {
+  border-color: var(--accent);
+}
+
+.workbook-unit-n {
+  grid-row: span 2;
+  font-family: var(--digits);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.workbook-unit-title {
+  font-weight: 600;
+}
+
+.workbook-unit-status {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.workbook-unit-status.done {
+  color: var(--good);
+}
+
+.workbook-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.workbook-steps {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.workbook-title {
+  text-align: left;
+}
+
+.workbook-exercises {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.workbook-exercise {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.workbook-exercise-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.workbook-exercise-id {
+  font-family: var(--digits);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.workbook-exercise-score {
+  font-weight: 800;
+  color: var(--bad);
+}
+
+.workbook-exercise-score.full {
+  color: var(--good);
+}
+
+/* The book's page, at its own proportions; on a phone it scrolls sideways rather than shrink the writing. */
+.workbook-sheet-scroll {
+  overflow-x: auto;
+}
+
+.workbook-sheet {
+  position: relative;
+  min-width: 42rem;
+  container-type: inline-size;
+  /* The page is paper in both themes. */
+  background: #fff;
+  border-radius: 0.4rem;
+}
+
+.workbook-sheet img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* A field on a dotted line: its bottom on the line, the size of the book's print. */
+.workbook-gap {
+  position: absolute;
+  transform: translateY(-90%);
+  height: 1.3em;
+  min-width: 1.6em;
+  padding: 0 0.2em;
+  font: inherit;
+  font-size: clamp(11px, 1.75cqw, 19px);
+  color: #1d3cc0;
+  background: rgba(255, 249, 196, 0.55);
+  border: none;
+  border-bottom: 2px solid rgba(36, 69, 196, 0.55);
+  border-radius: 0.2em 0.2em 0 0;
+}
+
+.workbook-gap:focus {
+  outline: 2px solid #2445c4;
+  outline-offset: 0;
+  background: #fffbe0;
+}
+
+.workbook-gap.wb-right {
+  color: #11643e;
+  background: rgba(214, 245, 226, 0.92);
+  border-bottom-color: #1d7a4e;
+}
+
+.workbook-gap.wb-wrong,
+.workbook-gap.wb-blank {
+  color: #b42318;
+  background: rgba(255, 226, 222, 0.92);
+  border-bottom-color: #cf3a32;
+}
+
+.workbook-gap.wb-open {
+  background: rgba(232, 236, 255, 0.92);
+}
+
+.workbook-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.4rem 1rem;
+}
+
+.workbook-fields-title {
+  grid-column: 1 / -1;
+  margin: 0.2rem 0 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.workbook-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.workbook-field-n {
+  min-width: 1.8rem;
+  font-family: var(--digits);
+  color: var(--muted);
+}
+
+.workbook-input,
+.workbook-free {
+  flex: 1;
+  min-width: 0;
+  padding: 0.35rem 0.55rem;
+  font: inherit;
+  color: var(--accent);
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 0.5rem;
+}
+
+.workbook-free {
+  grid-column: 1 / -1;
+  resize: vertical;
+}
+
+.workbook-input.wb-right {
+  border-color: var(--good);
+}
+
+.workbook-input.wb-wrong,
+.workbook-input.wb-blank {
+  border-color: var(--bad);
+}
+
+.workbook-key {
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--line);
+}
+
+.workbook-key-note,
+.workbook-key-text {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.workbook-key-text {
+  white-space: pre-wrap;
+  color: var(--ink);
+}
+
+.workbook-key-items {
+  list-style: none;
+  margin: 0.3rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.workbook-key-item {
+  display: grid;
+  grid-template-columns: 1.3rem 2rem 1fr auto;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.workbook-key-mark {
+  font-weight: 800;
+}
+
+.workbook-key-item.wb-right .workbook-key-mark {
+  color: var(--good);
+}
+
+.workbook-key-item.wb-wrong .workbook-key-mark,
+.workbook-key-item.wb-blank .workbook-key-mark {
+  color: var(--bad);
+}
+
+.workbook-key-n {
+  font-family: var(--digits);
+  color: var(--muted);
+}
+
+.workbook-key-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.workbook-key-given,
+.workbook-key-by-you {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.workbook-key-say {
+  display: flex;
+  gap: 0.3rem;
+}
+
+button.tiny {
+  padding: 0.15rem 0.55rem;
+  font-size: 0.8rem;
+}
+
+.workbook-summary:empty {
+  display: none;
+}
+
+.workbook-unit-score {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 7%, var(--paper));
+}
+
+.workbook-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.workbook-save {
+  margin: 0;
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--muted);
+}

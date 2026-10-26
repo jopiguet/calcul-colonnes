@@ -20,6 +20,7 @@ import type {
 } from "../shared/types";
 import type { Bank, Subject } from "../shared/quiz";
 
+import type { ExerciseBookInfo, ExerciseBookView, ExerciseUnitView } from "../shared/exercises/api";
 export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, PastTest, PlayerShare, Profile, SignInMethod, User, UserStats };
 export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabLessonWords, VocabProgress, VocabStats };
 
@@ -95,6 +96,7 @@ export interface AdminState {
   invites: { id: string; note: string; createdAt: number; expiresAt: number; usedAt: number | null; usedBy: string | null }[];
   books: { id: number; title: string; kind: string; term: string; visibility: "private" | "shared" }[];
   bank: "private" | "shared";
+  exerciseBooks: { id: string; title: string; visibility: "private" | "shared" }[];
   feedback: { id: number; at: number; account: string | null; player: string | null; page: string; version: string; text: string }[];
 }
 
@@ -105,6 +107,8 @@ export const admin = {
   bookVisibility: (id: number, visibility: "private" | "shared"): Promise<void> =>
     call(`/admin/books/${id}`, { method: "PUT", body: JSON.stringify({ visibility }) }),
   bankVisibility: (visibility: "private" | "shared"): Promise<void> => call("/admin/bank", { method: "PUT", body: JSON.stringify({ visibility }) }),
+  exerciseBookVisibility: (id: string, visibility: "private" | "shared"): Promise<void> =>
+    call(`/admin/exercise-books/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify({ visibility }) }),
 };
 
 /** "Send feedback": a few lines for the owner. */
@@ -190,4 +194,23 @@ export const vocab = {
     call(`/vocab/stats?userId=${userId}&book=${bookId}&tz=${-new Date().getTimezoneOffset()}`),
   /** The server grades the answer and moves the card between boxes. */
   answer: (answer: VocabAnswer): Promise<VocabAnswerResult> => post("/vocab/answers", answer),
+};
+
+/** Workbook exercises (server/exercises.ts). */
+export const workbook = {
+  books: (userId: number): Promise<ExerciseBookInfo[]> => call(`/exercises/books?userId=${userId}`),
+  book: (userId: number, book: string): Promise<ExerciseBookView> => call(`/exercises/books/${encodeURIComponent(book)}?userId=${userId}`),
+  unit: (userId: number, book: string, unit: number): Promise<ExerciseUnitView> =>
+    call(`/exercises/books/${encodeURIComponent(book)}/units/${unit}?userId=${userId}`),
+  /** What was typed in one exercise, kept as a draft. */
+  save: (userId: number, book: string, exercise: string, answers: Record<string, string[]>): Promise<void> =>
+    call("/exercises/answers", { method: "PUT", body: JSON.stringify({ userId, book, exercise, answers }) }),
+  /** Corrects the unit: the server marks every exercise against the key. */
+  check: (userId: number, book: string, unit: number, answers: Record<string, Record<string, string[]>>): Promise<ExerciseUnitView> =>
+    post("/exercises/check", { userId, book, unit, answers }),
+  /** The player marks an item himself; null gives it back to the key. */
+  override: (userId: number, book: string, exercise: string, item: string, right: boolean | null): Promise<void> =>
+    call("/exercises/override", { method: "PUT", body: JSON.stringify({ userId, book, exercise, item, right }) }),
+  reset: (userId: number, book: string, unit: number): Promise<void> =>
+    call(`/exercises/answers?userId=${userId}&book=${encodeURIComponent(book)}&unit=${unit}`, { method: "DELETE" }),
 };

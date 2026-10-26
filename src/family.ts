@@ -189,6 +189,14 @@ export async function familySection(state: AuthState): Promise<HTMLElement[]> {
         }),
       );
     }
+    for (const book of data.exerciseBooks ?? []) {
+      part.append(
+        row(`✏️ ${book.title}`, book.visibility, async (v) => {
+          await admin.exerciseBookVisibility(book.id, v);
+          book.visibility = v;
+        }),
+      );
+    }
     part.append(
       row(at("bankLabel"), data.bank, async (v) => {
         await admin.bankVisibility(v);

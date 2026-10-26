@@ -590,6 +590,13 @@ it is any one of the readings, in katakana, hiragana or rōmaji. Then also:
 
 Errors: `invalid answer` (400), `unknown user`, `unknown entry` (404).
 
+## Workbook exercises
+
+`/api/exercises/…`: a workbook's units, a unit's exercises with the
+player's answers, drafts, the correction of a unit and the player's own
+marks. Every route and its body are in
+[Workbook exercises › Routes](exercises.md#routes).
+
 ## Authentication
 
 Under `/api/auth`. Errors are `{"error": "<code>"}`; the codes are listed at

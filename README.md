@@ -70,6 +70,8 @@ at *lycée / bachillerato* or university level.
 
 **Calculus** — multiple-choice tests at two levels following the chapters of Stewart's *Calculus*, from limits to vector calculus, with differential equations, series and stochastic calculus (Brownian motion, Itô). Concept questions are written from six books you own (kept out of the project); 28 kinds of question are generated on graphs (a limit at a jump, tangents, Riemann sums, slope fields and Euler, polar roses, Taylor polynomials as answers, level curves, Green's theorem, Brownian paths…), each answer computed again by an independent evaluator.
 
+**Workbook exercises** — the exercises of the English workbooks you own (*Grammar in Use*, *Vocabulary in Use*, *Academic Vocabulary in Use*, *Idioms in Use*), filled in on the book's own pages: each dotted line is a field, the other items get one under the page. A unit is corrected at the end against the book's key, which is read the way the books print it (alternatives, optional words, several gaps, letters); the player can mark an answer the key did not foresee as right. The pages and keys are extracted from your PDFs by a script and never leave `data/`.
+
 **Physical chemistry** — multiple-choice tests from *Atkins' Physical Chemistry* (12th edition), a book you own: Focuses 1 to 8, 11 to 13, 17 and 18, from gases and the laws of thermodynamics to quantum theory, atomic and molecular spectra, NMR and EPR, statistical thermodynamics, kinetics and reaction dynamics.
 
 - Calculations are generated like the maths questions: 122 kinds, from the perfect gas law to the Nernst equation, hydrogenic spectra, rotational lines, Larmor frequencies, partition functions, half-lives, the Arrhenius and Eyring equations and Marcus theory, with data to three significant figures and units in the options. The wrong options are unit slips and real mistakes: °C for K, kJ mixed with J, C_p for C_V, a log₁₀ for a ln, the ions of a salt counted as one particle, electrode potentials weighted by electrons.
@@ -188,6 +190,7 @@ Settings are read from `.env` (see `.env.example`):
 | [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust, 36 TypeScript, 44 React, 40 Google Cloud, 13 economics, 28 calculus and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
+| [Workbook exercises](docs/exercises.md) | Extracting a workbook's exercises from its PDF, importing it, how answers are marked against the key |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |
 | [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |
 | [Database](docs/database.md) | Schema, migrations, SQLite and PostgreSQL |

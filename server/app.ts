@@ -32,6 +32,7 @@ import { ACTIVITY_ID, HIDDEN_MAX, Repository, normalizeCode, type Scope } from "
 import { RateLimit } from "./auth/rate-limit.ts";
 import { VocabStore, vocabRoutes } from "./vocab.ts";
 import { BankStore, bankRoutes, bankVisible } from "./quiz-bank.ts";
+import { ExerciseStore, exerciseRoutes } from "./exercises.ts";
 import { adminRoutes } from "./admin.ts";
 import { APP_VERSION } from "./version.ts";
 import { log } from "./runtime.ts";
@@ -238,6 +239,8 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
 
   const vocabStore = new VocabStore(db);
   data.route("/vocab", vocabRoutes(vocabStore, repository, scope as (c: never) => Scope));
+  const exerciseStore = new ExerciseStore(db);
+  data.route("/exercises", exerciseRoutes(exerciseStore, repository, scope as (c: never) => Scope));
 
   // "Send feedback": a few lines for the owner, with the page and the version.
   data.post("/feedback", async (c) => {
@@ -260,7 +263,7 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
   });
 
   // The owner's page: invitations, who sees which content, feedback.
-  data.route("/admin", adminRoutes({ store, repository, vocab: vocabStore, publicUrl: authConfig.publicUrl, registration: authConfig.registration }));
+  data.route("/admin", adminRoutes({ store, repository, vocab: vocabStore, exercises: exerciseStore, publicUrl: authConfig.publicUrl, registration: authConfig.registration }));
   data.route("/quiz", bankRoutes(bank, repository, scope as (c: never) => Scope));
 
   api.route("/", data);

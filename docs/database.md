@@ -208,6 +208,18 @@ account once shared, `app_settings.bank_visibility`). See
 | `quiz_bank` | `id`, `unit`, `level` (`core` or `advanced`), `section`, `position`; `prompt`, `correct`, `wrong`, `explanation` as JSON by language; `from_revision`, `until_revision` (null while in the file) |
 | `quiz_flags` | `id`, `user_id`, `at`, `skill`, `question` (bank id or formula), `note`, `resolved` |
 
+### Workbook exercises
+
+The exercises of workbooks you own, seen by the owner's account (and by every
+account once a book is shared). See [Workbook exercises](exercises.md).
+
+| Table | Content |
+|---|---|
+| `exercise_books` | `id` ("grammar-in-use-5"), `title`, `source`, `level`, `kind`, `position`, `revision` (raised by each import: images' addresses carry it), `visibility` (`private`, `shared`), `imported_at` |
+| `exercise_units` | `book_id`, `n`, `title` |
+| `exercises` | `book_id`, `id` ("9.4"), `unit`, `position`, `page`, `instruction`, `image` (base64), `image_type`, `width`, `height`, `is_open`, `note`, `key_text`, `items` (JSON: number, key, gaps) |
+| `exercise_answers` | `user_id`, `book_id`, `exercise_id`, `answers` (JSON by item), `results` (JSON: each item's result, the player's marks), `score`, `total`, `checked_at` (null for a draft), `updated_at` |
+
 ### `schema_migrations`
 
 The versions of the migrations already applied.
@@ -251,6 +263,7 @@ runs: add tables and columns, rename or drop later.
 | `026_bank_books` | The bank holds several books: `quiz_bank_books`, filled from the old `book`, `title`, `source` meta keys (then removed); `book` on `quiz_bank_units`. |
 | `027_econ_levels` | `quiz_results.level` accepts `econ` and `econAdvanced`. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `028_calc_levels` | `quiz_results.level` accepts `calc` and `calcAdvanced`. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `029_exercises` | Workbook exercises: `exercise_books`, `exercise_units`, `exercises`, `exercise_answers`. |
 
 **File names.**
 

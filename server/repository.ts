@@ -424,6 +424,7 @@ export class Repository {
         ),
         vocabularyAnswers: await all("SELECT * FROM vocab_answers WHERE user_id = $1 ORDER BY at", [id]),
         vocabularySkipped: await all("SELECT * FROM vocab_skips WHERE user_id = $1", [id]),
+        exerciseAnswers: await all("SELECT book_id, exercise_id, answers, results, score, total, checked_at, updated_at FROM exercise_answers WHERE user_id = $1 ORDER BY book_id, exercise_id", [id]),
       });
     }
     const sharedWithMe = await all(

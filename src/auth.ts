@@ -3,7 +3,7 @@ import { activityCatalog, vocabBooks } from "./home";
 import { at, errorText, type AuthKey } from "./auth-i18n";
 import { button, el } from "./dom";
 import { currentLang, t } from "./i18n";
-import { ApiError, auth, store } from "./store";
+import { ApiError, auth, store, workbook } from "./store";
 import { dataSection, familySection } from "./family";
 
 /**
@@ -286,7 +286,9 @@ export async function accountView(ctx: AccountContext): Promise<HTMLElement> {
 
   // ---- players: what each one sees, sharing, their own sign-in
   const books = await vocabBooks().catch(() => [] as VocabBookInfo[]);
-  const catalog = activityCatalog(books);
+  // The workbooks this account sees (the first player's view of them is enough for their names).
+  const exerciseBooks = ctx.players[0] ? await workbook.books(ctx.players[0].id).catch(() => []) : [];
+  const catalog = activityCatalog(books, exerciseBooks);
   wrap.append(el("h2", "subtitle", at("players")), el("p", "hint left", at("playersHint")));
   for (const player of ctx.players) {
     const block = el("div", "player-login");

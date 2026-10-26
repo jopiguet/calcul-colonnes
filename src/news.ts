@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.29.0",
+    fr: ["✏️ Exercices des livres : les exercices de tes livres d'anglais (Grammar in Use, Vocabulary in Use, Idioms in Use…), à remplir sur la page même, corrigés à la fin de chaque unité."],
+    es: ["✏️ Ejercicios de los libros: los ejercicios de tus libros de inglés (Grammar in Use, Vocabulary in Use, Idioms in Use…), para rellenar en la misma página, corregidos al final de cada unidad."],
+    en: ["✏️ Book exercises: the exercises of your English workbooks (Grammar in Use, Vocabulary in Use, Idioms in Use…), filled in on the page itself, corrected at the end of each unit."],
+  },
+  {
     version: "6.28.0",
     fr: ["∫ Analyse : un nouveau QCM d'analyse, des limites au calcul stochastique, avec des questions sur des graphiques (tangentes, sommes de Riemann, champs de pentes, polynômes de Taylor…). Le QCM de maths reste là."],
     es: ["∫ Cálculo: un nuevo test de cálculo, de los límites al cálculo estocástico, con preguntas sobre gráficas (tangentes, sumas de Riemann, campos de pendientes, polinomios de Taylor…). El test de matemáticas sigue ahí."],

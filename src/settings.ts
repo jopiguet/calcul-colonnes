@@ -20,6 +20,9 @@ export interface Settings {
   vocabBook: number | null;
   /** The shelf open in the "vocab" activity (language studied, "de"): its page when no book is open, the way back from a book. */
   vocabShelf: string | null;
+  /** Workbook open in the "workbook" activity (its id), and its unit (null: the book's page). */
+  workbookBook: string | null;
+  workbookUnit: number | null;
   /** Lab open in the "discover" activity. */
   discoverActivity: DiscoverActivity;
   /** The mathematics test's level ("school" or "university"). */
@@ -56,7 +59,7 @@ export interface Settings {
   quizMode: AnswerMode;
 }
 
-export type Mode = "home" | "columns" | "quiz" | "vocab" | "discover";
+export type Mode = "home" | "columns" | "quiz" | "vocab" | "discover" | "workbook";
 
 export const OPERATORS: Operator[] = ["+", "−", "×", "÷"];
 
@@ -120,7 +123,9 @@ export function loadSettings(): Settings {
     ? CHEMISTRY_TOPICS.filter((topic) => (saved.chemTopics as unknown[]).includes(topic))
     : [];
   return {
-    mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" || saved.mode === "discover" ? saved.mode : "home",
+    mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" || saved.mode === "discover" || saved.mode === "workbook" ? saved.mode : "home",
+    workbookBook: typeof saved.workbookBook === "string" && /^[a-z0-9][a-z0-9-]{1,60}$/.test(saved.workbookBook) ? saved.workbookBook : null,
+    workbookUnit: typeof saved.workbookUnit === "number" && Number.isInteger(saved.workbookUnit) && saved.workbookUnit >= 0 ? saved.workbookUnit : null,
     vocabBook: typeof saved.vocabBook === "number" && saved.vocabBook > 0 ? saved.vocabBook : null,
     vocabShelf: typeof saved.vocabShelf === "string" && /^[a-z]{2,3}$/.test(saved.vocabShelf) ? saved.vocabShelf : null,
     discoverActivity: isDiscoverActivity(saved.discoverActivity) ? saved.discoverActivity : "dice",

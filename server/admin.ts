@@ -3,6 +3,7 @@ import type { AppEnv } from "./auth/middleware.ts";
 import type { AuthStore } from "./auth/store.ts";
 import type { Repository } from "./repository.ts";
 import type { VocabStore } from "./vocab.ts";
+import type { ExerciseStore } from "./exercises.ts";
 
 /**
  * The owner's page (docs/authentication.md#family-release): invitations to
@@ -25,10 +26,11 @@ export function adminRoutes(deps: {
   store: AuthStore;
   repository: Repository;
   vocab: VocabStore;
+  exercises: ExerciseStore;
   publicUrl: URL;
   registration: "open" | "invite" | "closed";
 }): Hono<AppEnv> {
-  const { store, repository, vocab } = deps;
+  const { store, repository, vocab, exercises } = deps;
   const admin = new Hono<AppEnv>();
   admin.use("*", ownerOnly);
 
@@ -39,6 +41,7 @@ export function adminRoutes(deps: {
       invites: await store.invites(),
       books: books.map((b) => ({ id: b.id, title: b.title, kind: b.kind, term: b.term, visibility: b.visibility })),
       bank: (await repository.setting("bank_visibility")) === "shared" ? "shared" : "private",
+      exerciseBooks: (await exercises.books(true, 0)).map((b) => ({ id: b.id, title: b.title, visibility: b.visibility })),
       feedback: await repository.feedback(FEEDBACK_SHOWN),
     });
   });
@@ -65,6 +68,15 @@ export function adminRoutes(deps: {
     const visibility = body.visibility;
     if (!Number.isInteger(id) || id < 1 || (visibility !== "private" && visibility !== "shared")) return c.json({ error: "invalid" }, 400);
     return (await vocab.setVisibility(id, visibility)) ? c.body(null, 204) : c.json({ error: "unknown_book" }, 404);
+  });
+
+  /** A workbook's exercises: the owner only, or every account. */
+  admin.put("/exercise-books/:id", async (c) => {
+    const id = c.req.param("id");
+    const body = ((await c.req.json().catch(() => null)) ?? {}) as Record<string, unknown>;
+    const visibility = body.visibility;
+    if (!/^[a-z0-9][a-z0-9-]{1,60}$/.test(id) || (visibility !== "private" && visibility !== "shared")) return c.json({ error: "invalid" }, 400);
+    return (await exercises.setVisibility(id, visibility)) ? c.body(null, 204) : c.json({ error: "unknown_book" }, 404);
   });
 
   /** The written questions of the bank: the owner only, or every account. */

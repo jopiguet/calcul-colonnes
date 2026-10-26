@@ -40,6 +40,7 @@ if (postgres) {
   const { account } = await store.createAccount(OWNER_EMAIL, "Owner");
   await store.addCredential({ accountId: account.id, playerId: null, type: "password", provider: "", subject: OWNER_EMAIL, secret: await hashPassword(OWNER_PASSWORD), label: OWNER_EMAIL });
   await db.query("UPDATE vocab_books SET visibility = 'shared'");
+  await db.query("UPDATE exercise_books SET visibility = 'shared'");
   await db.query("INSERT INTO app_settings (key, value) VALUES ('bank_visibility', 'shared')");
   await db.close();
 }

@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
 import { migrate } from "./db/migrate.ts";
@@ -8,12 +8,14 @@ import { bookIdOf, importVocabFile } from "./vocab-import.ts";
 import { VocabStore } from "./vocab.ts";
 import { BankStore } from "./quiz-bank.ts";
 import { importBankFile } from "./quiz-import.ts";
+import { ExerciseStore } from "./exercises.ts";
 
 /**
  * Everything the database needs before a server version may serve it:
  * migrations, answers and mistakes rebuilt for older tests, vocabulary books
  * from VOCAB_FILE not yet imported, the question bank from QUIZ_BANK_FILE when
- * the server has none, expired sessions removed.
+ * the server has none, workbooks from EXERCISE_BOOKS not yet imported,
+ * expired sessions removed.
  *
  * Locally it runs at every start (as before). On Cloud Run it runs once per
  * release as a job (`node dist-server/index.js maintenance`), so instances
@@ -57,6 +59,24 @@ export async function maintain(db: Database): Promise<void> {
       if (present.has(bookIdOf(file))) continue;
       const report = await importVocabFile(db, file);
       log.info(`vocabulary imported from ${file}: book "${report.book}", ${report.lessons} lessons, ${report.entries} entries`);
+    }
+  }
+
+  // EXERCISE_BOOKS: folders made by tools/exercises-extract.py, comma-separated.
+  // Each book not yet on the server is imported once; later: npm run exercises:import.
+  const exerciseDirs = (process.env.EXERCISE_BOOKS ?? "").split(",").map((f) => f.trim()).filter(Boolean);
+  if (exerciseDirs.length > 0) {
+    const exercises = new ExerciseStore(db);
+    const present = new Set((await exercises.books(true, 0)).map((b) => b.id));
+    for (const dir of exerciseDirs) {
+      if (!existsSync(`${dir}/book.json`)) {
+        log.warn(`exercises: EXERCISE_BOOKS ${dir} has no book.json`);
+        continue;
+      }
+      const id = (JSON.parse(readFileSync(`${dir}/book.json`, "utf8")) as { book?: { id?: string } }).book?.id ?? "";
+      if (present.has(id)) continue;
+      const report = await exercises.importFolder(dir);
+      log.info(`exercises imported from ${dir}: book "${report.book}", ${report.exercises} exercises`);
     }
   }
 

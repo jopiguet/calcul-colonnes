@@ -65,6 +65,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `vocab-extract-japanese.py` | *Japanese vocabulary for English speakers* EPUB → vocabulary file (standard library only) |
 | `vocab-extract-lernwortschatz.py` | *Lernwortschatz* word lists (Markdown tables, a folder or a zip) → vocabulary file (standard library only) |
 | `vocab-extract-nietzsche.py` | Nietzsche vocabulary CSV → vocabulary file (standard library only) |
+| `exercises-extract.py` | A workbook's PDF (*in Use* series) → exercise book: cropped exercises, their gaps, the key; Tesseract for scans (PyMuPDF, OpenCV, Pillow, pytesseract). See [Workbook exercises](exercises.md). |
 
 ### `public/` — copied as is into the build
 
@@ -101,6 +102,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `check-gcp.ts` | The Google Cloud answers computed again for `check:quiz` (IAM, firewalls, subnets, Cloud Run, availability) |
 | `check-econ.ts` | The economics answers computed again for `check:quiz` (incidence, areas, Pigou, Samuelson, Gini, monopsony, insurance…) |
 | `check-calc.ts` | The calculus answers computed again for `check:quiz` (limits, slopes, Newton, Riemann and Simpson sums, Euler, Taylor, Green, Brownian moments…) |
+| `check-exercises.ts` | The marking of workbook answers against the key (`npm run check:exercises`) |
 | `quiz-bank.ts` | Question bank storage, import, flags; `/api/quiz/bank`, `/api/quiz/flags`. See [Question bank](question-bank.md). |
 | `quiz-import.ts`, `quiz-flags.ts` | `npm run quiz:import`, `npm run quiz:flags` |
 | `vocab.ts` | Vocabulary storage, import, sessions, answers; `/api/vocab` |
@@ -110,6 +112,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `check-physics.ts` | `npm run check:physics` |
 | `check-astronomy.ts`, `check-biology.ts` | `npm run check:astronomy`, `npm run check:biology` |
 | `check-tour.ts` | `npm run check:tour` |
+| `npm run check:exercises` | Marking workbook answers: invented cases of every rule of the keys; with a book's folder, each item's key typed back. See [Workbook exercises](exercises.md#marking). | a second |
 | `copy-to-postgres.ts` | One-off copy SQLite → PostgreSQL |
 
 ### TypeScript projects

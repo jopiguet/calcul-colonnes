@@ -7,7 +7,10 @@ import { button, el } from "./dom";
 import { appFooter, newsBanner } from "./news";
 import { currentLang, type Lang } from "./i18n";
 import { qt } from "./quiz-i18n";
-import { store, vocab, type User, type VocabBookInfo, type VocabProgress } from "./store";
+import { store, vocab, workbook, type User, type VocabBookInfo, type VocabProgress } from "./store";
+import { workbookStatus } from "./workbook";
+import { wt } from "./workbook-i18n";
+import type { ExerciseBookInfo } from "../shared/exercises/api";
 import { bookTitle, shelfApart, shelvesOf } from "./vocab";
 import { langName, vt } from "./vocab-i18n";
 import { dt } from "./discover/i18n";
@@ -130,7 +133,9 @@ export type Activity =
   | { mode: "vocab"; book: number }
   /** The books of one language studied, together (src/vocab.ts, shelvesOf). */
   | { mode: "shelf"; lang: string }
-  | { mode: "discover"; activity: DiscoverActivity };
+  | { mode: "discover"; activity: DiscoverActivity }
+  /** A workbook's exercises (src/workbook.ts). */
+  | { mode: "workbook"; book: string };
 
 export interface HomeContext {
   user: User;
@@ -172,11 +177,13 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "shelf":
       // Not hidden on its own: it holds the player's books that are not.
       return null;
+    case "workbook":
+      return `workbook-${activity.book}`;
   }
 }
 
 /** Every activity of the home page, by group: what an account can show or hide for a player. */
-export function activityCatalog(books: VocabBookInfo[]): { group: string; activities: { id: string; title: string }[] }[] {
+export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseBookInfo[] = []): { group: string; activities: { id: string; title: string }[] }[] {
   return [
     { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }, { id: "calc", title: qt("modeCalc") }] },
     { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
@@ -194,7 +201,10 @@ export function activityCatalog(books: VocabBookInfo[]): { group: string; activi
     { group: ht("economics"), activities: [{ id: "econ", title: qt("modeEcon") }] },
     {
       group: ht("languages"),
-      activities: books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
+      activities: [
+        ...books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
+        ...exerciseBooks.map((b) => ({ id: `workbook-${b.id}`, title: `✏️ ${b.source}` })),
+      ],
     },
     {
       group: dt("group"),
@@ -249,10 +259,11 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   wrap.append(head);
 
   // What is waiting, fetched together; a failure leaves the cards without status.
-  const [profile, books, progress] = await Promise.all([
+  const [profile, books, progress, exerciseBooks] = await Promise.all([
     store.profile(ctx.user.id).catch(() => null),
     vocabBooks().catch(() => [] as VocabBookInfo[]),
     vocab.progress(ctx.user.id).catch(() => null as VocabProgress | null),
+    workbook.books(ctx.user.id).catch(() => [] as ExerciseBookInfo[]),
   ]);
 
   const maths = el("div", "activity-group");
@@ -389,7 +400,11 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
       ),
     );
   }
-  if (books.length === 0) shelf.append(el("p", "empty small", ht("noBooks")));
+  // Workbooks: the exercises of a book, filled in on its pages (docs/exercises.md).
+  for (const b of exerciseBooks) {
+    shelf.append(card(`workbook-${b.id}`, `✏️ ${b.source}`, `${b.title} · ${wt("homeText")}`, workbookStatus(b), () => ctx.open({ mode: "workbook", book: b.id })));
+  }
+  if (books.length === 0 && exerciseBooks.length === 0) shelf.append(el("p", "empty small", ht("noBooks")));
   languages.append(shelf);
 
   // Discover: experiments rather than exercises (docs/discover.md).

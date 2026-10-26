@@ -31,6 +31,7 @@ if (!db) {
 try {
   const { migrate } = await import("./db/migrate.ts");
   const { VocabStore } = await import("./vocab.ts");
+  const { ExerciseStore } = await import("./exercises.ts");
   await migrate(db);
   const config: AuthConfig = {
     publicUrl: new URL("http://localhost:8787"),
@@ -55,6 +56,8 @@ try {
       });
       const set = response.headers.get("set-cookie");
       if (set) cookie = set.split(";")[0]!;
+      // An image is not JSON: its status is enough.
+      if (!(response.headers.get("content-type") ?? "").includes("json")) return { status: response.status, json: null };
       const text = await response.text();
       return { status: response.status, json: text ? (JSON.parse(text) as Record<string, unknown>) : null };
     };
@@ -71,6 +74,9 @@ try {
     book: { id: "kana", title: "Kana", kind: "characters", term: "ja", meaning: "en" },
     lessons: [{ title: "L", subtitle: "", sections: [{ title: "S", subtitle: "", entries: [{ term: "あ", meaning: "a" }, { term: "い", meaning: "i" }] }] }],
   });
+
+  // A workbook of the owner's: the invented one of the browser tests.
+  await new ExerciseStore(db).importFolder("tests/e2e/fixtures/exercise-book");
 
   // The first account: no invitation needed, and it is the owner.
   const owner = browser();
@@ -113,6 +119,15 @@ try {
   const ownedEntry = Number((await db.query("SELECT e.id FROM vocab_entries e WHERE e.term = 'uno'"))[0]!.id);
   expect("member: a session of the owner's book refused", (await rosa("GET", `/api/vocab/session?userId=${player.id}&kind=all&id=${ownedId}&purpose=learn&size=15&mode=choice`)).status, 404);
   expect("member: an answer in it refused", (await rosa("POST", "/api/vocab/answers", { userId: player.id, entryId: ownedEntry, direction: "recognise", mode: "choice", given: "one" })).status, 404);
+
+  // The owner's workbook: not hers either, nor its images, until shared.
+  expect("member: no workbook", (await rosa("GET", `/api/exercises/books?userId=${player.id}`)).json, []);
+  expect("member: a unit refused", (await rosa("GET", `/api/exercises/books/test-workbook/units/1?userId=${player.id}`)).status, 404);
+  expect("member: an image refused", (await rosa("GET", "/api/exercises/image/test-workbook/1.1")).status, 404);
+  expect("member: a correction refused", (await rosa("POST", "/api/exercises/check", { userId: player.id, book: "test-workbook", unit: 1, answers: {} })).status, 404);
+  expect("owner shares the workbook", (await owner("PUT", "/api/admin/exercise-books/test-workbook", { visibility: "shared" })).status, 204);
+  expect("member: the workbook seen", ((await rosa("GET", `/api/exercises/books?userId=${player.id}`)).json as { id: string }[]).map((b) => b.id), ["test-workbook"]);
+  expect("member: an image now", (await rosa("GET", "/api/exercises/image/test-workbook/1.1")).status, 200);
 
   // Shared by the owner: seen.
   expect("owner shares the book", (await owner("PUT", `/api/admin/books/${ownedId}`, { visibility: "shared" })).status, 204);

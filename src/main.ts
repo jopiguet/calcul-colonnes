@@ -38,6 +38,8 @@ import { at as astroText } from "./discover/astro-i18n";
 import { bt as bioText } from "./discover/bio-i18n";
 import { dt } from "./discover/i18n";
 import { progressView, type ProgressScope } from "./progress";
+import { workbookView } from "./workbook";
+import { wt } from "./workbook-i18n";
 import { resetTour, tourView } from "./tour";
 
 const NAME_LENGTH = 20;
@@ -146,14 +148,14 @@ let lastScreen = "";
 async function render(): Promise<void> {
   // The privacy page, signed in or not; its button goes back where it came from.
   if (location.hash === "#privacy") {
-    app.classList.remove("is-landing", "is-wide");
+    app.classList.remove("is-landing", "is-wide", "is-sheet");
     app.replaceChildren(topBar(), privacyView(state.options, () => (history.length > 1 ? history.back() : (location.hash = ""))));
     window.scrollTo(0, 0);
     lastScreen = "privacy";
     return;
   }
   if (state.auth?.authenticated && location.hash === "#tour") {
-    app.classList.remove("is-landing", "is-wide");
+    app.classList.remove("is-landing", "is-wide", "is-sheet");
     if (lastScreen !== "tour") window.scrollTo(0, 0);
     app.replaceChildren(topBar(), tourView({ playerSession: playerSession(), onDone: () => (leaveTour(), goHome()) }));
     lastScreen = "tour";
@@ -181,10 +183,13 @@ async function render(): Promise<void> {
   // The width changes with the content, once it is ready: the screen being
   // left keeps its own width while the next one loads.
   const wide = Boolean(state.user) && ((state.view === "play" && state.settings.mode === "home") || (state.view === "progress" && progressScope === "all"));
+  // A workbook's pages are as wide as the book's.
+  const bookPage = Boolean(state.user) && state.view === "play" && state.settings.mode === "workbook";
   // Another screen opens at its top; the same screen redrawn (a choice, an answer) stays where it was.
-  const screenOf = [state.view, state.settings.mode, state.settings.quizSubject, state.settings.discoverActivity, state.settings.vocabBook, state.settings.vocabShelf, progressScope].join("|");
+  const screenOf = [state.view, state.settings.mode, state.settings.quizSubject, state.settings.discoverActivity, state.settings.vocabBook, state.settings.vocabShelf, state.settings.workbookBook, state.settings.workbookUnit, progressScope].join("|");
   const paint = (...nodes: Node[]): void => {
     app.classList.toggle("is-wide", wide);
+    app.classList.toggle("is-sheet", bookPage);
     // The kind of page counts too: a test's setup, a question and the result are three screens.
     const screen = [screenOf, ...nodes.map((n) => (n instanceof Element ? n.className : ""))].join("|");
     const y = window.scrollY;
@@ -301,6 +306,23 @@ async function render(): Promise<void> {
           rerender: () => void render(),
         }),
       );
+    } else if (state.settings.mode === "workbook") {
+      const book = state.settings.workbookBook;
+      if (!book) return goHome();
+      paint(
+        topBar(),
+        activityBar(`✏️ ${wt("home")}`, goHome),
+        await workbookView({
+          user: state.user,
+          book,
+          unit: state.settings.workbookUnit,
+          openUnit: (unit) => {
+            updateSettings({ workbookUnit: unit });
+            void render();
+          },
+          rerender: () => void render(),
+        }),
+      );
     } else if (state.settings.mode === "discover") {
       const physics = PHYSICS_LABS.includes(state.settings.discoverActivity);
       const astronomy = ASTRONOMY_LABS.includes(state.settings.discoverActivity);
@@ -392,6 +414,8 @@ async function hiddenNow(user: User): Promise<boolean> {
         ? { mode: "quiz", subject: quizSubject }
         : mode === "discover"
           ? { mode: "discover", activity: discoverActivity }
+          : mode === "workbook"
+            ? state.settings.workbookBook ? { mode: "workbook", book: state.settings.workbookBook } : null
           : mode === "vocab"
             ? vocabShelf && vocabBook === null
               ? { mode: "shelf", lang: vocabShelf }
@@ -407,6 +431,7 @@ function open(activity: Activity): void {
   if (activity.mode === "vocab") updateSettings({ mode: "vocab", vocabBook: activity.book, vocabShelf: null });
   else if (activity.mode === "shelf") updateSettings({ mode: "vocab", vocabBook: null, vocabShelf: activity.lang });
   else if (activity.mode === "discover") updateSettings({ mode: "discover", discoverActivity: activity.activity });
+  else if (activity.mode === "workbook") updateSettings({ mode: "workbook", workbookBook: activity.book, workbookUnit: null });
   else if (activity.mode === "quiz") updateSettings({ mode: "quiz", quizSubject: activity.subject ?? "maths" });
   else updateSettings({ mode: activity.mode });
   if (activity.mode === "columns") next();

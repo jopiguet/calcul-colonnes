@@ -137,7 +137,7 @@ home page: **Que fait-on, Léa ?**
 | Group | Activities | Shows |
 |---|---|---|
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM, ∫ Analyse | For the QCM and calculus, how many kinds of question are to review |
-| Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche) | Words due today, *À jour*, or the book's number of words if not started |
+| Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche); ✏️ one per workbook (*Grammar in Use*…) | Words due today, *À jour*, or the book's number of words if not started; for a workbook, exercises corrected and score |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
 | Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud | Kinds of question to review, for each |
@@ -698,6 +698,39 @@ spaces its next review: 10 minutes, then 1, 3, 7, 16 and 35 days. A wrong
 answer sends it back to the first box. A few minutes a day is enough; a long
 session once a week is less effective. The method is described in
 [Vocabulary › The learning method](vocabulary.md#the-learning-method).
+
+## Workbook exercises
+
+Activity **✏️** and the book's name (*Grammar in Use*, *Vocabulary Advanced*…),
+in the *Langues* group, one card per workbook: the exercises of an English
+workbook you own, filled in on its own pages (see [Workbook exercises](exercises.md)
+to add a book).
+
+**The book's page** lists its units, each with its exercises corrected and
+the score (*3/4 · 85 %*). *Continuer : unité 12* opens the first unit not
+finished.
+
+**A unit's page** shows its exercises as the book prints them:
+
+- On every dotted line of the page, a field: write in it as in the book. A
+  line already filled in is the book's worked example.
+- Items without a line (circle the right word, match, rewrite a sentence)
+  have their fields under the page, numbered like the items.
+- What you type is kept as you go (*Enregistré*): leave and come back later.
+- *Corriger l'unité*, at the bottom, corrects every exercise of the unit:
+  fields turn green or red; under each exercise, the key, item by item, with
+  your answer next to a wrong one, and the exercise's score; the unit's score
+  above the buttons.
+- *J'avais juste*: the key gives one or two answers, and yours may be good
+  too; this marks it right (*noté par toi*). *Annuler* gives the item back to
+  the key. Changing the answer and correcting again drops your mark.
+- Free exercises (*Over to you*, *Example answers*): the key's example is
+  shown; mark yourself *Juste* or *Faux*.
+- *Corriger à nouveau* after changes; *Recommencer l'unité* erases the
+  unit's answers; *Unité 13 →* goes on.
+
+On a phone the page keeps the size of the book's print and scrolls sideways
+inside its frame; a tablet or a computer shows it whole.
 
 ## Discover
 
