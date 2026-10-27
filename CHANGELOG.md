@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.29.1
+
+- **Home page:** the workbooks have a group of their own, *✏️ Exercices des livres*, after *Langues*, which keeps the vocabulary books; *Chimie et biologie* moves to the end. The account page lists the activities in the same order.
+- **Tests:** the workbook test checks the groups' order.
+
 ## 6.29.0
 
 - **A new activity, ✏️ workbook exercises** (see [Workbook exercises](docs/exercises.md) and [User guide › Workbook exercises](docs/user-guide.md#workbook-exercises)): the exercises of the English workbooks you own, filled in on the book's own pages, one card per book in the *Langues* group.

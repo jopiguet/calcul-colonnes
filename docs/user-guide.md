@@ -137,14 +137,15 @@ home page: **Que fait-on, Léa ?**
 | Group | Activities | Shows |
 |---|---|---|
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM, ∫ Analyse | For the QCM and calculus, how many kinds of question are to review |
-| Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche); ✏️ one per workbook (*Grammar in Use*…) | Words due today, *À jour*, or the book's number of words if not started; for a workbook, exercises corrected and score |
+| Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche) | Words due today, *À jour*, or the book's number of words if not started |
+| Exercices des livres | ✏️ one per workbook (*Grammar in Use*, *Vocabulary Advanced*…) | Exercises corrected and score, or the book's number of exercises |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
-| Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
 | Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud | Kinds of question to review, for each |
 | Économie | 🏛️ Économie publique | Kinds of question to review |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
+| Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
 
 Click an activity to open it. Every activity has *← Accueil* at the top to
 come back.
@@ -702,7 +703,7 @@ session once a week is less effective. The method is described in
 ## Workbook exercises
 
 Activity **✏️** and the book's name (*Grammar in Use*, *Vocabulary Advanced*…),
-in the *Langues* group, one card per workbook: the exercises of an English
+in its own group, *Exercices des livres*, after *Langues*, one card per workbook: the exercises of an English
 workbook you own, filled in on its own pages (see [Workbook exercises](exercises.md)
 to add a book).
 

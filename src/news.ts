@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.29.1",
+    fr: ["Sur l'accueil, les exercices des livres ont leur propre groupe, à côté du vocabulaire ; Chimie et biologie passe à la fin."],
+    es: ["En el inicio, los ejercicios de los libros tienen su propio grupo, junto al vocabulario; Química y biología pasa al final."],
+    en: ["On the home page, the book exercises have a group of their own, next to the vocabulary; Chemistry and biology moves to the end."],
+  },
+  {
     version: "6.29.0",
     fr: ["✏️ Exercices des livres : les exercices de tes livres d'anglais (Grammar in Use, Vocabulary in Use, Idioms in Use…), à remplir sur la page même, corrigés à la fin de chaque unité."],
     es: ["✏️ Ejercicios de los libros: los ejercicios de tus libros de inglés (Grammar in Use, Vocabulary in Use, Idioms in Use…), para rellenar en la misma página, corregidos al final de cada unidad."],

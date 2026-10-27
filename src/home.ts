@@ -187,25 +187,15 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
   return [
     { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }, { id: "calc", title: qt("modeCalc") }] },
     { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
-    {
-      group: ht("chembio"),
-      activities: [
-        { id: "chembio", title: qt("modeChemBio") },
-        { id: "discover-molecules", title: bt("moleculesTitle") },
-        { id: "discover-genetics", title: bt("geneticsTitle") },
-        { id: "discover-cells", title: bt("cellsTitle") },
-        { id: "discover-ecology", title: bt("ecologyTitle") },
-      ],
-    },
     { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }, { id: "rust", title: qt("modeRust") }, { id: "ts", title: qt("modeTs") }, { id: "react", title: qt("modeReact") }, { id: "gcp", title: qt("modeGcp") }] },
     { group: ht("economics"), activities: [{ id: "econ", title: qt("modeEcon") }] },
     {
       group: ht("languages"),
       activities: [
         ...books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
-        ...exerciseBooks.map((b) => ({ id: `workbook-${b.id}`, title: `✏️ ${b.source}` })),
       ],
     },
+    { group: wt("home"), activities: exerciseBooks.map((b) => ({ id: `workbook-${b.id}`, title: `✏️ ${b.source}` })) },
     {
       group: dt("group"),
       activities: [
@@ -230,6 +220,16 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
         { id: "discover-seasons", title: at("seasonsTitle") },
         { id: "discover-eclipses", title: at("eclipsesTitle") },
         { id: "discover-planets", title: at("planetsTitle") },
+      ],
+    },
+    {
+      group: ht("chembio"),
+      activities: [
+        { id: "chembio", title: qt("modeChemBio") },
+        { id: "discover-molecules", title: bt("moleculesTitle") },
+        { id: "discover-genetics", title: bt("geneticsTitle") },
+        { id: "discover-cells", title: bt("cellsTitle") },
+        { id: "discover-ecology", title: bt("ecologyTitle") },
       ],
     },
   ];
@@ -400,12 +400,17 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
       ),
     );
   }
-  // Workbooks: the exercises of a book, filled in on its pages (docs/exercises.md).
-  for (const b of exerciseBooks) {
-    shelf.append(card(`workbook-${b.id}`, `✏️ ${b.source}`, `${b.title} · ${wt("homeText")}`, workbookStatus(b), () => ctx.open({ mode: "workbook", book: b.id })));
-  }
-  if (books.length === 0 && exerciseBooks.length === 0) shelf.append(el("p", "empty small", ht("noBooks")));
+  if (books.length === 0) shelf.append(el("p", "empty small", ht("noBooks")));
   languages.append(shelf);
+
+  // Workbooks: the exercises of a book, filled in on its pages (docs/exercises.md); a group of their own.
+  const workbooks = el("div", "activity-group");
+  workbooks.append(el("h2", "activity-group-title", wt("home")));
+  const desks = el("div", "activity-grid");
+  for (const b of exerciseBooks) {
+    desks.append(card(`workbook-${b.id}`, `✏️ ${b.source}`, `${b.title} · ${wt("homeText")}`, workbookStatus(b), () => ctx.open({ mode: "workbook", book: b.id })));
+  }
+  workbooks.append(desks);
 
   // Discover: experiments rather than exercises (docs/discover.md).
   const discover = el("div", "activity-group");
@@ -446,7 +451,8 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const hidden = new Set(ctx.user.hidden ?? []);
   // On a wide screen, groups sit side by side, each as wide as its cards need.
   const groups = el("div", "home-groups");
-  for (const group of [maths, sciences, computing, economics, chembio, languages, discover, physics, astronomy]) {
+  // Chemistry and biology last: the other science groups come before it.
+  for (const group of [maths, sciences, computing, economics, languages, workbooks, discover, physics, astronomy, chembio]) {
     for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
       if (hidden.has(node.dataset.activity!)) node.remove();
     }
