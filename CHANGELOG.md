@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.32.0
+
+- **Courses in the app.** Tests with a course get **📖 Lire le cours** in their settings: the course in the player's language, with a contents list, tables, code, formulas (KaTeX), exercises and sources, loaded only when opened. After a test, a wrong answer links to the part that explains it (*📖 Dans le cours : Partie 4 — Cache et performance*). The Cloudflare course is the first, in French, Spanish and English. See [User guide › Courses](docs/user-guide.md#courses).
+- **A new test, ⚒️ Le Capital**, in the *Économie* group after *Économie publique*, on the three volumes of Marx's *Capital*, at three levels, *Débutant*, *Intermédiaire* and *Avancé*, with twelve topics in three groups (*Livre I : valeur et plus-value*, *Livre I : production et accumulation*, *Livres II et III*). See [Question generators › Capital](docs/question-generators.md#capital) and [User guide › Capital](docs/user-guide.md#capital).
+  - **A twelve-part course** in three languages: the commodity, money, surplus value, the working day, relative surplus value, wages, accumulation, primitive accumulation, the circuits and turnover, the reproduction schemes, profit and prices of production, merchants, interest and rent; worked examples, Marx's own tables, the debates (transformation problem, Okishio, Luxemburg), twelve problems and twelve self-check questions with answers. Short quotations from the public-domain translations only; the reference works stay in `data/marx/`, never shipped.
+  - **108 written questions** in French, Spanish and English, from what the concepts are to where readers disagree.
+  - **Sixteen generated kinds**: a commodity's social value, the money in circulation, a day's product, rates of surplus value, the working day, cheaper wage goods, the hourly wage, accumulation, turnover, simple and expanded reproduction, the rate of profit, prices of production, the falling rate, differential rent and capitalised income. 52 mistake types.
+- **Checks:** `check:quiz` computes every generated Capital answer again with its own evaluator (`server/check-marx.ts`). `npm run check:courses` keeps the courses' languages in step (headings, tables, code, links, inline code, number of formulas) and checks that every topic points to a part; in the CI checks too.
+- **Database:** migration `031_marx_levels`.
+- **Tests:** 167 browser tests; `tests/e2e/courses.spec.ts`: the Cloudflare course from the settings, in two languages, and the link from a wrong answer on a phone; `tests/e2e/marx.spec.ts`: the card, levels, groups and course, a rate of profit on a phone graded on the server with its slip named and the course part linked.
+
 ## 6.31.0
 
 - **A new test, 🔶 Cloudflare**, in the *Informatique* group after Google Cloud, at four levels, *Débutant* to *Expert*, with eight topics in three groups: *Réseau et sécurité* (DNS and the proxy, SSL/TLS, the cache, WAF and bots), *Plateforme développeur* (Workers; KV, R2, D1, Durable Objects, Queues, Workflows, Hyperdrive) and *Zero Trust et IA* (Access, Tunnel, Gateway; Workers AI, AI Gateway, Vectorize, AI Search, agents). See [Question generators › Cloudflare](docs/question-generators.md#cloudflare) and [User guide › Cloudflare](docs/user-guide.md#cloudflare).

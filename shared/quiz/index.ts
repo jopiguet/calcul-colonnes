@@ -28,6 +28,7 @@ import { calcLimits, calcDerivatives, calcApplications, calcIntegrals, calcTrans
 import { econWelfare, econMarketFailure, econPublicChoice, econIncidence, econOptimalTax, econTaxDesign, econSocialInsurance, econRedistribution, econLabour } from "./econ";
 import { gcpHierarchy, gcpIam, gcpServiceAccounts, gcpSecurity, gcpNetworking, gcpCompute, gcpStorage, gcpOperations } from "./gcp";
 import { cfDns, cfTls, cfCache, cfSecurity, cfWorkers, cfStorage, cfZeroTrust, cfAi } from "./cf";
+import { marxCommodity, marxMoney, marxSurplus, marxWorkingDay, marxRelative, marxWages, marxAccumulation, marxPrimitive, marxCirculation, marxReproduction, marxProfit, marxCredit } from "./marx";
 import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
 import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
 import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools, linuxScripting, linuxGit, linuxVim } from "./linux";
@@ -139,6 +140,18 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   cfStorage,
   cfZeroTrust,
   cfAi,
+  marxCommodity,
+  marxMoney,
+  marxSurplus,
+  marxWorkingDay,
+  marxRelative,
+  marxWages,
+  marxAccumulation,
+  marxPrimitive,
+  marxCirculation,
+  marxReproduction,
+  marxProfit,
+  marxCredit,
   econWelfare,
   econMarketFailure,
   econPublicChoice,
@@ -303,6 +316,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "react":
     case "gcp":
     case "cf":
+    case "marx":
     case "econ":
     case "calc":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
@@ -430,8 +444,10 @@ export { GCP_QUESTIONS } from "./gcp";
 export { GCP_LINE_MAX } from "./gcp-output";
 export type { GcpModel } from "./gcp-model";
 export { CF_QUESTIONS } from "./cf";
+export { MARX_QUESTIONS } from "./marx";
 export { CF_LINE_MAX } from "./cf-output";
 export type { CfModel } from "./cf-model";
+export type { MarxModel } from "./marx-model";
 export type { EconModel } from "./econ-model";
 export type { CalcModel } from "./calc-model";
 export { formatRows } from "./sql-output";

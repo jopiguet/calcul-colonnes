@@ -23,6 +23,21 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.32.0",
+    fr: [
+      "⚒️ Le Capital : un nouveau QCM sur les trois livres du Capital de Marx, en trois niveaux, avec des questions calculées (plus-value, profit, schémas de reproduction, prix de production, rente).",
+      "📖 Lire le cours : le Capital et Cloudflare ont maintenant leur cours dans l'appli, et une mauvaise réponse mène à la partie qui l'explique.",
+    ],
+    es: [
+      "⚒️ El capital: un nuevo test sobre los tres libros de El capital de Marx, en tres niveles, con preguntas calculadas (plusvalor, ganancia, esquemas de reproducción, precios de producción, renta).",
+      "📖 Leer el curso: El capital y Cloudflare tienen ahora su curso en la aplicación, y una respuesta incorrecta lleva a la parte que la explica.",
+    ],
+    en: [
+      "⚒️ Capital: a new test on the three volumes of Marx's Capital, at three levels, with computed questions (surplus value, profit, reproduction schemes, prices of production, rent).",
+      "📖 Read the course: Capital and Cloudflare now have their course in the app, and a wrong answer leads to the part that explains it.",
+    ],
+  },
+  {
     version: "6.31.0",
     fr: ["🔶 Cloudflare : un nouveau QCM en quatre niveaux, du DNS et du cache aux Workers, à Zero Trust et à l'IA, avec des questions calculées sur les règles, le SSL/TLS, le cache, les tunnels et Access."],
     es: ["🔶 Cloudflare: un nuevo test en cuatro niveles, del DNS y la caché a los Workers, Zero Trust y la IA, con preguntas calculadas sobre reglas, SSL/TLS, caché, túneles y Access."],

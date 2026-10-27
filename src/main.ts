@@ -42,6 +42,7 @@ import { progressView, type ProgressScope } from "./progress";
 import { workbookView } from "./workbook";
 import { wt } from "./workbook-i18n";
 import { resetTour, tourView } from "./tour";
+import { closeCourse } from "./course";
 
 const NAME_LENGTH = 20;
 
@@ -337,7 +338,7 @@ async function render(): Promise<void> {
       if (subject === "chemistry" || subject === "econ" || subject === "calc") await loadBank();
       paint(
         topBar(),
-        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : subject === "ts" ? "modeTs" : subject === "react" ? "modeReact" : subject === "gcp" ? "modeGcp" : subject === "cf" ? "modeCf" : subject === "econ" ? "modeEcon" : subject === "calc" ? "modeCalc" : "modeQuiz"), goHome),
+        activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : subject === "ts" ? "modeTs" : subject === "react" ? "modeReact" : subject === "gcp" ? "modeGcp" : subject === "cf" ? "modeCf" : subject === "marx" ? "modeMarx" : subject === "econ" ? "modeEcon" : subject === "calc" ? "modeCalc" : "modeQuiz"), goHome),
         quizView({
           user,
           subject,
@@ -442,6 +443,7 @@ function open(activity: Activity): void {
 
 function goHome(): void {
   leaveTour();
+  closeCourse();
   updateSettings({ mode: "home" });
   applyPendingUpdate();
   void render();

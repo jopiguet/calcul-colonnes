@@ -742,6 +742,74 @@ The right option must equal it and no wrong one may.
 
 Thirty-nine mistake types, `cfRulePrecedence` to `cfNeuronUnit`.
 
+## Capital
+
+The test on Marx's *Capital* (6.32.0), *⚒️ Le Capital* in the home page's
+*Économie* group after *Économie publique*, has three levels,
+`marxBeginner`, `marxIntermediate` and `marxAdvanced` (*Débutant*,
+*Intermédiaire*, *Avancé*), and twelve topics that follow the twelve parts
+of the in-app course (`src/courses/marx`), in three groups. *Livre I : valeur
+et plus-value*: `marxCommodity`, `marxMoney`, `marxSurplus`,
+`marxWorkingDay`. *Livre I : production et accumulation*: `marxRelative`,
+`marxWages`, `marxAccumulation`, `marxPrimitive`. *Livres II et III*:
+`marxCirculation`, `marxReproduction`, `marxProfit`, `marxCredit`.
+
+| Topic | Débutant | Intermédiaire | Avancé |
+|---|---|---|---|
+| `marxCommodity` | `commodityBasics` 3 | `commodityDeeper` 3, `socialValue` | `commodityDebates` 3, `socialValue` |
+| `marxMoney` | `moneyBasics` 3 | `moneyDeeper` 3, `moneyQuantity` | `moneyDebates` 3, `moneyQuantity` |
+| `marxSurplus` | `surplusBasics` 3, `productValue`, `surplusRate` | `surplusDeeper` 3, `productValue`, `surplusRate` | `surplusDebates` 3, `productValue` |
+| `marxWorkingDay` | `dayBasics` 3, `workingDay` | `dayDeeper` 3, `workingDay` | `dayDebates` 3 |
+| `marxRelative` | `relativeBasics` 3 | `relativeDeeper` 3, `relativeSurplus` | `relativeDebates` 3, `relativeSurplus` |
+| `marxWages` | `wagesBasics` 3 | `wagesDeeper` 3, `hourlyWage` | `wagesDebates` 3, `hourlyWage` |
+| `marxAccumulation` | `accumulationBasics` 3 | `accumulationDeeper` 3, `accumulationSplit` | `accumulationDebates` 3, `accumulationSplit` |
+| `marxPrimitive` | `primitiveBasics` 3 | `primitiveDeeper` 3 | `primitiveDebates` 3 |
+| `marxCirculation` | `circulationBasics` 3 | `circulationDeeper` 3, `turnover` | `circulationDebates` 3, `turnover` |
+| `marxReproduction` | `reproductionBasics` 3, `reproductionSimple` | `reproductionDeeper` 3, `reproductionSimple`, `reproductionSurplus` | `reproductionDebates` 3, `reproductionSurplus` |
+| `marxProfit` | `profitBasics` 3, `profitRate` | `profitDeeper` 3, `profitRate`, `pricesOfProduction` | `profitDebates` 3, `pricesOfProduction`, `fallingRate` |
+| `marxCredit` | `creditBasics` 3 | `creditDeeper` 3, `capitalised`, `differentialRent` | `creditDebates` 3, `differentialRent`, `capitalised` |
+
+108 written questions in `shared/quiz/marx/beginner.ts` to `advanced.ts`,
+ids `mx-…`: *Débutant* asks what the concepts are, *Intermédiaire* how the
+arguments run, *Avancé* where later readers disagree (the transformation
+problem, Okishio, Luxemburg on the schemes, absolute or relative
+immiseration, the value-form readings). The text is original; the only
+quotations are short ones from *Capital* itself in the public-domain
+translations (Moore–Aveling, the Progress editions on marxists.org). The
+reference works the course was checked against (Harvey's companions, the
+*Dictionary of Marxist Thought* and others) are copyrighted and stay in
+`data/marx/`, never committed or shipped. Chapter numbers are the English
+edition's, 33 chapters in Volume I.
+
+Sixteen kinds are generated (`marx-output.ts`). Quantities are hours of
+labour or money; in French and Spanish numbers take a decimal comma.
+Capitals and yields that the question compares are shown as a block.
+
+| Id | Asks for | Typical wrong options |
+|---|---|---|
+| `socialValue` | the value of one unit when firms produce at different hours per unit (output-weighted average) | one producer's time, the simple average, the fastest |
+| `moneyQuantity` | money needed: (prices − credit + payments due − offsets) / velocity | credit or offsets not deducted, velocity forgotten |
+| `productValue` | a day's product: materials + machine/life + hours worked | the whole machine in one day, wear ignored, the wage added to the new value |
+| `surplusRate` | s′ from a product's value, c and v | s over c + v, s over c, the value of labour-power taken for new value |
+| `workingDay` | s′ after the day is lengthened | the old day, surplus over the whole day |
+| `relativeSurplus` | s′ after wage goods get cheaper | the old necessary labour, the cut applied to surplus labour |
+| `hourlyWage` | the price of an hour when the day is lengthened for the same daily wage | the old hours, the daily wage |
+| `accumulationSplit` | how many more workers when an addition is split at c/v | all of it to wages, an even split |
+| `turnover` | surplus value a year from v, s′ and turnovers | one turnover, the rate forgotten |
+| `reproductionSimple`, `reproductionSurplus` | IIc in simple reproduction; the means of production left for accumulation | all of I's product, v forgotten, IIc not deducted, the wrong department |
+| `profitRate` | p′ = s/(c + v) | p′ taken for s′, s over c, s over the whole value |
+| `pricesOfProduction` | a capital's price of production at the general rate (capitals as a block) | its value, the simple average of rates, the rate on v only |
+| `fallingRate` | p′ after the organic composition rises | the old composition, the rise in s′ forgotten |
+| `differentialRent` | one land's rent when the worst land sets the price (yields as a block) | the rent per tonne, the best land setting the price |
+| `capitalised` | the price of a title or of land: income / rate of interest | income plus interest, the rate as a whole number |
+
+Each question carries its model (`marx-model.ts`), and `check:quiz` computes
+the answer again with an evaluator of its own (`server/check-marx.ts`),
+from the course's definitions. The right option must equal it and no wrong
+one may.
+
+Fifty-two mistake types, `marxIndividualTime` to `marxIncomePlusInterest`.
+
 ## Economics
 
 The public economics test (6.26.0), *🏛️ Économie publique* in the home

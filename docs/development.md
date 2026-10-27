@@ -36,6 +36,8 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `exercise.ts` | Drawing arithmetic exercises; column counts; reading a row of digit boxes |
 | `worksheet.ts` | The A4 PDF worksheet, written by hand (no library) |
 | `quiz.ts` | Multiple-choice screens: settings, question, results; review focus |
+| `course.ts`, `courses/` | The in-app courses: `courses/<id>/<lang>.md` loaded on demand, `courses/sections.ts` mapping topics and kinds to parts; the reader and the links from wrong answers |
+| `markdown.ts`, `markdown-parse.ts` | The small Markdown reader for the courses: headings, lists, check lists, tables, code, links, TeX formulas |
 | `progress.ts` | Progress page of a player |
 | `store.ts` | API calls; `auth` calls; `SignedOutError` when the session has ended |
 | `auth.ts` | Sign-in screen (and invitation links) and Account page |
@@ -100,6 +102,8 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `migrations/` | Schema, see [Database](database.md#migrations) |
 | `check-quiz.ts` | Verification of the generators (`npm run check:quiz`) |
 | `check-gcp.ts` | The Google Cloud answers computed again for `check:quiz` (IAM, firewalls, subnets, Cloud Run, availability) |
+| `check-marx.ts` | The Capital answers computed again for `check:quiz` (values, rates of surplus value and profit, reproduction, prices of production, rent) |
+| `check-courses.ts` | The courses' languages kept in step (`npm run check:courses`): headings, tables, code, links, formulas; every topic's part exists |
 | `check-cf.ts` | The Cloudflare answers computed again for `check:quiz` (rules-language expressions, phases, SSL/TLS, cache, tunnels, Access, bills) |
 | `check-econ.ts` | The economics answers computed again for `check:quiz` (incidence, areas, Pigou, Samuelson, Gini, monopsony, insurance…) |
 | `check-calc.ts` | The calculus answers computed again for `check:quiz` (limits, slopes, Newton, Riemann and Simpson sums, Euler, Taylor, Green, Brownian moments…) |
@@ -175,8 +179,9 @@ Automated checks:
 | `npm run check:astronomy` | The astronomy models against an integration, Newton's gravity and centuries of eclipses. See [Discover](discover.md#astronomy-checks). | a few seconds |
 | `npm run check:biology` | The chemistry and biology models: bonds, crosses, diffusion, predators and prey. See [Discover](discover.md#biology-checks). | a second or two |
 | `npm run check:math` | The mathematical curiosities: the snowflake, the Mandelbrot points, the chaos game, Lorenz, the logistic map. See [Discover](discover.md#math-checks). | a second or two |
+| `npm run check:courses` | The in-app courses (`src/courses/<id>/<lang>.md`): the same headings, tables, code, links, inline code and number of formulas in every language, no stray `$`, and a part for every topic | a second |
 | `npm run check:tour` | The guided tour: the session flag for an account and a player's own login, migration 023 on existing rows, the same pages in every language, every chip a real label of the app. See [User guide › Guided tour](user-guide.md#guided-tour). | a second |
-| `npm run test:e2e` | The whole app in a browser: 163 tests | about nine minutes |
+| `npm run test:e2e` | The whole app in a browser: 167 tests | about nine minutes |
 | `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
 
 ### Browser tests
@@ -231,6 +236,7 @@ npm run check:physics
 npm run check:astronomy
 npm run check:biology
 npm run check:math
+npm run check:courses
 npm run check:tour
 npm run test:e2e
 ```

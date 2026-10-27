@@ -1,6 +1,7 @@
 import type { Rng } from "./rng";
 import type { Fn } from "./tex";
 import type { GcpModel } from "./gcp-model";
+import type { MarxModel } from "./marx-model";
 import type { CfModel } from "./cf-model";
 import type { EconModel } from "./econ-model";
 import type { CalcModel } from "./calc-model";
@@ -13,7 +14,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "cfBeginner" | "cfIntermediate" | "cfAdvanced" | "cfExpert" | "econ" | "econAdvanced" | "calc" | "calcAdvanced";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "cfBeginner" | "cfIntermediate" | "cfAdvanced" | "cfExpert" | "econ" | "econAdvanced" | "calc" | "calcAdvanced" | "marxBeginner" | "marxIntermediate" | "marxAdvanced";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -54,9 +55,11 @@ export type EconTopic = "econWelfare" | "econMarketFailure" | "econPublicChoice"
 export type CalcTopic = "calcLimits" | "calcDerivatives" | "calcApplications" | "calcIntegrals" | "calcTranscendental" | "calcTechniques" | "calcOde" | "calcParametric" | "calcSeries" | "calcVectors" | "calcMultivariable" | "calcVectorCalculus" | "calcStochastic";
 /** Cloudflare: the network and security, the developer platform, Zero Trust and AI; each at up to four levels. */
 export type CfTopic = "cfDns" | "cfTls" | "cfCache" | "cfSecurity" | "cfWorkers" | "cfStorage" | "cfZeroTrust" | "cfAi";
-export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic | EconTopic | CalcTopic | CfTopic;
+/** Marx's Capital: the twelve parts of the course (src/courses/marx), at three levels. */
+export type MarxTopic = "marxCommodity" | "marxMoney" | "marxSurplus" | "marxWorkingDay" | "marxRelative" | "marxWages" | "marxAccumulation" | "marxPrimitive" | "marxCirculation" | "marxReproduction" | "marxProfit" | "marxCredit";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic | EconTopic | CalcTopic | CfTopic | MarxTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced", "calc", "calcAdvanced", "cfBeginner", "cfIntermediate", "cfAdvanced", "cfExpert"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced", "calc", "calcAdvanced", "cfBeginner", "cfIntermediate", "cfAdvanced", "cfExpert", "marxBeginner", "marxIntermediate", "marxAdvanced"];
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
@@ -88,6 +91,11 @@ export const CF_TOPICS: CfTopic[] = ["cfDns", "cfTls", "cfCache", "cfSecurity", 
 /** The levels offered in the Cloudflare test's settings, easiest first. */
 export const CF_LEVELS: Level[] = ["cfBeginner", "cfIntermediate", "cfAdvanced", "cfExpert"];
 export const isCf = (level: Level): boolean => CF_LEVELS.includes(level);
+/** Topics of the test on Marx's Capital, one per part of the course. */
+export const MARX_TOPICS: MarxTopic[] = ["marxCommodity", "marxMoney", "marxSurplus", "marxWorkingDay", "marxRelative", "marxWages", "marxAccumulation", "marxPrimitive", "marxCirculation", "marxReproduction", "marxProfit", "marxCredit"];
+/** The levels offered in the Capital test's settings, easiest first. */
+export const MARX_LEVELS: Level[] = ["marxBeginner", "marxIntermediate", "marxAdvanced"];
+export const isMarx = (level: Level): boolean => MARX_LEVELS.includes(level);
 /** Topics of the economics test. */
 export const ECON_TOPICS: EconTopic[] = ["econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour"];
 /** The levels offered in the economics test's settings: core, and advanced reasoning. */
@@ -99,9 +107,9 @@ export const CALC_TOPICS: CalcTopic[] = ["calcLimits", "calcDerivatives", "calcA
 export const CALC_LEVELS: Level[] = ["calc", "calcAdvanced"];
 export const isCalc = (level: Level): boolean => CALC_LEVELS.includes(level);
 /** The subjects of the tests, each with its own levels and topics. */
-export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc" | "cf";
+export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc" | "cf" | "marx";
 export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : isCf(level) ? "cf" : isEcon(level) ? "econ" : isCalc(level) ? "calc" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : isCf(level) ? "cf" : isMarx(level) ? "marx" : isEcon(level) ? "econ" : isCalc(level) ? "calc" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
@@ -112,9 +120,9 @@ export const isChemistry = (level: Level): boolean => level === "chemistry" || l
 /** Tests that draw from the question bank, and so record the bank revision they drew from. */
 export const usesBank = (level: Level): boolean => isChemistry(level) || isEcon(level) || isCalc(level);
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations", "econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour", "calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques", "calcOde", "calcParametric", "calcSeries", "calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic", "cfDns", "cfTls", "cfCache", "cfSecurity", "cfWorkers", "cfStorage", "cfZeroTrust", "cfAi"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations", "econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour", "calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques", "calcOde", "calcParametric", "calcSeries", "calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic", "cfDns", "cfTls", "cfCache", "cfSecurity", "cfWorkers", "cfStorage", "cfZeroTrust", "cfAi", "marxCommodity", "marxMoney", "marxSurplus", "marxWorkingDay", "marxRelative", "marxWages", "marxAccumulation", "marxPrimitive", "marxCirculation", "marxReproduction", "marxProfit", "marxCredit"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure" | "cfNetwork" | "cfDeveloper" | "cfOneAi" | "econTheory" | "econTaxation" | "econWelfareState" | "calcOneVariable" | "calcFurther" | "calcSeveral";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure" | "cfNetwork" | "cfDeveloper" | "cfOneAi" | "econTheory" | "econTaxation" | "econWelfareState" | "calcOneVariable" | "calcFurther" | "calcSeveral" | "marxValue" | "marxProduction" | "marxWhole";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -149,6 +157,9 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "calcOneVariable", topics: ["calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques"] },
   { group: "calcFurther", topics: ["calcOde", "calcParametric", "calcSeries"] },
   { group: "calcSeveral", topics: ["calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic"] },
+  { group: "marxValue", topics: ["marxCommodity", "marxMoney", "marxSurplus", "marxWorkingDay"] },
+  { group: "marxProduction", topics: ["marxRelative", "marxWages", "marxAccumulation", "marxPrimitive"] },
+  { group: "marxWhole", topics: ["marxCirculation", "marxReproduction", "marxProfit", "marxCredit"] },
 ];
 
 /**
@@ -1027,6 +1038,59 @@ export const MISTAKES = [
   "calcGbmMedianMean", // the mean and the median of a lognormal confused
   "calcGbmDrift", // +σ²/2 instead of −σ²/2
   "calcGbmLinear", // growth taken as linear
+  // Marx's Capital (marx-output.ts)
+  "marxIndividualTime", // value read from one producer's own time
+  "marxUnweightedTime", // the plain average of the times, not weighted by output
+  "marxBestTime", // value set by the most productive producers
+  "marxModalTime", // value set by the largest group alone
+  "marxMeansOfPaymentIgnored", // credit and payments falling due left out
+  "marxPaymentsIgnored", // payments falling due left out
+  "marxOffsetIgnored", // payments that cancel out not deducted
+  "marxVelocityIgnored", // not divided by the velocity of money
+  "marxWholeMachine", // the whole machine's value put into one day's product
+  "marxWagesAdded", // the value of labour-power added on top of the new value
+  "marxPaidLabourOnly", // new value counted as the value of labour-power only
+  "marxWearIgnored", // the machine's wear left out
+  "marxRateOnTotal", // surplus value over c + v: the rate of profit
+  "marxNewValueOverV", // (v + s)/v instead of s/v
+  "marxRateOnValue", // surplus value over the value of the product
+  "marxInverted", // necessary over surplus labour, or v/s
+  "marxOldRate", // the rate before the change
+  "marxRateOnDay", // surplus labour over the whole day
+  "marxOnlyExtra", // only the added hours counted as surplus labour
+  "marxProportional", // a rate scaled by the change instead of recomputed
+  "marxOldNecessary", // divided by the old necessary labour
+  "marxOldDay", // the new wage over the old length of the day
+  "marxOldWage", // the old wage over the new length of the day
+  "marxHourUnchanged", // the price of an hour taken as unchanged
+  "marxMarginalHour", // the extra wage over the extra hours
+  "marxAllToLabour", // all accumulated capital spent on labour-power
+  "marxSplitInverted", // c and v swapped in the split
+  "marxRatioMisread", // c/v taken as the share of v
+  "marxEvenSplit", // the accumulated capital split half and half between c and v
+  "marxTurnoverIgnored", // one turnover a year assumed
+  "marxTurnoverDivided", // divided by the number of turnovers instead of multiplied
+  "marxRateIgnored", // the variable capital turned over, not the surplus value
+  "marxWrongDepartment", // Department I's own constant capital taken
+  "marxSurplusForgotten", // the capitalists' consumption, s, left out
+  "marxWholeProduct", // Department I's whole product taken
+  "marxWagesForgotten", // the workers' consumption, v, left out
+  "marxSurplusOnly", // all of I's surplus value taken as available
+  "marxIIcIgnored", // Department II's replacement not deducted
+  "marxProfitIsSurplus", // rate of profit taken as the rate of surplus value
+  "marxOnConstant", // surplus value over constant capital only
+  "marxValueNotPrice", // the value, not the price of production
+  "marxUnweightedAverage", // the plain average of the branches' rates of profit
+  "marxSurplusRateAsProfit", // the rate of surplus value used as the rate of profit
+  "marxProfitOnWages", // the general rate applied to v only
+  "marxCounterIgnored", // the rise in the rate of surplus value left out
+  "marxRentPerTonne", // the rent per tonne, not for the whole land
+  "marxAverageLand", // price set by the average land
+  "marxRentIsRevenue", // the whole revenue taken as rent
+  "marxRentInKind", // the extra yield in tonnes, not its money value
+  "marxRateMultiplied", // income times the rate of interest
+  "marxPercentAsUnit", // divided by the rate in per cent as a whole number
+  "marxIncomePlusInterest", // income plus interest on it
   // balancing equations
   "subscriptChanged", // a formula's subscript changed instead of a coefficient: another substance
   "notLowestTerms", // balanced, but not in the smallest whole numbers
@@ -1179,6 +1243,8 @@ export type Verify =
   /** The option (its formula) is the answer to a Google Cloud model: an IAM evaluation, a firewall decision, a subnet, Cloud Run's scaling, an availability. */
   | { kind: "gcp"; model: GcpModel }
   | { kind: "cf"; model: CfModel }
+  /** The option (its formula) is the answer to a computation of Capital: rates, values, prices of production, schemes, rent. */
+  | { kind: "marx"; model: MarxModel }
   /** The option (its formula) is the answer to a small economic model: incidence, areas, Pigou, Samuelson, Gini, Ramsey, Saez, monopsony… */
   | { kind: "econ"; model: EconModel }
   /** The option (its formula) is the answer to a small calculus model: a limit on a graph, a Riemann sum, Euler's method, a directional derivative… */

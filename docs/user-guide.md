@@ -142,7 +142,7 @@ home page: **Que fait-on, Léa ?**
 | Exercices des livres | ✏️ one per workbook (*Grammar in Use*, *Vocabulary Advanced*…) | Exercises corrected and score, or the book's number of exercises |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud, 🔶 Cloudflare | Kinds of question to review, for each |
-| Économie | 🏛️ Économie publique | Kinds of question to review |
+| Économie | 🏛️ Économie publique, ⚒️ Le Capital | Kinds of question to review, for each |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
@@ -570,6 +570,38 @@ Two kinds of question:
 
 Without the bank, the tests hold the chart questions only, and the settings
 say so.
+
+## Capital
+
+Activity **⚒️ Le Capital** (*⚒️ El capital*, *⚒️ Capital*), in the
+*Économie* group after *Économie publique*: multiple-choice tests on the
+three volumes of Marx's *Capital* at three levels, *Débutant*,
+*Intermédiaire* and *Avancé*, with a course to read in the app. Twelve
+topics in three groups, one per part of the course:
+
+| Group | Topics |
+|---|---|
+| Livre I : valeur et plus-value | the commodity; exchange and money; capital and surplus value; the working day |
+| Livre I : production et accumulation | relative surplus value; wages; accumulation; primitive accumulation |
+| Livres II et III | circuits and turnover; reproduction schemes; profit and prices of production; merchants, interest and rent |
+
+*Débutant* asks what the concepts are, *Intermédiaire* how the arguments
+run, *Avancé* where readers disagree. Some questions are computed: values,
+rates of surplus value and profit, the working day, cheaper wage goods,
+hourly wages, accumulation, turnover, the reproduction schemes, prices of
+production, the falling rate, differential rent and capitalised income.
+Every answer has been computed twice, by two independent programs.
+
+## Courses
+
+Two tests come with a course to read in the app: *🔶 Cloudflare* and
+*⚒️ Le Capital*. **📖 Lire le cours** in the test's settings opens it in the
+player's language: a contents list, the parts with their tables, code and
+formulas, exercises with answers, and the sources. **← Retour au test**
+goes back to the settings.
+
+After a test, a wrong answer has a link to the part of the course that
+explains it (*📖 Dans le cours : Partie 4 — Cache et performance*).
 
 ## Chemical equations
 

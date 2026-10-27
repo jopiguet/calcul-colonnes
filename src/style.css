@@ -6177,3 +6177,154 @@ button.tiny {
   text-align: left;
   font-family: var(--font);
 }
+
+/* ------------------------------------------------------------ courses (src/course.ts) */
+.course-open {
+  align-self: flex-start;
+  margin-bottom: 0.75rem;
+}
+.course {
+  max-width: 52rem;
+  align-items: stretch;
+  min-width: 0;
+}
+.course-bar {
+  min-width: 0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.course-body {
+  min-width: 0;
+  width: 100%;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.course-body p,
+.course-body li {
+  overflow-wrap: break-word;
+}
+.course-title {
+  margin-top: 1rem;
+}
+.course-contents {
+  margin: 1.25rem 0 2rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.course-contents-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+.course-toc {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: none;
+}
+.course-toc li {
+  padding: 0.15rem 0;
+}
+.course-section {
+  scroll-margin-top: 3.5rem;
+}
+.course-section h2,
+.course-section h3,
+.course-section h4 {
+  scroll-margin-top: 3.5rem;
+}
+.course-h2 {
+  margin-top: 2.5rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid var(--line);
+}
+.course-h3 {
+  margin-top: 1.75rem;
+  font-size: 1.15rem;
+}
+.course-body code {
+  font-family: var(--digits);
+  font-size: 0.92em;
+  padding: 0.05em 0.3em;
+  border-radius: 0.3em;
+  background: color-mix(in srgb, var(--line) 45%, transparent);
+  overflow-wrap: anywhere;
+}
+.course-code {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--line) 25%, var(--paper));
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.course-code code {
+  padding: 0;
+  background: none;
+  overflow-wrap: normal;
+  white-space: pre;
+}
+.course-table {
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.course-table table {
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  min-width: 100%;
+}
+.course-table th,
+.course-table td {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: auto;
+}
+.course-table th {
+  background: color-mix(in srgb, var(--line) 35%, transparent);
+}
+.course-table td code {
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+.course-checklist {
+  list-style: none;
+  padding-left: 0.25rem;
+}
+.course-checklist input {
+  margin-right: 0.5rem;
+}
+.course-top {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.course-link {
+  margin-top: 0.5rem;
+}
+.course-body .math.display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+@media (min-width: 52rem) {
+  #app:has(.course) {
+    max-width: 56rem;
+  }
+  .course {
+    padding: 2rem 2.5rem 2rem;
+  }
+}
+.course-body a {
+  color: var(--accent);
+}

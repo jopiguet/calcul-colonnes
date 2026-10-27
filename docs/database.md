@@ -265,6 +265,7 @@ runs: add tables and columns, rename or drop later.
 | `028_calc_levels` | `quiz_results.level` accepts `calc` and `calcAdvanced`. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `029_exercises` | Workbook exercises: `exercise_books`, `exercise_units`, `exercises`, `exercise_answers`. |
 | `030_cf_levels` | `quiz_results.level` accepts the four Cloudflare levels. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `031_marx_levels` | `quiz_results.level` accepts the three Capital levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 

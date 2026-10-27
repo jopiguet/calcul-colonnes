@@ -1,0 +1,3 @@
+-- Marx's Capital (docs/question-generators.md#capital): three levels.
+ALTER TABLE quiz_results DROP CONSTRAINT IF EXISTS quiz_results_level_check;
+ALTER TABLE quiz_results ADD CONSTRAINT quiz_results_level_check CHECK (level IN ('school', 'university', 'chemistry', 'chemistryAdvanced', 'linux', 'chembio', 'sql', 'rustBeginner', 'rustIntermediate', 'rustAdvanced', 'rustExpert', 'tsBeginner', 'tsIntermediate', 'tsAdvanced', 'tsExpert', 'reactBeginner', 'reactIntermediate', 'reactAdvanced', 'reactExpert', 'gcpBeginner', 'gcpIntermediate', 'gcpAdvanced', 'gcpExpert', 'econ', 'econAdvanced', 'calc', 'calcAdvanced', 'cfBeginner', 'cfIntermediate', 'cfAdvanced', 'cfExpert', 'marxBeginner', 'marxIntermediate', 'marxAdvanced'));
