@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.30.0
+
+- **A new group, *Curiosités mathématiques*** (*Curiosidades matemáticas*, *Mathematical curiosities*), just before *Chimie et biologie*, which stays last: five labs on fractals and chaos, each in the five Discover steps (see [Discover › Mathematical curiosities](docs/discover.md#mathematical-curiosities) and [User guide › Mathematical curiosities](docs/user-guide.md#mathematical-curiosities)).
+  - **❄️ Le flocon de Koch:** the steps 0 to 6 with their sides, perimeter and area; the edge measured with rulers from 1 to 1/243. The perimeter times 4/3, the area to 8/5, the dimension log 4 / log 3; Richardson's coastlines.
+  - **🌀 L'ensemble de Mandelbrot:** the set on a canvas, coloured by escape time; tap to zoom ×4 or to follow a point, buttons to zoom, pan and reach the seahorse valley; six points with their first values of z, their orbit drawn and their fate. The escape at 2, the endless edge.
+  - **🎲 Le jeu du chaos:** random jumps towards the corners, with an experiment number: the triangle (Sierpinski, its middle hole never hit), the square (filled), the square never repeating a corner and the pentagon (patterns), 1 to 10,000 jumps at a time. Three half-size copies, dimension 1.58.
+  - **🦋 L'attracteur de Lorenz:** two runs started 10⁻¹ to 10⁻¹² apart, drawn as the butterfly; their gap on a log scale against \(e^{\lambda t}\), λ ≈ 0.91: each factor 10 of precision buys about 2.5 time units.
+  - **🐇 De l'ordre au chaos:** the logistic map from r = 1 to 4: sixty years, the long run (extinct, settled, a cycle, chaos), the bifurcation diagram; the doublings, Feigenbaum's 4.669, the period-3 window at 3.83.
+- **Checks:** `npm run check:math`, 71 checks: the snowflake's polygon summed, the Mandelbrot points, area and symmetry, the chaos game's hole and dimensions, Lorenz's convergence and Lyapunov exponent, the logistic map's regimes, doublings and Feigenbaum ratio. In the CI checks too.
+- **Tests:** 159 browser tests; `tests/e2e/curiosities.spec.ts`: the group and its place, each lab through its five steps at 360 px with the models' figures, Spanish and English. The home-page tests match group titles exactly (*Mathématiques* is also in *Curiosités mathématiques*).
+
 ## 6.29.1
 
 - **Home page:** the workbooks have a group of their own, *✏️ Exercices des livres*, after *Langues*, which keeps the vocabulary books; *Chimie et biologie* moves to the end. The account page lists the activities in the same order.
@@ -188,7 +199,7 @@ Opening Luma to friends and family (see [Authentication › Family release](docs
 
 ## 6.14.0
 
-- **Linux: scripts, git and vim.** A new group of topics, *Scripts, git et vim*, in French, Spanish and English.
+- **Linux: scripts, git and vim.** A new group of topics, *Scripts, git et vim*, in French, Spanish and English. The home-page tests match group titles exactly (*Mathématiques* is also in *Curiosités mathématiques*).
   - **Scripts bash:** tests (`[` against `[[`, `-eq` against `=`, patterns and `=~`), loops (`for` over a glob, `while IFS= read -r`, the pipe's subshell, `-print0`), functions (`local`, printing a result, `source`), arguments (`$0`, `${1:-…}`, `shift`, `getopts`, `${VAR:?}`) and arrays (`"${a[@]}"`, `+=`, `declare -A`). 27 questions.
   - **Git:** staging and commits, branches, fast-forward, rebase and conflicts, undoing (`restore`, `revert`, `reset --soft`/`--hard`, `reflog`, `stash`), remotes (`fetch` against `pull`, rejected pushes, `--force-with-lease`, `origin/main`). 23 questions, each with the *📦 git* badge.
   - **Vim:** modes and quitting, moving (`^`, `%`, `f`, `*`), editing with operators and text objects (`ci"`, `ddp`, `.`), search and replace (`:%s`, `gc`, `:g`, `\<…\>`). 24 questions.
@@ -245,7 +256,7 @@ Opening Luma to friends and family (see [Authentication › Family release](docs
 
 ## 6.10.0
 
-- **Physics playground** (Phase 2): a new *Physique* group on the home page, four labs in the Discover pattern (predict, try, compare, understand, check), in French, Spanish and English.
+- **Physics playground** (Phase 2): a new *Physique* group on the home page, four labs in the Discover pattern (predict, try, compare, understand, check), in French, Spanish and English. The home-page tests match group titles exactly (*Mathématiques* is also in *Curiosités mathématiques*).
   - **🏀 Lancer une balle**, the anchor: pick the angle that goes farthest and plant a flag where a throw at 30° lands, then throw at any angle, speed and height. The ball flies in real time on a field drawn to scale; the comparison shows distance against angle and each throw against \(v^2\sin 2\theta/g\). The check: a dropped marble and a pushed one, with a multi-flash picture.
   - **⏱️ Le pendule:** length, mass and release angle; time 10 swings; time against length, \(2\pi\sqrt{L/g}\) and the exact period at large angles. The check: a child and an adult on the same swing.
   - **🔍 Les lentilles:** move the arrow and the screen until the image is sharp, cover half the lens with a card, then the lens equation and a three-ray diagram. The check: a magnifying glass's virtual image.

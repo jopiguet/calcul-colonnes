@@ -32,10 +32,11 @@ import { shelvesOf, showVocabStats, vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
-import { ASTRONOMY_LABS, BIO_LABS, PHYSICS_LABS, discoverBusy, discoverView } from "./discover/index";
+import { ASTRONOMY_LABS, BIO_LABS, MATH_LABS, PHYSICS_LABS, discoverBusy, discoverView } from "./discover/index";
 import { pt } from "./discover/physics-i18n";
 import { at as astroText } from "./discover/astro-i18n";
 import { bt as bioText } from "./discover/bio-i18n";
+import { mt as mathText } from "./discover/math-i18n";
 import { dt } from "./discover/i18n";
 import { progressView, type ProgressScope } from "./progress";
 import { workbookView } from "./workbook";
@@ -327,7 +328,8 @@ async function render(): Promise<void> {
       const physics = PHYSICS_LABS.includes(state.settings.discoverActivity);
       const astronomy = ASTRONOMY_LABS.includes(state.settings.discoverActivity);
       const biology = BIO_LABS.includes(state.settings.discoverActivity);
-      paint(topBar(), activityBar(biology ? bioText("group") : astronomy ? astroText("group") : physics ? pt("group") : dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
+      const curiosity = MATH_LABS.includes(state.settings.discoverActivity);
+      paint(topBar(), activityBar(curiosity ? mathText("group") : biology ? bioText("group") : astronomy ? astroText("group") : physics ? pt("group") : dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
       const subject = state.settings.quizSubject;

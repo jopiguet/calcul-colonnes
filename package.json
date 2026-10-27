@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "6.29.1",
+  "version": "6.30.0",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -30,6 +30,7 @@
     "check:biology": "tsx server/check-biology.ts",
     "check:tour": "tsx server/check-tour.ts",
     "check:exercises": "tsx server/check-exercises.ts",
+    "check:math": "tsx server/check-math.ts",
     "exercises:import": "tsx server/exercises-import.ts"
   },
   "devDependencies": {

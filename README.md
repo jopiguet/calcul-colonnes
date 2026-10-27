@@ -47,6 +47,8 @@ at *lycée / bachillerato* or university level.
 - Equations generated from five families (combustion, synthesis, neutralization, displacement, decomposition), balanced exactly; the wrong options are the classic slips: a subscript changed instead of a coefficient, coefficients not the smallest, an element left unbalanced, O₂ written O.
 - Labs: building molecules (bonds from valences, shapes from lone pairs), Mendel's peas (Punnett squares, seeded offspring, chi-square), why cells are small (surface, volume, diffusion), hares and lynxes (Lotka–Volterra cycles).
 
+**Mathematical curiosities** — five labs: the Koch snowflake (an infinite perimeter around a finite area), the Mandelbrot set (zoom into the edge, follow a point's orbit), the chaos game (random jumps that draw a Sierpinski triangle), the Lorenz attractor (the butterfly effect, measured) and the logistic map (period doubling, chaos, Feigenbaum's constant).
+
 **Astronomy** — four labs on geometric models: the Moon's phases (not the Earth's shadow), the seasons (the tilt, not the distance), eclipses (the tilted orbit), and the planets' orbits (Kepler's laws, Mars going backwards).
 
 **Linux** — multiple-choice tests on the command line: files and permissions, text processing, the shell, processes and services, the system, the network, bash scripting, git, vim, and tools worth installing.
@@ -159,6 +161,7 @@ npm start          # http://localhost:8787
 | `npm run check:physics` | Checks the physics playground: every simulation against its exact solution, energy that does not drift, Kirchhoff's laws (see [Discover](docs/discover.md#physics-checks)) |
 | `npm run check:astronomy` | Checks the astronomy models: the Moon's lit fraction and shadow, the seasons' sunlight, centuries of eclipses, Kepler against Newton (see [Discover](docs/discover.md#astronomy-checks)) |
 | `npm run check:biology` | Checks the chemistry and biology labs: unique bonds, Punnett squares and chi-square, diffusion, Lotka–Volterra (see [Discover](docs/discover.md#biology-checks)) |
+| `npm run check:math` | Checks the mathematical curiosities: the snowflake's polygon, the Mandelbrot points and area, the chaos game's hole, Lorenz's Lyapunov exponent, the logistic map's doublings (see [Discover](docs/discover.md#math-checks)) |
 | `npm run check:tour` | Checks the guided tour: the session flag, migration 023, the pages in every language, the chips against the app's labels (see [User guide › Guided tour](docs/user-guide.md#guided-tour)) |
 | `npm run test:e2e:postgres` | The same browser tests on PostgreSQL, with `E2E_DATABASE_URL` naming a database that may be emptied |
 | `npm run maintenance` | Migrations, backfills, new vocabulary books and session purge, then exit: what a Cloud Run release runs as a job |

@@ -10,6 +10,7 @@ the project's planning notes; this page describes what exists.
 - [Logic grids](#logic-grids)
 - [The physics playground](#the-physics-playground)
 - [Astronomy](#astronomy)
+- [Mathematical curiosities](#mathematical-curiosities)
 - [Chemistry and biology](#chemistry-and-biology)
 - [Randomness and experiment numbers](#randomness-and-experiment-numbers)
 - [What is saved](#what-is-saved)
@@ -17,6 +18,7 @@ the project's planning notes; this page describes what exists.
 - [Physics checks](#physics-checks)
 - [Astronomy checks](#astronomy-checks)
 - [Biology checks](#biology-checks)
+- [Math checks](#math-checks)
 - [Code](#code)
 
 ## The pattern
@@ -299,6 +301,75 @@ planets' elements, equal-time sectors, the vis-viva speed, Mars' direction
 from the Earth and its retrograde spells, and an integration of Newton's
 gravity for the check.
 
+## Mathematical curiosities
+
+The group *Curiosités mathématiques* (*Curiosidades matemáticas*,
+*Mathematical curiosities*), just before *Chimie et biologie*: two fractals,
+a game that draws one, and two faces of chaos. Five labs on the Discover
+pattern; the chaos game draws at random, so it has an experiment number.
+`npm run check:math` checks their models.
+
+### The Koch snowflake
+
+| Step | What happens |
+|---|---|
+| 1. Predict | After many steps, the perimeter (tends to a value, grows without limit, shrinks) and the area (grows without limit, tends to a value, shrinks). |
+| 2. Try | A slider from step 0 to 6; the snowflake over the starting triangle, its sides, side length, perimeter and area; each step seen goes into a table. Measuring the edge with rulers from 1 to 1/243: the number of lengths and the length measured. |
+| 3. Compare | After 4 steps and 3 rulers. \(P_n = 3(4/3)^n\), \(A_n \to \tfrac85 A_0\), the dimension \(\log 4/\log 3 \approx 1.26\); after 100 steps, over 9 × 10¹² for the perimeter, under 1.6 for the area. The predictions. |
+| 4. Understand | An infinite length on a page; a bounded area; self-similarity and a dimension that is not a whole number; Richardson's coastlines. |
+| 5. Check | A coastline measured with a shorter ruler is longer. |
+
+### The Mandelbrot set
+
+| Step | What happens |
+|---|---|
+| 1. Predict | Where z goes for c = −1 (escapes, jumps between two values, settles). What the edge looks like magnified (smooth, just as detailed, blurry). |
+| 2. Try | The set on a canvas, coloured by escape time. A tap zooms ×4 around the point, or, in *suivre* mode, follows that c; buttons to zoom, pan, reset and go to the seahorse valley. Six points to follow (−1, 0.25, 0.26, 1, i, −0.75 + 0.1i): the first values of z, \|z\|, the point's fate, its orbit drawn on the picture. |
+| 3. Compare | After magnifying 64 times and following 2 points. Past \|z\| = 2 there is no way back; the six points and their fates; the edge's dimension is 2 (Shishikura). The predictions, with the deepest zoom reached. |
+| 4. Understand | One line of arithmetic; colours are escape speed; small copies, connected; computers made it visible. |
+| 5. Check | c = 1 is not in the set: 0, 1, 2, 5… |
+
+The picture is computed in the browser (540 × 360 points, more iterations
+as one zooms) and kept: redrawing for another reason does not compute it
+again.
+
+### The chaos game
+
+| Step | What happens |
+|---|---|
+| 1. Predict | Thousands of random jumps halfway to a triangle's corners (fill it evenly, a blurry cloud, a precise pattern with holes). With a square's corners (a pattern, an even fill, a hole). |
+| 2. Try | Four shapes: triangle, square, square never repeating a corner, pentagon (jumps of 0.618). Jumps by 1 to 10,000 (up to 100,000); the first ones drawn as lines. The dots in the triangle's middle hole after the first 20 (always 0); the share of a 32 × 32 grid hit, per shape. |
+| 3. Compare | After 5,000 dots on the triangle and on the square. Three half-size copies, \(D = \log 3/\log 2 \approx 1.58\); why the hole stays empty; why the square fills and the no-repeat rule does not. The predictions. |
+| 4. Understand | The rule, not chance, makes the shape; shrinkings; the dimension; Barnsley's fern. |
+| 5. Check | Started far outside, the dot ends on the same pattern. |
+
+### The Lorenz attractor
+
+| Step | What happens |
+|---|---|
+| 1. Predict | Two runs started 0.001 apart, much later (identical, drifting steadily, unrelated). With a start ten times more precise, they stay together (ten times longer, a bit longer, the same). |
+| 2. Try | The starting gap from 10⁻¹ to 10⁻¹² and the time from 0 to 40. Both runs drawn as the butterfly (x across, z up); their gap on a log scale with the line where they have parted (a gap of 10); each gap tried, with the time they part. |
+| 3. Compare | After 3 different gaps. \(|\delta(t)| \approx |\delta_0| e^{\lambda t}\), \(\lambda \approx 0.91\), drawn on the chart; each factor 10 buys \(\ln 10/\lambda \approx 2.5\) time units; the times measured against the formula. The predictions. |
+| 4. Understand | Deterministic is not predictable; the butterfly; a strange attractor (dimension ≈ 2.06); weather forecasts. |
+| 5. Check | Forecasting twice as far needs twice the correct digits: the precision squared. |
+
+### From order to chaos
+
+| Step | What happens |
+|---|---|
+| 1. Predict | The logistic map \(x_{n+1} = r x_n(1 - x_n)\): in the long run at r = 3.2 (settles, alternates between two values, grows) and at r = 3.9 (settles, repeats a short cycle, never repeats). |
+| 2. Try | r from 1 to 4, and five ready values (2.8, 3.2, 3.5, 3.83, 3.9). 60 years of the population; what it does in the long run (dies out, settles at, a cycle of p years with its values, chaos); the bifurcation diagram from 2.5 to 4 with r marked; each r tried in a table. |
+| 3. Compare | After 4 values of r. The doublings at 3, 3.449, 3.544, 3.564, 3.569, chaos from 3.5699, the period-3 window at \(1 + \sqrt 8\), marked on the diagram; Feigenbaum's 4.669. The predictions. |
+| 4. Understand | One multiplication a year; doubling; windows of order; a universal constant. |
+| 5. Check | At r = 3.83, beyond the start of chaos, the population repeats every 3 years. |
+
+**The models**: `shared/discover/fractals.ts` (the snowflake's points and
+figures, rulers; escape time, orbits and fates; the chaos game, seeded,
+its hole and grid share) and `shared/discover/chaos.ts` (Lorenz by
+Runge–Kutta, twin runs, when they part, the Lyapunov exponent by
+Benettin's method; the logistic map, its long run, the bifurcation diagram,
+the doublings and Feigenbaum's constant).
+
 ## Chemistry and biology
 
 Phase 4 of the roadmap: the group *Chimie et biologie*. Its anchor is a
@@ -490,6 +561,23 @@ lab through its five steps at 360 px without sideways scrolling, with the
 figures computed by the models (the bonds and shapes, the seeded peas and
 their chi-square, the ratios and times, the cycles).
 
+## Math checks
+
+`npm run check:math` (a second or two), in `server/check-math.ts`, 71 checks:
+
+- **Koch:** the drawn polygon's perimeter and area (by the shoelace formula) against \(3(4/3)^n\) and the series, step by step; the area below 8/5 and approaching it; the rulers; the dimension by counting boxes.
+- **Mandelbrot:** the six points' fates (−1 and i a 2-cycle, 0.25 settling, 0.26 and 1 escaping), and 0 and −2; once \(|z| > 2\), never back; the area ≈ 1.51 by counting points; the symmetry about the real axis.
+- **Chaos game:** no dot in the middle hole after the first jumps; the same number, the same dots; the triangle's dimension by counting boxes; the square filling, the no-repeat rule never repeating, the pentagon's holes; each corner drawn about equally often.
+- **Lorenz:** Runge–Kutta converged (the same run with the step halved); the attractor bounded, both wings visited; λ ≈ 0.91 by Benettin's method; about 2.5 time units gained per factor 10 of precision.
+- **Logistic map:** extinction, a fixed point at \(1 - 1/r\), 2, 4 and 8-cycles between the doublings, chaos at 3.9, period 3 at 3.83; the doublings and Feigenbaum's ratio; sensitivity to the start.
+
+Browser tests (`tests/e2e/curiosities.spec.ts`): the group's five cards and
+its place before *Chimie et biologie*; each lab through its five steps at
+360 px without sideways scrolling, with the figures computed by the models
+(the snowflake's measures and rulers, the points' fates and the zoom, the
+seeded dots and grid shares, the times the runs part, the regimes); the
+texts in Spanish and English.
+
 ## Code
 
 | File | Role |
@@ -508,7 +596,7 @@ their chi-square, the ratios and times, the cycles).
 | `shared/discover/pendulum.ts` | A pendulum: Runge–Kutta from the force, the timed period, the exact period by the elliptic integral, energy |
 | `shared/discover/lenses.ts` | A thin lens: the image, traced rays, what the screen shows, sharpness, the three principal rays |
 | `shared/discover/circuits.ts` | Bulbs and a battery: six layouts solved by nodal analysis |
-| `src/discover/activities.ts` | The ids of every Discover activity, and which are physics, astronomy or biology labs |
+| `src/discover/activities.ts` | The ids of every Discover activity, and which are physics, astronomy, biology or math labs |
 | `src/discover/physics-ui.ts` | What the physics labs share: head, sliders that redraw while dragged, SVG drawing, tables, formulas, verdicts, restart |
 | `src/discover/throw.ts`, `pendulum.ts`, `lenses.ts`, `circuits.ts` | The four physics labs |
 | `src/discover/physics-i18n.ts` | Their texts in French, Spanish and English; decimals and percentages in each language's format |
@@ -521,4 +609,8 @@ their chi-square, the ratios and times, the cycles).
 | `src/discover/molecules.ts`, `genetics.ts`, `cells.ts`, `ecology.ts` | The four chemistry and biology labs |
 | `src/discover/bio-i18n.ts` | Their texts in French, Spanish and English |
 | `server/check-astronomy.ts`, `server/check-biology.ts` | `npm run check:astronomy`, `npm run check:biology` |
-| `tests/e2e/discover.spec.ts`, `physics.spec.ts`, `astronomy.spec.ts`, `biology.spec.ts` | Browser tests |
+| `shared/discover/fractals.ts`, `chaos.ts` | The mathematical curiosities' models |
+| `src/discover/koch.ts`, `mandelbrot.ts`, `chaosgame.ts`, `lorenz.ts`, `logistic.ts` | The five mathematical curiosities |
+| `src/discover/math-i18n.ts` | Their texts in French, Spanish and English |
+| `server/check-math.ts` | `npm run check:math` |
+| `tests/e2e/discover.spec.ts`, `physics.spec.ts`, `astronomy.spec.ts`, `biology.spec.ts`, `curiosities.spec.ts` | Browser tests |

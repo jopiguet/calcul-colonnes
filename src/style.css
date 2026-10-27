@@ -6032,3 +6032,148 @@ button.tiny {
   font-size: 0.85rem;
   color: var(--muted);
 }
+
+/* Mathematical curiosities (docs/discover.md#mathematical-curiosities). */
+.math-figure {
+  align-self: center;
+  width: 100%;
+}
+
+.math-drawing {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.math-flake {
+  fill: color-mix(in srgb, var(--accent) 14%, transparent);
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.math-flake-start {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.math-canvas-wrap {
+  margin: 0.5rem 0;
+}
+
+/* Canvases keep their own pixels: they scale down to the column, never sideways. */
+.math-canvas {
+  display: block;
+  width: 100%;
+  max-width: 34rem;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+  touch-action: manipulation;
+}
+
+.math-mandelbrot {
+  cursor: crosshair;
+  background: #000000;
+}
+
+.math-chaos {
+  max-width: 26rem;
+}
+
+.math-modes,
+.math-nav,
+.math-presets,
+.math-rulers {
+  flex-wrap: wrap;
+}
+
+.math-fate {
+  font-weight: 600;
+}
+
+.math-hole {
+  color: var(--good);
+}
+
+.math-run-a,
+.math-run-b {
+  fill: none;
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.math-run-a {
+  stroke: var(--accent);
+}
+
+.math-run-b {
+  stroke: var(--ball);
+  opacity: 0.85;
+}
+
+.math-dot-a {
+  fill: var(--accent);
+}
+
+.math-dot-b {
+  fill: var(--ball);
+}
+
+.math-gap-line,
+.math-years-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.math-years-line {
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+.math-years-dot {
+  fill: var(--accent);
+}
+
+.math-lost {
+  stroke: var(--bad);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+}
+
+.math-now {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.physics-curve .math-theory {
+  stroke: var(--good);
+  stroke-dasharray: 6 4;
+}
+
+/* Columns of words, not numbers: left, in the text font, wrapping. */
+.physics-table-wrap .math-tried-table td,
+.physics-table-wrap .math-points td,
+.physics-table-wrap .math-runs-compare thead th,
+.physics-table-wrap .math-runs-table thead th,
+.physics-table-wrap .math-koch-table thead th,
+.physics-table-wrap .math-chaos-table thead th {
+  white-space: normal;
+}
+
+.physics-table-wrap .math-tried-table td,
+.physics-table-wrap .math-points td {
+  text-align: left;
+  font-family: var(--font);
+}

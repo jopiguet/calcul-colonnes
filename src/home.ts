@@ -17,6 +17,7 @@ import { dt } from "./discover/i18n";
 import { pt } from "./discover/physics-i18n";
 import { at } from "./discover/astro-i18n";
 import { bt } from "./discover/bio-i18n";
+import { mt } from "./discover/math-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
 import { CALC_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
@@ -223,6 +224,16 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
       ],
     },
     {
+      group: mt("group"),
+      activities: [
+        { id: "discover-koch", title: mt("kochTitle") },
+        { id: "discover-mandelbrot", title: mt("mandelbrotTitle") },
+        { id: "discover-chaosgame", title: mt("chaosTitle") },
+        { id: "discover-lorenz", title: mt("lorenzTitle") },
+        { id: "discover-logistic", title: mt("logisticTitle") },
+      ],
+    },
+    {
       group: ht("chembio"),
       activities: [
         { id: "chembio", title: qt("modeChemBio") },
@@ -339,6 +350,19 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   );
   chembio.append(bench);
 
+  // Mathematical curiosities: fractals and chaos (docs/discover.md#mathematical-curiosities).
+  const curiosities = el("div", "activity-group");
+  curiosities.append(el("h2", "activity-group-title", mt("group")));
+  const oddities = el("div", "activity-grid");
+  oddities.append(
+    card("discover-koch", mt("kochTitle"), mt("kochText"), null, () => ctx.open({ mode: "discover", activity: "koch" })),
+    card("discover-mandelbrot", mt("mandelbrotTitle"), mt("mandelbrotText"), null, () => ctx.open({ mode: "discover", activity: "mandelbrot" })),
+    card("discover-chaosgame", mt("chaosTitle"), mt("chaosText"), null, () => ctx.open({ mode: "discover", activity: "chaosgame" })),
+    card("discover-lorenz", mt("lorenzTitle"), mt("lorenzText"), null, () => ctx.open({ mode: "discover", activity: "lorenz" })),
+    card("discover-logistic", mt("logisticTitle"), mt("logisticText"), null, () => ctx.open({ mode: "discover", activity: "logistic" })),
+  );
+  curiosities.append(oddities);
+
   const computing = el("div", "activity-group");
   computing.append(el("h2", "activity-group-title", ht("computing")));
   const shell = el("div", "activity-grid");
@@ -452,7 +476,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   // On a wide screen, groups sit side by side, each as wide as its cards need.
   const groups = el("div", "home-groups");
   // Chemistry and biology last: the other science groups come before it.
-  for (const group of [maths, sciences, computing, economics, languages, workbooks, discover, physics, astronomy, chembio]) {
+  for (const group of [maths, sciences, computing, economics, languages, workbooks, discover, physics, astronomy, curiosities, chembio]) {
     for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
       if (hidden.has(node.dataset.activity!)) node.remove();
     }

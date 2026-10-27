@@ -18,6 +18,7 @@ describes every screen, every setting and the keyboard shortcuts.
 - [Discover](#discover)
 - [Physics](#physics)
 - [Astronomy](#astronomy)
+- [Mathematical curiosities](#mathematical-curiosities)
 - [Chemistry and biology labs](#chemistry-and-biology-labs)
 - [Scores](#scores)
 - [Language](#language)
@@ -145,6 +146,7 @@ home page: **Que fait-on, Léa ?**
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
 | Astronomie | 🌓 Les phases de la Lune, 🌍 Les saisons, 🌑 Les éclipses, 🪐 Les orbites des planètes | |
+| Curiosités mathématiques | ❄️ Le flocon de Koch, 🌀 L'ensemble de Mandelbrot, 🎲 Le jeu du chaos, 🦋 L'attracteur de Lorenz, 🐇 De l'ordre au chaos | |
 | Chimie et biologie | ⚗️ Équations chimiques, 🧬 Construire des molécules, 🫛 Les pois de Mendel, 🦠 Pourquoi les cellules sont petites, 🐇 Lièvres et lynx | For the test, kinds of question to review |
 
 Click an activity to open it. Every activity has *← Accueil* at the top to
@@ -830,6 +832,19 @@ five steps. The drawings are not to scale, and say so.
 - **🪐 Les orbites des planètes.** Predict where a planet is fastest and how long a Mars year is. Draw an orbit in twelve slices of equal time; watch Mars seen from the Earth go backwards for a while. The check: why Mars goes backwards.
 
 Details in [Discover › Astronomy](discover.md#astronomy).
+
+## Mathematical curiosities
+
+Five labs in *Curiosités mathématiques* (*Curiosidades matemáticas*,
+*Mathematical curiosities*), on fractals and chaos.
+
+- **❄️ Le flocon de Koch.** Predict what happens to the perimeter and the area as the steps go on. Move through the steps and measure the edge with shorter and shorter rulers. The check: a coastline measured with a shorter ruler.
+- **🌀 L'ensemble de Mandelbrot.** Predict where z goes for c = −1 and what the edge looks like close up. Tap to zoom (or use the buttons), switch to *suivre* to follow a point and read its values of z. The check: is c = 1 in the set?
+- **🎲 Le jeu du chaos.** Predict what random jumps halfway to the corners draw, with a triangle and a square. Play 1 to 10,000 jumps at a time on four shapes. Like the probability labs it has an experiment number. The check: a start far outside.
+- **🦋 L'attracteur de Lorenz.** Predict what two runs started a hair apart do, and what ten times more precision buys. Choose the gap and the time; watch the butterfly and the gap growing. The check: forecasting twice as far.
+- **🐇 De l'ordre au chaos.** Predict a population's long run at r = 3.2 and 3.9. Move r, read the years, the long run and the bifurcation diagram. The check: r = 3.83.
+
+Details in [Discover › Mathematical curiosities](discover.md#mathematical-curiosities).
 
 ## Chemistry and biology labs
 

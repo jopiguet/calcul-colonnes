@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.30.0",
+    fr: ["Curiosités mathématiques : cinq nouveaux labos, avant Chimie et biologie. Le flocon de Koch, l'ensemble de Mandelbrot (zoome dans le bord), le jeu du chaos, l'attracteur de Lorenz (l'effet papillon) et le passage de l'ordre au chaos."],
+    es: ["Curiosidades matemáticas: cinco laboratorios nuevos, antes de Química y biología. El copo de Koch, el conjunto de Mandelbrot (amplía el borde), el juego del caos, el atractor de Lorenz (el efecto mariposa) y el paso del orden al caos."],
+    en: ["Mathematical curiosities: five new labs, before Chemistry and biology. The Koch snowflake, the Mandelbrot set (zoom into the edge), the chaos game, the Lorenz attractor (the butterfly effect) and the road from order to chaos."],
+  },
+  {
     version: "6.29.1",
     fr: ["Sur l'accueil, les exercices des livres ont leur propre groupe, à côté du vocabulaire ; Chimie et biologie passe à la fin."],
     es: ["En el inicio, los ejercicios de los libros tienen su propio grupo, junto al vocabulario; Química y biología pasa al final."],

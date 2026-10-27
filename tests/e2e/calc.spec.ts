@@ -32,7 +32,7 @@ function seedWhere(level: Level, count: number, topics: string[], pick: (q: Ques
 test("calculus: its own card among the maths, two levels, three groups of topics", async ({ page }) => {
   await newPlayer(page, "Calc");
   await goHome(page);
-  const group = page.locator(".activity-group", { has: page.locator(".activity-group-title", { hasText: "Mathématiques" }) });
+  const group = page.locator(".activity-group", { has: page.locator(".activity-group-title", { hasText: /^Mathématiques$/ }) });
   await expect(group.locator("[data-activity='calc']")).toContainText("∫ Analyse");
   // The arithmetic quiz is still there, next to it.
   await expect(group.locator("[data-activity='quiz']")).toHaveCount(1);

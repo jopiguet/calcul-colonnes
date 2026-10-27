@@ -11,7 +11,7 @@ test("the home page uses a wide screen: small groups side by side; one column on
   await newPlayer(page, "Wid");
   await goHome(page);
   const top = async (title: string): Promise<number> =>
-    (await page.locator(".activity-group", { has: page.locator(".activity-group-title", { hasText: title }) }).boundingBox())!.y;
+    (await page.locator(".activity-group", { has: page.locator(".activity-group-title", { hasText: new RegExp(`^${title}$`) }) }).boundingBox())!.y;
   // Mathematics (two cards) and Sciences (one) on the same row; Computing (Linux, SQL) on the next.
   expect(Math.abs((await top("Mathématiques")) - (await top("Sciences")))).toBeLessThan(2);
   expect(await top("Informatique")).toBeGreaterThan(await top("Sciences"));

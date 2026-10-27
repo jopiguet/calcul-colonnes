@@ -111,6 +111,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `check-discover.ts` | `npm run check:discover` |
 | `check-physics.ts` | `npm run check:physics` |
 | `check-astronomy.ts`, `check-biology.ts` | `npm run check:astronomy`, `npm run check:biology` |
+| `check-math.ts` | `npm run check:math` |
 | `check-tour.ts` | `npm run check:tour` |
 | `npm run check:exercises` | Marking workbook answers: invented cases of every rule of the keys; with a book's folder, each item's key typed back. See [Workbook exercises](exercises.md#marking). | a second |
 | `copy-to-postgres.ts` | One-off copy SQLite → PostgreSQL |
@@ -172,8 +173,9 @@ Automated checks:
 | `npm run check:physics` | The physics playground: every simulation against its exact solution and the conservation laws. See [Discover](discover.md#physics-checks). | about 15 seconds |
 | `npm run check:astronomy` | The astronomy models against an integration, Newton's gravity and centuries of eclipses. See [Discover](discover.md#astronomy-checks). | a few seconds |
 | `npm run check:biology` | The chemistry and biology models: bonds, crosses, diffusion, predators and prey. See [Discover](discover.md#biology-checks). | a second or two |
+| `npm run check:math` | The mathematical curiosities: the snowflake, the Mandelbrot points, the chaos game, Lorenz, the logistic map. See [Discover](discover.md#math-checks). | a second or two |
 | `npm run check:tour` | The guided tour: the session flag for an account and a player's own login, migration 023 on existing rows, the same pages in every language, every chip a real label of the app. See [User guide › Guided tour](user-guide.md#guided-tour). | a second |
-| `npm run test:e2e` | The whole app in a browser: 101 tests | about two minutes |
+| `npm run test:e2e` | The whole app in a browser: 159 tests | about nine minutes |
 | `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
 
 ### Browser tests
@@ -227,6 +229,7 @@ npm run check:discover
 npm run check:physics
 npm run check:astronomy
 npm run check:biology
+npm run check:math
 npm run check:tour
 npm run test:e2e
 ```
