@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.31.0
+
+- **A new test, 🔶 Cloudflare**, in the *Informatique* group after Google Cloud, at four levels, *Débutant* to *Expert*, with eight topics in three groups: *Réseau et sécurité* (DNS and the proxy, SSL/TLS, the cache, WAF and bots), *Plateforme développeur* (Workers; KV, R2, D1, Durable Objects, Queues, Workflows, Hyperdrive) and *Zero Trust et IA* (Access, Tunnel, Gateway; Workers AI, AI Gateway, Vectorize, AI Search, agents). See [Question generators › Cloudflare](docs/question-generators.md#cloudflare) and [User guide › Cloudflare](docs/user-guide.md#cloudflare).
+  - **124 written questions** in French, Spanish and English, checked against Cloudflare's documentation in October 2026 (the Ruleset Engine's phases, proxy and TTL rules, the encryption modes, cache defaults, plan limits, Workers and Workers AI prices and limits, Access and Gateway evaluation, the Cloudflare One Client, formerly WARP, the `cf` CLI in beta).
+  - **Eight generated kinds**: which requests a rules-language expression matches, which product decides a request's fate, what an SSL/TLS mode gives against an origin, how long a response is cached and what the browser is told, which ingress rule of a tunnel serves a request, which Access policy decides, and the Workers and Workers AI bills. 39 mistake types.
+  - **A written course to go with it**, *Cloudflare — a complete course*: eleven parts in the same order, worked examples, diagrams, ten labs and a self-check, every changing figure linked to its documentation page.
+- **Checks:** `check:quiz` computes every generated Cloudflare answer again with its own evaluator (`server/check-cf.ts`), which parses each expression from its text with the documented precedence; rule and policy lines at most 36 characters.
+- **Database:** migration `030_cf_levels`.
+- **Tests:** 163 browser tests; `tests/e2e/cloudflare.spec.ts`: the card, levels and groups, a rules-language question on a phone with its slip named, an Access policy at Expert, a beginner test in English.
+
 ## 6.30.0
 
 - **A new group, *Curiosités mathématiques*** (*Curiosidades matemáticas*, *Mathematical curiosities*), just before *Chimie et biologie*, which stays last: five labs on fractals and chaos, each in the five Discover steps (see [Discover › Mathematical curiosities](docs/discover.md#mathematical-curiosities) and [User guide › Mathematical curiosities](docs/user-guide.md#mathematical-curiosities)).

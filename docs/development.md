@@ -100,6 +100,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `migrations/` | Schema, see [Database](database.md#migrations) |
 | `check-quiz.ts` | Verification of the generators (`npm run check:quiz`) |
 | `check-gcp.ts` | The Google Cloud answers computed again for `check:quiz` (IAM, firewalls, subnets, Cloud Run, availability) |
+| `check-cf.ts` | The Cloudflare answers computed again for `check:quiz` (rules-language expressions, phases, SSL/TLS, cache, tunnels, Access, bills) |
 | `check-econ.ts` | The economics answers computed again for `check:quiz` (incidence, areas, Pigou, Samuelson, Gini, monopsony, insurance…) |
 | `check-calc.ts` | The calculus answers computed again for `check:quiz` (limits, slopes, Newton, Riemann and Simpson sums, Euler, Taylor, Green, Brownian moments…) |
 | `check-exercises.ts` | The marking of workbook answers against the key (`npm run check:exercises`) |
@@ -175,7 +176,7 @@ Automated checks:
 | `npm run check:biology` | The chemistry and biology models: bonds, crosses, diffusion, predators and prey. See [Discover](discover.md#biology-checks). | a second or two |
 | `npm run check:math` | The mathematical curiosities: the snowflake, the Mandelbrot points, the chaos game, Lorenz, the logistic map. See [Discover](discover.md#math-checks). | a second or two |
 | `npm run check:tour` | The guided tour: the session flag for an account and a player's own login, migration 023 on existing rows, the same pages in every language, every chip a real label of the app. See [User guide › Guided tour](user-guide.md#guided-tour). | a second |
-| `npm run test:e2e` | The whole app in a browser: 159 tests | about nine minutes |
+| `npm run test:e2e` | The whole app in a browser: 163 tests | about nine minutes |
 | `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
 
 ### Browser tests

@@ -141,7 +141,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche) | Words due today, *À jour*, or the book's number of words if not started |
 | Exercices des livres | ✏️ one per workbook (*Grammar in Use*, *Vocabulary Advanced*…) | Exercises corrected and score, or the book's number of exercises |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
-| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud | Kinds of question to review, for each |
+| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud, 🔶 Cloudflare | Kinds of question to review, for each |
 | Économie | 🏛️ Économie publique | Kinds of question to review |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
@@ -508,6 +508,27 @@ included; what firewall rules or policies do to a packet; a subnet's
 addresses; how many Cloud Run instances a load needs; the availability of
 components in series or in two zones. Each answer has been computed twice,
 by two independent programs.
+
+## Cloudflare
+
+Activity **🔶 Cloudflare**, in the *Informatique* group: multiple-choice
+tests on Cloudflare at four levels, *Débutant* to *Expert*, in three groups,
+*Réseau et sécurité*, *Plateforme développeur* and *Zero Trust et IA*. They
+follow the written course *Cloudflare — a complete course*, part by part.
+
+| Level | Topics |
+|---|---|
+| Débutant | the proxy and anycast, setting a zone up, the encryption modes, Universal SSL, what is cached, DDoS, challenges, Turnstile, what a Worker is, bindings and secrets, R2, KV, D1, Durable Objects, Access, Tunnel, Workers AI, AI Gateway, Vectorize |
+| Intermédiaire | CNAME flattening, TTLs, mail and DNSSEC, Origin CA and HSTS, cache keys and TTLs, purges, the WAF's order, Skip, rate limiting, Wrangler's configuration, choosing a store, Queues, Access policies and service tokens, AI Gateway's cache and fallbacks |
+| Avancé | origin leaks, mTLS and Tunnel, error 526, Tiered Cache and Cache Reserve, bots and OWASP scoring, API Shield, the Workers runtime, Smart Placement, Durable Objects' design, Gateway and HTTPS inspection, Vectorize and AI Search |
+| Expert | partial and secondary setups, Origin CA limits, SSL-only origin pull, purge limits, custom cache keys, WAF exceptions, Advanced Rate Limiting, gradual deployments, Tail Workers, the `cf` CLI, D1 throughput, Workflows, Hyperdrive, Access JWTs, the client's modes, agents |
+
+Some questions are computed: which requests a rules-language expression
+matches, which product decides a request's fate, what an encryption mode
+gives against an origin, how long a response is cached, which ingress rule
+of a tunnel serves a request, which Access policy decides, and the Workers
+and Workers AI bills. Each answer has been computed twice, by two
+independent programs.
 
 ## Calculus
 

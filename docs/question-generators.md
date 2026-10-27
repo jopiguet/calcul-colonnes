@@ -682,6 +682,66 @@ permissions. The right option must equal it and no wrong one may.
 
 Twenty mistake types, `gcpReservedAddresses` to `gcpAvailabilityMin`.
 
+## Cloudflare
+
+The Cloudflare test (6.31.0), *🔶 Cloudflare* in the home page's
+*Informatique* group, has four levels, `cfBeginner`, `cfIntermediate`,
+`cfAdvanced` and `cfExpert`, and eight topics in three groups. *Réseau et
+sécurité*: `cfDns` (zones, the proxy, anycast, DNSSEC), `cfTls`, `cfCache`,
+`cfSecurity` (WAF, the rules language, rate limiting, bots, API Shield).
+*Plateforme développeur*: `cfWorkers`, `cfStorage` (KV, R2, D1, Durable
+Objects, Queues, Workflows, Hyperdrive). *Zero Trust et IA*: `cfZeroTrust`
+(Access, Tunnel, Gateway, the Cloudflare One Client), `cfAi` (Workers AI,
+AI Gateway, Vectorize, AI Search, agents). It goes with the written course
+*Cloudflare — a complete course*, in the same order.
+
+| Topic | Débutant | Intermédiaire | Avancé | Expert |
+|---|---|---|---|---|
+| `cfDns` | `dnsBasics` 4 | `dnsSetup` 4 | `dnsAdvanced` 4 | `dnsExpert` 3 |
+| `cfTls` | `tlsBasics` 4, `tlsMode` | `tlsCertificates` 4, `tlsMode` | `tlsOrigin` 4 | `tlsExpert` 3 |
+| `cfCache` | `cacheBasics` 4 | `cacheRules` 4, `cacheTtl` | `cacheTiers` 4, `cacheTtl` | `cacheExpert` 3 |
+| `cfSecurity` | `securityBasics` 4 | `wafRules` 4, `ruleMatch` | `botsApi` 4, `ruleMatch`, `phaseOrder` | `securityExpert` 3, `phaseOrder` |
+| `cfWorkers` | `workersBasics` 4 | `workersConfig` 4, `workersCost` | `workersRuntime` 4, `workersCost` | `workersExpert` 4 |
+| `cfStorage` | `storageBasics` 4 | `storageChoice` 4 | `durableObjects` 4 | `storageExpert` 4 |
+| `cfZeroTrust` | `ztBasics` 4 | `accessTunnel` 4, `tunnelIngress` | `gateway` 4, `tunnelIngress`, `accessPolicy` | `ztExpert` 4, `accessPolicy` |
+| `cfAi` | `aiBasics` 4 | `aiGateway` 4, `aiCost` | `rag` 4 | `agents` 4 |
+
+124 written questions in `shared/quiz/cf/beginner.ts` to `expert.ts`, ids
+`cf-…`. Facts that change were checked against Cloudflare's documentation in
+October 2026: the request phases of the Ruleset Engine; proxiable records,
+proxied ports and the fixed 300-second TTL; the encryption modes and
+Automatic SSL/TLS; Universal SSL's coverage; the default cache behaviour,
+TTLs by status code and the 4-hour browser TTL; purge methods on every plan;
+the plans' WAF and rate limiting limits; the OWASP thresholds; Workers' and
+Workers AI's prices and limits; KV, D1, Queues and Vectorize limits; Access
+policy evaluation; Gateway's order since July 2025; the Cloudflare One
+Client (formerly WARP); AI Gateway's caching headers and Unified Billing;
+the `cf` CLI in beta. Prices are written `USD 5`: a dollar sign would start
+a formula.
+
+Eight kinds are generated (`cf-output.ts`). Expressions, rules and policies
+are shown as a block of lines of 36 characters at most (`CF_LINE_MAX`).
+
+| Id | Level | Asks for | Typical wrong options |
+|---|---|---|---|
+| `cfTls.tlsMode` | Débutant, Intermédiaire | what a visitor gets for an encryption mode and an origin (valid, Origin CA, self-signed or expired certificate, HTTP only, a redirect to HTTPS) | Flexible taken as end to end, Full taken as checking, an Origin CA certificate refused, the redirect loop missed |
+| `cfCache.cacheTtl` | Intermédiaire, Avancé | how long Cloudflare keeps a response and what the browser is told, from its extension, `Cache-Control`, `Set-Cookie` and a Cache Rule | HTML cached by default, a cookie ignored, the origin's short `max-age` kept for the browser, a 4-hour default, `s-maxage` ignored |
+| `cfSecurity.ruleMatch` | Intermédiaire, Avancé | which of four requests an expression matches (`eq`, `ne`, `wildcard`, `contains`, `in`, `starts_with()`, `and`, `or`, `not`) | `or` before `and`, case-insensitive `eq`, case-sensitive or unanchored `wildcard`, `contains` as a prefix |
+| `cfSecurity.phaseOrder` | Avancé, Expert | which of four or five products decides a request's fate | listed order, managed rules before custom rules, Bulk Redirects first, Access first, a Cache Rule stopping the request |
+| `cfWorkers.workersCost` | Intermédiaire, Avancé | the month's Workers Paid bill from requests and CPU time | included usage not subtracted, the USD 5 forgotten, wall time billed, CPU forgotten |
+| `cfZeroTrust.tunnelIngress` | Intermédiaire, Avancé | which service of a tunnel's ingress rules gets a request | the most specific rule, the last match, the path ignored, `*.example.com` covering the apex |
+| `cfZeroTrust.accessPolicy` | Avancé, Expert | which Access policy decides for a user (email, groups, country, disk encryption) | Require as OR, Include as AND, Exclude ignored, Bypass not first, allowed by default |
+| `cfAi.aiCost` | Intermédiaire | the month's Workers AI bill in Neurons | the free Neurons per month, not subtracted, the price unit misread |
+
+Each question carries its model (`cf-model.ts`), and `check:quiz` computes
+the answer again with an evaluator of its own (`server/check-cf.ts`): the
+expression is parsed from its text with the documented precedence, the
+phases, modes, cache rules, ingress and Access policies follow the
+documentation's rules, and the bills are computed from the published prices.
+The right option must equal it and no wrong one may.
+
+Thirty-nine mistake types, `cfRulePrecedence` to `cfNeuronUnit`.
+
 ## Economics
 
 The public economics test (6.26.0), *🏛️ Économie publique* in the home
@@ -1347,6 +1407,7 @@ mistakes to review. It then checks:
 - **Economics:** every generated answer computed again by `server/check-econ.ts` (see [Economics](#economics)); every chart inside its window.
 - **Calculus:** every generated answer computed again by `server/check-calc.ts` (see [Calculus](#calculus)); every chart inside its window, no two option charts alike.
 - **Google Cloud:** every generated answer computed again by `server/check-gcp.ts` (see [Google Cloud](#google-cloud)), policy lines at most 36 characters; every written Google Cloud question checked like the Linux ones.
+- **Cloudflare:** every generated answer computed again by `server/check-cf.ts` (see [Cloudflare](#cloudflare)), rule lines at most 36 characters; every written Cloudflare question checked like the Linux ones.
 - **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.
 - **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).

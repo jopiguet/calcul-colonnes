@@ -1,6 +1,7 @@
 import type { Rng } from "./rng";
 import type { Fn } from "./tex";
 import type { GcpModel } from "./gcp-model";
+import type { CfModel } from "./cf-model";
 import type { EconModel } from "./econ-model";
 import type { CalcModel } from "./calc-model";
 
@@ -12,7 +13,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "econ" | "econAdvanced" | "calc" | "calcAdvanced";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "cfBeginner" | "cfIntermediate" | "cfAdvanced" | "cfExpert" | "econ" | "econAdvanced" | "calc" | "calcAdvanced";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -51,9 +52,11 @@ export type EconTopic = "econWelfare" | "econMarketFailure" | "econPublicChoice"
  * technique.
  */
 export type CalcTopic = "calcLimits" | "calcDerivatives" | "calcApplications" | "calcIntegrals" | "calcTranscendental" | "calcTechniques" | "calcOde" | "calcParametric" | "calcSeries" | "calcVectors" | "calcMultivariable" | "calcVectorCalculus" | "calcStochastic";
-export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic | EconTopic | CalcTopic;
+/** Cloudflare: the network and security, the developer platform, Zero Trust and AI; each at up to four levels. */
+export type CfTopic = "cfDns" | "cfTls" | "cfCache" | "cfSecurity" | "cfWorkers" | "cfStorage" | "cfZeroTrust" | "cfAi";
+export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic | EconTopic | CalcTopic | CfTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced", "calc", "calcAdvanced"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced", "calc", "calcAdvanced", "cfBeginner", "cfIntermediate", "cfAdvanced", "cfExpert"];
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
@@ -80,6 +83,11 @@ export const GCP_TOPICS: GcpTopic[] = ["gcpHierarchy", "gcpIam", "gcpServiceAcco
 /** The levels offered in the Google Cloud test's settings, easiest first. */
 export const GCP_LEVELS: Level[] = ["gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert"];
 export const isGcp = (level: Level): boolean => GCP_LEVELS.includes(level);
+/** Topics of the Cloudflare test; each level has some of them (topicsFor). */
+export const CF_TOPICS: CfTopic[] = ["cfDns", "cfTls", "cfCache", "cfSecurity", "cfWorkers", "cfStorage", "cfZeroTrust", "cfAi"];
+/** The levels offered in the Cloudflare test's settings, easiest first. */
+export const CF_LEVELS: Level[] = ["cfBeginner", "cfIntermediate", "cfAdvanced", "cfExpert"];
+export const isCf = (level: Level): boolean => CF_LEVELS.includes(level);
 /** Topics of the economics test. */
 export const ECON_TOPICS: EconTopic[] = ["econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour"];
 /** The levels offered in the economics test's settings: core, and advanced reasoning. */
@@ -91,9 +99,9 @@ export const CALC_TOPICS: CalcTopic[] = ["calcLimits", "calcDerivatives", "calcA
 export const CALC_LEVELS: Level[] = ["calc", "calcAdvanced"];
 export const isCalc = (level: Level): boolean => CALC_LEVELS.includes(level);
 /** The subjects of the tests, each with its own levels and topics. */
-export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc";
+export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc" | "cf";
 export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : isEcon(level) ? "econ" : isCalc(level) ? "calc" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : isCf(level) ? "cf" : isEcon(level) ? "econ" : isCalc(level) ? "calc" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
@@ -104,9 +112,9 @@ export const isChemistry = (level: Level): boolean => level === "chemistry" || l
 /** Tests that draw from the question bank, and so record the bank revision they drew from. */
 export const usesBank = (level: Level): boolean => isChemistry(level) || isEcon(level) || isCalc(level);
 /** Every topic; new ones are appended (the order is the selector's within a group). */
-export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations", "econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour", "calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques", "calcOde", "calcParametric", "calcSeries", "calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic"];
+export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations", "econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour", "calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques", "calcOde", "calcParametric", "calcSeries", "calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic", "cfDns", "cfTls", "cfCache", "cfSecurity", "cfWorkers", "cfStorage", "cfZeroTrust", "cfAi"];
 
-export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure" | "econTheory" | "econTaxation" | "econWelfareState" | "calcOneVariable" | "calcFurther" | "calcSeveral";
+export type TopicGroup = "analysis" | "algebra" | "geometry" | "probability" | "thermodynamics" | "linuxCommands" | "linuxDev" | "linuxInstall" | "reactions" | "structure" | "rates" | "spectra" | "statistics" | "sqlLanguage" | "sqlEngines" | "rustLanguage" | "rustSystems" | "tsLanguage" | "tsPlatform" | "reactCore" | "reactStack" | "gcpIdentity" | "gcpInfrastructure" | "cfNetwork" | "cfDeveloper" | "cfOneAi" | "econTheory" | "econTaxation" | "econWelfareState" | "calcOneVariable" | "calcFurther" | "calcSeveral";
 /** How the topics are grouped in the test's settings. */
 export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "analysis", topics: ["graphs", "functions", "sequences", "derivatives", "integrals", "limits", "explog", "trigonometry", "odes", "series", "multivariable"] },
@@ -132,6 +140,9 @@ export const TOPIC_GROUPS: { group: TopicGroup; topics: Topic[] }[] = [
   { group: "reactStack", topics: ["reactData", "reactTyping", "reactTooling", "reactTesting"] },
   { group: "gcpIdentity", topics: ["gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity"] },
   { group: "gcpInfrastructure", topics: ["gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations"] },
+  { group: "cfNetwork", topics: ["cfDns", "cfTls", "cfCache", "cfSecurity"] },
+  { group: "cfDeveloper", topics: ["cfWorkers", "cfStorage"] },
+  { group: "cfOneAi", topics: ["cfZeroTrust", "cfAi"] },
   { group: "econTheory", topics: ["econWelfare", "econMarketFailure", "econPublicChoice"] },
   { group: "econTaxation", topics: ["econIncidence", "econOptimalTax", "econTaxDesign"] },
   { group: "econWelfareState", topics: ["econSocialInsurance", "econRedistribution", "econLabour"] },
@@ -849,6 +860,45 @@ export const MISTAKES = [
   "gcpMinInstancesAdded", // minimum instances added on top of those needed
   "gcpAvailabilityLayout", // series and redundant components confused
   "gcpAvailabilityMin", // the whole taken to be as available as one part
+  "cfRulePrecedence", // "or" taken to bind before "and", or "not" over the whole
+  "cfRuleCase", // eq, contains or in taken to ignore case
+  "cfWildcardCase", // wildcard taken to be case-sensitive
+  "cfWildcardAnchor", // wildcard taken to match part of the value
+  "cfContains", // contains taken to match only at the start
+  "cfRuleMisread", // the expression read without its operators' rules
+  "cfPhaseListed", // rules taken in the order they are listed, not the phases'
+  "cfManagedFirst", // managed rules taken to run before custom rules
+  "cfBulkFirst", // Bulk Redirects taken to run first, like Single Redirects
+  "cfAccessFirst", // the Access check taken to run before the WAF
+  "cfCacheStops", // a Cache Rule taken to stop the request
+  "cfRedirectLast", // redirects taken to run after the security phases
+  "cfRedirectLoop", // Flexible's redirect loop missed, or seen where there is none
+  "cfFlexibleSafe", // Flexible taken to encrypt the connection to the origin
+  "cfFullNotStrict", // Full taken to check the certificate, or Full (strict) not to
+  "cfOriginCaUntrusted", // an Origin CA certificate taken to fail Full (strict)
+  "cfHtmlCached", // HTML or JSON taken to be cached by default
+  "cfCacheBypass", // a cookie or private, no-store taken not to stop caching
+  "cfBrowserTtl", // the browser TTL taken to be the origin's even when shorter than 4 hours
+  "cfDefaultEdgeTtl", // the default edge TTL taken to be 4 hours
+  "cfSmaxage", // s-maxage ignored at the edge
+  "cfEdgeBrowser", // the edge TTL taken to be the browser's, or the reverse
+  "cfNoHeaders", // a response without cache headers taken not to be cached
+  "cfIngressSpecific", // the most specific ingress rule taken to win, not the first
+  "cfIngressLast", // the last matching ingress rule taken to win
+  "cfIngressPath", // an ingress rule's path ignored
+  "cfIngressWildcard", // *.example.com taken to cover example.com
+  "cfRequireOr", // Require taken as OR
+  "cfExcludeIgnored", // Exclude ignored
+  "cfAccessOrder", // Bypass not evaluated first, or the wrong policy decides
+  "cfAccessDefault", // a user who matches no policy taken to be allowed
+  "cfIncludeAnd", // Include taken as AND
+  "cfIncludedIgnored", // Workers Paid's included usage not subtracted
+  "cfBaseForgotten", // the USD 5 subscription forgotten
+  "cfWallTime", // wall time billed instead of CPU time
+  "cfCpuIgnored", // CPU time left out of the bill
+  "cfNeuronsMonthly", // the free Neurons taken per month, not per day
+  "cfFreeIgnored", // the free Neurons not subtracted
+  "cfNeuronUnit", // the price per 1,000 Neurons misread
   // public economics
   "econStatutoryIncidence", // the tax taken to fall on whoever pays it to the state
   "econIncidenceInverted", // the more elastic side taken to bear more
@@ -1128,6 +1178,7 @@ export type Verify =
   | { kind: "react"; program: string; clicks: number; show: "page" | "log"; strict?: boolean }
   /** The option (its formula) is the answer to a Google Cloud model: an IAM evaluation, a firewall decision, a subnet, Cloud Run's scaling, an availability. */
   | { kind: "gcp"; model: GcpModel }
+  | { kind: "cf"; model: CfModel }
   /** The option (its formula) is the answer to a small economic model: incidence, areas, Pigou, Samuelson, Gini, Ramsey, Saez, monopsony… */
   | { kind: "econ"; model: EconModel }
   /** The option (its formula) is the answer to a small calculus model: a limit on a graph, a Riemann sum, Euler's method, a directional derivative… */

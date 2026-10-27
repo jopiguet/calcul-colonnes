@@ -208,7 +208,7 @@ compiled in by `vite.config.ts` and published as `/version.json`.
 
 ## Internationalisation
 
-- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 525 kinds of question and of the 382 mistake types (with `quiz-i18n-chemistry.ts`, `quiz-i18n-equilibria.ts`, `quiz-i18n-quantum.ts`, `quiz-i18n-kinetics.ts`, `quiz-i18n-spectroscopy.ts`, `quiz-i18n-statistical.ts`, `quiz-i18n-linux.ts`, `quiz-i18n-chembio.ts`, `quiz-i18n-sql.ts`, `quiz-i18n-rust.ts`, `quiz-i18n-ts.ts`, `quiz-i18n-react.ts`, `quiz-i18n-gcp.ts`, `quiz-i18n-econ.ts` and `quiz-i18n-calc.ts` merged into it). Every dictionary is typed against the French one, so a missing translation is a compile error.
+- **Interface texts:** French, Spanish and English. The dictionaries are in `src/i18n.ts` for the arithmetic part, and in `src/quiz-i18n.ts` for tests, progress, the names of the 565 kinds of question and of the 421 mistake types (with `quiz-i18n-chemistry.ts`, `quiz-i18n-equilibria.ts`, `quiz-i18n-quantum.ts`, `quiz-i18n-kinetics.ts`, `quiz-i18n-spectroscopy.ts`, `quiz-i18n-statistical.ts`, `quiz-i18n-linux.ts`, `quiz-i18n-chembio.ts`, `quiz-i18n-sql.ts`, `quiz-i18n-rust.ts`, `quiz-i18n-ts.ts`, `quiz-i18n-react.ts`, `quiz-i18n-gcp.ts`, `quiz-i18n-cf.ts`, `quiz-i18n-econ.ts` and `quiz-i18n-calc.ts` merged into it). Every dictionary is typed against the French one, so a missing translation is a compile error.
 - **Generated questions:** the generators produce only LaTeX plus *keys* for the sentence around it (`PromptKey`, `ExplanationKey`), so they contain no language.
 - **Spanish notation:** KaTeX macros render `\sin` as *sen* and `\arcsin` as *arcsen*.
 

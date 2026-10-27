@@ -20,7 +20,7 @@ import { bt } from "./discover/bio-i18n";
 import { mt } from "./discover/math-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
-import { CALC_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
+import { CALC_TOPICS, CF_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -49,6 +49,7 @@ const texts = {
     tsText: "Les types, et le JavaScript qui tourne dessous, en quatre niveaux",
     reactText: "Composants, état, effets, et la pile autour : Vite, tests, déploiement",
     gcpText: "IAM, comptes de service, réseau et pare-feu, en quatre niveaux",
+    cfText: "DNS, cache, WAF, Workers, Zero Trust et IA, en quatre niveaux",
     economics: "Économie",
     econText: "Fiscalité, bien-être, assurance sociale, travail : notions et graphiques",
     calcText: "Limites, dérivées, intégrales, séries, plusieurs variables, Itô : notions et graphiques",
@@ -82,6 +83,7 @@ const texts = {
     tsText: "Los tipos, y el JavaScript que se ejecuta debajo, en cuatro niveles",
     reactText: "Componentes, estado, efectos, y la pila alrededor: Vite, tests, despliegue",
     gcpText: "IAM, cuentas de servicio, red y firewall, en cuatro niveles",
+    cfText: "DNS, caché, WAF, Workers, Zero Trust e IA, en cuatro niveles",
     economics: "Economía",
     econText: "Impuestos, bienestar, seguro social, trabajo: conceptos y gráficos",
     calcText: "Límites, derivadas, integrales, series, varias variables, Itô: conceptos y gráficas",
@@ -115,6 +117,7 @@ const texts = {
     tsText: "The types, and the JavaScript running underneath, in four levels",
     reactText: "Components, state, effects, and the stack around them: Vite, tests, deployment",
     gcpText: "IAM, service accounts, networking and firewalls, in four levels",
+    cfText: "DNS, cache, WAF, Workers, Zero Trust and AI, in four levels",
     economics: "Economics",
     econText: "Taxation, welfare, social insurance, labour: concepts and charts",
     calcText: "Limits, derivatives, integrals, series, several variables, Itô: concepts and graphs",
@@ -168,7 +171,7 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "columns":
       return "columns";
     case "quiz":
-      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : activity.subject === "ts" ? "ts" : activity.subject === "react" ? "react" : activity.subject === "gcp" ? "gcp" : activity.subject === "econ" ? "econ" : activity.subject === "calc" ? "calc" : "quiz";
+      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : activity.subject === "ts" ? "ts" : activity.subject === "react" ? "react" : activity.subject === "gcp" ? "gcp" : activity.subject === "cf" ? "cf" : activity.subject === "econ" ? "econ" : activity.subject === "calc" ? "calc" : "quiz";
     case "discover":
       return `discover-${activity.activity}`;
     case "vocab": {
@@ -188,7 +191,7 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
   return [
     { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }, { id: "calc", title: qt("modeCalc") }] },
     { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
-    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }, { id: "rust", title: qt("modeRust") }, { id: "ts", title: qt("modeTs") }, { id: "react", title: qt("modeReact") }, { id: "gcp", title: qt("modeGcp") }] },
+    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }, { id: "rust", title: qt("modeRust") }, { id: "ts", title: qt("modeTs") }, { id: "react", title: qt("modeReact") }, { id: "gcp", title: qt("modeGcp") }, { id: "cf", title: qt("modeCf") }] },
     { group: ht("economics"), activities: [{ id: "econ", title: qt("modeEcon") }] },
     {
       group: ht("languages"),
@@ -297,6 +300,8 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
                   ? "react"
                   : (GCP_TOPICS as string[]).includes(topic)
                     ? "gcp"
+                    : (CF_TOPICS as string[]).includes(topic)
+                      ? "cf"
                     : (ECON_TOPICS as string[]).includes(topic)
                       ? "econ"
                       : (CALC_TOPICS as string[]).includes(topic)
@@ -372,6 +377,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
     card("ts", qt("modeTs"), ht("tsText"), reviewStatus(toReview("ts")), () => ctx.open({ mode: "quiz", subject: "ts" })),
     card("react", qt("modeReact"), ht("reactText"), reviewStatus(toReview("react")), () => ctx.open({ mode: "quiz", subject: "react" })),
     card("gcp", qt("modeGcp"), ht("gcpText"), reviewStatus(toReview("gcp")), () => ctx.open({ mode: "quiz", subject: "gcp" })),
+    card("cf", qt("modeCf"), ht("cfText"), reviewStatus(toReview("cf")), () => ctx.open({ mode: "quiz", subject: "cf" })),
   );
   computing.append(shell);
 

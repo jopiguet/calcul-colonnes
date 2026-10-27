@@ -8,6 +8,7 @@ import { RS_GROUPS, RS_LEVELS, RS_MISTAKES, RS_SKILLS, RS_TEXTS, RS_TOPICS } fro
 import { TS_GROUPS, TS_LEVEL_NAMES, TS_MISTAKES, TS_SKILLS, TS_TEXTS, TS_TOPIC_NAMES } from "./quiz-i18n-ts";
 import { REACT_GROUPS, REACT_LEVEL_NAMES, REACT_MISTAKES, REACT_SKILLS, REACT_TEXTS, REACT_TOPIC_NAMES } from "./quiz-i18n-react";
 import { GCP_GROUPS, GCP_LEVEL_NAMES, GCP_MISTAKES, GCP_SKILLS, GCP_TEXTS, GCP_TOPIC_NAMES } from "./quiz-i18n-gcp";
+import { CF_GROUPS, CF_LEVEL_NAMES, CF_MISTAKES, CF_SKILLS, CF_TEXTS, CF_TOPIC_NAMES } from "./quiz-i18n-cf";
 import { ECON_GROUPS, ECON_LEVEL_NAMES, ECON_MISTAKES, ECON_SKILLS, ECON_TEXTS, ECON_TOPIC_NAMES } from "./quiz-i18n-econ";
 import { CALC_GROUPS, CALC_LEVEL_NAMES, CALC_MISTAKES, CALC_SKILLS, CALC_TEXTS, CALC_TOPIC_NAMES } from "./quiz-i18n-calc";
 import { EQ_EXPLANATIONS, EQ_MISTAKES, EQ_PROMPTS, EQ_SKILLS } from "./quiz-i18n-equilibria";
@@ -104,6 +105,7 @@ const fr = {
     ...TS_TEXTS.fr,
     ...REACT_TEXTS.fr,
     ...GCP_TEXTS.fr,
+    ...CF_TEXTS.fr,
     ...ECON_TEXTS.fr,
     ...CALC_TEXTS.fr,
 };
@@ -195,6 +197,7 @@ const es: Record<QuizKey, string> = {
     ...TS_TEXTS.es,
     ...REACT_TEXTS.es,
     ...GCP_TEXTS.es,
+    ...CF_TEXTS.es,
     ...ECON_TEXTS.es,
     ...CALC_TEXTS.es,
 };
@@ -284,13 +287,14 @@ const en: Record<QuizKey, string> = {
     ...TS_TEXTS.en,
     ...REACT_TEXTS.en,
     ...GCP_TEXTS.en,
+    ...CF_TEXTS.en,
     ...ECON_TEXTS.en,
     ...CALC_TEXTS.en,
 };
 
 const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
-  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr, chembio: CB_LEVEL.fr, sql: SQ_LEVEL.fr, rustBeginner: RS_LEVELS.rustBeginner.fr, rustIntermediate: RS_LEVELS.rustIntermediate.fr, rustAdvanced: RS_LEVELS.rustAdvanced.fr, rustExpert: RS_LEVELS.rustExpert.fr, tsBeginner: TS_LEVEL_NAMES.tsBeginner.fr, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.fr, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.fr, tsExpert: TS_LEVEL_NAMES.tsExpert.fr, reactBeginner: REACT_LEVEL_NAMES.reactBeginner.fr, reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.fr, reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.fr, reactExpert: REACT_LEVEL_NAMES.reactExpert.fr, gcpBeginner: GCP_LEVEL_NAMES.gcpBeginner.fr, gcpIntermediate: GCP_LEVEL_NAMES.gcpIntermediate.fr, gcpAdvanced: GCP_LEVEL_NAMES.gcpAdvanced.fr, gcpExpert: GCP_LEVEL_NAMES.gcpExpert.fr, econ: ECON_LEVEL_NAMES.econ.fr, econAdvanced: ECON_LEVEL_NAMES.econAdvanced.fr, calc: CALC_LEVEL_NAMES.calc.fr, calcAdvanced: CALC_LEVEL_NAMES.calcAdvanced.fr },
-  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es, chembio: CB_LEVEL.es, sql: SQ_LEVEL.es, rustBeginner: RS_LEVELS.rustBeginner.es, rustIntermediate: RS_LEVELS.rustIntermediate.es, rustAdvanced: RS_LEVELS.rustAdvanced.es, rustExpert: RS_LEVELS.rustExpert.es, tsBeginner: TS_LEVEL_NAMES.tsBeginner.es, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.es, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.es, tsExpert: TS_LEVEL_NAMES.tsExpert.es, reactBeginner: REACT_LEVEL_NAMES.reactBeginner.es, reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.es, reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.es, reactExpert: REACT_LEVEL_NAMES.reactExpert.es, gcpBeginner: GCP_LEVEL_NAMES.gcpBeginner.es, gcpIntermediate: GCP_LEVEL_NAMES.gcpIntermediate.es, gcpAdvanced: GCP_LEVEL_NAMES.gcpAdvanced.es, gcpExpert: GCP_LEVEL_NAMES.gcpExpert.es, econ: ECON_LEVEL_NAMES.econ.es, econAdvanced: ECON_LEVEL_NAMES.econAdvanced.es, calc: CALC_LEVEL_NAMES.calc.es, calcAdvanced: CALC_LEVEL_NAMES.calcAdvanced.es },
+  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr, chembio: CB_LEVEL.fr, sql: SQ_LEVEL.fr, rustBeginner: RS_LEVELS.rustBeginner.fr, rustIntermediate: RS_LEVELS.rustIntermediate.fr, rustAdvanced: RS_LEVELS.rustAdvanced.fr, rustExpert: RS_LEVELS.rustExpert.fr, tsBeginner: TS_LEVEL_NAMES.tsBeginner.fr, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.fr, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.fr, tsExpert: TS_LEVEL_NAMES.tsExpert.fr, reactBeginner: REACT_LEVEL_NAMES.reactBeginner.fr, reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.fr, reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.fr, reactExpert: REACT_LEVEL_NAMES.reactExpert.fr, gcpBeginner: GCP_LEVEL_NAMES.gcpBeginner.fr, gcpIntermediate: GCP_LEVEL_NAMES.gcpIntermediate.fr, gcpAdvanced: GCP_LEVEL_NAMES.gcpAdvanced.fr, gcpExpert: GCP_LEVEL_NAMES.gcpExpert.fr, cfBeginner: CF_LEVEL_NAMES.cfBeginner.fr, cfIntermediate: CF_LEVEL_NAMES.cfIntermediate.fr, cfAdvanced: CF_LEVEL_NAMES.cfAdvanced.fr, cfExpert: CF_LEVEL_NAMES.cfExpert.fr, econ: ECON_LEVEL_NAMES.econ.fr, econAdvanced: ECON_LEVEL_NAMES.econAdvanced.fr, calc: CALC_LEVEL_NAMES.calc.fr, calcAdvanced: CALC_LEVEL_NAMES.calcAdvanced.fr },
+  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es, chembio: CB_LEVEL.es, sql: SQ_LEVEL.es, rustBeginner: RS_LEVELS.rustBeginner.es, rustIntermediate: RS_LEVELS.rustIntermediate.es, rustAdvanced: RS_LEVELS.rustAdvanced.es, rustExpert: RS_LEVELS.rustExpert.es, tsBeginner: TS_LEVEL_NAMES.tsBeginner.es, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.es, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.es, tsExpert: TS_LEVEL_NAMES.tsExpert.es, reactBeginner: REACT_LEVEL_NAMES.reactBeginner.es, reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.es, reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.es, reactExpert: REACT_LEVEL_NAMES.reactExpert.es, gcpBeginner: GCP_LEVEL_NAMES.gcpBeginner.es, gcpIntermediate: GCP_LEVEL_NAMES.gcpIntermediate.es, gcpAdvanced: GCP_LEVEL_NAMES.gcpAdvanced.es, gcpExpert: GCP_LEVEL_NAMES.gcpExpert.es, cfBeginner: CF_LEVEL_NAMES.cfBeginner.es, cfIntermediate: CF_LEVEL_NAMES.cfIntermediate.es, cfAdvanced: CF_LEVEL_NAMES.cfAdvanced.es, cfExpert: CF_LEVEL_NAMES.cfExpert.es, econ: ECON_LEVEL_NAMES.econ.es, econAdvanced: ECON_LEVEL_NAMES.econAdvanced.es, calc: CALC_LEVEL_NAMES.calc.es, calcAdvanced: CALC_LEVEL_NAMES.calcAdvanced.es },
   en: {
     school: "High school",
     university: "University",
@@ -315,15 +319,19 @@ const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
     gcpIntermediate: GCP_LEVEL_NAMES.gcpIntermediate.en,
     gcpAdvanced: GCP_LEVEL_NAMES.gcpAdvanced.en,
     gcpExpert: GCP_LEVEL_NAMES.gcpExpert.en,
+    cfBeginner: CF_LEVEL_NAMES.cfBeginner.en,
+    cfIntermediate: CF_LEVEL_NAMES.cfIntermediate.en,
+    cfAdvanced: CF_LEVEL_NAMES.cfAdvanced.en,
+    cfExpert: CF_LEVEL_NAMES.cfExpert.en,
     econ: ECON_LEVEL_NAMES.econ.en,
     econAdvanced: ECON_LEVEL_NAMES.econAdvanced.en, calc: CALC_LEVEL_NAMES.calc.en, calcAdvanced: CALC_LEVEL_NAMES.calcAdvanced.en,
   },
 };
 
 const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
-  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr, ...SQ_GROUPS.fr, ...RS_GROUPS.fr, ...TS_GROUPS.fr, ...REACT_GROUPS.fr, ...GCP_GROUPS.fr, ...ECON_GROUPS.fr, ...CALC_GROUPS.fr },
-  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, statistics: ST_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es, ...SQ_GROUPS.es, ...RS_GROUPS.es, ...TS_GROUPS.es, ...REACT_GROUPS.es, ...GCP_GROUPS.es, ...ECON_GROUPS.es, ...CALC_GROUPS.es },
-  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, statistics: ST_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en, ...SQ_GROUPS.en, ...RS_GROUPS.en, ...TS_GROUPS.en, ...REACT_GROUPS.en, ...GCP_GROUPS.en, ...ECON_GROUPS.en, ...CALC_GROUPS.en },
+  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr, ...SQ_GROUPS.fr, ...RS_GROUPS.fr, ...TS_GROUPS.fr, ...REACT_GROUPS.fr, ...GCP_GROUPS.fr, ...CF_GROUPS.fr, ...ECON_GROUPS.fr, ...CALC_GROUPS.fr },
+  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, statistics: ST_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es, ...SQ_GROUPS.es, ...RS_GROUPS.es, ...TS_GROUPS.es, ...REACT_GROUPS.es, ...GCP_GROUPS.es, ...CF_GROUPS.es, ...ECON_GROUPS.es, ...CALC_GROUPS.es },
+  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, statistics: ST_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en, ...SQ_GROUPS.en, ...RS_GROUPS.en, ...TS_GROUPS.en, ...REACT_GROUPS.en, ...GCP_GROUPS.en, ...CF_GROUPS.en, ...ECON_GROUPS.en, ...CALC_GROUPS.en },
 };
 
 const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
@@ -336,6 +344,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...TS_TOPIC_NAMES.fr,
     ...REACT_TOPIC_NAMES.fr,
     ...GCP_TOPIC_NAMES.fr,
+    ...CF_TOPIC_NAMES.fr,
     ...ECON_TOPIC_NAMES.fr,
     ...CALC_TOPIC_NAMES.fr,
     derivatives: "Dérivées",
@@ -363,6 +372,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...TS_TOPIC_NAMES.es,
     ...REACT_TOPIC_NAMES.es,
     ...GCP_TOPIC_NAMES.es,
+    ...CF_TOPIC_NAMES.es,
     ...ECON_TOPIC_NAMES.es,
     ...CALC_TOPIC_NAMES.es,
     derivatives: "Derivadas",
@@ -390,6 +400,7 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...TS_TOPIC_NAMES.en,
     ...REACT_TOPIC_NAMES.en,
     ...GCP_TOPIC_NAMES.en,
+    ...CF_TOPIC_NAMES.en,
     ...ECON_TOPIC_NAMES.en,
     ...CALC_TOPIC_NAMES.en,
     derivatives: "Derivatives",
@@ -954,6 +965,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...TS_SKILLS.fr,
     ...REACT_SKILLS.fr,
     ...GCP_SKILLS.fr,
+    ...CF_SKILLS.fr,
     ...ECON_SKILLS.fr,
     ...CALC_SKILLS.fr,
     "derivatives.polynomial": "Dérivée d'un polynôme",
@@ -1081,6 +1093,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...TS_SKILLS.es,
     ...REACT_SKILLS.es,
     ...GCP_SKILLS.es,
+    ...CF_SKILLS.es,
     ...ECON_SKILLS.es,
     ...CALC_SKILLS.es,
     "derivatives.polynomial": "Derivada de un polinomio",
@@ -1208,6 +1221,7 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...TS_SKILLS.en,
     ...REACT_SKILLS.en,
     ...GCP_SKILLS.en,
+    ...CF_SKILLS.en,
     ...ECON_SKILLS.en,
     ...CALC_SKILLS.en,
     "derivatives.polynomial": "Derivative of a polynomial",
@@ -1339,6 +1353,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...TS_MISTAKES.fr,
     ...REACT_MISTAKES.fr,
     ...GCP_MISTAKES.fr,
+    ...CF_MISTAKES.fr,
     ...ECON_MISTAKES.fr,
     ...CALC_MISTAKES.fr,
     exponentKept: "Exposant non abaissé",
@@ -1458,6 +1473,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...TS_MISTAKES.es,
     ...REACT_MISTAKES.es,
     ...GCP_MISTAKES.es,
+    ...CF_MISTAKES.es,
     ...ECON_MISTAKES.es,
     ...CALC_MISTAKES.es,
     exponentKept: "Exponente sin reducir",
@@ -1577,6 +1593,7 @@ const MISTAKE_NAMES: Record<Lang, Record<MistakeKey, string>> = {
     ...TS_MISTAKES.en,
     ...REACT_MISTAKES.en,
     ...GCP_MISTAKES.en,
+    ...CF_MISTAKES.en,
     ...ECON_MISTAKES.en,
     ...CALC_MISTAKES.en,
     exponentKept: "Exponent not lowered",

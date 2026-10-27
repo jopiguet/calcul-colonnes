@@ -27,6 +27,7 @@ import { reactComponents, reactState, reactEffects, reactRendering, reactData, r
 import { calcLimits, calcDerivatives, calcApplications, calcIntegrals, calcTranscendental, calcTechniques, calcOde, calcParametric, calcSeries, calcVectors, calcMultivariable, calcVectorCalculus, calcStochastic } from "./calc";
 import { econWelfare, econMarketFailure, econPublicChoice, econIncidence, econOptimalTax, econTaxDesign, econSocialInsurance, econRedistribution, econLabour } from "./econ";
 import { gcpHierarchy, gcpIam, gcpServiceAccounts, gcpSecurity, gcpNetworking, gcpCompute, gcpStorage, gcpOperations } from "./gcp";
+import { cfDns, cfTls, cfCache, cfSecurity, cfWorkers, cfStorage, cfZeroTrust, cfAi } from "./cf";
 import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
 import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
 import { linuxFiles, linuxText, linuxShell, linuxProcesses, linuxSystem, linuxNetwork, linuxTools, linuxScripting, linuxGit, linuxVim } from "./linux";
@@ -130,6 +131,14 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   gcpCompute,
   gcpStorage,
   gcpOperations,
+  cfDns,
+  cfTls,
+  cfCache,
+  cfSecurity,
+  cfWorkers,
+  cfStorage,
+  cfZeroTrust,
+  cfAi,
   econWelfare,
   econMarketFailure,
   econPublicChoice,
@@ -293,6 +302,7 @@ function same(verify: Verify, a: Option, b: Option, version: number): boolean {
     case "ts":
     case "react":
     case "gcp":
+    case "cf":
     case "econ":
     case "calc":
       return false; // written answers and permission modes: told apart by their identity (tex), checked above
@@ -419,6 +429,9 @@ export { REACT_IMPORTS, REACT_LINE_MAX } from "./react-output";
 export { GCP_QUESTIONS } from "./gcp";
 export { GCP_LINE_MAX } from "./gcp-output";
 export type { GcpModel } from "./gcp-model";
+export { CF_QUESTIONS } from "./cf";
+export { CF_LINE_MAX } from "./cf-output";
+export type { CfModel } from "./cf-model";
 export type { EconModel } from "./econ-model";
 export type { CalcModel } from "./calc-model";
 export { formatRows } from "./sql-output";

@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.31.0",
+    fr: ["🔶 Cloudflare : un nouveau QCM en quatre niveaux, du DNS et du cache aux Workers, à Zero Trust et à l'IA, avec des questions calculées sur les règles, le SSL/TLS, le cache, les tunnels et Access."],
+    es: ["🔶 Cloudflare: un nuevo test en cuatro niveles, del DNS y la caché a los Workers, Zero Trust y la IA, con preguntas calculadas sobre reglas, SSL/TLS, caché, túneles y Access."],
+    en: ["🔶 Cloudflare: a new test at four levels, from DNS and the cache to Workers, Zero Trust and AI, with computed questions on rules, SSL/TLS, caching, tunnels and Access."],
+  },
+  {
     version: "6.30.0",
     fr: ["Curiosités mathématiques : cinq nouveaux labos, avant Chimie et biologie. Le flocon de Koch, l'ensemble de Mandelbrot (zoome dans le bord), le jeu du chaos, l'attracteur de Lorenz (l'effet papillon) et le passage de l'ordre au chaos."],
     es: ["Curiosidades matemáticas: cinco laboratorios nuevos, antes de Química y biología. El copo de Koch, el conjunto de Mandelbrot (amplía el borde), el juego del caos, el atractor de Lorenz (el efecto mariposa) y el paso del orden al caos."],

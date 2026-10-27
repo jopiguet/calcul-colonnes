@@ -13,13 +13,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, REACT_QUESTIONS, REACT_LINE_MAX, REACT_IMPORTS, GCP_QUESTIONS, GCP_LINE_MAX, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, REACT_QUESTIONS, REACT_LINE_MAX, REACT_IMPORTS, GCP_QUESTIONS, GCP_LINE_MAX, CF_QUESTIONS, CF_LINE_MAX, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
   type Chart,
   type Graph, type Option, type Question, matchTyped, typeable,
 } from "../shared/quiz/index.ts";
 import { parseBankFile, toBank } from "../shared/quiz/bank-file.ts";
 import { gcpAnswer, validNewSubnet } from "./check-gcp.ts";
+import { cfAnswer } from "./check-cf.ts";
 import { econAnswer } from "./check-econ.ts";
 import { calcAnswer } from "./check-calc.ts";
 
@@ -508,6 +509,9 @@ function isRight(q: Question, o: Option): boolean {
     case "gcp":
       // Google Cloud: the answer computed again by an evaluator of the checks' own.
       return v.model.type === "subnetNew" ? validNewSubnet(v.model.existing, o.tex) : o.tex === gcpAnswer(v.model);
+    case "cf":
+      // Cloudflare: the answer computed again by an evaluator of the checks' own.
+      return o.tex === cfAnswer(v.model);
     case "econ":
       // Economics: the answer computed again by an evaluator of the checks' own.
       return econAnswer(v.model, o.tex);
@@ -749,6 +753,10 @@ for (const level of LEVELS) {
           if (long) throw new Error(`program line longer than ${TS_LINE_MAX} characters: ${long}`);
           if (q.prompt.code !== q.verify.program) throw new Error("the program shown is not the one checked");
         }
+        if (q.verify.kind === "cf" && q.prompt.code) {
+          const long = q.prompt.code.split("\n").find((line) => [...line].length > CF_LINE_MAX);
+          if (long) throw new Error(`rule line longer than ${CF_LINE_MAX} characters: ${long}`);
+        }
         if (q.verify.kind === "gcp" && q.prompt.code) {
           const long = q.prompt.code.split("\n").find((line) => [...line].length > GCP_LINE_MAX);
           if (long) throw new Error(`policy line longer than ${GCP_LINE_MAX} characters: ${long}`);
@@ -858,6 +866,7 @@ if (tsPending.length > 0) {
 } else console.log(`${tsWritten} written TypeScript questions checked`);
 
 console.log(`${checkWritten("gcp", "gc-", GCP_QUESTIONS)} written Google Cloud questions checked`);
+console.log(`${checkWritten("cf", "cf-", CF_QUESTIONS)} written Cloudflare questions checked`);
 const reactWritten = checkWritten("react", "re-", REACT_QUESTIONS);
 if (reactPending.length > 0) {
   const cases = [...new Map(reactPending.map((p) => [p.key, p.run])).values()];
