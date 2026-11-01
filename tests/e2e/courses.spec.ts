@@ -24,8 +24,17 @@ function seedWhere(level: Level, count: number, topics: string[], pick: (q: Ques
 }
 
 test("the Cloudflare course: read from the settings, in the player's language, back to the test", async ({ page }) => {
+  await page.setViewportSize({ width: 1100, height: 900 });
   await newPlayer(page, "Reader");
   await openActivity(page, "cf");
+  // On a large screen the button sits under the title, across both columns, and leaves no hole beside the settings.
+  const open = await page.locator(".course-open").boundingBox();
+  const what = await page.locator(".quiz-setup-what").boundingBox();
+  const how = await page.locator(".quiz-setup-how").boundingBox();
+  expect(what!.y).toBeGreaterThan(open!.y + open!.height);
+  expect(Math.abs(what!.y - how!.y)).toBeLessThan(2);
+  expect(what!.x).toBeLessThan(how!.x);
+  expect(await page.$$eval(".segmented .segment", (bs) => bs.filter((b) => b.scrollWidth > b.clientWidth + 1).length)).toBe(0);
   await page.click("text=📖 Lire le cours");
   await expect(page.locator(".course-title")).toHaveText("Cloudflare — un cours complet");
   const toc = page.locator(".course-toc a");

@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.32.1
+
+- **Test settings on a large screen:** *📖 Lire le cours* sits under the title, across both columns. It took the first column, which pushed the levels and topics into the narrow right one, left a hole under the button and cut the four level names (*Débutant*… *Expert*).
+- **Four levels between 52 and 64 rem wide:** on two rows, so that *Intermédiaire* stays whole.
+- **Tests:** the Cloudflare course test checks the settings' columns and that no level name is cut.
+
 ## 6.32.0
 
 - **Courses in the app.** Tests with a course get **📖 Lire le cours** in their settings: the course in the player's language, with a contents list, tables, code, formulas (KaTeX), exercises and sources, loaded only when opened. After a test, a wrong answer links to the part that explains it (*📖 Dans le cours : Partie 4 — Cache et performance*). The Cloudflare course is the first, in French, Spanish and English. See [User guide › Courses](docs/user-guide.md#courses).

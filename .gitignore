@@ -6,3 +6,8 @@ test-results
 playwright-report
 dist-server
 .react-check-*
+.neon/
+.DS_Store
+.neon
+neon_cmd
+dictionary_export/

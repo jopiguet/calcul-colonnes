@@ -4114,6 +4114,12 @@ pre.quiz-code {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+/* Settings in two columns but the window not wide: four levels need two rows to keep their names whole. */
+@media (min-width: 52rem) and (max-width: 63.99rem) {
+  .quiz-setup .segmented.levels-four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
 /* ------------------------------------------------------------- physics playground */
 
@@ -6179,9 +6185,13 @@ button.tiny {
 }
 
 /* ------------------------------------------------------------ courses (src/course.ts) */
+/* Under the test's title, across both columns of the settings on a large screen. */
 .course-open {
-  align-self: flex-start;
-  margin-bottom: 0.75rem;
+  align-self: center;
+  justify-self: center;
+}
+.quiz-setup > .course-open {
+  grid-column: 1 / -1;
 }
 .course {
   max-width: 52rem;
