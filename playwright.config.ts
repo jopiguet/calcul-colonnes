@@ -54,7 +54,7 @@ export default defineConfig({
         AUTH_ATTEMPTS_PER_ADDRESS: "10000",
         // An invented vocabulary (never a book's content), imported at startup.
         VOCAB_FILE:
-          "tests/e2e/fixtures/vocab.json,tests/e2e/fixtures/vocab-english.json,tests/e2e/fixtures/vocab-japanese.json,tests/e2e/fixtures/vocab-german.json,tests/e2e/fixtures/vocab-german-school.json,tests/e2e/fixtures/vocab-arabic.json,tests/e2e/fixtures/vocab-cuneiform.json,tests/e2e/fixtures/characters.json",
+          "tests/e2e/fixtures/vocab.json,tests/e2e/fixtures/vocab-english.json,tests/e2e/fixtures/vocab-japanese.json,tests/e2e/fixtures/vocab-german.json,tests/e2e/fixtures/vocab-german-school.json,tests/e2e/fixtures/vocab-arabic.json,tests/e2e/fixtures/vocab-cuneiform.json,tests/e2e/fixtures/vocab-pictures/vocab.json,tests/e2e/fixtures/characters.json",
         // Invented question banks (never a book's content), imported at startup.
         QUIZ_BANK_FILE: "tests/e2e/fixtures/bank.json,tests/e2e/fixtures/econ-bank.json,tests/e2e/fixtures/calc-bank.json",
         // An invented workbook (never a book's pages), imported at startup.

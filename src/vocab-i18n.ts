@@ -1,6 +1,14 @@
 import { currentLang, type Lang } from "./i18n";
 
 const fr = {
+  picturesTitle: "Images",
+  picturesWith: "Avec le mot",
+  picturesAlone: "L’image seule",
+  picturesHint: "L’image seule : quand elle désigne un seul mot (sa propre image, ou un numéro sur un schéma), le mot n’apparaît qu’avec la réponse.",
+  askPicture: "Qu’est-ce que c’est, en {lang} ?",
+  pictureAlt: "Image du dictionnaire",
+  pictureAltPart: "Image du dictionnaire, numéro {part}",
+  picturePart: "n° {part}",
   shelfLink: "📚 Vocabulaire {lang} : les {count} livres",
   shelfSource: "{books} livres · {words}",
   shelfAll: "Tous les livres",
@@ -173,6 +181,14 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
+  picturesTitle: "Imágenes",
+  picturesWith: "Con la palabra",
+  picturesAlone: "Solo la imagen",
+  picturesHint: "Solo la imagen: cuando designa una sola palabra (su propia imagen, o un número en un esquema), la palabra aparece solo con la respuesta.",
+  askPicture: "¿Qué es esto, en {lang}?",
+  pictureAlt: "Imagen del diccionario",
+  pictureAltPart: "Imagen del diccionario, número {part}",
+  picturePart: "n.º {part}",
   shelfLink: "📚 Vocabulario de {lang}: los {count} libros",
   shelfSource: "{books} libros · {words}",
   shelfAll: "Todos los libros",
@@ -343,6 +359,14 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
+  picturesTitle: "Pictures",
+  picturesWith: "With the word",
+  picturesAlone: "Picture alone",
+  picturesHint: "Picture alone: when it points to one word (its own picture, or a number on a diagram), the word only appears with the answer.",
+  askPicture: "What is this in {lang}?",
+  pictureAlt: "Dictionary picture",
+  pictureAltPart: "Dictionary picture, number {part}",
+  picturePart: "no. {part}",
   shelfLink: "📚 {lang} vocabulary: all {count} books",
   shelfSource: "{books} books · {words}",
   shelfAll: "All the books",

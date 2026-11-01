@@ -495,6 +495,104 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
       // A section dropped: its words go, the others stay.
       const shrunk = await store.import(evolving([[["die Ruhe", "le calme / la tranquillité"], ["ruhig", "calme"]], [["der Mut", "le courage"], ["muthig", "courageux"]]]), { replace: true });
       expect("evolving list: a section removed", [shrunk.removed, await idOf("der Mut"), await idOf("die Geduld")], [1, courage, 0]);
+
+      // Picture dictionary: pictures read beside the file, stored once by their hash, shown to who may see the book.
+      {
+        const { writeFileSync, mkdirSync } = await import("node:fs");
+        const { readImages, imageType } = await import("./vocab-import.ts");
+        const { deflateSync } = await import("node:zlib");
+        const crc = (bytes: Buffer): number => {
+          let c = ~0;
+          for (const byte of bytes) {
+            c ^= byte;
+            for (let k = 0; k < 8; k++) c = (c >>> 1) ^ (0xedb88320 & -(c & 1));
+          }
+          return ~c >>> 0;
+        };
+        const chunk = (type: string, data: Buffer): Buffer => {
+          const body = Buffer.concat([Buffer.from(type, "latin1"), data]);
+          const out = Buffer.alloc(body.length + 8);
+          out.writeUInt32BE(data.length, 0);
+          body.copy(out, 4);
+          out.writeUInt32BE(crc(body), body.length + 4);
+          return out;
+        };
+        // A 4×4 PNG of one colour: invented pictures.
+        const png = (r: number, g: number, b: number): Buffer => {
+          const header = Buffer.alloc(13);
+          header.writeUInt32BE(4, 0);
+          header.writeUInt32BE(4, 4);
+          header.set([8, 2, 0, 0, 0], 8);
+          const row = Buffer.from([0, ...Array.from({ length: 4 }, () => [r, g, b]).flat()]);
+          return Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), chunk("IHDR", header), chunk("IDAT", deflateSync(Buffer.concat([row, row, row, row]))), chunk("IEND", Buffer.alloc(0))]);
+        };
+        const folder = join(dir, "pictures");
+        mkdirSync(join(folder, "images"), { recursive: true });
+        writeFileSync(join(folder, "images", "scene.png"), png(200, 30, 30));
+        writeFileSync(join(folder, "images", "scene-copy.png"), png(200, 30, 30));
+        writeFileSync(join(folder, "images", "own.png"), png(30, 30, 200));
+        writeFileSync(join(folder, "images", "fake.png"), "not a picture");
+        writeFileSync(join(dir, "outside.png"), png(1, 2, 3));
+        expect("pictures: types by their bytes", [imageType(png(1, 1, 1)), imageType(Buffer.from("GIF89a")), imageType(Buffer.from("not"))], ["image/png", "image/gif", null]);
+        const pictured = (entries: VocabFile["lessons"][0]["sections"][0]["entries"]): VocabFile => ({
+          book: { id: "pictures", title: "p", kind: "translation", term: "de", meaning: "en" },
+          lessons: [{ title: "L", subtitle: "", sections: [{ title: "S", subtitle: "", entries }] }],
+        });
+        const scene = [
+          { term: "der Rotor", meaning: "rotor", image: "images/scene.png", part: 1 },
+          { term: "das Cockpit", meaning: "cockpit", image: "images/scene-copy.png", part: 2 },
+          { term: "der Hubschrauber", meaning: "helicopter", image: "images/scene.png" },
+          { term: "der Schirm", meaning: "umbrella", image: "images/own.png" },
+          { term: "blau", meaning: "blue" },
+        ];
+        const file = pictured(scene.map((e) => ({ ...e })));
+        const images = readImages(file, join(folder, "vocab.json"));
+        expect("pictures: the same bytes twice are one picture", images.length, 2);
+        const first = await store.import(file, { images });
+        expect("pictures: stored", [first.images, Number((await db.query("SELECT COUNT(*) AS n FROM vocab_images"))[0]!.n)], [2, 2]);
+        const again = pictured(scene.map((e) => ({ ...e })));
+        expect("pictures: a re-import stores none again", (await store.import(again, { images: readImages(again, join(folder, "vocab.json")) })).images, 0);
+        const refusedPicture = (image: string): string => {
+          try {
+            readImages(pictured([{ term: "x", meaning: "y", image }]), join(folder, "vocab.json"));
+            return "read";
+          } catch (error) {
+            return String((error as Error).message).replace(/^picture \S+: /, "");
+          }
+        };
+        expect("pictures: not a picture, missing, outside", [refusedPicture("images/fake.png"), refusedPicture("images/none.png"), refusedPicture("../outside.png")],
+          ["not a PNG, JPEG, WebP or GIF", `not found beside ${join(folder, "vocab.json")}`, "outside the file's folder"]);
+        const { parseVocabFile } = await import("../shared/vocab/format.ts");
+        const parsed = (image: unknown, part?: unknown): string => {
+          try {
+            parseVocabFile({ format: 2, book: { id: "p", title: "p", kind: "translation", term: "de", meaning: "en" }, lessons: [{ title: "L", sections: [{ title: "S", entries: [{ term: "a", meaning: "b", image, part }] }] }] });
+            return "ok";
+          } catch {
+            return "refused";
+          }
+        };
+        expect("pictures: paths and parts in the file", [parsed("images/a.png"), parsed("../a.png"), parsed("/etc/a.png"), parsed("a.svg"), parsed("a.png", 0), parsed("a.png", 2.5), parsed("a.png", 3)],
+          ["ok", "refused", "refused", "refused", "refused", "refused", "ok"]);
+
+        const pictureBook = Number((await db.query("SELECT id FROM vocab_books WHERE slug = 'pictures'"))[0]!.id);
+        const hashOf = async (term: string): Promise<string> => String((await db.query("SELECT image FROM vocab_entries WHERE term = $1", [term]))[0]!.image);
+        const sceneHash = await hashOf("der Rotor");
+        expect("pictures: a copy of a picture is the same picture", await hashOf("das Cockpit"), sceneHash);
+        expect("pictures: the owner sees them, another account not in a private book", [Boolean(await store.image(sceneHash, true)), Boolean(await store.image(sceneHash, false))], [true, false]);
+        await store.setVisibility(pictureBook, "shared");
+        expect("pictures: a shared book's, every account", (await store.image(sceneHash, false))?.mime, "image/png");
+        expect("pictures: the book counts them", (await store.books()).find((b) => b.slug === "pictures")?.pictures, 4);
+        // Recall cards: the picture alone says the word for a numbered part or a picture of its own, not for a scene.
+        for (const row of await db.query(`SELECT e.id FROM vocab_entries e JOIN vocab_sections s ON s.id = e.section_id JOIN vocab_lessons l ON l.id = s.lesson_id WHERE l.book_id = $1`, [pictureBook])) {
+          await db.query("INSERT INTO vocab_progress (user_id, entry_id, direction, box, due_at, last_at) VALUES ($1, $2, 'recognise', 3, 9e12, 0)", [user, Number(row.id)]);
+        }
+        const deck = await store.session(user, { kind: "all", id: pictureBook }, "learn", 20, "choice", 1, "book");
+        const recall = Object.fromEntries(deck.filter((c) => c.direction === "recall").map((c) => [c.prompt, [Boolean(c.image), c.part ?? 0, c.pictureAlone === true]]));
+        expect("pictures: recall cards", Object.entries(recall).sort(), Object.entries({ blue: [false, 0, false], cockpit: [true, 2, true], helicopter: [true, 0, false], rotor: [true, 1, true], umbrella: [true, 0, true] }));
+        // The scene's words removed: its picture goes with them.
+        await store.import(pictured([{ term: "der Schirm", meaning: "umbrella", image: await hashOf("der Schirm") }, { term: "blau", meaning: "blue" }]), { replace: true, images: [] });
+        expect("pictures: one no entry shows is removed", [Boolean(await store.image(sceneHash, true)), Number((await db.query("SELECT COUNT(*) AS n FROM vocab_images"))[0]!.n)], [false, 1]);
+      }
     } finally {
       await db.close();
       rmSync(dir, { recursive: true, force: true });

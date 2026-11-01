@@ -19,6 +19,7 @@ from the app's own origin.
 | `POST` | [`/api/quizzes`](#post-apiquizzes) | Record a finished test |
 | `GET` | [`/api/stats`](#get-apistats) | Totals of every player |
 | `GET` | [`/api/vocab/books`](#get-apivocabbooks) | Vocabulary books, with their lessons and sections |
+| `GET` | [`/api/vocab/images/:hash`](#get-apivocabimageshash) | A picture of a picture dictionary |
 | `GET` | [`/api/vocab/progress`](#get-apivocabprogress) | One player's vocabulary progress |
 | `GET` | [`/api/vocab/lessons/:id/words`](#get-apivocablessonsidwords) | A lesson's words, for a player |
 | `PUT` | [`/api/vocab/skips`](#put-apivocabskips) | Skip a word, or put it back |
@@ -412,6 +413,7 @@ See [Vocabulary](vocabulary.md) for the method and the grading.
     "meaning": "en",
     "order": "book",
     "entries": 3214,
+    "pictures": 0,
     "lessons": [
       {
         "id": 1,
@@ -426,7 +428,18 @@ See [Vocabulary](vocabulary.md) for the method and the grading.
 
 Books without entries are left out; an empty list when none has been
 imported. `kind` is `translation` or `definition`; `term` and `meaning` are the
-language studied and the language of the meanings.
+language studied and the language of the meanings. `pictures` counts the
+entries with a picture (a picture dictionary).
+
+### `GET /api/vocab/images/:hash`
+
+A picture, by its SHA-256 (64 hexadecimal digits), as stored by the import:
+its bytes with their type (`image/png`, `image/jpeg`, `image/webp` or
+`image/gif`), cached for a year (`immutable`: other bytes have another hash).
+`404` unless an entry the account may see shows it. A session's cards carry
+the hash in `image`, with `part` (the word's number on a diagram) and, on a
+recall card, `pictureAlone` when the picture alone says which word. See
+[Vocabulary › Pictures](vocabulary.md#pictures).
 
 ### `GET /api/vocab/progress`
 

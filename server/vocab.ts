@@ -40,7 +40,9 @@ const n = (value: unknown): number => Number(value);
 
 /** Entries with their book's kind and languages, for grading and sessions. */
 const ENTRY_COLUMNS = `e.id, e.section_id, e.position, e.term, e.meaning, e.grp, e.feminine, e.note, e.reading,
-  e.readings, e.translations, b.id AS entry_book, b.kind, b.term_lang, b.meaning_lang, b.ordering`;
+  e.readings, e.translations, e.image, e.part,
+  CASE WHEN e.image = '' THEN 0 ELSE (SELECT COUNT(*) FROM vocab_entries x WHERE x.image = e.image) END AS image_uses,
+  b.id AS entry_book, b.kind, b.term_lang, b.meaning_lang, b.ordering`;
 const ENTRY_JOINS = `FROM vocab_entries e
   JOIN vocab_sections s ON s.id = e.section_id
   JOIN vocab_lessons l ON l.id = s.lesson_id
@@ -87,6 +89,9 @@ function toEntry(row: Row): SessionEntry {
     reading: String(row.reading ?? ""),
     readings: String(row.readings ?? ""),
     translations: translationsOf(row.translations),
+    image: String(row.image ?? ""),
+    part: n(row.part ?? 0),
+    imageUses: n(row.image_uses ?? 0),
     book: {
       id: n(row.entry_book),
       kind: bookKind(row.kind),
@@ -115,6 +120,8 @@ export interface ImportReport {
   removed: number;
   /** Kept with their progress, their term or meaning corrected. */
   changed: number;
+  /** Pictures stored by this import (those already on the server are not counted). */
+  images: number;
 }
 
 /** An entry already in the database, with its place in the book. */
@@ -132,6 +139,15 @@ export interface StoredEntry {
   reading: string;
   readings: string;
   translations: string;
+  image: string;
+  part: number;
+}
+
+/** A picture read by the import: its SHA-256 (the entries' "image"), type and bytes in base64. */
+export interface VocabImage {
+  hash: string;
+  mime: string;
+  data: string;
 }
 
 /** An entry of the file, with its place in the book (positions of lesson, section and entry). */
@@ -212,11 +228,31 @@ export class VocabStore {
    * book labelled as the Spanish one), or more than a fifth of the book's
    * entries removed while players have progress on some of them.
    */
-  async import(file: VocabFile, options: { replace?: boolean } = {}): Promise<ImportReport> {
+  async import(file: VocabFile, options: { replace?: boolean; images?: VocabImage[] } = {}): Promise<ImportReport> {
     if (!options.replace) await this.checkImport(file);
     return this.db.transaction(async (tx) => {
       const { book } = file;
-      const report: ImportReport = { book: book.id, lessons: 0, sections: 0, entries: 0, added: 0, removed: 0, changed: 0 };
+      const report: ImportReport = { book: book.id, lessons: 0, sections: 0, entries: 0, added: 0, removed: 0, changed: 0, images: 0 };
+
+      // 0. Pictures (their entries' "image" is the hash): only those not yet stored, a re-import sends none again.
+      // A hash the file names that is already stored stays good without its bytes.
+      const images = options.images ?? [];
+      const named = [...new Set([
+        ...images.map((i) => i.hash),
+        ...file.lessons.flatMap((l) => l.sections.flatMap((s) => s.entries.map((e) => e.image ?? ""))).filter((h) => /^[0-9a-f]{64}$/.test(h)),
+      ])];
+      const known = new Set<string>();
+      for (let start = 0; start < named.length; start += 200) {
+        const chunk = named.slice(start, start + 200);
+        const rows = await tx.query(`SELECT hash FROM vocab_images WHERE hash IN (${chunk.map((_, i) => `$${i + 1}`).join(", ")})`, chunk);
+        for (const row of rows) known.add(String(row.hash));
+      }
+      for (const image of images) {
+        if (known.has(image.hash)) continue;
+        known.add(image.hash);
+        await tx.query("INSERT INTO vocab_images (hash, mime, data) VALUES ($1, $2, $3) ON CONFLICT (hash) DO NOTHING", [image.hash, image.mime, image.data]);
+        report.images++;
+      }
 
       const found = await tx.query("SELECT id FROM vocab_books WHERE slug = $1", [book.id]);
       let bookId: number;
@@ -285,6 +321,8 @@ export class VocabStore {
         const values = [
           sectionId, item.position, entry.term, entry.meaning, entry.group ?? "", entry.feminine ? 1 : 0, entry.note ?? "",
           entry.reading ?? "", entry.readings ?? "", storedTranslations(entry.translations),
+          // A path the import did not turn into a stored picture's hash counts as none.
+          entry.image && known.has(entry.image) ? entry.image : "", entry.part ?? 0,
         ] as const;
         const row = matches[i];
         if (!row) {
@@ -302,24 +340,26 @@ export class VocabStore {
           row.note === values[6] &&
           row.reading === values[7] &&
           row.readings === values[8] &&
-          row.translations === values[9];
+          row.translations === values[9] &&
+          row.image === values[10] &&
+          row.part === values[11];
         if (!same) {
           await tx.query(
             `UPDATE vocab_entries SET section_id = $1, position = $2, term = $3, meaning = $4, grp = $5, feminine = $6, note = $7,
-                    reading = $8, readings = $9, translations = $10
-              WHERE id = $11`,
+                    reading = $8, readings = $9, translations = $10, image = $11, part = $12
+              WHERE id = $13`,
             [...values, row.id],
           );
         }
       }
       report.entries = placed.length;
       // New entries: one statement per hundred, a few round trips for a whole book (matters on Neon).
-      const width = 10;
+      const width = 12;
       for (let start = 0; start < fresh.length; start += 100) {
         const rows = fresh.slice(start, start + 100);
         const placeholders = rows.map((_, i) => `(${Array.from({ length: width }, (_, k) => `$${i * width + k + 1}`).join(", ")})`);
         await tx.query(
-          `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations)
+          `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations, image, part)
            VALUES ${placeholders.join(", ")}`,
           rows.flat(),
         );
@@ -336,6 +376,8 @@ export class VocabStore {
         );
       }
       await tx.query("DELETE FROM vocab_lessons WHERE book_id = $1 AND position >= $2", [bookId, file.lessons.length]);
+      // 4. Pictures no entry shows any more (a corrected extraction, a book replaced).
+      await tx.query("DELETE FROM vocab_images WHERE NOT EXISTS (SELECT 1 FROM vocab_entries e WHERE e.image = vocab_images.hash)");
       return report;
     });
   }
@@ -343,7 +385,7 @@ export class VocabStore {
   /** A book's entries as stored, with their place in the book. */
   private async bookEntries(db: Pick<Database, "query">, bookId: number): Promise<StoredEntry[]> {
     const rows = await db.query(
-      `SELECT e.id, e.term, e.meaning, e.section_id, e.position, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations,
+      `SELECT e.id, e.term, e.meaning, e.section_id, e.position, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations, e.image, e.part,
               l.position AS lesson_position, s.position AS section_position
          ${ENTRY_JOINS} WHERE b.id = $1 ORDER BY l.position, s.position, e.position`,
       [bookId],
@@ -362,6 +404,8 @@ export class VocabStore {
       reading: String(row.reading ?? ""),
       readings: String(row.readings ?? ""),
       translations: String(row.translations ?? ""),
+      image: String(row.image ?? ""),
+      part: n(row.part ?? 0),
     }));
   }
 
@@ -404,7 +448,8 @@ export class VocabStore {
     );
     const lessons = await this.db.query("SELECT id, book_id, title, subtitle FROM vocab_lessons ORDER BY position");
     const sections = await this.db.query(
-      `SELECT s.id, s.lesson_id, s.title, s.subtitle, COUNT(e.id) AS entries
+      `SELECT s.id, s.lesson_id, s.title, s.subtitle, COUNT(e.id) AS entries,
+              SUM(CASE WHEN e.image <> '' THEN 1 ELSE 0 END) AS pictures
          FROM vocab_sections s LEFT JOIN vocab_entries e ON e.section_id = s.id
         GROUP BY s.id, s.lesson_id, s.title, s.subtitle, s.position
         ORDER BY s.position`,
@@ -419,7 +464,7 @@ export class VocabStore {
             subtitle: String(l.subtitle ?? ""),
             sections: sections
               .filter((s) => n(s.lesson_id) === n(l.id))
-              .map((s) => ({ id: n(s.id), title: String(s.title), subtitle: String(s.subtitle ?? ""), entries: n(s.entries) })),
+              .map((s) => ({ id: n(s.id), title: String(s.title), subtitle: String(s.subtitle ?? ""), entries: n(s.entries), pictures: n(s.pictures ?? 0) })),
           }));
         return {
           id: n(b.id),
@@ -432,7 +477,8 @@ export class VocabStore {
           credit: String(b.credit ?? ""),
           visibility: (b.visibility === "shared" ? "shared" : "private") as VocabBookInfo["visibility"],
           entries: own.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.entries, 0), 0),
-          lessons: own,
+          pictures: own.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.pictures, 0), 0),
+          lessons: own.map((l) => ({ ...l, sections: l.sections.map(({ pictures: _, ...s }) => s) })),
         };
       })
       .filter((b) => b.entries > 0);
@@ -453,6 +499,16 @@ export class VocabStore {
     }[kind];
     const rows = await this.db.query(`SELECT b.visibility FROM ${from}`, [id]);
     return rows[0]?.visibility === "shared";
+  }
+
+  /** A picture, if an entry the player may see shows it. */
+  async image(hash: string, owner: boolean): Promise<{ mime: string; data: string } | null> {
+    const rows = await this.db.query(
+      `SELECT i.mime, i.data FROM vocab_images i WHERE i.hash = $1 AND EXISTS (
+         SELECT 1 ${ENTRY_JOINS} WHERE e.image = i.hash AND ($2 = 1 OR b.visibility = 'shared'))`,
+      [hash, owner ? 1 : 0],
+    );
+    return rows[0] ? { mime: String(rows[0].mime), data: String(rows[0].data) } : null;
   }
 
   async setVisibility(bookId: number, visibility: "private" | "shared"): Promise<boolean> {
@@ -897,6 +953,19 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     store.visible(kind, id, owner(c)).then((ok) => !ok);
 
   routes.get("/books", async (c) => c.json(await store.books(owner(c))));
+
+  // A picture of a picture dictionary, by its SHA-256: the same bytes forever.
+  routes.get("/images/:hash", async (c) => {
+    const hash = c.req.param("hash");
+    if (!/^[0-9a-f]{64}$/.test(hash)) return c.json({ error: "unknown image" }, 404);
+    const image = await store.image(hash, owner(c));
+    if (!image) return c.json({ error: "unknown image" }, 404);
+    return c.body(new Uint8Array(Buffer.from(image.data, "base64")), 200, {
+      "Content-Type": image.mime,
+      "Cache-Control": "private, max-age=31536000, immutable",
+      "X-Content-Type-Options": "nosniff",
+    });
+  });
 
   routes.get("/progress", async (c) => {
     const userId = Number(c.req.query("userId"));

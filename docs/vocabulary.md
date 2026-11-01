@@ -46,8 +46,8 @@ own, and stay in your database:
 - **Storage:** the import puts the entries in your database (SQLite or Neon). They are never part of the project, a build or a release.
 - **Access:** keep the app behind its sign-in, with `REGISTRATION=invite` (or `closed`) if the server is reachable from the internet. A book is imported *private*: only the owner's account (the first one) sees it, whoever else has an account. The owner can share a book under an open licence from the Account page (see [Authentication › Family release](authentication.md#family-release)).
 
-The tests use seven invented books (`tests/e2e/fixtures/`): 27 Spanish
-entries, two German books (5 German–English entries, 10 German–French ones), 5 Arabic ones, 5 cuneiform signs, 20 English ones, 13 Japanese ones and 17 characters.
+The tests use eight invented books (`tests/e2e/fixtures/`): 27 Spanish
+entries, two German books (5 German–English entries, 10 German–French ones), 5 Arabic ones, 5 cuneiform signs, 5 Portuguese ones with two drawn pictures (`vocab-pictures/`), 20 English ones, 13 Japanese ones and 17 characters.
 
 ## Importing a book
 
@@ -248,6 +248,50 @@ and uses the system's Japanese fonts (Hiragino on Apple devices, Yu Gothic on
 Windows, Noto Sans CJK on Android and Linux), so kanji take their Japanese
 forms.
 
+## Pictures
+
+A picture dictionary gives each word a picture: a scene with its words under
+it, or a diagram whose parts are numbered (*1. rotor*, *2. blade*). An entry
+names its picture with `image`, a path relative to the vocabulary file, and
+its number on a diagram with `part`.
+
+**From an extraction.** A picture-dictionary extractor writes a folder with
+`vocabulary.json` (`[{"english", "german", "image", "page"}]`) and `images/`.
+`tools/vocab-visual.py` turns it into a vocabulary file with its pictures:
+
+```sh
+python3 tools/vocab-visual.py dictionary_export data/german-visual
+python3 tools/vocab-visual.py dictionary_export data/german-visual --chapters data/visual-chapters.json
+npm run vocab:import -- data/german-visual/vocab.json
+```
+
+- **Words:** the German is the term, the English the meaning (`--term`, `--meaning` for another pair). `1. rotor` becomes `rotor`, part 1. The plural marks (`mpl`, `fpl`, `ntpl`) and ® are taken off. Running text caught as pairs (the book's culture notes: long lines, or English on the German side) is left out, and counted.
+- **Lessons:** one per chapter with `--chapters` (`{"13": "Colours", "40": "Transport"}`, by first page), otherwise one per 25 pages (`--pages`). **Sections:** pages put together, about 12 words each (`--words`), titled by their pages (*p. 47–49*).
+- **Pictures:** copied once each into `data/german-visual/images/`. With Pillow installed (`python3 -m pip install pillow`), shrunk to 640 pixels wide (`--max-width`) and saved as WebP: a few dozen kilobytes each, instead of a few hundred.
+- **Book:** `german-visual`, *German visual dictionary*; `--id`, `--title`, `--credit` to change them.
+
+Both the extraction and the converted folder are the book's content: keep
+them in `data/`, never in the project.
+
+**At the import,** `vocab:import` (and `VOCAB_FILE`) reads each picture beside
+the file, checks its type by its first bytes, whatever its name, and stores it
+once in the database, by its SHA-256: a scene shown by twelve words, or the
+same picture under two names, is stored once. A missing picture, one outside
+the file's folder, over 2 MB or not a picture stops the import, naming it.
+Importing again stores only the pictures not yet there, and pictures that no
+entry shows any more are removed. The report ends with the count of the new
+ones: `…, 640 pictures stored`.
+
+**On the cards:**
+
+- **The meaning shown** (*rotor*, the word asked): the picture above it, with the part's number in its corner (*n° 1*).
+- **The word shown** (*der Rotor*, the meaning asked): no picture before the answer, which it would give away; the picture with the answer.
+- **Images › L'image seule**, on the book's page: when the picture says which word (it is the entry's own, or a numbered part), the meaning is hidden until the answer: *Qu'est-ce que c'est, en allemand ?* A scene shared by several words is always shown with its meaning.
+
+The pictures are served by `GET /api/vocab/images/:sha256`, to an account that
+may see a book showing them (the owner, or every account once it is shared),
+with a year's cache: a picture's address changes with its bytes.
+
 ## Shelves
 
 A language with two books or more (German: Collins, Lernwortschatz and
@@ -316,6 +360,8 @@ Format 2, one book per file:
 | `reading` | Optional: how the term reads when its script does not say it, in Latin letters (Japanese rōmaji: `"gachō"` for ガチョウ). Shown with the term, and accepted as an answer. |
 | `readings` | Optional, Characters book: a kanji's readings, on'yomi in katakana then kun'yomi in hiragana, okurigana in brackets: `"ニチ / ジツ / ひ / か"`. Asked as a third direction; any one is a right answer. |
 | `translations` | Optional: the meaning in other interface languages, `{"fr": "jour / soleil", "es": "día / sol"}`. Used when the interface is in that language. |
+| `image` | Optional: a picture, as a path relative to the file (`"images/page_0047_image_01.png"`): PNG, JPEG, WebP or GIF, at most 2 MB. See [Pictures](#pictures). |
+| `part` | Optional, with `image`: the word's number on the picture, a labelled diagram (`1` for *1. rotor*). |
 
 Files in format 1, written by version 4.2 for the Collins book (titles and
 entries as `{ "en", "es" }`), are still read, as the book `collins-spanish`.
@@ -549,6 +595,7 @@ directions.
 | `tools/vocab-extract-japanese.py` | Japanese EPUB → JSON |
 | `tools/vocab-extract-lernwortschatz.py` | *Lernwortschatz* word lists (Markdown tables) → JSON |
 | `tools/vocab-extract-nietzsche.py` | Nietzsche CSV → JSON |
+| `tools/vocab-visual.py` | A picture dictionary's extraction → JSON and its pictures |
 | `shared/vocab/format.ts` | File formats 1 and 2, and their validation |
 | `shared/vocab/grade.ts` | Grading of written answers |
 | `shared/vocab/kana.ts` | Kana → rōmaji, for Japanese answers typed in kana |
@@ -556,7 +603,7 @@ directions.
 | `shared/vocab/schedule.ts` | Boxes, intervals, how a card is asked |
 | `shared/vocab/session.ts` | Choice of cards and wrong options; sides of a card by book kind |
 | `server/vocab.ts` | Storage, import, sessions, answers; the `/api/vocab` routes |
-| `server/vocab-import.ts` | `npm run vocab:import` |
+| `server/vocab-import.ts` | `npm run vocab:import`; reads the pictures beside the file |
 | `server/check-vocab.ts` | `npm run check:vocab` |
 | `src/vocab.ts`, `src/vocab-i18n.ts` | A book's page and a shelf's: lessons, cards, summary; texts in three languages |
 | `src/vocab-stats.ts` | A book's statistics page |

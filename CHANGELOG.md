@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.35.0
+
+- **Picture dictionaries.** A vocabulary entry can carry a picture (`"image"`, a path beside the file) and its number on a labelled diagram (`"part"`). See [Vocabulary › Pictures](docs/vocabulary.md#pictures).
+  - **Converter:** `tools/vocab-visual.py` turns a picture-dictionary extraction (`vocabulary.json` with `english`, `german`, `image`, `page`, and its `images/`) into a vocabulary file: German term, English meaning; `1. rotor` becomes part 1; plural marks and ® taken off; the culture notes caught as pairs left out; lessons by chapter (`--chapters`) or by 25 pages, sections of about 12 words; pictures shrunk to WebP when Pillow is installed.
+  - **Import:** each picture read beside the file, its type checked by its bytes, at most 2 MB, stored once by its SHA-256; a re-import sends only new pictures, and pictures no entry shows are removed. A missing or foreign picture stops the import, naming it.
+  - **Cards:** the picture above the meaning, with the part's number; with the word shown, the picture only after the answer. **Images › L'image seule** on the book's page hides the meaning when the picture says which word (its own picture, or a numbered part).
+  - **API:** `GET /api/vocab/images/:hash`, for an account that may see a book showing the picture, cached for good. `/api/vocab/books` counts each book's `pictures`.
+- **Database:** migration `033_vocab_images`.
+- **Checks:** `check:vocab` imports invented pictures: stored once, re-import, refused files and paths, who sees them, which recall cards may show the picture alone, removal.
+- **Tests:** 171 browser tests; `tests/e2e/vocab.spec.ts`: a Portuguese book with two drawn pictures.
+
 ## 6.34.0
 
 - **Fix — a short answer marked wrong ("das Werden"):** with `becoming / process of coming-to-be`, *becoming* was refused. A short first side was always merged into the start of the longer one (meant for `Este / Esta es mi`), giving *becoming of coming-to-be*. It now merges only when it is a form of the next word (*este*/*esta*); otherwise each side is an answer of its own. Over 400 entries of the imported books were affected, in every language, which is why it happened "sometimes".

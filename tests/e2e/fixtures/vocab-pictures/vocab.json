@@ -1,0 +1,21 @@
+{
+ "format": 2,
+ "book": { "id": "test-pictures", "title": "Test pictures", "kind": "translation", "term": "pt", "meaning": "en" },
+ "lessons": [
+  {
+   "title": "Outside",
+   "sections": [
+    {
+     "title": "p. 1",
+     "entries": [
+      { "term": "a bicicleta", "meaning": "bicycle", "image": "images/bicycle.png" },
+      { "term": "a roda", "meaning": "wheel", "image": "images/bicycle.png", "part": 1 },
+      { "term": "o quadro", "meaning": "frame", "image": "images/bicycle.png", "part": 2 },
+      { "term": "o sol", "meaning": "sun", "image": "images/sun.png" },
+      { "term": "azul", "meaning": "blue" }
+     ]
+    }
+   ]
+  }
+ ]
+}

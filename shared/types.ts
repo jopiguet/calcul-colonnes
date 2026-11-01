@@ -198,6 +198,12 @@ export interface VocabCard {
   met?: boolean;
   /** A session across a shelf's books: the title of the word's book. */
   source?: string;
+  /** Picture dictionary: the picture's hash (GET /api/vocab/images/:hash). */
+  image?: string;
+  /** The word's number on the picture (a labelled diagram). */
+  part?: number;
+  /** Recall: the picture alone says which word (the entry's own picture, or a numbered part). */
+  pictureAlone?: boolean;
 }
 
 export interface VocabSectionInfo {
@@ -231,6 +237,8 @@ export interface VocabBookInfo {
   /** "private": seen by the owner's account only (a book you own); "shared": by every account. */
   visibility: "private" | "shared";
   entries: number;
+  /** Entries with a picture (a picture dictionary), 0 for most books. */
+  pictures: number;
   lessons: VocabLessonInfo[];
 }
 

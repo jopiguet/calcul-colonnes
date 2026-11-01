@@ -35,6 +35,8 @@ interface Preferences {
   order: Record<number, "book" | "random">;
   /** Japanese rōmaji, per book id: shown with the question, or only after the answer. */
   romaji: Record<number, "always" | "after">;
+  /** Picture dictionary, per book id: the picture with its word, or the picture alone when it says which word. */
+  pictures: Record<number, "with" | "alone">;
   /** Per shelf (language studied): books left out of its sessions, its cards apart on the home page, order of new words. */
   shelves: Record<string, ShelfPreferences>;
 }
@@ -67,6 +69,11 @@ function loadPreferences(): Preferences {
           ([, v]) => v === "always" || v === "after",
         ),
       ) as Preferences["romaji"],
+      pictures: Object.fromEntries(
+        Object.entries(typeof saved.pictures === "object" && saved.pictures ? saved.pictures : {}).filter(
+          ([, v]) => v === "with" || v === "alone",
+        ),
+      ) as Preferences["pictures"],
       shelves: Object.fromEntries(
         Object.entries(typeof saved.shelves === "object" && saved.shelves ? saved.shelves : {}).map(([lang, v]) => {
           const raw = (v ?? {}) as Partial<ShelfPreferences>;
@@ -79,7 +86,7 @@ function loadPreferences(): Preferences {
       ),
     };
   } catch {
-    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romaji: {}, shelves: {} };
+    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romaji: {}, pictures: {}, shelves: {} };
   }
 }
 
@@ -212,6 +219,7 @@ export function vocabBusy(): boolean {
 }
 
 /** Japanese rōmaji with the question, or only after the answer. */
+const picturesAlone = (book: VocabBookInfo | null): boolean => book !== null && prefs.pictures[book.id] === "alone";
 const romajiAlways = (book: VocabBookInfo | null): boolean => !book || (prefs.romaji[book.id] ?? "always") === "always";
 
 async function start(ctx: VocabContext, target: Target): Promise<void> {
@@ -378,6 +386,23 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       romaji.append(option);
     }
     wrap.append(romaji, el("p", "hint left", vt(arabic ? "transcriptionHint" : "romajiHint")));
+  }
+
+  // Picture dictionary: the picture with its word, or alone (a diagram's part, a picture of its own).
+  if (book.pictures > 0) {
+    const pictures = el("fieldset", "segmented vocab-pictures");
+    pictures.append(el("legend", "field-label", vt("picturesTitle")));
+    for (const [value, key] of [["with", "picturesWith"], ["alone", "picturesAlone"]] as const) {
+      const on = (prefs.pictures[book.id] ?? "with") === value;
+      const option = button(on ? "segment on" : "segment", vt(key), () => {
+        prefs.pictures[book.id] = value;
+        savePreferences();
+        ctx.rerender();
+      });
+      option.setAttribute("aria-pressed", String(on));
+      pictures.append(option);
+    }
+    wrap.append(pictures, el("p", "hint left", vt("picturesHint")));
   }
 
   // Lessons, one open at a time.
@@ -748,6 +773,20 @@ function related(title: string, items: VocabRelated[], kind: "words" | "kanji"):
   return box;
 }
 
+/** A picture-dictionary card's picture, with the word's number on it when it is a part of a diagram. */
+function picture(card: VocabCard): HTMLElement {
+  const figure = el("figure", "vocab-picture");
+  const img = el("img", "vocab-picture-img");
+  img.src = `/api/vocab/images/${card.image}`;
+  // The word is what is asked: the picture is described by its place, not its caption.
+  img.alt = card.part ? vt("pictureAltPart", { part: card.part }) : vt("pictureAlt");
+  img.decoding = "async";
+  img.addEventListener("error", () => figure.remove());
+  figure.append(img);
+  if (card.part) figure.append(el("figcaption", "vocab-picture-part", vt("picturePart", { part: card.part })));
+  return figure;
+}
+
 function cardView(ctx: VocabContext, s: Session): HTMLElement {
   const card = s.cards[s.index]!;
   const wrap = el("section", "sheet vocab-card");
@@ -776,12 +815,17 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
           : card.script === "kana" ? "askSound" : "askMeaning",
       )
     : recognise ? vt("askMeaning") : card.promptLang === card.answerLang ? vt("askWord") : vt("askIn", { lang: langName(card.answerLang) });
+  // Picture dictionary: the picture with the meaning asked, and after the answer
+  // when the word was shown (before, it would give the meaning away). Alone, if
+  // chosen and it says which word: the caption comes with the answer.
+  const alone = !s.result && card.pictureAlone === true && picturesAlone(ctx.book);
   const question = el("div", "vocab-question");
-  question.append(el("p", "vocab-ask", ask));
+  question.append(el("p", "vocab-ask", alone ? vt("askPicture", { lang: langName(card.answerLang) }) : ask));
+  if (card.image && (!recognise || s.result)) question.append(picture(card));
   const prompt = el("p", glyphShown ? "vocab-prompt vocab-glyph" : "vocab-prompt", card.prompt);
   prompt.lang = card.promptLang;
   prompt.dir = "auto";
-  question.append(prompt);
+  if (!alone) question.append(prompt);
   // Rōmaji: with the question, or once answered, as the player chose.
   const showReading = romajiAlways(ctx.book) || s.result !== null;
   if (card.promptReading && showReading) {

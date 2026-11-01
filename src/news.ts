@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.35.0",
+    fr: ["Vocabulaire : les dictionnaires illustrés. L'image accompagne le mot, et « L'image seule » demande le mot d'après l'image."],
+    es: ["Vocabulario: los diccionarios ilustrados. La imagen acompaña la palabra, y «Solo la imagen» pide la palabra a partir de la imagen."],
+    en: ["Vocabulary: picture dictionaries. The picture comes with the word, and \"Picture alone\" asks for the word from the picture."],
+  },
+  {
     version: "6.34.0",
     fr: ["Vocabulaire : portugais, swahili, chinois, sumérien (cunéiforme) et égyptien (hiéroglyphes), les signes en grand avec leur lecture. Une réponse courte comme « becoming » n'est plus refusée quand le livre en donne deux."],
     es: ["Vocabulario: portugués, suajili, chino, sumerio (cuneiforme) y egipcio (jeroglíficos), los signos en grande con su lectura. Una respuesta corta como «becoming» ya no se rechaza cuando el libro da dos."],

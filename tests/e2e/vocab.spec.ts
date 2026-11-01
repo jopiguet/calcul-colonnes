@@ -549,3 +549,77 @@ test("cuneiform: the sign large, its reading under it, answered by its reading; 
   expect(await post(lord, "recognise", "lord")).toMatchObject({ verdict: "right" });
   expect(await post(lord, "recognise", "ruler")).toMatchObject({ verdict: "right" });
 });
+
+test("a picture dictionary: the picture with the meaning, after the answer with the word, alone when it says which word", async ({ page }) => {
+  const name = await newPlayer(page, "Pic");
+  const user = await userByName(page.request, name);
+  await openActivity(page, "vocab-test-pictures");
+  await expect(page.locator(".vocab-pictures legend")).toHaveText("Images");
+
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { slug: string; pictures: number; lessons: { id: number }[] }[];
+  const book = books.find((b) => b.slug === "test-pictures")!;
+  expect(book.pictures).toBe(4);
+  type Card = { entryId: number; prompt: string; direction: string; image?: string; part?: number; pictureAlone?: boolean };
+  const session = async (purpose: string): Promise<Card[]> =>
+    (await (await page.request.get(`/api/vocab/session?userId=${user.id}&kind=lesson&id=${book.lessons[0]!.id}&purpose=${purpose}&size=20&mode=choice`)).json()) as Card[];
+  const fresh = await session("learn");
+  const wheel = fresh.find((c) => c.prompt === "a roda")!;
+  expect(wheel).toMatchObject({ direction: "recognise", part: 1 });
+  expect(fresh.find((c) => c.prompt === "a bicicleta")!.image).toBe(wheel.image);
+  expect(fresh.find((c) => c.prompt === "azul")!.image).toBeUndefined();
+
+  // The picture: its bytes, cached for good; nothing for a hash no entry shows.
+  const picture = await page.request.get(`/api/vocab/images/${wheel.image}`);
+  expect(picture.status()).toBe(200);
+  expect(picture.headers()["content-type"]).toBe("image/png");
+  expect(picture.headers()["cache-control"]).toContain("immutable");
+  expect((await page.request.get(`/api/vocab/images/${"0".repeat(64)}`)).status()).toBe(404);
+  expect((await page.request.get("/api/vocab/images/..%2F..%2Fetc")).status()).toBe(404);
+
+  // A word shown: no picture before the answer (it would give the meaning), the picture after.
+  await startFirstSection(page);
+  const prompt = page.locator(".vocab-prompt");
+  const meanings: Record<string, string> = { "a bicicleta": "bicycle", "a roda": "wheel", "o quadro": "frame", "o sol": "sun", azul: "blue" };
+  const shown = await prompt.innerText();
+  await expect(page.locator(".vocab-picture")).toHaveCount(0);
+  const options = await page.locator(".choice-text").allInnerTexts();
+  await page.keyboard.press(String(options.indexOf(meanings[shown]!) + 1));
+  await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
+  await expect(page.locator(".vocab-picture")).toHaveCount(shown === "azul" ? 0 : 1);
+
+  // Recall cards (meaning shown, word asked): the picture with the meaning, and the part's number.
+  const post = (entryId: number) =>
+    page.request.post("/api/vocab/answers", { data: { userId: user.id, entryId, direction: "recall", mode: "choice", given: "?" } });
+  for (const card of fresh) await post(card.entryId);
+  const recall = (await session("review")).filter((c) => c.direction === "recall");
+  const alone = Object.fromEntries(recall.map((c) => [c.prompt, c.pictureAlone === true]));
+  expect(alone).toEqual({ bicycle: false, wheel: true, frame: true, sun: true, blue: false });
+
+  // Picture alone: the meaning hidden while the picture says which word.
+  await page.reload();
+  await openActivity(page, "vocab-test-pictures");
+  await page.click(".vocab-pictures >> text=L’image seule");
+  await page.click(".vocab-how >> text=Choix multiples");
+  await page.click("text=Réviser tout le vocabulaire");
+  await page.locator(".vocab-card").waitFor();
+  for (let i = 0; i < 10; i++) {
+    const ask = await page.locator(".vocab-ask").innerText();
+    const hasPicture = (await page.locator(".vocab-picture").count()) > 0;
+    if (ask.startsWith("Qu’est-ce que c’est")) {
+      // Alone: no meaning, the picture (and its number on a diagram) only.
+      await expect(page.locator(".vocab-prompt")).toHaveCount(0);
+      expect(hasPicture).toBe(true);
+      await expect.poll(() => page.locator(".vocab-picture-img").evaluate((img) => (img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+      await page.screenshot({ path: "test-results/picture-alone.png" });
+      await page.locator(".choice").first().click();
+      // The meaning comes with the answer.
+      await expect(page.locator(".vocab-prompt")).toBeVisible();
+      return;
+    }
+    await page.locator(".choice").first().click();
+    await page.locator(".vocab-feedback .vocab-verdict").waitFor();
+    await page.keyboard.press("Enter");
+    await page.locator(".vocab-card, .vocab-done, .vocab-summary").first().waitFor();
+  }
+  throw new Error("no picture-alone card in the review");
+});

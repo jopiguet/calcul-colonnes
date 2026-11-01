@@ -37,6 +37,12 @@ export interface SessionEntry {
   readings: string;
   /** The meaning in other interface languages. */
   translations: Partial<Record<TranslationLang, string>>;
+  /** Picture dictionary: the picture's hash, or "". */
+  image?: string;
+  /** Its number on a labelled diagram, 0 for none. */
+  part?: number;
+  /** Entries of the book showing the same picture (a shared scene), 1 when it is the entry's own. */
+  imageUses?: number;
   book: BookInfo;
 }
 
@@ -253,6 +259,10 @@ export function buildSession(req: SessionRequest): VocabCard[] {
       ...(direction === "recognise" && entry.reading ? { promptReading: entry.reading } : {}),
       ...(characters ? { script: entry.readings ? ("kanji" as const) : ("kana" as const) } : {}),
       ...(characters && req.met?.has(entry.id) ? { met: true } : {}),
+      ...(entry.image ? { image: entry.image } : {}),
+      ...(entry.image && entry.part ? { part: entry.part } : {}),
+      // The picture says which word without its caption: its own, or a numbered part of a diagram.
+      ...(entry.image && direction === "recall" && (entry.part || entry.imageUses === 1) ? { pictureAlone: true } : {}),
     };
     if (mode === "choice") {
       card.options = shuffle([display(answer), ...distractors(entry, direction, req.pool, req.random)], req.random);

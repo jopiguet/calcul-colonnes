@@ -45,7 +45,14 @@ export interface VocabFileEntry {
   readings?: string;
   /** The meaning in other interface languages ("fr", "es"), when known. */
   translations?: Partial<Record<TranslationLang, string>>;
+  /** A picture: a path relative to the file ("images/page_0013_image_01.png"), read by the import. */
+  image?: string;
+  /** The entry's number on a shared picture (a labelled diagram: "1. rotor" is part 1). */
+  part?: number;
 }
+
+/** A picture path in a vocabulary file: relative, inside the file's folder, an image. */
+export const IMAGE_PATH = /^(?![/\\])(?!.*(?:^|[/\\])\.\.(?:[/\\]|$))[^\0:]{1,300}\.(?:png|jpe?g|webp|gif)$/i;
 
 export const TRANSLATION_LANGS = ["fr", "es", "en"] as const;
 export type TranslationLang = (typeof TRANSLATION_LANGS)[number];
@@ -182,6 +189,7 @@ export function parseVocabFile(data: unknown): VocabFile {
                 ...(reading ? { reading } : {}),
                 ...(readings ? { readings } : {}),
                 ...(Object.keys(translations).length ? { translations } : {}),
+                ...picture(entry, `${at}, entry ${e + 1}`),
               };
             }),
           };
@@ -189,4 +197,21 @@ export function parseVocabFile(data: unknown): VocabFile {
       };
     }),
   };
+}
+
+function picture(entry: Record<string, unknown>, at: string): Pick<VocabFileEntry, "image" | "part"> {
+  const out: Pick<VocabFileEntry, "image" | "part"> = {};
+  if (entry.image !== undefined && entry.image !== "") {
+    if (typeof entry.image !== "string" || !IMAGE_PATH.test(entry.image)) {
+      throw new Error(`${at}: "image" is a path inside the file's folder, ending .png, .jpg, .webp or .gif`);
+    }
+    out.image = entry.image;
+  }
+  if (entry.part !== undefined) {
+    if (typeof entry.part !== "number" || !Number.isInteger(entry.part) || entry.part < 1 || entry.part > 999) {
+      throw new Error(`${at}: "part" is a whole number from 1 to 999`);
+    }
+    out.part = entry.part;
+  }
+  return out;
 }
