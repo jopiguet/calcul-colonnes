@@ -6,7 +6,7 @@
  * entry is unaskable.
  */
 import { readFileSync } from "node:fs";
-import { acceptedForms, grade, writable, type AnswerLang, type Verdict } from "../shared/vocab/grade.ts";
+import { acceptedForms, answerLangOf, grade, writable, type AnswerLang, type Verdict } from "../shared/vocab/grade.ts";
 import { askMode, entryStatus, nextState, DAY, MINUTE, TOP_BOX } from "../shared/vocab/schedule.ts";
 import { parseVocabFile, type VocabFile } from "../shared/vocab/format.ts";
 import { computeStats } from "../shared/vocab/stats.ts";
@@ -104,6 +104,25 @@ const cases: [string, string, AnswerLang, Verdict][] = [
   ["el dentista/la dentista", "el dentista / la dentista", "es", "right"],
   ["las lentillas blandas", "las lentillas rígidas / blandas", "es", "right"],
   ["Santa Claus", "Father Christmas/ Santa Claus", "en", "right"],
+  // A short first answer stands on its own when the longer one is another phrase (das Werden).
+  ["becoming", "becoming / process of coming-to-be", "en", "right"],
+  ["process of coming-to-be", "becoming / process of coming-to-be", "en", "right"],
+  ["este es mi", "este / esta es mi", "es", "right"],
+  ["este", "este / esta es mi", "es", "wrong"],
+  // A semicolon between two meanings: either one.
+  ["lord", "lord; ruler", "en", "right"],
+  ["ruler", "lord; ruler", "en", "right"],
+  ["walk", "to go; to walk", "en", "right"],
+  ["lord ruler", "lord; ruler", "en", "right"],
+  ["king", "lord; ruler", "en", "wrong"],
+  // Portuguese: articles as in Spanish, accents as accents.
+  ["a cidade", "a cidade", "pt", "right"],
+  ["o cidade", "a cidade", "pt", "article"],
+  ["coracao", "o coração", "pt", "article"],
+  ["o coracao", "o coração", "pt", "accent"],
+  // Swahili: plain text.
+  ["kitabu", "kitabu", "sw", "right"],
+  ["kitbu", "kitabu", "sw", "typo"],
 ];
 for (const [given, expected, lang, verdict] of cases) {
   expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)})`, grade(given, expected, lang), verdict);
@@ -158,6 +177,30 @@ const arabic: [string, string, string, Verdict][] = [
 ];
 for (const [given, expected, reading, verdict] of arabic) {
   expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)}, ar)`, grade(given, expected, "ar", reading), verdict);
+}
+
+// Chinese, cuneiform, hieroglyphs: the script, or the reading by its letters.
+const scripts: [string, string, string, AnswerLang, Verdict][] = [
+  ["人", "人", "rén", "zh", "right"],
+  ["ren", "人", "rén", "zh", "right"],
+  ["ren2", "人", "rén", "zh", "right"],
+  ["ni hao", "你好", "nǐ hǎo", "zh", "right"],
+  ["大", "人", "rén", "zh", "wrong"],
+  ["da", "人", "rén", "zh", "wrong"],
+  ["𒊕", "𒊕", "sag", "sux", "right"],
+  ["sag", "𒊕", "sag", "sux", "right"],
+  ["SAĜ", "𒊕", "saĝ", "sux", "right"],
+  ["du", "𒊕", "sag", "sux", "wrong"],
+  ["ꜥnḫ", "𓋹", "ꜥnḫ", "egy", "right"],
+  ["'nh", "𓋹", "ꜥnḫ", "egy", "right"],
+  ["anh", "𓋹", "ꜥnḫ", "egy", "right"],
+  ["nfr", "𓋹", "ꜥnḫ", "egy", "wrong"],
+  ["ra", "𓇳", "rꜥ", "egy", "right"],
+  ["𓋹", "𓋹", "ꜥnḫ", "egy", "right"],
+  ["sag", "𒊕", "", "sux", "wrong"],
+];
+for (const [given, expected, reading, lang, verdict] of scripts) {
+  expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)}, ${lang})`, grade(given, expected, lang, reading), verdict);
 }
 
 expect("writable short", writable("el coche"), true);
@@ -465,7 +508,7 @@ if (file) {
   const vocab = parseVocabFile(JSON.parse(readFileSync(file, "utf8")));
   let entries = 0;
   let written = 0;
-  const lang = (code: string): AnswerLang => (code === "es" || code === "de" || code === "ja" || code === "ar" || code === "fr" ? code : "en");
+  const lang = (code: string): AnswerLang => answerLangOf(code);
   const termLang = lang(vocab.book.term);
   const meaningLang = lang(vocab.book.meaning);
   for (const lesson of vocab.lessons) {

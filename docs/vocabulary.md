@@ -47,7 +47,7 @@ own, and stay in your database:
 - **Access:** keep the app behind its sign-in, with `REGISTRATION=invite` (or `closed`) if the server is reachable from the internet. A book is imported *private*: only the owner's account (the first one) sees it, whoever else has an account. The owner can share a book under an open licence from the Account page (see [Authentication › Family release](authentication.md#family-release)).
 
 The tests use seven invented books (`tests/e2e/fixtures/`): 27 Spanish
-entries, two German books (5 German–English entries, 10 German–French ones), 5 Arabic ones, 20 English ones, 13 Japanese ones and 17 characters.
+entries, two German books (5 German–English entries, 10 German–French ones), 5 Arabic ones, 5 cuneiform signs, 20 English ones, 13 Japanese ones and 17 characters.
 
 ## Importing a book
 
@@ -432,7 +432,7 @@ spacing are ignored.
 | right | Exact | right |
 | accent | Right letters, missing or wrong accent or tilde (*el lapiz*, *el nino*, *eclat*) | right, with the spelling shown |
 | typo | One letter off, in a word of at least 5 letters | right, with the spelling shown |
-| article | Spanish or German: right word, missing or wrong article (*lápiz*, *la lápiz*; *Straße*, *der Straße*) | **wrong**: the gender is part of the word |
+| article | Spanish, Portuguese or German: right word, missing or wrong article (*lápiz*, *la lápiz*; *Straße*, *der Straße*) | **wrong**: the gender is part of the word |
 
 In English and French answers (the language of the meanings) the article is
 optional: *key*, *the key*; *patience*, *la patience*; *honneur*, *l'honneur*.
@@ -449,7 +449,9 @@ of two Spanish words with the same English meaning.
 |---|---|
 | `el amigo / la amiga` | either, or both as printed |
 | `Buenas tardes / noches.` | *buenas tardes*, *buenas noches* |
-| `Este / Esta es mi...` | *este es mi*, *esta es mi* |
+| `Este / Esta es mi...` | *este es mi*, *esta es mi* (a short first side that is a form of the next word) |
+| `becoming / process of coming-to-be` | *becoming*, *process of coming-to-be* (a short first side that is another word: an answer of its own) |
+| `lord; ruler` | *lord*, *ruler*, or both |
 | `to take his/her pulse` | *to take his pulse*, *to take her pulse* |
 | `step-/half-brother` | *step-brother*, *half-brother* |
 | `ad / ac / af` | any of them |
@@ -474,6 +476,23 @@ transliteration, which is the entry's reading.
 Arabic is shown right to left, in the system's Arabic font and a larger size,
 with the transliteration under the word. As in Japanese, the transliteration
 can wait until the answer (*Transcription › Après la réponse*).
+
+**Chinese, Sumerian and Egyptian answers** are written in their script or by
+the entry's `reading`: pinyin (*rén*, *ren*, *ren2*), a cuneiform sign's
+reading (*sag*), an Egyptological transliteration (*ꜥnḫ*, *'nh*, *anh*).
+Tones and diacritics do not count; in Egyptian, ꜣ may be typed *3* or *a* and
+ꜥ *'*, *a* or left out. A cuneiform or hieroglyph entry without a reading is
+asked as a choice only, since few keyboards type the signs. The signs are
+shown large, under them their reading (which, as in Arabic, can wait until the
+answer), in the Noto Sans Cuneiform and Noto Sans Egyptian Hieroglyphs fonts,
+which the browser fetches only for a page that shows a sign.
+
+**Any other language** imports (a two- or three-letter code) and is graded as
+plain text, with the English rules. Grading a new language properly means
+`AnswerLang`, `answerLangOf` and `ARTICLES` in `shared/vocab/grade.ts`, its
+name in `LANGUAGE_NAMES` (`src/vocab-i18n.ts`), and, for a script language,
+`SCRIPT_LANGS`. Known codes: `en`, `fr`, `es`, `de`, `pt` (articles), `sw`,
+`ja`, `ar`, `zh`, `sux` (Sumerian, cuneiform), `egy` (Egyptian, hieroglyphs).
 
 **German answers.** Capitals are not checked: nouns take one, but a phone
 keyboard may not. *ß* may be written *ss*, as in Switzerland, and *ä*, *ö*, *ü*
@@ -513,7 +532,7 @@ as printed, while *konnichiha* is a typo for *konnichiwa*.
 
 A multiple-choice answer is compared with the option as printed.
 
-`npm run check:vocab` runs 113 grading cases (21 of them Japanese, 16 Arabic, 24 German, 8 French), the
+`npm run check:vocab` runs 128 grading cases (21 of them Japanese, 16 Arabic, 17 Chinese, Sumerian and Egyptian, 24 German, 8 French, 4 Portuguese), the
 scheduling rules, the three kinds of session, the rules of definition books,
 the rōmaji on Japanese cards, and imports of a list that evolves (a section
 inserted, a meaning and a term corrected, a section dropped: progress and

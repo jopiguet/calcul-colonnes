@@ -77,8 +77,9 @@ const fr = {
   answerIn: "Réponse en {lang}",
   answerJa: "Réponse en japonais : kana, kanji ou rōmaji",
   answerAr: "Réponse en arabe : écriture arabe ou transcription",
+  answerScript: "Réponse en {lang} : son écriture ou sa transcription",
   transcriptionTitle: "Transcription",
-  transcriptionHint: "Après la réponse : l'arabe seul pendant la question, la transcription ensuite.",
+  transcriptionHint: "Après la réponse : l'écriture seule pendant la question, la transcription ensuite.",
   example: "Exemple : {note}",
   check: "Vérifier",
   next: "Continuer",
@@ -248,8 +249,9 @@ const es: Record<Key, string> = {
   answerIn: "Respuesta en {lang}",
   answerJa: "Respuesta en japonés: kana, kanji o rōmaji",
   answerAr: "Respuesta en árabe: escritura árabe o transcripción",
+  answerScript: "Respuesta en {lang}: su escritura o su transcripción",
   transcriptionTitle: "Transcripción",
-  transcriptionHint: "Tras la respuesta: solo el árabe durante la pregunta, la transcripción después.",
+  transcriptionHint: "Tras la respuesta: solo la escritura durante la pregunta, la transcripción después.",
   example: "Ejemplo: {note}",
   check: "Comprobar",
   next: "Continuar",
@@ -417,8 +419,9 @@ const en: Record<Key, string> = {
   answerIn: "Answer in {lang}",
   answerJa: "Answer in Japanese: kana, kanji or rōmaji",
   answerAr: "Answer in Arabic: Arabic script or transliteration",
+  answerScript: "Answer in {lang}: its script or its transliteration",
   transcriptionTitle: "Transliteration",
-  transcriptionHint: "After the answer: only the Arabic during the question, the transliteration afterwards.",
+  transcriptionHint: "After the answer: only the script during the question, the transliteration afterwards.",
   example: "Example: {note}",
   check: "Check",
   next: "Continue",
@@ -519,9 +522,9 @@ export function vt(key: Key, values: Record<string, string | number> = {}): stri
 
 /** A language's name in the interface's language, as used in "Vocabulaire {lang}". */
 const LANGUAGE_NAMES: Record<Lang, Record<string, string>> = {
-  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe" },
-  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe" },
-  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic" },
+  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe", pt: "portugais", sw: "swahili", zh: "chinois", sux: "sumérien", egy: "égyptien ancien" },
+  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe", pt: "portugués", sw: "suajili", zh: "chino", sux: "sumerio", egy: "egipcio antiguo" },
+  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic", pt: "Portuguese", sw: "Swahili", zh: "Chinese", sux: "Sumerian", egy: "Ancient Egyptian" },
 };
 
 export function langName(code: string): string {

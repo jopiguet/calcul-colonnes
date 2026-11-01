@@ -9,7 +9,7 @@ import { Hono } from "hono";
 import type { Database, Param, Row } from "./db/index.ts";
 import type { AppEnv } from "./auth/middleware.ts";
 import type { Repository, Scope } from "./repository.ts";
-import { COUNTS_AS_RIGHT, display, grade, normalise, type AnswerLang } from "../shared/vocab/grade.ts";
+import { answerLangOf, COUNTS_AS_RIGHT, display, grade, normalise } from "../shared/vocab/grade.ts";
 import { kanaToRomaji } from "../shared/vocab/kana.ts";
 import { TRANSLATION_LANGS, type BookKind, type TranslationLang, type VocabFile } from "../shared/vocab/format.ts";
 import { DIRECTIONS, entryStatus, nextState, type CardState, type Direction, type ModePreference } from "../shared/vocab/schedule.ts";
@@ -97,8 +97,8 @@ function toEntry(row: Row): SessionEntry {
   };
 }
 
-/** Grading knows Spanish and German articles, optional French and English ones, Japanese rōmaji and Arabic; other languages are graded as plain text. */
-const answerLang = (lang: string): AnswerLang => (lang === "es" || lang === "de" || lang === "ja" || lang === "ar" || lang === "fr" ? lang : "en");
+/** Grading knows Spanish, Portuguese and German articles, optional French and English ones, Japanese rōmaji, Arabic, and readings for Chinese, cuneiform and hieroglyphs; other languages are graded as plain text. */
+const answerLang = answerLangOf;
 
 /** An import that would overwrite another book, or most of one: nothing was changed. */
 export class ImportRefused extends Error {}

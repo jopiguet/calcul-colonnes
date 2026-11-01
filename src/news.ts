@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.34.0",
+    fr: ["Vocabulaire : portugais, swahili, chinois, sumérien (cunéiforme) et égyptien (hiéroglyphes), les signes en grand avec leur lecture. Une réponse courte comme « becoming » n'est plus refusée quand le livre en donne deux."],
+    es: ["Vocabulario: portugués, suajili, chino, sumerio (cuneiforme) y egipcio (jeroglíficos), los signos en grande con su lectura. Una respuesta corta como «becoming» ya no se rechaza cuando el libro da dos."],
+    en: ["Vocabulary: Portuguese, Swahili, Chinese, Sumerian (cuneiform) and Egyptian (hieroglyphs), the signs large with their reading. A short answer such as \"becoming\" is no longer refused when the book gives two."],
+  },
+  {
     version: "6.33.0",
     fr: [
       "Quatre niveaux partout : chaque QCM a maintenant Débutant, Intermédiaire, Avancé et Expert. Tes anciens tests et tes progrès restent à leur place.",

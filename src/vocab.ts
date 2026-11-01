@@ -6,7 +6,7 @@
  * The session in progress lives here, outside the render, so a language
  * change or another re-render does not lose it.
  */
-import { COUNTS_AS_RIGHT, type Verdict } from "../shared/vocab/grade";
+import { COUNTS_AS_RIGHT, SCRIPT_LANGS, type Verdict } from "../shared/vocab/grade";
 import { DAY, TOP_BOX, type ModePreference } from "../shared/vocab/schedule";
 import { button, el } from "./dom";
 import { currentLang } from "./i18n";
@@ -362,9 +362,9 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   wrap.append(order);
 
   // Japanese: rōmaji with the question, or only once answered.
-  // Arabic: the transliteration, the same choice.
-  if ((book.term === "ja" || book.term === "ar") && book.kind !== "characters") {
-    const arabic = book.term === "ar";
+  // Arabic, Chinese, cuneiform, hieroglyphs: the transliteration, the same choice.
+  if (SCRIPT_LANGS.has(book.term) && book.kind !== "characters") {
+    const arabic = book.term !== "ja";
     const romaji = el("fieldset", "segmented vocab-romaji");
     romaji.append(el("legend", "field-label", vt(arabic ? "transcriptionTitle" : "romajiTitle")));
     for (const [value, key] of [["always", "romajiShow"], ["after", "romajiHide"]] as const) {
@@ -684,6 +684,9 @@ const LETTERS: Record<string, string[]> = {
   es: ["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"],
   de: ["ä", "ö", "ü", "ß", "Ä", "Ö", "Ü"],
   fr: ["é", "è", "ê", "à", "â", "ç", "ô", "î", "û", "ù", "œ"],
+  pt: ["ã", "õ", "ç", "á", "â", "à", "é", "ê", "í", "ó", "ô", "ú"],
+  egy: ["ꜣ", "ꜥ", "ḥ", "ḫ", "ẖ", "š", "ḳ", "ṯ", "ḏ"],
+  sux: ["ĝ", "š", "ḫ"],
 };
 
 function boxDots(box: number): HTMLElement {
@@ -875,7 +878,8 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
         card.direction === "read" ? vt("answerReading")
           : card.script === "kana" ? vt("answerSound")
           : answerLang === "ja" ? vt("answerJa")
-          : answerLang === "ar" ? vt("answerAr") : vt("answerIn", { lang: langName(answerLang) }),
+          : answerLang === "ar" ? vt("answerAr")
+          : SCRIPT_LANGS.has(answerLang) ? vt("answerScript", { lang: langName(answerLang) }) : vt("answerIn", { lang: langName(answerLang) }),
       ),
     );
     const input = el("input", "vocab-input");

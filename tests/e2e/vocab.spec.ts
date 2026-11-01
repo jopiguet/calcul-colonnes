@@ -506,3 +506,46 @@ test("the Arabic book: right to left, transliteration under the word, answers in
   expect(await post(week, "الشهر")).toMatchObject({ correct: false });
   expect(await post(entryOf("أخضَر"), "akhdar")).toMatchObject({ verdict: "right" });
 });
+
+test("cuneiform: the sign large, its reading under it, answered by its reading; either meaning of a pair", async ({ page }) => {
+  const name = await newPlayer(page, "Sux");
+  const user = await userByName(page.request, name);
+  await openActivity(page, "vocab-test-cuneiform");
+  await expect(page.locator(".vocab-home h1")).toHaveText("Vocabulaire sumérien");
+  await expect(page.locator(".vocab-romaji legend")).toHaveText("Transcription");
+
+  const signs: Record<string, [string, string]> = {
+    "𒂗": ["lord; ruler", "en"], "𒁺": ["to go; to walk", "du"], "𒊕": ["head", "sag"], "𒀭": ["sky; god", "an"], "𒆠": ["earth; place", "ki"],
+  };
+  await startFirstSection(page);
+  const prompt = page.locator(".vocab-prompt");
+  await expect(prompt).toHaveAttribute("lang", "sux");
+  const [meaning, reading] = signs[await prompt.innerText()]!;
+  await expect(page.locator(".vocab-reading")).toHaveText(reading);
+  // Large enough to read the wedges, drawn with the cuneiform font.
+  expect(await prompt.evaluate((el) => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(64);
+  await expect.poll(() => page.evaluate(() => document.fonts.check("64px 'Noto Sans Cuneiform'", "𒊕"))).toBe(true);
+  await page.screenshot({ path: "test-results/cuneiform.png" });
+  const options = await page.locator(".choice-text").allInnerTexts();
+  await page.keyboard.press(String(options.indexOf(meaning) + 1));
+  await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
+
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { slug: string; lessons: { id: number }[] }[];
+  const book = books.find((b) => b.slug === "test-cuneiform")!;
+  const cards: { entryId: number; prompt: string }[] = [];
+  for (const purpose of ["learn", "review"]) {
+    const url = `/api/vocab/session?userId=${user.id}&kind=lesson&id=${book.lessons[0]!.id}&purpose=${purpose}&size=20&mode=written`;
+    cards.push(...((await (await page.request.get(url)).json()) as { entryId: number; prompt: string }[]));
+  }
+  const entryOf = (p: string): number => cards.find((c) => c.prompt === p)!.entryId;
+  const post = (entryId: number, direction: string, given: string) =>
+    page.request.post("/api/vocab/answers", { data: { userId: user.id, entryId, direction, mode: "written", given } })
+      .then((r) => r.json()) as Promise<{ verdict: string; correct: boolean }>;
+  const head = cards.find((c) => c.prompt === "head" || c.prompt === "𒊕")!.entryId;
+  expect(await post(head, "recall", "sag")).toMatchObject({ verdict: "right" });
+  expect(await post(head, "recall", "𒊕")).toMatchObject({ verdict: "right" });
+  expect(await post(head, "recall", "du")).toMatchObject({ correct: false });
+  const lord = cards.find((c) => c.prompt === "𒂗" || c.prompt === "lord; ruler")?.entryId ?? entryOf("𒂗");
+  expect(await post(lord, "recognise", "lord")).toMatchObject({ verdict: "right" });
+  expect(await post(lord, "recognise", "ruler")).toMatchObject({ verdict: "right" });
+});

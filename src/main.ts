@@ -22,6 +22,9 @@ import "@fontsource/atkinson-hyperlegible-next/latin-600.css";
 import "@fontsource/atkinson-hyperlegible-next/latin-800.css";
 import "@fontsource/atkinson-hyperlegible-mono/latin-400.css";
 import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
+// Cuneiform and hieroglyphs: fetched only when a page shows one (unicode-range).
+import "@fontsource/noto-sans-cuneiform/400.css";
+import "@fontsource/noto-sans-egyptian-hieroglyphs/400.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { loadBank, quizView, replayTest } from "./quiz";

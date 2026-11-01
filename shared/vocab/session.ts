@@ -94,6 +94,8 @@ export function canWrite(entry: SessionEntry, direction: Direction): boolean {
   if (direction === "recognise" && entry.book.kind === "definition") return false;
   if (entry.book.kind === "characters") return direction === "read" || writable(entry.meaning) && direction === "recognise";
   const { answer, lang } = sides(entry, direction);
+  // Cuneiform and hieroglyphs: typed by their reading, so only with one.
+  if (direction === "recall" && (lang === "sux" || lang === "egy") && !entry.reading) return false;
   return writable(answer, lang);
 }
 
@@ -119,7 +121,7 @@ export function distractors(entry: SessionEntry, direction: Direction, pool: Ses
   const taken = new Set(acceptedForms(answer));
   taken.add(normalise(answer));
   // Length in words; in Japanese, written without spaces, in characters.
-  const size = (text: string): number => (sides(entry, direction).lang === "ja" ? [...text].length : text.split(" ").length);
+  const size = (text: string): number => (["ja", "zh", "sux", "egy"].includes(sides(entry, direction).lang) ? [...text].length : text.split(" ").length);
   const words = size(answer);
   // In a themed book, the same section gives plausible wrong options. In an
   // alphabetical list it gives look-alikes (abase, abash, abate): the whole

@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.34.0
+
+- **Fix — a short answer marked wrong ("das Werden"):** with `becoming / process of coming-to-be`, *becoming* was refused. A short first side was always merged into the start of the longer one (meant for `Este / Esta es mi`), giving *becoming of coming-to-be*. It now merges only when it is a form of the next word (*este*/*esta*); otherwise each side is an answer of its own. Over 400 entries of the imported books were affected, in every language, which is why it happened "sometimes".
+- **A semicolon separates meanings:** `lord; ruler` accepts *lord* or *ruler*; such entries are offered for writing when each meaning is short.
+- **New languages:** Portuguese (`pt`, articles graded as in Spanish, its accents on the letter keys), Swahili (`sw`), Chinese (`zh`, characters or pinyin), Sumerian in cuneiform (`sux`) and Ancient Egyptian in hieroglyphs (`egy`), answered in their script or by the entry's reading. Cuneiform signs and hieroglyphs are shown large, with their reading under them, in the Noto Sans Cuneiform and Noto Sans Egyptian Hieroglyphs fonts (fetched only when a sign is shown); letter keys for ĝ š ḫ and ꜣ ꜥ ḥ ḫ ẖ š ḳ ṯ ḏ. See [Vocabulary › How answers are graded](docs/vocabulary.md#how-answers-are-graded).
+- **Checks:** 128 grading cases in `check:vocab`.
+- **Tests:** 170 browser tests; `tests/e2e/vocab.spec.ts`: a cuneiform book, the sign large in its font, answered by its reading, either meaning of a pair.
+
 ## 6.33.0
 
 - **Four levels in every test.** Every test now has *Débutant*, *Intermédiaire*, *Avancé* and *Expert*, with the same names and the same hint under them (*Les notions de base, un pas à la fois.* … *Les points fins, les pièges et les débats.*). See [User guide › The four levels](docs/user-guide.md#the-four-levels) and [Question generators › Levels](docs/question-generators.md#levels).

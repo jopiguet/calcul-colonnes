@@ -1,0 +1,21 @@
+{
+ "format": 2,
+ "book": { "id": "test-cuneiform", "title": "Test signs", "kind": "translation", "term": "sux", "meaning": "en" },
+ "lessons": [
+  {
+   "title": "First signs",
+   "sections": [
+    {
+     "title": "Common signs",
+     "entries": [
+      { "term": "𒂗", "meaning": "lord; ruler", "reading": "en" },
+      { "term": "𒁺", "meaning": "to go; to walk", "reading": "du" },
+      { "term": "𒊕", "meaning": "head", "reading": "sag" },
+      { "term": "𒀭", "meaning": "sky; god", "reading": "an" },
+      { "term": "𒆠", "meaning": "earth; place", "reading": "ki" }
+     ]
+    }
+   ]
+  }
+ ]
+}

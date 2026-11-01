@@ -45,12 +45,27 @@
  * in rōmaji, the entry's reading. Rōmaji is compared without its long-vowel
  * marks: "gacho", "gachou" and "gachō" are all ガチョウ. Full-width and
  * half-width characters are the same, and Japanese punctuation is ignored.
+ *
+ * Chinese, Sumerian (cuneiform) and Egyptian (hieroglyphs) are answered in
+ * their script or by the entry's reading (pinyin, a sign's reading, an
+ * Egyptological transliteration), compared by its letters: tones, diacritics
+ * and the signs ꜣ, ꜥ written 3 or ' do not count. Portuguese takes articles
+ * like Spanish; Swahili is plain text.
  */
 
 import { hasKana, kanaToRomaji } from "./kana";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar";
+export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy";
+
+/** Languages written in their own script and also answered by their reading (as Arabic). */
+export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy"]);
+
+/** The grading rules for a book language: those it has, else English (plain text). */
+export function answerLangOf(code: string): AnswerLang {
+  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy"];
+  return (known.includes(code) ? code : "en") as AnswerLang;
+}
 
 export const COUNTS_AS_RIGHT: ReadonlySet<Verdict> = new Set(["right", "accent", "typo"]);
 
@@ -63,6 +78,11 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   fr: ["le", "la", "les", "un", "une", "des", "du"],
   ja: [],
   ar: [],
+  pt: ["o", "a", "os", "as", "um", "uma", "uns", "umas"],
+  sw: [],
+  zh: [],
+  sux: [],
+  egy: [],
 };
 
 /** Text as shown: book typography cleaned, "..." for an open end. */
@@ -97,6 +117,9 @@ export function plain(text: string): string {
 
 /** Every way of writing the answer that the entry accepts, normalised. */
 export function acceptedForms(expected: string): string[] {
+  // "lord; ruler": each side of a semicolon is an answer of its own.
+  const sides = expected.split(/;(?![^(]*\))/).map((side) => side.trim()).filter(Boolean);
+  if (sides.length > 1) return [...new Set([normalise(expected), ...sides.flatMap(acceptedForms)])];
   // As printed, brackets read as spaces: "embarcar(se)", "(fish)bone".
   const forms = new Set<string>([normalise(expected)]);
   // An optional bracketed part: with and without it.
@@ -145,13 +168,21 @@ function expandSlashes(text: string): string[] {
     if (part.length === 0) continue;
     if (part.length === first.length) out.push(part.join(" "));
     else if (part.length < first.length) out.push([...first.slice(0, first.length - part.length), ...part].join(" "));
-    else {
-      // First side shorter: it replaces the start of the longer one.
+    else if (first.length === 1 && sharesStem(first[0]!, part[0]!)) {
+      // First side shorter, a variant of the longer one's first word: it replaces it ("este / esta es mi").
       out[0] = [...first, ...part.slice(first.length)].join(" ");
+      out.push(part.join(" "));
+    } else {
+      // Two answers of their own: "becoming / process of coming-to-be".
       out.push(part.join(" "));
     }
   }
   return out;
+}
+
+/** Two forms of one word: "este" and "esta", "his" and "her" (the same first letter and length close). */
+function sharesStem(a: string, b: string): boolean {
+  return a.length >= 2 && b.length >= 2 && a[0] === b[0] && Math.abs(a.length - b.length) <= 2 && distance(a, b, 2) <= 2;
 }
 
 /** Levenshtein distance, stopping early above `limit`. */
@@ -309,6 +340,43 @@ function gradeArabic(given: string, expected: string, reading: string): Verdict 
   return "wrong";
 }
 
+/** Script, spaces and punctuation aside: "人 们" and "人们" are one. */
+function scriptKey(text: string): string {
+  return normalise(text.normalize("NFKC")).replace(/\s/g, "");
+}
+
+/**
+ * A reading by its letters: "rén", "ren2", "Ren" are one. In Egyptian, ꜣ may be
+ * typed 3 or a and ꜥ may be typed ' or left out ("ꜥnḫ", "'nh", "anh").
+ */
+function readingKey(text: string, lang: AnswerLang): string {
+  const egyptian = lang === "egy" ? text.replace(/[ꜣꜢ3]/g, "a").replace(/[ꜥꜤʿʾ']/g, "") : text;
+  return latinKey(egyptian);
+}
+
+/** An Egyptian reading's keys: ꜣ and ꜥ read as "a" or left out ("rꜥ" is "ra" or "r"). */
+function readingKeys(text: string, lang: AnswerLang): string[] {
+  if (lang !== "egy") return [readingKey(text, lang)];
+  return [readingKey(text, lang), latinKey(text.replace(/[ꜣꜢꜥꜤʿ3]/g, "a"))];
+}
+
+/** Chinese, cuneiform, hieroglyphs: the script itself, or the reading. */
+function gradeScript(given: string, expected: string, reading: string, lang: AnswerLang): Verdict {
+  if (!normalise(given)) return "wrong";
+  if (/[^\p{Script=Latin}\p{N}\p{P}\p{Z}\p{M}]/u.test(given)) {
+    const answer = scriptKey(given);
+    return acceptedForms(expected.normalize("NFKC")).map(scriptKey).includes(answer) ? "right" : "wrong";
+  }
+  if (!reading) return "wrong";
+  const givenKeys = readingKeys(given, lang).filter(Boolean);
+  if (givenKeys.length === 0) return "wrong";
+  const key = givenKeys[0]!;
+  const keys = [...acceptedForms(reading), ...reading.split(/[/;,]/).flatMap(acceptedForms)].flatMap((k) => readingKeys(k, lang)).filter(Boolean);
+  if (givenKeys.some((k) => keys.includes(k))) return "right";
+  if (keys.some((k) => k.length >= 5 && distance(key, k, 1) <= 1)) return "typo";
+  return "wrong";
+}
+
 /**
  * The verdict for a written answer. `reading` is the term's reading, for a
  * Japanese term: rōmaji is accepted for it.
@@ -316,6 +384,7 @@ function gradeArabic(given: string, expected: string, reading: string): Verdict 
 export function grade(given: string, expected: string, lang: AnswerLang, reading = ""): Verdict {
   if (lang === "ja") return gradeJapanese(given, expected, reading);
   if (lang === "ar") return gradeArabic(given, expected, reading);
+  if (lang === "zh" || lang === "sux" || lang === "egy") return gradeScript(given, expected, reading, lang);
   const answer = normalise(given);
   if (!answer) return "wrong";
   const forms = formsFor(expected, lang);
@@ -329,7 +398,7 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   if (lang === "de" && candidates.some((f) => tried.some((t) => germanFold(t) === germanFold(f)))) return "right";
   if (candidates.some((f) => tried.some((t) => plain(t) === plain(f)))) return "accent";
 
-  if (lang === "es" || lang === "de") {
+  if (lang === "es" || lang === "de" || lang === "pt") {
     // Right word, wrong or missing article.
     const fold = (t: string): string => (lang === "de" ? plain(germanFold(t)) : plain(t));
     const bare = fold(withoutArticle(answer, lang));
@@ -348,7 +417,10 @@ export const MAX_WRITTEN_WORDS = 4;
 export function writable(expected: string, lang = ""): boolean {
   // German printed with its forms: the word alone is what is typed.
   const heads = lang === "de" ? germanHeads(expected) : [];
-  const single = (heads.length ? heads.flatMap(acceptedForms) : acceptedForms(expected)).filter((f) => !f.includes("/"));
+  // "lord; ruler": each meaning on its own, not the two run together.
+  const sides = expected.split(/;(?![^(]*\))/).map((side) => side.trim()).filter(Boolean);
+  const forms = heads.length ? heads.flatMap(acceptedForms) : sides.length > 1 ? sides.flatMap(acceptedForms) : acceptedForms(expected);
+  const single = forms.filter((f) => !f.includes("/"));
   const longest = Math.max(...single.map((f) => f.split(" ").length));
   return longest <= MAX_WRITTEN_WORDS;
 }
