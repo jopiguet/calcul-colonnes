@@ -32,7 +32,7 @@ test("Capital: its card under Economics, three levels, three groups, its course"
   await openActivity(page, "marx");
   await expect(page.locator(".activity-bar-title")).toHaveText("⚒️ Le Capital");
   await expect(page.locator("h1")).toHaveText("QCM : Le Capital de Marx");
-  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé"]);
+  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé", "Expert"]);
   await expect(page.locator(".topic-group-name")).toHaveText(["Livre I : valeur et plus-value", "Livre I : production et accumulation", "Livres II et III"]);
   await expect(page.locator(".topics .topic")).toHaveCount(12);
   for (const level of ["marxBeginner", "marxIntermediate", "marxAdvanced"] as const) expect(topicsFor(level).every((t) => t.startsWith("marx"))).toBe(true);

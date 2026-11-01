@@ -9,7 +9,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseMarkdown, type Block } from "../src/markdown-parse";
-import { TOPICS } from "../shared/quiz";
+import { SUBJECT_LEVELS, TOPICS, topicsFor, type Subject } from "../shared/quiz";
 import { sectionOf } from "../src/courses/sections";
 
 const ROOT = join(import.meta.dirname, "..", "src", "courses");
@@ -102,8 +102,10 @@ for (const id of readdirSync(ROOT, { withFileTypes: true }).filter((d) => d.isDi
     check(en.math.length === other.math.length, `${name}: ${other.math.length} formulas vs ${en.math.length} in English`);
   }
   // Every topic that points into this course points to a section it has.
-  const prefix = id === "marx" ? "marx" : id;
-  for (const topic of TOPICS.filter((t) => t.startsWith(prefix))) {
+  const subject = id as Subject;
+  const mine = SUBJECT_LEVELS[subject] ? [...new Set(SUBJECT_LEVELS[subject].flatMap((level) => topicsFor(level)))] : [];
+  check(mine.length > 0, `${id}: a course for a test subject`);
+  for (const topic of TOPICS.filter((t) => mine.includes(t))) {
     const section = sectionOf(topic, "");
     check(section !== null && section < en.sections, `${id}: topic ${topic} points to section ${section} of ${en.sections}`);
   }

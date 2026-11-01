@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { generateQuiz, type Question } from "../../shared/quiz/index.ts";
+import { generateQuiz, type Level, type Question } from "../../shared/quiz/index.ts";
 import { goHome, newPlayer, openActivity, profileOf, rebuild, takeMixedQuiz, takeQuiz } from "./helpers";
 
 /** The next test started in this page gets this seed. */
@@ -16,9 +16,9 @@ async function fixSeed(page: Page, seed: number): Promise<void> {
   }, seed);
 }
 
-function seedWhere(count: number, pick: (q: Question) => boolean): { seed: number; quiz: Question[] } {
+function seedWhere(count: number, pick: (q: Question) => boolean, level: Level = "chembio"): { seed: number; quiz: Question[] } {
   for (let seed = 1; ; seed++) {
-    const quiz = generateQuiz({ seed, level: "chembio", topics: ["balancing"], count });
+    const quiz = generateQuiz({ seed, level, topics: ["balancing"], count });
     if (pick(quiz[0]!)) return { seed, quiz };
   }
 }
@@ -31,7 +31,7 @@ test("balancing equations: its own card and test, equations shown, graded on the
   await openActivity(page, "chembio");
   await expect(page.locator(".activity-bar-title")).toHaveText("⚗️ Équations chimiques");
   await expect(page.locator("h1")).toHaveText("QCM : équilibrer les équations");
-  await expect(page.locator(".quiz-setup legend", { hasText: "Niveau" })).toHaveCount(0);
+  await expect(page.locator(".levels-four .segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé", "Expert"]);
   await expect(page.locator(".topic-group-name")).toHaveText(["Réactions chimiques"]);
 
   // A whole-equation question first; answer it with its subscript mistake.
@@ -60,9 +60,10 @@ test("balancing equations: its own card and test, equations shown, graded on the
 test("a coefficient can be typed", async ({ page }) => {
   await newPlayer(page, "Coe");
   await openActivity(page, "chembio");
+  await page.click(".quiz-setup .segment >> text=Avancé");
   await page.click("text=Au clavier");
   await page.locator(".count button").first().click();
-  const { seed, quiz } = seedWhere(5, (q) => q.verify.kind === "coefficient");
+  const { seed, quiz } = seedWhere(5, (q) => q.verify.kind === "coefficient", "chembioAdvanced");
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
   await expect(page.locator(".quiz-prompt")).toContainText("quel coefficient va à la place du « ? »");

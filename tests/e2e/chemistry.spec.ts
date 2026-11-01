@@ -39,8 +39,8 @@ test.beforeEach(async ({ page }) => {
 
 test("physical chemistry: its own topics and levels; calculations and written questions graded the same everywhere", async ({ page }) => {
   // Its own levels, core first; the Focuses of thermodynamics, quantum theory and atoms, spectroscopy, statistical thermodynamics, then kinetics.
-  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Fondamental", "Avancé"]);
-  await expect(page.locator(".segment.on", { hasText: "Fondamental" })).toHaveCount(1);
+  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé", "Expert"]);
+  await expect(page.locator(".segment.on", { hasText: "Intermédiaire" })).toHaveCount(1);
   await expect(page.locator(".topic-group-name")).toHaveText(["Thermodynamique", "Quantique et structure", "Spectroscopie", "Thermodynamique statistique", "Cinétique"]);
   await expect(page.locator(".topics .topic")).toHaveText([
     "1 · Les gaz",
@@ -113,10 +113,10 @@ test("a written question answered wrong comes back for review, named after its u
   await expect(page.locator("#app")).toContainText(`Notions ${unit.id} – ${localized(unit.title, "fr")}`);
 });
 
-test("the advanced level: written questions only, in the app's language, its own kinds of question", async ({ page }) => {
+test("the advanced level: written questions in the app's language, its own kinds of question, beside calculations", async ({ page }) => {
   await page.click("text=Avancé");
   await expect(page.locator(".segment.on", { hasText: "Avancé" })).toHaveCount(1);
-  await expect(page.locator(".mode-hint").first()).toContainText("Raisonnements et démonstrations");
+  await expect(page.locator(".mode-hint").first()).toContainText("Des cas moins directs et des raisonnements plus longs.");
   const { seed, first } = seedStartingWritten(5, "chemistryAdvanced");
   await page.locator(".count button").first().click(); // 5 questions
   await fixSeed(page, seed);
@@ -130,7 +130,6 @@ test("the advanced level: written questions only, in the app's language, its own
   expect(body.level).toBe("chemistryAdvanced");
   expect(body.bank).toBe(serverBank().revision);
   expect(server.correct).toBe(rebuild(body).correct);
-  expect(rebuild(body).questions.every((q) => q.verify.kind === "choice")).toBe(true);
 
   // Its own kinds of question, named "Avancé".
   expect(first.skill).toMatch(/\.advanced\w+$/);
@@ -148,12 +147,12 @@ test("Focuses 4–6: a calculation typed, a written question of the new topics, 
   let quiz: Question[] = [];
   for (; ; seed++) {
     quiz = generateQuiz({ seed, level: "chemistry", topics: [...topics], count: 5, bank: 1 });
-    if (quiz[0]!.skill === "mixtures.ionicStrength" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "equilibrium.concepts6A")) break;
+    if (quiz[0]!.skill === "mixtures.osmoticMolarMass" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "equilibrium.concepts6A")) break;
   }
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
-  await expect(page.locator(".quiz-prompt")).toContainText("Force ionique");
-  const right = quiz[0]!.options[quiz[0]!.correct]!.tex;
+  await expect(page.locator(".quiz-prompt")).toContainText("Masse molaire de cette macromolécule");
+  const right = quiz[0]!.options[quiz[0]!.correct]!.tex.split("\\,")[0]!; // the number, in the unit shown
   const { body, server } = await takeMixedQuiz(page, (i) => (i === 0 ? right.replace(".", ",") : "0"), () => 0);
   expect(body.topics).toEqual([...topics]);
   expect(body.mode).toBe("typed");
@@ -164,7 +163,7 @@ test("Focuses 4–6: a calculation typed, a written question of the new topics, 
   await expect(page.locator(".review-item").first()).toHaveClass(/good/);
 });
 
-test("Focuses 7–8: a spectral line typed, a written question of the new topics, graded the same everywhere", async ({ page }) => {
+test("Focuses 7–8: a particle-in-a-box transition typed, a written question of the new topics, graded the same everywhere", async ({ page }) => {
   await chooseTopics(page, ["7 · Théorie quantique", "8 · Structure atomique et spectres"]);
   await page.click("text=Au clavier");
   await page.locator(".count button").first().click(); // 5 questions
@@ -173,11 +172,11 @@ test("Focuses 7–8: a spectral line typed, a written question of the new topics
   let quiz: Question[] = [];
   for (; ; seed++) {
     quiz = generateQuiz({ seed, level: "chemistry", topics: [...topics], count: 5, bank: 1 });
-    if (quiz[0]!.skill === "atoms.hydrogenLine" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "quantum.concepts7A" || q.skill === "atoms.concepts8A")) break;
+    if (quiz[0]!.skill === "quantum.boxTransition" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "quantum.concepts7A" || q.skill === "atoms.concepts8A")) break;
   }
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
-  await expect(page.locator(".quiz-prompt")).toContainText("hydrogénoïde");
+  await expect(page.locator(".quiz-prompt")).toContainText("boîte à une dimension");
   const right = quiz[0]!.options[quiz[0]!.correct]!.tex.split("\\,")[0]!; // the number, in the unit shown
   const { body, server } = await takeMixedQuiz(page, (i) => (i === 0 ? right.replace(".", ",") : "0"), () => 0);
   expect(body.topics).toEqual([...topics]);
@@ -189,7 +188,7 @@ test("Focuses 7–8: a spectral line typed, a written question of the new topics
   await expect(page.locator(".review-item").first()).toHaveClass(/good/);
 });
 
-test("Focuses 17–18: an enzyme rate typed, a written question of the new topics, graded the same everywhere", async ({ page }) => {
+test("Focuses 17–18: a second-order half-life typed, a written question of the new topics, graded the same everywhere", async ({ page }) => {
   await chooseTopics(page, ["17 · Cinétique chimique", "18 · Dynamique réactionnelle"]);
   await page.click("text=Au clavier");
   await page.locator(".count button").first().click(); // 5 questions
@@ -198,11 +197,11 @@ test("Focuses 17–18: an enzyme rate typed, a written question of the new topic
   let quiz: Question[] = [];
   for (; ; seed++) {
     quiz = generateQuiz({ seed, level: "chemistry", topics: [...topics], count: 5, bank: 1 });
-    if (quiz[0]!.skill === "kinetics.michaelisMenten" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "kinetics.concepts17A" || q.skill === "dynamics.concepts18A")) break;
+    if (quiz[0]!.skill === "kinetics.secondOrderHalfLife" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "kinetics.concepts17A" || q.skill === "dynamics.concepts18A")) break;
   }
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
-  await expect(page.locator(".quiz-prompt")).toContainText("Michaelis–Menten");
+  await expect(page.locator(".quiz-prompt")).toContainText("second ordre");
   const right = quiz[0]!.options[quiz[0]!.correct]!.tex.split("\\,")[0]!; // the number, in the unit shown
   const { body, server } = await takeMixedQuiz(page, (i) => (i === 0 ? right.replace(".", ",") : "0"), () => 0);
   expect(body.topics).toEqual([...topics]);
@@ -214,7 +213,7 @@ test("Focuses 17–18: an enzyme rate typed, a written question of the new topic
   await expect(page.locator(".review-item").first()).toHaveClass(/good/);
 });
 
-test("Focuses 11–12: a Larmor frequency typed, a written question of the new topics, graded the same everywhere", async ({ page }) => {
+test("Focuses 11–12: an EPR g-value typed, a written question of the new topics, graded the same everywhere", async ({ page }) => {
   await chooseTopics(page, ["11 · Spectroscopie moléculaire", "12 · Résonance magnétique"]);
   await page.click("text=Au clavier");
   await page.locator(".count button").first().click(); // 5 questions
@@ -223,11 +222,11 @@ test("Focuses 11–12: a Larmor frequency typed, a written question of the new t
   let quiz: Question[] = [];
   for (; ; seed++) {
     quiz = generateQuiz({ seed, level: "chemistry", topics: [...topics], count: 5, bank: 1 });
-    if (quiz[0]!.skill === "resonance.larmorFrequency" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "spectroscopy.concepts11A" || q.skill === "resonance.concepts12A")) break;
+    if (quiz[0]!.skill === "resonance.gValue" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "spectroscopy.concepts11A" || q.skill === "resonance.concepts12A")) break;
   }
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
-  await expect(page.locator(".quiz-prompt")).toContainText("Larmor");
+  await expect(page.locator(".quiz-prompt")).toContainText("Valeur de g");
   const right = quiz[0]!.options[quiz[0]!.correct]!.tex.split("\\,")[0]!; // the number, in the unit shown
   const { body, server } = await takeMixedQuiz(page, (i) => (i === 0 ? right.replace(".", ",") : "0"), () => 0);
   expect(body.topics).toEqual([...topics]);
@@ -239,7 +238,7 @@ test("Focuses 11–12: a Larmor frequency typed, a written question of the new t
   await expect(page.locator(".review-item").first()).toHaveClass(/good/);
 });
 
-test("Focus 13: a vibrational partition function typed, a written question of the new topic, graded the same everywhere", async ({ page }) => {
+test("Focus 13: a rotational partition function typed, a written question of the new topic, graded the same everywhere", async ({ page }) => {
   await chooseTopics(page, ["13 · Thermodynamique statistique"]);
   await page.click("text=Au clavier");
   await page.locator(".count button").first().click(); // 5 questions
@@ -248,12 +247,12 @@ test("Focus 13: a vibrational partition function typed, a written question of th
   let quiz: Question[] = [];
   for (; ; seed++) {
     quiz = generateQuiz({ seed, level: "chemistry", topics: [...topics], count: 5, bank: 1 });
-    if (quiz[0]!.skill === "statistical.vibrationalPartition" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "statistical.concepts13A")) break;
+    if (quiz[0]!.skill === "statistical.rotationalPartition" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "statistical.concepts13A")) break;
   }
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
-  await expect(page.locator(".quiz-prompt")).toContainText("partition de vibration");
-  const right = quiz[0]!.options[quiz[0]!.correct]!.tex;
+  await expect(page.locator(".quiz-prompt")).toContainText("partition de rotation");
+  const right = quiz[0]!.options[quiz[0]!.correct]!.tex.split("\\,")[0]!; // the number, in the unit shown
   const { body, server } = await takeMixedQuiz(page, (i) => (i === 0 ? right.replace(".", ",") : "0"), () => 0);
   expect(body.topics).toEqual([...topics]);
   expect(body.mode).toBe("typed");
@@ -273,11 +272,11 @@ test("a past chemistry test, typed, with written questions: rebuilt from its ban
   let quiz: Question[] = [];
   for (; ; seed++) {
     quiz = generateQuiz({ seed, level: "chemistry", topics: [...topics], count: 5, bank: 1 });
-    if (quiz[0]!.skill === "statistical.vibrationalPartition" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "statistical.concepts13A")) break;
+    if (quiz[0]!.skill === "statistical.rotationalPartition" && typeable(quiz[0]!) && quiz.some((q) => q.skill === "statistical.concepts13A")) break;
   }
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
-  const right = quiz[0]!.options[quiz[0]!.correct]!.tex;
+  const right = quiz[0]!.options[quiz[0]!.correct]!.tex.split("\\,")[0]!; // the number, in the unit shown
   const { server, typedAt } = await takeMixedQuiz(page, (i) => (i === 0 ? right.replace(".", ",") : "7"), () => 1);
   const prompts = await page.locator(".review-item .quiz-prompt").allInnerTexts();
 

@@ -22,17 +22,19 @@
  * test. A question corrected in place keeps its place, with its new text.
  */
 import type { Rng } from "./rng";
-import { CALC_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, type CalcTopic, type ChemistryTopic, type Draft, type EconTopic, type Level, type Localized } from "./types";
+import { CALC_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, isCalc, isChemistry, isEcon, levelStep, type CalcTopic, type ChemistryTopic, type Draft, type EconTopic, type Level, type Localized } from "./types";
 
 export type BankLevel = "core" | "advanced";
 export const BANK_LEVELS: BankLevel[] = ["core", "advanced"];
 /** The bank level a test level draws from; null for the tests without a bank. */
-export const bankLevelOf = (level: Level): BankLevel | null =>
-  level === "chemistry" || level === "econ" || level === "calc" ? "core" : level === "chemistryAdvanced" || level === "econAdvanced" || level === "calcAdvanced" ? "advanced" : null;
+export const bankLevelOf = (level: Level): BankLevel | null => {
+  if (!isChemistry(level) && !isEcon(level) && !isCalc(level)) return null;
+  return levelStep(level) < 2 ? "core" : "advanced";
+};
 
 /** The bank topics a test level draws from: a chemistry test never gets an economics unit. */
 export const bankTopicsOf = (level: Level): readonly BankTopic[] =>
-  level === "chemistry" || level === "chemistryAdvanced" ? CHEMISTRY_TOPICS : level === "econ" || level === "econAdvanced" ? ECON_TOPICS : level === "calc" || level === "calcAdvanced" ? CALC_TOPICS : [];
+  isChemistry(level) ? CHEMISTRY_TOPICS : isEcon(level) ? ECON_TOPICS : isCalc(level) ? CALC_TOPICS : [];
 
 /** The test topics a bank unit may belong to. */
 export type BankTopic = ChemistryTopic | EconTopic | CalcTopic;

@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.33.0
+
+- **Four levels in every test.** Every test now has *Débutant*, *Intermédiaire*, *Avancé* and *Expert*, with the same names and the same hint under them (*Les notions de base, un pas à la fois.* … *Les points fins, les pièges et les débats.*). See [User guide › The four levels](docs/user-guide.md#the-four-levels) and [Question generators › Levels](docs/question-generators.md#levels).
+  - **Two levels become four:** the maths QCM (*Lycée*, *Université*), physical chemistry (*Fondamental*, *Avancé*), public economics and calculus (*Fondamentaux*, *Avancé*) keep their levels as *Intermédiaire* and *Avancé*, with *Débutant* and *Expert* added. Maths and chemistry re-sort their generated kinds by difficulty; economics and calculus get three written questions per topic at each new level (*«topic» · Débutant*, *«topic» · Expert*).
+  - **One level becomes four:** Linux, SQL and chemical equations show the level picker. Every Linux and SQL written question has a level; octal modes start at *Débutant*, `umask`, `cron`, `${f%.*}` and the generated joins and counts at *Avancé*; 24 Linux and 22 SQL *Expert* questions where a topic was thin. Chemical equations: what a coefficient means at *Débutant*, the typed coefficient from *Avancé*, oxidation numbers, half-equations and limiting reactants at *Expert*.
+  - **Capital gets *Expert*:** three questions per topic on the fine points of Marx's reasoning.
+  - **Old tests unchanged:** `QUIZ_VERSION` 5; each level's contents are gated by version, so every test saved at versions 1 to 4 rebuilds with the same questions and marks (3,600 rebuilds compared against 6.32). Results and progress keep their level: the old ids stand for *Intermédiaire* and *Avancé*.
+- **A course for every test.** Short courses, in French, Spanish and English, for the eleven tests that had none: mathematics, physical chemistry, Linux, chemical equations, SQL, Rust, TypeScript, React, Google Cloud, public economics and calculus. Each gives the four levels, a part per group of topics with the rules, formulas or commands the test uses and a worked example, and free sources. **📖 Lire le cours** in every test's settings; a wrong answer links to its part. A Claude doc of each course, in three tabs, is kept outside the project.
+- **The level hint** spans the whole picker instead of one column.
+- **Checks:** `check:quiz` checks the 221 new written questions; `check:courses` checks thirteen courses and that every topic of every level points to a part.
+- **Database:** migration `032_four_levels`.
+- **Tests:** 169 browser tests; `tests/e2e/courses.spec.ts`: the four levels and the course of every test, and a wrong SQL answer at *Débutant* linked to its part; the chemistry, Linux, SQL and chemical-equation tests follow their kinds to their new levels.
+
 ## 6.32.1
 
 - **Test settings on a large screen:** *📖 Lire le cours* sits under the title, across both columns. It took the first column, which pushed the levels and topics into the narrow right one, left a hole under the button and cut the four level names (*Débutant*… *Expert*).

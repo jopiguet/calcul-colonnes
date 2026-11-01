@@ -11,9 +11,10 @@
 import type { Lang } from "../i18n";
 export { sectionOf } from "./sections";
 
-export type CourseId = "cf" | "marx";
+/** One course per test subject, named like it. */
+export type CourseId = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc" | "cf" | "marx";
 
-export const COURSE_IDS: CourseId[] = ["cf", "marx"];
+export const COURSE_IDS: CourseId[] = ["maths", "chemistry", "linux", "chembio", "sql", "rust", "ts", "react", "gcp", "econ", "calc", "cf", "marx"];
 
 const loaders = import.meta.glob<string>("./*/*.md", { query: "?raw", import: "default" });
 const cache = new Map<string, Promise<string>>();
@@ -30,6 +31,8 @@ export function loadCourse(id: CourseId, lang: Lang): Promise<string> {
   return text;
 }
 
-/** The test subject a course belongs to. */
-export const COURSE_OF_SUBJECT: Record<string, CourseId> = { cf: "cf", marx: "marx" };
+/** The test subject a course belongs to: the subjects whose course is written. */
+export const COURSE_OF_SUBJECT: Record<string, CourseId> = Object.fromEntries(
+  COURSE_IDS.filter((id) => loaders[`./${id}/en.md`]).map((id) => [id, id]),
+);
 

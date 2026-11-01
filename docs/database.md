@@ -140,7 +140,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced`, `calc`, `calcAdvanced` |
+| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced`, `calc`, `calcAdvanced`, `cfBeginner` to `cfExpert`, `marxBeginner` to `marxExpert`, `mathBeginner`, `mathExpert`, `chemBeginner`, `chemExpert`, `linuxBeginner`, `linuxAdvanced`, `linuxExpert`, `chembioBeginner`, `chembioAdvanced`, `chembioExpert`, `sqlBeginner`, `sqlAdvanced`, `sqlExpert`, `econBeginner`, `econExpert`, `calcBeginner`, `calcExpert`, `marxExpert` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -266,6 +266,7 @@ runs: add tables and columns, rename or drop later.
 | `029_exercises` | Workbook exercises: `exercise_books`, `exercise_units`, `exercises`, `exercise_answers`. |
 | `030_cf_levels` | `quiz_results.level` accepts the four Cloudflare levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `031_marx_levels` | `quiz_results.level` accepts the three Capital levels. SQLite rebuilds `quiz_results`, keeping its rows. |
+| `032_four_levels` | `quiz_results.level` accepts the new levels of the four-level tests (*Débutant* and *Expert* everywhere, *Avancé* for Linux, SQL and chemical equations). The old ids stay, as *Intermédiaire* and *Avancé*. SQLite rebuilds `quiz_results`, keeping its rows. |
 
 **File names.**
 

@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
 
 test("a test is graded the same by the browser, the server and an independent rebuild", async ({ page }) => {
   const request = page.request;
-  await page.click("text=Université");
+  await page.click(".quiz-setup .segment >> text=Avancé");
   await chooseTopics(page, ["Intégrales", "Limites"]);
   await page.click("text=Commencer le test");
   const { body, server } = await takeQuiz(page, (i) => (i * 3) % 4);
@@ -87,10 +87,10 @@ test("giving up does not save the test", async ({ page }) => {
   expect((await statsOf(request, name)).quizTests).toBe(0);
 });
 
-test("topics come by group; a probability test, at both levels, is graded the same everywhere", async ({ page }) => {
+test("topics come by group; a probability test, at each of the four levels, is graded the same everywhere", async ({ page }) => {
   await expect(page.locator(".topic-group-name")).toContainText(["Analyse", "Algèbre", "Géométrie", "Probabilités"]);
-  for (const level of ["Lycée", "Université"]) {
-    await page.click(`text=${level}`);
+  for (const level of ["Débutant", "Intermédiaire", "Avancé", "Expert"]) {
+    await page.click(`.quiz-setup .segment >> text=${level}`);
     await chooseTopics(page, ["Probabilités"]);
     await page.click("text=Commencer le test");
     await page.locator(".choices").waitFor();
@@ -106,15 +106,15 @@ test("topics come by group; a probability test, at both levels, is graded the sa
 test("each new topic alone, at each of its levels, is graded the same everywhere", async ({ page }) => {
   test.setTimeout(360_000);
   const topics: [string, string[]][] = [
-    ["Suites", ["Lycée", "Université"]],
-    ["Nombres complexes", ["Lycée", "Université"]],
-    ["Équations différentielles", ["Lycée", "Université"]],
-    ["Matrices et systèmes", ["Lycée", "Université"]],
-    ["Étude de fonctions", ["Lycée", "Université"]],
-    ["Vecteurs et géométrie dans l'espace", ["Lycée", "Université"]],
-    ["Séries", ["Université"]],
-    ["Fonctions de plusieurs variables", ["Université"]],
-    ["Lecture graphique", ["Lycée", "Université"]],
+    ["Suites", ["Intermédiaire", "Avancé"]],
+    ["Nombres complexes", ["Intermédiaire", "Avancé"]],
+    ["Équations différentielles", ["Intermédiaire", "Avancé"]],
+    ["Matrices et systèmes", ["Intermédiaire", "Avancé"]],
+    ["Étude de fonctions", ["Intermédiaire", "Avancé"]],
+    ["Vecteurs et géométrie dans l'espace", ["Intermédiaire", "Avancé"]],
+    ["Séries", ["Avancé"]],
+    ["Fonctions de plusieurs variables", ["Avancé"]],
+    ["Lecture graphique", ["Intermédiaire", "Avancé"]],
   ];
   for (const [topic, levels] of topics) {
     for (const level of levels) {
@@ -129,8 +129,8 @@ test("each new topic alone, at each of its levels, is graded the same everywhere
       await page.locator(".actions button", { hasText: "Changer les réglages" }).click();
     }
   }
-  // University-only topics are not offered at lycée.
-  await page.click(".quiz-setup .segment >> text=Lycée");
+  // Advanced-only topics are not offered at the intermediate level.
+  await page.click(".quiz-setup .segment >> text=Intermédiaire");
   await expect(page.locator(".topics .topic", { hasText: "Séries" })).toHaveCount(0);
   await expect(page.locator(".topics .topic", { hasText: "Fonctions de plusieurs variables" })).toHaveCount(0);
 });
@@ -157,10 +157,10 @@ test("graph questions are drawn: the given curve, and four curves or planes to c
 });
 
 test("typed answers: the number typed is graded by the server, a wrong option typed is named as its mistake", async ({ page }) => {
-  await page.click("text=Université");
+  await page.click(".quiz-setup .segment >> text=Avancé");
   await chooseTopics(page, ["Probabilités", "Matrices et systèmes"]);
   await page.click("text=Au clavier");
-  await expect(page.locator(".mode-hint")).toBeVisible();
+  await expect(page.locator(".mode-hint", { hasText: "Quand la réponse est un nombre" })).toBeVisible();
   await page.click("text=Commencer le test");
 
   // First pass: whatever is typed, the browser, the server and a rebuild agree.
@@ -198,7 +198,7 @@ test("typed answers: the number typed is graded by the server, a wrong option ty
 });
 
 test("typed answers: the field reads what is typed, and the symbol keys insert where the cursor is", async ({ page }) => {
-  await page.click("text=Université");
+  await page.click(".quiz-setup .segment >> text=Avancé");
   await chooseTopics(page, ["Probabilités"]);
   await page.click("text=Au clavier");
   await page.click("text=Commencer le test");

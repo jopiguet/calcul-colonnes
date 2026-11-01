@@ -36,7 +36,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `exercise.ts` | Drawing arithmetic exercises; column counts; reading a row of digit boxes |
 | `worksheet.ts` | The A4 PDF worksheet, written by hand (no library) |
 | `quiz.ts` | Multiple-choice screens: settings, question, results; review focus |
-| `course.ts`, `courses/` | The in-app courses: `courses/<id>/<lang>.md` loaded on demand, `courses/sections.ts` mapping topics and kinds to parts; the reader and the links from wrong answers |
+| `course.ts`, `courses/` | The in-app courses, one per test (13): `courses/<id>/<lang>.md` loaded on demand, `courses/sections.ts` mapping topics and kinds to parts; the reader and the links from wrong answers |
 | `markdown.ts`, `markdown-parse.ts` | The small Markdown reader for the courses: headings, lists, check lists, tables, code, links, TeX formulas |
 | `progress.ts` | Progress page of a player |
 | `store.ts` | API calls; `auth` calls; `SignedOutError` when the session has ended |
@@ -150,6 +150,8 @@ three before building.
 | Ranges of the column arithmetic | `LEVELS`, `SMALL_LEVELS` in `src/settings.ts` |
 | How arithmetic exercises are drawn | `src/exercise.ts` |
 | Number of questions offered in tests | `QUIZ_COUNTS` in `shared/quiz/index.ts` (the server accepts 1–30, `MAX_QUESTIONS`) |
+| What each of a test's four levels holds | `shared/quiz/standard.ts` and the written lists of `shared/quiz/levels/` ([Levels](question-generators.md#levels)). Changes what seeds produce: [bump the version](question-generators.md#versioning). |
+| The level names and hints | `STEP_NAMES`, `STEP_HINTS` in `src/quiz-i18n.ts`, the same for every test |
 | Share of review questions | `REVIEW_SHARE`, `REVIEW_PER_SKILL` in `shared/quiz/index.ts`. Changes what seeds produce with a focus: [bump the version](question-generators.md#versioning). |
 | When a kind is "to review" or "mastered" | `skillStatus` in `shared/quiz/progress.ts`. Applies immediately to all history, without a version bump. |
 | A new kind of question | [Question generators › Adding a kind](question-generators.md#adding-a-kind-of-question) |

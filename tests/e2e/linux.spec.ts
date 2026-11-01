@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { generateQuiz, LINUX_TOPICS, localized, type Question } from "../../shared/quiz/index.ts";
+import { generateQuiz, LINUX_TOPICS, localized, type Level, type Question } from "../../shared/quiz/index.ts";
 import { chooseTopics, newPlayer, openActivity, rebuild, takeMixedQuiz, takeQuiz } from "./helpers";
 import { LX_MISTAKES, type LinuxMistake } from "../../src/quiz-i18n-linux.ts";
 
@@ -18,9 +18,9 @@ async function fixSeed(page: Page, seed: number): Promise<void> {
 }
 
 /** A seed whose test starts with a question that `pick` accepts. */
-function seedWhere(count: number, topics: string[], pick: (q: Question) => boolean): { seed: number; first: Question } {
+function seedWhere(count: number, topics: string[], pick: (q: Question) => boolean, level: Level = "linux"): { seed: number; first: Question } {
   for (let seed = 1; ; seed++) {
-    const quiz = generateQuiz({ seed, level: "linux", topics: topics as never, count });
+    const quiz = generateQuiz({ seed, level, topics: topics as never, count });
     if (pick(quiz[0]!)) return { seed, first: quiz[0]! };
   }
 }
@@ -31,8 +31,8 @@ test.beforeEach(async ({ page }) => {
   await expect(page.locator("h1")).toHaveText("QCM Linux");
 });
 
-test("Linux: its topics in three groups, no level; commands shown as code; graded the same everywhere", async ({ page }) => {
-  await expect(page.locator(".quiz-setup legend", { hasText: "Niveau" })).toHaveCount(0);
+test("Linux: its topics in three groups, four levels; commands shown as code; graded the same everywhere", async ({ page }) => {
+  await expect(page.locator(".levels-four .segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé", "Expert"]);
   await expect(page.locator(".topic-group-name")).toHaveText(["La ligne de commande", "Scripts, git et vim", "Outils à installer"]);
   await expect(page.locator(".topics .topic")).toHaveCount(LINUX_TOPICS.length);
 
@@ -56,10 +56,11 @@ test("Linux: its topics in three groups, no level; commands shown as code; grade
 });
 
 test("a permission mode can be typed: 640 is read as the octal mode", async ({ page }) => {
+  await page.click(".quiz-setup .segment >> text=Débutant");
   await chooseTopics(page, ["Fichiers et permissions"]);
   await page.click("text=Au clavier");
   await page.locator(".count button").first().click(); // 5 questions
-  const { seed, first } = seedWhere(5, ["linuxFiles"], (q) => q.prompt.key === "chmodToOctal");
+  const { seed, first } = seedWhere(5, ["linuxFiles"], (q) => q.prompt.key === "chmodToOctal", "linuxBeginner");
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
   await expect(page.locator(".quiz-prompt code")).toHaveText(["ls -l", "chmod"]);
@@ -74,10 +75,11 @@ test("a permission mode can be typed: 640 is read as the octal mode", async ({ p
 });
 
 test("what a command prints: the command and the outputs as code, a slip named in the corrections", async ({ page }) => {
+  await page.click(".quiz-setup .segment >> text=Avancé");
   await chooseTopics(page, ["Scripts bash", "Git", "Vim"]);
   await page.locator(".count button").first().click(); // 5 questions
   const topics = ["linuxScripting", "linuxGit", "linuxVim"];
-  const { seed, first } = seedWhere(5, topics, (q) => q.skill === "linuxScripting.paramExpansion");
+  const { seed, first } = seedWhere(5, topics, (q) => q.skill === "linuxScripting.paramExpansion", "linuxAdvanced");
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
   if (first.verify.kind !== "shell") throw new Error("not a generated command");

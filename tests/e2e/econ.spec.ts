@@ -37,8 +37,8 @@ test("public economics: its own card and group, two levels, three groups of topi
   await openActivity(page, "econ");
   await expect(page.locator(".activity-bar-title")).toHaveText("🏛️ Économie publique");
   await expect(page.locator("h1")).toHaveText("QCM : économie publique");
-  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Fondamentaux", "Avancé"]);
-  await expect(page.locator(".mode-hint").first()).toContainText("graphiques classiques");
+  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé", "Expert"]);
+  await expect(page.locator(".mode-hint").first()).toContainText("Le cœur du sujet, comme en cours.");
   await expect(page.locator(".topic-group-name")).toHaveText(["Théorie du bien-être et choix publics", "Fiscalité", "État-providence et travail"]);
   await expect(page.locator(".topics .topic")).toHaveCount(topicsFor("econ").length);
   // The bank holds economics units here: no hint that concept questions are missing.

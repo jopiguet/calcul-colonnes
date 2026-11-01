@@ -39,8 +39,8 @@ test("calculus: its own card among the maths, two levels, three groups of topics
   await openActivity(page, "calc");
   await expect(page.locator(".activity-bar-title")).toHaveText("∫ Analyse");
   await expect(page.locator("h1")).toHaveText("QCM : analyse");
-  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Fondamentaux", "Avancé"]);
-  await expect(page.locator(".mode-hint").first()).toContainText("champs de pentes");
+  await expect(page.locator(".quiz-setup .segmented").first().locator(".segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé", "Expert"]);
+  await expect(page.locator(".mode-hint").first()).toContainText("Le cœur du sujet, comme en cours.");
   await expect(page.locator(".topic-group-name")).toHaveText(["Une variable", "Équations différentielles, courbes, séries", "Plusieurs variables et calcul stochastique"]);
   await expect(page.locator(".topics .topic")).toHaveCount(topicsFor("calc").length);
   await expect(page.locator(".hint", { hasText: "banque de questions" })).toHaveCount(0);

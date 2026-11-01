@@ -14,7 +14,7 @@ export type Fn2 = (x: number, y: number) => number;
  * its own (its topics are the Focuses of Atkins' Physical Chemistry): core
  * calculations and concepts, or advanced reasoning and derivations.
  */
-export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "cfBeginner" | "cfIntermediate" | "cfAdvanced" | "cfExpert" | "econ" | "econAdvanced" | "calc" | "calcAdvanced" | "marxBeginner" | "marxIntermediate" | "marxAdvanced";
+export type Level = "school" | "university" | "chemistry" | "chemistryAdvanced" | "linux" | "chembio" | "sql" | "mathBeginner" | "mathExpert" | "chemBeginner" | "chemExpert" | "linuxBeginner" | "linuxAdvanced" | "linuxExpert" | "chembioBeginner" | "chembioAdvanced" | "chembioExpert" | "sqlBeginner" | "sqlAdvanced" | "sqlExpert" | "econBeginner" | "econExpert" | "calcBeginner" | "calcExpert" | "marxExpert" | "rustBeginner" | "rustIntermediate" | "rustAdvanced" | "rustExpert" | "tsBeginner" | "tsIntermediate" | "tsAdvanced" | "tsExpert" | "reactBeginner" | "reactIntermediate" | "reactAdvanced" | "reactExpert" | "gcpBeginner" | "gcpIntermediate" | "gcpAdvanced" | "gcpExpert" | "cfBeginner" | "cfIntermediate" | "cfAdvanced" | "cfExpert" | "econ" | "econAdvanced" | "calc" | "calcAdvanced" | "marxBeginner" | "marxIntermediate" | "marxAdvanced";
 export type MathTopic = "derivatives" | "integrals" | "trigonometry" | "limits" | "explog" | "probability" | "sequences" | "complex" | "odes" | "linear" | "functions" | "geometry" | "series" | "multivariable" | "graphs";
 /**
  * Physical chemistry, by Focus: 1 gases, 2 First Law, 3 Second and Third Laws,
@@ -59,7 +59,7 @@ export type CfTopic = "cfDns" | "cfTls" | "cfCache" | "cfSecurity" | "cfWorkers"
 export type MarxTopic = "marxCommodity" | "marxMoney" | "marxSurplus" | "marxWorkingDay" | "marxRelative" | "marxWages" | "marxAccumulation" | "marxPrimitive" | "marxCirculation" | "marxReproduction" | "marxProfit" | "marxCredit";
 export type Topic = MathTopic | ChemistryTopic | LinuxTopic | ChemBioTopic | SqlTopic | RustTopic | TsTopic | ReactTopic | GcpTopic | EconTopic | CalcTopic | CfTopic | MarxTopic;
 
-export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced", "calc", "calcAdvanced", "cfBeginner", "cfIntermediate", "cfAdvanced", "cfExpert", "marxBeginner", "marxIntermediate", "marxAdvanced"];
+export const LEVELS: Level[] = ["school", "university", "chemistry", "chemistryAdvanced", "linux", "chembio", "sql", "rustBeginner", "rustIntermediate", "rustAdvanced", "rustExpert", "tsBeginner", "tsIntermediate", "tsAdvanced", "tsExpert", "reactBeginner", "reactIntermediate", "reactAdvanced", "reactExpert", "gcpBeginner", "gcpIntermediate", "gcpAdvanced", "gcpExpert", "econ", "econAdvanced", "calc", "calcAdvanced", "cfBeginner", "cfIntermediate", "cfAdvanced", "cfExpert", "marxBeginner", "marxIntermediate", "marxAdvanced", "mathBeginner", "mathExpert", "chemBeginner", "chemExpert", "linuxBeginner", "linuxAdvanced", "linuxExpert", "chembioBeginner", "chembioAdvanced", "chembioExpert", "sqlBeginner", "sqlAdvanced", "sqlExpert", "econBeginner", "econExpert", "calcBeginner", "calcExpert", "marxExpert"];
 /** Topics of the chemistry-and-biology test. */
 export const CHEMBIO_TOPICS: ChemBioTopic[] = ["balancing"];
 /** Topics of the Linux test. */
@@ -94,31 +94,63 @@ export const isCf = (level: Level): boolean => CF_LEVELS.includes(level);
 /** Topics of the test on Marx's Capital, one per part of the course. */
 export const MARX_TOPICS: MarxTopic[] = ["marxCommodity", "marxMoney", "marxSurplus", "marxWorkingDay", "marxRelative", "marxWages", "marxAccumulation", "marxPrimitive", "marxCirculation", "marxReproduction", "marxProfit", "marxCredit"];
 /** The levels offered in the Capital test's settings, easiest first. */
-export const MARX_LEVELS: Level[] = ["marxBeginner", "marxIntermediate", "marxAdvanced"];
+export const MARX_LEVELS: Level[] = ["marxBeginner", "marxIntermediate", "marxAdvanced", "marxExpert"];
 export const isMarx = (level: Level): boolean => MARX_LEVELS.includes(level);
 /** Topics of the economics test. */
 export const ECON_TOPICS: EconTopic[] = ["econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour"];
 /** The levels offered in the economics test's settings: core, and advanced reasoning. */
-export const ECON_LEVELS: Level[] = ["econ", "econAdvanced"];
+export const ECON_LEVELS: Level[] = ["econBeginner", "econ", "econAdvanced", "econExpert"];
 export const isEcon = (level: Level): boolean => ECON_LEVELS.includes(level);
 /** Topics of the calculus test. */
 export const CALC_TOPICS: CalcTopic[] = ["calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques", "calcOde", "calcParametric", "calcSeries", "calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic"];
 /** The levels offered in the calculus test's settings: core, and advanced. */
-export const CALC_LEVELS: Level[] = ["calc", "calcAdvanced"];
+export const CALC_LEVELS: Level[] = ["calcBeginner", "calc", "calcAdvanced", "calcExpert"];
 export const isCalc = (level: Level): boolean => CALC_LEVELS.includes(level);
 /** The subjects of the tests, each with its own levels and topics. */
 export type Subject = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc" | "cf" | "marx";
-export const subjectOf = (level: Level): Subject =>
-  level === "linux" ? "linux" : level === "sql" ? "sql" : isRust(level) ? "rust" : isTypeScript(level) ? "ts" : isReact(level) ? "react" : isGcp(level) ? "gcp" : isCf(level) ? "cf" : isMarx(level) ? "marx" : isEcon(level) ? "econ" : isCalc(level) ? "calc" : level === "chembio" ? "chembio" : level === "chemistry" || level === "chemistryAdvanced" ? "chemistry" : "maths";
+export const subjectOf = (level: Level): Subject => SUBJECT_OF_LEVEL[level];
 /** Topics of the physical chemistry test. */
 export const CHEMISTRY_TOPICS: ChemistryTopic[] = ["gases", "firstLaw", "secondLaw", "phases", "mixtures", "equilibrium", "quantum", "atoms", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical"];
 /** The levels offered in the mathematics test's settings. */
-export const MATH_LEVELS: Level[] = ["school", "university"];
+export const MATH_LEVELS: Level[] = ["mathBeginner", "school", "university", "mathExpert"];
 /** The levels offered in the physical chemistry test's settings. */
-export const CHEMISTRY_LEVELS: Level[] = ["chemistry", "chemistryAdvanced"];
-export const isChemistry = (level: Level): boolean => level === "chemistry" || level === "chemistryAdvanced";
+export const CHEMISTRY_LEVELS: Level[] = ["chemBeginner", "chemistry", "chemistryAdvanced", "chemExpert"];
+export const isChemistry = (level: Level): boolean => CHEMISTRY_LEVELS.includes(level);
+/** The levels of the Linux, chemistry-and-biology and SQL tests. */
+export const LINUX_LEVELS: Level[] = ["linuxBeginner", "linux", "linuxAdvanced", "linuxExpert"];
+export const CHEMBIO_LEVELS: Level[] = ["chembioBeginner", "chembio", "chembioAdvanced", "chembioExpert"];
+export const SQL_LEVELS: Level[] = ["sqlBeginner", "sql", "sqlAdvanced", "sqlExpert"];
 /** Tests that draw from the question bank, and so record the bank revision they drew from. */
 export const usesBank = (level: Level): boolean => isChemistry(level) || isEcon(level) || isCalc(level);
+
+/**
+ * Every test has four levels, easiest first: Débutant, Intermédiaire, Avancé,
+ * Expert. Tests that had one or two levels keep their ids as Intermédiaire
+ * and Avancé (saved tests stay where they were); what each level holds is
+ * versioned (docs/question-generators.md#levels).
+ */
+export const SUBJECT_LEVELS: Record<Subject, readonly Level[]> = {
+  maths: MATH_LEVELS,
+  chemistry: CHEMISTRY_LEVELS,
+  linux: LINUX_LEVELS,
+  chembio: CHEMBIO_LEVELS,
+  sql: SQL_LEVELS,
+  rust: RUST_LEVELS,
+  ts: TS_LEVELS,
+  react: REACT_LEVELS,
+  gcp: GCP_LEVELS,
+  econ: ECON_LEVELS,
+  calc: CALC_LEVELS,
+  cf: CF_LEVELS,
+  marx: MARX_LEVELS,
+};
+const SUBJECT_OF_LEVEL = Object.fromEntries(
+  (Object.entries(SUBJECT_LEVELS) as [Subject, readonly Level[]][]).flatMap(([subject, levels]) => levels.map((l) => [l, subject])),
+) as Record<Level, Subject>;
+/** The generator version from which every test has its four levels (QUIZ_VERSION 5). */
+export const LEVELS_VERSION = 5;
+/** 0 Débutant, 1 Intermédiaire, 2 Avancé, 3 Expert. */
+export const levelStep = (level: Level): 0 | 1 | 2 | 3 => SUBJECT_LEVELS[SUBJECT_OF_LEVEL[level]].indexOf(level) as 0 | 1 | 2 | 3;
 /** Every topic; new ones are appended (the order is the selector's within a group). */
 export const TOPICS: Topic[] = ["derivatives", "integrals", "trigonometry", "limits", "explog", "probability", "sequences", "complex", "odes", "linear", "functions", "geometry", "series", "multivariable", "graphs", "gases", "firstLaw", "secondLaw", "linuxFiles", "linuxText", "linuxShell", "linuxProcesses", "linuxSystem", "linuxNetwork", "linuxTools", "phases", "mixtures", "equilibrium", "balancing", "quantum", "atoms", "linuxScripting", "linuxGit", "linuxVim", "kinetics", "dynamics", "spectroscopy", "resonance", "statistical", "sqlSelect", "sqlAggregate", "sqlJoins", "sqlModify", "sqlPostgres", "sqlSqlite", "sqlMysql", "sqlPractice", "rustBasics", "rustOwnership", "rustTypes", "rustErrors", "rustCollections", "rustConcurrency", "rustCargo", "rustUnsafe", "tsBasics", "tsFunctions", "tsObjects", "tsNarrowing", "tsGenerics", "tsTypeLevel", "tsRuntime", "tsTooling", "reactComponents", "reactState", "reactEffects", "reactRendering", "reactData", "reactTyping", "reactTooling", "reactTesting", "gcpHierarchy", "gcpIam", "gcpServiceAccounts", "gcpSecurity", "gcpNetworking", "gcpCompute", "gcpStorage", "gcpOperations", "econWelfare", "econMarketFailure", "econPublicChoice", "econIncidence", "econOptimalTax", "econTaxDesign", "econSocialInsurance", "econRedistribution", "econLabour", "calcLimits", "calcDerivatives", "calcApplications", "calcIntegrals", "calcTranscendental", "calcTechniques", "calcOde", "calcParametric", "calcSeries", "calcVectors", "calcMultivariable", "calcVectorCalculus", "calcStochastic", "cfDns", "cfTls", "cfCache", "cfSecurity", "cfWorkers", "cfStorage", "cfZeroTrust", "cfAi", "marxCommodity", "marxMoney", "marxSurplus", "marxWorkingDay", "marxRelative", "marxWages", "marxAccumulation", "marxPrimitive", "marxCirculation", "marxReproduction", "marxProfit", "marxCredit"];
 

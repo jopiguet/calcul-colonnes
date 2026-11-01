@@ -4098,12 +4098,13 @@ pre.quiz-code {
   tab-size: 4;
 }
 
-/* Four levels (Rust): two by two on a phone, one row when there is room. */
+/* Four levels (every test): two by two on a phone, one row when there is room. */
 .segmented.levels-four {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-.segmented.levels-four > legend {
+.segmented.levels-four > legend,
+.segmented.levels-four > .mode-hint {
   grid-column: 1 / -1;
 }
 .segmented.levels-four > .segment {

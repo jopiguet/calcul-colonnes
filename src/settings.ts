@@ -1,4 +1,4 @@
-import { CALC_LEVELS, CALC_TOPICS, CF_LEVELS, CF_TOPICS, MARX_LEVELS, MARX_TOPICS, ECON_LEVELS, ECON_TOPICS, GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { CHEMBIO_LEVELS, LINUX_LEVELS, SQL_LEVELS, CALC_LEVELS, CALC_TOPICS, CF_LEVELS, CF_TOPICS, MARX_LEVELS, MARX_TOPICS, ECON_LEVELS, ECON_TOPICS, GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 import { isDiscoverActivity, type DiscoverActivity } from "./discover/activities";
@@ -25,20 +25,24 @@ export interface Settings {
   workbookUnit: number | null;
   /** Lab open in the "discover" activity. */
   discoverActivity: DiscoverActivity;
-  /** The mathematics test's level ("school" or "university"). */
+  /** The mathematics test's level (Intermédiaire is "school", Avancé "university"). */
   quizLevel: Level;
   quizTopics: Topic[];
   /** Which test the "quiz" activity shows: mathematics, or physical chemistry. */
   quizSubject: Subject;
   /** Topics chosen for the physical chemistry test. */
   chemTopics: Topic[];
-  /** Level of the physical chemistry test: core or advanced. */
+  /** Level of the physical chemistry test. */
   chemLevel: Level;
   /** Topics chosen for the Linux test. */
   linuxTopics: Topic[];
   /** Topics chosen for the chemistry-and-biology test. */
   chembioTopics: Topic[];
   sqlTopics: Topic[];
+  /** Levels of the Linux, chemistry-and-biology and SQL tests. */
+  linuxLevel: Level;
+  chembioLevel: Level;
+  sqlLevel: Level;
   rustTopics: Topic[];
   rustLevel: Level;
   tsTopics: Topic[];
@@ -179,6 +183,9 @@ export function loadSettings(): Settings {
       : [...CALC_TOPICS],
     calcLevel: CALC_LEVELS.includes(saved.calcLevel as Level) ? (saved.calcLevel as Level) : "calc",
     chemLevel: CHEMISTRY_LEVELS.includes(saved.chemLevel as Level) ? (saved.chemLevel as Level) : "chemistry",
+    linuxLevel: LINUX_LEVELS.includes(saved.linuxLevel as Level) ? (saved.linuxLevel as Level) : "linux",
+    chembioLevel: CHEMBIO_LEVELS.includes(saved.chembioLevel as Level) ? (saved.chembioLevel as Level) : "chembio",
+    sqlLevel: SQL_LEVELS.includes(saved.sqlLevel as Level) ? (saved.sqlLevel as Level) : "sql",
     quizCount: nearest(QUIZ_COUNTS, saved.quizCount, 10),
     quizReview: saved.quizReview !== false,
     quizMode: saved.quizMode === "typed" ? "typed" : "choices",

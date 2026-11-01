@@ -1,23 +1,23 @@
-import type { ExplanationKey, Level, MistakeKey, PromptKey, SkillStatus, Topic, TopicGroup } from "../shared/quiz";
+import { LEVELS, levelStep, type ExplanationKey, type Level, type MistakeKey, type PromptKey, type SkillStatus, type Topic, type TopicGroup } from "../shared/quiz";
 import { currentLang, type Lang } from "./i18n";
 import { bankSkillParts, currentBank, localized } from "../shared/quiz";
-import { LX_EXPLANATIONS, LX_GROUPS, LX_LEVEL, LX_MISTAKES, LX_PROMPTS, LX_SKILLS, LX_TEXTS, LX_TOPICS } from "./quiz-i18n-linux";
-import { CB_EXPLANATIONS, CB_GROUPS, CB_LEVEL, CB_MISTAKES, CB_PROMPTS, CB_SKILLS, CB_TEXTS, CB_TOPICS } from "./quiz-i18n-chembio";
-import { SQ_GROUPS, SQ_LEVEL, SQ_MISTAKES, SQ_SKILLS, SQ_TEXTS, SQ_TOPICS } from "./quiz-i18n-sql";
-import { RS_GROUPS, RS_LEVELS, RS_MISTAKES, RS_SKILLS, RS_TEXTS, RS_TOPICS } from "./quiz-i18n-rust";
-import { TS_GROUPS, TS_LEVEL_NAMES, TS_MISTAKES, TS_SKILLS, TS_TEXTS, TS_TOPIC_NAMES } from "./quiz-i18n-ts";
-import { REACT_GROUPS, REACT_LEVEL_NAMES, REACT_MISTAKES, REACT_SKILLS, REACT_TEXTS, REACT_TOPIC_NAMES } from "./quiz-i18n-react";
-import { GCP_GROUPS, GCP_LEVEL_NAMES, GCP_MISTAKES, GCP_SKILLS, GCP_TEXTS, GCP_TOPIC_NAMES } from "./quiz-i18n-gcp";
-import { CF_GROUPS, CF_LEVEL_NAMES, CF_MISTAKES, CF_SKILLS, CF_TEXTS, CF_TOPIC_NAMES } from "./quiz-i18n-cf";
-import { MARX_GROUPS, MARX_LEVEL_NAMES, MARX_MISTAKES, MARX_SKILLS, MARX_TEXTS, MARX_TOPIC_NAMES } from "./quiz-i18n-marx";
-import { ECON_GROUPS, ECON_LEVEL_NAMES, ECON_MISTAKES, ECON_SKILLS, ECON_TEXTS, ECON_TOPIC_NAMES } from "./quiz-i18n-econ";
-import { CALC_GROUPS, CALC_LEVEL_NAMES, CALC_MISTAKES, CALC_SKILLS, CALC_TEXTS, CALC_TOPIC_NAMES } from "./quiz-i18n-calc";
+import { LX_EXPLANATIONS, LX_GROUPS, LX_MISTAKES, LX_PROMPTS, LX_SKILLS, LX_TEXTS, LX_TOPICS } from "./quiz-i18n-linux";
+import { CB_EXPLANATIONS, CB_GROUPS, CB_MISTAKES, CB_PROMPTS, CB_SKILLS, CB_TEXTS, CB_TOPICS } from "./quiz-i18n-chembio";
+import { SQ_GROUPS, SQ_MISTAKES, SQ_SKILLS, SQ_TEXTS, SQ_TOPICS } from "./quiz-i18n-sql";
+import { RS_GROUPS, RS_MISTAKES, RS_SKILLS, RS_TEXTS, RS_TOPICS } from "./quiz-i18n-rust";
+import { TS_GROUPS, TS_MISTAKES, TS_SKILLS, TS_TEXTS, TS_TOPIC_NAMES } from "./quiz-i18n-ts";
+import { REACT_GROUPS, REACT_MISTAKES, REACT_SKILLS, REACT_TEXTS, REACT_TOPIC_NAMES } from "./quiz-i18n-react";
+import { GCP_GROUPS, GCP_MISTAKES, GCP_SKILLS, GCP_TEXTS, GCP_TOPIC_NAMES } from "./quiz-i18n-gcp";
+import { CF_GROUPS, CF_MISTAKES, CF_SKILLS, CF_TEXTS, CF_TOPIC_NAMES } from "./quiz-i18n-cf";
+import { MARX_GROUPS, MARX_MISTAKES, MARX_SKILLS, MARX_TEXTS, MARX_TOPIC_NAMES } from "./quiz-i18n-marx";
+import { ECON_GROUPS, ECON_MISTAKES, ECON_SKILLS, ECON_TEXTS, ECON_TOPIC_NAMES } from "./quiz-i18n-econ";
+import { CALC_GROUPS, CALC_MISTAKES, CALC_SKILLS, CALC_TEXTS, CALC_TOPIC_NAMES } from "./quiz-i18n-calc";
 import { EQ_EXPLANATIONS, EQ_MISTAKES, EQ_PROMPTS, EQ_SKILLS } from "./quiz-i18n-equilibria";
 import { QT_EXPLANATIONS, QT_GROUP, QT_MISTAKES, QT_PROMPTS, QT_SKILLS } from "./quiz-i18n-quantum";
 import { KN_EXPLANATIONS, KN_GROUP, KN_MISTAKES, KN_PROMPTS, KN_SKILLS } from "./quiz-i18n-kinetics";
 import { SP_EXPLANATIONS, SP_GROUP, SP_MISTAKES, SP_PROMPTS, SP_SKILLS } from "./quiz-i18n-spectroscopy";
 import { ST_EXPLANATIONS, ST_GROUP, ST_MISTAKES, ST_PROMPTS, ST_SKILLS } from "./quiz-i18n-statistical";
-import { CHEM_ADVANCED, CHEM_EXPLANATIONS, CHEM_GROUP, CHEM_LEVEL, CHEM_MISTAKES, CHEM_PROMPTS, CHEM_SKILLS, CHEM_TEXTS, CHEM_TOPICS } from "./quiz-i18n-chemistry";
+import { CHEM_EXPLANATIONS, CHEM_GROUP, CHEM_MISTAKES, CHEM_PROMPTS, CHEM_SKILLS, CHEM_TEXTS, CHEM_TOPICS } from "./quiz-i18n-chemistry";
 
 /** Texts of the multiple-choice part, in French, Spanish and English. */
 
@@ -296,44 +296,15 @@ const en: Record<QuizKey, string> = {
     ...CALC_TEXTS.en,
 };
 
-const LEVEL_NAMES: Record<Lang, Record<Level, string>> = {
-  fr: { school: "Lycée", university: "Université", chemistry: CHEM_LEVEL.fr, chemistryAdvanced: CHEM_ADVANCED.fr, linux: LX_LEVEL.fr, chembio: CB_LEVEL.fr, sql: SQ_LEVEL.fr, rustBeginner: RS_LEVELS.rustBeginner.fr, rustIntermediate: RS_LEVELS.rustIntermediate.fr, rustAdvanced: RS_LEVELS.rustAdvanced.fr, rustExpert: RS_LEVELS.rustExpert.fr, tsBeginner: TS_LEVEL_NAMES.tsBeginner.fr, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.fr, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.fr, tsExpert: TS_LEVEL_NAMES.tsExpert.fr, reactBeginner: REACT_LEVEL_NAMES.reactBeginner.fr, reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.fr, reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.fr, reactExpert: REACT_LEVEL_NAMES.reactExpert.fr, gcpBeginner: GCP_LEVEL_NAMES.gcpBeginner.fr, gcpIntermediate: GCP_LEVEL_NAMES.gcpIntermediate.fr, gcpAdvanced: GCP_LEVEL_NAMES.gcpAdvanced.fr, gcpExpert: GCP_LEVEL_NAMES.gcpExpert.fr, cfBeginner: CF_LEVEL_NAMES.cfBeginner.fr, cfIntermediate: CF_LEVEL_NAMES.cfIntermediate.fr, cfAdvanced: CF_LEVEL_NAMES.cfAdvanced.fr, cfExpert: CF_LEVEL_NAMES.cfExpert.fr, marxBeginner: MARX_LEVEL_NAMES.marxBeginner.fr, marxIntermediate: MARX_LEVEL_NAMES.marxIntermediate.fr, marxAdvanced: MARX_LEVEL_NAMES.marxAdvanced.fr, econ: ECON_LEVEL_NAMES.econ.fr, econAdvanced: ECON_LEVEL_NAMES.econAdvanced.fr, calc: CALC_LEVEL_NAMES.calc.fr, calcAdvanced: CALC_LEVEL_NAMES.calcAdvanced.fr },
-  es: { school: "Bachillerato", university: "Universidad", chemistry: CHEM_LEVEL.es, chemistryAdvanced: CHEM_ADVANCED.es, linux: LX_LEVEL.es, chembio: CB_LEVEL.es, sql: SQ_LEVEL.es, rustBeginner: RS_LEVELS.rustBeginner.es, rustIntermediate: RS_LEVELS.rustIntermediate.es, rustAdvanced: RS_LEVELS.rustAdvanced.es, rustExpert: RS_LEVELS.rustExpert.es, tsBeginner: TS_LEVEL_NAMES.tsBeginner.es, tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.es, tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.es, tsExpert: TS_LEVEL_NAMES.tsExpert.es, reactBeginner: REACT_LEVEL_NAMES.reactBeginner.es, reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.es, reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.es, reactExpert: REACT_LEVEL_NAMES.reactExpert.es, gcpBeginner: GCP_LEVEL_NAMES.gcpBeginner.es, gcpIntermediate: GCP_LEVEL_NAMES.gcpIntermediate.es, gcpAdvanced: GCP_LEVEL_NAMES.gcpAdvanced.es, gcpExpert: GCP_LEVEL_NAMES.gcpExpert.es, cfBeginner: CF_LEVEL_NAMES.cfBeginner.es, cfIntermediate: CF_LEVEL_NAMES.cfIntermediate.es, cfAdvanced: CF_LEVEL_NAMES.cfAdvanced.es, cfExpert: CF_LEVEL_NAMES.cfExpert.es, marxBeginner: MARX_LEVEL_NAMES.marxBeginner.es, marxIntermediate: MARX_LEVEL_NAMES.marxIntermediate.es, marxAdvanced: MARX_LEVEL_NAMES.marxAdvanced.es, econ: ECON_LEVEL_NAMES.econ.es, econAdvanced: ECON_LEVEL_NAMES.econAdvanced.es, calc: CALC_LEVEL_NAMES.calc.es, calcAdvanced: CALC_LEVEL_NAMES.calcAdvanced.es },
-  en: {
-    school: "High school",
-    university: "University",
-    chemistry: CHEM_LEVEL.en,
-    chemistryAdvanced: CHEM_ADVANCED.en,
-    linux: LX_LEVEL.en,
-    chembio: CB_LEVEL.en,
-    sql: SQ_LEVEL.en,
-    rustBeginner: RS_LEVELS.rustBeginner.en,
-    rustIntermediate: RS_LEVELS.rustIntermediate.en,
-    rustAdvanced: RS_LEVELS.rustAdvanced.en,
-    rustExpert: RS_LEVELS.rustExpert.en,
-    tsBeginner: TS_LEVEL_NAMES.tsBeginner.en,
-    tsIntermediate: TS_LEVEL_NAMES.tsIntermediate.en,
-    tsAdvanced: TS_LEVEL_NAMES.tsAdvanced.en,
-    tsExpert: TS_LEVEL_NAMES.tsExpert.en,
-    reactBeginner: REACT_LEVEL_NAMES.reactBeginner.en,
-    reactIntermediate: REACT_LEVEL_NAMES.reactIntermediate.en,
-    reactAdvanced: REACT_LEVEL_NAMES.reactAdvanced.en,
-    reactExpert: REACT_LEVEL_NAMES.reactExpert.en,
-    gcpBeginner: GCP_LEVEL_NAMES.gcpBeginner.en,
-    gcpIntermediate: GCP_LEVEL_NAMES.gcpIntermediate.en,
-    gcpAdvanced: GCP_LEVEL_NAMES.gcpAdvanced.en,
-    gcpExpert: GCP_LEVEL_NAMES.gcpExpert.en,
-    cfBeginner: CF_LEVEL_NAMES.cfBeginner.en,
-    cfIntermediate: CF_LEVEL_NAMES.cfIntermediate.en,
-    cfAdvanced: CF_LEVEL_NAMES.cfAdvanced.en,
-    cfExpert: CF_LEVEL_NAMES.cfExpert.en,
-    marxBeginner: MARX_LEVEL_NAMES.marxBeginner.en,
-    marxIntermediate: MARX_LEVEL_NAMES.marxIntermediate.en,
-    marxAdvanced: MARX_LEVEL_NAMES.marxAdvanced.en,
-    econ: ECON_LEVEL_NAMES.econ.en,
-    econAdvanced: ECON_LEVEL_NAMES.econAdvanced.en, calc: CALC_LEVEL_NAMES.calc.en, calcAdvanced: CALC_LEVEL_NAMES.calcAdvanced.en,
-  },
+/** Every test has the same four levels (shared/quiz/standard.ts). */
+const STEP_NAMES: Record<Lang, readonly [string, string, string, string]> = {
+  fr: ["Débutant", "Intermédiaire", "Avancé", "Expert"],
+  es: ["Principiante", "Intermedio", "Avanzado", "Experto"],
+  en: ["Beginner", "Intermediate", "Advanced", "Expert"],
 };
+const LEVEL_NAMES: Record<Lang, Record<Level, string>> = Object.fromEntries(
+  (Object.keys(STEP_NAMES) as Lang[]).map((lang) => [lang, Object.fromEntries(LEVELS.map((level) => [level, STEP_NAMES[lang][levelStep(level)]]))]),
+) as Record<Lang, Record<Level, string>>;
 
 const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
   fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr, ...SQ_GROUPS.fr, ...RS_GROUPS.fr, ...TS_GROUPS.fr, ...REACT_GROUPS.fr, ...GCP_GROUPS.fr, ...CF_GROUPS.fr, ...MARX_GROUPS.fr, ...ECON_GROUPS.fr, ...CALC_GROUPS.fr },
@@ -1732,6 +1703,14 @@ export function qt(key: QuizKey, values: Record<string, string | number> = {}): 
 }
 
 export const levelName = (level: Level): string => LEVEL_NAMES[currentLang()][level];
+
+/** What each of the four levels asks, the same in every test. */
+const STEP_HINTS: Record<Lang, readonly [string, string, string, string]> = {
+  fr: ["Les notions de base, un pas à la fois.", "Le cœur du sujet, comme en cours.", "Des cas moins directs et des raisonnements plus longs.", "Les points fins, les pièges et les débats."],
+  es: ["Las nociones básicas, paso a paso.", "El núcleo del tema, como en clase.", "Casos menos directos y razonamientos más largos.", "Los puntos finos, las trampas y los debates."],
+  en: ["The basics, one step at a time.", "The core of the subject, as taught.", "Less direct cases and longer reasoning.", "The fine points, the traps and the debates."],
+};
+export const levelHint = (level: Level): string => STEP_HINTS[currentLang()][levelStep(level)];
 export const topicName = (topic: Topic): string => TOPIC_NAMES[currentLang()][topic];
 export const groupName = (group: TopicGroup): string => GROUP_NAMES[currentLang()][group];
 export const promptText = (key: PromptKey): string => PROMPTS[currentLang()][key];
@@ -1739,6 +1718,9 @@ export const explanationText = (key: ExplanationKey): string => EXPLANATIONS[cur
 export function skillName(skill: string): string {
   const known = SKILL_NAMES[currentLang()][skill];
   if (known) return known;
+  // The written lists of the four levels (shared/quiz/levels): "linuxGit.expert" → "Git · Expert".
+  const level = /^(\w+)\.(basics|expert)$/.exec(skill);
+  if (level) return `${topicName(level[1] as Topic)} · ${STEP_NAMES[currentLang()][level[2] === "basics" ? 0 : 3]}`;
   // A unit of the question bank: "gases.concepts1A" → "Concepts 1A – The perfect gas", "gases.advanced1A" → "Advanced 1A – …".
   const parts = bankSkillParts(skill);
   const found = parts ? currentBank().units.find((u) => u.id === parts.unit) : undefined;

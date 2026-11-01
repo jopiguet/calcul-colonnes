@@ -18,10 +18,46 @@ way in the browser and on the server.
 | `econ.ts`, `econ-output.ts`, `econ-model.ts` | Public economics: the kinds by topic and level, the generated questions drawn as charts, and their models |
 | `calc.ts`, `calc-output.ts`, `calc-model.ts` | Calculus: the kinds by topic and level, the generated questions read on graphs, and their models |
 | `balancing.ts` | Chemistry basics: formulas, an exact balancing solver, reactions by family, the generators of balancing equations |
+| `standard.ts`, `levels/*.ts` | The four levels of every test: what each level holds from version 5, and the written questions added for the new levels (Linux and SQL *Expert*; economics, calculus, Capital and chemical equations *Débutant* and *Expert*). See [Levels](#levels) |
 | `bank.ts`, `bank-file.ts` | Written questions from a textbook: see [Question bank](question-bank.md) |
 | `typed.ts` | Typed answers: reading a number (`readNumber`), the tolerance (`accepts`), which questions can be typed (`typeable`), matching an answer to an option (`matchTyped`) |
 | `index.ts` | Registry of kinds of question, `generateQuiz`, `gradeQuiz`, `QUIZ_VERSION` |
 | `progress.ts` | Status of a kind of question from the latest answers |
+
+## Levels
+
+From 6.33.0 (`QUIZ_VERSION` 5) every test has the same four levels,
+*Débutant*, *Intermédiaire*, *Avancé* and *Expert*, with the same names and
+hints in the three languages (`STEP_NAMES`, `STEP_HINTS` in
+`src/quiz-i18n.ts`). `SUBJECT_LEVELS` in `types.ts` lists each subject's
+levels in that order, and `levelStep(level)` gives 0 to 3.
+
+| Subject | Débutant | Intermédiaire | Avancé | Expert |
+|---|---|---|---|---|
+| maths | `mathBeginner` | `school` | `university` | `mathExpert` |
+| chemistry | `chemBeginner` | `chemistry` | `chemistryAdvanced` | `chemExpert` |
+| linux | `linuxBeginner` | `linux` | `linuxAdvanced` | `linuxExpert` |
+| chembio | `chembioBeginner` | `chembio` | `chembioAdvanced` | `chembioExpert` |
+| sql | `sqlBeginner` | `sql` | `sqlAdvanced` | `sqlExpert` |
+| econ | `econBeginner` | `econ` | `econAdvanced` | `econExpert` |
+| calc | `calcBeginner` | `calc` | `calcAdvanced` | `calcExpert` |
+| marx | `marxBeginner` | `marxIntermediate` | `marxAdvanced` | `marxExpert` |
+| rust, ts, react, gcp, cf | `…Beginner` | `…Intermediate` | `…Advanced` | `…Expert` |
+
+The old ids stay as *Intermédiaire* and *Avancé*, so saved results and
+progress keep their level (migration `032_four_levels`). What each level
+holds from version 5 is in `standard.ts`:
+
+- **Mathematics and physical chemistry:** the generated kinds re-sorted by difficulty; a kind may sit at two neighbouring levels.
+- **Linux and SQL:** each written question gets a level letter, B, I, A or E, in list order (`LINUX_LETTERS`, `SQL_LETTERS`), and the generated kinds start where they fit (`chmodToOctal` at B, `umask`, `cron` and `paramExpansion` at A and E; `joinRows` and `groupCount` at A and E). Topics thin at Expert got written questions (`levels/linux.ts`, `levels/sql.ts`).
+- **Economics, calculus, Capital, chemical equations:** the generated kinds keep their two levels; `levels/*.ts` adds written questions for the new ones, kinds `basics` (*Débutant*) and `expert` (*Expert*), named *«topic» · Débutant* and *«topic» · Expert*.
+
+`index.ts` merges these tables with the topic files, which are unchanged:
+`LEVEL_GATE` records the kinds a level gains (`from: 5`) and loses
+(`until: 5`), and `atLevel()` applies it in `skillsFor` and `generateQuiz`.
+A test saved at version 4 or before is rebuilt from its seed exactly as it
+was. The bank's tier follows the step: *Débutant* and *Intermédiaire* draw
+from the core units, *Avancé* and *Expert* from the advanced ones.
 
 ## The 110 kinds of question
 
@@ -745,9 +781,10 @@ Thirty-nine mistake types, `cfRulePrecedence` to `cfNeuronUnit`.
 ## Capital
 
 The test on Marx's *Capital* (6.32.0), *⚒️ Le Capital* in the home page's
-*Économie* group after *Économie publique*, has three levels,
-`marxBeginner`, `marxIntermediate` and `marxAdvanced` (*Débutant*,
-*Intermédiaire*, *Avancé*), and twelve topics that follow the twelve parts
+*Économie* group after *Économie publique*, has four levels,
+`marxBeginner`, `marxIntermediate`, `marxAdvanced` and, from 6.33.0,
+`marxExpert` (*Débutant* to *Expert*, three written questions per topic in
+`levels/marx.ts`), and twelve topics that follow the twelve parts
 of the in-app course (`src/courses/marx`), in three groups. *Livre I : valeur
 et plus-value*: `marxCommodity`, `marxMoney`, `marxSurplus`,
 `marxWorkingDay`. *Livre I : production et accumulation*: `marxRelative`,
@@ -813,8 +850,10 @@ Fifty-two mistake types, `marxIndividualTime` to `marxIncomePlusInterest`.
 ## Economics
 
 The public economics test (6.26.0), *🏛️ Économie publique* in the home
-page's *Économie* group, has two levels, `econ` (*Fondamentaux*) and
-`econAdvanced` (*Avancé*), and nine topics in three groups. *Théorie du
+page's *Économie* group, has four levels: `econ` (*Fondamentaux* until
+6.33.0, now *Intermédiaire*) and `econAdvanced` (*Avancé*), with
+`econBeginner` and `econExpert` from 6.33.0 (three written questions each per
+topic, `levels/econ.ts`), and nine topics in three groups. *Théorie du
 bien-être et choix publics*: `econWelfare`, `econMarketFailure`,
 `econPublicChoice`. *Fiscalité*: `econIncidence`, `econOptimalTax`,
 `econTaxDesign`. *État-providence et travail*: `econSocialInsurance`,
@@ -859,8 +898,10 @@ Forty-two mistake types, `econStatutoryIncidence` to `econRiskPremiumOnly`.
 ## Calculus
 
 The calculus test (6.28.0), *∫ Analyse* in the home page's *Mathématiques*
-group, next to the maths QCM (which it does not replace), has two levels,
-`calc` (*Fondamentaux*) and `calcAdvanced` (*Avancé*), and thirteen topics
+group, next to the maths QCM (which it does not replace), has four levels:
+`calc` (*Fondamentaux* until 6.33.0, now *Intermédiaire*) and `calcAdvanced`
+(*Avancé*), with `calcBeginner` and `calcExpert` from 6.33.0 (three written
+questions each per topic, `levels/calc.ts`), and thirteen topics
 in three groups, following the chapters of Stewart's *Calculus*. *Une
 variable*: `calcLimits`, `calcDerivatives`, `calcApplications`,
 `calcIntegrals`, `calcTranscendental`, `calcTechniques`. *Équations
@@ -1402,7 +1443,7 @@ blank.
 A new topic needs **no version bump**. A saved test draws only from the topics
 it was made with, so a topic that did not exist cannot change it.
 
-1. **Write its file** in `shared/quiz/`, with its `school` and `university` objects. A topic may exist at one level only: leave the other object empty.
+1. **Write its file** in `shared/quiz/`, with an object per level of its subject (`SUBJECT_LEVELS`). A topic may be missing at a level: leave that object empty.
 2. **Register it:**
    - add it to `Topic` and at the end of `TOPICS` in `types.ts`, and to one group of `TOPIC_GROUPS`;
    - add it to `GENERATORS` in `index.ts`.
@@ -1453,6 +1494,7 @@ after the change. The hashes must match.
 | 2 | ±∞ compared correctly when removing duplicate options. In version 1 every number counted as equal to ±∞, so questions with an infinite answer were always discarded, and `limits.growth` never appeared. |
 | 3 | No option that is not a number. `gases.rmsSpeed` offered √(3R(T − 273.15)/M) as the °C-for-K slip, which below 0 °C has no square root and showed as −∞. From version 3 that option is left out when T ≤ 273.15 K; earlier versions keep it, so their tests are unchanged. `check:quiz` now fails on any NaN option. |
 | 4 | Linux: six more `sed` and seven more `awk` questions (`since: 4`), and the kinds `linuxText.sedSubstitute` and `linuxText.awkFields` (`from: 4`). The new topics `linuxScripting`, `linuxGit` and `linuxVim` need no version: no older test names them. |
+| 5 | Four levels in every test (see [Levels](#levels)): the kinds re-sorted by level through `LEVEL_GATE`, the Linux and SQL written questions by letter, the written lists of `levels/*.ts` (`since: 5`). Every test of versions 1 to 4 rebuilds unchanged. |
 
 ## Verification
 

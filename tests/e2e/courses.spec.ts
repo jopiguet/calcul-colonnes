@@ -74,3 +74,58 @@ test("a wrong answer opens the part of the course that teaches it, on a phone", 
   await page.click("text=← Retour au test");
   await expect(page.locator(".quiz-result h1")).toBeVisible();
 });
+
+test("every test has the same four levels and a course, which opens in the player's language", async ({ page }) => {
+  test.setTimeout(120_000);
+  await newPlayer(page, "Student");
+  const courses: [string, string, number][] = [
+    ["quiz", "Mathématiques — l'essentiel du test", 11],
+    ["chemistry", "Chimie physique — l'essentiel du test", 11],
+    ["linux", "Linux — l'essentiel du test", 12],
+    ["chembio", "Équations chimiques — l'essentiel du test", 6],
+    ["sql", "SQL — l'essentiel du test", 10],
+    ["rust", "Rust — l'essentiel du test", 10],
+    ["ts", "TypeScript — l'essentiel du test", 10],
+    ["react", "React — l'essentiel du test", 10],
+    ["gcp", "Google Cloud — l'essentiel du test", 10],
+    ["econ", "Économie publique — l'essentiel du test", 11],
+    ["calc", "Analyse — l'essentiel du test", 12],
+    ["cf", "Cloudflare — un cours complet", 14],
+    ["marx", "", 15],
+  ];
+  for (const [activity, title, sections] of courses) {
+    await openActivity(page, activity);
+    await expect(page.locator(".levels-four .segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé", "Expert"]);
+    await expect(page.locator(".mode-hint").first()).toBeVisible();
+    await page.click("text=📖 Lire le cours");
+    if (title) await expect(page.locator(".course-title")).toHaveText(title);
+    await expect(page.locator(".course-toc a")).toHaveCount(sections);
+    // Nothing left as raw Markdown outside the code.
+    const prose = await page.locator(".course-body").evaluate((n) => {
+      const copy = n.cloneNode(true) as HTMLElement;
+      copy.querySelectorAll("code, pre, .course-code, .katex").forEach((c) => c.remove());
+      return copy.textContent ?? "";
+    });
+    expect(prose, activity).not.toMatch(/\*\*|\]\(http|```|\$\$/);
+  }
+});
+
+test("a new course: a wrong SQL answer points to its part, and the course reads in English too", async ({ page }) => {
+  await newPlayer(page, "Querier");
+  await openActivity(page, "sql");
+  await page.click(".quiz-setup .segment >> text=Débutant");
+  await chooseTopics(page, ["Jointures et sous-requêtes"]);
+  await page.locator(".count button").first().click();
+  const { seed, first } = seedWhere("sqlBeginner", 5, ["sqlJoins"], () => true);
+  await fixSeed(page, seed);
+  await page.click("text=Commencer le test");
+  const wrong = first.correct === 0 ? 1 : 0;
+  await takeQuiz(page, (i) => (i === 0 ? wrong : first.correct));
+  const link = page.locator(".review-item").first().locator(".course-link");
+  await expect(link).toContainText("Partie 3 — Jointures et sous-requêtes");
+  await link.click();
+  await expect(page.locator("#course-s3")).toBeInViewport();
+  await expect(page.locator(".course-code").first()).toBeVisible();
+  await page.selectOption(".language", "en");
+  await expect(page.locator(".course-title")).toHaveText("SQL — the essentials of the test");
+});

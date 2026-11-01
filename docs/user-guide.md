@@ -253,14 +253,32 @@ Tab **📐 QCM** (**Test** in Spanish).
 
 | Setting | Values |
 |---|---|
-| Level | *Lycée / Bachillerato*, or *Université / Universidad* |
-| Topics | By group. **Analyse:** reading graphs, function study, sequences, derivatives, integrals, limits, exponentials and logarithms, trigonometry, differential equations, and at university series and functions of two variables. **Algèbre:** complex numbers, matrices and systems. **Géométrie:** vectors, planes and distances in space. **Probabilités:** the binomial law, trees and Bayes' formula, counting, expectation, and at university the Poisson, exponential and normal laws. Only the topics of the chosen level are shown; at least one |
+| Level | *Débutant*, *Intermédiaire*, *Avancé* or *Expert* (see [the four levels](#the-four-levels)) |
+| Topics | By group. **Analyse:** reading graphs, function study, sequences, derivatives, integrals, limits, exponentials and logarithms, trigonometry, differential equations, and from *Avancé* series and functions of two variables. **Algèbre:** complex numbers, matrices and systems. **Géométrie:** vectors, planes and distances in space. **Probabilités:** the binomial law, trees and Bayes' formula, counting, expectation, and from *Avancé* the Poisson, exponential and normal laws. Only the topics of the chosen level are shown; at least one |
 | Number of questions | 5, 10, 15 or 20 |
 | Réponses | *4 choix*, or *Au clavier*: questions whose answer is a number are answered by typing it (see [typed answers](#typed-answers)) |
 | 🔁 Revoir mes erreurs | On by default; see [review of mistakes](#progress-and-review-of-mistakes) |
 
 The topics in a test are taken in turn, so a test covers all the chosen ones
-evenly. The [question generators](question-generators.md#the-110-kinds-of-question)
+evenly. **📖 Lire le cours** opens the test's [course](#courses).
+
+### The four levels
+
+Every test has the same four levels, with the same names and the same hint
+under them:
+
+| Level | Hint |
+|---|---|
+| *Débutant* (*Principiante*, *Beginner*) | The basics, one step at a time. |
+| *Intermédiaire* (*Intermedio*, *Intermediate*) | The core of the subject, as taught. |
+| *Avancé* (*Avanzado*, *Advanced*) | Less direct cases and longer reasoning. |
+| *Expert* (*Experto*, *Expert*) | The fine points, the traps and the debates. |
+
+The tests that had two levels kept them as *Intermédiaire* and *Avancé*
+(the maths *Lycée* and *Université*, chemistry and economics *Fondamental* or
+*Fondamentaux* and *Avancé*); Linux, SQL and chemical equations, which had
+one, had it split in four by difficulty. Tests taken before 6.33.0 keep their
+questions and their marks, under the level that took the old one's place. The [question generators](question-generators.md#the-110-kinds-of-question)
 page lists what each topic and level contains.
 
 ### Taking a test
@@ -323,12 +341,14 @@ server cannot be reached, the page says *Résultat non enregistré*.
 Activity **⚗️ Chimie physique** (*Química física*, *Physical chemistry*), in
 the *Sciences* group: multiple-choice tests on *Atkins' Physical Chemistry*,
 12th edition. Settings, keys, typed answers and results work as for the
-[QCM](#multiple-choice-tests), with two levels:
+[QCM](#multiple-choice-tests), with [the four levels](#the-four-levels):
 
 | Niveau | Questions |
 |---|---|
-| *Fondamental* | Calculations and concept questions of the course |
-| *Avancé* | Reasoning and derivations, a step beyond the course: a free expansion of a van der Waals gas, why $pV^{\gamma}$ needs a reversible change, what a negative expansion coefficient does to entropy. No calculations. |
+| *Débutant* | One formula with given values, and the course's concept questions |
+| *Intermédiaire* | Calculations and concept questions of the course |
+| *Avancé* | The calculations of the later Focuses, and reasoning a step beyond the course: a free expansion of a van der Waals gas, why $pV^{\gamma}$ needs a reversible change, what a negative expansion coefficient does to entropy |
+| *Expert* | Calculations in two steps or more (Debye–Hückel, Marcus, partition functions, relaxation), and the same reasoning questions |
 
 | Topic | Atkins | Content |
 |---|---|---|
@@ -367,8 +387,10 @@ only.
 
 Activity **🐧 Linux**, in the *Informatique* group (*Informática*,
 *Computing*): multiple-choice tests on the command line. Settings, keys,
-typed answers and results work as for the [QCM](#multiple-choice-tests);
-there is one level.
+typed answers and results work as for the [QCM](#multiple-choice-tests),
+with [the four levels](#the-four-levels): each written question has its
+level, and the generated ones start where they fit (octal modes at
+*Débutant*, `umask`, `cron` and `${f%.*}` at *Avancé*).
 
 | Topic | Content |
 |---|---|
@@ -400,8 +422,9 @@ bash's `${f%.*}` on a file name. An octal mode can be typed with
 
 Activity **🗄️ SQL**, in the *Informatique* group, next to Linux:
 multiple-choice tests on SQL and databases. Settings, keys, typed answers
-and results work as for the [QCM](#multiple-choice-tests); there is one
-level.
+and results work as for the [QCM](#multiple-choice-tests), with
+[the four levels](#the-four-levels): *Débutant* reads and filters rows,
+*Expert* asks where the engines differ and what isolation allows.
 
 | Group | Topic | Content |
 |---|---|---|
@@ -534,7 +557,7 @@ independent programs.
 
 Activity **∫ Analyse** (*∫ Cálculo*, *∫ Calculus*), in the *Mathématiques*
 group next to the QCM, which it does not replace: multiple-choice tests on
-calculus at two levels, *Fondamentaux* and *Avancé*. Thirteen topics in
+calculus at [the four levels](#the-four-levels). Thirteen topics in
 three groups, following the chapters of Stewart's *Calculus*:
 
 | Group | Topics |
@@ -554,8 +577,8 @@ say so.
 ## Public economics
 
 Activity **🏛️ Économie publique**, in the *Économie* group (*Economía*,
-*Economics*): multiple-choice tests on public and labour economics at two
-levels, *Fondamentaux* and *Avancé*. Nine topics in three groups:
+*Economics*): multiple-choice tests on public and labour economics at
+[the four levels](#the-four-levels). Nine topics in three groups:
 
 | Group | Topics |
 |---|---|
@@ -575,8 +598,8 @@ say so.
 
 Activity **⚒️ Le Capital** (*⚒️ El capital*, *⚒️ Capital*), in the
 *Économie* group after *Économie publique*: multiple-choice tests on the
-three volumes of Marx's *Capital* at three levels, *Débutant*,
-*Intermédiaire* and *Avancé*, with a course to read in the app. Twelve
+three volumes of Marx's *Capital* at [the four levels](#the-four-levels),
+with a course to read in the app. Twelve
 topics in three groups, one per part of the course:
 
 | Group | Topics |
@@ -586,7 +609,8 @@ topics in three groups, one per part of the course:
 | Livres II et III | circuits and turnover; reproduction schemes; profit and prices of production; merchants, interest and rent |
 
 *Débutant* asks what the concepts are, *Intermédiaire* how the arguments
-run, *Avancé* where readers disagree. Some questions are computed: values,
+run, *Avancé* where readers disagree, *Expert* the fine points of Marx's
+own reasoning. Some questions are computed: values,
 rates of surplus value and profit, the working day, cheaper wage goods,
 hourly wages, accumulation, turnover, the reproduction schemes, prices of
 production, the falling rate, differential rent and capitalised income.
@@ -594,9 +618,10 @@ Every answer has been computed twice, by two independent programs.
 
 ## Courses
 
-Two tests come with a course to read in the app: *🔶 Cloudflare* and
-*⚒️ Le Capital*. **📖 Lire le cours** in the test's settings opens it in the
-player's language: a contents list, the parts with their tables, code and
+Every test comes with a course to read in the app, short for most
+(*Mathématiques — l'essentiel du test*, a part per group of topics) and
+long for *🔶 Cloudflare* and *⚒️ Le Capital*. **📖 Lire le cours** in the
+test's settings opens it in the player's language: a contents list, the parts with their tables, code and
 formulas, exercises with answers, and the sources. **← Retour au test**
 goes back to the settings.
 
@@ -608,7 +633,10 @@ explains it (*📖 Dans le cours : Partie 4 — Cache et performance*).
 Activity **⚗️ Équations chimiques**, in the *Chimie et biologie* group
 (*Química y biología*, *Chemistry and biology*): tests on balancing
 equations. Settings, keys, typed answers and results work as for the
-[QCM](#multiple-choice-tests); there is one level and one topic.
+[QCM](#multiple-choice-tests), with [the four levels](#the-four-levels)
+and one topic: *Débutant* asks what a coefficient and a subscript mean,
+*Intermédiaire* and *Avancé* balance longer equations, *Expert* asks for
+oxidation numbers, half-equations and the limiting reactant.
 
 Each question shows an unbalanced equation, such as
 C₃H₈ + O₂ → CO₂ + H₂O, and four equations to choose from: the one

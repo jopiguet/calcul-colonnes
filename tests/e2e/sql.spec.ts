@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { generateQuiz, localized, SQL_TOPICS, type Question } from "../../shared/quiz/index.ts";
+import { generateQuiz, localized, SQL_TOPICS, type Level, type Question } from "../../shared/quiz/index.ts";
 import { chooseTopics, goHome, newPlayer, openActivity, profileOf, rebuild, takeQuiz } from "./helpers";
 import { SQ_MISTAKES } from "../../src/quiz-i18n-sql.ts";
 
@@ -18,14 +18,14 @@ async function fixSeed(page: Page, seed: number): Promise<void> {
 }
 
 /** A seed whose test starts with a question that `pick` accepts. */
-function seedWhere(count: number, topics: string[], pick: (q: Question) => boolean): { seed: number; first: Question } {
+function seedWhere(count: number, topics: string[], pick: (q: Question) => boolean, level: Level = "sql"): { seed: number; first: Question } {
   for (let seed = 1; ; seed++) {
-    const quiz = generateQuiz({ seed, level: "sql", topics: topics as never, count });
+    const quiz = generateQuiz({ seed, level, topics: topics as never, count });
     if (pick(quiz[0]!)) return { seed, first: quiz[0]! };
   }
 }
 
-test("SQL: its card under Computing, its topics in two groups, no level", async ({ page }) => {
+test("SQL: its card under Computing, its topics in two groups, four levels", async ({ page }) => {
   await newPlayer(page, "Codd");
   await goHome(page);
   const group = page.locator(".activity-group", { has: page.locator(".activity-group-title", { hasText: "Informatique" }) });
@@ -33,7 +33,7 @@ test("SQL: its card under Computing, its topics in two groups, no level", async 
   await openActivity(page, "sql");
   await expect(page.locator(".activity-bar-title")).toHaveText("🗄️ SQL");
   await expect(page.locator("h1")).toHaveText("QCM : SQL et bases de données");
-  await expect(page.locator(".quiz-setup legend", { hasText: "Niveau" })).toHaveCount(0);
+  await expect(page.locator(".levels-four .segment")).toHaveText(["Débutant", "Intermédiaire", "Avancé", "Expert"]);
   await expect(page.locator(".topic-group-name")).toHaveText(["Le langage SQL", "PostgreSQL, SQLite, MySQL"]);
   await expect(page.locator(".topics .topic")).toHaveCount(SQL_TOPICS.length);
 });
@@ -42,10 +42,11 @@ test("what a query returns: the tables fit a phone, the query and results as cod
   await page.setViewportSize({ width: 360, height: 760 });
   const name = await newPlayer(page, "Null");
   await openActivity(page, "sql");
+  await page.click(".quiz-setup .segment >> text=Avancé");
   await chooseTopics(page, ["Jointures et sous-requêtes"]);
   await page.locator(".count button").first().click(); // 5 questions
   // A join: both tables, stacked; the widest prompt of the generated kinds.
-  const { seed, first } = seedWhere(5, ["sqlJoins"], (q) => q.skill === "sqlJoins.joinRows");
+  const { seed, first } = seedWhere(5, ["sqlJoins"], (q) => q.skill === "sqlJoins.joinRows", "sqlAdvanced");
   await fixSeed(page, seed);
   await page.click("text=Commencer le test");
   if (first.verify.kind !== "sql") throw new Error("not a generated query");
@@ -62,7 +63,7 @@ test("what a query returns: the tables fit a phone, the query and results as cod
   // A wrong result first, the right answers after.
   const slip = first.options.findIndex((o, i) => i !== first.correct && o.mistake !== undefined);
   const { body, server } = await takeQuiz(page, (i) => (i === 0 ? slip : 0));
-  expect(body.level).toBe("sql");
+  expect(body.level).toBe("sqlAdvanced");
   expect(body.topics).toEqual(["sqlJoins"]);
   expect(server.correct).toBe(rebuild(body).correct);
   await expect(page.locator("#quiz-status")).toHaveText("✓ Résultat enregistré");

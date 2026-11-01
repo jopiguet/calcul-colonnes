@@ -4,33 +4,24 @@ import "katex/dist/katex.min.css";
 import {
   ANSWER_MODES,
   CHEMISTRY_TOPICS,
-  MATH_LEVELS,
   richParts,
   CHEMBIO_TOPICS,
-  CHEMISTRY_LEVELS,
   LEVELS,
   usesBank,
   subjectOf,
   LINUX_TOPICS,
   SQL_TOPICS,
-  RUST_LEVELS,
   RUST_TOPICS,
-  TS_LEVELS,
   TS_TOPICS,
-  REACT_LEVELS,
   REACT_TOPICS,
-  GCP_LEVELS,
   GCP_TOPICS,
-  CF_LEVELS,
   CF_TOPICS,
-  MARX_LEVELS,
   MARX_TOPICS,
-  ECON_LEVELS,
   ECON_TOPICS,
-  CALC_LEVELS,
   CALC_TOPICS,
   currentBank,
   type Subject,
+  SUBJECT_LEVELS,
   OPTION_COUNT,
   QUIZ_COUNTS,
   QUIZ_VERSION,
@@ -59,7 +50,7 @@ import {
 import { button, el } from "./dom";
 import { drawGraph } from "./graph";
 import { currentLang } from "./i18n";
-import { explanationText, groupName, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
+import { explanationText, groupName, levelHint, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
 import { saveSettings, type Settings } from "./settings";
 import { quizBank, store, type PastTest, type User } from "./store";
 
@@ -172,8 +163,24 @@ const promptView = (q: Question): HTMLElement =>
   q.prompt.text ? rich(q.prompt.text, "quiz-prompt", "p") : richString(promptText(q.prompt.key), "quiz-prompt", "p");
 
 /** The level of this subject's tests. */
-const levelOf = (ctx: QuizContext): Level =>
-  ctx.subject === "chemistry" ? ctx.settings.chemLevel : ctx.subject === "linux" ? "linux" : ctx.subject === "chembio" ? "chembio" : ctx.subject === "sql" ? "sql" : ctx.subject === "rust" ? ctx.settings.rustLevel : ctx.subject === "ts" ? ctx.settings.tsLevel : ctx.subject === "react" ? ctx.settings.reactLevel : ctx.subject === "gcp" ? ctx.settings.gcpLevel : ctx.subject === "cf" ? ctx.settings.cfLevel : ctx.subject === "marx" ? ctx.settings.marxLevel : ctx.subject === "econ" ? ctx.settings.econLevel : ctx.subject === "calc" ? ctx.settings.calcLevel : ctx.settings.quizLevel;
+/** The setting that keeps each test's level. */
+const LEVEL_SETTING: Record<Subject, "quizLevel" | "chemLevel" | "linuxLevel" | "chembioLevel" | "sqlLevel" | "rustLevel" | "tsLevel" | "reactLevel" | "gcpLevel" | "cfLevel" | "marxLevel" | "econLevel" | "calcLevel"> = {
+  maths: "quizLevel",
+  chemistry: "chemLevel",
+  linux: "linuxLevel",
+  chembio: "chembioLevel",
+  sql: "sqlLevel",
+  rust: "rustLevel",
+  ts: "tsLevel",
+  react: "reactLevel",
+  gcp: "gcpLevel",
+  cf: "cfLevel",
+  marx: "marxLevel",
+  econ: "econLevel",
+  calc: "calcLevel",
+};
+
+const levelOf = (ctx: QuizContext): Level => ctx.settings[LEVEL_SETTING[ctx.subject]];
 
 /** Spanish writes sen and arcsen. */
 const macros = (): Record<string, string> =>
@@ -321,20 +328,17 @@ function setupView(ctx: QuizContext): HTMLElement {
     wrap.append(read);
   }
 
-  // Mathematics: lycée or university. Physical chemistry: core or advanced. Rust: four levels.
-  const level = el("fieldset", rust || ts || react || gcp || cf ? "segmented levels-four" : "segmented");
+  // Every test: Débutant, Intermédiaire, Avancé, Expert.
+  const level = el("fieldset", "segmented levels-four");
   level.append(el("legend", "field-label", qt("level")));
-  for (const value of chemistry ? CHEMISTRY_LEVELS : rust ? RUST_LEVELS : ts ? TS_LEVELS : react ? REACT_LEVELS : gcp ? GCP_LEVELS : cf ? CF_LEVELS : marx ? MARX_LEVELS : econ ? ECON_LEVELS : calc ? CALC_LEVELS : MATH_LEVELS) {
+  for (const value of SUBJECT_LEVELS[ctx.subject]) {
     const on = value === testLevel;
-    const label = chemistry ? qt(value === "chemistry" ? "chemCore" : "chemAdvanced") : levelName(value);
-    const option = button(on ? "segment on" : "segment", label, () => save(chemistry ? { chemLevel: value } : rust ? { rustLevel: value } : ts ? { tsLevel: value } : react ? { reactLevel: value } : gcp ? { gcpLevel: value } : cf ? { cfLevel: value } : marx ? { marxLevel: value } : econ ? { econLevel: value } : calc ? { calcLevel: value } : { quizLevel: value }));
+    const option = button(on ? "segment on" : "segment", levelName(value), () => save({ [LEVEL_SETTING[ctx.subject]]: value }));
     option.setAttribute("aria-pressed", String(on));
     option.dataset.focus = `level-${value}`;
     level.append(option);
   }
-  if (chemistry) level.append(el("p", "hint mode-hint", qt(testLevel === "chemistry" ? "chemCoreHint" : "chemAdvancedHint")));
-  if (econ) level.append(el("p", "hint mode-hint", qt(testLevel === "econ" ? "econCoreHint" : "econAdvancedHint")));
-  if (calc) level.append(el("p", "hint mode-hint", qt(testLevel === "calc" ? "calcCoreHint" : "calcAdvancedHint")));
+  level.append(el("p", "hint mode-hint", levelHint(testLevel)));
 
   // Topics by group, those of the chosen level only (some exist at one level).
   const available = topicsFor(testLevel);
@@ -430,10 +434,9 @@ function setupView(ctx: QuizContext): HTMLElement {
     wrap.append(level, el("p", "hint", qt("noAdvanced")), button("ghost small", qt("progress"), ctx.showProgress));
     return wrap;
   }
-  // Linux, chemistry basics and SQL have one level: no choice to show.
   // What to test on one side, how on the other: side by side on a large screen, Start always in reach on a phone.
   const what = el("div", "quiz-setup-what");
-  what.append(...(linux || chembio || sql ? [] : [level]), topics);
+  what.append(level, topics);
   const how = el("div", "quiz-setup-how");
   go.classList.add("quiz-start");
   how.append(count, answerMode, review, go, button("ghost small", qt("progress"), ctx.showProgress));

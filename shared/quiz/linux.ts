@@ -12,7 +12,7 @@
  * so a saved test, rebuilt at its own version, draws from the list it had.
  */
 import type { Rng } from "./rng";
-import type { Draft, Generator, Localized, MistakeKey, Option } from "./types";
+import { LEVELS_VERSION, type Draft, type Generator, type Localized, type MistakeKey, type Option } from "./types";
 import type { Install, L3, LinuxQuestion } from "./linux/types";
 import { files } from "./linux/files";
 import { text } from "./linux/text";
@@ -58,6 +58,21 @@ export const written =
   (list: readonly LinuxQuestion[]): Generator =>
   (rng: Rng, version = Number.POSITIVE_INFINITY) =>
     linuxDraft(rng.pick(list.filter((q) => (q.since ?? 2) <= version)));
+
+/**
+ * A list shared out over the four levels: `letters` gives each question's
+ * level, in order ("B" Débutant, "I" Intermédiaire, "A" Avancé, "E" Expert).
+ * Before LEVELS_VERSION the kind draws from the whole list, as it did, so a
+ * saved test is rebuilt unchanged.
+ */
+export function writtenAt(list: readonly LinuxQuestion[], letters: string, letter: "B" | "I" | "A" | "E"): Generator | null {
+  if (letters.length !== list.length) throw new Error(`${list[0]?.id ?? "list"}: ${letters.length} levels for ${list.length} questions`);
+  const mine = list.filter((_, i) => letters[i] === letter);
+  if (mine.length === 0) return null;
+  const legacy = written(list);
+  return (rng: Rng, version = Number.POSITIVE_INFINITY) =>
+    version < LEVELS_VERSION ? legacy(rng, version) : linuxDraft(rng.pick(mine.filter((q) => (q.since ?? 2) <= version)));
+}
 
 // ------------------------------------------------------------- permissions
 

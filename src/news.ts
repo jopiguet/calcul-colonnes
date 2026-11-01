@@ -23,6 +23,21 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.33.0",
+    fr: [
+      "Quatre niveaux partout : chaque QCM a maintenant Débutant, Intermédiaire, Avancé et Expert. Tes anciens tests et tes progrès restent à leur place.",
+      "📖 Lire le cours : chaque QCM a maintenant son cours, court et dans ta langue, et une mauvaise réponse mène à la partie qui l'explique.",
+    ],
+    es: [
+      "Cuatro niveles en todos: cada test tiene ahora Principiante, Intermedio, Avanzado y Experto. Tus tests anteriores y tu progreso siguen en su sitio.",
+      "📖 Leer el curso: cada test tiene ahora su curso, breve y en tu idioma, y una respuesta incorrecta lleva a la parte que la explica.",
+    ],
+    en: [
+      "Four levels everywhere: every test now has Beginner, Intermediate, Advanced and Expert. Your past tests and progress stay where they were.",
+      "📖 Read the course: every test now has its course, short and in your language, and a wrong answer leads to the part that explains it.",
+    ],
+  },
+  {
     version: "6.32.0",
     fr: [
       "⚒️ Le Capital : un nouveau QCM sur les trois livres du Capital de Marx, en trois niveaux, avec des questions calculées (plus-value, profit, schémas de reproduction, prix de production, rente).",

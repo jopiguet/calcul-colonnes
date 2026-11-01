@@ -21,6 +21,7 @@ import {
 import { parseBankFile, toBank } from "../shared/quiz/bank-file.ts";
 import { gcpAnswer, validNewSubnet } from "./check-gcp.ts";
 import { cfAnswer } from "./check-cf.ts";
+import { LEVEL_QUESTIONS } from "../shared/quiz/levels/index.ts";
 import { marxAnswer } from "./check-marx.ts";
 import { econAnswer } from "./check-econ.ts";
 import { calcAnswer } from "./check-calc.ts";
@@ -744,7 +745,9 @@ for (const level of LEVELS) {
           q.options.forEach((o, i) => {
             // About eleven significant figures: a double keeps more, so the last digit typed is exact.
             const long = o.num!.toFixed(Math.max(0, 10 - Math.max(0, Math.floor(Math.log10(Math.abs(o.num!) || 1)) + 1)));
-            for (const text of [o.num!.toFixed(4), long, o.num!.toFixed(4).replace(".", ",")]) {
+            // Two wrong options can print alike to 4 decimals (0.00032 and 0.000256): that text names neither for sure.
+            const alike = q.options.some((p, j) => j !== i && j !== q.correct && i !== q.correct && p.num!.toFixed(4) === o.num!.toFixed(4));
+            for (const text of alike ? [long] : [o.num!.toFixed(4), long, o.num!.toFixed(4).replace(".", ",")]) {
               const got = matchTyped(q, text);
               if (got !== i) throw new Error(`typed ${text} read as option ${got}, not ${i}`);
             }
@@ -872,6 +875,19 @@ if (tsPending.length > 0) {
 console.log(`${checkWritten("gcp", "gc-", GCP_QUESTIONS)} written Google Cloud questions checked`);
 console.log(`${checkWritten("cf", "cf-", CF_QUESTIONS)} written Cloudflare questions checked`);
 console.log(`${checkWritten("marx", "mx-", MARX_QUESTIONS)} written questions on Capital checked`);
+// The written questions of the four levels (shared/quiz/levels), by the subject of their topic.
+{
+  const prefixOf = (topic: string): string =>
+    topic.startsWith("linux") ? "lx-" : topic.startsWith("sql") ? "sq-" : topic.startsWith("econ") ? "ec-" : topic.startsWith("calc") ? "ca-" : topic.startsWith("marx") ? "mx-" : "cb-";
+  const byPrefix: Record<string, Record<string, Record<string, (typeof LEVEL_QUESTIONS)[string]>>> = {};
+  for (const [id, list] of Object.entries(LEVEL_QUESTIONS)) {
+    const [topic, kind] = id.split(".") as [string, string];
+    ((byPrefix[prefixOf(topic)] ??= {})[topic] ??= {})[kind] = list;
+  }
+  let levelWritten = 0;
+  for (const [prefix, lists] of Object.entries(byPrefix)) levelWritten += checkWritten(`levels ${prefix}`, prefix, lists);
+  console.log(`${levelWritten} written questions of the four levels checked`);
+}
 const reactWritten = checkWritten("react", "re-", REACT_QUESTIONS);
 if (reactPending.length > 0) {
   const cases = [...new Map(reactPending.map((p) => [p.key, p.run])).values()];

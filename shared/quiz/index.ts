@@ -44,7 +44,8 @@ import { kinetics, dynamics } from "./kinetics";
 import { spectroscopy, resonance } from "./spectroscopy";
 import { statistical } from "./statistical";
 import { EMPTY_BANK, bankLevelOf, bankSkills, bankTopicsOf, type Bank, type BankLevel } from "./bank";
-import { TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
+import { LEVELS_VERSION, TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
+import { STANDARD } from "./standard";
 
 export * from "./types";
 export * from "./progress";
@@ -176,6 +177,29 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   calcStochastic,
 };
 
+/**
+ * The four levels (standard.ts): each changed level's table becomes the union
+ * of what it had and what it holds from LEVELS_VERSION; LEVEL_GATE says which
+ * kinds a level gains (from) or loses (until) at that version.
+ */
+const LEVEL_GATE = new Map<string, { from?: number; until?: number }>();
+for (const [topic, byLevel] of Object.entries(STANDARD) as [Topic, Partial<Record<Level, Record<string, Generator>>>][]) {
+  const table = { ...GENERATORS[topic] };
+  for (const [level, kinds] of Object.entries(byLevel) as [Level, Record<string, Generator>][]) {
+    const before = table[level] ?? {};
+    for (const name of Object.keys(before)) if (!(name in kinds)) LEVEL_GATE.set(`${level}|${topic}.${name}`, { until: LEVELS_VERSION });
+    for (const name of Object.keys(kinds)) if (!(name in before)) LEVEL_GATE.set(`${level}|${topic}.${name}`, { from: LEVELS_VERSION });
+    table[level] = { ...before, ...kinds };
+  }
+  GENERATORS[topic] = table;
+}
+
+/** Whether a kind is at this level in a test of this version. */
+function atLevel(level: Level, id: string, version: number): boolean {
+  const gate = LEVEL_GATE.get(`${level}|${id}`);
+  return !gate || ((gate.from ?? 1) <= version && (gate.until === undefined || version < gate.until));
+}
+
 /** Every kind of question, by id ("topic.name"). */
 const SKILLS = new Map<string, { topic: Topic; generator: Generator; levels: Level[] }>();
 for (const [topic, byLevel] of Object.entries(GENERATORS) as [Topic, Partial<Record<Level, Record<string, Generator>>>][]) {
@@ -236,7 +260,7 @@ export function topicsFor(level: Level, version = QUIZ_VERSION): Topic[] {
 export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION, revision = bank.revision): string[] {
   const generated = SKILL_IDS.filter((id) => {
     const skill = SKILLS.get(id)!;
-    return topics.includes(skill.topic) && skill.levels.includes(level) && available(id, version);
+    return topics.includes(skill.topic) && skill.levels.includes(level) && available(id, version) && atLevel(level, id, version);
   });
   const tier = bankLevelOf(level);
   if (tier === null) return generated;
@@ -262,9 +286,11 @@ const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
  *       so questions whose answer is infinite were never kept);
  *   2 — ±∞ compared correctly;
  *   3 — no option that is not a number (a v_rms slip below 0 °C gave one);
- *   4 — Linux: more sed and awk questions, and what sed and awk print (linuxText).
+ *   4 — Linux: more sed and awk questions, and what sed and awk print (linuxText);
+ *   5 — four levels in every test (standard.ts): kinds and written questions
+ *       shared out by difficulty, new Débutant and Expert questions.
  */
-export const QUIZ_VERSION = 4;
+export const QUIZ_VERSION = 5;
 
 const close = (a: number, b: number, version: number): boolean => {
   if (version >= 2 && (!Number.isFinite(a) || !Number.isFinite(b))) return a === b;
@@ -419,7 +445,7 @@ export function generateQuiz({ seed, level, topics: asked, count, focus = [], ve
     const topic = order[i % order.length]!;
     const entries: [string, Generator][] = [
       ...Object.entries(GENERATORS[topic][level] ?? {})
-        .filter(([name]) => available(`${topic}.${name}`, version))
+        .filter(([name]) => available(`${topic}.${name}`, version) && atLevel(level, `${topic}.${name}`, version))
         .map(([name, generator]): [string, Generator] => [`${topic}.${name}`, generator]),
       ...[...fromBank].filter(([, k]) => k.topic === topic).map(([id, k]): [string, Generator] => [id, k.generator]),
     ];
