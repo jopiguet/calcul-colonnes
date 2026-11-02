@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "6.35.1",
+  "version": "6.36.1",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -32,7 +32,8 @@
     "check:exercises": "tsx server/check-exercises.ts",
     "check:math": "tsx server/check-math.ts",
     "check:courses": "tsx server/check-courses.ts",
-    "exercises:import": "tsx server/exercises-import.ts"
+    "exercises:import": "tsx server/exercises-import.ts",
+    "exercises:epub": "tsx server/exercises-epub.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

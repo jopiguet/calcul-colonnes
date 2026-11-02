@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.36.1
+
+- **EPUB workbooks without Playwright's Chromium:** `npm run exercises:epub` failed on macOS 13, for which Playwright has no Chromium (*does not support chromium on mac13*). It now draws in Google Chrome, Chromium, Microsoft Edge or Brave when one is installed, after `PLAYWRIGHT_CHROMIUM` and Playwright's own; it says which, and lists what it tried when none starts.
+
+## 6.36.0
+
+- **Workbooks from an EPUB.** `npm run exercises:epub -- book.epub` turns a workbook sold as an EPUB into an exercise book, for the *✏️ Exercices des livres*: written first for *Practice Makes Perfect: Complete Spanish Grammar* (424 exercises in 26 chapters). See [Exercises › EPUB workbooks](docs/exercises.md#epub-workbooks).
+  - **Drawn as printed:** each exercise is laid out with the book's style sheet in Chromium (Playwright's) and its picture taken; every blank of the book (underscores, answer lines, lines drawn inside a picture) becomes a field at its place, given to its item by the number that starts its line or comes just before it.
+  - **The key:** each numbered line an item's answer; exercises without a key, or whose key is a translated text, are answered freely and marked by the player.
+  - **The book's slips:** an exercise anchored in the wrong chapter is renumbered, without a wrong key; items the key has and the page does not are reported.
+  - The EPUB reader is in the project (no new dependency); the book's content stays in `data/`.
+- **Checks:** `check:exercises` reads an invented EPUB (zip, key, fragments, columns) and, where Chromium is installed, draws it and checks each gap.
+
 ## 6.35.1
 
 - **Fix — a full answer marked wrong ("el jugador de baloncesto"):** with `el jugador / la jugadora de baloncesto`, only *el jugador* was accepted. A shorter side of two or more words now replaces the start of the longer one when its words are forms of the other's, word by word (same word, another article, another form of the word): *el jugador de baloncesto* and *la jugadora de baloncesto*. The same with the longer side first, and with an article alone (`der / die Büroangestellte`). In the books on this machine, 6 entries accept more, none less.

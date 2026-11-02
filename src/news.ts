@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.36.0",
+    fr: ["Exercices des livres : les cahiers en EPUB, comme Complete Spanish Grammar, se remplissent sur la page, avec la correction à la fin de l'unité."],
+    es: ["Ejercicios de los libros: los cuadernos en EPUB, como Complete Spanish Grammar, se rellenan en la página, con la corrección al final de la unidad."],
+    en: ["Workbook exercises: workbooks sold as EPUB, such as Complete Spanish Grammar, are filled in on the page, corrected at the end of the unit."],
+  },
+  {
     version: "6.35.1",
     fr: ["Vocabulaire : « el jugador de baloncesto » est accepté quand le livre écrit « el jugador / la jugadora de baloncesto », et en anglais « I'm » vaut « I am », « don't » vaut « do not »."],
     es: ["Vocabulario: «el jugador de baloncesto» se acepta cuando el libro escribe «el jugador / la jugadora de baloncesto», y en inglés «I'm» vale «I am», «don't» vale «do not»."],

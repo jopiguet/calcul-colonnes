@@ -22,6 +22,7 @@ les autres comptes*).
 | File | Content |
 |---|---|
 | `tools/exercises-extract.py` | PDF → exercise book: units, exercises, gaps, key |
+| `server/exercises-epub.ts` | EPUB → exercise book, drawn in Chromium (`npm run exercises:epub`) |
 | `shared/exercises/format.ts` | The book file's format, `parseExerciseBook` |
 | `shared/exercises/grade.ts` | Marking an answer against the key (`markItem`, `markExercise`) |
 | `shared/exercises/api.ts` | What the routes send |
@@ -93,6 +94,66 @@ item's key back and checks that the marking takes it.
 bars that Tesseract does not read, and its key is in three columns of small
 print: only a few exercises come out. Its content is that of the 5th
 edition, which extracts completely.
+
+## EPUB workbooks
+
+A workbook sold as an EPUB (McGraw-Hill's *Practice Makes Perfect: Complete
+Spanish Grammar*, 3rd edition, 424 exercises in 26 chapters) is read by
+`npm run exercises:epub`, on the computer that has the EPUB:
+
+```sh
+npm run exercises:epub -- "Practice_Makes_Perfect_Complete_Spanish_Grammar.epub" --report
+npm run exercises:import -- data/exercises/complete-spanish-grammar
+```
+
+The exercises are drawn in a browser built on Chromium, driven by
+Playwright: `PLAYWRIGHT_CHROMIUM` if set, else Playwright's own Chromium
+(`npx playwright install chromium`), else Google Chrome, Chromium, Microsoft
+Edge or Brave where they are usually installed (it says which). Playwright
+has no Chromium of its own for every system (none for macOS 13): an installed
+Chrome does the same.
+
+It takes about a minute. The book gets the id `complete-spanish-grammar`;
+`--id`, `--title`, `--source`, `--level`, `--language` and `--out` change
+what it is called and where it goes; `--only 4.11,4.12` draws just those, for a look.
+
+**What it reads.** Such an EPUB marks each exercise with an anchor
+(`ch4ans11`) and its key with another (`ch4ans-11`), linked to each other.
+The exercise runs from its title (*EJERCICIO 4·11*, a picture) to the rule
+under it. Its number comes from the anchor; when an anchor names another
+chapter than the ones around it (a slip of the book: `ch16ans18` among
+chapter 17's exercises, linked to 16.18's key), it takes its chapter's number,
+without a key. The chapters' titles come from the key's headings.
+
+**How it is drawn.** Each exercise is laid out with the book's own style
+sheet, 720 pixels wide, in Chromium, and its picture taken (JPEG, about
+70 kB). Its blanks are measured in the page, so each one gets a field at its
+place:
+
+- a run of underscores (`Pedro _______ (vivir)`, `______ 1.` for true or false);
+- an answer line: a thin, wide picture used ten times or more in the book;
+- an answer line drawn inside a picture (a list printed as an image): a thin
+  dark line, a fifth of the picture wide, with nothing printed just above it
+  (an underlined word has its letters there). Such lines go to the items in
+  order, column by column when the list has two; lines on one row are one
+  item's.
+
+A blank belongs to the item whose number starts its paragraph, or to the
+number just before it in running text (`… todos 2. _______ martes`). Lines in
+a paragraph without numbers go to the items in order, when there are as many.
+
+**The key.** Each numbered line is an item's answer (`es; digo` for two
+blanks). An exercise without a key (*Y en tu caso…*, *Tu lista*) or whose key
+is a text (a translated paragraph) is answered freely, and marked by the
+player against the key's text when there is one. An item of the key the page
+does not number (a matching table printed as a picture) gets a field under the
+picture; when the page numbers its items, an extra item of the key has no
+question and is left out (`--report` lists them).
+
+For *Complete Spanish Grammar*: 424 exercises, 373 with a key, 88 answered
+freely; 2,586 items with a field on the page, 272 under it (choices to
+underline, matching tables); each key typed back is right
+(`npm run check:exercises -- data/exercises/complete-spanish-grammar`).
 
 ## How a book is extracted
 
