@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.35.1",
+    fr: ["Vocabulaire : « el jugador de baloncesto » est accepté quand le livre écrit « el jugador / la jugadora de baloncesto », et en anglais « I'm » vaut « I am », « don't » vaut « do not »."],
+    es: ["Vocabulario: «el jugador de baloncesto» se acepta cuando el libro escribe «el jugador / la jugadora de baloncesto», y en inglés «I'm» vale «I am», «don't» vale «do not»."],
+    en: ["Vocabulary: \"el jugador de baloncesto\" is accepted when the book prints \"el jugador / la jugadora de baloncesto\", and in English \"I'm\" counts as \"I am\", \"don't\" as \"do not\"."],
+  },
+  {
     version: "6.35.0",
     fr: ["Vocabulaire : les dictionnaires illustrés. L'image accompagne le mot, et « L'image seule » demande le mot d'après l'image."],
     es: ["Vocabulario: los diccionarios ilustrados. La imagen acompaña la palabra, y «Solo la imagen» pide la palabra a partir de la imagen."],

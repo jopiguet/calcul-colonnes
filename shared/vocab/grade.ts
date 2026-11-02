@@ -105,6 +105,34 @@ export function normalise(text: string): string {
     .trim();
 }
 
+/** English negatives whose stem changes: "won't" is "will not". */
+const IRREGULAR_NOT: Record<string, string> = { "won't": "will not", "can't": "can not", "cannot": "can not", "shan't": "shall not", "ain't": "am not" };
+/** Words whose "'s" is "is" ("it's"), not a possessive ("John's"). */
+const IS_BEFORE = new Set(["he", "she", "it", "that", "what", "there", "here", "who", "where", "how", "when", "why", "this"]);
+
+/**
+ * English contractions written out, on a normalised text: "I'm" and "I am",
+ * "don't" and "do not", "it's" and "it is" are one answer, either way round.
+ * "'d" reads "would", "'s" reads "is" (after a pronoun only: "John's" stays).
+ */
+export function expandEnglish(text: string): string {
+  return text
+    .split(" ")
+    .map((word) => {
+      if (IRREGULAR_NOT[word]) return IRREGULAR_NOT[word];
+      if (word === "let's") return "let us";
+      if (word === "y'all") return "you all";
+      const n = /^(\p{L}+)n't$/u.exec(word);
+      if (n) return `${n[1]} not`;
+      const m = /^(\p{L}+)'(m|re|ve|ll|d|s)$/u.exec(word);
+      if (!m) return word;
+      const [, stem, tail] = m;
+      if (tail === "s") return IS_BEFORE.has(stem!) ? `${stem} is` : word;
+      return `${stem} ${{ m: "am", re: "are", ve: "have", ll: "will", d: "would" }[tail!]}`;
+    })
+    .join(" ");
+}
+
 /** German spellings without special letters: "Straße" and "Strasse", "Mütter" and "Muetter" are one. */
 export function germanFold(text: string): string {
   return text.replace(/ß/g, "ss").replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue");
@@ -167,9 +195,16 @@ function expandSlashes(text: string): string[] {
   for (const part of parts.slice(1)) {
     if (part.length === 0) continue;
     if (part.length === first.length) out.push(part.join(" "));
-    else if (part.length < first.length) out.push([...first.slice(0, first.length - part.length), ...part].join(" "));
-    else if (first.length === 1 && sharesStem(first[0]!, part[0]!)) {
-      // First side shorter, a variant of the longer one's first word: it replaces it ("este / esta es mi").
+    else if (part.length < first.length && formsOf(part, first)) {
+      // Second side shorter, a variant of the longer one's start: "la jugadora de baloncesto / el jugador".
+      out.push([...part, ...first.slice(part.length)].join(" "));
+    } else if (part.length < first.length && part.every((w, i) => w === first[i])) {
+      // The start of the longer side, word for word: an answer of its own ("to go up / to go").
+      out.push(part.join(" "));
+    } else if (part.length < first.length) out.push([...first.slice(0, first.length - part.length), ...part].join(" "));
+    else if (formsOf(first, part)) {
+      // First side shorter, a variant of the longer one's start: it replaces it
+      // ("este / esta es mi", "el jugador / la jugadora de baloncesto").
       out[0] = [...first, ...part.slice(first.length)].join(" ");
       out.push(part.join(" "));
     } else {
@@ -178,6 +213,28 @@ function expandSlashes(text: string): string[] {
     }
   }
   return out;
+}
+
+/** Every article of every language: "el / la", "der / die" are forms of one another. */
+const ANY_ARTICLE = new Set(Object.values(ARTICLES).flat());
+
+/**
+ * The short side is another form of the long side's first words, word by
+ * word: the same word, two articles, or two forms of one word ("el jugador"
+ * and "la jugadora de …", "der / die Büroangestellte"), one of them changed.
+ */
+function formsOf(short: string[], long: string[]): boolean {
+  let word = false;
+  let changed = false;
+  for (const [i, a] of short.entries()) {
+    const b = long[i]!;
+    if (a !== b) changed = true;
+    if (ANY_ARTICLE.has(a) && ANY_ARTICLE.has(b)) continue;
+    if (a !== b && !sharesStem(a, b)) return false;
+    word = true;
+  }
+  // Articles alone count too: "der / die Büroangestellte".
+  return changed && (word || short.length === 1);
 }
 
 /** Two forms of one word: "este" and "esta", "his" and "her" (the same first letter and length close). */
@@ -385,9 +442,11 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   if (lang === "ja") return gradeJapanese(given, expected, reading);
   if (lang === "ar") return gradeArabic(given, expected, reading);
   if (lang === "zh" || lang === "sux" || lang === "egy") return gradeScript(given, expected, reading, lang);
-  const answer = normalise(given);
+  // English: contractions written out on both sides ("I'm" and "I am").
+  const english = (t: string): string => (lang === "en" ? expandEnglish(t) : t);
+  const answer = english(normalise(given));
   if (!answer) return "wrong";
-  const forms = formsFor(expected, lang);
+  const forms = formsFor(expected, lang).map(english);
 
   // English and French: an article (or "to") is optional on either side.
   const optional = lang === "en" || lang === "fr";

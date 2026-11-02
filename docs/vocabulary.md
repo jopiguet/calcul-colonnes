@@ -496,6 +496,8 @@ of two Spanish words with the same English meaning.
 | `el amigo / la amiga` | either, or both as printed |
 | `Buenas tardes / noches.` | *buenas tardes*, *buenas noches* |
 | `Este / Esta es mi...` | *este es mi*, *esta es mi* (a short first side that is a form of the next word) |
+| `el jugador / la jugadora de baloncesto` | *el jugador de baloncesto*, *la jugadora de baloncesto* (a short side whose words are forms of the other's first words, word by word: the same word, another article, another form) |
+| `der / die Büroangestellte` | *der Büroangestellte*, *die Büroangestellte* |
 | `becoming / process of coming-to-be` | *becoming*, *process of coming-to-be* (a short first side that is another word: an answer of its own) |
 | `lord; ruler` | *lord*, *ruler*, or both |
 | `to take his/her pulse` | *to take his pulse*, *to take her pulse* |
@@ -506,6 +508,12 @@ of two Spanish words with the same English meaning.
 
 In English answers, *the*, *a*, *an* and *to* are optional: *key*, *the key*;
 *walk*, *to walk*.
+
+**English contractions count as written out,** either way round: *I'm* and
+*I am*, *don't* and *do not*, *won't* and *will not*, *can't*, *cannot* and
+*can not*, *they're*, *we've*, *she'll*, *let's*. *'d* reads *would*, and *'s*
+reads *is* after a pronoun (*it's*, *that's*, *there's*); *John's* stays a
+possessive.
 
 **Arabic answers** are written in Arabic script or in the book's
 transliteration, which is the entry's reading.

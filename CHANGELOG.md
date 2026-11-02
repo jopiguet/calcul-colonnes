@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.35.1
+
+- **Fix — a full answer marked wrong ("el jugador de baloncesto"):** with `el jugador / la jugadora de baloncesto`, only *el jugador* was accepted. A shorter side of two or more words now replaces the start of the longer one when its words are forms of the other's, word by word (same word, another article, another form of the word): *el jugador de baloncesto* and *la jugadora de baloncesto*. The same with the longer side first, and with an article alone (`der / die Büroangestellte`). In the books on this machine, 6 entries accept more, none less.
+- **English contractions:** *I'm* and *I am*, *don't* and *do not*, *won't* and *will not*, *can't* and *cannot*, *it's* and *it is* are one answer, either way round. *'s* is read as *is* only after a pronoun: *John's* stays a possessive. See [Vocabulary › How answers are graded](docs/vocabulary.md#how-answers-are-graded).
+- **Checks:** 154 grading cases in `check:vocab`.
+
 ## 6.35.0
 
 - **Picture dictionaries.** A vocabulary entry can carry a picture (`"image"`, a path beside the file) and its number on a labelled diagram (`"part"`). See [Vocabulary › Pictures](docs/vocabulary.md#pictures).
