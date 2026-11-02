@@ -48,6 +48,9 @@ jobs:
 
       - run: npx playwright install --with-deps chromium
 
+      - name: Workbook marking, and an invented EPUB workbook drawn in Chromium
+        run: npm run check:exercises
+
       - name: e2e on SQLite
         run: npx playwright test
 

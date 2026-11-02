@@ -3,14 +3,15 @@
 Extract illustrations and English/German vocabulary pairs from a visual-dictionary PDF.
 
 Requirements:
-    python -m pip install pymupdf
+    python3 -m pip install pymupdf      (or: -r tools/requirements.txt)
 
-Usage:
-    python extract_dictionary.py "Collins German Visual Dictionary.pdf"
-    python extract_dictionary.py input.pdf --output dictionary_export
+Usage (docs/vocabulary.md#pictures):
+    python3 tools/vocab-extract-visual.py "Collins German Visual Dictionary.pdf"
+    python3 tools/vocab-extract-visual.py input.pdf --output data/dictionary_export
+    python3 tools/vocab-visual.py data/dictionary_export data/german-visual
 
-Output:
-    dictionary_export/
+Output (book content: it stays in data/, never in the project):
+    data/dictionary_export/
         vocabulary.json
         images/
             page_0013_image_01.png
@@ -284,8 +285,8 @@ def main() -> None:
         "--output",
         "-o",
         type=Path,
-        default=Path("dictionary_export"),
-        help="Output directory (default: dictionary_export)",
+        default=Path("data/dictionary_export"),
+        help="Output directory (default: data/dictionary_export)",
     )
     parser.add_argument(
         "--scale",

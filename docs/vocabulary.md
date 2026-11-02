@@ -52,7 +52,7 @@ entries, two German books (5 German–English entries, 10 German–French ones),
 ## Importing a book
 
 ```sh
-pip install pdfplumber
+python3 -m pip install -r tools/requirements.txt   # in .venv: see docs/development.md#setup
 
 # Collins Spanish 3000 words and phrases
 python3 tools/vocab-extract.py "Collins Spanish 3000.pdf" > data/vocab-spanish.json
@@ -75,6 +75,10 @@ python3 tools/vocab-extract-lernwortschatz.py Lernwortschatz/ > data/vocab-lernw
 # Nietzsche: the cumulative CSV kept by hand
 python3 tools/vocab-extract-nietzsche.py nietzsche_vocabulary_cumulative.csv > data/vocab-nietzsche.json
 
+# A picture dictionary: its pairs and pictures, then a vocabulary file with them (see Pictures)
+python3 tools/vocab-extract-visual.py "Collins German Visual Dictionary.pdf"
+python3 tools/vocab-visual.py data/dictionary_export data/german-visual
+
 npm run check:vocab -- data/vocab-english.json   # optional: every entry can be asked and graded
 npm run vocab:import -- data/vocab-spanish.json  # into the database of .env
 npm run vocab:import -- data/vocab-german.json
@@ -83,11 +87,12 @@ npm run vocab:import -- data/vocab-english.json
 npm run vocab:import -- data/vocab-japanese.json
 npm run vocab:import -- data/vocab-lernwortschatz.json
 npm run vocab:import -- data/vocab-nietzsche.json
+npm run vocab:import -- data/german-visual/vocab.json
 ```
 
 Each file holds one book, identified by its id (`collins-spanish`,
 `collins-german`, `collins-arabic`, `english-4000`, `japanese-5000`,
-`lernwortschatz`, `nietzsche`). Importing a file updates that book only. The
+`lernwortschatz`, `nietzsche`, `german-visual`). Importing a file updates that book only. The
 Spanish book keeps the id of its first version, so progress carries over; it
 is shown by its title, *3000 words and phrases*.
 
@@ -199,6 +204,21 @@ the CSV is read, by its column names). `tools/vocab-extract-nietzsche.py`:
 687 rows: 12 lessons, 42 sections. The book carries a credit line saying what
 the list is.
 
+**Lemmas and frequencies.** `tools/vocab-lemmatize-nietzsche.py` (spaCy's
+`de_core_news_sm`, pandas) adds columns to the list: each headword's lemmas
+and parts of speech, and how often they occur in the six works, read from
+their Project Gutenberg EPUBs (`pg7202` to `pg7207`) in a corpus folder. Single
+words are counted by lemma and part of speech, phrases as runs of lemmas. Its
+caveat stands in the output: a model's lemmas, to be checked by hand for
+ambiguous, historical and poetic forms. It also writes the whole corpus's
+lemma table.
+
+```sh
+python3 -m spacy download de_core_news_sm
+python3 tools/vocab-lemmatize-nietzsche.py --vocab data/nietzsche_vocabulary.csv \
+  --corpus-dir data/nietzsche-corpus --output-dir data/nietzsche-lemmas
+```
+
 ### *Vocabulary 4000*
 
 `tools/vocab-extract-4000.py`:
@@ -255,15 +275,22 @@ it, or a diagram whose parts are numbered (*1. rotor*, *2. blade*). An entry
 names its picture with `image`, a path relative to the vocabulary file, and
 its number on a diagram with `part`.
 
-**From an extraction.** A picture-dictionary extractor writes a folder with
-`vocabulary.json` (`[{"english", "german", "image", "page"}]`) and `images/`.
-`tools/vocab-visual.py` turns it into a vocabulary file with its pictures:
+**From the book's PDF, in two steps.** `tools/vocab-extract-visual.py`
+(PyMuPDF) reads the PDF: each picture as it is placed on the page, and the
+English line followed by its German line under it; a numbered label above a
+page's first picture (*7. tail*) continues the previous page's diagram. It
+writes `vocabulary.json` (`[{"english", "german", "image", "page"}]`) and
+`images/`. `tools/vocab-visual.py` turns that into a vocabulary file with its
+pictures:
 
 ```sh
-python3 tools/vocab-visual.py dictionary_export data/german-visual
-python3 tools/vocab-visual.py dictionary_export data/german-visual --chapters data/visual-chapters.json
+python3 tools/vocab-extract-visual.py "Collins German Visual Dictionary.pdf"    # → data/dictionary_export/
+python3 tools/vocab-visual.py data/dictionary_export data/german-visual
+python3 tools/vocab-visual.py data/dictionary_export data/german-visual --chapters data/visual-chapters.json
 npm run vocab:import -- data/german-visual/vocab.json
 ```
+
+`--scale` (default 2) sets the size the pictures are rendered at.
 
 - **Words:** the German is the term, the English the meaning (`--term`, `--meaning` for another pair). `1. rotor` becomes `rotor`, part 1. The plural marks (`mpl`, `fpl`, `ntpl`) and ® are taken off. Running text caught as pairs (the book's culture notes: long lines, or English on the German side) is left out, and counted.
 - **Lessons:** one per chapter with `--chapters` (`{"13": "Colours", "40": "Transport"}`, by first page), otherwise one per 25 pages (`--pages`). **Sections:** pages put together, about 12 words each (`--words`), titled by their pages (*p. 47–49*).
@@ -603,6 +630,8 @@ directions.
 | `tools/vocab-extract-japanese.py` | Japanese EPUB → JSON |
 | `tools/vocab-extract-lernwortschatz.py` | *Lernwortschatz* word lists (Markdown tables) → JSON |
 | `tools/vocab-extract-nietzsche.py` | Nietzsche CSV → JSON |
+| `tools/vocab-lemmatize-nietzsche.py` | The Nietzsche list's lemmas and corpus frequencies, as new columns |
+| `tools/vocab-extract-visual.py` | A picture dictionary's PDF → its pairs and pictures |
 | `tools/vocab-visual.py` | A picture dictionary's extraction → JSON and its pictures |
 | `shared/vocab/format.ts` | File formats 1 and 2, and their validation |
 | `shared/vocab/grade.ts` | Grading of written answers |

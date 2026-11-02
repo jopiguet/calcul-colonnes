@@ -3,9 +3,9 @@
 Picture dictionary → vocabulary file (format 2) with its pictures.
 See docs/vocabulary.md#pictures.
 
-Input: the folder written by a picture-dictionary extractor,
+Input: the folder written by tools/vocab-extract-visual.py,
 
-    dictionary_export/
+    data/dictionary_export/
         vocabulary.json   [{"english": "1. rotor", "german": "der Rotor",
                             "image": "images/page_0047_image_01.png", "page": 47}, …]
         images/page_0047_image_01.png …
@@ -17,8 +17,8 @@ Output: a folder to import with npm run vocab:import,
         images/…          the pictures, once each (shrunk to WebP when Pillow is installed)
 
 Usage:
-    python3 tools/vocab-visual.py dictionary_export data/german-visual
-    python3 tools/vocab-visual.py dictionary_export data/german-visual --chapters chapters.json
+    python3 tools/vocab-visual.py data/dictionary_export data/german-visual
+    python3 tools/vocab-visual.py data/dictionary_export data/german-visual --chapters data/visual-chapters.json
     npm run vocab:import -- data/german-visual/vocab.json
 
 What it does with the extraction:

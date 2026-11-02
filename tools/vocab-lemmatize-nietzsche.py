@@ -4,14 +4,14 @@ POS-aware German lemmatisation and corpus-frequency analysis for the Nietzsche
 Vocabulary project.
 
 Requires:
-    python -m pip install spacy beautifulsoup4 pandas openpyxl
-    python -m spacy download de_core_news_sm
+    python3 -m pip install spacy beautifulsoup4 pandas openpyxl   (or: -r tools/requirements.txt)
+    python3 -m spacy download de_core_news_sm
 
-Run:
-    python lemmatize_nietzsche.py \
-      --vocab Nietzsche_Vocabulary_Master_2026-10-29_v12.csv \
-      --corpus-dir ./corpus \
-      --output-dir ./lemma_output
+Run (docs/vocabulary.md#nietzsche-the-vocabulary-of-six-works-germanenglish):
+    python3 tools/vocab-lemmatize-nietzsche.py \
+      --vocab data/Nietzsche_Vocabulary_Master_2026-10-29_v12.csv \
+      --corpus-dir data/nietzsche-corpus \
+      --output-dir data/nietzsche-lemmas
 
 Expected corpus filenames:
     pg7207-images-3.epub  Menschliches, Allzumenschliches
@@ -25,7 +25,7 @@ This script deliberately keeps strict surface counts and lemma/POS counts apart.
 It does not silently infer a lemma when the NLP model returns an uncertain parse.
 """
 from __future__ import annotations
-import argparse, collections, csv, os, re, zipfile
+import argparse, collections, re, zipfile
 from pathlib import Path
 import pandas as pd
 import spacy

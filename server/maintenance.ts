@@ -62,7 +62,7 @@ export async function maintain(db: Database): Promise<void> {
     }
   }
 
-  // EXERCISE_BOOKS: folders made by tools/exercises-extract.py, comma-separated.
+  // EXERCISE_BOOKS: folders made by tools/exercises-extract.py or npm run exercises:epub, comma-separated.
   // Each book not yet on the server is imported once; later: npm run exercises:import.
   const exerciseDirs = (process.env.EXERCISE_BOOKS ?? "").split(",").map((f) => f.trim()).filter(Boolean);
   if (exerciseDirs.length > 0) {

@@ -76,7 +76,7 @@ at four levels, *Débutant* to *Expert*, like every test of the app, each with a
 
 **Calculus** — multiple-choice tests at four levels following the chapters of Stewart's *Calculus*, from limits to vector calculus, with differential equations, series and stochastic calculus (Brownian motion, Itô). Concept questions are written from six books you own (kept out of the project); 28 kinds of question are generated on graphs (a limit at a jump, tangents, Riemann sums, slope fields and Euler, polar roses, Taylor polynomials as answers, level curves, Green's theorem, Brownian paths…), each answer computed again by an independent evaluator.
 
-**Workbook exercises** — the exercises of the English workbooks you own (*Grammar in Use*, *Vocabulary in Use*, *Academic Vocabulary in Use*, *Idioms in Use*), filled in on the book's own pages: each dotted line is a field, the other items get one under the page. A unit is corrected at the end against the book's key, which is read the way the books print it (alternatives, optional words, several gaps, letters); the player can mark an answer the key did not foresee as right. The pages and keys are extracted from your PDFs by a script and never leave `data/`.
+**Workbook exercises** — the exercises of the workbooks you own (*Grammar in Use*, *Vocabulary in Use*, *Academic Vocabulary in Use*, *Idioms in Use* from their PDFs; *Practice Makes Perfect: Complete Spanish Grammar* from its EPUB), filled in on the book's own pages: each dotted line is a field, the other items get one under the page. A unit is corrected at the end against the book's key, which is read the way the books print it (alternatives, optional words, several gaps, letters); the player can mark an answer the key did not foresee as right. The pages and keys are extracted from your PDFs and EPUBs by a script and never leave `data/`.
 
 **Physical chemistry** — multiple-choice tests from *Atkins' Physical Chemistry* (12th edition), a book you own: Focuses 1 to 8, 11 to 13, 17 and 18, from gases and the laws of thermodynamics to quantum theory, atomic and molecular spectra, NMR and EPR, statistical thermodynamics, kinetics and reaction dynamics.
 
@@ -86,7 +86,7 @@ at four levels, *Débutant* to *Expert*, like every test of the app, each with a
 - In French, Spanish and English: texts are stored per language, never in the code.
 - Any question can be flagged from the corrections, with a note, for the author to check.
 
-**Vocabulary** — from books you own, imported once: Spanish, German, Arabic and Japanese with translations, English with definitions. Plus kanji and kana in the Japanese school's order.
+**Vocabulary** — from books you own, imported once: Spanish, German, Arabic and Japanese with translations, English with definitions; Portuguese, Swahili, Chinese, Sumerian cuneiform and Egyptian hieroglyphs from lists you write; picture dictionaries with their pictures. Plus kanji and kana in the Japanese school's order.
 
 - Their chapters are the lessons and their sections the sections. *Spanish*, *German* and *Arabic 3000 words and phrases* and *Vocabulary 4000* are read automatically from their PDF, *Japanese vocabulary for English speakers* from its EPUB; any other list can be written as a simple JSON file.
 - A translation is chosen or written; a definition is chosen and the word written.
@@ -95,6 +95,7 @@ at four levels, *Débutant* to *Expert*, like every test of the app, each with a
 - Multiple choice while a word is new, written answers once it is known. Accents and one-letter slips are forgiven with the spelling shown; a wrong article is not. In German, *ss* for *ß* and *ae*, *oe*, *ue* for umlauts are right.
 - The book's own notation is understood: `el amigo / la amiga`, `Buenas tardes / noches`, `embarcar(se)`.
 - Japanese comes with its rōmaji, and is answered in kanji, kana or rōmaji: 学校, がっこう, *gakkō* and *gakko* are all right.
+- A picture dictionary shows each word's picture, with its number on a labelled diagram; the picture alone can ask for the word.
 - Arabic reads right to left with its transliteration, and is answered in Arabic script, vowel marks optional, or in transliteration: الأُسبوع, الأسبوع and *al usbou’* are all right.
 - Statistics per book: progress by lesson, the last 30 days, the reviews coming, the hardest words.
 - **Kanji and kana:** hiragana, katakana and the 2,136 jōyō kanji, grade by grade as in Japanese schools. A kanji is learnt three ways: its meaning (in French, Spanish or English), its readings (in kana or rōmaji) and the kanji from its meaning. Example words use only kanji already learnt. Characters met in your Japanese words come first, and each card shows the other side: a character's words, a word's kanji. Built from KANJIDIC2 and JMdict (EDRDG, CC BY-SA), downloaded by you.
@@ -172,6 +173,9 @@ npm start          # http://localhost:8787
 | `npm run maintenance` | Migrations, backfills, new vocabulary books and session purge, then exit: what a Cloud Run release runs as a job |
 | `npm run build:server` | Bundles the server into `dist-server/` for the container image |
 | `npm run db:copy-to-postgres` | One-off copy of the SQLite data into the PostgreSQL database named by `DATABASE_URL` |
+| `npm run exercises:import -- data/exercises/<book>` | Imports a workbook's exercises, keeping the players' answers (see [Workbook exercises](docs/exercises.md)) |
+| `npm run exercises:epub -- book.epub` | Turns an EPUB workbook into an exercise book, drawn in Chromium (see [Workbook exercises › EPUB workbooks](docs/exercises.md#epub-workbooks)) |
+| `npm run check:exercises` | Checks the marking of workbook answers and the EPUB reader; with a book's folder, every item's key typed back |
 
 ## Configuration
 
@@ -186,7 +190,9 @@ Settings are read from `.env` (see `.env.example`):
 | `REGISTRATION` | `open` | `closed` allows only the first account |
 | `SESSION_DAYS`, `COOKIE_SECURE`, `TRUST_PROXY` | | See [Deployment › HTTPS and sign-in](docs/deployment.md#https-and-sign-in) |
 | `STARTUP_MAINTENANCE`, `LOG_FORMAT` | from the platform | Maintenance at startup and JSON logs: on locally, off and JSON on Cloud Run. See [Deployment › Cloud Run](docs/deployment.md#cloud-run) |
+| `VOCAB_FILE` | *(empty)* | Vocabulary files, comma-separated: each book not yet on the server is imported at startup (see [Vocabulary](docs/vocabulary.md#importing-a-book)) |
 | `QUIZ_BANK_FILE` | *(empty)* | A question bank file imported by the maintenance when the database has none |
+| `EXERCISE_BOOKS` | *(empty)* | Workbook folders, comma-separated: each book not yet on the server is imported at startup (see [Workbook exercises](docs/exercises.md)) |
 | `GOOGLE_*`, `MICROSOFT_*`, `GITHUB_*`, `OIDC_*` | *(empty)* | Sign-in providers, see [Authentication](docs/authentication.md#providers-1) |
 
 ## Documentation
@@ -198,7 +204,7 @@ Settings are read from `.env` (see `.env.example`):
 | [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust, 36 TypeScript, 44 React, 40 Google Cloud, 13 economics, 28 calculus and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
-| [Workbook exercises](docs/exercises.md) | Extracting a workbook's exercises from its PDF, importing it, how answers are marked against the key |
+| [Workbook exercises](docs/exercises.md) | Extracting a workbook's exercises from its PDF or EPUB, importing it, how answers are marked against the key |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |
 | [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |
 | [Database](docs/database.md) | Schema, migrations, SQLite and PostgreSQL |
@@ -215,7 +221,10 @@ shared/         code used by both browser and server
   quiz/         question generators, test assembly, progress rules
 server/         API (Hono), database access, migrations, scripts
 tests/e2e/      browser tests (Playwright)
+tools/          book extractors (Python; tools/requirements.txt, in .venv)
 docs/           documentation
+deploy/         Cloud Run setup
+data/           your database and your books' extractions: never committed
 ```
 
 A file-by-file description is in [Development](docs/development.md#code-layout).

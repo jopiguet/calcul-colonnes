@@ -25,6 +25,19 @@ The development database is `./data/calcul-colonnes.sqlite`; delete the
 folder to start from scratch. To develop against PostgreSQL, set
 `DATABASE_URL`.
 
+**The Python tools** (`tools/`, the book extractors) run in a virtual
+environment, `.venv/`, ignored by Git:
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate                       # or `direnv allow` once: .envrc does it on cd
+python3 -m pip install -r tools/requirements.txt
+python3 -m spacy download de_core_news_sm       # only for vocab-lemmatize-nietzsche.py
+```
+
+Everything the tools write (extractions, pictures, corpora) goes to `data/`,
+never committed and never in a release zip.
+
 ## Code layout
 
 ### `src/` — browser
@@ -38,7 +51,10 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `quiz.ts` | Multiple-choice screens: settings, question, results; review focus |
 | `course.ts`, `courses/` | The in-app courses, one per test (13): `courses/<id>/<lang>.md` loaded on demand, `courses/sections.ts` mapping topics and kinds to parts; the reader and the links from wrong answers |
 | `markdown.ts`, `markdown-parse.ts` | The small Markdown reader for the courses: headings, lists, check lists, tables, code, links, TeX formulas |
-| `progress.ts` | Progress page of a player |
+| `progress.ts`, `progress-i18n.ts` | Progress pages of a player (the overview and each activity's), and their texts |
+| `graph.ts` | The QCM's graphs as inline SVG: curves on a grid, a plane in space, economic diagrams; colours from CSS classes, for both themes |
+| `tour.ts`, `tour-texts.ts` | The guided tour (`#tour`), shown once to a new account, and its texts (without the DOM, so that `check:tour` reads them) |
+| `workbook.ts`, `workbook-i18n.ts` | Workbook exercises: a book's units, a unit's exercises filled in on the page, the correction; their texts |
 | `store.ts` | API calls; `auth` calls; `SignedOutError` when the session has ended |
 | `auth.ts` | Sign-in screen (and invitation links) and Account page |
 | `family.ts` | The Account page's last sections: the account's data (download, deletion), and the owner's family and friends (invitations, content visibility, feedback) |
@@ -54,19 +70,26 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `settings.ts` | Browser settings in `localStorage`, with validation of saved values |
 | `i18n.ts` | Interface texts (arithmetic part), current language, column names |
 | `quiz-i18n.ts` | Texts of tests and progress, names of the kinds of question, prompts and explanations |
-| `quiz-i18n-chemistry.ts` | The same for physical chemistry, merged into `quiz-i18n.ts` (as are `quiz-i18n-equilibria.ts`, `quiz-i18n-quantum.ts`, `quiz-i18n-kinetics.ts`, `quiz-i18n-spectroscopy.ts`, `quiz-i18n-statistical.ts`, `quiz-i18n-linux.ts`, `quiz-i18n-chembio.ts`, `quiz-i18n-sql.ts`, `quiz-i18n-rust.ts` and `quiz-i18n-ts.ts`) |
+| `quiz-i18n-chemistry.ts` | The same for physical chemistry, merged into `quiz-i18n.ts` (as are `quiz-i18n-equilibria.ts`, `quiz-i18n-quantum.ts`, `quiz-i18n-kinetics.ts`, `quiz-i18n-spectroscopy.ts`, `quiz-i18n-statistical.ts`, `quiz-i18n-linux.ts`, `quiz-i18n-chembio.ts`, `quiz-i18n-sql.ts`, `quiz-i18n-rust.ts`, `quiz-i18n-ts.ts`, `quiz-i18n-react.ts`, `quiz-i18n-gcp.ts`, `quiz-i18n-cf.ts`, `quiz-i18n-marx.ts`, `quiz-i18n-econ.ts` and `quiz-i18n-calc.ts`) |
 | `dom.ts` | `el()` and `button()` helpers |
 | `style.css` | All styles; colours are CSS variables with a dark variant |
 
-### `tools/` — book extractors (Python; pdfplumber for the PDFs)
+### `tools/` — book extractors (Python)
+
+Their packages are in `tools/requirements.txt`; each script's docstring says
+how to run it.
 
 | File | Role |
 |---|---|
-| `vocab-extract.py` | Collins *3000 words and phrases* PDF → vocabulary file |
-| `vocab-extract-4000.py` | *Vocabulary 4000* PDF → vocabulary file |
+| `requirements.txt` | The packages of all the tools, by tool |
+| `vocab-extract.py` | Collins *3000 words and phrases* PDF → vocabulary file (pdfplumber) |
+| `vocab-extract-4000.py` | *Vocabulary 4000* PDF → vocabulary file (pdfplumber) |
 | `vocab-extract-japanese.py` | *Japanese vocabulary for English speakers* EPUB → vocabulary file (standard library only) |
 | `vocab-extract-lernwortschatz.py` | *Lernwortschatz* word lists (Markdown tables, a folder or a zip) → vocabulary file (standard library only) |
 | `vocab-extract-nietzsche.py` | Nietzsche vocabulary CSV → vocabulary file (standard library only) |
+| `vocab-lemmatize-nietzsche.py` | The Nietzsche list's lemmas and parts of speech, and their frequencies in the six works (Project Gutenberg EPUBs), as new columns (spaCy, pandas). See [Vocabulary › Nietzsche](vocabulary.md#nietzsche-the-vocabulary-of-six-works-germanenglish). |
+| `vocab-extract-visual.py` | A picture dictionary's PDF → its English–German pairs and its pictures (`vocabulary.json`, `images/`; PyMuPDF) |
+| `vocab-visual.py` | That extraction → vocabulary file with pictures (Pillow, optional). See [Vocabulary › Pictures](vocabulary.md#pictures). |
 | `exercises-extract.py` | A workbook's PDF (*in Use* series) → exercise book: cropped exercises, their gaps, the key; Tesseract for scans (PyMuPDF, OpenCV, Pillow, pytesseract). See [Workbook exercises](exercises.md). |
 
 ### `public/` — copied as is into the build
@@ -83,6 +106,7 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `types.ts` | Types exchanged over the API |
 | `quiz/` | Question generators and test assembly; see [Question generators](question-generators.md) |
 | `vocab/` | Vocabulary: file format, grading, Leitner boxes, sessions, statistics; see [Vocabulary](vocabulary.md#code) |
+| `exercises/` | Workbook exercises: the book file's format, the marking against the key, what the routes send; see [Workbook exercises](exercises.md) |
 | `discover/` | Discover engines and models: two dice, a coin, logic grids, the physics simulations, the astronomy and biology models; see [Discover](discover.md#code) |
 
 ### `server/`
@@ -107,7 +131,10 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `check-cf.ts` | The Cloudflare answers computed again for `check:quiz` (rules-language expressions, phases, SSL/TLS, cache, tunnels, Access, bills) |
 | `check-econ.ts` | The economics answers computed again for `check:quiz` (incidence, areas, Pigou, Samuelson, Gini, monopsony, insurance…) |
 | `check-calc.ts` | The calculus answers computed again for `check:quiz` (limits, slopes, Newton, Riemann and Simpson sums, Euler, Taylor, Green, Brownian moments…) |
-| `check-exercises.ts` | The marking of workbook answers against the key (`npm run check:exercises`) |
+| `check-exercises.ts` | The marking of workbook answers against the key, and an invented EPUB workbook (`npm run check:exercises`) |
+| `exercises.ts` | Workbook storage, import, units, answers, correction, images; `/api/exercises`. See [Workbook exercises](exercises.md). |
+| `exercises-import.ts` | `npm run exercises:import` |
+| `exercises-epub.ts` | `npm run exercises:epub`: an EPUB workbook drawn in Chromium → exercise book. See [Workbook exercises › EPUB workbooks](exercises.md#epub-workbooks). |
 | `quiz-bank.ts` | Question bank storage, import, flags; `/api/quiz/bank`, `/api/quiz/flags`. See [Question bank](question-bank.md). |
 | `quiz-import.ts`, `quiz-flags.ts` | `npm run quiz:import`, `npm run quiz:flags` |
 | `vocab.ts` | Vocabulary storage, import, sessions, answers; `/api/vocab` |
@@ -118,8 +145,9 @@ folder to start from scratch. To develop against PostgreSQL, set
 | `check-astronomy.ts`, `check-biology.ts` | `npm run check:astronomy`, `npm run check:biology` |
 | `check-math.ts` | `npm run check:math` |
 | `check-tour.ts` | `npm run check:tour` |
-| `npm run check:exercises` | Marking workbook answers: invented cases of every rule of the keys; with a book's folder, each item's key typed back. See [Workbook exercises](exercises.md#marking). | a second |
-| `copy-to-postgres.ts` | One-off copy SQLite → PostgreSQL |
+| `copy-to-postgres.ts` | One-off copy SQLite → PostgreSQL (`npm run db:copy-to-postgres`) |
+| `maintenance.ts` | Migrations, backfills and the startup imports (`VOCAB_FILE`, `EXERCISE_BOOKS`…), before a version serves; `npm run maintenance`, and the Cloud Run job |
+| `runtime.ts` | Where the server runs (Cloud Run or not) and how it logs |
 
 ### TypeScript projects
 
@@ -182,9 +210,10 @@ Automated checks:
 | `npm run check:biology` | The chemistry and biology models: bonds, crosses, diffusion, predators and prey. See [Discover](discover.md#biology-checks). | a second or two |
 | `npm run check:math` | The mathematical curiosities: the snowflake, the Mandelbrot points, the chaos game, Lorenz, the logistic map. See [Discover](discover.md#math-checks). | a second or two |
 | `npm run check:courses` | The in-app courses (`src/courses/<id>/<lang>.md`): the same headings, tables, code, links, inline code and number of formulas in every language, no stray `$`, and a part for every topic | a second |
+| `npm run check:exercises` | Marking workbook answers: invented cases of every rule of the keys; an invented EPUB workbook read, and drawn where a Chromium-based browser is found; with a book's folder, each item's key typed back. See [Workbook exercises](exercises.md#marking). | a second; a few more with the drawing |
 | `npm run check:tour` | The guided tour: the session flag for an account and a player's own login, migration 023 on existing rows, the same pages in every language, every chip a real label of the app. See [User guide › Guided tour](user-guide.md#guided-tour). | a second |
-| `npm run test:e2e` | The whole app in a browser: 167 tests | about nine minutes |
-| `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about three minutes |
+| `npm run test:e2e` | The whole app in a browser: 171 tests | about ten minutes |
+| `npm run test:e2e:postgres` | The same on PostgreSQL (`E2E_DATABASE_URL`, emptied first); CI runs both | about ten minutes |
 
 ### Browser tests
 
@@ -217,8 +246,22 @@ server; each signs up its own account.
 | `quiz.spec.ts` | A test graded identically by the browser, the server and an independent rebuild from its seed; keyboard; language change mid-test; blanks; replay; giving up |
 | `progress.spec.ts` | Mistakes coming back in the next test; progress page against the API; mistake recorded for each wrong answer and shown |
 | `languages.spec.ts` | Every screen in French, Spanish and English with no missing text, vocabulary included; language of the landing page on a first visit |
+| `characters.spec.ts` | The Characters book: kana by their sound, a kanji's meaning and readings; characters met in the player's words first |
+| `overview.spec.ts` | The home page on a wide screen and a phone; the progress overview; a lesson's words, skipped and put back |
+| `family.spec.ts` | The owner's invitations and what other accounts see; a member's feedback, export and deletion; the owner's account kept; privacy page, never indexed |
+| `sharing.spec.ts` | The activities a player sees; a player shared with another account by a single-use code |
+| `tour.spec.ts` | The guided tour: shown once, skipped and opened again, on a phone |
+| `update.spec.ts` | A new version: `version.json` checked, a quiet window reloaded, a session left to finish |
+| `courses.spec.ts` | Four levels and a course in every test; a wrong answer opening its part, on a phone |
+| `chemistry.spec.ts`, `chembio.spec.ts` | Physical chemistry (levels, written questions, reports, review) and balancing equations |
+| `linux.spec.ts`, `sql.spec.ts`, `rust.spec.ts`, `typescript.spec.ts`, `react.spec.ts`, `gcp.spec.ts`, `cloudflare.spec.ts` | The computing tests: card, levels and topics; code shown as code and graded on the server, on a phone; a slip named |
+| `econ.spec.ts`, `marx.spec.ts`, `calc.spec.ts` | Public economics, *Capital* and calculus: charts and graphs as options, graded on the server, the course linked |
+| `discover.spec.ts`, `puzzles.spec.ts`, `physics.spec.ts`, `astronomy.spec.ts`, `biology.spec.ts`, `curiosities.spec.ts` | The Discover labs: predict, try, compare, check; the logic grids; on a phone |
+| `workbook.spec.ts` | Workbook exercises on an invented book: gaps on the page and fields under it, the correction of a unit, answers kept, the routes' access |
 
-`helpers.ts` holds the shared steps. `rebuild()` regenerates a submitted test
+`helpers.ts` holds the shared steps; `owner.ts` the owner's account the test
+server creates before it starts; `bank.ts` the question bank as the server
+holds it after importing the invented banks. `rebuild()` regenerates a submitted test
 with `shared/quiz` directly, so the tests check the server's grading against
 an independent computation rather than against itself.
 
@@ -240,7 +283,10 @@ npm run check:biology
 npm run check:math
 npm run check:courses
 npm run check:tour
+npm run check:family
+npm run check:exercises
 npm run test:e2e
+npm run test:e2e:postgres   # with E2E_DATABASE_URL
 ```
 
 Then start the new version once on a **copy** of the production database.

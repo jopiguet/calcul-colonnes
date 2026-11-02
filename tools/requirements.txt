@@ -1,0 +1,29 @@
+# The Python tools (docs/development.md#tools--book-extractors-python), in the
+# virtual environment that .envrc activates:
+#
+#   python3 -m venv .venv && source .venv/bin/activate
+#   python3 -m pip install -r tools/requirements.txt
+#   python3 -m spacy download de_core_news_sm      # vocab-lemmatize-nietzsche.py only
+#
+# vocab-extract-japanese.py, vocab-extract-lernwortschatz.py and
+# vocab-extract-nietzsche.py need nothing beyond the standard library.
+# Tesseract itself (scanned workbooks) is a system package:
+# brew install tesseract, or apt install tesseract-ocr.
+
+# vocab-extract.py, vocab-extract-4000.py: the Collins and Vocabulary 4000 PDFs
+pdfplumber
+
+# exercises-extract.py: workbook PDFs (all four); vocab-extract-visual.py: a picture dictionary's PDF (PyMuPDF only)
+pymupdf
+opencv-python-headless
+pillow
+pytesseract
+
+# vocab-visual.py: shrinks the pictures to WebP (optional; copies them as they are without it)
+# pillow (above)
+
+# vocab-lemmatize-nietzsche.py: lemmas and corpus frequencies for the Nietzsche list
+spacy
+beautifulsoup4
+pandas
+openpyxl

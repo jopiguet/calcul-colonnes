@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.36.2
+
+Chores: nothing changes in the app.
+
+- **Tools named like the others:** `tools/extract_dictionary.py` is now `tools/vocab-extract-visual.py` and writes to `data/dictionary_export/` by default (it wrote beside the project); `tools/lemmatize_nietzsche.py` is now `tools/vocab-lemmatize-nietzsche.py`, without its two unused imports. Both are documented: [Vocabulary › Pictures](docs/vocabulary.md#pictures) and [› Nietzsche](docs/vocabulary.md#nietzsche-the-vocabulary-of-six-works-germanenglish).
+- **Python environment:** `tools/requirements.txt` lists every tool's packages, by tool; `.envrc` activates `.venv/` (direnv); [Development › Setup](docs/development.md#setup) says how to make it.
+- **`.gitignore`** grouped and commented, with `.venv/`, `__pycache__/`, `*.tmp.*` (it was only in `.dockerignore`), `.DS_Store`, the Neon CLI's files, and the folders tools used to write outside `data/`. **`.dockerignore`** the same, and `tools/`: the image needs no Python.
+- **CI** runs `check:exercises` too, after Chromium is installed, so the EPUB workbook is drawn.
+- **Docs:** `docs/development.md` lists every source, server, tool and test file (12 sources, 4 server files, 3 tools and 26 test files were missing), puts `check:exercises` in the checks (it sat in the server table), and the release list runs every check and both e2e suites; the README lists the workbook scripts, `VOCAB_FILE` and `EXERCISE_BOOKS`, the EPUB workbooks, picture dictionaries and new languages; `.env.example` gets `EXERCISE_BOOKS`.
+
 ## 6.36.1
 
 - **EPUB workbooks without Playwright's Chromium:** `npm run exercises:epub` failed on macOS 13, for which Playwright has no Chromium (*does not support chromium on mac13*). It now draws in Google Chrome, Chromium, Microsoft Edge or Brave when one is installed, after `PLAYWRIGHT_CHROMIUM` and Playwright's own; it says which, and lists what it tried when none starts.

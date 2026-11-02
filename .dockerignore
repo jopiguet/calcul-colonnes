@@ -1,10 +1,23 @@
+# The image is built from the sources (Dockerfile): no local state, no book
+# content, no Python tools.
 .git
 .github
 node_modules
 dist
 dist-server
 data
+dictionary_export
+lemma_output
+corpus
 .env
+.envrc
+.neon
+neon_cmd
+.venv
+__pycache__
+tools
 test-results
 playwright-report
 *.tmp.*
+.react-check-*
+.DS_Store

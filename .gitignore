@@ -1,13 +1,34 @@
-node_modules
-dist
-data
-.env
-test-results
-playwright-report
-dist-server
-.react-check-*
-.neon/
-.DS_Store
-.neon
-neon_cmd
+# Dependencies and builds
+node_modules/
+dist/
+dist-server/
+
+# Book content, local databases and extractions: never committed
+# (docs/vocabulary.md#content-and-copyright). Extractors write to data/;
+# these are the folders some of them used to write beside the project.
+data/
 dictionary_export/
+lemma_output/
+corpus/
+
+# Secrets and local settings
+.env
+.neon
+.neon/
+neon_cmd
+
+# Python (tools/): the virtual environment .envrc activates
+.venv/
+__pycache__/
+*.pyc
+
+# Test output
+test-results/
+playwright-report/
+
+# Scratch files
+*.tmp.*
+.react-check-*
+
+# System files
+.DS_Store
