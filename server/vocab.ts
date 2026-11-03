@@ -11,7 +11,7 @@ import type { AppEnv } from "./auth/middleware.ts";
 import type { Repository, Scope } from "./repository.ts";
 import { answerLangOf, COUNTS_AS_RIGHT, display, grade, normalise } from "../shared/vocab/grade.ts";
 import { kanaToRomaji } from "../shared/vocab/kana.ts";
-import { TRANSLATION_LANGS, type BookKind, type TranslationLang, type VocabFile } from "../shared/vocab/format.ts";
+import { infoOf, storedInfo, TRANSLATION_LANGS, type BookKind, type TranslationLang, type VocabFile } from "../shared/vocab/format.ts";
 import { DIRECTIONS, entryStatus, nextState, type CardState, type Direction, type ModePreference } from "../shared/vocab/schedule.ts";
 import {
   buildSession,
@@ -40,7 +40,7 @@ const n = (value: unknown): number => Number(value);
 
 /** Entries with their book's kind and languages, for grading and sessions. */
 const ENTRY_COLUMNS = `e.id, e.section_id, e.position, e.term, e.meaning, e.grp, e.feminine, e.note, e.reading,
-  e.readings, e.translations, e.image, e.part,
+  e.readings, e.translations, e.image, e.part, e.info,
   CASE WHEN e.image = '' THEN 0 ELSE (SELECT COUNT(*) FROM vocab_entries x WHERE x.image = e.image) END AS image_uses,
   b.id AS entry_book, b.kind, b.term_lang, b.meaning_lang, b.ordering`;
 const ENTRY_JOINS = `FROM vocab_entries e
@@ -92,6 +92,7 @@ function toEntry(row: Row): SessionEntry {
     image: String(row.image ?? ""),
     part: n(row.part ?? 0),
     imageUses: n(row.image_uses ?? 0),
+    ...(infoOf(row.info) ? { info: infoOf(row.info) } : {}),
     book: {
       id: n(row.entry_book),
       kind: bookKind(row.kind),
@@ -141,6 +142,7 @@ export interface StoredEntry {
   translations: string;
   image: string;
   part: number;
+  info: string;
 }
 
 /** A picture read by the import: its SHA-256 (the entries' "image"), type and bytes in base64. */
@@ -322,7 +324,7 @@ export class VocabStore {
           sectionId, item.position, entry.term, entry.meaning, entry.group ?? "", entry.feminine ? 1 : 0, entry.note ?? "",
           entry.reading ?? "", entry.readings ?? "", storedTranslations(entry.translations),
           // A path the import did not turn into a stored picture's hash counts as none.
-          entry.image && known.has(entry.image) ? entry.image : "", entry.part ?? 0,
+          entry.image && known.has(entry.image) ? entry.image : "", entry.part ?? 0, storedInfo(entry.info),
         ] as const;
         const row = matches[i];
         if (!row) {
@@ -342,24 +344,25 @@ export class VocabStore {
           row.readings === values[8] &&
           row.translations === values[9] &&
           row.image === values[10] &&
-          row.part === values[11];
+          row.part === values[11] &&
+          row.info === values[12];
         if (!same) {
           await tx.query(
             `UPDATE vocab_entries SET section_id = $1, position = $2, term = $3, meaning = $4, grp = $5, feminine = $6, note = $7,
-                    reading = $8, readings = $9, translations = $10, image = $11, part = $12
-              WHERE id = $13`,
+                    reading = $8, readings = $9, translations = $10, image = $11, part = $12, info = $13
+              WHERE id = $14`,
             [...values, row.id],
           );
         }
       }
       report.entries = placed.length;
       // New entries: one statement per hundred, a few round trips for a whole book (matters on Neon).
-      const width = 12;
+      const width = 13;
       for (let start = 0; start < fresh.length; start += 100) {
         const rows = fresh.slice(start, start + 100);
         const placeholders = rows.map((_, i) => `(${Array.from({ length: width }, (_, k) => `$${i * width + k + 1}`).join(", ")})`);
         await tx.query(
-          `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations, image, part)
+          `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations, image, part, info)
            VALUES ${placeholders.join(", ")}`,
           rows.flat(),
         );
@@ -385,7 +388,7 @@ export class VocabStore {
   /** A book's entries as stored, with their place in the book. */
   private async bookEntries(db: Pick<Database, "query">, bookId: number): Promise<StoredEntry[]> {
     const rows = await db.query(
-      `SELECT e.id, e.term, e.meaning, e.section_id, e.position, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations, e.image, e.part,
+      `SELECT e.id, e.term, e.meaning, e.section_id, e.position, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations, e.image, e.part, e.info,
               l.position AS lesson_position, s.position AS section_position
          ${ENTRY_JOINS} WHERE b.id = $1 ORDER BY l.position, s.position, e.position`,
       [bookId],
@@ -406,6 +409,7 @@ export class VocabStore {
       translations: String(row.translations ?? ""),
       image: String(row.image ?? ""),
       part: n(row.part ?? 0),
+      info: String(row.info ?? ""),
     }));
   }
 
@@ -879,6 +883,7 @@ export class VocabStore {
       note: entry.note,
       box: next.box,
       dueAt: next.dueAt,
+      ...(entry.info ? { info: entry.info } : {}),
     };
     if (characters) {
       if (entry.readings) {

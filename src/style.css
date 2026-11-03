@@ -6398,3 +6398,39 @@ button.tiny {
   font-weight: 800;
   font-size: 0.95rem;
 }
+
+/* Format 3 (docs/vocabulary.md#format-3): what a sign is and does, its readings by language. */
+.vocab-info {
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin: 0.25rem 0;
+}
+.vocab-info-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.vocab-info-tag {
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+.vocab-info-readings {
+  font-size: 0.9rem;
+}
+.vocab-info-label {
+  margin-right: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.vocab-info-note {
+  opacity: 0.8;
+}

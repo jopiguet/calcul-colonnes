@@ -185,7 +185,7 @@ shared), and each player's progress. See [Vocabulary](vocabulary.md).
 | `vocab_books` | one per book | `slug` (the file's book id), `position`, `title`, `kind` (`translation`, `definition` or `characters`), `term_lang`, `meaning_lang`, `ordering` (`book` or `alphabetical`), `credit` (attribution shown with the book), `visibility` (`private`: the owner's account only; `shared`: every account) |
 | `vocab_lessons` | one per lesson (chapter) | `book_id`, `position` (unique per book), `title`, `subtitle` |
 | `vocab_sections` | one per section | `lesson_id`, `position`, `title`, `subtitle` |
-| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji), `readings` (a kanji's on and kun readings), `translations` (JSON: the meaning in French, Spanish), `image` (the picture's SHA-256, or empty), `part` (its number on the picture, 0 for none) |
+| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji), `readings` (a kanji's on and kun readings), `translations` (JSON: the meaning in French, Spanish), `image` (the picture's SHA-256, or empty), `part` (its number on the picture, 0 for none), `info` (format 3: JSON `{"type", "readings", "functions"}`, or empty) |
 | `vocab_images` | one per picture of a picture dictionary | `hash` (SHA-256, primary key), `mime`, `data` (base64) |
 | `vocab_progress` | one per player, entry and direction | primary key `(user_id, entry_id, direction)`, direction `recognise`, `recall` or `read` (a kanji's reading); `box` 1–6, `due_at`, `last_at`, `right_count`, `wrong_count` |
 | `vocab_answers` | one per answer | `user_id`, `entry_id`, `direction`, `mode`, `at`, `given`, `verdict`, `correct` |
@@ -269,6 +269,7 @@ runs: add tables and columns, rename or drop later.
 | `031_marx_levels` | `quiz_results.level` accepts the three Capital levels. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `032_four_levels` | `quiz_results.level` accepts the new levels of the four-level tests (*Débutant* and *Expert* everywhere, *Avancé* for Linux, SQL and chemical equations). The old ids stay, as *Intermédiaire* and *Avancé*. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `033_vocab_images` | `vocab_images`, the pictures of picture dictionaries; `image` and `part` on `vocab_entries` (docs/vocabulary.md#pictures) |
+| `034_vocab_info` | `info` on `vocab_entries`: an entry's type, readings by language and functions, from a format-3 file (docs/vocabulary.md#format-3) |
 
 **File names.**
 

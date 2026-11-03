@@ -515,7 +515,7 @@ test("cuneiform: the sign large, its reading under it, answered by its reading; 
   await expect(page.locator(".vocab-romaji legend")).toHaveText("Transcription");
 
   const signs: Record<string, [string, string]> = {
-    "𒂗": ["lord; ruler", "en"], "𒁺": ["to go; to walk", "du"], "𒊕": ["head", "sag"], "𒀭": ["sky; god", "an"], "𒆠": ["earth; place", "ki"],
+    "𒂗": ["lord; ruler", "en"], "𒁺": ["to go; to walk", "du"], "𒊕": ["head", "sag"], "𒀭": ["sky; god", "an; diĝir; ilum"], "𒆠": ["earth; place", "ki"],
   };
   await startFirstSection(page);
   const prompt = page.locator(".vocab-prompt");
@@ -529,6 +529,11 @@ test("cuneiform: the sign large, its reading under it, answered by its reading; 
   const options = await page.locator(".choice-text").allInnerTexts();
   await page.keyboard.press(String(options.indexOf(meaning) + 1));
   await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
+  // Format 3: what the sign is and does, its readings by language, after the answer.
+  await expect(page.locator(".vocab-info-tag").first()).toHaveText("signe");
+  await expect(page.locator(".vocab-info-tag").nth(1)).toHaveText("logogramme");
+  await expect(page.locator(".vocab-info-readings").first().locator(".vocab-info-label")).toHaveText("Sumérien");
+  await page.screenshot({ path: "test-results/cuneiform-answered.png" });
 
   const books = (await (await page.request.get("/api/vocab/books")).json()) as { slug: string; lessons: { id: number }[] }[];
   const book = books.find((b) => b.slug === "test-cuneiform")!;
@@ -545,6 +550,13 @@ test("cuneiform: the sign large, its reading under it, answered by its reading; 
   expect(await post(head, "recall", "sag")).toMatchObject({ verdict: "right" });
   expect(await post(head, "recall", "𒊕")).toMatchObject({ verdict: "right" });
   expect(await post(head, "recall", "du")).toMatchObject({ correct: false });
+  // Every reading of a sign is an answer; the result carries its readings by language.
+  const sky = cards.find((c) => c.prompt === "𒀭" || c.prompt === "sky; god")!.entryId;
+  expect(await post(sky, "recall", "diĝir")).toMatchObject({ verdict: "right" });
+  expect(await post(sky, "recall", "ilum")).toMatchObject({
+    verdict: "right",
+    info: { type: "sign", functions: ["logogram", "determinative"], readings: [{ value: "an", language: "sux" }, { value: "diĝir", language: "sux" }, { value: "ilum", language: "akkadian", note: "invented note" }] },
+  });
   const lord = cards.find((c) => c.prompt === "𒂗" || c.prompt === "lord; ruler")?.entryId ?? entryOf("𒂗");
   expect(await post(lord, "recognise", "lord")).toMatchObject({ verdict: "right" });
   expect(await post(lord, "recognise", "ruler")).toMatchObject({ verdict: "right" });
@@ -622,4 +634,25 @@ test("a picture dictionary: the picture with the meaning, after the answer with 
     await page.locator(".vocab-card, .vocab-done, .vocab-summary").first().waitFor();
   }
   throw new Error("no picture-alone card in the review");
+});
+
+test("Latin in format 3: after the answer, the noun's gender and genitive, the verb's principal parts", async ({ page }) => {
+  await newPlayer(page, "Lat");
+  await openActivity(page, "vocab-test-latin");
+  await expect(page.locator(".vocab-home h1")).toHaveText("Vocabulaire latin");
+  const words: Record<string, { meaning: string; tags: string[]; form: [string, string] }> = {
+    rosa: { meaning: "rose", tags: ["nom", "féminin"], form: ["Génitif", "rosae"] },
+    lupus: { meaning: "wolf", tags: ["nom", "masculin"], form: ["Génitif", "lupi"] },
+    templum: { meaning: "temple", tags: ["nom", "neutre"], form: ["Génitif", "templi"] },
+    amare: { meaning: "to love", tags: ["verbe"], form: ["Temps primitifs", "amo · amare · amavi · amatum"] },
+  };
+  await startFirstSection(page);
+  const word = words[await page.locator(".vocab-prompt").innerText()]!;
+  const options = await page.locator(".choice-text").allInnerTexts();
+  await page.keyboard.press(String(options.indexOf(word.meaning) + 1));
+  await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
+  await expect(page.locator(".vocab-info-tag")).toHaveText(word.tags);
+  const form = page.locator(".vocab-info-form").first();
+  await expect(form.locator(".vocab-info-label")).toHaveText(word.form[0]);
+  await expect(form.locator(".vocab-info-value")).toHaveText(word.form[1]);
 });

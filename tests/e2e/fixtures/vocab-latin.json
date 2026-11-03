@@ -1,0 +1,20 @@
+{
+ "format": 3,
+ "book": { "id": "test-latin", "title": "Test Latin", "kind": "translation", "term": "la", "meaning": "en" },
+ "lessons": [
+  {
+   "title": "First words",
+   "sections": [
+    {
+     "title": "Nouns and a verb",
+     "entries": [
+      { "term": "rosa", "meaning": "rose", "type": "noun", "gender": "feminine", "genitive": "rosae" },
+      { "term": "lupus", "meaning": "wolf", "type": "noun", "gender": "masculine", "genitive": "lupi", "forms": [{ "label": "plural", "value": "lupi" }] },
+      { "term": "templum", "meaning": "temple", "type": "noun", "gender": "neuter", "genitive": "templi" },
+      { "term": "amare", "meaning": "to love", "type": "verb", "principal_parts": ["amo", "amare", "amavi", "amatum"] }
+     ]
+    }
+   ]
+  }
+ ]
+}

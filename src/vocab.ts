@@ -20,7 +20,8 @@ import {
   type VocabProgress,
 } from "./store";
 import type { VocabRelated, VocabWord } from "../shared/types";
-import { langName, vt, type VocabKey } from "./vocab-i18n";
+import { infoLabel, langName, readingLanguage, vt, type VocabKey } from "./vocab-i18n";
+import type { EntryInfo } from "../shared/vocab/format";
 import { statsView } from "./vocab-stats";
 
 // ------------------------------------------------------------ preferences
@@ -754,6 +755,48 @@ function kanjiFacts(meaning: string, readings: string, direction: VocabCard["dir
   return box;
 }
 
+/**
+ * Format 3: what the entry is and does ("sign · logogram · determinative"),
+ * then its readings by language ("Sumerian an · diĝir", "Akkadian ilum").
+ */
+function infoFacts(info: EntryInfo): HTMLElement {
+  const box = el("span", "vocab-info");
+  const tags = [info.type, info.gender, ...(info.functions ?? [])].filter((t): t is string => Boolean(t));
+  if (tags.length) {
+    const line = el("span", "vocab-info-tags");
+    for (const tag of tags) line.append(el("span", "vocab-info-tag", infoLabel(tag)));
+    box.append(line);
+  }
+  // Forms: a noun's genitive, a verb's principal parts, any other the file gives.
+  const forms: [string, string][] = [
+    ...(info.genitive ? [[vt("infoGenitive"), info.genitive] as [string, string]] : []),
+    ...(info.principalParts?.length ? [[vt("infoPrincipalParts"), info.principalParts.join(" · ")] as [string, string]] : []),
+    ...(info.forms ?? []).map((f): [string, string] => [infoLabel(f.label), f.value]),
+  ];
+  for (const [name, value] of forms) {
+    const line = el("span", "vocab-info-readings vocab-info-form");
+    line.append(el("span", "vocab-info-label", name), el("span", "vocab-info-value", value));
+    box.append(line);
+  }
+  const groups = new Map<string, NonNullable<EntryInfo["readings"]>>();
+  for (const r of info.readings ?? []) groups.set(r.language ?? "", [...(groups.get(r.language ?? "") ?? []), r]);
+  for (const [language, readings] of groups) {
+    const line = el("span", "vocab-info-readings");
+    line.append(el("span", "vocab-info-label", language ? readingLanguage(language) : vt("infoReadings")));
+    const values = el("span", "vocab-info-values");
+    readings.forEach((r, i) => {
+      if (i > 0) values.append(" · ");
+      const value = el("span", "vocab-info-value", r.value);
+      value.lang = "und-Latn";
+      values.append(value);
+      if (r.note) values.append(el("span", "vocab-info-note", ` (${r.note})`));
+    });
+    line.append(values);
+    box.append(line);
+  }
+  return box;
+}
+
 /** Words of the player that use this character, or a word's kanji. */
 function related(title: string, items: VocabRelated[], kind: "words" | "kanji"): HTMLElement {
   const box = el("span", `vocab-related is-${kind}`);
@@ -985,6 +1028,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     if (r.feminine) feedback.append(el("span", "vocab-fem", ` (f)`));
     // A kanji: its meaning and readings, whichever way it was asked.
     if (r.readings) feedback.append(kanjiFacts(r.meaning ?? "", r.readings, card.direction));
+    if (r.info) feedback.append(infoFacts(r.info));
     if (r.note) feedback.append(el("span", "vocab-note", vt(card.script ? "exampleWords" : "example", { note: r.note })));
     if (r.inWords?.length) feedback.append(related(vt("inYourWords"), r.inWords, "words"));
     if (r.characters?.length) feedback.append(related(vt("itsKanji"), r.characters, "kanji"));

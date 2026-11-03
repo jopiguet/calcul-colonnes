@@ -590,7 +590,7 @@ always `choice`. With `lang`, `answerLang` (recognise) or `promptLang`
 what moves the card between boxes. A `choice` answer must equal the option as
 printed. A `written` answer that is wrong for this entry but right for another
 entry of the book with the same prompt counts as right. `note` is the entry's
-example, if any; `reading` the term's rōmaji, if any. A Japanese `written`
+example, if any; `reading` the term's rōmaji, if any (a sign's readings, `; ` between). `info`, for an entry of a format-3 file, is `{"type", "readings": [{"value", "language", "note"}], "functions"}`, each part present only when the file gives it ([Vocabulary › Format 3](vocabulary.md#format-3)). A Japanese `written`
 answer may be kanji, kana or rōmaji.
 
 `lang` (optional, `fr`, `es`, `en`) grades a meaning in that language when

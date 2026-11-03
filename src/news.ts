@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "6.37.0",
+    fr: ["Vocabulaire : après la réponse, un signe cunéiforme montre ce qu'il est et fait et ses lectures par langue (chacune acceptée), un mot latin son genre, son génitif ou ses temps primitifs."],
+    es: ["Vocabulario: tras la respuesta, un signo cuneiforme muestra lo que es y lo que hace y sus lecturas por idioma (cada una se acepta), una palabra latina su género, su genitivo o su enunciado."],
+    en: ["Vocabulary: after the answer, a cuneiform sign shows what it is and does and its readings by language (each one accepted), a Latin word its gender, genitive or principal parts."],
+  },
+  {
     version: "6.36.0",
     fr: ["Exercices des livres : les cahiers en EPUB, comme Complete Spanish Grammar, se remplissent sur la page, avec la correction à la fin de l'unité."],
     es: ["Ejercicios de los libros: los cuadernos en EPUB, como Complete Spanish Grammar, se rellenan en la página, con la corrección al final de la unidad."],

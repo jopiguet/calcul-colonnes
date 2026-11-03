@@ -621,6 +621,86 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
         await store.import(pictured([{ term: "der Schirm", meaning: "umbrella", image: await hashOf("der Schirm") }, { term: "blau", meaning: "blue" }]), { replace: true, images: [] });
         expect("pictures: one no entry shows is removed", [Boolean(await store.image(sceneHash, true)), Number((await db.query("SELECT COUNT(*) AS n FROM vocab_images"))[0]!.n)], [false, 1]);
       }
+
+      // Format 3: a sign's type, readings by language and functions; every reading an answer.
+      {
+        const { parseVocabFile } = await import("../shared/vocab/format.ts");
+        const signs = (format: number, entry: Record<string, unknown>): unknown => ({
+          format,
+          book: { id: "signs", title: "s", kind: "translation", term: "sux", meaning: "en" },
+          lessons: [{ title: "L", sections: [{ title: "S", entries: [{ term: "𒀭", meaning: "heaven; sky; god", ...entry }] }] }],
+        });
+        const sky = {
+          reading: "an",
+          type: "sign",
+          readings: [{ value: "an", language: "sumerian" }, { value: "diĝir", language: "sumerian" }, { value: "ilum", language: "akk", note: "as a word" }],
+          functions: ["lexical", "determinative"],
+          note: "Also a silent divine determinative.",
+        };
+        const parsedOf = (format: number, entry: Record<string, unknown>): string => {
+          try {
+            return JSON.stringify(parseVocabFile(signs(format, entry)).lessons[0]!.sections[0]!.entries[0]);
+          } catch (error) {
+            return String((error as Error).message).replace(/^.*?: /, "");
+          }
+        };
+        const parsed = parseVocabFile(signs(3, sky)).lessons[0]!.sections[0]!.entries[0]!;
+        expect("format 3: the readings complete the one shown", parsed.reading, "an; diĝir; ilum");
+        expect("format 3: info", parsed.info, {
+          type: "sign",
+          readings: [{ value: "an", language: "sumerian" }, { value: "diĝir", language: "sumerian" }, { value: "ilum", language: "akk", note: "as a word" }],
+          functions: ["lexical", "determinative"],
+        });
+        expect("format 3: no reading, the list's", parseVocabFile(signs(3, { readings: ["ki", { value: "ĝeš" }] })).lessons[0]!.sections[0]!.entries[0]!.reading, "ki; ĝeš");
+        expect("format 3: a kanji's readings stay a text", parseVocabFile(signs(3, { readings: "ニチ / ジツ" })).lessons[0]!.sections[0]!.entries[0]!.readings, "ニチ / ジツ");
+        expect("format 3: refused fields", [
+          parsedOf(2, { type: "sign" }),
+          parsedOf(2, { readings: [{ value: "an" }] }),
+          parsedOf(3, { readings: [{ value: "an; diĝir" }] }),
+          parsedOf(3, { readings: [{ language: "sux" }] }),
+          parsedOf(3, { functions: "determinative" }),
+          parsedOf(3, { type: "<b>sign</b>" }),
+        ].map((m) => /format": 3|one reading per value|"value" is required|list of at most|short label/.test(m)), [true, true, true, true, true, true]);
+        // Latin: a noun's gender and genitive, a verb's principal parts, other forms; a field nobody knows refused.
+        const latinOf = (format: number, entry: Record<string, unknown>): unknown => ({
+          format,
+          book: { id: "latin", title: "l", kind: "translation", term: "la", meaning: "en" },
+          lessons: [{ title: "L", sections: [{ title: "S", entries: [{ term: "rosa", meaning: "rose", ...entry }] }] }],
+        });
+        const latinEntry = (format: number, entry: Record<string, unknown>): string => {
+          try {
+            return JSON.stringify(parseVocabFile(latinOf(format, entry)).lessons[0]!.sections[0]!.entries[0]!.info);
+          } catch (error) {
+            return String((error as Error).message).replace(/^.*?: /, "");
+          }
+        };
+        expect("format 3: a noun", latinEntry(3, { type: "noun", gender: "feminine", genitive: "rosae", forms: [{ label: "plural", value: "rosae" }] }),
+          JSON.stringify({ type: "noun", gender: "feminine", genitive: "rosae", forms: [{ label: "plural", value: "rosae" }] }));
+        expect("format 3: a verb's principal parts", latinEntry(3, { type: "verb", principal_parts: ["amo", "amare", "amavi", "amatum"] }),
+          JSON.stringify({ type: "verb", principalParts: ["amo", "amare", "amavi", "amatum"] }));
+        expect("format 3: refused grammar", [
+          latinEntry(3, { genders: "feminine" }),
+          latinEntry(2, { gender: "feminine" }),
+          latinEntry(3, { principal_parts: [] }),
+          latinEntry(3, { forms: [{ label: "plural" }] }),
+          latinEntry(3, { genitive: "" }),
+        ].map((m) => /unknown field "genders"|format": 3|list of 1 to|"value" is required|"genitive" is a text/.test(m)), [true, true, true, true, true]);
+        expect("format 1 and 2 still read", [parsedOf(2, { reading: "an" }).includes('"reading":"an"'), (() => { try { parseVocabFile({ format: 4, lessons: [] }); return "read"; } catch (e) { return String((e as Error).message); } })()], [true, 'unsupported file: "format" must be 1, 2 or 3']);
+
+        const file = parseVocabFile(signs(3, sky));
+        await store.import(file);
+        const signBook = Number((await db.query("SELECT id FROM vocab_books WHERE slug = 'signs'"))[0]!.id);
+        const sign = Number((await db.query("SELECT e.id FROM vocab_entries e JOIN vocab_sections s ON s.id = e.section_id JOIN vocab_lessons l ON l.id = s.lesson_id WHERE l.book_id = $1", [signBook]))[0]!.id);
+        const answered = await store.answer({ userId: user, entryId: sign, direction: "recall", mode: "written", given: "diĝir" }, 1);
+        expect("format 3: any reading is right", answered?.verdict, "right");
+        expect("format 3: ilum, the Akkadian reading, too", (await store.answer({ userId: user, entryId: sign, direction: "recall", mode: "written", given: "ilum" }, 2))?.verdict, "right");
+        expect("format 3: the answer carries the info", answered?.info, parsed.info);
+        expect("format 3: imported again unchanged", (await store.import(parseVocabFile(signs(3, sky)))).changed, 0);
+        const before = (await db.query("SELECT info FROM vocab_entries WHERE id = $1", [sign]))[0]!.info;
+        await store.import(parseVocabFile(signs(3, { ...sky, functions: ["logogram"] })));
+        const after = (await db.query("SELECT id, info FROM vocab_entries WHERE id = $1", [sign]))[0];
+        expect("format 3: info corrected in place, the entry kept", [Number(after?.id), JSON.parse(String(after?.info)).functions, before !== after?.info], [sign, ["logogram"], true]);
+      }
     } finally {
       await db.close();
       rmSync(dir, { recursive: true, force: true });

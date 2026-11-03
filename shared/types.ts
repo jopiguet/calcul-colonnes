@@ -1,4 +1,5 @@
 /** Types shared by the browser app and the API server. */
+import type { EntryInfo } from "./vocab/format";
 
 export type Operator = "+" | "−" | "×" | "÷";
 
@@ -321,6 +322,8 @@ export interface VocabAnswerResult {
   inWords?: VocabRelated[];
   /** Japanese word: its kanji, as the Characters book gives them. */
   characters?: VocabRelated[];
+  /** Format 3: what the entry is, its readings by language, what it does in writing. */
+  info?: EntryInfo;
 }
 
 /** A share of answers: how many, how many right. */

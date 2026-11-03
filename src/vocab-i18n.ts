@@ -1,6 +1,9 @@
 import { currentLang, type Lang } from "./i18n";
 
 const fr = {
+  infoReadings: "Lectures",
+  infoGenitive: "Génitif",
+  infoPrincipalParts: "Temps primitifs",
   picturesTitle: "Images",
   picturesWith: "Avec le mot",
   picturesAlone: "L’image seule",
@@ -181,6 +184,9 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
+  infoReadings: "Lecturas",
+  infoGenitive: "Genitivo",
+  infoPrincipalParts: "Enunciado",
   picturesTitle: "Imágenes",
   picturesWith: "Con la palabra",
   picturesAlone: "Solo la imagen",
@@ -359,6 +365,9 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
+  infoReadings: "Readings",
+  infoGenitive: "Genitive",
+  infoPrincipalParts: "Principal parts",
   picturesTitle: "Pictures",
   picturesWith: "With the word",
   picturesAlone: "Picture alone",
@@ -546,11 +555,49 @@ export function vt(key: Key, values: Record<string, string | number> = {}): stri
 
 /** A language's name in the interface's language, as used in "Vocabulaire {lang}". */
 const LANGUAGE_NAMES: Record<Lang, Record<string, string>> = {
-  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe", pt: "portugais", sw: "swahili", zh: "chinois", sux: "sumérien", egy: "égyptien ancien" },
-  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe", pt: "portugués", sw: "suajili", zh: "chino", sux: "sumerio", egy: "egipcio antiguo" },
-  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic", pt: "Portuguese", sw: "Swahili", zh: "Chinese", sux: "Sumerian", egy: "Ancient Egyptian" },
+  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe", pt: "portugais", sw: "swahili", zh: "chinois", sux: "sumérien", egy: "égyptien ancien", akk: "akkadien", la: "latin", grc: "grec ancien" },
+  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe", pt: "portugués", sw: "suajili", zh: "chino", sux: "sumerio", egy: "egipcio antiguo", akk: "acadio", la: "latín", grc: "griego antiguo" },
+  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic", pt: "Portuguese", sw: "Swahili", zh: "Chinese", sux: "Sumerian", egy: "Ancient Egyptian", akk: "Akkadian", la: "Latin", grc: "Ancient Greek" },
 };
 
 export function langName(code: string): string {
   return LANGUAGE_NAMES[currentLang()][code] ?? code;
+}
+
+/** A reading's language as files write it: a code ("sux") or an English name ("sumerian"). */
+const LANGUAGE_ALIASES: Record<string, string> = {
+  sumerian: "sux", akkadian: "akk", egyptian: "egy", chinese: "zh", japanese: "ja", arabic: "ar",
+};
+
+/** The name of a reading's language, in the interface's language; a name the app does not know, as written. */
+export function readingLanguage(language: string): string {
+  const code = LANGUAGE_ALIASES[language.toLowerCase()] ?? language.toLowerCase();
+  const name = LANGUAGE_NAMES[currentLang()][code] ?? language;
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+/** Format 3's usual labels ("sign", "noun", "masculine", "determinative"), translated; others as written. */
+const INFO_LABELS: Record<Lang, Record<string, string>> = {
+  fr: {
+    sign: "signe", word: "mot", phrase: "expression", character: "caractère", compound: "composé",
+    lexical: "lexical", logogram: "logogramme", logographic: "logographique", syllabogram: "syllabogramme", syllabic: "syllabique",
+    phonogram: "phonogramme", phonetic: "phonétique", determinative: "déterminatif", "phonetic complement": "complément phonétique",
+    numeral: "nombre", ideogram: "idéogramme", radical: "clé",
+    noun: "nom", verb: "verbe", adjective: "adjectif", adverb: "adverbe", pronoun: "pronom", preposition: "préposition", conjunction: "conjonction",
+    masculine: "masculin", feminine: "féminin", neuter: "neutre", common: "commun", plural: "pluriel",
+  },
+  es: {
+    sign: "signo", word: "palabra", phrase: "expresión", character: "carácter", compound: "compuesto",
+    lexical: "léxico", logogram: "logograma", logographic: "logográfico", syllabogram: "silabograma", syllabic: "silábico",
+    phonogram: "fonograma", phonetic: "fonético", determinative: "determinativo", "phonetic complement": "complemento fonético",
+    numeral: "número", ideogram: "ideograma", radical: "radical",
+    noun: "sustantivo", verb: "verbo", adjective: "adjetivo", adverb: "adverbio", pronoun: "pronombre", preposition: "preposición", conjunction: "conjunción",
+    masculine: "masculino", feminine: "femenino", neuter: "neutro", common: "común", plural: "plural",
+  },
+  en: {},
+};
+
+export function infoLabel(label: string): string {
+  const key = label.toLowerCase().replace(/[-_]+/g, " ");
+  return INFO_LABELS[currentLang()][key] ?? label;
 }

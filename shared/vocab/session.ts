@@ -16,7 +16,7 @@
  */
 import { acceptedForms, display, normalise, writable } from "./grade";
 import { NEW_PER_SESSION, RECALL_AFTER, askMode, type CardState, type Direction, type ModePreference } from "./schedule";
-import type { BookKind, TranslationLang } from "./format";
+import type { BookKind, EntryInfo, TranslationLang } from "./format";
 import type { VocabCard } from "../types";
 
 export interface SessionEntry {
@@ -43,6 +43,8 @@ export interface SessionEntry {
   part?: number;
   /** Entries of the book showing the same picture (a shared scene), 1 when it is the entry's own. */
   imageUses?: number;
+  /** Format 3: what the entry is, its readings by language, what it does in writing. */
+  info?: EntryInfo;
   book: BookInfo;
 }
 

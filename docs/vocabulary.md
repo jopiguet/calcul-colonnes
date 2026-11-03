@@ -46,8 +46,8 @@ own, and stay in your database:
 - **Storage:** the import puts the entries in your database (SQLite or Neon). They are never part of the project, a build or a release.
 - **Access:** keep the app behind its sign-in, with `REGISTRATION=invite` (or `closed`) if the server is reachable from the internet. A book is imported *private*: only the owner's account (the first one) sees it, whoever else has an account. The owner can share a book under an open licence from the Account page (see [Authentication › Family release](authentication.md#family-release)).
 
-The tests use eight invented books (`tests/e2e/fixtures/`): 27 Spanish
-entries, two German books (5 German–English entries, 10 German–French ones), 5 Arabic ones, 5 cuneiform signs, 5 Portuguese ones with two drawn pictures (`vocab-pictures/`), 20 English ones, 13 Japanese ones and 17 characters.
+The tests use nine invented books (`tests/e2e/fixtures/`): 27 Spanish
+entries, two German books (5 German–English entries, 10 German–French ones), 5 Arabic ones, 5 cuneiform signs (format 3), 4 Latin words (format 3), 5 Portuguese ones with two drawn pictures (`vocab-pictures/`), 20 English ones, 13 Japanese ones and 17 characters.
 
 ## Importing a book
 
@@ -387,8 +387,76 @@ Format 2, one book per file:
 | `reading` | Optional: how the term reads when its script does not say it, in Latin letters (Japanese rōmaji: `"gachō"` for ガチョウ). Shown with the term, and accepted as an answer. |
 | `readings` | Optional, Characters book: a kanji's readings, on'yomi in katakana then kun'yomi in hiragana, okurigana in brackets: `"ニチ / ジツ / ひ / か"`. Asked as a third direction; any one is a right answer. |
 | `translations` | Optional: the meaning in other interface languages, `{"fr": "jour / soleil", "es": "día / sol"}`. Used when the interface is in that language. |
+| `type`, `readings` (a list), `functions` | Format 3 only: see [Format 3](#format-3). |
 | `image` | Optional: a picture, as a path relative to the file (`"images/page_0047_image_01.png"`): PNG, JPEG, WebP or GIF, at most 2 MB. See [Pictures](#pictures). |
 | `part` | Optional, with `image`: the word's number on the picture, a labelled diagram (`1` for *1. rotor*). |
+
+### Format 3
+
+For languages where an entry is more than a word and its meaning: a
+cuneiform sign that reads *an* or *diĝir*, *ilum* in Akkadian, and also
+stands silent before a god's name; a Latin noun learnt with its gender and
+genitive, a verb with its principal parts. Format 3 is format 2 with more
+fields on an entry, and **only known fields**: a misspelt one (`"genders"`)
+is refused, naming it, instead of being dropped. An older server refuses a
+format-3 file (*"format" must be 1 or 2*) instead of losing them, and a
+format-2 file that uses them is refused too, saying so.
+
+```json
+{
+  "format": 3,
+  "book": { "id": "cuneiform-signs", "title": "Cuneiform: Essential Signs",
+            "kind": "translation", "term": "sux", "meaning": "en" },
+  "lessons": [{ "title": "The world around us", "sections": [{ "title": "Sky, earth and nature", "entries": [
+    { "term": "𒀭", "meaning": "heaven; sky; god", "reading": "an",
+      "type": "sign",
+      "readings": [
+        { "value": "an", "language": "sux" },
+        { "value": "diĝir", "language": "sux" },
+        { "value": "ilum", "language": "akk", "note": "the word for god" }
+      ],
+      "functions": ["logogram", "determinative"],
+      "note": "Also a silent divine determinative." }
+  ] }] }]
+}
+```
+
+| Field | |
+|---|---|
+| `type` | Optional: what the entry is, a short label (`sign`, `word`, `phrase`, `compound`). Shown after the answer. |
+| `readings` | Optional: a list of readings, each `{"value", "language", "note"}` or just `"an"`. One reading per value (`"an; diĝir"` is refused: two values). `language` is a code (`sux`, `akk`, `egy`) or an English name (`sumerian`); the app names the ones it knows in the interface's language and shows the others as written. At most 20. |
+| `functions` | Optional: what it does in writing, short labels (`logogram`, `syllabogram`, `determinative`, `phonetic complement`), at most 8. |
+| `gender` | Optional: a noun's gender, a short label (`masculine`, `feminine`, `neuter`, `common`). |
+| `genitive` | Optional: a noun's genitive singular (`hominis`). |
+| `principal_parts` | Optional: a verb's principal parts, 1 to 6, in the dictionary's order (`["habeo", "habere", "habui", "habitum"]`). |
+| `forms` | Optional: any other form to show, at most 12: `[{"label": "plural", "value": "homines"}]`. |
+
+A Latin entry:
+
+```json
+{ "term": "homo", "meaning": "human being; person; man",
+  "type": "noun", "gender": "masculine", "genitive": "hominis",
+  "note": "Third declension; plural homines." }
+```
+
+The term is still the one answer for the word: *habere* for *to have*, not
+*habeo*. The other forms are shown, not asked.
+
+**Every reading is an answer.** `reading` is what is shown under the sign;
+the readings of the list it lacks are added to it, so *an*, *diĝir* and
+*ilum* are each right when the sign is asked, typed as for any reading:
+case ignored, *digir* right for *diĝir* (see [How answers are
+graded](#how-answers-are-graded)). Without `reading`, the list's values make
+it (`an; diĝir; ilum`).
+
+**After the answer** the card shows the type, gender and functions as tags
+(*nom*, *masculin*; *signe*, *logogramme*, *déterminatif*: the usual labels
+are translated, others shown as written), then the forms (*Génitif hominis*,
+*Temps primitifs habeo · habere · habui · habitum*), then the readings by language (*Sumérien an · diĝir*, *Akkadien ilum
+(the word for god)*), then the note.
+
+A string `readings` is still a kanji's readings (`"ニチ / ジツ"`), in format 3
+as in format 2.
 
 Files in format 1, written by version 4.2 for the Collins book (titles and
 entries as `{ "en", "es" }`), are still read, as the book `collins-spanish`.

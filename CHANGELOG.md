@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.37.0
+
+- **Vocabulary file format 3**, for languages where an entry is more than a word and its meaning: on an entry, `type` (`sign`, `noun`, `verb`…), `readings` as a list (`{"value": "diĝir", "language": "sux", "note": "…"}`), `functions` (`logogram`, `determinative`…), and for Latin and its like `gender`, `genitive`, `principal_parts` and `forms` (`[{"label": "plural", "value": "homines"}]`). Only known fields: a misspelt one is refused, named, rather than dropped. See [Vocabulary › Format 3](docs/vocabulary.md#format-3).
+  - **Every reading is an answer:** the list's readings are added to `reading`, so *an*, *diĝir* and *ilum* are each right for 𒀭.
+  - **After the answer:** the type, gender and functions as tags, the forms (*Génitif hominis*, *Temps primitifs habeo · habere · habui · habitum*), the readings by language (*Sumérien an · diĝir*, *Akkadien ilum*); the usual labels and languages translated (Latin, Akkadian and Ancient Greek added).
+  - **Formats 1 and 2 are read as before;** a format-2 file using the new fields is refused with a pointer to format 3, and a server before 6.37 refuses a format-3 file rather than dropping them. A `readings` text stays a kanji's readings.
+- **Database:** migration `034_vocab_info`.
+- **Checks:** `check:vocab` reads format 3 (readings completing `reading`, refused fields, formats 1 and 2), imports it, grades every reading and corrects the info in place.
+- **Tests:** the invented cuneiform book is now in format 3, and an invented Latin book is added; `tests/e2e/vocab.spec.ts` checks the tags, readings and forms after the answer, and that an Akkadian reading is right.
+
 ## 6.36.2
 
 Chores: nothing changes in the app.
