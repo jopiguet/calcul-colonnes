@@ -786,7 +786,7 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-for now, with the exercises done (*12 exercices sur 126 réussis*). See
+and **𓋹 Égyptien hiéroglyphique**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
 **The course page** lists the 31 lessons, each with its exercises done
@@ -807,6 +807,12 @@ parts. *← Leçon 4* and *Leçon 6 →* sit at the top, with the way back to th
 - a translation: right when it matches one of the model answers closely
   enough; otherwise the model answer is shown (*Proposition : …*) to compare
   with yours, and *J'avais juste* marks it right, *Annuler* takes that back.
+
+In the Egyptian course, a row of buttons under each exercise writes the
+letters a keyboard lacks (ꜣ ꜥ ḥ ḫ ẖ š ḳ ṯ ḏ) where the cursor is, and a
+transliteration can be typed as it is read: *ankh*, *nefer*, *netjer* are
+right for *ꜥnḫ*, *nfr*, *nṯr*. The hieroglyphs are drawn large, and each word
+of the lesson shows its reading under its signs.
 
 A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
 shows them checked, and *Recommencer la leçon* empties it.

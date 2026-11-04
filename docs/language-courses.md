@@ -9,15 +9,17 @@ structure and the same exercises.
 | Course | Version | Lessons | Exercises | Words |
 |---|---|---|---|---|
 | 🏛️ Latin (`latin`) | 7.0.0 | 31 | 126 | 410 |
+| 𓋹 Hieroglyphic Egyptian (`egyptian`) | 7.1.0 | 21 | 84 | 168 |
 
 The content is original, written for the app, and ships with it; quoted texts
-(Caesar, Catullus, Virgil) are in the public domain.
+(Caesar, Catullus, Virgil; Sinuhe, the Shipwrecked Sailor, the offering
+formula) are in the public domain.
 
 ## Files
 
 ```text
 content/courses/
-  index.json                      ["latin"]: the courses, in order
+  index.json                      ["latin", "egyptian"]: the courses, in order
   latin/
     course.json                   id, language, icon, folds, titles, the lesson list
     01-letters-and-sounds/
@@ -42,7 +44,7 @@ content/courses/
 }
 ```
 
-`vocabLesson` names the lessons of the vocabulary book. `lessons` lists the lesson folders in order; a folder not listed is not
+`vocabLesson` names the lessons of the vocabulary book. `keys` (optional) lists letters a keyboard lacks; they are offered as buttons under every exercise with fields and write at the cursor of the field last used (Egyptian: `["ꜣ", "ꜥ", "ḥ", "ḫ", "ẖ", "š", "ḳ", "ṯ", "ḏ"]`). `lessons` lists the lesson folders in order; a folder not listed is not
 loaded. `build:server` copies `content/courses` into `dist-server/`.
 
 ## A lesson
@@ -60,7 +62,10 @@ three languages:
 
 The Markdown is the courses' small dialect (headings, paragraphs, lists,
 tables, `*italics*`, `**bold**`, italics holding bold); a line ending in `\`
-is a line break, for verse. Two blocks are added:
+is a line break, for verse. Hieroglyphs (U+13000–1345F) and cuneiform
+(U+12000–1254F) in the text are drawn larger, in their Noto font, wherever
+they appear: text, tables, options. A blank never sits inside emphasis: an
+exercise line with a blank has no italics. Two blocks are added:
 
 ```markdown
 ::: exercise decline-exercitus
@@ -101,14 +106,20 @@ course's folds.
 | `ij` | *j* = *i* | *iam*, *jam* |
 | `uv` | *v* = *u* | *uīvus*, *vīvus* |
 | `accents` | every accent dropped | Greek and the like |
-| `translit` | *ḥ* = *h*, *š* = *sh*, *ꜥ* dropped, `-.=` dropped… | Egyptian, Akkadian transliteration |
+| `translit` | *ḥ* = *h*, *š* = *sh*, *ꜥ* dropped, `-.=` dropped… | Akkadian transliteration |
 | `aleph3` | *3* = *ꜣ* | Egyptian typed on a keyboard |
 | `subscripts` | *₂* = *2* | Sumerian sign indices |
+| `egyptian` | strict blanks compared by their consonants: *ꜣ ꜥ* (*3*, *'*) and the vowels *a e o* dropped, *j i y* one letter, *w u* one, *ḥ ḫ ẖ kh x* = *h*, *š sh* = *s*, *ṯ tj* = *t*, *ḏ dj* = *d*, *ḳ q* = *k*, dots and hyphens dropped; free answers keep their vowels | Egyptian typed as it is read: *ankh*, *nefer*, *sedjem.n.ef* |
+
+The `egyptian` fold makes *h* and *ḥ* one answer: exercises that test the
+difference between such letters are choices, not typed blanks.
 
 ## Vocabulary
 
 `vocab.json` holds the lesson's words in [vocabulary format 3](vocabulary.md#format-3)
-(`type`, `gender`, `genitive`, `principal_parts`, `forms`); `meaning` is
+(`type`, `gender`, `genitive`, `principal_parts`, `forms`; `reading` for a
+script: the hieroglyphs in `term`, the transliteration in `reading`, shown
+under the signs and accepted as the answer in the vocabulary book); `meaning` is
 English and `translations` gives French and Spanish. Notes are not
 translated, so they are written in the language taught (*domī, domum, domō*).
 

@@ -50,7 +50,7 @@ never committed and never in a release zip.
 | `worksheet.ts` | The A4 PDF worksheet, written by hand (no library) |
 | `quiz.ts` | Multiple-choice screens: settings, question, results; review focus |
 | `course.ts`, `courses/` | The in-app courses, one per test (13): `courses/<id>/<lang>.md` loaded on demand, `courses/sections.ts` mapping topics and kinds to parts; the reader and the links from wrong answers |
-| `markdown.ts`, `markdown-parse.ts` | The small Markdown reader for the courses: headings, lists, check lists, tables, code, links, TeX formulas, italics holding bold, `\` line breaks |
+| `markdown.ts`, `markdown-parse.ts` | The small Markdown reader for the courses: headings, lists, check lists, tables, code, links, TeX formulas, italics holding bold, `\` line breaks, hieroglyphs and cuneiform set in their font |
 | `lessons.ts`, `lessons-i18n.ts` | Language courses: a course's lessons and progress, a lesson with its exercises filled in on the page and marked, its summary and words; their texts. See [Language courses](language-courses.md). |
 | `progress.ts`, `progress-i18n.ts` | Progress pages of a player (the overview and each activity's), and their texts |
 | `graph.ts` | The QCM's graphs as inline SVG: curves on a grid, a plane in space, economic diagrams; colours from CSS classes, for both themes |
@@ -262,7 +262,7 @@ server; each signs up its own account.
 | `linux.spec.ts`, `sql.spec.ts`, `rust.spec.ts`, `typescript.spec.ts`, `react.spec.ts`, `gcp.spec.ts`, `cloudflare.spec.ts` | The computing tests: card, levels and topics; code shown as code and graded on the server, on a phone; a slip named |
 | `econ.spec.ts`, `marx.spec.ts`, `calc.spec.ts` | Public economics, *Capital* and calculus: charts and graphs as options, graded on the server, the course linked |
 | `discover.spec.ts`, `puzzles.spec.ts`, `physics.spec.ts`, `astronomy.spec.ts`, `biology.spec.ts`, `curiosities.spec.ts` | The Discover labs: predict, try, compare, check; the logic grids; on a phone |
-| `lessons.spec.ts` | A Latin lesson: strict, free and choice answers marked, a free answer marked right by the player, all kept after a reload; the course's shared vocabulary book; a lesson on a phone |
+| `lessons.spec.ts` | A Latin lesson: strict, free and choice answers marked, a free answer marked right by the player, all kept after a reload; the course's shared vocabulary book; a lesson on a phone; an Egyptian lesson: hieroglyphs in their font, the key row, answers typed as read, readings in the word list |
 | `workbook.spec.ts` | Workbook exercises on an invented book: gaps on the page and fields under it, the correction of a unit, answers kept, the routes' access |
 
 `helpers.ts` holds the shared steps; `owner.ts` the owner's account the test

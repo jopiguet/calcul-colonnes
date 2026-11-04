@@ -6661,3 +6661,37 @@ button.tiny {
 .lesson-page .title {
   text-align: left;
 }
+
+/* Hieroglyphs and cuneiform in a course's text: their own font, large enough to read. */
+.script-signs {
+  font-size: 1.6em;
+  line-height: 1;
+  vertical-align: -0.15em;
+  letter-spacing: 0.02em;
+}
+.script-signs.hiero {
+  font-family: "Noto Sans Egyptian Hieroglyphs", var(--font);
+}
+.script-signs.cuneiform {
+  font-family: "Noto Sans Cuneiform", var(--font);
+}
+.lesson-vocab-sign:lang(egy),
+.lesson-vocab-sign:lang(sux),
+.lesson-vocab-sign:lang(akk) {
+  font-size: 1.6em;
+}
+.lesson-vocab-reading {
+  display: block;
+  font-style: italic;
+  color: var(--muted);
+}
+.lesson-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.4rem 0 0.2rem;
+}
+.lesson-key {
+  min-width: 2.2rem;
+  font-size: 1.05rem;
+}

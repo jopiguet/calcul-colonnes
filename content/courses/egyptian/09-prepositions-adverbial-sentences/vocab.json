@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "𓅓", "reading": "m", "meaning": "in; with; from; as", "translations": { "fr": "dans ; avec ; hors de ; en tant que", "es": "en; con; desde; como" }, "type": "preposition" },
+    { "term": "𓂋", "reading": "r", "meaning": "to; towards; against; than", "translations": { "fr": "vers ; contre ; plus que", "es": "hacia; contra; más que" }, "type": "preposition" },
+    { "term": "𓁷𓏤", "reading": "ḥr", "meaning": "on; upon; because of", "translations": { "fr": "sur ; à cause de", "es": "sobre; a causa de" }, "type": "preposition" },
+    { "term": "𓎛𓈖𓂝", "reading": "ḥnꜥ", "meaning": "together with", "translations": { "fr": "avec ; en compagnie de", "es": "con; en compañía de" }, "type": "preposition" },
+    { "term": "𓏇𓇋", "reading": "mj", "meaning": "like; as", "translations": { "fr": "comme", "es": "como" }, "type": "preposition" },
+    { "term": "𓇋𓈖", "reading": "jn", "meaning": "by (agent)", "translations": { "fr": "par (agent)", "es": "por (agente)" }, "type": "preposition" },
+    { "term": "𓃛𓅱", "reading": "jw", "meaning": "(particle introducing a statement)", "translations": { "fr": "(particule introduisant un énoncé)", "es": "(partícula que introduce un enunciado)" }, "type": "particle" },
+    { "term": "𓈗", "reading": "mw", "meaning": "water", "translations": { "fr": "eau", "es": "agua" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓏞𓀀", "reading": "sš", "meaning": "scribe", "translations": { "fr": "scribe", "es": "escriba" }, "type": "noun", "gender": "masculine" }
+  ]
+}

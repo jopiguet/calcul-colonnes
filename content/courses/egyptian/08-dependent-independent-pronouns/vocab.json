@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "𓇋𓈖𓎡", "reading": "jnk", "meaning": "I (independent)", "translations": { "fr": "moi, je (indépendant)", "es": "yo (independiente)" }, "type": "pronoun" },
+    { "term": "𓈖𓏏𓆑", "reading": "ntf", "meaning": "he (independent)", "translations": { "fr": "lui, il (indépendant)", "es": "él (independiente)" }, "type": "pronoun" },
+    { "term": "𓈖𓏏𓋴", "reading": "nts", "meaning": "she (independent)", "translations": { "fr": "elle (indépendant)", "es": "ella (independiente)" }, "type": "pronoun" },
+    { "term": "𓈖𓏏𓎡", "reading": "ntk", "meaning": "you, masculine (independent)", "translations": { "fr": "toi, masculin (indépendant)", "es": "tú, masculino (independiente)" }, "type": "pronoun" },
+    { "term": "𓋴𓅱", "reading": "sw", "meaning": "him; he (dependent)", "translations": { "fr": "le ; il (dépendant)", "es": "lo; él (dependiente)" }, "type": "pronoun" },
+    { "term": "𓅱𓇋𓀀", "reading": "wj", "meaning": "me; I (dependent)", "translations": { "fr": "me ; je (dépendant)", "es": "me; yo (dependiente)" }, "type": "pronoun" },
+    { "term": "𓌳𓄿𓄿𓁹", "reading": "mꜣꜣ", "meaning": "to see", "translations": { "fr": "voir", "es": "ver" }, "type": "verb" },
+    { "term": "𓂋𓐍𓏛", "reading": "rḫ", "meaning": "to know; learn", "translations": { "fr": "savoir ; connaître", "es": "saber; conocer" }, "type": "verb" },
+    { "term": "𓅓𓎡", "reading": "mk", "meaning": "look!; behold", "translations": { "fr": "vois ! ; voici", "es": "¡mira!; he aquí" }, "type": "particle" }
+  ]
+}

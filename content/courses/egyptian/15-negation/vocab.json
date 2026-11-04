@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "𓂜", "reading": "n", "meaning": "not (negation)", "translations": { "fr": "ne … pas (négation)", "es": "no (negación)" }, "type": "particle" },
+    { "term": "𓂜𓈖", "reading": "nn", "meaning": "there is no; will not", "translations": { "fr": "il n'y a pas ; ne … pas (futur)", "es": "no hay; no (futuro)" }, "type": "particle" },
+    { "term": "𓍃𓅓", "reading": "tm", "meaning": "not to (negative verb)", "translations": { "fr": "ne pas (verbe négatif)", "es": "no (verbo negativo)" }, "type": "verb" },
+    { "term": "𓇋𓋴", "reading": "js", "meaning": "(second part of nj … js)", "translations": { "fr": "(seconde partie de nj … js)", "es": "(segunda parte de nj … js)" }, "type": "particle" },
+    { "term": "𓎟", "reading": "nb", "meaning": "every; any (after a noun)", "translations": { "fr": "tout ; chaque (après un nom)", "es": "todo; cada (tras un sustantivo)" }, "type": "adjective" },
+    { "term": "𓊃𓊪", "reading": "zp", "meaning": "time; occasion", "translations": { "fr": "fois ; occasion", "es": "vez; ocasión" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓇋𓅱𓏏𓏭", "reading": "jwtj", "meaning": "who has not; without", "translations": { "fr": "qui n'a pas ; sans", "es": "que no tiene; sin" }, "type": "adjective" }
+  ]
+}

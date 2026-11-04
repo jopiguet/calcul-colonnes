@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "𓇓𓏏𓈖", "reading": "nswt", "meaning": "king", "translations": { "fr": "roi", "es": "rey" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓇓𓏏𓈖𓉐𓏤", "reading": "pr nswt", "meaning": "the king's house; palace", "translations": { "fr": "la maison du roi ; palais", "es": "la casa del rey; palacio" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓁷𓏤", "reading": "ḥr", "meaning": "face", "translations": { "fr": "visage", "es": "rostro" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓁶𓏤", "reading": "tp", "meaning": "head", "translations": { "fr": "tête", "es": "cabeza" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓃀𓇋𓈖𓅪", "reading": "bjn", "meaning": "bad; evil", "translations": { "fr": "mauvais", "es": "malo" }, "type": "adjective" },
+    { "term": "𓏶𓇋𓇋", "reading": "jmj", "meaning": "who is in", "translations": { "fr": "qui est dans", "es": "que está en" }, "type": "adjective" },
+    { "term": "𓁷𓂋𓏭", "reading": "ḥrj", "meaning": "who is upon; chief", "translations": { "fr": "qui est sur ; chef", "es": "que está sobre; jefe" }, "type": "adjective" },
+    { "term": "𓁷𓂋𓏭𓁶", "reading": "ḥrj-tp", "meaning": "chief; leader", "translations": { "fr": "chef", "es": "jefe; dirigente" }, "type": "noun", "gender": "masculine" }
+  ]
+}

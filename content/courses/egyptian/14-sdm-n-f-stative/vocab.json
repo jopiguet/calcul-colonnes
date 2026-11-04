@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "𓆓𓏏𓇿", "reading": "ḏt", "meaning": "eternity; for ever", "translations": { "fr": "éternité ; à jamais", "es": "eternidad; para siempre" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓈎𓂧𓀨", "reading": "qd", "meaning": "to build", "translations": { "fr": "bâtir", "es": "construir" }, "type": "verb" },
+    { "term": "𓏎𓈖𓅱𓏥", "reading": "jnw", "meaning": "tribute; gifts", "translations": { "fr": "tribut ; présents", "es": "tributo; presentes" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓇋𓇋𓂻𓎡𓇋", "reading": "jj.kj", "meaning": "I have come", "translations": { "fr": "je suis venu", "es": "he venido" }, "type": "phrase" },
+    { "term": "𓋹𓈖𓐍𓆓𓏏𓇿", "reading": "ꜥnḫ ḏt", "meaning": "alive for ever", "translations": { "fr": "vivant à jamais", "es": "vivo para siempre" }, "type": "phrase" },
+    { "term": "𓁹𓈖𓆑", "reading": "jr.n.f", "meaning": "he did; he made", "translations": { "fr": "il fit", "es": "él hizo" }, "type": "verb" }
+  ]
+}

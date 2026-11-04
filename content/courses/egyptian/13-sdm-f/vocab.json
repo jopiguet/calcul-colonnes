@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "𓁹𓂋𓂋", "reading": "jrr.f", "meaning": "he does (imperfective)", "translations": { "fr": "il fait (inaccompli)", "es": "él hace (imperfectivo)" }, "type": "verb" },
+    { "term": "𓂧𓂧𓆑", "reading": "dd.f", "meaning": "he gives (imperfective)", "translations": { "fr": "il donne (inaccompli)", "es": "él da (imperfectivo)" }, "type": "verb" },
+    { "term": "𓂞𓆑", "reading": "dj.f", "meaning": "may he give (subjunctive)", "translations": { "fr": "puisse-t-il donner (subjonctif)", "es": "que dé (subjuntivo)" }, "type": "verb" },
+    { "term": "𓌻𓂋𓏏", "reading": "mrrt", "meaning": "what is loved; what one loves", "translations": { "fr": "ce qui est aimé ; ce qu'on aime", "es": "lo amado; lo que se ama" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓄤𓆑𓂋𓅱𓏥", "reading": "nfrw", "meaning": "beauty", "translations": { "fr": "beauté", "es": "belleza" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓆓𓂧𓏤𓆑", "reading": "ḏd.f", "meaning": "he says", "translations": { "fr": "il dit", "es": "él dice" }, "type": "verb" }
+  ]
+}

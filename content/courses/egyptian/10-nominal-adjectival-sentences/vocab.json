@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "𓊪𓅱", "reading": "pw", "meaning": "this; it is (copula)", "translations": { "fr": "ce ; c'est (copule)", "es": "esto; es (cópula)" }, "type": "pronoun" },
+    { "term": "𓉻𓄿", "reading": "ꜥꜣ", "meaning": "great; big", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective" },
+    { "term": "𓅱𓇋𓀁", "reading": "wj", "meaning": "how …! (exclamation)", "translations": { "fr": "comme … ! (exclamation)", "es": "¡qué …! (exclamación)" }, "type": "particle" },
+    { "term": "𓊪𓏏𓂋", "reading": "ptr", "meaning": "what?", "translations": { "fr": "quoi ?", "es": "¿qué?" }, "type": "pronoun" },
+    { "term": "𓈖𓅓", "reading": "nm", "meaning": "who?", "translations": { "fr": "qui ?", "es": "¿quién?" }, "type": "pronoun" },
+    { "term": "𓅭𓀀𓊪𓅱", "reading": "sꜣ pw", "meaning": "it is a son", "translations": { "fr": "c'est un fils", "es": "es un hijo" }, "type": "phrase" }
+  ]
+}

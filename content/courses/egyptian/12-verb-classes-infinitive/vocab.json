@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "𓌻𓂋𓀁", "reading": "mrj", "meaning": "to love; want", "translations": { "fr": "aimer ; vouloir", "es": "amar; querer" }, "type": "verb" },
+    { "term": "𓁹", "reading": "jrj", "meaning": "to do; make", "translations": { "fr": "faire", "es": "hacer" }, "type": "verb" },
+    { "term": "𓂋𓂞", "reading": "rdj", "meaning": "to give; cause", "translations": { "fr": "donner ; faire que", "es": "dar; hacer que" }, "type": "verb" },
+    { "term": "𓇋𓇋𓂻", "reading": "jj", "meaning": "to come", "translations": { "fr": "venir", "es": "venir" }, "type": "verb" },
+    { "term": "𓏎𓈖", "reading": "jnj", "meaning": "to bring; fetch", "translations": { "fr": "apporter ; aller chercher", "es": "traer; ir a buscar" }, "type": "verb" },
+    { "term": "𓃹𓈖𓈖", "reading": "wnn", "meaning": "to be; exist", "translations": { "fr": "être ; exister", "es": "ser; existir" }, "type": "verb" },
+    { "term": "𓌃𓂧𓅱𓀁𓏥", "reading": "mdw", "meaning": "words; speech", "translations": { "fr": "paroles ; discours", "es": "palabras; discurso" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓎛𓋴𓀁", "reading": "ḥsj", "meaning": "to praise; favour", "translations": { "fr": "louer ; favoriser", "es": "alabar; favorecer" }, "type": "verb" }
+  ]
+}

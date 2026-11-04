@@ -1,5 +1,18 @@
 # Changelog
 
+## 7.1.0
+
+- **𓋹 Hieroglyphic Egyptian**, the second language course: 21 lessons, 84 exercises, 168 words, in French, Spanish and English, on the template of the Latin course. See [Language courses](docs/language-courses.md).
+  - **The script:** how hieroglyphs work and which way to read them, the transliteration alphabet and the Egyptological pronunciation, the 25 uniliteral signs, the common biliterals and triliterals with their phonetic complements, logograms and some thirty determinatives.
+  - **The grammar of Middle Egyptian:** gender, number and the dual, the genitives and the nisbe, suffix, dependent and independent pronouns, prepositions, the adverbial, nominal and adjectival sentences, numbers and dates, verb classes and the infinitive, the *sḏm.f*, the *sḏm.n.f* and the stative, negation (*n sḏm.f* against *n sḏm.n.f*), participles, relative forms and *ntj*, the imperative and the future.
+  - **Reading and symbols:** the offering formula part by part, the five royal names and the cartouche, the great symbols (ankh, djed, was, the eye of Horus), the crowns, the gods, ka, ba and akh and the judgement of the dead; the opening lines of Sinuhe and of the Shipwrecked Sailor.
+  - **Every sign is a Unicode hieroglyph** (Gardiner numbers in the tables), drawn in Noto Sans Egyptian Hieroglyphs, larger than the text.
+- **Answers typed as they are read:** a course fold, `egyptian`, compares a strict answer by its consonants, so *ꜥnḫ*, *ankh*, *anx* and *'nḫ* are one answer, and *nefer* is *nfr*. Free answers keep their vowels. Exercises on the difference between *h* and *ḥ* are choices.
+- **Special letters:** a course lists the letters a keyboard lacks (`keys` in `course.json`); they appear as buttons under each exercise and write at the cursor.
+- **Course Markdown:** hieroglyphs and cuneiform in a lesson are set apart in their font, in text, tables and options. The lesson's words show the reading under the signs.
+- **Checks:** `check:lessons` reads the Egyptian course and tests the new fold (*ankh*, *nefer*, *sḏm.n.f*, *j/i/y*, free answers unchanged).
+- **Tests:** `tests/e2e/lessons.spec.ts` checks the hieroglyph font, the key row writing *ꜥ* at the cursor, answers typed as read (*nefer*, *netjer*, *hotep*), and the readings in the word list.
+
 ## 7.0.0
 
 - **Language courses.** A new group on the home page, *Cours de langues*, with complete courses written for the app, in French, Spanish and English. See [Language courses](docs/language-courses.md).

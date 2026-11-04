@@ -70,3 +70,28 @@ test("a lesson fits a phone", async ({ page }) => {
   const wide = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(wide).toBeLessThanOrEqual(1);
 });
+
+test("Egyptian: hieroglyphs in their font, the special letters, answers typed as they are read", async ({ page }) => {
+  await newPlayer(page, "Nefert");
+  await openActivity(page, "lessons-egyptian");
+  await expect(page.locator(".lessons-item")).toHaveCount(21);
+  await page.locator(".lessons-item").first().click();
+  await expect(page.locator(".lesson-title")).toContainText("1.");
+  // Signs in the text are set apart, in the hieroglyph font.
+  const sign = page.locator(".script-signs.hiero").first();
+  await expect(sign).toBeVisible();
+  expect(await sign.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Egyptian Hieroglyphs");
+  // The key row writes ꜥ where the cursor is; "nefer", "ꜥnkh", "netjer" are read by their consonants.
+  const card = page.locator(".lesson-exercise[data-exercise='pronounce']");
+  const inputs = card.locator(".lesson-input");
+  await inputs.nth(0).fill("nefer");
+  await inputs.nth(1).click();
+  await card.locator(".lesson-key", { hasText: "ꜥ" }).click();
+  await inputs.nth(1).pressSequentially("nkh");
+  await expect(inputs.nth(1)).toHaveValue("ꜥnkh");
+  for (const [i, v] of [[2, "neb"], [3, "per"], [4, "netjer"], [5, "hotep"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("6/6");
+  // The lesson's words: the signs, their reading under them.
+  await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("nfr");
+});

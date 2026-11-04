@@ -117,8 +117,11 @@ function vocabTable(ctx: LessonsContext, view: LessonView): HTMLElement {
   table.append(head);
   for (const w of view.lesson.vocab) {
     const row = el("tr");
-    const term = el("td", "lesson-vocab-term", w.term);
-    term.lang = view.course.language;
+    const term = el("td", "lesson-vocab-term");
+    const sign = el("span", "lesson-vocab-sign", w.term);
+    sign.lang = view.course.language;
+    term.append(sign);
+    if (w.reading) term.append(el("span", "lesson-vocab-reading", w.reading));
     const i = w.info;
     const forms = [
       i?.genitive ? lt("genitive", { form: i.genitive }) : "",
@@ -135,9 +138,32 @@ function vocabTable(ctx: LessonsContext, view: LessonView): HTMLElement {
   return box;
 }
 
+/** The letters a keyboard lacks (ꜣ ꜥ ḥ ḫ…): each button writes its letter at the cursor of the field last used. */
+function keyRow(keys: string[], target: () => HTMLInputElement): HTMLElement {
+  const row = el("div", "lesson-keys");
+  row.setAttribute("aria-label", lt("keysAria"));
+  for (const k of keys) {
+    const b = button("ghost small lesson-key", k, () => {
+      const input = target();
+      const start = input.selectionStart ?? input.value.length;
+      const end = input.selectionEnd ?? start;
+      input.value = input.value.slice(0, start) + k + input.value.slice(end);
+      input.focus();
+      input.setSelectionRange(start + k.length, start + k.length);
+      input.dispatchEvent(new Event("input"));
+    });
+    // The field keeps its focus and its cursor.
+    b.addEventListener("mousedown", (event) => event.preventDefault());
+    row.append(b);
+  }
+  return row;
+}
+
 /** One exercise: its instruction, its items or table with a field (or a choice) for each blank, Check, the result. */
 function exerciseCard(ctx: LessonsContext, view: LessonView, e: PublicExercise, number: number, initial: ExerciseState): HTMLElement {
   let state = initial;
+  /** The blank last focused, where a key of the key row writes. */
+  let lastField = -1;
   const given: string[] = e.blanks.map((_, i) => state.given[i] ?? "");
   const card = el("section", "lesson-exercise");
   card.dataset.exercise = e.id;
@@ -152,7 +178,7 @@ function exerciseCard(ctx: LessonsContext, view: LessonView, e: PublicExercise, 
     card.append(head);
     if (e.prompt) for (const block of parseMarkdown(e.prompt)) card.append(renderBlock(block));
 
-    const fields: HTMLElement[] = [];
+    const fields: HTMLInputElement[] = [];
     const segments = (parts: Segment[], target: HTMLElement): HTMLElement => {
       for (const s of parts) {
         if (typeof s === "string") inline(s, target);
@@ -201,6 +227,7 @@ function exerciseCard(ctx: LessonsContext, view: LessonView, e: PublicExercise, 
           if (next) next.focus();
           else void check();
         });
+        input.addEventListener("focus", () => (lastField = i));
         fields.push(input);
         box.append(input);
       }
@@ -234,6 +261,7 @@ function exerciseCard(ctx: LessonsContext, view: LessonView, e: PublicExercise, 
       scroll.append(table);
       card.append(scroll);
     }
+    if (fields.length && view.course.keys.length) card.append(keyRow(view.course.keys, () => fields.find((f) => f.dataset.blank === String(lastField)) ?? fields[0]!));
     if (state.results?.includes("check")) card.append(el("p", "lesson-compare hint", lt("compare")));
     const status = el("p", "lesson-status");
     status.setAttribute("role", "status");

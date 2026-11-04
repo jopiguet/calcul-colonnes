@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "𓃹𓈖𓅓𓀁", "reading": "wnm", "meaning": "to eat", "translations": { "fr": "manger", "es": "comer" }, "type": "verb" },
+    { "term": "𓈙𓅓𓂻", "reading": "šm", "meaning": "to go", "translations": { "fr": "aller", "es": "ir" }, "type": "verb" },
+    { "term": "𓉐𓂋𓂻", "reading": "prj", "meaning": "to go out", "translations": { "fr": "sortir", "es": "salir" }, "type": "verb" },
+    { "term": "𓉔𓂋𓅱𓇳", "reading": "hrw", "meaning": "day", "translations": { "fr": "jour", "es": "día" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓎼𓂋𓎛𓇰", "reading": "grḥ", "meaning": "night", "translations": { "fr": "nuit", "es": "noche" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓈞𓏏𓁐", "reading": "ḥmt", "meaning": "woman; wife", "translations": { "fr": "femme ; épouse", "es": "mujer; esposa" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓊖𓏏𓏤", "reading": "nwt", "meaning": "town", "translations": { "fr": "ville", "es": "ciudad" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓈉𓏏𓏥", "reading": "ḫꜣst", "meaning": "foreign land; desert", "translations": { "fr": "pays étranger ; désert", "es": "país extranjero; desierto" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓂋𓅓𓍿𓀀𓁐𓏥", "reading": "rmṯ", "meaning": "people; mankind", "translations": { "fr": "les hommes ; le peuple", "es": "la gente; la humanidad" }, "type": "noun", "gender": "masculine" }
+  ]
+}

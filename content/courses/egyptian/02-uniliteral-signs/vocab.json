@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "𓂋𓈖", "reading": "rn", "meaning": "name", "translations": { "fr": "nom", "es": "nombre" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓇋𓏏𓆑𓀀", "reading": "jt", "meaning": "father", "translations": { "fr": "père", "es": "padre" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓆓𓂧", "reading": "ḏd", "meaning": "to say", "translations": { "fr": "dire", "es": "decir" }, "type": "verb" },
+    { "term": "𓊪𓏏𓇯", "reading": "pt", "meaning": "sky", "translations": { "fr": "ciel", "es": "cielo" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓂝𓈎", "reading": "ꜥḳ", "meaning": "to enter", "translations": { "fr": "entrer", "es": "entrar" }, "type": "verb" },
+    { "term": "𓆑𓈖𓂧", "reading": "fnd", "meaning": "nose", "translations": { "fr": "nez", "es": "nariz" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓊃𓀀", "reading": "s", "meaning": "man; person", "translations": { "fr": "homme ; personne", "es": "hombre; persona" }, "type": "noun", "gender": "masculine" }
+  ]
+}

@@ -35,6 +35,8 @@ export interface CourseMeta {
   vocabLesson: string;
   /** The lessons' folders, in order. */
   lessons: string[];
+  /** Letters a keyboard lacks, offered as buttons over the fields (Egyptian ꜣ ꜥ ḥ…). */
+  keys: string[];
 }
 
 export interface LoadedLesson {
@@ -82,6 +84,7 @@ export function loadCourse(dir: string): LoadedCourse {
     description: byLang(raw.description, `${id}: description`),
     vocabLesson: text(raw.vocabLesson) ? raw.vocabLesson : "{n}",
     lessons: lessonsList as string[],
+    keys: Array.isArray(raw.keys) ? (raw.keys as unknown[]).filter((k): k is string => typeof k === "string" && k.length > 0 && k.length <= 4).slice(0, 24) : [],
   };
   if (!/^[a-z]{2,3}$/.test(meta.language)) throw new Error(`${id}: "language" is a language code`);
   const lessons = meta.lessons.map((slug, i): LoadedLesson => {
@@ -250,13 +253,13 @@ export class LessonStore {
     }
     const around = (i: number) => (c.lessons[i] ? { slug: c.lessons[i]!.slug, n: c.lessons[i]!.n, title: c.lessons[i]!.byLang[lang].title } : null);
     return {
-      course: { id, title: c.meta.title[lang], language: c.meta.language, icon: c.meta.icon, vocabBook: vocabBookOf(c) ? vocabBookId(id) : null },
+      course: { id, title: c.meta.title[lang], language: c.meta.language, icon: c.meta.icon, vocabBook: vocabBookOf(c) ? vocabBookId(id) : null, keys: c.meta.keys },
       lesson: {
         n: l.n,
         slug,
         title: lesson.title,
         parts: lesson.parts.map((p) => (p.kind === "exercise" ? { kind: "exercise" as const, exercise: publicExercise(p.exercise) } : p)),
-        vocab: l.vocab.map((v) => ({ term: v.term, meaning: lang === "en" ? v.meaning : (v.translations?.[lang] ?? v.meaning), ...(v.info ? { info: v.info } : {}), ...(v.note ? { note: v.note } : {}) })),
+        vocab: l.vocab.map((v) => ({ term: v.term, ...(v.reading ? { reading: v.reading } : {}), meaning: lang === "en" ? v.meaning : (v.translations?.[lang] ?? v.meaning), ...(v.info ? { info: v.info } : {}), ...(v.note ? { note: v.note } : {}) })),
       },
       previous: around(index - 1),
       next: around(index + 1),

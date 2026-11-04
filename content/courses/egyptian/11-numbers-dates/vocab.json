@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "𓅱𓂝𓏤", "reading": "wꜥ", "meaning": "one", "translations": { "fr": "un", "es": "uno" }, "type": "numeral" },
+    { "term": "𓏤𓏤", "reading": "snwj", "meaning": "two", "translations": { "fr": "deux", "es": "dos" }, "type": "numeral" },
+    { "term": "𓎆", "reading": "mḏ", "meaning": "ten", "translations": { "fr": "dix", "es": "diez" }, "type": "numeral" },
+    { "term": "𓍢", "reading": "št", "meaning": "a hundred", "translations": { "fr": "cent", "es": "cien" }, "type": "numeral" },
+    { "term": "𓆼", "reading": "ḫꜣ", "meaning": "a thousand", "translations": { "fr": "mille", "es": "mil" }, "type": "numeral" },
+    { "term": "𓁨", "reading": "ḥḥ", "meaning": "a million; eternity", "translations": { "fr": "un million ; l'éternité", "es": "un millón; la eternidad" }, "type": "numeral" },
+    { "term": "𓇹𓇼𓂧", "reading": "ꜣbd", "meaning": "month", "translations": { "fr": "mois", "es": "mes" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓆷𓄿𓐍𓏏𓇳", "reading": "ꜣḫt", "meaning": "Inundation (season)", "translations": { "fr": "Inondation (saison)", "es": "Inundación (estación)" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓉐𓂋𓏏𓇳", "reading": "prt", "meaning": "Growing (season)", "translations": { "fr": "Croissance (saison)", "es": "Crecimiento (estación)" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓈙𓅓𓅱𓇳", "reading": "šmw", "meaning": "Harvest; summer (season)", "translations": { "fr": "Récolte ; été (saison)", "es": "Cosecha; verano (estación)" }, "type": "noun", "gender": "masculine" }
+  ]
+}

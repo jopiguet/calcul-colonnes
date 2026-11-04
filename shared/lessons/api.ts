@@ -51,14 +51,14 @@ export interface ExerciseState {
 export type PublicLessonPart = Exclude<LessonPart, { kind: "exercise" }> | { kind: "exercise"; exercise: PublicExercise };
 
 export interface LessonView {
-  course: { id: string; title: string; language: string; icon: string; vocabBook: string | null };
+  course: { id: string; title: string; language: string; icon: string; vocabBook: string | null; keys: string[] };
   lesson: {
     n: number;
     slug: string;
     title: string;
     parts: PublicLessonPart[];
     /** The lesson's words, their meaning in the interface's language. */
-    vocab: { term: string; meaning: string; info?: EntryInfo; note?: string }[];
+    vocab: { term: string; reading?: string; meaning: string; info?: EntryInfo; note?: string }[];
   };
   previous: { slug: string; n: number; title: string } | null;
   next: { slug: string; n: number; title: string } | null;

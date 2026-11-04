@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "𓅭𓀀", "reading": "sꜣ", "meaning": "son", "translations": { "fr": "fils", "es": "hijo" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓌢𓈖𓀀", "reading": "sn", "meaning": "brother", "translations": { "fr": "frère", "es": "hermano" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓇾𓏤", "reading": "tꜣ", "meaning": "land; earth", "translations": { "fr": "terre ; pays", "es": "tierra; país" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓄣𓏤", "reading": "jb", "meaning": "heart", "translations": { "fr": "cœur", "es": "corazón" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓋾𓄿", "reading": "ḥqꜣ", "meaning": "ruler", "translations": { "fr": "souverain", "es": "soberano" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓆣𓂋", "reading": "ḫpr", "meaning": "to come into being; become", "translations": { "fr": "advenir ; devenir", "es": "llegar a ser; devenir" }, "type": "verb" },
+    { "term": "𓊤", "reading": "ḫrw", "meaning": "voice", "translations": { "fr": "voix", "es": "voz" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓅨𓂋", "reading": "wr", "meaning": "great", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective" },
+    { "term": "𓆳𓏏𓇳", "reading": "rnpt", "meaning": "year", "translations": { "fr": "année", "es": "año" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓇋𓏠𓈖", "reading": "jmn", "meaning": "Amun", "translations": { "fr": "Amon", "es": "Amón" }, "type": "noun", "gender": "masculine" }
+  ]
+}

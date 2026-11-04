@@ -37,10 +37,21 @@ export function inline(text: string, target: HTMLElement = el("span")): HTMLElem
   return target;
 }
 
+/** Hieroglyphs and cuneiform signs: drawn larger than the text around them, in their own font. */
+const SIGNS = /([\u{13000}-\u{1345F}\u{12000}-\u{1254F}]+)/u;
+
+function signs(text: string, target: HTMLElement): void {
+  text.split(SIGNS).forEach((piece, i) => {
+    if (!piece) return;
+    if (i % 2 === 0) target.append(piece);
+    else target.append(el("span", /[\u{13000}-\u{1345F}]/u.test(piece) ? "script-signs hiero" : "script-signs cuneiform", piece));
+  });
+}
+
 function plain(text: string, target: HTMLElement, atoms: Atom[]): void {
   text.split(new RegExp(`${MARK}(\\d+)${MARK}`)).forEach((piece, i) => {
     if (i % 2 === 0) {
-      if (piece) target.append(piece);
+      if (piece) signs(piece, target);
       return;
     }
     const atom = atoms[Number(piece)]!;

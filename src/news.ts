@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.1.0",
+    fr: ["Cours de langues : l'égyptien hiéroglyphique, en 21 leçons, des signes à Sinouhé, avec la formule d'offrande, les noms des rois et les symboles. Les lettres spéciales ont leurs boutons, et « ankh » vaut ꜥnḫ."],
+    es: ["Cursos de idiomas: el egipcio jeroglífico, en 21 lecciones, de los signos a Sinuhé, con la fórmula de ofrenda, los nombres de los reyes y los símbolos. Las letras especiales tienen sus botones, y «ankh» vale ꜥnḫ."],
+    en: ["Language courses: hieroglyphic Egyptian, 21 lessons from the signs to Sinuhe, with the offering formula, the kings' names and the symbols. The special letters have buttons, and \"ankh\" counts as ꜥnḫ."],
+  },
+  {
     version: "7.0.0",
     fr: ["Cours de langues : un cours de latin complet, en 31 leçons, de l'alphabet à Virgile. Chaque leçon a ses explications et tableaux, ses exercices corrigés, un résumé et ses mots à réviser."],
     es: ["Cursos de idiomas: un curso completo de latín, en 31 lecciones, del alfabeto a Virgilio. Cada lección tiene sus explicaciones y tablas, ejercicios corregidos, un resumen y sus palabras para repasar."],

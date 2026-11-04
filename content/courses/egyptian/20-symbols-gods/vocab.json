@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "𓊽", "reading": "ḏd", "meaning": "stability; djed pillar", "translations": { "fr": "stabilité ; pilier djed", "es": "estabilidad; pilar djed" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓌀", "reading": "wꜣs", "meaning": "dominion; was sceptre", "translations": { "fr": "pouvoir ; sceptre ouas", "es": "dominio; cetro uas" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓂀", "reading": "wḏꜣt", "meaning": "the sound eye (of Horus)", "translations": { "fr": "l'œil intact (d'Horus)", "es": "el ojo sano (de Horus)" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓅽", "reading": "bꜣ", "meaning": "ba (soul, personality)", "translations": { "fr": "ba (âme, personnalité)", "es": "ba (alma, personalidad)" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓅜", "reading": "ꜣḫ", "meaning": "akh (transfigured spirit)", "translations": { "fr": "akh (esprit transfiguré)", "es": "aj (espíritu transfigurado)" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓊨𓏏𓁐", "reading": "ꜣst", "meaning": "Isis", "translations": { "fr": "Isis", "es": "Isis" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓅝", "reading": "ḏḥwtj", "meaning": "Thoth", "translations": { "fr": "Thot", "es": "Thot" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓉡", "reading": "ḥwt-ḥr", "meaning": "Hathor", "translations": { "fr": "Hathor", "es": "Hathor" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓆎𓏏𓊖", "reading": "kmt", "meaning": "Egypt, the black land", "translations": { "fr": "l'Égypte, la terre noire", "es": "Egipto, la tierra negra" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓋑", "reading": "ḥḏt", "meaning": "the white crown", "translations": { "fr": "la couronne blanche", "es": "la corona blanca" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓋔", "reading": "dšrt", "meaning": "the red crown", "translations": { "fr": "la couronne rouge", "es": "la corona roja" }, "type": "noun", "gender": "feminine" }
+  ]
+}

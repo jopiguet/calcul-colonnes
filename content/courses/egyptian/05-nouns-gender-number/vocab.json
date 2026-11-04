@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "𓌢𓈖𓏏𓁐", "reading": "snt", "meaning": "sister", "translations": { "fr": "sœur", "es": "hermana" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓅭𓏏𓁐", "reading": "sꜣt", "meaning": "daughter", "translations": { "fr": "fille", "es": "hija" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓎟𓏏", "reading": "nbt", "meaning": "lady; mistress", "translations": { "fr": "dame ; maîtresse", "es": "señora; dueña" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓊹𓏏", "reading": "nṯrt", "meaning": "goddess", "translations": { "fr": "déesse", "es": "diosa" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓊹𓊹𓊹", "reading": "nṯrw", "meaning": "gods", "translations": { "fr": "dieux", "es": "dioses" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "nṯrw" }] },
+    { "term": "𓇾𓇾", "reading": "tꜣwj", "meaning": "the Two Lands (Egypt)", "translations": { "fr": "les Deux Terres (l'Égypte)", "es": "las Dos Tierras (Egipto)" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓊪𓈖", "reading": "pn", "meaning": "this (masculine)", "translations": { "fr": "ce (masculin)", "es": "este (masculino)" }, "type": "pronoun" },
+    { "term": "𓏏𓈖", "reading": "tn", "meaning": "this (feminine)", "translations": { "fr": "cette (féminin)", "es": "esta (femenino)" }, "type": "pronoun" }
+  ]
+}

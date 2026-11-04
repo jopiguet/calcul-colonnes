@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "𓄤", "reading": "nfr", "meaning": "good; beautiful", "translations": { "fr": "bon ; beau", "es": "bueno; hermoso" }, "type": "adjective" },
+    { "term": "𓋹𓈖𓐍", "reading": "ꜥnḫ", "meaning": "life; to live", "translations": { "fr": "vie ; vivre", "es": "vida; vivir" }, "type": "noun" },
+    { "term": "𓉐𓏤", "reading": "pr", "meaning": "house", "translations": { "fr": "maison", "es": "casa" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓎟", "reading": "nb", "meaning": "lord; master", "translations": { "fr": "seigneur ; maître", "es": "señor; amo" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓊹", "reading": "nṯr", "meaning": "god", "translations": { "fr": "dieu", "es": "dios" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓊵𓏏𓊪", "reading": "ḥtp", "meaning": "offering; peace; to be content", "translations": { "fr": "offrande ; paix ; être satisfait", "es": "ofrenda; paz; estar satisfecho" }, "type": "noun" },
+    { "term": "𓂋𓂝𓇳𓏤", "reading": "rꜥ", "meaning": "sun; Ra", "translations": { "fr": "soleil ; Rê", "es": "sol; Ra" }, "type": "noun", "gender": "masculine" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "𓆑", "reading": ".f", "meaning": "he; him; his (suffix)", "translations": { "fr": "il ; lui ; son (suffixe)", "es": "él; su (sufijo)" }, "type": "pronoun" },
+    { "term": "𓋴", "reading": ".s", "meaning": "she; her (suffix)", "translations": { "fr": "elle ; sa (suffixe)", "es": "ella; su (sufijo)" }, "type": "pronoun" },
+    { "term": "𓎡", "reading": ".k", "meaning": "you; your, masculine (suffix)", "translations": { "fr": "tu ; ton, masculin (suffixe)", "es": "tú; tu, masculino (sufijo)" }, "type": "pronoun" },
+    { "term": "𓈖𓏥", "reading": ".n", "meaning": "we; us; our (suffix)", "translations": { "fr": "nous ; notre (suffixe)", "es": "nosotros; nuestro (sufijo)" }, "type": "pronoun" },
+    { "term": "𓋴𓈖𓏥", "reading": ".sn", "meaning": "they; them; their (suffix)", "translations": { "fr": "ils ; eux ; leur (suffixe)", "es": "ellos; su (sufijo)" }, "type": "pronoun" },
+    { "term": "𓈖", "reading": "n", "meaning": "to; for", "translations": { "fr": "à ; pour", "es": "a; para" }, "type": "preposition" },
+    { "term": "𓄔𓅓", "reading": "sḏm", "meaning": "to hear; listen", "translations": { "fr": "entendre ; écouter", "es": "oír; escuchar" }, "type": "verb" }
+  ]
+}

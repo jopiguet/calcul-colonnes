@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "𓇓𓆤", "reading": "nswt-bjtj", "meaning": "king of Upper and Lower Egypt", "translations": { "fr": "roi de Haute et de Basse-Égypte", "es": "rey del Alto y el Bajo Egipto" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓅭𓇳", "reading": "sꜣ rꜥ", "meaning": "son of Ra", "translations": { "fr": "fils de Rê", "es": "hijo de Ra" }, "type": "phrase" },
+    { "term": "𓅃", "reading": "ḥrw", "meaning": "Horus", "translations": { "fr": "Horus", "es": "Horus" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓉐𓉻", "reading": "pr-ꜥꜣ", "meaning": "the great house; Pharaoh", "translations": { "fr": "la grande maison ; Pharaon", "es": "la gran casa; Faraón" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓎟𓇾𓇾", "reading": "nb tꜣwj", "meaning": "lord of the Two Lands", "translations": { "fr": "seigneur des Deux Terres", "es": "señor de las Dos Tierras" }, "type": "phrase" },
+    { "term": "𓂞𓋹", "reading": "dj ꜥnḫ", "meaning": "given life", "translations": { "fr": "doué de vie", "es": "dotado de vida" }, "type": "phrase" },
+    { "term": "𓇳𓏠𓆣", "reading": "mn-ḫpr-rꜥ", "meaning": "Menkheperre (Thutmose III)", "translations": { "fr": "Menkheperrê (Thoutmosis III)", "es": "Menjeperra (Tutmosis III)" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓇋𓏠𓈖𓏏𓅱𓏏𓋹", "reading": "twt-ꜥnḫ-jmn", "meaning": "Tutankhamun", "translations": { "fr": "Toutânkhamon", "es": "Tutankamón" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓇳𓄟𓋴𓋴", "reading": "rꜥ-ms-sw", "meaning": "Ramesses", "translations": { "fr": "Ramsès", "es": "Ramsés" }, "type": "noun", "gender": "masculine" }
+  ]
+}

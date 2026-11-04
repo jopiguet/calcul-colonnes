@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "𓇓𓏏𓈖𓊵𓏏𓊪𓂞", "reading": "ḥtp-dj-nswt", "meaning": "an offering which the king gives", "translations": { "fr": "offrande que donne le roi", "es": "ofrenda que da el rey" }, "type": "phrase" },
+    { "term": "𓉓", "reading": "prt-ḫrw", "meaning": "invocation offering", "translations": { "fr": "offrande invocatoire", "es": "ofrenda de invocación" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓊨𓁹𓀭", "reading": "wsjr", "meaning": "Osiris", "translations": { "fr": "Osiris", "es": "Osiris" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓇋𓈖𓊪𓅱𓃢", "reading": "jnpw", "meaning": "Anubis", "translations": { "fr": "Anubis", "es": "Anubis" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓏐𓏏𓏤", "reading": "t", "meaning": "bread", "translations": { "fr": "pain", "es": "pan" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓏊𓏏", "reading": "ḥnqt", "meaning": "beer", "translations": { "fr": "bière", "es": "cerveza" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓂓𓏤𓃒", "reading": "kꜣ", "meaning": "bull; cattle", "translations": { "fr": "taureau ; bœufs", "es": "toro; bueyes" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓄪", "reading": "jmꜣḫ", "meaning": "revered; honoured one", "translations": { "fr": "vénéré ; honoré", "es": "venerado; honrado" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓐙𓂝𓊤", "reading": "mꜣꜥ-ḫrw", "meaning": "true of voice; justified", "translations": { "fr": "juste de voix ; justifié", "es": "justo de voz; justificado" }, "type": "adjective" },
+    { "term": "𓂓𓏤", "reading": "kꜣ", "meaning": "ka (life force)", "translations": { "fr": "ka (force vitale)", "es": "ka (fuerza vital)" }, "type": "noun", "gender": "masculine" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "𓌞𓋴𓅱𓀀", "reading": "šmsw", "meaning": "follower; retainer", "translations": { "fr": "suivant ; serviteur", "es": "seguidor; servidor" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓌞𓋴𓂻", "reading": "šms", "meaning": "to follow", "translations": { "fr": "suivre", "es": "seguir" }, "type": "verb" },
+    { "term": "𓅡𓎡𓀀", "reading": "bꜣk", "meaning": "servant", "translations": { "fr": "serviteur", "es": "servidor" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓈌𓏏𓏤", "reading": "ꜣḫt", "meaning": "horizon", "translations": { "fr": "horizon", "es": "horizonte" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓇋𓀀𓈎𓂋", "reading": "jqr", "meaning": "excellent; capable", "translations": { "fr": "excellent ; capable", "es": "excelente; capaz" }, "type": "adjective" },
+    { "term": "𓍑𓄿", "reading": "wḏꜣ", "meaning": "to be sound; prosper", "translations": { "fr": "être sain ; prospérer", "es": "estar sano; prosperar" }, "type": "verb" },
+    { "term": "𓄅𓏏𓏭𓂝", "reading": "ḥꜣtj-ꜥ", "meaning": "count; mayor", "translations": { "fr": "comte ; maire", "es": "conde; alcalde" }, "type": "noun", "gender": "masculine" },
+    { "term": "𓊪𓎛𓂻", "reading": "pḥ", "meaning": "to reach; arrive", "translations": { "fr": "atteindre ; arriver", "es": "alcanzar; llegar" }, "type": "verb" },
+    { "term": "𓄚𓈖𓅱𓊖", "reading": "ẖnw", "meaning": "the Residence; home", "translations": { "fr": "la Résidence ; chez soi", "es": "la Residencia; el hogar" }, "type": "noun", "gender": "masculine" }
+  ]
+}

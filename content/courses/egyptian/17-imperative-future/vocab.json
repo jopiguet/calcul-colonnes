@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "𓏇𓇋𓂻", "reading": "mj", "meaning": "come! (imperative)", "translations": { "fr": "viens ! (impératif)", "es": "¡ven! (imperativo)" }, "type": "verb" },
+    { "term": "𓇋𓐝𓂝", "reading": "jmj", "meaning": "give!; let …! (imperative)", "translations": { "fr": "donne ! ; fais que ! (impératif)", "es": "¡da!; ¡haz que! (imperativo)" }, "type": "verb" },
+    { "term": "𓂟", "reading": "m", "meaning": "do not! (negative imperative)", "translations": { "fr": "ne … pas ! (impératif négatif)", "es": "¡no …! (imperativo negativo)" }, "type": "verb" },
+    { "term": "𓋴𓈖𓂧𓀁", "reading": "snḏ", "meaning": "to fear; fear", "translations": { "fr": "craindre ; crainte", "es": "temer; temor" }, "type": "verb" },
+    { "term": "𓃛𓅱𓏏𓂻", "reading": "jwt", "meaning": "coming (infinitive of jj)", "translations": { "fr": "venir (infinitif de jj)", "es": "venir (infinitivo de jj)" }, "type": "verb" },
+    { "term": "𓃛𓅱𓆑𓂋", "reading": "jw.f r", "meaning": "he will (future)", "translations": { "fr": "il va (futur)", "es": "él va a (futuro)" }, "type": "phrase" }
+  ]
+}

@@ -13,9 +13,27 @@ import type { Blank } from "./format";
 export type BlankResult = "right" | "wrong" | "blank" | "check";
 
 /** A course's folds: what may be written either way in its language. */
-/** translit: the special letters of Egyptian and Akkadian transliteration; aleph3: Egyptian ꜣ typed as "3". */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts"];
+/**
+ * translit: the special letters of Egyptian and Akkadian transliteration; aleph3: Egyptian ꜣ typed as "3";
+ * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
+ * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
+ */
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian"];
+
+/**
+ * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
+ * morpheme dots are dropped; j, i, y are one letter; w and u one; the dotted and underlined letters
+ * fall on their plain ones (ḥ ḫ ẖ h; š s; ṯ t; ḏ d; ḳ q k), and so do kh, x, sh, tj, dj.
+ */
+export function egyptianKey(text: string): string {
+  let t = text.normalize("NFC").toLowerCase();
+  t = t.replace(/[ꜣꜢ3ꜥꜤʿʾ'’‘`]/g, "").replace(/[-.=()⸗\s]/g, "");
+  t = t.replace(/kh|x/g, "h").replace(/sh/g, "s").replace(/tj/g, "t").replace(/dj/g, "d");
+  t = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").normalize("NFC");
+  t = t.replace(/[ꞽỉ]/g, "i").replace(/[jy]/g, "i").replace(/u/g, "w").replace(/[qc]/g, "k");
+  return t.replace(/[aeo]/g, "");
+}
 
 /** Egyptian and Akkadian transliterations as typed on a keyboard: ꜣ as 3 or a, ꜥ as ' or e, ḥ as h… */
 const TRANSLIT: [RegExp, string][] = [
@@ -42,6 +60,7 @@ export function fold(text: string, folds: readonly Fold[]): string {
   t = t.replace(/^[«"“'¿¡(]+|[.!?;:,»"”)]+$/g, "").trim();
   // Commas and the like inside an answer are the learner's choice: "amīce, venī" or "amice veni".
   t = t.replace(/\s*[,;:!?¡¿«»"“”]\s*/g, " ").replace(/\s+/g, " ").trim();
+  if (folds.includes("egyptian")) return egyptianKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -67,12 +86,16 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
     return Number(given) === blank.right ? "right" : "wrong";
   }
   if (!given.trim()) return "blank";
+  if (blank.kind === "free") {
+    // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
+    const f = folds.filter((x) => x !== "egyptian");
+    const exact = fold(given, f);
+    if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
+    const l = loose(given, f);
+    return blank.answers.some((a) => loose(a, f) === l) ? "right" : "check";
+  }
   const g = fold(given, folds);
   if (blank.answers.some((a) => fold(a, folds) === g)) return "right";
-  if (blank.kind === "free") {
-    const l = loose(given, folds);
-    return blank.answers.some((a) => loose(a, folds) === l) ? "right" : "check";
-  }
   return "wrong";
 }
 

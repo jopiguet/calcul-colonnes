@@ -34,6 +34,11 @@ expect("fold: macrons, j, v, case, final dot", fold("Iūlius vēnit.", latin), "
 expect("fold: transliteration", [fold("sḏm.n=f", translit), fold("sDm.n.f", translit)].map((s) => s.replace("dj", "d")), ["sdmnf", "sdmnf"]);
 expect("fold: ꜣ typed as 3", fold("ꜣbd", translit), fold("3bd", translit));
 expect("fold: subscripts", fold("du₃", ["translit", "subscripts"]), "du3");
+const egy = ["egyptian"] as const;
+expect("egyptian: ankh however typed", ["ꜥnḫ", "ankh", "anx", "'nḫ", "Anh"].map((t) => fold(t, [...egy])), ["nh", "nh", "nh", "nh", "nh"]);
+expect("egyptian: pronunciation and transliteration", [fold("nefer", [...egy]), fold("nfr", [...egy]), fold("sḏm.n.f", [...egy]), fold("sedjem-en-ef", [...egy])], ["nfr", "nfr", "sdmnf", "sdmnf"]);
+expect("egyptian: j, i, y; w, u", [fold("jmn", [...egy]), fold("Imen", [...egy]), fold("Amun", [...egy]), fold("wsjr", [...egy]), fold("usir", [...egy])], ["imn", "imn", "mwn", "wsir", "wsir"]);
+expect("egyptian: free answers keep their vowels", markBlank({ kind: "free", answers: ["The king lives."] } as Parameters<typeof markBlank>[0], "the king loves", [...egy]), "check");
 const strict = { kind: "strict" as const, answers: ["rosae", "rosās"] };
 const free = { kind: "free" as const, answers: ["The girl loves the rose."] };
 const choice = { kind: "choice" as const, answers: ["nom.", "gen.", "dat."], right: 1 };

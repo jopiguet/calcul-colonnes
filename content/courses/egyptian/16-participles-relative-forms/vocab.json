@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "𓈖𓏏𓏭", "reading": "ntj", "meaning": "who is; which is", "translations": { "fr": "qui est ; lequel est", "es": "que está; el cual" }, "type": "pronoun" },
+    { "term": "𓌻𓂋𓇋𓇋", "reading": "mrj", "meaning": "beloved; loved", "translations": { "fr": "aimé ; bien-aimé", "es": "amado" }, "type": "adjective" },
+    { "term": "𓇋𓏠𓈖𓌻𓂋𓇋𓇋", "reading": "mrj jmn", "meaning": "beloved of Amun", "translations": { "fr": "aimé d'Amon", "es": "amado de Amón" }, "type": "phrase" },
+    { "term": "𓆄", "reading": "mꜣꜥt", "meaning": "truth; right order (Maat)", "translations": { "fr": "vérité ; ordre juste (Maât)", "es": "verdad; orden justo (Maat)" }, "type": "noun", "gender": "feminine" },
+    { "term": "𓁹𓏏𓈖𓆑", "reading": "jrt.n.f", "meaning": "what he did", "translations": { "fr": "ce qu'il a fait", "es": "lo que hizo" }, "type": "phrase" },
+    { "term": "𓁹𓂋𓂋𓅱𓏥", "reading": "jrrw", "meaning": "those who do", "translations": { "fr": "ceux qui font", "es": "los que hacen" }, "type": "phrase" }
+  ]
+}

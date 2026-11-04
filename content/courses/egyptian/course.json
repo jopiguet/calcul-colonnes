@@ -1,0 +1,53 @@
+{
+  "id": "egyptian",
+  "language": "egy",
+  "icon": "𓋹",
+  "folds": [
+    "egyptian"
+  ],
+  "keys": [
+    "ꜣ",
+    "ꜥ",
+    "ḥ",
+    "ḫ",
+    "ẖ",
+    "š",
+    "ḳ",
+    "ṯ",
+    "ḏ"
+  ],
+  "title": {
+    "fr": "Égyptien hiéroglyphique",
+    "es": "Egipcio jeroglífico",
+    "en": "Hieroglyphic Egyptian"
+  },
+  "description": {
+    "fr": "Le moyen égyptien, de l'alphabet des hiéroglyphes à Sinouhé : les signes, la grammaire, la formule d'offrande, les noms des rois et les symboles.",
+    "es": "El egipcio medio, del alfabeto jeroglífico a Sinuhé: los signos, la gramática, la fórmula de ofrenda, los nombres de los reyes y los símbolos.",
+    "en": "Middle Egyptian, from the hieroglyphic alphabet to Sinuhe: the signs, the grammar, the offering formula, the kings' names and the symbols."
+  },
+  "vocabLesson": "Lesson {n}",
+  "lessons": [
+    "01-script-and-transliteration",
+    "02-uniliteral-signs",
+    "03-biliteral-triliteral-signs",
+    "04-logograms-determinatives",
+    "05-nouns-gender-number",
+    "06-genitive-adjectives",
+    "07-suffix-pronouns",
+    "08-dependent-independent-pronouns",
+    "09-prepositions-adverbial-sentences",
+    "10-nominal-adjectival-sentences",
+    "11-numbers-dates",
+    "12-verb-classes-infinitive",
+    "13-sdm-f",
+    "14-sdm-n-f-stative",
+    "15-negation",
+    "16-participles-relative-forms",
+    "17-imperative-future",
+    "18-offering-formula",
+    "19-royal-names",
+    "20-symbols-gods",
+    "21-reading-sinuhe-sailor"
+  ]
+}

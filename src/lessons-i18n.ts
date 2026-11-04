@@ -36,6 +36,7 @@ const fr = {
   blankAria: "Exercice {n}, case {i}",
   choiceAria: "Exercice {n}, choix {i}",
   lessonsDone: "{done} exercices réussis sur {exercises}",
+  keysAria: "Lettres spéciales",
 };
 
 type Key = keyof typeof fr;
@@ -75,6 +76,7 @@ const es: Record<Key, string> = {
   blankAria: "Ejercicio {n}, casilla {i}",
   choiceAria: "Ejercicio {n}, opción {i}",
   lessonsDone: "{done} de {exercises} ejercicios logrados",
+  keysAria: "Letras especiales",
 };
 
 const en: Record<Key, string> = {
@@ -112,6 +114,7 @@ const en: Record<Key, string> = {
   blankAria: "Exercise {n}, blank {i}",
   choiceAria: "Exercise {n}, choice {i}",
   lessonsDone: "{done} of {exercises} exercises right",
+  keysAria: "Special letters",
 };
 
 const dictionaries: Record<Lang, Record<Key, string>> = { fr, es, en };
