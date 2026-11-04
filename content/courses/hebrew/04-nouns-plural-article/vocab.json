@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "יַלְדָּה", "reading": "yalda", "meaning": "girl", "translations": { "fr": "fille, fillette", "es": "niña" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "יְלָדוֹת" }] },
+    { "term": "מַחְבֶּרֶת", "reading": "machberet", "meaning": "notebook", "translations": { "fr": "cahier", "es": "cuaderno" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "מַחְבָּרוֹת" }] },
+    { "term": "אִשָּׁה", "reading": "isha", "meaning": "woman, wife", "translations": { "fr": "femme", "es": "mujer, esposa" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "נָשִׁים" }] },
+    { "term": "עִיר", "reading": "ir", "meaning": "city", "translations": { "fr": "ville", "es": "ciudad" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "עָרִים" }] },
+    { "term": "יָד", "reading": "yad", "meaning": "hand", "translations": { "fr": "main", "es": "mano" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "dual", "value": "יָדַיִם" }] },
+    { "term": "עַיִן", "reading": "ayin", "meaning": "eye", "translations": { "fr": "œil", "es": "ojo" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "dual", "value": "עֵינַיִם" }] },
+    { "term": "כִּתָּה", "reading": "kita", "meaning": "class, classroom", "translations": { "fr": "classe", "es": "clase, aula" }, "type": "noun", "gender": "feminine" },
+    { "term": "אָב", "reading": "av", "meaning": "father", "translations": { "fr": "père", "es": "padre" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "אָבוֹת" }] }
+  ]
+}

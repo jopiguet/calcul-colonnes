@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "בְּרֵאשִׁית", "reading": "bereshit", "meaning": "in the beginning", "translations": { "fr": "au commencement", "es": "en el principio" }, "type": "adverb", "note": "ר־א־שׁ" },
+    { "term": "בָּרָא", "reading": "bara", "meaning": "to create (he created)", "translations": { "fr": "créer (il créa)", "es": "crear (creó)" }, "type": "verb", "note": "ב־ר־א" },
+    { "term": "אֱלֹהִים", "reading": "elohim", "meaning": "God", "translations": { "fr": "Dieu", "es": "Dios" }, "type": "noun", "gender": "masculine" },
+    { "term": "שָׁמַיִם", "reading": "shamayim", "meaning": "heavens, sky", "translations": { "fr": "cieux, ciel", "es": "cielos, cielo" }, "type": "noun", "gender": "masculine" },
+    { "term": "אוֹר", "reading": "or", "meaning": "light", "translations": { "fr": "lumière", "es": "luz" }, "type": "noun", "gender": "masculine" },
+    { "term": "חֹשֶׁךְ", "reading": "choshekh", "meaning": "darkness", "translations": { "fr": "ténèbres, obscurité", "es": "tinieblas, oscuridad" }, "type": "noun", "gender": "masculine" },
+    { "term": "עֶרֶב", "reading": "erev", "meaning": "evening", "translations": { "fr": "soir", "es": "tarde, noche" }, "type": "noun", "gender": "masculine" },
+    { "term": "רוּחַ", "reading": "ru'ach", "meaning": "spirit, wind", "translations": { "fr": "esprit, vent", "es": "espíritu, viento" }, "type": "noun", "gender": "feminine" },
+    { "term": "מַיִם", "reading": "mayim", "meaning": "water", "translations": { "fr": "eau", "es": "agua" }, "type": "noun", "gender": "masculine" },
+    { "term": "תֹהוּ וָבֹהוּ", "reading": "tohu vavohu", "meaning": "formless and empty; chaos", "translations": { "fr": "informe et vide ; tohu-bohu", "es": "informe y vacía; caos" }, "type": "phrase" }
+  ]
+}

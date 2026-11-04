@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "שָׁלוֹם", "reading": "shalom", "meaning": "peace; hello, goodbye", "translations": { "fr": "paix ; bonjour, au revoir", "es": "paz; hola, adiós" }, "type": "noun", "gender": "masculine" },
+    { "term": "בַּיִת", "reading": "bayit", "meaning": "house", "translations": { "fr": "maison", "es": "casa" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "בָּתִּים" }] },
+    { "term": "סֵפֶר", "reading": "sefer", "meaning": "book", "translations": { "fr": "livre", "es": "libro" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "סְפָרִים" }] },
+    { "term": "מֶלֶךְ", "reading": "melekh", "meaning": "king", "translations": { "fr": "roi", "es": "rey" }, "type": "noun", "gender": "masculine" },
+    { "term": "אֶרֶץ", "reading": "erets", "meaning": "land, country, earth", "translations": { "fr": "terre, pays", "es": "tierra, país" }, "type": "noun", "gender": "feminine" },
+    { "term": "לֵב", "reading": "lev", "meaning": "heart", "translations": { "fr": "cœur", "es": "corazón" }, "type": "noun", "gender": "masculine" },
+    { "term": "כֵּן", "reading": "ken", "meaning": "yes; so", "translations": { "fr": "oui ; ainsi", "es": "sí; así" }, "type": "adverb" },
+    { "term": "כֶּסֶף", "reading": "kesef", "meaning": "money, silver", "translations": { "fr": "argent", "es": "dinero, plata" }, "type": "noun", "gender": "masculine" }
+  ]
+}

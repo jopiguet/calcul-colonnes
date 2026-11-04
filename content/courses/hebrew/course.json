@@ -1,0 +1,69 @@
+{
+  "id": "hebrew",
+  "language": "he",
+  "icon": "📜",
+  "folds": [
+    "hebrew"
+  ],
+  "keys": [
+    "א",
+    "ב",
+    "ג",
+    "ד",
+    "ה",
+    "ו",
+    "ז",
+    "ח",
+    "ט",
+    "י",
+    "כ",
+    "ך",
+    "ל",
+    "מ",
+    "ם",
+    "נ",
+    "ן",
+    "ס",
+    "ע",
+    "פ",
+    "ף",
+    "צ",
+    "ץ",
+    "ק",
+    "ר",
+    "ש",
+    "ת"
+  ],
+  "title": {
+    "fr": "Hébreu",
+    "es": "Hebreo",
+    "en": "Hebrew"
+  },
+  "description": {
+    "fr": "L'hébreu d'Israël aujourd'hui, de l'alphabet aux binyanim et à la langue de tous les jours, puis l'hébreu biblique : la Genèse, le Shema, la bénédiction des prêtres et les Psaumes.",
+    "es": "El hebreo de Israel hoy, del alfabeto a los binyanim y la lengua de cada día, y luego el hebreo bíblico: el Génesis, el Shemá, la bendición sacerdotal y los Salmos.",
+    "en": "The Hebrew of Israel today, from the alphabet to the binyanim and everyday language, then Biblical Hebrew: Genesis, the Shema, the Priestly Blessing and the Psalms."
+  },
+  "vocabLesson": "Lesson {n}",
+  "lessons": [
+    "01-alef-bet",
+    "02-vowels-niqqud",
+    "03-greetings-pronouns",
+    "04-nouns-plural-article",
+    "05-adjectives-demonstratives",
+    "06-prepositions-possession",
+    "07-present-tense",
+    "08-roots-binyanim",
+    "09-past-tense",
+    "10-future-imperative",
+    "11-infinitive-modals",
+    "12-smikhut",
+    "13-numbers-time-calendar",
+    "14-questions-relatives",
+    "15-modern-hebrew-in-use",
+    "16-biblical-grammar",
+    "17-genesis-1",
+    "18-shema-blessing",
+    "19-psalm-ecclesiastes"
+  ]
+}

@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.6.0",
+    fr: ["Cours de langues : l'hébreu, en 19 leçons, de l'alef-bet et du niqqud aux binyanim, aux temps et à la smikhout, l'hébreu parlé d'aujourd'hui, puis l'hébreu biblique : Genèse 1, le Chema, la bénédiction sacerdotale, le psaume 23 et l'Ecclésiaste. Les réponses se tapent en hébreu ou en lettres latines : « shalom » vaut שלום."],
+    es: ["Cursos de idiomas: el hebreo, en 19 lecciones, del alef-bet y el niqud a los binyanim, los tiempos y la smijut, el hebreo hablado de hoy, y luego el hebreo bíblico: Génesis 1, el Shemá, la bendición sacerdotal, el salmo 23 y el Eclesiastés. Las respuestas se escriben en hebreo o en letras latinas: «shalom» vale שלום."],
+    en: ["Language courses: Hebrew, 19 lessons from the alef-bet and niqqud to the binyanim, the tenses and smikhut, the Hebrew spoken today, then Biblical Hebrew: Genesis 1, the Shema, the Priestly Blessing, Psalm 23 and Ecclesiastes. Answers can be typed in Hebrew or Latin letters: \"shalom\" counts as שלום."],
+  },
+  {
     version: "7.5.0",
     fr: ["Cours de langues : l'arabe, en 22 leçons, de l'alphabet aux formes verbales, avec des exemples coraniques tout au long, puis l'écriture du Coran, la Fâtiha et les sourates courtes, et les dialectes d'aujourd'hui. Les réponses se tapent en arabe ou en lettres latines : « kitab » vaut كتاب."],
     es: ["Cursos de idiomas: el árabe, en 22 lecciones, del alfabeto a las formas verbales, con ejemplos coránicos a lo largo del curso, y luego la escritura del Corán, la Fátiha y las suras breves, y los dialectos de hoy. Las respuestas se escriben en árabe o en letras latinas: «kitab» vale كتاب."],

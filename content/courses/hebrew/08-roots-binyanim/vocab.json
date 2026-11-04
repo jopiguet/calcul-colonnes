@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "שֹׁרֶשׁ", "reading": "shoresh", "meaning": "root", "translations": { "fr": "racine", "es": "raíz" }, "type": "noun", "gender": "masculine" },
+    { "term": "בִּנְיָן", "reading": "binyan", "meaning": "building; verb pattern", "translations": { "fr": "bâtiment ; schème verbal", "es": "edificio; esquema verbal" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "בִּנְיָנִים" }] },
+    { "term": "תַּלְמִיד", "reading": "talmid", "meaning": "pupil, student", "translations": { "fr": "élève", "es": "alumno" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "feminine", "value": "תַּלְמִידָה" }] },
+    { "term": "לִמֵּד", "reading": "limed", "meaning": "to teach (he taught)", "translations": { "fr": "enseigner (il a enseigné)", "es": "enseñar (enseñó)" }, "type": "verb", "note": "פִּעֵל, ל־מ־ד" },
+    { "term": "כְּתֹבֶת", "reading": "ktovet", "meaning": "address", "translations": { "fr": "adresse", "es": "dirección" }, "type": "noun", "gender": "feminine" },
+    { "term": "הִתְלַבֵּשׁ", "reading": "hitlabesh", "meaning": "to get dressed", "translations": { "fr": "s'habiller", "es": "vestirse" }, "type": "verb", "note": "הִתְפַּעֵל, ל־ב־ש" },
+    { "term": "דִּבֵּר", "reading": "diber", "meaning": "to speak (he spoke)", "translations": { "fr": "parler (il a parlé)", "es": "hablar (habló)" }, "type": "verb", "note": "פִּעֵל, ד־ב־ר" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "וַיֹּאמֶר", "reading": "vayomer", "meaning": "and he said", "translations": { "fr": "et il dit", "es": "y dijo" }, "type": "verb", "note": "א־מ־ר" },
+    { "term": "וַיֵּלֶךְ", "reading": "vayelekh", "meaning": "and he went", "translations": { "fr": "et il alla", "es": "y fue" }, "type": "verb", "note": "ה־ל־ך" },
+    { "term": "אָמַר", "reading": "amar", "meaning": "to say (he said)", "translations": { "fr": "dire (il a dit)", "es": "decir (dijo)" }, "type": "verb", "note": "א־מ־ר" },
+    { "term": "אֵת", "reading": "et", "meaning": "marker of the definite object", "translations": { "fr": "marque du complément défini", "es": "marca del complemento definido" }, "type": "particle" },
+    { "term": "הִנֵּה", "reading": "hine", "meaning": "behold, here is", "translations": { "fr": "voici", "es": "he aquí" }, "type": "particle" },
+    { "term": "אָנֹכִי", "reading": "anokhi", "meaning": "I (biblical)", "translations": { "fr": "je (biblique)", "es": "yo (bíblico)" }, "type": "pronoun" },
+    { "term": "אִישׁ", "reading": "ish", "meaning": "man", "translations": { "fr": "homme", "es": "hombre" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "אֲנָשִׁים" }] },
+    { "term": "עַם", "reading": "am", "meaning": "people, nation", "translations": { "fr": "peuple", "es": "pueblo" }, "type": "noun", "gender": "masculine" },
+    { "term": "אֶל", "reading": "el", "meaning": "to, towards", "translations": { "fr": "vers, à", "es": "a, hacia" }, "type": "preposition" }
+  ]
+}

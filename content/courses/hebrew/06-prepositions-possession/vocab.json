@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "שֶׁל", "reading": "shel", "meaning": "of (possession)", "translations": { "fr": "de (possession)", "es": "de (posesión)" }, "type": "preposition" },
+    { "term": "יֵשׁ", "reading": "yesh", "meaning": "there is", "translations": { "fr": "il y a", "es": "hay" }, "type": "particle" },
+    { "term": "אֵין", "reading": "ein", "meaning": "there is not", "translations": { "fr": "il n'y a pas", "es": "no hay" }, "type": "particle" },
+    { "term": "עִם", "reading": "im", "meaning": "with", "translations": { "fr": "avec", "es": "con" }, "type": "preposition" },
+    { "term": "עַל", "reading": "al", "meaning": "on, about", "translations": { "fr": "sur, au sujet de", "es": "sobre, acerca de" }, "type": "preposition" },
+    { "term": "אָח", "reading": "ach", "meaning": "brother", "translations": { "fr": "frère", "es": "hermano" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "feminine", "value": "אָחוֹת" }] },
+    { "term": "זְמַן", "reading": "zman", "meaning": "time", "translations": { "fr": "temps", "es": "tiempo" }, "type": "noun", "gender": "masculine" },
+    { "term": "חָבֵר", "reading": "chaver", "meaning": "friend; member", "translations": { "fr": "ami ; membre", "es": "amigo; miembro" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "feminine", "value": "חֲבֵרָה" }] },
+    { "term": "יָם", "reading": "yam", "meaning": "sea", "translations": { "fr": "mer", "es": "mar" }, "type": "noun", "gender": "masculine" }
+  ]
+}

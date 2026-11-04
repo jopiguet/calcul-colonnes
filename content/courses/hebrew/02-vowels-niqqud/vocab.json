@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "תּוֹדָה", "reading": "toda", "meaning": "thank you", "translations": { "fr": "merci", "es": "gracias" }, "type": "interjection" },
+    { "term": "יֶלֶד", "reading": "yeled", "meaning": "boy, child", "translations": { "fr": "garçon, enfant", "es": "niño" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "יְלָדִים" }] },
+    { "term": "אִמָּא", "reading": "ima", "meaning": "mum, mother", "translations": { "fr": "maman, mère", "es": "mamá, madre" }, "type": "noun", "gender": "feminine" },
+    { "term": "אַבָּא", "reading": "aba", "meaning": "dad, father", "translations": { "fr": "papa, père", "es": "papá, padre" }, "type": "noun", "gender": "masculine" },
+    { "term": "עִבְרִית", "reading": "ivrit", "meaning": "Hebrew (language)", "translations": { "fr": "hébreu (langue)", "es": "hebreo (lengua)" }, "type": "noun", "gender": "feminine" },
+    { "term": "שׁוּק", "reading": "shuk", "meaning": "market", "translations": { "fr": "marché", "es": "mercado" }, "type": "noun", "gender": "masculine" },
+    { "term": "תִּקְוָה", "reading": "tikva", "meaning": "hope", "translations": { "fr": "espoir", "es": "esperanza" }, "type": "noun", "gender": "feminine" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "כָּתַב", "reading": "katav", "meaning": "to write (he wrote)", "translations": { "fr": "écrire (il a écrit)", "es": "escribir (escribió)" }, "type": "verb", "note": "פָּעַל, כ־ת־ב" },
+    { "term": "אָכַל", "reading": "akhal", "meaning": "to eat (he ate)", "translations": { "fr": "manger (il a mangé)", "es": "comer (comió)" }, "type": "verb", "note": "פָּעַל, א־כ־ל" },
+    { "term": "הָיָה", "reading": "haya", "meaning": "to be (he was)", "translations": { "fr": "être (il était)", "es": "ser, estar (fue, era)" }, "type": "verb", "note": "ה־י־ה" },
+    { "term": "אֶתְמוֹל", "reading": "etmol", "meaning": "yesterday", "translations": { "fr": "hier", "es": "ayer" }, "type": "adverb" },
+    { "term": "כְּבָר", "reading": "kvar", "meaning": "already", "translations": { "fr": "déjà", "es": "ya" }, "type": "adverb" },
+    { "term": "עוֹד", "reading": "od", "meaning": "still, more", "translations": { "fr": "encore", "es": "todavía, más" }, "type": "adverb" },
+    { "term": "כֶּלֶב", "reading": "kelev", "meaning": "dog", "translations": { "fr": "chien", "es": "perro" }, "type": "noun", "gender": "masculine" },
+    { "term": "שָׁנָה", "reading": "shana", "meaning": "year", "translations": { "fr": "année", "es": "año" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "שָׁנִים" }] }
+  ]
+}

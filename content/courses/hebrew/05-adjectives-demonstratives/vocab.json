@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "גָּדוֹל", "reading": "gadol", "meaning": "big, great", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "גְּדוֹלָה" }] },
+    { "term": "קָטָן", "reading": "katan", "meaning": "small", "translations": { "fr": "petit", "es": "pequeño" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "קְטַנָּה" }] },
+    { "term": "חָדָשׁ", "reading": "chadash", "meaning": "new", "translations": { "fr": "nouveau, neuf", "es": "nuevo" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "חֲדָשָׁה" }] },
+    { "term": "יָשָׁן", "reading": "yashan", "meaning": "old (things)", "translations": { "fr": "vieux, ancien", "es": "viejo" }, "type": "adjective" },
+    { "term": "יָפֶה", "reading": "yafe", "meaning": "beautiful", "translations": { "fr": "beau", "es": "bonito, hermoso" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "יָפָה" }] },
+    { "term": "זֶה", "reading": "ze", "meaning": "this (m.)", "translations": { "fr": "ce, ceci (m.)", "es": "este, esto (m.)" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "זֹאת" }, { "label": "plural", "value": "אֵלֶּה" }] },
+    { "term": "רַע", "reading": "ra", "meaning": "bad, evil", "translations": { "fr": "mauvais, méchant", "es": "malo" }, "type": "adjective" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "אֶחָד", "reading": "echad", "meaning": "one (m.)", "translations": { "fr": "un (m.)", "es": "uno (m.)" }, "type": "numeral", "forms": [{ "label": "feminine", "value": "אַחַת" }] },
+    { "term": "שָׁלוֹשׁ", "reading": "shalosh", "meaning": "three (with f. nouns, counting)", "translations": { "fr": "trois (avec un nom f., comptage)", "es": "tres (con sustantivo f., contar)" }, "type": "numeral", "forms": [{ "label": "with m. noun", "value": "שְׁלוֹשָׁה" }] },
+    { "term": "עֶשֶׂר", "reading": "eser", "meaning": "ten (with f. nouns, counting)", "translations": { "fr": "dix (avec un nom f., comptage)", "es": "diez (con sustantivo f., contar)" }, "type": "numeral", "forms": [{ "label": "with m. noun", "value": "עֲשָׂרָה" }] },
+    { "term": "מֵאָה", "reading": "me'a", "meaning": "hundred", "translations": { "fr": "cent", "es": "cien" }, "type": "numeral" },
+    { "term": "שָׁעָה", "reading": "sha'a", "meaning": "hour", "translations": { "fr": "heure", "es": "hora" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "שָׁעוֹת" }] },
+    { "term": "יוֹם", "reading": "yom", "meaning": "day", "translations": { "fr": "jour", "es": "día" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "יָמִים" }] },
+    { "term": "חֹדֶשׁ", "reading": "chodesh", "meaning": "month", "translations": { "fr": "mois", "es": "mes" }, "type": "noun", "gender": "masculine" },
+    { "term": "שַׁבָּת", "reading": "shabat", "meaning": "Sabbath, Saturday", "translations": { "fr": "chabbat, samedi", "es": "sábado, shabat" }, "type": "noun", "gender": "feminine" },
+    { "term": "חֵצִי", "reading": "chetsi", "meaning": "half", "translations": { "fr": "demi, moitié", "es": "medio, mitad" }, "type": "noun", "gender": "masculine" }
+  ]
+}

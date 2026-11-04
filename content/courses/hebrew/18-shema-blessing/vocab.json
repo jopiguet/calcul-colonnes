@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "שְׁמַע", "reading": "shma", "meaning": "hear! listen!", "translations": { "fr": "écoute !", "es": "¡escucha!" }, "type": "verb", "note": "ש־מ־ע" },
+    { "term": "יִשְׂרָאֵל", "reading": "Yisra'el", "meaning": "Israel", "translations": { "fr": "Israël", "es": "Israel" }, "type": "noun" },
+    { "term": "אֲדֹנָי", "reading": "Adonai", "meaning": "the Lord (read for יהוה)", "translations": { "fr": "le Seigneur (lu pour יהוה)", "es": "el Señor (leído por יהוה)" }, "type": "noun" },
+    { "term": "אָהַב", "reading": "ahav", "meaning": "to love (he loved)", "translations": { "fr": "aimer (il aima)", "es": "amar (amó)" }, "type": "verb", "note": "א־ה־ב" },
+    { "term": "לֵבָב", "reading": "levav", "meaning": "heart (literary)", "translations": { "fr": "cœur (littéraire)", "es": "corazón (literario)" }, "type": "noun", "gender": "masculine" },
+    { "term": "נֶפֶשׁ", "reading": "nefesh", "meaning": "soul, life", "translations": { "fr": "âme, vie", "es": "alma, vida" }, "type": "noun", "gender": "feminine" },
+    { "term": "כֹּל", "reading": "kol", "meaning": "all, every", "translations": { "fr": "tout, chaque", "es": "todo, cada" }, "type": "pronoun", "forms": [{ "label": "construct", "value": "כָּל־" }] },
+    { "term": "בֵּרַךְ", "reading": "berakh", "meaning": "to bless", "translations": { "fr": "bénir", "es": "bendecir" }, "type": "verb", "note": "פִּעֵל, ב־ר־ך" },
+    { "term": "שָׁמַר", "reading": "shamar", "meaning": "to keep, guard", "translations": { "fr": "garder", "es": "guardar" }, "type": "verb", "note": "ש־מ־ר" },
+    { "term": "פָּנִים", "reading": "panim", "meaning": "face (always plural)", "translations": { "fr": "visage, face (toujours pluriel)", "es": "rostro, cara (siempre plural)" }, "type": "noun", "gender": "masculine" }
+  ]
+}

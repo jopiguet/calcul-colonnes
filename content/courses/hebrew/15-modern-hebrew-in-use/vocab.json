@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "מַחְשֵׁב", "reading": "machshev", "meaning": "computer", "translations": { "fr": "ordinateur", "es": "ordenador" }, "type": "noun", "gender": "masculine", "note": "ח־ש־ב" },
+    { "term": "מִלּוֹן", "reading": "milon", "meaning": "dictionary", "translations": { "fr": "dictionnaire", "es": "diccionario" }, "type": "noun", "gender": "masculine" },
+    { "term": "מִלָּה", "reading": "mila", "meaning": "word", "translations": { "fr": "mot", "es": "palabra" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "מִלִּים" }] },
+    { "term": "יַאללָה", "reading": "yalla", "meaning": "come on, let's go", "translations": { "fr": "allez, on y va", "es": "venga, vamos" }, "type": "interjection" },
+    { "term": "סַבָּבָּה", "reading": "sababa", "meaning": "great, fine", "translations": { "fr": "super, d'accord", "es": "genial, vale" }, "type": "interjection" },
+    { "term": "בַּלָּגָן", "reading": "balagan", "meaning": "mess, chaos", "translations": { "fr": "pagaille", "es": "lío, caos" }, "type": "noun", "gender": "masculine" },
+    { "term": "כָּל הַכָּבוֹד", "reading": "kol hakavod", "meaning": "well done", "translations": { "fr": "bravo", "es": "bien hecho" }, "type": "phrase" },
+    { "term": "בְּהַצְלָחָה", "reading": "behatslacha", "meaning": "good luck", "translations": { "fr": "bonne chance", "es": "buena suerte" }, "type": "phrase" },
+    { "term": "מִבְחָן", "reading": "mivchan", "meaning": "exam, test", "translations": { "fr": "examen", "es": "examen" }, "type": "noun", "gender": "masculine" }
+  ]
+}

@@ -211,3 +211,30 @@ test("Arabic: Naskh for the Arabic text, answers in the script or in translitera
   await card.locator(".lesson-check").click();
   await expect(card.locator(".lesson-exercise-score")).toHaveText("4/5");
 });
+
+test("Hebrew: right-to-left runs, answers in the script or in transliteration", async ({ page }) => {
+  await newPlayer(page, "Noa");
+  await openActivity(page, "lessons-hebrew");
+  await expect(page.locator(".lessons-item")).toHaveCount(19);
+  await page.locator(".lessons-item").first().click();
+  await expect(page.locator(".lesson-title")).toContainText("1.");
+  const run = page.locator("bdi.script-hebrew").first();
+  await expect(run).toHaveAttribute("dir", "rtl");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Noto Sans Hebrew");
+  await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("shalom");
+  const card = page.locator(".lesson-exercise[data-exercise='read']");
+  const inputs = card.locator(".lesson-input");
+  await inputs.nth(0).fill("shalom");
+  // בית from the key row.
+  await inputs.nth(1).click();
+  for (const k of ["ב", "י", "ת"]) await card.locator(".lesson-key", { hasText: new RegExp(`^${k}$`) }).click();
+  await expect(inputs.nth(1)).toHaveValue("בית");
+  // ch and tz are accepted for kh and ts.
+  for (const [i, v] of [[2, "sefer"], [3, "melech"], [4, "eretz"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("5/5");
+  // A wrong word stays wrong: kesef is not sefer.
+  await inputs.nth(2).fill("kesef");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/5");
+});

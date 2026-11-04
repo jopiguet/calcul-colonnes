@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "בֵּית סֵפֶר", "reading": "beit sefer", "meaning": "school", "translations": { "fr": "école", "es": "escuela" }, "type": "noun", "gender": "masculine" },
+    { "term": "בֵּית חוֹלִים", "reading": "beit cholim", "meaning": "hospital", "translations": { "fr": "hôpital", "es": "hospital" }, "type": "noun", "gender": "masculine" },
+    { "term": "בֵּית כְּנֶסֶת", "reading": "beit knesset", "meaning": "synagogue", "translations": { "fr": "synagogue", "es": "sinagoga" }, "type": "noun", "gender": "masculine" },
+    { "term": "עוּגָה", "reading": "uga", "meaning": "cake", "translations": { "fr": "gâteau", "es": "pastel" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "construct", "value": "עוּגַת" }] },
+    { "term": "יוֹם הֻלֶּדֶת", "reading": "yom huledet", "meaning": "birthday", "translations": { "fr": "anniversaire", "es": "cumpleaños" }, "type": "noun", "gender": "masculine" },
+    { "term": "עוֹרֵךְ דִּין", "reading": "orekh din", "meaning": "lawyer", "translations": { "fr": "avocat", "es": "abogado" }, "type": "noun", "gender": "masculine" },
+    { "term": "מְכוֹנִית", "reading": "mekhonit", "meaning": "car", "translations": { "fr": "voiture", "es": "coche" }, "type": "noun", "gender": "feminine" },
+    { "term": "שָׂמֵחַ", "reading": "same'ach", "meaning": "happy, glad", "translations": { "fr": "joyeux, content", "es": "feliz, contento" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "שְׂמֵחָה" }] },
+    { "term": "בַּחוּץ", "reading": "bachuts", "meaning": "outside", "translations": { "fr": "dehors", "es": "fuera" }, "type": "adverb" }
+  ]
+}

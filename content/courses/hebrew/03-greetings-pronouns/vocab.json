@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "אֲנִי", "reading": "ani", "meaning": "I", "translations": { "fr": "je, moi", "es": "yo" }, "type": "pronoun" },
+    { "term": "אַתָּה", "reading": "ata", "meaning": "you (m.)", "translations": { "fr": "tu (m.)", "es": "tú (m.)" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "אַתְּ" }] },
+    { "term": "אֲנַחְנוּ", "reading": "anachnu", "meaning": "we", "translations": { "fr": "nous", "es": "nosotros" }, "type": "pronoun" },
+    { "term": "בֹּקֶר", "reading": "boker", "meaning": "morning", "translations": { "fr": "matin", "es": "mañana" }, "type": "noun", "gender": "masculine" },
+    { "term": "טוֹב", "reading": "tov", "meaning": "good", "translations": { "fr": "bon", "es": "bueno" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "טוֹבָה" }] },
+    { "term": "לַיְלָה", "reading": "laila", "meaning": "night", "translations": { "fr": "nuit", "es": "noche" }, "type": "noun", "gender": "masculine" },
+    { "term": "בְּבַקָּשָׁה", "reading": "bevakasha", "meaning": "please; you're welcome", "translations": { "fr": "s'il te plaît ; je t'en prie", "es": "por favor; de nada" }, "type": "interjection" },
+    { "term": "סְלִיחָה", "reading": "slicha", "meaning": "sorry, excuse me", "translations": { "fr": "pardon, excuse-moi", "es": "perdón, disculpa" }, "type": "interjection" },
+    { "term": "בְּסֵדֶר", "reading": "beseder", "meaning": "fine, OK", "translations": { "fr": "ça va, d'accord", "es": "bien, de acuerdo" }, "type": "adverb" },
+    { "term": "מוֹרֶה", "reading": "more", "meaning": "teacher", "translations": { "fr": "enseignant", "es": "profesor, maestro" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "feminine", "value": "מוֹרָה" }] }
+  ]
+}

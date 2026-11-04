@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "מִי", "reading": "mi", "meaning": "who", "translations": { "fr": "qui", "es": "quién" }, "type": "pronoun" },
+    { "term": "אֵיפֹה", "reading": "eifo", "meaning": "where", "translations": { "fr": "où", "es": "dónde" }, "type": "adverb" },
+    { "term": "מָתַי", "reading": "matai", "meaning": "when (question)", "translations": { "fr": "quand (question)", "es": "cuándo" }, "type": "adverb" },
+    { "term": "לָמָּה", "reading": "lama", "meaning": "why", "translations": { "fr": "pourquoi", "es": "por qué" }, "type": "adverb" },
+    { "term": "אֵיךְ", "reading": "eikh", "meaning": "how", "translations": { "fr": "comment", "es": "cómo" }, "type": "adverb" },
+    { "term": "כַּמָּה", "reading": "kama", "meaning": "how much, how many", "translations": { "fr": "combien", "es": "cuánto" }, "type": "adverb" },
+    { "term": "אֲבָל", "reading": "aval", "meaning": "but", "translations": { "fr": "mais", "es": "pero" }, "type": "conjunction" },
+    { "term": "כִּי", "reading": "ki", "meaning": "because", "translations": { "fr": "parce que", "es": "porque" }, "type": "conjunction" },
+    { "term": "אִם", "reading": "im", "meaning": "if", "translations": { "fr": "si", "es": "si" }, "type": "conjunction" },
+    { "term": "אֲשֶׁר", "reading": "asher", "meaning": "who, which (literary)", "translations": { "fr": "qui, que (littéraire)", "es": "que, quien (literario)" }, "type": "pronoun" }
+  ]
+}

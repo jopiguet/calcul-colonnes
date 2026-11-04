@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "מָחָר", "reading": "machar", "meaning": "tomorrow", "translations": { "fr": "demain", "es": "mañana" }, "type": "adverb" },
+    { "term": "שָׁבוּעַ", "reading": "shavua", "meaning": "week", "translations": { "fr": "semaine", "es": "semana" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "שָׁבוּעוֹת" }] },
+    { "term": "אַל", "reading": "al", "meaning": "don't (with the future)", "translations": { "fr": "ne… pas (avec le futur)", "es": "no (con el futuro)" }, "type": "particle" },
+    { "term": "בּוֹא", "reading": "bo", "meaning": "come! (m.)", "translations": { "fr": "viens ! (m.)", "es": "¡ven! (m.)" }, "type": "verb", "note": "ב־ו־א" },
+    { "term": "לֵךְ", "reading": "lekh", "meaning": "go! (m.)", "translations": { "fr": "va ! (m.)", "es": "¡ve! (m.)" }, "type": "verb", "note": "ה־ל־ך" },
+    { "term": "דָּאַג", "reading": "da'ag", "meaning": "to worry", "translations": { "fr": "s'inquiéter", "es": "preocuparse" }, "type": "verb", "note": "ד־א־ג" },
+    { "term": "הֵנָּה", "reading": "hena", "meaning": "here, hither", "translations": { "fr": "ici (direction)", "es": "aquí (dirección)" }, "type": "adverb" }
+  ]
+}

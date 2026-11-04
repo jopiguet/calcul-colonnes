@@ -1,0 +1,110 @@
+{
+  "entries": [
+    {
+      "term": "יָכוֹל",
+      "reading": "yakhol",
+      "meaning": "can, be able",
+      "translations": {
+        "fr": "pouvoir",
+        "es": "poder"
+      },
+      "type": "verb",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "יְכוֹלָה"
+        }
+      ]
+    },
+    {
+      "term": "צָרִיךְ",
+      "reading": "tsarikh",
+      "meaning": "must, need",
+      "translations": {
+        "fr": "devoir, falloir",
+        "es": "tener que, necesitar"
+      },
+      "type": "verb",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "צְרִיכָה"
+        }
+      ]
+    },
+    {
+      "term": "אֶפְשָׁר",
+      "reading": "efshar",
+      "meaning": "it is possible, one may",
+      "translations": {
+        "fr": "il est possible, on peut",
+        "es": "es posible, se puede"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "אָסוּר",
+      "reading": "asur",
+      "meaning": "forbidden",
+      "translations": {
+        "fr": "interdit",
+        "es": "prohibido"
+      },
+      "type": "adjective"
+    },
+    {
+      "term": "שָׁכַח",
+      "reading": "shakhach",
+      "meaning": "to forget",
+      "translations": {
+        "fr": "oublier",
+        "es": "olvidar"
+      },
+      "type": "verb",
+      "note": "ש־כ־ח"
+    },
+    {
+      "term": "עִשֵּׁן",
+      "reading": "ishen",
+      "meaning": "to smoke",
+      "translations": {
+        "fr": "fumer",
+        "es": "fumar"
+      },
+      "type": "verb",
+      "note": "פִּעֵל, ע־ש־ן"
+    },
+    {
+      "term": "שָׁתָה",
+      "reading": "shata",
+      "meaning": "to drink",
+      "translations": {
+        "fr": "boire",
+        "es": "beber"
+      },
+      "type": "verb",
+      "note": "ש־ת־ה"
+    },
+    {
+      "term": "מֵבִין",
+      "reading": "mevin",
+      "meaning": "understand(s)",
+      "translations": {
+        "fr": "comprend, comprendre",
+        "es": "entiende, entender"
+      },
+      "type": "verb",
+      "note": "הִפְעִיל, ב־י־ן"
+    },
+    {
+      "term": "אַף אֶחָד",
+      "reading": "af echad",
+      "meaning": "nobody",
+      "translations": {
+        "fr": "personne",
+        "es": "nadie"
+      },
+      "type": "pronoun"
+    }
+  ]
+}

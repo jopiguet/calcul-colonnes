@@ -1,5 +1,18 @@
 # Changelog
 
+## 7.6.0
+
+- **📜 Hebrew**, the eighth language course: 19 lessons, 76 exercises, 165 words, in French, Spanish and English. Modern Hebrew first, then Biblical Hebrew. See [Language courses](docs/language-courses.md).
+  - **Script:** the alef-bet, final forms, dagesh, the niqqud and reading without it.
+  - **Grammar:** greetings and pronouns, nouns, plurals and the article, adjectives and demonstratives, prepositions with suffixes and possession (יש לי), the present, roots and the seven binyanim, past, future and imperative, infinitive, modals and negation, smikhut, numbers and their gender polarity, the clock, the week and the Hebrew calendar (5787, תשפ״ז), questions, ־ש and conjunctions.
+  - **Hebrew today:** the revival, words from old roots, loanwords and slang, speech and register.
+  - **Biblical Hebrew:** the vav-consecutive, word order and את; Genesis 1:1–5; the Shema and the Priestly Blessing; Psalm 23:1–4 and Ecclesiastes 1:2 and 3:1. The vocalised Masoretic text, without cantillation marks; the divine name is read *Adonai*.
+- **Hebrew typed on any keyboard:** a course fold, `hebrew`, compares strict answers by their consonants, in the script with or without niqqud or in transliteration: שלום, שָׁלוֹם and *shalom* are one answer, *melech* and *melekh* are מלך, *eretz* and *erets* are ארץ. A row of buttons writes the 22 letters and the final forms.
+- **Right to left:** Hebrew runs are set in Noto Sans Hebrew (Hebrew subset). A colon or semicolon now ends a right-to-left run, so that a Hebrew, Persian or Arabic word before "word: example" no longer swaps places with the example.
+- **Word lists:** form labels *construct* and *with m. noun* are translated.
+- **Checks:** `check:lessons` tests the new fold (script, niqqud, transliteration, *ch*/*kh*, *tz*/*ts*, the consonant ו; different words stay different); its wrong answers are now further from the right ones: 161 lessons, 646 exercises, 1435 words in all.
+- **Tests:** `tests/e2e/lessons.spec.ts` checks the Hebrew font, the right-to-left runs, answers in transliteration, in the script and from the key row, and a wrong word marked wrong.
+
 ## 7.5.0
 
 - **🌙 Arabic**, the seventh language course: 22 lessons, 88 exercises, 182 words, in French, Spanish and English. Modern Standard Arabic, with Quranic examples throughout. See [Language courses](docs/language-courses.md).

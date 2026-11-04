@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "מִזְמוֹר", "reading": "mizmor", "meaning": "psalm", "translations": { "fr": "psaume", "es": "salmo" }, "type": "noun", "gender": "masculine" },
+    { "term": "רֹעֶה", "reading": "ro'e", "meaning": "shepherd", "translations": { "fr": "berger", "es": "pastor" }, "type": "noun", "gender": "masculine" },
+    { "term": "צֶדֶק", "reading": "tsedek", "meaning": "righteousness, justice", "translations": { "fr": "justice", "es": "justicia" }, "type": "noun", "gender": "masculine" },
+    { "term": "שֵׁם", "reading": "shem", "meaning": "name", "translations": { "fr": "nom", "es": "nombre" }, "type": "noun", "gender": "masculine" },
+    { "term": "יָרֵא", "reading": "yare", "meaning": "to fear", "translations": { "fr": "craindre", "es": "temer" }, "type": "verb", "note": "י־ר־א" },
+    { "term": "הֶבֶל", "reading": "hevel", "meaning": "breath, vapour, futility", "translations": { "fr": "souffle, vapeur, vanité", "es": "aliento, vapor, vanidad" }, "type": "noun", "gender": "masculine" },
+    { "term": "עֵת", "reading": "et", "meaning": "time, season (literary)", "translations": { "fr": "temps, moment (littéraire)", "es": "tiempo, momento (literario)" }, "type": "noun", "gender": "feminine" },
+    { "term": "תַּחַת", "reading": "tachat", "meaning": "under", "translations": { "fr": "sous", "es": "bajo, debajo de" }, "type": "preposition" },
+    { "term": "גַּם", "reading": "gam", "meaning": "also, even", "translations": { "fr": "aussi, même", "es": "también, incluso" }, "type": "adverb" }
+  ]
+}

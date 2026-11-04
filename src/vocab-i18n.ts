@@ -585,7 +585,7 @@ const INFO_LABELS: Record<Lang, Record<string, string>> = {
     numeral: "nombre", ideogram: "idéogramme", radical: "clé",
     noun: "nom", verb: "verbe", adjective: "adjectif", adverb: "adverbe", pronoun: "pronom", preposition: "préposition", conjunction: "conjonction", interjection: "interjection", particle: "particule",
     masculine: "masculin", feminine: "féminin", neuter: "neutre", common: "commun", plural: "pluriel", dual: "duel", genitive: "génitif", dative: "datif", perfect: "parfait", comparative: "comparatif", superlative: "superlatif",
-    imperfect: "inaccompli", accusative: "accusatif", article: "article", "with f. noun": "avec un nom f.", "plural f.": "pluriel f.",
+    imperfect: "inaccompli", accusative: "accusatif", article: "article", "with f. noun": "avec un nom f.", "plural f.": "pluriel f.", "with m. noun": "avec un nom m.", construct: "état construit",
   },
   es: {
     sign: "signo", word: "palabra", phrase: "expresión", character: "carácter", compound: "compuesto",
@@ -594,7 +594,7 @@ const INFO_LABELS: Record<Lang, Record<string, string>> = {
     numeral: "número", ideogram: "ideograma", radical: "radical",
     noun: "sustantivo", verb: "verbo", adjective: "adjetivo", adverb: "adverbio", pronoun: "pronombre", preposition: "preposición", conjunction: "conjunción", interjection: "interjección", particle: "partícula",
     masculine: "masculino", feminine: "femenino", neuter: "neutro", common: "común", plural: "plural", dual: "dual", genitive: "genitivo", dative: "dativo", perfect: "perfecto", comparative: "comparativo", superlative: "superlativo",
-    imperfect: "imperfectivo", accusative: "acusativo", article: "artículo", "with f. noun": "con sustantivo f.", "plural f.": "plural f.",
+    imperfect: "imperfectivo", accusative: "acusativo", article: "artículo", "with f. noun": "con sustantivo f.", "plural f.": "plural f.", "with m. noun": "con sustantivo m.", construct: "estado constructo",
   },
   en: {},
 };

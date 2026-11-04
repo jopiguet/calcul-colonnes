@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "כּוֹתֵב", "reading": "kotev", "meaning": "write(s), writing", "translations": { "fr": "écrit, écrivant", "es": "escribe, escribiendo" }, "type": "verb", "note": "כ־ת־ב, לִכְתֹּב" },
+    { "term": "לוֹמֵד", "reading": "lomed", "meaning": "learn(s), study", "translations": { "fr": "apprend, étudie", "es": "aprende, estudia" }, "type": "verb", "note": "ל־מ־ד, לִלְמֹד" },
+    { "term": "הוֹלֵךְ", "reading": "holekh", "meaning": "go(es), walk(s)", "translations": { "fr": "va, marche", "es": "va, camina" }, "type": "verb", "note": "ה־ל־ך, לָלֶכֶת" },
+    { "term": "אוֹהֵב", "reading": "ohev", "meaning": "love(s), like(s)", "translations": { "fr": "aime", "es": "ama, le gusta" }, "type": "verb", "note": "א־ה־ב, לֶאֱהֹב" },
+    { "term": "גָּר", "reading": "gar", "meaning": "live(s), reside(s)", "translations": { "fr": "habite", "es": "vive, reside" }, "type": "verb", "note": "ג־ו־ר, לָגוּר" },
+    { "term": "רוֹצֶה", "reading": "rotse", "meaning": "want(s)", "translations": { "fr": "veut", "es": "quiere" }, "type": "verb", "note": "ר־צ־ה, לִרְצוֹת" },
+    { "term": "יוֹדֵעַ", "reading": "yode'a", "meaning": "know(s)", "translations": { "fr": "sait", "es": "sabe" }, "type": "verb", "note": "י־ד־ע, לָדַעַת" },
+    { "term": "מְדַבֵּר", "reading": "medaber", "meaning": "speak(s)", "translations": { "fr": "parle", "es": "habla" }, "type": "verb", "note": "ד־ב־ר, לְדַבֵּר" },
+    { "term": "מִכְתָּב", "reading": "mikhtav", "meaning": "letter", "translations": { "fr": "lettre", "es": "carta" }, "type": "noun", "gender": "masculine" },
+    { "term": "לֹא", "reading": "lo", "meaning": "no, not", "translations": { "fr": "non, ne… pas", "es": "no" }, "type": "adverb" }
+  ]
+}

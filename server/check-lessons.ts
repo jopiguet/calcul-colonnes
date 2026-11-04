@@ -128,7 +128,7 @@ for (const course of courses().values()) {
         if (marked.score !== marked.total) fail(`${at}, ${e.id}: its own answers marked ${marked.results.join(", ")}`);
         e.blanks.forEach((b, i) => {
           checks++;
-          const wrong = b.kind === "choice" ? String((b.right! + 1) % b.answers.length) : `${b.answers[0]}xq`;
+          const wrong = b.kind === "choice" ? String((b.right! + 1) % b.answers.length) : `${b.answers[0]}xqz`;
           if (markBlank(b, wrong, course.meta.folds) === "right") fail(`${at}, ${e.id}, blank ${i + 1}: a wrong answer is right`);
           if (b.kind !== "choice" && b.answers.some((a) => !fold(a, course.meta.folds))) fail(`${at}, ${e.id}, blank ${i + 1}: an answer folds to nothing`);
         });
