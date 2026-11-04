@@ -1,0 +1,19 @@
+{
+  "entries": [
+    { "term": "dominus", "meaning": "master; lord", "translations": { "fr": "maître ; seigneur", "es": "señor; amo" }, "type": "noun", "gender": "masculine", "genitive": "dominī" },
+    { "term": "servus", "meaning": "slave", "translations": { "fr": "esclave", "es": "esclavo" }, "type": "noun", "gender": "masculine", "genitive": "servī" },
+    { "term": "amīcus", "meaning": "friend", "translations": { "fr": "ami", "es": "amigo" }, "type": "noun", "gender": "masculine", "genitive": "amīcī" },
+    { "term": "fīlius", "meaning": "son", "translations": { "fr": "fils", "es": "hijo" }, "type": "noun", "gender": "masculine", "genitive": "fīliī" },
+    { "term": "fīlia", "meaning": "daughter", "translations": { "fr": "fille", "es": "hija" }, "type": "noun", "gender": "feminine", "genitive": "fīliae" },
+    { "term": "puer", "meaning": "boy; child", "translations": { "fr": "garçon ; enfant", "es": "niño; muchacho" }, "type": "noun", "gender": "masculine", "genitive": "puerī" },
+    { "term": "ager", "meaning": "field", "translations": { "fr": "champ", "es": "campo" }, "type": "noun", "gender": "masculine", "genitive": "agrī" },
+    { "term": "magister", "meaning": "teacher; master", "translations": { "fr": "maître d'école ; maître", "es": "maestro" }, "type": "noun", "gender": "masculine", "genitive": "magistrī" },
+    { "term": "liber", "meaning": "book", "translations": { "fr": "livre", "es": "libro" }, "type": "noun", "gender": "masculine", "genitive": "librī" },
+    { "term": "vir", "meaning": "man; husband", "translations": { "fr": "homme ; mari", "es": "hombre; marido" }, "type": "noun", "gender": "masculine", "genitive": "virī" },
+    { "term": "līberī", "meaning": "children", "translations": { "fr": "enfants", "es": "hijos" }, "type": "noun", "gender": "masculine", "genitive": "līberōrum" },
+    { "term": "dō", "meaning": "to give", "translations": { "fr": "donner", "es": "dar" }, "type": "verb", "principal_parts": ["dō", "dare", "dedī", "datum"] },
+    { "term": "habeō", "meaning": "to have; hold", "translations": { "fr": "avoir ; tenir", "es": "tener" }, "type": "verb", "principal_parts": ["habeō", "habēre", "habuī", "habitum"] },
+    { "term": "exspectō", "meaning": "to wait for; expect", "translations": { "fr": "attendre", "es": "esperar; aguardar" }, "type": "verb", "principal_parts": ["exspectō", "exspectāre", "exspectāvī", "exspectātum"] },
+    { "term": "cūr", "meaning": "why", "translations": { "fr": "pourquoi", "es": "por qué" }, "type": "adverb" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "entries": [
+    { "term": "quīn", "meaning": "that (after negative doubting); but that", "translations": { "fr": "que (après un doute nié)", "es": "que (tras duda negada)" }, "type": "conjunction" },
+    { "term": "quōminus", "meaning": "so that … not; from (after preventing)", "translations": { "fr": "que … ne (après empêcher)", "es": "que no (tras impedir)" }, "type": "conjunction" },
+    { "term": "quod", "meaning": "because; the fact that", "translations": { "fr": "parce que ; le fait que", "es": "porque; el hecho de que" }, "type": "conjunction" },
+    { "term": "quia", "meaning": "because", "translations": { "fr": "parce que", "es": "porque" }, "type": "conjunction" },
+    { "term": "quoniam", "meaning": "since; because", "translations": { "fr": "puisque", "es": "puesto que" }, "type": "conjunction" },
+    { "term": "quamquam", "meaning": "although", "translations": { "fr": "bien que", "es": "aunque" }, "type": "conjunction" },
+    { "term": "quamvīs", "meaning": "however much; although", "translations": { "fr": "si … que ; bien que", "es": "por mucho que; aunque" }, "type": "conjunction" },
+    { "term": "dum", "meaning": "while; until", "translations": { "fr": "pendant que ; jusqu'à ce que", "es": "mientras; hasta que" }, "type": "conjunction" },
+    { "term": "priusquam", "meaning": "before", "translations": { "fr": "avant que", "es": "antes de que" }, "type": "conjunction" },
+    { "term": "dubitō", "meaning": "to doubt; hesitate", "translations": { "fr": "douter ; hésiter", "es": "dudar; vacilar" }, "type": "verb", "principal_parts": ["dubitō", "dubitāre", "dubitāvī", "dubitātum"] },
+    { "term": "impediō", "meaning": "to hinder; prevent", "translations": { "fr": "empêcher", "es": "impedir" }, "type": "verb", "principal_parts": ["impediō", "impedīre", "impedīvī", "impedītum"] },
+    { "term": "metuō", "meaning": "to fear", "translations": { "fr": "redouter", "es": "temer" }, "type": "verb", "principal_parts": ["metuō", "metuere", "metuī"] },
+    { "term": "dignus", "meaning": "worthy", "translations": { "fr": "digne", "es": "digno" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "digna" }, { "label": "neuter", "value": "dignum" }], "note": "dignus laude" },
+    { "term": "cibus", "meaning": "food", "translations": { "fr": "nourriture", "es": "comida; alimento" }, "type": "noun", "gender": "masculine", "genitive": "cibī" },
+    { "term": "vērum", "meaning": "the truth", "translations": { "fr": "la vérité", "es": "la verdad" }, "type": "noun", "gender": "neuter", "genitive": "vērī" }
+  ]
+}

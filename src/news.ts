@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.0.0",
+    fr: ["Cours de langues : un cours de latin complet, en 31 leçons, de l'alphabet à Virgile. Chaque leçon a ses explications et tableaux, ses exercices corrigés, un résumé et ses mots à réviser."],
+    es: ["Cursos de idiomas: un curso completo de latín, en 31 lecciones, del alfabeto a Virgilio. Cada lección tiene sus explicaciones y tablas, ejercicios corregidos, un resumen y sus palabras para repasar."],
+    en: ["Language courses: a complete Latin course, 31 lessons from the alphabet to Virgil. Each lesson has its explanations and tables, marked exercises, a summary and its words to practise."],
+  },
+  {
     version: "6.37.0",
     fr: ["Vocabulaire : après la réponse, un signe cunéiforme montre ce qu'il est et fait et ses lectures par langue (chacune acceptée), un mot latin son genre, son génitif ou ses temps primitifs."],
     es: ["Vocabulario: tras la respuesta, un signo cuneiforme muestra lo que es y lo que hace y sus lecturas por idioma (cada una se acepta), una palabra latina su género, su genitivo o su enunciado."],

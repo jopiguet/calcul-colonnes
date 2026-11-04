@@ -783,6 +783,34 @@ answer sends it back to the first box. A few minutes a day is enough; a long
 session once a week is less effective. The method is described in
 [Vocabulary › The learning method](vocabulary.md#the-learning-method).
 
+## Language courses
+
+Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
+for now, with the exercises done (*12 exercices sur 126 réussis*). See
+[Language courses](language-courses.md) for how they are written.
+
+**The course page** lists the 31 lessons, each with its exercises done
+(*3/4 exercices réussis*). *Continuer : leçon 5* opens the first lesson not finished;
+*📚 Réviser le vocabulaire du cours* opens the course's words as a vocabulary
+book, with the usual spaced repetition.
+
+**A lesson** reads from top to bottom: what it is for, the explanations and
+their tables, the examples, the exercises between them, a summary box
+(*En bref*), then the lesson's words with their gender, genitive or principal
+parts. *← Leçon 4* and *Leçon 6 →* sit at the top, with the way back to the course.
+
+**An exercise** is checked on its own, with *Vérifier*:
+
+- a form to type (*rērum*): right or wrong; macrons are not needed (*rerum*
+  is right), nor *j* for *i* or *u* for *v*;
+- a choice: one option;
+- a translation: right when it matches one of the model answers closely
+  enough; otherwise the model answer is shown (*Proposition : …*) to compare
+  with yours, and *J'avais juste* marks it right, *Annuler* takes that back.
+
+A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
+shows them checked, and *Recommencer la leçon* empties it.
+
 ## Workbook exercises
 
 Activity **✏️** and the book's name (*Grammar in Use*, *Vocabulary Advanced*…),

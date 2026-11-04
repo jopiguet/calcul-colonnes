@@ -1,0 +1,16 @@
+{
+  "entries": [
+    { "term": "putō", "meaning": "to think; suppose", "translations": { "fr": "penser ; croire", "es": "pensar; creer" }, "type": "verb", "principal_parts": ["putō", "putāre", "putāvī", "putātum"] },
+    { "term": "crēdō", "meaning": "to believe; trust", "translations": { "fr": "croire ; confier", "es": "creer; confiar" }, "type": "verb", "principal_parts": ["crēdō", "crēdere", "crēdidī", "crēditum"], "note": "crēdō tibi" },
+    { "term": "sciō", "meaning": "to know", "translations": { "fr": "savoir", "es": "saber" }, "type": "verb", "principal_parts": ["sciō", "scīre", "scīvī", "scītum"] },
+    { "term": "nesciō", "meaning": "not to know", "translations": { "fr": "ne pas savoir ; ignorer", "es": "no saber; ignorar" }, "type": "verb", "principal_parts": ["nesciō", "nescīre", "nescīvī", "nescītum"] },
+    { "term": "nūntiō", "meaning": "to announce; report", "translations": { "fr": "annoncer", "es": "anunciar" }, "type": "verb", "principal_parts": ["nūntiō", "nūntiāre", "nūntiāvī", "nūntiātum"] },
+    { "term": "spērō", "meaning": "to hope", "translations": { "fr": "espérer", "es": "esperar (tener esperanza)" }, "type": "verb", "principal_parts": ["spērō", "spērāre", "spērāvī", "spērātum"] },
+    { "term": "negō", "meaning": "to deny; say that … not", "translations": { "fr": "nier ; dire que … ne … pas", "es": "negar; decir que no" }, "type": "verb", "principal_parts": ["negō", "negāre", "negāvī", "negātum"] },
+    { "term": "errō", "meaning": "to wander; be mistaken", "translations": { "fr": "errer ; se tromper", "es": "errar; equivocarse" }, "type": "verb", "principal_parts": ["errō", "errāre", "errāvī", "errātum"] },
+    { "term": "adsum", "meaning": "to be present", "translations": { "fr": "être présent", "es": "estar presente" }, "type": "verb", "principal_parts": ["adsum", "adesse", "adfuī", "adfutūrus"] },
+    { "term": "intellegō", "meaning": "to understand; realize", "translations": { "fr": "comprendre", "es": "entender; comprender" }, "type": "verb", "principal_parts": ["intellegō", "intellegere", "intellēxī", "intellēctum"] },
+    { "term": "nūntius", "meaning": "messenger; message", "translations": { "fr": "messager ; message", "es": "mensajero; mensaje" }, "type": "noun", "gender": "masculine", "genitive": "nūntiī" },
+    { "term": "aeger", "meaning": "sick; ill", "translations": { "fr": "malade", "es": "enfermo" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "aegra" }, { "label": "neuter", "value": "aegrum" }] }
+  ]
+}

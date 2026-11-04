@@ -1,0 +1,18 @@
+{
+  "entries": [
+    { "term": "regō", "meaning": "to rule; guide", "translations": { "fr": "diriger ; gouverner", "es": "regir; gobernar" }, "type": "verb", "principal_parts": ["regō", "regere", "rēxī", "rēctum"] },
+    { "term": "mittō", "meaning": "to send", "translations": { "fr": "envoyer", "es": "enviar" }, "type": "verb", "principal_parts": ["mittō", "mittere", "mīsī", "missum"] },
+    { "term": "dūcō", "meaning": "to lead", "translations": { "fr": "conduire ; mener", "es": "conducir; guiar" }, "type": "verb", "principal_parts": ["dūcō", "dūcere", "dūxī", "ductum"] },
+    { "term": "dīcō", "meaning": "to say; speak", "translations": { "fr": "dire", "es": "decir" }, "type": "verb", "principal_parts": ["dīcō", "dīcere", "dīxī", "dictum"] },
+    { "term": "scrībō", "meaning": "to write", "translations": { "fr": "écrire", "es": "escribir" }, "type": "verb", "principal_parts": ["scrībō", "scrībere", "scrīpsī", "scrīptum"] },
+    { "term": "legō", "meaning": "to read; choose", "translations": { "fr": "lire ; choisir", "es": "leer; escoger" }, "type": "verb", "principal_parts": ["legō", "legere", "lēgī", "lēctum"] },
+    { "term": "agō", "meaning": "to do; drive", "translations": { "fr": "faire ; mener", "es": "hacer; conducir" }, "type": "verb", "principal_parts": ["agō", "agere", "ēgī", "āctum"] },
+    { "term": "capiō", "meaning": "to take; seize", "translations": { "fr": "prendre ; saisir", "es": "tomar; coger" }, "type": "verb", "principal_parts": ["capiō", "capere", "cēpī", "captum"] },
+    { "term": "faciō", "meaning": "to make; do", "translations": { "fr": "faire", "es": "hacer" }, "type": "verb", "principal_parts": ["faciō", "facere", "fēcī", "factum"] },
+    { "term": "fugiō", "meaning": "to flee", "translations": { "fr": "fuir", "es": "huir" }, "type": "verb", "principal_parts": ["fugiō", "fugere", "fūgī", "fugitum"] },
+    { "term": "audiō", "meaning": "to hear; listen", "translations": { "fr": "entendre ; écouter", "es": "oír; escuchar" }, "type": "verb", "principal_parts": ["audiō", "audīre", "audīvī", "audītum"] },
+    { "term": "veniō", "meaning": "to come", "translations": { "fr": "venir", "es": "venir" }, "type": "verb", "principal_parts": ["veniō", "venīre", "vēnī", "ventum"] },
+    { "term": "sentiō", "meaning": "to feel; perceive", "translations": { "fr": "sentir ; percevoir", "es": "sentir; percibir" }, "type": "verb", "principal_parts": ["sentiō", "sentīre", "sēnsī", "sēnsum"] },
+    { "term": "dormiō", "meaning": "to sleep", "translations": { "fr": "dormir", "es": "dormir" }, "type": "verb", "principal_parts": ["dormiō", "dormīre", "dormīvī", "dormītum"] }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "entries": [
+    { "term": "rēx", "meaning": "king", "translations": { "fr": "roi", "es": "rey" }, "type": "noun", "gender": "masculine", "genitive": "rēgis" },
+    { "term": "mīles", "meaning": "soldier", "translations": { "fr": "soldat", "es": "soldado" }, "type": "noun", "gender": "masculine", "genitive": "mīlitis" },
+    { "term": "homō", "meaning": "human being; person", "translations": { "fr": "être humain ; homme", "es": "ser humano; hombre" }, "type": "noun", "gender": "masculine", "genitive": "hominis" },
+    { "term": "pater", "meaning": "father", "translations": { "fr": "père", "es": "padre" }, "type": "noun", "gender": "masculine", "genitive": "patris" },
+    { "term": "māter", "meaning": "mother", "translations": { "fr": "mère", "es": "madre" }, "type": "noun", "gender": "feminine", "genitive": "mātris" },
+    { "term": "frāter", "meaning": "brother", "translations": { "fr": "frère", "es": "hermano" }, "type": "noun", "gender": "masculine", "genitive": "frātris" },
+    { "term": "soror", "meaning": "sister", "translations": { "fr": "sœur", "es": "hermana" }, "type": "noun", "gender": "feminine", "genitive": "sorōris" },
+    { "term": "cīvitās", "meaning": "state; community", "translations": { "fr": "cité ; État", "es": "ciudad; Estado" }, "type": "noun", "gender": "feminine", "genitive": "cīvitātis" },
+    { "term": "lībertās", "meaning": "freedom", "translations": { "fr": "liberté", "es": "libertad" }, "type": "noun", "gender": "feminine", "genitive": "lībertātis" },
+    { "term": "virtūs", "meaning": "courage; virtue", "translations": { "fr": "courage ; vertu", "es": "valor; virtud" }, "type": "noun", "gender": "feminine", "genitive": "virtūtis" },
+    { "term": "amor", "meaning": "love", "translations": { "fr": "amour", "es": "amor" }, "type": "noun", "gender": "masculine", "genitive": "amōris" },
+    { "term": "labor", "meaning": "work; toil", "translations": { "fr": "travail ; peine", "es": "trabajo; esfuerzo" }, "type": "noun", "gender": "masculine", "genitive": "labōris" },
+    { "term": "corpus", "meaning": "body", "translations": { "fr": "corps", "es": "cuerpo" }, "type": "noun", "gender": "neuter", "genitive": "corporis" },
+    { "term": "tempus", "meaning": "time", "translations": { "fr": "temps", "es": "tiempo" }, "type": "noun", "gender": "neuter", "genitive": "temporis" },
+    { "term": "nōmen", "meaning": "name", "translations": { "fr": "nom", "es": "nombre" }, "type": "noun", "gender": "neuter", "genitive": "nōminis" },
+    { "term": "flūmen", "meaning": "river", "translations": { "fr": "fleuve", "es": "río" }, "type": "noun", "gender": "neuter", "genitive": "flūminis" },
+    { "term": "ōrātiō", "meaning": "speech", "translations": { "fr": "discours", "es": "discurso" }, "type": "noun", "gender": "feminine", "genitive": "ōrātiōnis" },
+    { "term": "cārus", "meaning": "dear", "translations": { "fr": "cher", "es": "querido" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "cāra" }, { "label": "neuter", "value": "cārum" }] },
+    { "term": "meus", "meaning": "my", "translations": { "fr": "mon", "es": "mi" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "mea" }, { "label": "neuter", "value": "meum" }] }
+  ]
+}

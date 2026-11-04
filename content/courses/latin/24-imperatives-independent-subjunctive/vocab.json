@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "utinam", "meaning": "if only; would that", "translations": { "fr": "si seulement ; puisse", "es": "ojalá" }, "type": "particle" },
+    { "term": "igitur", "meaning": "therefore; then", "translations": { "fr": "donc", "es": "por tanto; pues" }, "type": "conjunction" },
+    { "term": "aliquis", "meaning": "someone; anyone", "translations": { "fr": "quelqu'un", "es": "alguien" }, "type": "pronoun", "forms": [{ "label": "neuter", "value": "aliquid" }] },
+    { "term": "quō", "meaning": "where to; whither", "translations": { "fr": "où (avec mouvement)", "es": "adónde" }, "type": "adverb" },
+    { "term": "prō", "meaning": "for; in front of; instead of", "translations": { "fr": "pour ; devant ; à la place de", "es": "por; delante de; en lugar de" }, "type": "preposition", "note": "prō patriā" },
+    { "term": "meminī", "meaning": "to remember", "translations": { "fr": "se souvenir", "es": "recordar" }, "type": "verb", "principal_parts": ["meminī", "meminisse"], "note": "mementō" },
+    { "term": "dētrīmentum", "meaning": "harm; loss", "translations": { "fr": "dommage ; perte", "es": "daño; perjuicio" }, "type": "noun", "gender": "neuter", "genitive": "dētrīmentī" },
+    { "term": "vīvō", "meaning": "to live; be alive", "translations": { "fr": "vivre", "es": "vivir" }, "type": "verb", "principal_parts": ["vīvō", "vīvere", "vīxī", "vīctum"] }
+  ]
+}

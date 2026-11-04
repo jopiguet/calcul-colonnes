@@ -2,7 +2,7 @@
 
 A web app for practising arithmetic the way it is written on paper, for
 multiple-choice tests in secondary-school and first-year university
-mathematics, for vocabulary (Spanish, English, Japanese) with spaced repetition, and
+mathematics, for vocabulary (Spanish, English, Japanese) with spaced repetition, for complete language courses (Latin), and
 for experiments to discover probability. French, Spanish
 and English interface; one server, one small database; sign-in by password or
 Google, Microsoft, GitHub and other OpenID providers; installable on a phone's
@@ -75,6 +75,8 @@ at four levels, *Débutant* to *Expert*, like every test of the app, each with a
 **Public economics** — multiple-choice tests at four levels on public and labour economics: welfare economics and social choice, externalities and public goods, public choice, tax incidence, optimal taxation, tax design, social insurance and pensions, inequality and benefits, the labour market. Concept questions are written from eight textbooks you own (kept out of the project, like the Atkins bank); thirteen kinds of question are generated on economic charts (incidence, lettered surplus areas, Pigou, Samuelson, Lorenz curves as answers, monopsony…), each answer computed again by an independent evaluator.
 
 **Calculus** — multiple-choice tests at four levels following the chapters of Stewart's *Calculus*, from limits to vector calculus, with differential equations, series and stochastic calculus (Brownian motion, Itô). Concept questions are written from six books you own (kept out of the project); 28 kinds of question are generated on graphs (a limit at a jump, tangents, Riemann sums, slope fields and Euler, polar roses, Taylor polynomials as answers, level curves, Green's theorem, Brownian paths…), each answer computed again by an independent evaluator.
+
+**Language courses** — complete courses written for the app, in French, Spanish and English. **Latin**: 31 lessons from the alphabet to Virgil's hexameter, every declension and conjugation, the subjunctive and its clauses, indirect speech, the calendar, readings from Caesar, Catullus and the *Aeneid*. Each lesson has its explanations and paradigm tables, examples, at least four exercises marked by the server (forms to type, choices, free translations the player can mark right), a summary, and its words in a shared vocabulary book for spaced repetition. Answers are kept.
 
 **Workbook exercises** — the exercises of the workbooks you own (*Grammar in Use*, *Vocabulary in Use*, *Academic Vocabulary in Use*, *Idioms in Use* from their PDFs; *Practice Makes Perfect: Complete Spanish Grammar* from its EPUB), filled in on the book's own pages: each dotted line is a field, the other items get one under the page. A unit is corrected at the end against the book's key, which is read the way the books print it (alternatives, optional words, several gaps, letters); the player can mark an answer the key did not foresee as right. The pages and keys are extracted from your PDFs and EPUBs by a script and never leave `data/`.
 
@@ -168,6 +170,7 @@ npm start          # http://localhost:8787
 | `npm run check:biology` | Checks the chemistry and biology labs: unique bonds, Punnett squares and chi-square, diffusion, Lotka–Volterra (see [Discover](docs/discover.md#biology-checks)) |
 | `npm run check:math` | Checks the mathematical curiosities: the snowflake's polygon, the Mandelbrot points and area, the chaos game's hole, Lorenz's Lyapunov exponent, the logistic map's doublings (see [Discover](docs/discover.md#math-checks)) |
 | `npm run check:courses` | Checks that the in-app courses say the same in French, Spanish and English: headings, tables, code, links and formulas, and that every topic points to a part |
+| `npm run check:lessons` | Checks the language courses: the same exercises and answers in the three languages, the lesson template, every answer marked right when typed back (see [Language courses › Checks](docs/language-courses.md#checks)) |
 | `npm run check:tour` | Checks the guided tour: the session flag, migration 023, the pages in every language, the chips against the app's labels (see [User guide › Guided tour](docs/user-guide.md#guided-tour)) |
 | `npm run test:e2e:postgres` | The same browser tests on PostgreSQL, with `E2E_DATABASE_URL` naming a database that may be emptied |
 | `npm run maintenance` | Migrations, backfills, new vocabulary books and session purge, then exit: what a Cloud Run release runs as a job |
@@ -204,6 +207,7 @@ Settings are read from `.env` (see `.env.example`):
 | [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust, 36 TypeScript, 44 React, 40 Google Cloud, 13 economics, 28 calculus and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
+| [Language courses](docs/language-courses.md) | The Latin course and those to come: lesson format, blanks and marking, checks, adding a lesson or a course |
 | [Workbook exercises](docs/exercises.md) | Extracting a workbook's exercises from its PDF or EPUB, importing it, how answers are marked against the key |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |
 | [Authentication](docs/authentication.md) | Accounts and players, cookies, providers setup, passkeys and email links to come |

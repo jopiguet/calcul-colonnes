@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "dēleō", "meaning": "to destroy", "translations": { "fr": "détruire", "es": "destruir" }, "type": "verb", "principal_parts": ["dēleō", "dēlēre", "dēlēvī", "dēlētum"] },
+    { "term": "vulnerō", "meaning": "to wound", "translations": { "fr": "blesser", "es": "herir" }, "type": "verb", "principal_parts": ["vulnerō", "vulnerāre", "vulnerāvī", "vulnerātum"] },
+    { "term": "portō", "meaning": "to carry", "translations": { "fr": "porter", "es": "llevar; transportar" }, "type": "verb", "principal_parts": ["portō", "portāre", "portāvī", "portātum"] },
+    { "term": "inveniō", "meaning": "to find", "translations": { "fr": "trouver", "es": "encontrar; hallar" }, "type": "verb", "principal_parts": ["inveniō", "invenīre", "invēnī", "inventum"] },
+    { "term": "occupō", "meaning": "to seize; occupy", "translations": { "fr": "s'emparer de ; occuper", "es": "ocupar; apoderarse de" }, "type": "verb", "principal_parts": ["occupō", "occupāre", "occupāvī", "occupātum"] },
+    { "term": "līberō", "meaning": "to free", "translations": { "fr": "libérer", "es": "liberar" }, "type": "verb", "principal_parts": ["līberō", "līberāre", "līberāvī", "līberātum"] },
+    { "term": "condō", "meaning": "to found; store", "translations": { "fr": "fonder ; mettre en réserve", "es": "fundar; guardar" }, "type": "verb", "principal_parts": ["condō", "condere", "condidī", "conditum"] },
+    { "term": "litterae", "meaning": "letter (epistle); literature", "translations": { "fr": "lettre (missive) ; littérature", "es": "carta; literatura" }, "type": "noun", "gender": "feminine", "genitive": "litterārum", "note": "littera: litterae" },
+    { "term": "Carthāgō", "meaning": "Carthage", "translations": { "fr": "Carthage", "es": "Cartago" }, "type": "noun", "gender": "feminine", "genitive": "Carthāginis" },
+    { "term": "cum", "meaning": "when (+ indicative)", "translations": { "fr": "quand (+ indicatif)", "es": "cuando (+ indicativo)" }, "type": "conjunction" }
+  ]
+}

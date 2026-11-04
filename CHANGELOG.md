@@ -1,5 +1,18 @@
 # Changelog
 
+## 7.0.0
+
+- **Language courses.** A new group on the home page, *Cours de langues*, with complete courses written for the app, in French, Spanish and English. See [Language courses](docs/language-courses.md).
+  - **🏛️ Latin**, the first: 31 lessons, 126 exercises, 410 words. From the alphabet and pronunciation through the five declensions, the four conjugations, pronouns, participles and the ablative absolute, indirect statement, comparison, the four tenses of the subjunctive and their clauses (purpose, result, *cum*, indirect questions, fear, characteristic), deponents, irregular verbs, the gerund and gerundive, conditionals, the uses of the cases, numbers and the calendar, indirect speech, to prosody and the hexameter; readings from Caesar (*BG* 1.1), Catullus 5 and the *Aeneid* 1.1–4.
+  - **One template for every lesson:** what it is for, explanations with paradigm tables, examples, at least four exercises, a summary, the lesson's words. `check:lessons` enforces it.
+  - **Exercises marked by the server,** filled in on the page: forms to type (macrons, *j* and *v* optional), choices, free translations matched against model answers and, when they differ, shown with the model for the player to mark right. Answers never reach the browser before a check; answers and scores are kept per player.
+  - **The words of each lesson** form a shared vocabulary book, *Latin*, imported at start when it changed, for spaced repetition, with gender, genitive and principal parts (format 3). It opens from the course and stays off the *Langues* shelf, apart from your own Latin books.
+- **Course Markdown:** italics may hold bold (*rosa **puellae***), and a line ending in `\` breaks the line, for verse.
+- **Database:** migration `035_lesson_answers`.
+- **API:** `/api/courses` (courses, a course, a lesson, check, override, reset). See [Language courses › Routes](docs/language-courses.md#routes).
+- **Checks:** `npm run check:lessons`, in CI too: marking cases; the three languages agree on exercises, answers, choices and structure; the template; every answer typed back is right and a wrong one is not; at least five words a lesson, none taught twice.
+- **Tests:** `tests/e2e/lessons.spec.ts`: strict, free and choice answers, a free answer marked right, everything kept after a reload; the shared vocabulary book; a lesson on a phone, without sideways scrolling.
+
 ## 6.37.0
 
 - **Vocabulary file format 3**, for languages where an entry is more than a word and its meaning: on an entry, `type` (`sign`, `noun`, `verb`…), `readings` as a list (`{"value": "diĝir", "language": "sux", "note": "…"}`), `functions` (`logogram`, `determinative`…), and for Latin and its like `gender`, `genitive`, `principal_parts` and `forms` (`[{"label": "plural", "value": "homines"}]`). Only known fields: a misspelt one is refused, named, rather than dropped. See [Vocabulary › Format 3](docs/vocabulary.md#format-3).

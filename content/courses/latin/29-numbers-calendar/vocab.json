@@ -1,0 +1,19 @@
+{
+  "entries": [
+    { "term": "duo", "meaning": "two", "translations": { "fr": "deux", "es": "dos" }, "type": "numeral", "forms": [{ "label": "feminine", "value": "duae" }, { "label": "neuter", "value": "duo" }] },
+    { "term": "trēs", "meaning": "three", "translations": { "fr": "trois", "es": "tres" }, "type": "numeral", "forms": [{ "label": "neuter", "value": "tria" }] },
+    { "term": "quattuor", "meaning": "four", "translations": { "fr": "quatre", "es": "cuatro" }, "type": "numeral" },
+    { "term": "quīnque", "meaning": "five", "translations": { "fr": "cinq", "es": "cinco" }, "type": "numeral" },
+    { "term": "decem", "meaning": "ten", "translations": { "fr": "dix", "es": "diez" }, "type": "numeral" },
+    { "term": "centum", "meaning": "a hundred", "translations": { "fr": "cent", "es": "cien" }, "type": "numeral" },
+    { "term": "mīlle", "meaning": "a thousand", "translations": { "fr": "mille", "es": "mil" }, "type": "numeral", "forms": [{ "label": "plural", "value": "mīlia" }] },
+    { "term": "prīmus", "meaning": "first", "translations": { "fr": "premier", "es": "primero" }, "type": "numeral", "forms": [{ "label": "feminine", "value": "prīma" }, { "label": "neuter", "value": "prīmum" }] },
+    { "term": "secundus", "meaning": "second; favourable", "translations": { "fr": "deuxième ; favorable", "es": "segundo; favorable" }, "type": "numeral", "forms": [{ "label": "feminine", "value": "secunda" }, { "label": "neuter", "value": "secundum" }] },
+    { "term": "passus", "meaning": "pace; step", "translations": { "fr": "pas", "es": "paso" }, "type": "noun", "gender": "masculine", "genitive": "passūs", "note": "mīlle passūs" },
+    { "term": "mēnsis", "meaning": "month", "translations": { "fr": "mois", "es": "mes" }, "type": "noun", "gender": "masculine", "genitive": "mēnsis" },
+    { "term": "Kalendae", "meaning": "the Kalends (1st of the month)", "translations": { "fr": "les Calendes (1er du mois)", "es": "las Calendas (día 1 del mes)" }, "type": "noun", "gender": "feminine", "genitive": "Kalendārum" },
+    { "term": "Īdūs", "meaning": "the Ides (13th or 15th)", "translations": { "fr": "les Ides (13 ou 15)", "es": "los idus (13 o 15)" }, "type": "noun", "gender": "feminine", "genitive": "Īduum" },
+    { "term": "prīdiē", "meaning": "on the day before", "translations": { "fr": "la veille", "es": "la víspera" }, "type": "adverb" },
+    { "term": "condō", "meaning": "to found; establish", "translations": { "fr": "fonder", "es": "fundar" }, "type": "verb", "principal_parts": ["condō", "condere", "condidī", "conditum"] }
+  ]
+}

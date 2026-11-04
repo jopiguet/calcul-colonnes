@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {"term": "signum", "meaning": "sign; signal; standard", "translations": {"fr": "signe ; signal ; enseigne", "es": "señal; signo; estandarte"}, "type": "noun", "gender": "neuter", "genitive": "signī"},
+    {"term": "cōnsul", "meaning": "consul", "translations": {"fr": "consul", "es": "cónsul"}, "type": "noun", "gender": "masculine", "genitive": "cōnsulis"},
+    {"term": "clāmō", "meaning": "to shout", "translations": {"fr": "crier", "es": "gritar"}, "type": "verb", "principal_parts": ["clāmō", "clāmāre", "clāmāvī", "clāmātum"]},
+    {"term": "necō", "meaning": "to kill", "translations": {"fr": "tuer", "es": "matar"}, "type": "verb", "principal_parts": ["necō", "necāre", "necāvī", "necātum"]},
+    {"term": "coepī", "meaning": "I began", "translations": {"fr": "j'ai commencé", "es": "empecé"}, "type": "verb", "principal_parts": ["coepī", "coepisse", "coeptum"]},
+    {"term": "morior", "meaning": "to die", "translations": {"fr": "mourir", "es": "morir"}, "type": "verb", "principal_parts": ["morior", "morī", "mortuus sum", "moritūrus"]},
+    {"term": "reddō", "meaning": "to give back; return", "translations": {"fr": "rendre", "es": "devolver"}, "type": "verb", "principal_parts": ["reddō", "reddere", "reddidī", "redditum"]},
+    {"term": "invītus", "meaning": "unwilling", "translations": {"fr": "contre son gré", "es": "contra su voluntad"}, "type": "adjective", "forms": [{"label": "feminine", "value": "invīta"}, {"label": "neuter", "value": "invītum"}]},
+    {"term": "vīvus", "meaning": "alive; living", "translations": {"fr": "vivant", "es": "vivo"}, "type": "adjective", "forms": [{"label": "feminine", "value": "vīva"}, {"label": "neuter", "value": "vīvum"}]}
+  ]
+}

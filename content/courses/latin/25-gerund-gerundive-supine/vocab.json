@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "ars", "meaning": "skill; art", "translations": { "fr": "art ; savoir-faire", "es": "arte; habilidad" }, "type": "noun", "gender": "feminine", "genitive": "artis" },
+    { "term": "causā", "meaning": "for the sake of (after a genitive)", "translations": { "fr": "en vue de (après un génitif)", "es": "a causa de; con el fin de (tras genitivo)" }, "type": "preposition", "note": "pugnandī causā" },
+    { "term": "lēgātus", "meaning": "envoy; lieutenant", "translations": { "fr": "ambassadeur ; légat", "es": "embajador; legado" }, "type": "noun", "gender": "masculine", "genitive": "lēgātī" },
+    { "term": "discō", "meaning": "to learn", "translations": { "fr": "apprendre", "es": "aprender" }, "type": "verb", "principal_parts": ["discō", "discere", "didicī"] },
+    { "term": "persuādeō", "meaning": "to persuade", "translations": { "fr": "persuader", "es": "persuadir" }, "type": "verb", "principal_parts": ["persuādeō", "persuādēre", "persuāsī", "persuāsum"], "note": "persuādeō tibi" },
+    { "term": "mīrābilis", "meaning": "wonderful; amazing", "translations": { "fr": "admirable ; étonnant", "es": "admirable; asombroso" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "mīrābile" }] },
+    { "term": "dē", "meaning": "about; down from", "translations": { "fr": "au sujet de ; du haut de", "es": "acerca de; desde (arriba)" }, "type": "preposition", "note": "dē librīs" },
+    { "term": "omnia", "meaning": "everything; all things", "translations": { "fr": "tout ; toutes choses", "es": "todo; todas las cosas" }, "type": "pronoun" }
+  ]
+}

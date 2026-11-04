@@ -9,13 +9,14 @@ import { VocabStore } from "./vocab.ts";
 import { BankStore } from "./quiz-bank.ts";
 import { importBankFile } from "./quiz-import.ts";
 import { ExerciseStore } from "./exercises.ts";
+import { importCourseVocab } from "./lessons.ts";
 
 /**
  * Everything the database needs before a server version may serve it:
  * migrations, answers and mistakes rebuilt for older tests, vocabulary books
  * from VOCAB_FILE not yet imported, the question bank from QUIZ_BANK_FILE when
- * the server has none, workbooks from EXERCISE_BOOKS not yet imported,
- * expired sessions removed.
+ * the server has none, workbooks from EXERCISE_BOOKS not yet imported, the
+ * language courses' vocabulary books when they changed, expired sessions removed.
  *
  * Locally it runs at every start (as before). On Cloud Run it runs once per
  * release as a job (`node dist-server/index.js maintenance`), so instances
@@ -79,6 +80,18 @@ export async function maintain(db: Database): Promise<void> {
       log.info(`exercises imported from ${dir}: book "${report.book}", ${report.exercises} exercises`);
     }
   }
+
+  // The language courses' vocabulary books (content/courses), imported again whenever they change; every account sees them.
+  const vocabStore = new VocabStore(db);
+  const courseBooks = await importCourseVocab(
+    db,
+    (file) => vocabStore.import(file, { replace: true }),
+    async (slug) => {
+      const id = (await db.query("SELECT id FROM vocab_books WHERE slug = $1", [slug]))[0]?.id;
+      if (id !== undefined) await vocabStore.setVisibility(Number(id), "shared");
+    },
+  );
+  if (courseBooks.length > 0) log.info(`course vocabulary imported: ${courseBooks.join(", ")}`);
 
   await new AuthStore(db).deleteExpired();
 }

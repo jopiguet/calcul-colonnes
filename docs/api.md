@@ -610,6 +610,13 @@ player's answers, drafts, the correction of a unit and the player's own
 marks. Every route and its body are in
 [Workbook exercises › Routes](exercises.md#routes).
 
+## Language courses
+
+`/api/courses/…`: the courses, a course with the player's progress, a
+lesson without its answers, checking an exercise, marking a free answer
+right, starting a lesson again. Every route and its body are in
+[Language courses › Routes](language-courses.md#routes).
+
 ## Authentication
 
 Under `/api/auth`. Errors are `{"error": "<code>"}`; the codes are listed at

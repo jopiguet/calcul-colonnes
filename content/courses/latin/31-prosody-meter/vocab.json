@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "canō", "meaning": "to sing; sing of", "translations": { "fr": "chanter", "es": "cantar" }, "type": "verb", "principal_parts": ["canō", "canere", "cecinī", "cantum"] },
+    { "term": "iactō", "meaning": "to toss; throw about", "translations": { "fr": "ballotter ; lancer", "es": "zarandear; lanzar" }, "type": "verb", "principal_parts": ["iactō", "iactāre", "iactāvī", "iactātum"] },
+    { "term": "fātum", "meaning": "fate; destiny", "translations": { "fr": "destin", "es": "destino; hado" }, "type": "noun", "gender": "neuter", "genitive": "fātī" },
+    { "term": "ōra", "meaning": "shore; coast", "translations": { "fr": "rivage ; côte", "es": "costa; orilla" }, "type": "noun", "gender": "feminine", "genitive": "ōrae" },
+    { "term": "lītus", "meaning": "shore; beach", "translations": { "fr": "rivage ; plage", "es": "playa; litoral" }, "type": "noun", "gender": "neuter", "genitive": "lītoris" },
+    { "term": "īra", "meaning": "anger; wrath", "translations": { "fr": "colère", "es": "ira" }, "type": "noun", "gender": "feminine", "genitive": "īrae" },
+    { "term": "vīs", "meaning": "force; power", "translations": { "fr": "force ; puissance", "es": "fuerza; poder" }, "type": "noun", "gender": "feminine", "genitive": "vīs", "note": "vim, vī; vīrēs" },
+    { "term": "profugus", "meaning": "exiled; fugitive", "translations": { "fr": "exilé ; fugitif", "es": "prófugo; desterrado" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "profuga" }, { "label": "neuter", "value": "profugum" }] },
+    { "term": "saevus", "meaning": "cruel; savage", "translations": { "fr": "cruel ; farouche", "es": "cruel; feroz" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "saeva" }, { "label": "neuter", "value": "saevum" }] },
+    { "term": "ob", "meaning": "because of; on account of", "translations": { "fr": "à cause de", "es": "a causa de; por" }, "type": "preposition", "note": "ob īram" },
+    { "term": "versus", "meaning": "line of verse", "translations": { "fr": "vers", "es": "verso" }, "type": "noun", "gender": "masculine", "genitive": "versūs" }
+  ]
+}

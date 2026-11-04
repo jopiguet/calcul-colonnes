@@ -1,0 +1,17 @@
+{
+  "entries": [
+    { "term": "is", "meaning": "he; this, that", "translations": { "fr": "il ; ce, cet", "es": "él; ese" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "ea" }, { "label": "neuter", "value": "id" }, { "label": "genitive", "value": "eius" }] },
+    { "term": "hic", "meaning": "this", "translations": { "fr": "celui-ci ; ce… -ci", "es": "este" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "haec" }, { "label": "neuter", "value": "hoc" }, { "label": "genitive", "value": "huius" }] },
+    { "term": "ille", "meaning": "that; the famous", "translations": { "fr": "celui-là ; ce… -là ; le célèbre", "es": "aquel; el famoso" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "illa" }, { "label": "neuter", "value": "illud" }, { "label": "genitive", "value": "illīus" }] },
+    { "term": "iste", "meaning": "that (of yours)", "translations": { "fr": "ce… (de toi)", "es": "ese (tuyo)" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "ista" }, { "label": "neuter", "value": "istud" }] },
+    { "term": "īdem", "meaning": "the same", "translations": { "fr": "le même", "es": "el mismo" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "eadem" }, { "label": "neuter", "value": "idem" }] },
+    { "term": "ipse", "meaning": "himself; the very", "translations": { "fr": "lui-même ; en personne", "es": "él mismo; en persona" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "ipsa" }, { "label": "neuter", "value": "ipsum" }] },
+    { "term": "ūnus", "meaning": "one", "translations": { "fr": "un, une", "es": "uno" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "ūnīus" }] },
+    { "term": "nūllus", "meaning": "no; none", "translations": { "fr": "aucun", "es": "ninguno" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "nūllīus" }] },
+    { "term": "sōlus", "meaning": "alone; only", "translations": { "fr": "seul", "es": "solo" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "sōlīus" }] },
+    { "term": "tōtus", "meaning": "whole; entire", "translations": { "fr": "tout entier", "es": "todo; entero" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "tōtīus" }] },
+    { "term": "alius", "meaning": "other; another", "translations": { "fr": "autre", "es": "otro" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "aliud" }] },
+    { "term": "alter", "meaning": "the other (of two)", "translations": { "fr": "l'autre (de deux)", "es": "el otro (de dos)" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "alterīus" }] },
+    { "term": "tuus", "meaning": "your (of one person)", "translations": { "fr": "ton", "es": "tu (de ti)" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "tua" }, { "label": "neuter", "value": "tuum" }] }
+  ]
+}

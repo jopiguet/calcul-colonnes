@@ -1,0 +1,22 @@
+{
+  "entries": [
+    { "term": "puella", "meaning": "girl", "translations": { "fr": "jeune fille", "es": "muchacha" }, "type": "noun", "gender": "feminine", "genitive": "puellae" },
+    { "term": "rosa", "meaning": "rose", "translations": { "fr": "rose", "es": "rosa" }, "type": "noun", "gender": "feminine", "genitive": "rosae" },
+    { "term": "aqua", "meaning": "water", "translations": { "fr": "eau", "es": "agua" }, "type": "noun", "gender": "feminine", "genitive": "aquae" },
+    { "term": "terra", "meaning": "land; earth", "translations": { "fr": "terre", "es": "tierra" }, "type": "noun", "gender": "feminine", "genitive": "terrae" },
+    { "term": "silva", "meaning": "forest", "translations": { "fr": "forêt", "es": "bosque" }, "type": "noun", "gender": "feminine", "genitive": "silvae" },
+    { "term": "via", "meaning": "road; way", "translations": { "fr": "route ; chemin", "es": "camino; vía" }, "type": "noun", "gender": "feminine", "genitive": "viae" },
+    { "term": "fābula", "meaning": "story", "translations": { "fr": "histoire ; récit", "es": "historia; relato" }, "type": "noun", "gender": "feminine", "genitive": "fābulae" },
+    { "term": "rēgīna", "meaning": "queen", "translations": { "fr": "reine", "es": "reina" }, "type": "noun", "gender": "feminine", "genitive": "rēgīnae" },
+    { "term": "agricola", "meaning": "farmer", "translations": { "fr": "paysan ; agriculteur", "es": "campesino; agricultor" }, "type": "noun", "gender": "masculine", "genitive": "agricolae" },
+    { "term": "nauta", "meaning": "sailor", "translations": { "fr": "marin", "es": "marinero" }, "type": "noun", "gender": "masculine", "genitive": "nautae" },
+    { "term": "poēta", "meaning": "poet", "translations": { "fr": "poète", "es": "poeta" }, "type": "noun", "gender": "masculine", "genitive": "poētae" },
+    { "term": "laudō", "meaning": "to praise", "translations": { "fr": "louer ; faire l'éloge", "es": "alabar" }, "type": "verb", "principal_parts": ["laudō", "laudāre", "laudāvī", "laudātum"] },
+    { "term": "nārrō", "meaning": "to tell", "translations": { "fr": "raconter", "es": "contar; narrar" }, "type": "verb", "principal_parts": ["nārrō", "nārrāre", "nārrāvī", "nārrātum"] },
+    { "term": "arō", "meaning": "to plough", "translations": { "fr": "labourer", "es": "arar" }, "type": "verb", "principal_parts": ["arō", "arāre", "arāvī", "arātum"] },
+    { "term": "ad", "meaning": "to; towards (+ acc.)", "translations": { "fr": "vers ; à (+ acc.)", "es": "hacia; a (+ ac.)" }, "type": "preposition" },
+    { "term": "in", "meaning": "into (+ acc.); in, on (+ abl.)", "translations": { "fr": "dans, vers (+ acc.) ; dans, sur (+ abl.)", "es": "a, hacia (+ ac.); en (+ abl.)" }, "type": "preposition" },
+    { "term": "cum", "meaning": "with (+ abl.)", "translations": { "fr": "avec (+ abl.)", "es": "con (+ abl.)" }, "type": "preposition" },
+    { "term": "ex", "meaning": "out of; from (+ abl.)", "translations": { "fr": "hors de ; de (+ abl.)", "es": "fuera de; desde (+ abl.)" }, "type": "preposition", "note": "ē silvā, ex aquā" }
+  ]
+}

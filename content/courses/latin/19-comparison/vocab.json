@@ -1,0 +1,19 @@
+{
+  "entries": [
+    { "term": "facilis", "meaning": "easy", "translations": { "fr": "facile", "es": "fácil" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "facile" }, { "label": "superlative", "value": "facillimus" }] },
+    { "term": "difficilis", "meaning": "difficult", "translations": { "fr": "difficile", "es": "difícil" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "difficile" }, { "label": "superlative", "value": "difficillimus" }] },
+    { "term": "similis", "meaning": "similar; like", "translations": { "fr": "semblable", "es": "semejante" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "simile" }, { "label": "superlative", "value": "simillimus" }] },
+    { "term": "celer", "meaning": "quick; swift", "translations": { "fr": "rapide", "es": "rápido" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "celeris" }, { "label": "neuter", "value": "celere" }] },
+    { "term": "dulcis", "meaning": "sweet", "translations": { "fr": "doux", "es": "dulce" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "dulce" }] },
+    { "term": "clārus", "meaning": "bright; famous", "translations": { "fr": "clair ; illustre", "es": "claro; ilustre" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "clāra" }, { "label": "neuter", "value": "clārum" }] },
+    { "term": "lātus", "meaning": "wide; broad", "translations": { "fr": "large", "es": "ancho" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "lāta" }, { "label": "neuter", "value": "lātum" }] },
+    { "term": "prūdēns", "meaning": "wise; sensible", "translations": { "fr": "sage ; avisé", "es": "prudente; sensato" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "prūdentis" }] },
+    { "term": "melior", "meaning": "better", "translations": { "fr": "meilleur", "es": "mejor" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "melius" }, { "label": "superlative", "value": "optimus" }] },
+    { "term": "maior", "meaning": "greater; bigger", "translations": { "fr": "plus grand", "es": "mayor; más grande" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "maius" }, { "label": "superlative", "value": "maximus" }] },
+    { "term": "plūs", "meaning": "more", "translations": { "fr": "plus", "es": "más" }, "type": "noun", "gender": "neuter", "genitive": "plūris", "note": "plūs pecūniae" },
+    { "term": "quam", "meaning": "than; how", "translations": { "fr": "que (comparaison) ; combien", "es": "que (comparación); cuán" }, "type": "adverb" },
+    { "term": "magis", "meaning": "more (degree)", "translations": { "fr": "davantage", "es": "más (en grado)" }, "type": "adverb" },
+    { "term": "nihil", "meaning": "nothing", "translations": { "fr": "rien", "es": "nada" }, "type": "pronoun" },
+    { "term": "lūx", "meaning": "light", "translations": { "fr": "lumière", "es": "luz" }, "type": "noun", "gender": "feminine", "genitive": "lūcis" }
+  ]
+}

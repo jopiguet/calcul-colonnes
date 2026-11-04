@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "vincō", "meaning": "to conquer; win", "translations": { "fr": "vaincre", "es": "vencer" }, "type": "verb", "principal_parts": ["vincō", "vincere", "vīcī", "victum"] },
+    { "term": "currō", "meaning": "to run", "translations": { "fr": "courir", "es": "correr" }, "type": "verb", "principal_parts": ["currō", "currere", "cucurrī", "cursum"] },
+    { "term": "gaudeō", "meaning": "to rejoice; be glad", "translations": { "fr": "se réjouir", "es": "alegrarse" }, "type": "verb", "principal_parts": ["gaudeō", "gaudēre", "gāvīsus sum"] },
+    { "term": "relinquō", "meaning": "to leave behind; abandon", "translations": { "fr": "laisser ; abandonner", "es": "dejar; abandonar" }, "type": "verb", "principal_parts": ["relinquō", "relinquere", "relīquī", "relictum"] },
+    { "term": "petō", "meaning": "to seek; ask; attack", "translations": { "fr": "chercher à atteindre ; demander ; attaquer", "es": "buscar; pedir; atacar" }, "type": "verb", "principal_parts": ["petō", "petere", "petīvī", "petītum"] },
+    { "term": "quaerō", "meaning": "to look for; ask", "translations": { "fr": "chercher ; demander", "es": "buscar; preguntar" }, "type": "verb", "principal_parts": ["quaerō", "quaerere", "quaesīvī", "quaesītum"] },
+    { "term": "cadō", "meaning": "to fall", "translations": { "fr": "tomber", "es": "caer" }, "type": "verb", "principal_parts": ["cadō", "cadere", "cecidī", "cāsum"] },
+    { "term": "stō", "meaning": "to stand", "translations": { "fr": "se tenir debout", "es": "estar de pie" }, "type": "verb", "principal_parts": ["stō", "stāre", "stetī", "statum"] },
+    { "term": "epistula", "meaning": "letter", "translations": { "fr": "lettre", "es": "carta" }, "type": "noun", "gender": "feminine", "genitive": "epistulae" },
+    { "term": "sī", "meaning": "if", "translations": { "fr": "si", "es": "si" }, "type": "conjunction" },
+    { "term": "postquam", "meaning": "after (conj.)", "translations": { "fr": "après que", "es": "después de que" }, "type": "conjunction" }
+  ]
+}

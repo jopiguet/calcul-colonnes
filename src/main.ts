@@ -43,6 +43,8 @@ import { mt as mathText } from "./discover/math-i18n";
 import { dt } from "./discover/i18n";
 import { progressView, type ProgressScope } from "./progress";
 import { workbookView } from "./workbook";
+import { lessonsView } from "./lessons";
+import { lt } from "./lessons-i18n";
 import { wt } from "./workbook-i18n";
 import { resetTour, tourView } from "./tour";
 import { closeCourse } from "./course";
@@ -190,11 +192,14 @@ async function render(): Promise<void> {
   const wide = Boolean(state.user) && ((state.view === "play" && state.settings.mode === "home") || (state.view === "progress" && progressScope === "all"));
   // A workbook's pages are as wide as the book's.
   const bookPage = Boolean(state.user) && state.view === "play" && state.settings.mode === "workbook";
+  // A lesson reads like a page of a book: a comfortable width for its tables.
+  const lessonPage = Boolean(state.user) && state.view === "play" && state.settings.mode === "lessons";
   // Another screen opens at its top; the same screen redrawn (a choice, an answer) stays where it was.
-  const screenOf = [state.view, state.settings.mode, state.settings.quizSubject, state.settings.discoverActivity, state.settings.vocabBook, state.settings.vocabShelf, state.settings.workbookBook, state.settings.workbookUnit, progressScope].join("|");
+  const screenOf = [state.view, state.settings.mode, state.settings.quizSubject, state.settings.discoverActivity, state.settings.vocabBook, state.settings.vocabShelf, state.settings.workbookBook, state.settings.workbookUnit, state.settings.lessonsCourse, state.settings.lessonsLesson, progressScope].join("|");
   const paint = (...nodes: Node[]): void => {
     app.classList.toggle("is-wide", wide);
     app.classList.toggle("is-sheet", bookPage);
+    app.classList.toggle("is-lesson", lessonPage);
     // The kind of page counts too: a test's setup, a question and the result are three screens.
     const screen = [screenOf, ...nodes.map((n) => (n instanceof Element ? n.className : ""))].join("|");
     const y = window.scrollY;
@@ -311,6 +316,31 @@ async function render(): Promise<void> {
           rerender: () => void render(),
         }),
       );
+    } else if (state.settings.mode === "lessons") {
+      const course = state.settings.lessonsCourse;
+      if (!course) return goHome();
+      paint(
+        topBar(),
+        activityBar(lt("group"), goHome),
+        await lessonsView({
+          user: state.user,
+          course,
+          lesson: state.settings.lessonsLesson,
+          openLesson: (lesson) => {
+            updateSettings({ lessonsLesson: lesson });
+            void render();
+          },
+          openVocab: (slug) => {
+            void vocabBooks().then((books) => {
+              const book = books.find((b) => b.slug === slug);
+              if (!book) return;
+              updateSettings({ mode: "vocab", vocabBook: book.id, vocabShelf: null });
+              void render();
+            });
+          },
+          rerender: () => void render(),
+        }),
+      );
     } else if (state.settings.mode === "workbook") {
       const book = state.settings.workbookBook;
       if (!book) return goHome();
@@ -422,6 +452,8 @@ async function hiddenNow(user: User): Promise<boolean> {
           ? { mode: "discover", activity: discoverActivity }
           : mode === "workbook"
             ? state.settings.workbookBook ? { mode: "workbook", book: state.settings.workbookBook } : null
+          : mode === "lessons"
+            ? state.settings.lessonsCourse ? { mode: "lessons", course: state.settings.lessonsCourse } : null
           : mode === "vocab"
             ? vocabShelf && vocabBook === null
               ? { mode: "shelf", lang: vocabShelf }
@@ -438,6 +470,7 @@ function open(activity: Activity): void {
   else if (activity.mode === "shelf") updateSettings({ mode: "vocab", vocabBook: null, vocabShelf: activity.lang });
   else if (activity.mode === "discover") updateSettings({ mode: "discover", discoverActivity: activity.activity });
   else if (activity.mode === "workbook") updateSettings({ mode: "workbook", workbookBook: activity.book, workbookUnit: null });
+  else if (activity.mode === "lessons") updateSettings({ mode: "lessons", lessonsCourse: activity.course, lessonsLesson: null });
   else if (activity.mode === "quiz") updateSettings({ mode: "quiz", quizSubject: activity.subject ?? "maths" });
   else updateSettings({ mode: activity.mode });
   if (activity.mode === "columns") next();

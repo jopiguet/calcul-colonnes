@@ -6434,3 +6434,230 @@ button.tiny {
 .vocab-info-note {
   opacity: 0.8;
 }
+
+/* Language courses (docs/language-courses.md): a course's lessons, a lesson with its exercises. */
+#app.is-lesson {
+  max-width: 52rem;
+}
+.lessons-home,
+.lesson-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  width: 100%;
+}
+.lessons-description {
+  color: var(--muted);
+  margin: 0;
+}
+.lessons-progress {
+  margin: 0;
+  font-weight: 700;
+}
+.lessons-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.lessons-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  text-align: left;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+}
+.lessons-item:hover {
+  border-color: var(--accent);
+}
+.lessons-item-title {
+  font-weight: 700;
+}
+.lessons-item-status {
+  color: var(--muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.lessons-item-status.done {
+  color: var(--good);
+}
+.lesson-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.lesson-steps {
+  display: flex;
+  gap: 0.5rem;
+}
+.lesson-text,
+.lesson-exercise,
+.lesson-summary,
+.lesson-vocab {
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+.lesson-text > :first-child {
+  margin-top: 0;
+}
+.lesson-exercise {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  background: var(--paper);
+}
+.lesson-exercise-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-weight: 800;
+}
+.lesson-exercise-score {
+  color: var(--bad);
+}
+.lesson-exercise-score.full {
+  color: var(--good);
+}
+.lesson-items {
+  margin: 0.5rem 0;
+  padding-left: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.lesson-blank {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem;
+  margin: 0 0.15rem;
+  max-width: 100%;
+}
+.lesson-input {
+  font: inherit;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.1rem 0.35rem;
+  border: none;
+  border-bottom: 2px solid var(--accent);
+  border-radius: 0.25rem 0.25rem 0 0;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  color: var(--ink);
+}
+.lesson-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.lesson-blank.lb-free .lesson-input {
+  min-width: min(100%, 16rem);
+}
+.lesson-blank.lb-right .lesson-input {
+  border-bottom-color: var(--good);
+  background: color-mix(in srgb, var(--good) 14%, transparent);
+}
+.lesson-blank.lb-wrong .lesson-input,
+.lesson-blank.lb-blank .lesson-input {
+  border-bottom-color: var(--bad);
+  background: color-mix(in srgb, var(--bad) 10%, transparent);
+}
+.lesson-blank.lb-check .lesson-input {
+  border-bottom-color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 12%, transparent);
+}
+.lesson-choice {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.lesson-option {
+  font: inherit;
+  font-size: 0.92rem;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.lesson-option.on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.lesson-blank.lb-right .lesson-option.on {
+  border-color: var(--good);
+  background: var(--good);
+}
+.lesson-blank.lb-wrong .lesson-option.on {
+  border-color: var(--bad);
+  background: var(--bad);
+}
+.lesson-expected {
+  font-size: 0.88rem;
+  color: var(--good);
+  font-weight: 700;
+}
+.lesson-blank.lb-check .lesson-expected {
+  color: var(--warn);
+}
+.lesson-mark,
+.lesson-unmark {
+  font-size: 0.78rem;
+  padding: 0.05rem 0.5rem;
+}
+.lesson-table td,
+.lesson-table th {
+  vertical-align: middle;
+}
+.lesson-summary {
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  background: color-mix(in srgb, var(--good) 9%, var(--paper));
+  border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
+}
+.lesson-summary-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+.lesson-vocab-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.92rem;
+}
+.lesson-vocab-table th,
+.lesson-vocab-table td {
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.lesson-vocab-term {
+  font-weight: 700;
+}
+.lesson-vocab-forms {
+  color: var(--muted);
+}
+.lesson-end {
+  margin-top: 1rem;
+}
+.sheet.lessons-home,
+.sheet.lesson-page {
+  align-items: stretch;
+  text-align: left;
+  padding: 1.5rem clamp(1rem, 4vw, 2rem);
+}
+.lesson-page .title {
+  text-align: left;
+}

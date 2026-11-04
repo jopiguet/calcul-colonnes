@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "rogō", "meaning": "to ask", "translations": { "fr": "demander", "es": "preguntar; pedir" }, "type": "verb", "principal_parts": ["rogō", "rogāre", "rogāvī", "rogātum"] },
+    { "term": "fleō", "meaning": "to weep; cry", "translations": { "fr": "pleurer", "es": "llorar" }, "type": "verb", "principal_parts": ["fleō", "flēre", "flēvī", "flētum"] },
+    { "term": "discēdō", "meaning": "to go away; depart", "translations": { "fr": "s'en aller ; partir", "es": "marcharse; partir" }, "type": "verb", "principal_parts": ["discēdō", "discēdere", "discessī", "discessum"] },
+    { "term": "vīsitō", "meaning": "to visit", "translations": { "fr": "visiter ; rendre visite", "es": "visitar" }, "type": "verb", "principal_parts": ["vīsitō", "vīsitāre", "vīsitāvī", "vīsitātum"] },
+    { "term": "appropinquō", "meaning": "to approach", "translations": { "fr": "s'approcher", "es": "acercarse" }, "type": "verb", "principal_parts": ["appropinquō", "appropinquāre", "appropinquāvī", "appropinquātum"] },
+    { "term": "dīves", "meaning": "rich", "translations": { "fr": "riche", "es": "rico" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "dīvitis" }] },
+    { "term": "pauper", "meaning": "poor", "translations": { "fr": "pauvre", "es": "pobre" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "pauperis" }] },
+    { "term": "tamen", "meaning": "nevertheless; yet", "translations": { "fr": "cependant ; pourtant", "es": "sin embargo; no obstante" }, "type": "adverb" },
+    { "term": "utrum", "meaning": "whether (… or)", "translations": { "fr": "si (… ou)", "es": "si (… o)" }, "type": "conjunction", "note": "utrum … an" },
+    { "term": "an", "meaning": "or (in questions)", "translations": { "fr": "ou (dans une question)", "es": "o (en preguntas)" }, "type": "conjunction" },
+    { "term": "Gallia", "meaning": "Gaul", "translations": { "fr": "la Gaule", "es": "la Galia" }, "type": "noun", "gender": "feminine", "genitive": "Galliae" }
+  ]
+}

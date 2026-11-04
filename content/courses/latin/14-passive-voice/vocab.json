@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "oppugnō", "meaning": "to attack; besiege", "translations": { "fr": "attaquer ; assiéger", "es": "atacar; asediar" }, "type": "verb", "principal_parts": ["oppugnō", "oppugnāre", "oppugnāvī", "oppugnātum"] },
+    { "term": "servō", "meaning": "to save; keep", "translations": { "fr": "sauver ; garder", "es": "salvar; guardar" }, "type": "verb", "principal_parts": ["servō", "servāre", "servāvī", "servātum"] },
+    { "term": "terreō", "meaning": "to frighten", "translations": { "fr": "effrayer", "es": "asustar; aterrar" }, "type": "verb", "principal_parts": ["terreō", "terrēre", "terruī", "territum"] },
+    { "term": "teneō", "meaning": "to hold; keep", "translations": { "fr": "tenir", "es": "tener; sostener" }, "type": "verb", "principal_parts": ["teneō", "tenēre", "tenuī", "tentum"] },
+    { "term": "trahō", "meaning": "to drag; draw", "translations": { "fr": "tirer ; traîner", "es": "arrastrar; tirar" }, "type": "verb", "principal_parts": ["trahō", "trahere", "trāxī", "tractum"] },
+    { "term": "occīdō", "meaning": "to kill", "translations": { "fr": "tuer", "es": "matar" }, "type": "verb", "principal_parts": ["occīdō", "occīdere", "occīdī", "occīsum"] },
+    { "term": "iaciō", "meaning": "to throw", "translations": { "fr": "jeter ; lancer", "es": "lanzar; arrojar" }, "type": "verb", "principal_parts": ["iaciō", "iacere", "iēcī", "iactum"] },
+    { "term": "mūniō", "meaning": "to fortify", "translations": { "fr": "fortifier", "es": "fortificar" }, "type": "verb", "principal_parts": ["mūniō", "mūnīre", "mūnīvī", "mūnītum"] },
+    { "term": "sagitta", "meaning": "arrow", "translations": { "fr": "flèche", "es": "flecha" }, "type": "noun", "gender": "feminine", "genitive": "sagittae" },
+    { "term": "arma", "meaning": "arms; weapons", "translations": { "fr": "armes", "es": "armas" }, "type": "noun", "gender": "neuter", "genitive": "armōrum", "note": "plūrāle tantum" },
+    { "term": "ā", "meaning": "by; from (+ abl.)", "translations": { "fr": "par ; de (+ abl.)", "es": "por; desde (+ abl.)" }, "type": "preposition", "note": "ā rēge, ab hostibus" }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "latin",
+  "language": "la",
+  "icon": "🏛️",
+  "folds": [
+    "macrons",
+    "ij",
+    "uv"
+  ],
+  "title": {
+    "fr": "Latin",
+    "es": "Latín",
+    "en": "Latin"
+  },
+  "description": {
+    "fr": "Le latin classique, de l'alphabet à Virgile : toute la grammaire, des exercices corrigés, le vocabulaire de chaque leçon.",
+    "es": "El latín clásico, del alfabeto a Virgilio: toda la gramática, ejercicios corregidos, el vocabulario de cada lección.",
+    "en": "Classical Latin, from the alphabet to Virgil: the whole grammar, marked exercises, each lesson's vocabulary."
+  },
+  "vocabLesson": "Lectio {n}",
+  "lessons": [
+    "01-letters-and-sounds",
+    "02-present-first-second",
+    "03-cases-first-declension",
+    "04-second-declension-masculine",
+    "05-neuters-and-adjectives",
+    "06-imperfect-and-future",
+    "07-third-declension",
+    "08-third-fourth-conjugations",
+    "09-demonstratives",
+    "10-personal-pronouns",
+    "11-perfect-system",
+    "12-relative-and-interrogative",
+    "13-i-stems-and-adjectives",
+    "14-passive-voice",
+    "15-perfect-passive",
+    "16-fourth-fifth-declensions",
+    "17-participles-ablative-absolute",
+    "18-infinitives-indirect-statement",
+    "19-comparison",
+    "20-subjunctive-purpose-result",
+    "21-sequence-cum-indirect-questions",
+    "22-deponent-verbs",
+    "23-irregular-verbs",
+    "24-imperatives-independent-subjunctive",
+    "25-gerund-gerundive-supine",
+    "26-conditionals",
+    "27-uses-of-cases",
+    "28-more-subordinate-clauses",
+    "29-numbers-calendar",
+    "30-oratio-obliqua-reading",
+    "31-prosody-meter"
+  ]
+}

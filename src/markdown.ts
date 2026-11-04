@@ -49,7 +49,8 @@ function plain(text: string, target: HTMLElement, atoms: Atom[]): void {
 }
 
 function emphasis(text: string, target: HTMLElement, atoms: Atom[]): void {
-  const pattern = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)|\*\*(.+?)\*\*|\*([^*\s](?:[^*]*[^*\s])?)\*/g;
+  // Italics may hold bold (*rosa **puellae***): tried first, so its asterisks are not read as bold.
+  const pattern = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)|\*((?:[^*\s]|\*\*[^*]+\*\*)(?:[^*]|\*\*[^*]+\*\*)*?)\*(?!\*)|\*\*(.+?)\*\*/g;
   let last = 0;
   for (const m of text.matchAll(pattern)) {
     if (m.index > last) plain(text.slice(last, m.index), target, atoms);
@@ -60,13 +61,13 @@ function emphasis(text: string, target: HTMLElement, atoms: Atom[]): void {
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       target.append(link);
-    } else if (m[3] !== undefined) {
+    } else if (m[4] !== undefined) {
       const strong = el("strong");
-      emphasis(m[3], strong, atoms);
+      emphasis(m[4], strong, atoms);
       target.append(strong);
     } else {
       const em = el("em");
-      emphasis(m[4]!, em, atoms);
+      emphasis(m[3]!, em, atoms);
       target.append(em);
     }
     last = m.index + m[0].length;
@@ -83,8 +84,14 @@ export function renderBlock(block: Block, id?: string): HTMLElement {
       if (id) node.id = id;
       return node;
     }
-    case "paragraph":
-      return inline(block.text, el("p"));
+    case "paragraph": {
+      const p = el("p");
+      block.text.split("\n").forEach((line, i) => {
+        if (i) p.append(el("br"));
+        inline(line, p);
+      });
+      return p;
+    }
     case "list": {
       const list = el(block.style === "ordered" ? "ol" : "ul", block.style === "check" ? "course-checklist" : undefined);
       for (const item of block.items) {

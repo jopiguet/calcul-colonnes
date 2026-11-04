@@ -23,6 +23,9 @@ export interface Settings {
   /** Workbook open in the "workbook" activity (its id), and its unit (null: the book's page). */
   workbookBook: string | null;
   workbookUnit: number | null;
+  /** Language course open in the "lessons" activity (its id), and its lesson (null: the course's page). */
+  lessonsCourse: string | null;
+  lessonsLesson: string | null;
   /** Lab open in the "discover" activity. */
   discoverActivity: DiscoverActivity;
   /** The mathematics test's level (Intermédiaire is "school", Avancé "university"). */
@@ -67,7 +70,7 @@ export interface Settings {
   quizMode: AnswerMode;
 }
 
-export type Mode = "home" | "columns" | "quiz" | "vocab" | "discover" | "workbook";
+export type Mode = "home" | "columns" | "quiz" | "vocab" | "discover" | "workbook" | "lessons";
 
 export const OPERATORS: Operator[] = ["+", "−", "×", "÷"];
 
@@ -131,7 +134,9 @@ export function loadSettings(): Settings {
     ? CHEMISTRY_TOPICS.filter((topic) => (saved.chemTopics as unknown[]).includes(topic))
     : [];
   return {
-    mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" || saved.mode === "discover" || saved.mode === "workbook" ? saved.mode : "home",
+    mode: saved.mode === "columns" || saved.mode === "quiz" || saved.mode === "vocab" || saved.mode === "discover" || saved.mode === "workbook" || saved.mode === "lessons" ? saved.mode : "home",
+    lessonsCourse: typeof saved.lessonsCourse === "string" && /^[a-z][a-z0-9-]{1,30}$/.test(saved.lessonsCourse) ? saved.lessonsCourse : null,
+    lessonsLesson: typeof saved.lessonsLesson === "string" && /^[a-z0-9][a-z0-9-]{1,60}$/.test(saved.lessonsLesson) ? saved.lessonsLesson : null,
     workbookBook: typeof saved.workbookBook === "string" && /^[a-z0-9][a-z0-9-]{1,60}$/.test(saved.workbookBook) ? saved.workbookBook : null,
     workbookUnit: typeof saved.workbookUnit === "number" && Number.isInteger(saved.workbookUnit) && saved.workbookUnit >= 0 ? saved.workbookUnit : null,
     vocabBook: typeof saved.vocabBook === "number" && saved.vocabBook > 0 ? saved.vocabBook : null,

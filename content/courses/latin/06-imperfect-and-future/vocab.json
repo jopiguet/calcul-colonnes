@@ -1,0 +1,17 @@
+{
+  "entries": [
+    { "term": "nunc", "meaning": "now", "translations": { "fr": "maintenant", "es": "ahora" }, "type": "adverb" },
+    { "term": "tum", "meaning": "then; at that time", "translations": { "fr": "alors ; à ce moment-là", "es": "entonces" }, "type": "adverb" },
+    { "term": "iam", "meaning": "already; now", "translations": { "fr": "déjà ; désormais", "es": "ya" }, "type": "adverb" },
+    { "term": "mox", "meaning": "soon", "translations": { "fr": "bientôt", "es": "pronto" }, "type": "adverb" },
+    { "term": "crās", "meaning": "tomorrow", "translations": { "fr": "demain", "es": "mañana" }, "type": "adverb" },
+    { "term": "herī", "meaning": "yesterday", "translations": { "fr": "hier", "es": "ayer" }, "type": "adverb" },
+    { "term": "diū", "meaning": "for a long time", "translations": { "fr": "longtemps", "es": "mucho tiempo" }, "type": "adverb" },
+    { "term": "ōlim", "meaning": "once; formerly", "translations": { "fr": "autrefois ; un jour", "es": "antaño; una vez" }, "type": "adverb" },
+    { "term": "forum", "meaning": "forum; marketplace", "translations": { "fr": "forum ; place publique", "es": "foro; plaza pública" }, "type": "noun", "gender": "neuter", "genitive": "forī" },
+    { "term": "maneō", "meaning": "to stay; remain", "translations": { "fr": "rester ; demeurer", "es": "quedarse; permanecer" }, "type": "verb", "principal_parts": ["maneō", "manēre", "mānsī", "mānsum"] },
+    { "term": "doceō", "meaning": "to teach", "translations": { "fr": "enseigner", "es": "enseñar" }, "type": "verb", "principal_parts": ["doceō", "docēre", "docuī", "doctum"] },
+    { "term": "pugnō", "meaning": "to fight", "translations": { "fr": "combattre", "es": "luchar; combatir" }, "type": "verb", "principal_parts": ["pugnō", "pugnāre", "pugnāvī", "pugnātum"] },
+    { "term": "spectō", "meaning": "to look at; watch", "translations": { "fr": "regarder", "es": "mirar; contemplar" }, "type": "verb", "principal_parts": ["spectō", "spectāre", "spectāvī", "spectātum"] }
+  ]
+}

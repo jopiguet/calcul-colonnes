@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "ego", "meaning": "I", "translations": { "fr": "je ; moi", "es": "yo" }, "type": "pronoun", "forms": [{ "label": "dative", "value": "mihi" }] },
+    { "term": "tū", "meaning": "you (of one person)", "translations": { "fr": "tu ; toi", "es": "tú" }, "type": "pronoun", "forms": [{ "label": "dative", "value": "tibi" }] },
+    { "term": "nōs", "meaning": "we", "translations": { "fr": "nous", "es": "nosotros" }, "type": "pronoun", "forms": [{ "label": "dative", "value": "nōbīs" }] },
+    { "term": "vōs", "meaning": "you (of several)", "translations": { "fr": "vous", "es": "vosotros" }, "type": "pronoun", "forms": [{ "label": "dative", "value": "vōbīs" }] },
+    { "term": "sē", "meaning": "himself; herself; themselves", "translations": { "fr": "soi ; se", "es": "se; sí mismo" }, "type": "pronoun", "forms": [{ "label": "dative", "value": "sibi" }] },
+    { "term": "suus", "meaning": "his, her, their (own)", "translations": { "fr": "son, sa, leur (propre)", "es": "su (propio)" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "sua" }, { "label": "neuter", "value": "suum" }] },
+    { "term": "vester", "meaning": "your (of several)", "translations": { "fr": "votre", "es": "vuestro" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "vestra" }, { "label": "neuter", "value": "vestrum" }] },
+    { "term": "patria", "meaning": "native land", "translations": { "fr": "patrie", "es": "patria" }, "type": "noun", "gender": "feminine", "genitive": "patriae" },
+    { "term": "memor", "meaning": "mindful; remembering", "translations": { "fr": "qui se souvient", "es": "que recuerda; memorioso" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "memoris" }] },
+    { "term": "cognōscō", "meaning": "to get to know; (perfect) know", "translations": { "fr": "apprendre à connaître ; (parfait) connaître", "es": "conocer; llegar a saber" }, "type": "verb", "principal_parts": ["cognōscō", "cognōscere", "cognōvī", "cognitum"] },
+    { "term": "iuvō", "meaning": "to help", "translations": { "fr": "aider", "es": "ayudar" }, "type": "verb", "principal_parts": ["iuvō", "iuvāre", "iūvī", "iūtum"] }
+  ]
+}

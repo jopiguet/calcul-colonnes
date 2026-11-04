@@ -1,0 +1,18 @@
+{
+  "entries": [
+    { "term": "manus", "meaning": "hand; band (of men)", "translations": { "fr": "main ; troupe", "es": "mano; tropa" }, "type": "noun", "gender": "feminine", "genitive": "manūs" },
+    { "term": "exercitus", "meaning": "army", "translations": { "fr": "armée", "es": "ejército" }, "type": "noun", "gender": "masculine", "genitive": "exercitūs" },
+    { "term": "senātus", "meaning": "senate", "translations": { "fr": "sénat", "es": "senado" }, "type": "noun", "gender": "masculine", "genitive": "senātūs" },
+    { "term": "metus", "meaning": "fear", "translations": { "fr": "crainte", "es": "miedo; temor" }, "type": "noun", "gender": "masculine", "genitive": "metūs" },
+    { "term": "impetus", "meaning": "attack; charge", "translations": { "fr": "attaque ; élan", "es": "ataque; ímpetu" }, "type": "noun", "gender": "masculine", "genitive": "impetūs" },
+    { "term": "domus", "meaning": "house; home", "translations": { "fr": "maison", "es": "casa" }, "type": "noun", "gender": "feminine", "genitive": "domūs", "note": "domī, domum, domō" },
+    { "term": "cornū", "meaning": "horn; wing (of an army)", "translations": { "fr": "corne ; aile (d'une armée)", "es": "cuerno; ala (de un ejército)" }, "type": "noun", "gender": "neuter", "genitive": "cornūs" },
+    { "term": "rēs", "meaning": "thing; matter; affair", "translations": { "fr": "chose ; affaire", "es": "cosa; asunto" }, "type": "noun", "gender": "feminine", "genitive": "reī" },
+    { "term": "diēs", "meaning": "day", "translations": { "fr": "jour", "es": "día" }, "type": "noun", "gender": "masculine", "genitive": "diēī" },
+    { "term": "spēs", "meaning": "hope", "translations": { "fr": "espoir", "es": "esperanza" }, "type": "noun", "gender": "feminine", "genitive": "speī" },
+    { "term": "fidēs", "meaning": "faith; trust; loyalty", "translations": { "fr": "foi ; confiance ; loyauté", "es": "fe; confianza; lealtad" }, "type": "noun", "gender": "feminine", "genitive": "fideī" },
+    { "term": "aciēs", "meaning": "battle line", "translations": { "fr": "ligne de bataille", "es": "línea de batalla" }, "type": "noun", "gender": "feminine", "genitive": "aciēī" },
+    { "term": "deus", "meaning": "god", "translations": { "fr": "dieu", "es": "dios" }, "type": "noun", "gender": "masculine", "genitive": "deī" },
+    { "term": "pōnō", "meaning": "to put; place", "translations": { "fr": "poser ; placer", "es": "poner; colocar" }, "type": "verb", "principal_parts": ["pōnō", "pōnere", "posuī", "positum"] }
+  ]
+}

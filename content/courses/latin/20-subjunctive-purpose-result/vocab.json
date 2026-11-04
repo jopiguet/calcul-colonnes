@@ -1,0 +1,19 @@
+{
+  "entries": [
+    { "term": "ut", "meaning": "in order that; so that; as", "translations": { "fr": "pour que ; si bien que ; comme", "es": "para que; de modo que; como" }, "type": "conjunction" },
+    { "term": "nē", "meaning": "so that … not; lest", "translations": { "fr": "pour que … ne … pas", "es": "para que no" }, "type": "conjunction" },
+    { "term": "tam", "meaning": "so (to such a degree)", "translations": { "fr": "si, tellement", "es": "tan" }, "type": "adverb" },
+    { "term": "ita", "meaning": "in such a way; so", "translations": { "fr": "ainsi ; de telle manière", "es": "así; de tal manera" }, "type": "adverb" },
+    { "term": "adeō", "meaning": "to such a degree", "translations": { "fr": "à tel point", "es": "hasta tal punto" }, "type": "adverb" },
+    { "term": "tantus", "meaning": "so great", "translations": { "fr": "si grand", "es": "tan grande" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "tanta" }, { "label": "neuter", "value": "tantum" }] },
+    { "term": "tot", "meaning": "so many", "translations": { "fr": "si nombreux, tant de", "es": "tantos" }, "type": "adjective", "note": "tot hominēs" },
+    { "term": "tālis", "meaning": "such; of such a kind", "translations": { "fr": "tel", "es": "tal" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "tāle" }] },
+    { "term": "nēmō", "meaning": "no one", "translations": { "fr": "personne", "es": "nadie" }, "type": "pronoun", "genitive": "nūllīus" },
+    { "term": "fessus", "meaning": "tired", "translations": { "fr": "fatigué", "es": "cansado" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "fessa" }, { "label": "neuter", "value": "fessum" }] },
+    { "term": "tempestās", "meaning": "storm; weather", "translations": { "fr": "tempête ; temps", "es": "tempestad; tiempo" }, "type": "noun", "gender": "feminine", "genitive": "tempestātis" },
+    { "term": "pecūnia", "meaning": "money", "translations": { "fr": "argent", "es": "dinero" }, "type": "noun", "gender": "feminine", "genitive": "pecūniae" },
+    { "term": "claudō", "meaning": "to close; shut", "translations": { "fr": "fermer", "es": "cerrar" }, "type": "verb", "principal_parts": ["claudō", "claudere", "clausī", "clausum"] },
+    { "term": "dēfendō", "meaning": "to defend", "translations": { "fr": "défendre", "es": "defender" }, "type": "verb", "principal_parts": ["dēfendō", "dēfendere", "dēfendī", "dēfēnsum"] },
+    { "term": "porta", "meaning": "gate", "translations": { "fr": "porte (de ville)", "es": "puerta (de ciudad)" }, "type": "noun", "gender": "feminine", "genitive": "portae" }
+  ]
+}

@@ -7,8 +7,11 @@ import { button, el } from "./dom";
 import { appFooter, newsBanner } from "./news";
 import { currentLang, type Lang } from "./i18n";
 import { qt } from "./quiz-i18n";
-import { store, vocab, workbook, type User, type VocabBookInfo, type VocabProgress } from "./store";
+import { lessons, store, vocab, workbook, type User, type VocabBookInfo, type VocabProgress } from "./store";
 import { workbookStatus } from "./workbook";
+import { courseStatus } from "./lessons";
+import { lt } from "./lessons-i18n";
+import type { CourseInfo } from "../shared/lessons/api";
 import { wt } from "./workbook-i18n";
 import type { ExerciseBookInfo } from "../shared/exercises/api";
 import { bookTitle, shelfApart, shelvesOf } from "./vocab";
@@ -142,7 +145,9 @@ export type Activity =
   | { mode: "shelf"; lang: string }
   | { mode: "discover"; activity: DiscoverActivity }
   /** A workbook's exercises (src/workbook.ts). */
-  | { mode: "workbook"; book: string };
+  | { mode: "workbook"; book: string }
+  /** A language course (src/lessons.ts). */
+  | { mode: "lessons"; course: string };
 
 export interface HomeContext {
   user: User;
@@ -186,11 +191,13 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
       return null;
     case "workbook":
       return `workbook-${activity.book}`;
+    case "lessons":
+      return `lessons-${activity.course}`;
   }
 }
 
 /** Every activity of the home page, by group: what an account can show or hide for a player. */
-export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseBookInfo[] = []): { group: string; activities: { id: string; title: string }[] }[] {
+export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseBookInfo[] = [], courses: CourseInfo[] = []): { group: string; activities: { id: string; title: string }[] }[] {
   return [
     { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }, { id: "calc", title: qt("modeCalc") }] },
     { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
@@ -199,9 +206,10 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
     {
       group: ht("languages"),
       activities: [
-        ...books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
+        ...books.filter((b) => !b.slug.startsWith("course-")).map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
       ],
     },
+    { group: lt("group"), activities: courses.map((c) => ({ id: `lessons-${c.id}`, title: `${c.icon} ${c.title}` })) },
     { group: wt("home"), activities: exerciseBooks.map((b) => ({ id: `workbook-${b.id}`, title: `✏️ ${b.source}` })) },
     {
       group: dt("group"),
@@ -276,11 +284,12 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   wrap.append(head);
 
   // What is waiting, fetched together; a failure leaves the cards without status.
-  const [profile, books, progress, exerciseBooks] = await Promise.all([
+  const [profile, books, progress, exerciseBooks, courses] = await Promise.all([
     store.profile(ctx.user.id).catch(() => null),
     vocabBooks().catch(() => [] as VocabBookInfo[]),
     vocab.progress(ctx.user.id).catch(() => null as VocabProgress | null),
     workbook.books(ctx.user.id).catch(() => [] as ExerciseBookInfo[]),
+    lessons.courses(ctx.user.id).catch(() => [] as CourseInfo[]),
   ]);
 
   const maths = el("div", "activity-group");
@@ -401,10 +410,12 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const shelf = el("div", "activity-grid");
   // A language with several books: one card for them all (its page opens each), unless the player keeps them apart.
   const hiddenBooks = new Set(ctx.user.hidden ?? []);
-  const shown = books.filter((b) => !hiddenBooks.has(`vocab-${b.slug}`));
+  // A language course's words (course-<id>) are opened from the course, not shelved with the player's books.
+  const ownBooks = books.filter((b) => !b.slug.startsWith("course-"));
+  const shown = ownBooks.filter((b) => !hiddenBooks.has(`vocab-${b.slug}`));
   const grouped = new Map(shelvesOf(shown).filter((s) => !shelfApart(s.lang)).map((s) => [s.lang, s]));
   const placed = new Set<string>();
-  for (const book of books) {
+  for (const book of ownBooks) {
     const together = book.kind !== "characters" && !hiddenBooks.has(`vocab-${book.slug}`) ? grouped.get(book.term) : undefined;
     if (together) {
       if (placed.has(together.lang)) continue;
@@ -438,8 +449,17 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
       ),
     );
   }
-  if (books.length === 0) shelf.append(el("p", "empty small", ht("noBooks")));
+  if (ownBooks.length === 0) shelf.append(el("p", "empty small", ht("noBooks")));
   languages.append(shelf);
+
+  // Language courses: lessons with their exercises and words (docs/language-courses.md); a group of their own, before the vocabulary.
+  const courseGroup = el("div", "activity-group");
+  courseGroup.append(el("h2", "activity-group-title", lt("group")));
+  const desksOfCourses = el("div", "activity-grid");
+  for (const c of courses) {
+    desksOfCourses.append(card(`lessons-${c.id}`, `${c.icon} ${c.title}`, c.description, courseStatus(c), () => ctx.open({ mode: "lessons", course: c.id })));
+  }
+  courseGroup.append(desksOfCourses);
 
   // Workbooks: the exercises of a book, filled in on its pages (docs/exercises.md); a group of their own.
   const workbooks = el("div", "activity-group");
@@ -490,7 +510,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   // On a wide screen, groups sit side by side, each as wide as its cards need.
   const groups = el("div", "home-groups");
   // Chemistry and biology last: the other science groups come before it.
-  for (const group of [maths, sciences, computing, economics, languages, workbooks, discover, physics, astronomy, curiosities, chembio]) {
+  for (const group of [maths, sciences, computing, economics, courseGroup, languages, workbooks, discover, physics, astronomy, curiosities, chembio]) {
     for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
       if (hidden.has(node.dataset.activity!)) node.remove();
     }

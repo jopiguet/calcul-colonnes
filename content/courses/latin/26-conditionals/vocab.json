@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "nisi", "meaning": "unless; if … not", "translations": { "fr": "à moins que ; si … ne … pas", "es": "a menos que; si no" }, "type": "conjunction" },
+    { "term": "sīn", "meaning": "but if", "translations": { "fr": "mais si", "es": "pero si" }, "type": "conjunction" },
+    { "term": "dummodo", "meaning": "provided that", "translations": { "fr": "pourvu que", "es": "con tal de que" }, "type": "conjunction" },
+    { "term": "autem", "meaning": "however; moreover", "translations": { "fr": "mais ; d'autre part", "es": "pero; por otra parte" }, "type": "conjunction" },
+    { "term": "pluit", "meaning": "it rains", "translations": { "fr": "il pleut", "es": "llueve" }, "type": "verb", "principal_parts": ["pluit", "pluere", "pluit"] },
+    { "term": "doleō", "meaning": "to grieve; be in pain", "translations": { "fr": "souffrir ; s'affliger", "es": "dolerse; sufrir" }, "type": "verb", "principal_parts": ["doleō", "dolēre", "doluī", "dolitūrus"] },
+    { "term": "parō", "meaning": "to prepare", "translations": { "fr": "préparer", "es": "preparar" }, "type": "verb", "principal_parts": ["parō", "parāre", "parāvī", "parātum"] },
+    { "term": "hīc", "meaning": "here", "translations": { "fr": "ici", "es": "aquí" }, "type": "adverb" }
+  ]
+}

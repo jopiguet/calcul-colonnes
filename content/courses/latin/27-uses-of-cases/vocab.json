@@ -1,0 +1,18 @@
+{
+  "entries": [
+    { "term": "rūs", "meaning": "countryside; farm", "translations": { "fr": "campagne", "es": "campo (rural)" }, "type": "noun", "gender": "neuter", "genitive": "rūris", "note": "rūrī, rūs, rūre" },
+    { "term": "Athēnae", "meaning": "Athens", "translations": { "fr": "Athènes", "es": "Atenas" }, "type": "noun", "gender": "feminine", "genitive": "Athēnārum" },
+    { "term": "Corinthus", "meaning": "Corinth", "translations": { "fr": "Corinthe", "es": "Corinto" }, "type": "noun", "gender": "feminine", "genitive": "Corinthī" },
+    { "term": "annus", "meaning": "year", "translations": { "fr": "année", "es": "año" }, "type": "noun", "gender": "masculine", "genitive": "annī" },
+    { "term": "cūra", "meaning": "care; concern", "translations": { "fr": "soin ; souci", "es": "cuidado; preocupación" }, "type": "noun", "gender": "feminine", "genitive": "cūrae" },
+    { "term": "legiō", "meaning": "legion", "translations": { "fr": "légion", "es": "legión" }, "type": "noun", "gender": "feminine", "genitive": "legiōnis" },
+    { "term": "subsidium", "meaning": "support; reserve", "translations": { "fr": "soutien ; réserve", "es": "apoyo; reserva" }, "type": "noun", "gender": "neuter", "genitive": "subsidiī" },
+    { "term": "mors", "meaning": "death", "translations": { "fr": "mort", "es": "muerte" }, "type": "noun", "gender": "feminine", "genitive": "mortis" },
+    { "term": "timor", "meaning": "fear", "translations": { "fr": "peur", "es": "temor" }, "type": "noun", "gender": "masculine", "genitive": "timōris" },
+    { "term": "satis", "meaning": "enough", "translations": { "fr": "assez", "es": "bastante" }, "type": "adverb", "note": "satis pecūniae" },
+    { "term": "paulō", "meaning": "a little; by a little", "translations": { "fr": "un peu", "es": "un poco" }, "type": "adverb", "note": "paulō post" },
+    { "term": "abhinc", "meaning": "ago", "translations": { "fr": "il y a", "es": "hace (tiempo)" }, "type": "adverb", "note": "abhinc annōs decem" },
+    { "term": "habitō", "meaning": "to live; dwell", "translations": { "fr": "habiter", "es": "vivir; habitar" }, "type": "verb", "principal_parts": ["habitō", "habitāre", "habitāvī", "habitātum"] },
+    { "term": "paucī", "meaning": "few", "translations": { "fr": "peu nombreux", "es": "pocos" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "paucae" }, { "label": "neuter", "value": "pauca" }] }
+  ]
+}

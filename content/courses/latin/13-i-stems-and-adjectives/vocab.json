@@ -1,0 +1,19 @@
+{
+  "entries": [
+    { "term": "cīvis", "meaning": "citizen", "translations": { "fr": "citoyen", "es": "ciudadano" }, "type": "noun", "gender": "common", "genitive": "cīvis" },
+    { "term": "hostis", "meaning": "enemy (of the state)", "translations": { "fr": "ennemi (public)", "es": "enemigo (público)" }, "type": "noun", "gender": "masculine", "genitive": "hostis" },
+    { "term": "nāvis", "meaning": "ship", "translations": { "fr": "navire", "es": "nave; barco" }, "type": "noun", "gender": "feminine", "genitive": "nāvis" },
+    { "term": "mōns", "meaning": "mountain", "translations": { "fr": "montagne", "es": "monte; montaña" }, "type": "noun", "gender": "masculine", "genitive": "montis" },
+    { "term": "nox", "meaning": "night", "translations": { "fr": "nuit", "es": "noche" }, "type": "noun", "gender": "feminine", "genitive": "noctis" },
+    { "term": "mare", "meaning": "sea", "translations": { "fr": "mer", "es": "mar" }, "type": "noun", "gender": "neuter", "genitive": "maris" },
+    { "term": "animal", "meaning": "animal", "translations": { "fr": "animal", "es": "animal" }, "type": "noun", "gender": "neuter", "genitive": "animālis" },
+    { "term": "pars", "meaning": "part", "translations": { "fr": "partie", "es": "parte" }, "type": "noun", "gender": "feminine", "genitive": "partis" },
+    { "term": "omnis", "meaning": "all; every", "translations": { "fr": "tout ; chaque", "es": "todo; cada" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "omne" }] },
+    { "term": "fortis", "meaning": "brave; strong", "translations": { "fr": "courageux ; fort", "es": "valiente; fuerte" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "forte" }] },
+    { "term": "brevis", "meaning": "short", "translations": { "fr": "court", "es": "breve; corto" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "breve" }] },
+    { "term": "ācer", "meaning": "sharp; fierce", "translations": { "fr": "vif ; violent", "es": "agudo; violento" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "ācris" }, { "label": "neuter", "value": "ācre" }] },
+    { "term": "fēlīx", "meaning": "lucky; happy", "translations": { "fr": "heureux ; chanceux", "es": "feliz; afortunado" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "fēlīcis" }] },
+    { "term": "ingēns", "meaning": "huge", "translations": { "fr": "immense", "es": "enorme" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "ingentis" }] },
+    { "term": "vetus", "meaning": "old", "translations": { "fr": "vieux ; ancien", "es": "viejo; antiguo" }, "type": "adjective", "forms": [{ "label": "genitive", "value": "veteris" }] }
+  ]
+}

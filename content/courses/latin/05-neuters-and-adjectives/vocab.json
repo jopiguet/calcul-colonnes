@@ -1,0 +1,26 @@
+{
+  "entries": [
+    { "term": "bellum", "meaning": "war", "translations": { "fr": "guerre", "es": "guerra" }, "type": "noun", "gender": "neuter", "genitive": "bellī" },
+    { "term": "dōnum", "meaning": "gift", "translations": { "fr": "cadeau ; don", "es": "regalo; don" }, "type": "noun", "gender": "neuter", "genitive": "dōnī" },
+    { "term": "oppidum", "meaning": "town", "translations": { "fr": "ville fortifiée ; place forte", "es": "ciudad; plaza fuerte" }, "type": "noun", "gender": "neuter", "genitive": "oppidī" },
+    { "term": "perīculum", "meaning": "danger", "translations": { "fr": "danger", "es": "peligro" }, "type": "noun", "gender": "neuter", "genitive": "perīculī" },
+    { "term": "verbum", "meaning": "word", "translations": { "fr": "mot ; parole", "es": "palabra" }, "type": "noun", "gender": "neuter", "genitive": "verbī" },
+    { "term": "cōnsilium", "meaning": "plan; advice", "translations": { "fr": "projet ; conseil", "es": "plan; consejo" }, "type": "noun", "gender": "neuter", "genitive": "cōnsiliī" },
+    { "term": "auxilium", "meaning": "help", "translations": { "fr": "aide ; secours", "es": "ayuda; auxilio" }, "type": "noun", "gender": "neuter", "genitive": "auxiliī" },
+    { "term": "caelum", "meaning": "sky; heaven", "translations": { "fr": "ciel", "es": "cielo" }, "type": "noun", "gender": "neuter", "genitive": "caelī" },
+    { "term": "bonus", "meaning": "good", "translations": { "fr": "bon", "es": "bueno" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "bona" }, { "label": "neuter", "value": "bonum" }] },
+    { "term": "malus", "meaning": "bad; evil", "translations": { "fr": "mauvais ; méchant", "es": "malo" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "mala" }, { "label": "neuter", "value": "malum" }] },
+    { "term": "magnus", "meaning": "large; great", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "magna" }, { "label": "neuter", "value": "magnum" }] },
+    { "term": "parvus", "meaning": "small", "translations": { "fr": "petit", "es": "pequeño" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "parva" }, { "label": "neuter", "value": "parvum" }] },
+    { "term": "multus", "meaning": "much; many (pl.)", "translations": { "fr": "nombreux ; beaucoup de", "es": "mucho; muchos (pl.)" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "multa" }, { "label": "neuter", "value": "multum" }] },
+    { "term": "novus", "meaning": "new", "translations": { "fr": "nouveau", "es": "nuevo" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "nova" }, { "label": "neuter", "value": "novum" }] },
+    { "term": "laetus", "meaning": "happy; glad", "translations": { "fr": "joyeux ; heureux", "es": "alegre; contento" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "laeta" }, { "label": "neuter", "value": "laetum" }] },
+    { "term": "longus", "meaning": "long", "translations": { "fr": "long", "es": "largo" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "longa" }, { "label": "neuter", "value": "longum" }] },
+    { "term": "līber", "meaning": "free", "translations": { "fr": "libre", "es": "libre" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "lībera" }, { "label": "neuter", "value": "līberum" }] },
+    { "term": "miser", "meaning": "wretched; poor", "translations": { "fr": "malheureux ; misérable", "es": "desdichado; pobre" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "misera" }, { "label": "neuter", "value": "miserum" }] },
+    { "term": "pulcher", "meaning": "beautiful", "translations": { "fr": "beau", "es": "hermoso" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "pulchra" }, { "label": "neuter", "value": "pulchrum" }] },
+    { "term": "noster", "meaning": "our", "translations": { "fr": "notre", "es": "nuestro" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "nostra" }, { "label": "neuter", "value": "nostrum" }] },
+    { "term": "Rōmānus", "meaning": "Roman", "translations": { "fr": "romain", "es": "romano" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "Rōmāna" }, { "label": "neuter", "value": "Rōmānum" }] },
+    { "term": "possum", "meaning": "to be able; can", "translations": { "fr": "pouvoir", "es": "poder" }, "type": "verb", "principal_parts": ["possum", "posse", "potuī"] }
+  ]
+}

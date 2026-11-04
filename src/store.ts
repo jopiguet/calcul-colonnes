@@ -21,6 +21,8 @@ import type {
 import type { Bank, Subject } from "../shared/quiz";
 
 import type { ExerciseBookInfo, ExerciseBookView, ExerciseUnitView } from "../shared/exercises/api";
+import type { CourseInfo, CourseView, ExerciseState, LessonView } from "../shared/lessons/api";
+import { currentLang } from "./i18n";
 export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, PastTest, PlayerShare, Profile, SignInMethod, User, UserStats };
 export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabLessonWords, VocabProgress, VocabStats };
 
@@ -194,6 +196,22 @@ export const vocab = {
     call(`/vocab/stats?userId=${userId}&book=${bookId}&tz=${-new Date().getTimezoneOffset()}`),
   /** The server grades the answer and moves the card between boxes. */
   answer: (answer: VocabAnswer): Promise<VocabAnswerResult> => post("/vocab/answers", answer),
+};
+
+/** Language courses (server/lessons.ts). */
+export const lessons = {
+  courses: (userId: number): Promise<CourseInfo[]> => call(`/courses?userId=${userId}&lang=${currentLang()}`),
+  course: (userId: number, course: string): Promise<CourseView> => call(`/courses/${encodeURIComponent(course)}?userId=${userId}&lang=${currentLang()}`),
+  lesson: (userId: number, course: string, lesson: string): Promise<LessonView> =>
+    call(`/courses/${encodeURIComponent(course)}/${encodeURIComponent(lesson)}?userId=${userId}&lang=${currentLang()}`),
+  /** Marks one exercise on the server, which keeps it. */
+  check: (userId: number, course: string, lesson: string, exercise: string, given: string[]): Promise<ExerciseState> =>
+    post("/courses/check", { userId, course, lesson, exercise, given, lang: currentLang() }),
+  /** The player marks a blank right himself; null gives it back to the key. */
+  override: (userId: number, course: string, lesson: string, exercise: string, blank: number, right: boolean | null): Promise<ExerciseState> =>
+    call("/courses/override", { method: "PUT", body: JSON.stringify({ userId, course, lesson, exercise, blank, right, lang: currentLang() }) }),
+  reset: (userId: number, course: string, lesson: string): Promise<void> =>
+    call(`/courses/answers?userId=${userId}&course=${encodeURIComponent(course)}&lesson=${encodeURIComponent(lesson)}`, { method: "DELETE" }),
 };
 
 /** Workbook exercises (server/exercises.ts). */

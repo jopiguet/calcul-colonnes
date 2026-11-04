@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "6.37.0",
+  "version": "7.0.0",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -11,7 +11,7 @@
     "dev:api": "tsx watch server/index.ts",
     "dev:web": "vite",
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.server.json && tsc -p tsconfig.tests.json && vite build",
-    "build:server": "rm -rf dist-server && esbuild server/index.ts --bundle --splitting --platform=node --format=esm --target=node22 --packages=external --outdir=dist-server && cp -r server/migrations dist-server/migrations",
+    "build:server": "rm -rf dist-server && esbuild server/index.ts --bundle --splitting --platform=node --format=esm --target=node22 --packages=external --outdir=dist-server && cp -r server/migrations dist-server/migrations && mkdir -p dist-server/content && cp -r content/courses dist-server/content/courses",
     "start": "tsx server/index.ts",
     "maintenance": "tsx server/index.ts maintenance",
     "db:copy-to-postgres": "tsx server/copy-to-postgres.ts",
@@ -32,6 +32,7 @@
     "check:exercises": "tsx server/check-exercises.ts",
     "check:math": "tsx server/check-math.ts",
     "check:courses": "tsx server/check-courses.ts",
+    "check:lessons": "tsx server/check-lessons.ts",
     "exercises:import": "tsx server/exercises-import.ts",
     "exercises:epub": "tsx server/exercises-epub.ts"
   },

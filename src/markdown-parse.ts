@@ -73,7 +73,8 @@ export function parseMarkdown(source: string): Block[] {
     }
     const para: string[] = [];
     while (i < lines.length && lines[i]!.trim() !== "" && !/^(#{1,4}\s|```|\||\$\$)/.test(lines[i]!) && !LIST_ITEM.test(lines[i]!)) para.push(lines[i++]!.trim());
-    blocks.push({ kind: "paragraph", text: para.join(" ") });
+    // A line ending in a backslash is a hard line break (verse), kept as "\n".
+    blocks.push({ kind: "paragraph", text: para.map((l, k) => (k < para.length - 1 && l.endsWith("\\") ? l.slice(0, -1).trimEnd() + "\n" : l + " ")).join("").trimEnd() });
   }
   return blocks;
 }

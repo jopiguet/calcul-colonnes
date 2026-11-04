@@ -1,0 +1,20 @@
+{
+  "entries": [
+    { "term": "incolō", "meaning": "to inhabit; live in", "translations": { "fr": "habiter (un lieu)", "es": "habitar (un lugar)" }, "type": "verb", "principal_parts": ["incolō", "incolere", "incoluī"] },
+    { "term": "appellō", "meaning": "to call; name", "translations": { "fr": "appeler ; nommer", "es": "llamar; nombrar" }, "type": "verb", "principal_parts": ["appellō", "appellāre", "appellāvī", "appellātum"] },
+    { "term": "differō", "meaning": "to differ; postpone", "translations": { "fr": "différer ; se distinguer", "es": "diferir; diferenciarse" }, "type": "verb", "principal_parts": ["differō", "differre", "distulī", "dīlātum"] },
+    { "term": "dīvidō", "meaning": "to divide; separate", "translations": { "fr": "diviser ; séparer", "es": "dividir; separar" }, "type": "verb", "principal_parts": ["dīvidō", "dīvidere", "dīvīsī", "dīvīsum"] },
+    { "term": "cōnstituō", "meaning": "to decide; establish", "translations": { "fr": "décider ; établir", "es": "decidir; establecer" }, "type": "verb", "principal_parts": ["cōnstituō", "cōnstituere", "cōnstituī", "cōnstitūtum"] },
+    { "term": "respondeō", "meaning": "to reply; answer", "translations": { "fr": "répondre", "es": "responder" }, "type": "verb", "principal_parts": ["respondeō", "respondēre", "respondī", "respōnsum"] },
+    { "term": "aestimō", "meaning": "to value; estimate", "translations": { "fr": "estimer ; évaluer", "es": "estimar; valorar" }, "type": "verb", "principal_parts": ["aestimō", "aestimāre", "aestimāvī", "aestimātum"] },
+    { "term": "occidō", "meaning": "to fall; set (of the sun)", "translations": { "fr": "tomber ; se coucher (soleil)", "es": "caer; ponerse (el sol)" }, "type": "verb", "principal_parts": ["occidō", "occidere", "occidī", "occāsum"] },
+    { "term": "lingua", "meaning": "tongue; language", "translations": { "fr": "langue", "es": "lengua" }, "type": "noun", "gender": "feminine", "genitive": "linguae" },
+    { "term": "lēx", "meaning": "law", "translations": { "fr": "loi", "es": "ley" }, "type": "noun", "gender": "feminine", "genitive": "lēgis" },
+    { "term": "populus", "meaning": "people; nation", "translations": { "fr": "peuple", "es": "pueblo" }, "type": "noun", "gender": "masculine", "genitive": "populī" },
+    { "term": "sōl", "meaning": "sun", "translations": { "fr": "soleil", "es": "sol" }, "type": "noun", "gender": "masculine", "genitive": "sōlis" },
+    { "term": "senex", "meaning": "old man", "translations": { "fr": "vieillard", "es": "anciano" }, "type": "noun", "gender": "masculine", "genitive": "senis" },
+    { "term": "rūmor", "meaning": "rumour; gossip", "translations": { "fr": "rumeur ; bavardage", "es": "rumor; habladuría" }, "type": "noun", "gender": "masculine", "genitive": "rūmōris" },
+    { "term": "perpetuus", "meaning": "everlasting; continuous", "translations": { "fr": "perpétuel ; éternel", "es": "perpetuo; eterno" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "perpetua" }, { "label": "neuter", "value": "perpetuum" }] },
+    { "term": "semel", "meaning": "once", "translations": { "fr": "une fois", "es": "una vez" }, "type": "adverb" }
+  ]
+}

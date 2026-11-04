@@ -1,0 +1,19 @@
+{
+  "entries": [
+    { "term": "quī", "meaning": "who; which (relative)", "translations": { "fr": "qui ; lequel (relatif)", "es": "que; el cual (relativo)" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "quae" }, { "label": "neuter", "value": "quod" }, { "label": "genitive", "value": "cuius" }] },
+    { "term": "quis", "meaning": "who? (interrogative)", "translations": { "fr": "qui ? (interrogatif)", "es": "¿quién? (interrogativo)" }, "type": "pronoun", "forms": [{ "label": "neuter", "value": "quid" }] },
+    { "term": "unde", "meaning": "from where", "translations": { "fr": "d'où", "es": "de dónde" }, "type": "adverb" },
+    { "term": "quandō", "meaning": "when?", "translations": { "fr": "quand ?", "es": "¿cuándo?" }, "type": "adverb" },
+    { "term": "quōmodo", "meaning": "how", "translations": { "fr": "comment", "es": "cómo" }, "type": "adverb" },
+    { "term": "quot", "meaning": "how many", "translations": { "fr": "combien", "es": "cuántos" }, "type": "adjective" },
+    { "term": "nōnne", "meaning": "(question expecting yes)", "translations": { "fr": "(question attendant oui)", "es": "(pregunta que espera sí)" }, "type": "particle" },
+    { "term": "num", "meaning": "(question expecting no); whether", "translations": { "fr": "(question attendant non) ; si", "es": "(pregunta que espera no); si" }, "type": "particle" },
+    { "term": "urbs", "meaning": "city", "translations": { "fr": "ville", "es": "ciudad" }, "type": "noun", "gender": "feminine", "genitive": "urbis" },
+    { "term": "mūrus", "meaning": "wall", "translations": { "fr": "mur ; rempart", "es": "muro; muralla" }, "type": "noun", "gender": "masculine", "genitive": "mūrī" },
+    { "term": "gladius", "meaning": "sword", "translations": { "fr": "épée ; glaive", "es": "espada" }, "type": "noun", "gender": "masculine", "genitive": "gladiī" },
+    { "term": "castra", "meaning": "camp", "translations": { "fr": "camp", "es": "campamento" }, "type": "noun", "gender": "neuter", "genitive": "castrōrum", "note": "plūrāle tantum" },
+    { "term": "altus", "meaning": "high; deep", "translations": { "fr": "haut ; profond", "es": "alto; profundo" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "alta" }, { "label": "neuter", "value": "altum" }] },
+    { "term": "trīstis", "meaning": "sad", "translations": { "fr": "triste", "es": "triste" }, "type": "adjective", "forms": [{ "label": "neuter", "value": "trīste" }] },
+    { "term": "absum", "meaning": "to be away", "translations": { "fr": "être absent", "es": "estar ausente" }, "type": "verb", "principal_parts": ["absum", "abesse", "āfuī"] }
+  ]
+}

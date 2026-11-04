@@ -50,7 +50,8 @@ never committed and never in a release zip.
 | `worksheet.ts` | The A4 PDF worksheet, written by hand (no library) |
 | `quiz.ts` | Multiple-choice screens: settings, question, results; review focus |
 | `course.ts`, `courses/` | The in-app courses, one per test (13): `courses/<id>/<lang>.md` loaded on demand, `courses/sections.ts` mapping topics and kinds to parts; the reader and the links from wrong answers |
-| `markdown.ts`, `markdown-parse.ts` | The small Markdown reader for the courses: headings, lists, check lists, tables, code, links, TeX formulas |
+| `markdown.ts`, `markdown-parse.ts` | The small Markdown reader for the courses: headings, lists, check lists, tables, code, links, TeX formulas, italics holding bold, `\` line breaks |
+| `lessons.ts`, `lessons-i18n.ts` | Language courses: a course's lessons and progress, a lesson with its exercises filled in on the page and marked, its summary and words; their texts. See [Language courses](language-courses.md). |
 | `progress.ts`, `progress-i18n.ts` | Progress pages of a player (the overview and each activity's), and their texts |
 | `graph.ts` | The QCM's graphs as inline SVG: curves on a grid, a plane in space, economic diagrams; colours from CSS classes, for both themes |
 | `tour.ts`, `tour-texts.ts` | The guided tour (`#tour`), shown once to a new account, and its texts (without the DOM, so that `check:tour` reads them) |
@@ -107,6 +108,7 @@ how to run it.
 | `quiz/` | Question generators and test assembly; see [Question generators](question-generators.md) |
 | `vocab/` | Vocabulary: file format, grading, Leitner boxes, sessions, statistics; see [Vocabulary](vocabulary.md#code) |
 | `exercises/` | Workbook exercises: the book file's format, the marking against the key, what the routes send; see [Workbook exercises](exercises.md) |
+| `lessons/` | Language courses: the lesson Markdown and its blanks (`format.ts`), the folds and the marking (`grade.ts`), what the routes send (`api.ts`); see [Language courses](language-courses.md) |
 | `discover/` | Discover engines and models: two dice, a coin, logic grids, the physics simulations, the astronomy and biology models; see [Discover](discover.md#code) |
 
 ### `server/`
@@ -128,6 +130,8 @@ how to run it.
 | `check-gcp.ts` | The Google Cloud answers computed again for `check:quiz` (IAM, firewalls, subnets, Cloud Run, availability) |
 | `check-marx.ts` | The Capital answers computed again for `check:quiz` (values, rates of surplus value and profit, reproduction, prices of production, rent) |
 | `check-courses.ts` | The courses' languages kept in step (`npm run check:courses`): headings, tables, code, links, formulas; every topic's part exists |
+| `lessons.ts` | Language courses: loading `content/courses/`, the vocabulary book of each course, answers in `lesson_answers`; `/api/courses`. See [Language courses](language-courses.md). |
+| `check-lessons.ts` | The language courses (`npm run check:lessons`): marking, the three languages in step, the lesson template, every answer, the words |
 | `check-cf.ts` | The Cloudflare answers computed again for `check:quiz` (rules-language expressions, phases, SSL/TLS, cache, tunnels, Access, bills) |
 | `check-econ.ts` | The economics answers computed again for `check:quiz` (incidence, areas, Pigou, Samuelson, Gini, monopsony, insurance…) |
 | `check-calc.ts` | The calculus answers computed again for `check:quiz` (limits, slopes, Newton, Riemann and Simpson sums, Euler, Taylor, Green, Brownian moments…) |
@@ -210,6 +214,7 @@ Automated checks:
 | `npm run check:biology` | The chemistry and biology models: bonds, crosses, diffusion, predators and prey. See [Discover](discover.md#biology-checks). | a second or two |
 | `npm run check:math` | The mathematical curiosities: the snowflake, the Mandelbrot points, the chaos game, Lorenz, the logistic map. See [Discover](discover.md#math-checks). | a second or two |
 | `npm run check:courses` | The in-app courses (`src/courses/<id>/<lang>.md`): the same headings, tables, code, links, inline code and number of formulas in every language, no stray `$`, and a part for every topic | a second |
+| `npm run check:lessons` | The language courses (`content/courses/`): folds and marking; every lesson parsed in every language; the same exercises, answers and structure in all three; the lesson template; each answer typed back right, a wrong one wrong; five words a lesson, none taught twice. See [Language courses › Checks](language-courses.md#checks). | a few seconds |
 | `npm run check:exercises` | Marking workbook answers: invented cases of every rule of the keys; an invented EPUB workbook read, and drawn where a Chromium-based browser is found; with a book's folder, each item's key typed back. See [Workbook exercises](exercises.md#marking). | a second; a few more with the drawing |
 | `npm run check:tour` | The guided tour: the session flag for an account and a player's own login, migration 023 on existing rows, the same pages in every language, every chip a real label of the app. See [User guide › Guided tour](user-guide.md#guided-tour). | a second |
 | `npm run test:e2e` | The whole app in a browser: 171 tests | about ten minutes |
@@ -257,6 +262,7 @@ server; each signs up its own account.
 | `linux.spec.ts`, `sql.spec.ts`, `rust.spec.ts`, `typescript.spec.ts`, `react.spec.ts`, `gcp.spec.ts`, `cloudflare.spec.ts` | The computing tests: card, levels and topics; code shown as code and graded on the server, on a phone; a slip named |
 | `econ.spec.ts`, `marx.spec.ts`, `calc.spec.ts` | Public economics, *Capital* and calculus: charts and graphs as options, graded on the server, the course linked |
 | `discover.spec.ts`, `puzzles.spec.ts`, `physics.spec.ts`, `astronomy.spec.ts`, `biology.spec.ts`, `curiosities.spec.ts` | The Discover labs: predict, try, compare, check; the logic grids; on a phone |
+| `lessons.spec.ts` | A Latin lesson: strict, free and choice answers marked, a free answer marked right by the player, all kept after a reload; the course's shared vocabulary book; a lesson on a phone |
 | `workbook.spec.ts` | Workbook exercises on an invented book: gaps on the page and fields under it, the correction of a unit, answers kept, the routes' access |
 
 `helpers.ts` holds the shared steps; `owner.ts` the owner's account the test
@@ -282,6 +288,7 @@ npm run check:astronomy
 npm run check:biology
 npm run check:math
 npm run check:courses
+npm run check:lessons
 npm run check:tour
 npm run check:family
 npm run check:exercises

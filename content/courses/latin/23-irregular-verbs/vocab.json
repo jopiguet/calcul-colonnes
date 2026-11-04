@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "volō", "meaning": "to want; wish", "translations": { "fr": "vouloir", "es": "querer" }, "type": "verb", "principal_parts": ["volō", "velle", "voluī"] },
+    { "term": "nōlō", "meaning": "to be unwilling; not want", "translations": { "fr": "ne pas vouloir", "es": "no querer" }, "type": "verb", "principal_parts": ["nōlō", "nōlle", "nōluī"] },
+    { "term": "mālō", "meaning": "to prefer", "translations": { "fr": "préférer", "es": "preferir" }, "type": "verb", "principal_parts": ["mālō", "mālle", "māluī"] },
+    { "term": "ferō", "meaning": "to carry; bear; endure", "translations": { "fr": "porter ; supporter", "es": "llevar; soportar" }, "type": "verb", "principal_parts": ["ferō", "ferre", "tulī", "lātum"] },
+    { "term": "referō", "meaning": "to bring back; report", "translations": { "fr": "rapporter", "es": "devolver; referir" }, "type": "verb", "principal_parts": ["referō", "referre", "rettulī", "relātum"] },
+    { "term": "eō", "meaning": "to go", "translations": { "fr": "aller", "es": "ir" }, "type": "verb", "principal_parts": ["eō", "īre", "iī", "itum"] },
+    { "term": "redeō", "meaning": "to go back; return", "translations": { "fr": "revenir ; retourner", "es": "volver; regresar" }, "type": "verb", "principal_parts": ["redeō", "redīre", "rediī", "reditum"] },
+    { "term": "exeō", "meaning": "to go out", "translations": { "fr": "sortir", "es": "salir" }, "type": "verb", "principal_parts": ["exeō", "exīre", "exiī", "exitum"] },
+    { "term": "pereō", "meaning": "to perish; die", "translations": { "fr": "périr", "es": "perecer" }, "type": "verb", "principal_parts": ["pereō", "perīre", "periī", "peritum"] },
+    { "term": "trānseō", "meaning": "to cross; go over", "translations": { "fr": "traverser", "es": "atravesar; cruzar" }, "type": "verb", "principal_parts": ["trānseō", "trānsīre", "trānsiī", "trānsitum"] },
+    { "term": "fīō", "meaning": "to become; happen; be made", "translations": { "fr": "devenir ; arriver ; être fait", "es": "hacerse; suceder; ser hecho" }, "type": "verb", "principal_parts": ["fīō", "fierī", "factus sum"] }
+  ]
+}

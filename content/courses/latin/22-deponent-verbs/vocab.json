@@ -1,0 +1,19 @@
+{
+  "entries": [
+    { "term": "hortor", "meaning": "to urge; encourage", "translations": { "fr": "exhorter ; encourager", "es": "exhortar; animar" }, "type": "verb", "principal_parts": ["hortor", "hortārī", "hortātus sum"] },
+    { "term": "vereor", "meaning": "to fear; respect", "translations": { "fr": "craindre ; respecter", "es": "temer; respetar" }, "type": "verb", "principal_parts": ["vereor", "verērī", "veritus sum"] },
+    { "term": "sequor", "meaning": "to follow", "translations": { "fr": "suivre", "es": "seguir" }, "type": "verb", "principal_parts": ["sequor", "sequī", "secūtus sum"] },
+    { "term": "loquor", "meaning": "to speak; talk", "translations": { "fr": "parler", "es": "hablar" }, "type": "verb", "principal_parts": ["loquor", "loquī", "locūtus sum"] },
+    { "term": "patior", "meaning": "to suffer; allow", "translations": { "fr": "souffrir ; permettre", "es": "sufrir; permitir" }, "type": "verb", "principal_parts": ["patior", "patī", "passus sum"] },
+    { "term": "orior", "meaning": "to rise; arise", "translations": { "fr": "se lever ; naître", "es": "levantarse; surgir" }, "type": "verb", "principal_parts": ["orior", "orīrī", "ortus sum"] },
+    { "term": "proficīscor", "meaning": "to set out; depart", "translations": { "fr": "partir ; se mettre en route", "es": "partir; ponerse en camino" }, "type": "verb", "principal_parts": ["proficīscor", "proficīscī", "profectus sum"] },
+    { "term": "ūtor", "meaning": "to use", "translations": { "fr": "se servir de", "es": "usar; servirse de" }, "type": "verb", "principal_parts": ["ūtor", "ūtī", "ūsus sum"], "note": "gladiō ūtitur" },
+    { "term": "fruor", "meaning": "to enjoy", "translations": { "fr": "jouir de", "es": "disfrutar de" }, "type": "verb", "principal_parts": ["fruor", "fruī", "frūctus sum"], "note": "vītā fruimur" },
+    { "term": "potior", "meaning": "to gain possession of", "translations": { "fr": "s'emparer de", "es": "apoderarse de" }, "type": "verb", "principal_parts": ["potior", "potīrī", "potītus sum"], "note": "urbe potītus est" },
+    { "term": "audeō", "meaning": "to dare", "translations": { "fr": "oser", "es": "atreverse" }, "type": "verb", "principal_parts": ["audeō", "audēre", "ausus sum"] },
+    { "term": "soleō", "meaning": "to be accustomed", "translations": { "fr": "avoir l'habitude", "es": "soler; acostumbrar" }, "type": "verb", "principal_parts": ["soleō", "solēre", "solitus sum"] },
+    { "term": "vīta", "meaning": "life", "translations": { "fr": "vie", "es": "vida" }, "type": "noun", "gender": "feminine", "genitive": "vītae" },
+    { "term": "officium", "meaning": "duty; service", "translations": { "fr": "devoir ; service", "es": "deber; servicio" }, "type": "noun", "gender": "neuter", "genitive": "officiī" },
+    { "term": "pāx", "meaning": "peace", "translations": { "fr": "paix", "es": "paz" }, "type": "noun", "gender": "feminine", "genitive": "pācis" }
+  ]
+}

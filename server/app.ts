@@ -33,6 +33,7 @@ import { RateLimit } from "./auth/rate-limit.ts";
 import { VocabStore, vocabRoutes } from "./vocab.ts";
 import { BankStore, bankRoutes, bankVisible } from "./quiz-bank.ts";
 import { ExerciseStore, exerciseRoutes } from "./exercises.ts";
+import { LessonStore, lessonRoutes } from "./lessons.ts";
 import { adminRoutes } from "./admin.ts";
 import { APP_VERSION } from "./version.ts";
 import { log } from "./runtime.ts";
@@ -241,6 +242,7 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
   data.route("/vocab", vocabRoutes(vocabStore, repository, scope as (c: never) => Scope));
   const exerciseStore = new ExerciseStore(db);
   data.route("/exercises", exerciseRoutes(exerciseStore, repository, scope as (c: never) => Scope));
+  data.route("/courses", lessonRoutes(new LessonStore(db), repository, scope as (c: never) => Scope));
 
   // "Send feedback": a few lines for the owner, with the page and the version.
   data.post("/feedback", async (c) => {

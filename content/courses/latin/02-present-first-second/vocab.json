@@ -1,0 +1,18 @@
+{
+  "entries": [
+    { "term": "amō", "meaning": "to love", "translations": { "fr": "aimer", "es": "amar" }, "type": "verb", "principal_parts": ["amō", "amāre", "amāvī", "amātum"] },
+    { "term": "vocō", "meaning": "to call", "translations": { "fr": "appeler", "es": "llamar" }, "type": "verb", "principal_parts": ["vocō", "vocāre", "vocāvī", "vocātum"] },
+    { "term": "labōrō", "meaning": "to work", "translations": { "fr": "travailler", "es": "trabajar" }, "type": "verb", "principal_parts": ["labōrō", "labōrāre", "labōrāvī", "labōrātum"] },
+    { "term": "ambulō", "meaning": "to walk", "translations": { "fr": "marcher ; se promener", "es": "pasear; caminar" }, "type": "verb", "principal_parts": ["ambulō", "ambulāre", "ambulāvī", "ambulātum"] },
+    { "term": "cantō", "meaning": "to sing", "translations": { "fr": "chanter", "es": "cantar" }, "type": "verb", "principal_parts": ["cantō", "cantāre", "cantāvī", "cantātum"] },
+    { "term": "cōgitō", "meaning": "to think", "translations": { "fr": "penser", "es": "pensar" }, "type": "verb", "principal_parts": ["cōgitō", "cōgitāre", "cōgitāvī", "cōgitātum"] },
+    { "term": "moneō", "meaning": "to warn; advise", "translations": { "fr": "avertir ; conseiller", "es": "advertir; aconsejar" }, "type": "verb", "principal_parts": ["moneō", "monēre", "monuī", "monitum"] },
+    { "term": "videō", "meaning": "to see", "translations": { "fr": "voir", "es": "ver" }, "type": "verb", "principal_parts": ["videō", "vidēre", "vīdī", "vīsum"] },
+    { "term": "timeō", "meaning": "to fear; be afraid", "translations": { "fr": "craindre ; avoir peur", "es": "temer; tener miedo" }, "type": "verb", "principal_parts": ["timeō", "timēre", "timuī"] },
+    { "term": "rīdeō", "meaning": "to laugh", "translations": { "fr": "rire", "es": "reír" }, "type": "verb", "principal_parts": ["rīdeō", "rīdēre", "rīsī", "rīsum"] },
+    { "term": "sum", "meaning": "to be", "translations": { "fr": "être", "es": "ser; estar" }, "type": "verb", "principal_parts": ["sum", "esse", "fuī", "futūrus"] },
+    { "term": "saepe", "meaning": "often", "translations": { "fr": "souvent", "es": "a menudo" }, "type": "adverb" },
+    { "term": "semper", "meaning": "always", "translations": { "fr": "toujours", "es": "siempre" }, "type": "adverb" },
+    { "term": "hodiē", "meaning": "today", "translations": { "fr": "aujourd'hui", "es": "hoy" }, "type": "adverb" }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "entries": [
+    { "term": "salvē", "meaning": "hello (to one person)", "translations": { "fr": "bonjour (à une personne)", "es": "hola (a una persona)" }, "type": "interjection" },
+    { "term": "salvēte", "meaning": "hello (to several)", "translations": { "fr": "bonjour (à plusieurs)", "es": "hola (a varios)" }, "type": "interjection" },
+    { "term": "valē", "meaning": "goodbye", "translations": { "fr": "au revoir", "es": "adiós" }, "type": "interjection" },
+    { "term": "bene", "meaning": "well", "translations": { "fr": "bien", "es": "bien" }, "type": "adverb" },
+    { "term": "grātiās", "meaning": "thanks", "translations": { "fr": "merci", "es": "gracias" }, "type": "noun", "note": "grātiās agō" },
+    { "term": "ita", "meaning": "so; yes", "translations": { "fr": "ainsi ; oui", "es": "así; sí" }, "type": "adverb" },
+    { "term": "vērō", "meaning": "indeed; truly", "translations": { "fr": "vraiment ; en vérité", "es": "en verdad; ciertamente" }, "type": "adverb" },
+    { "term": "quid", "meaning": "what", "translations": { "fr": "quoi ; que", "es": "qué" }, "type": "pronoun" },
+    { "term": "et", "meaning": "and", "translations": { "fr": "et", "es": "y" }, "type": "conjunction" },
+    { "term": "nōn", "meaning": "not", "translations": { "fr": "ne… pas", "es": "no" }, "type": "adverb" },
+    { "term": "sed", "meaning": "but", "translations": { "fr": "mais", "es": "pero" }, "type": "conjunction" },
+    { "term": "ubi", "meaning": "where", "translations": { "fr": "où", "es": "dónde" }, "type": "adverb" }
+  ]
+}

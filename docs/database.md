@@ -221,6 +221,14 @@ account once a book is shared). See [Workbook exercises](exercises.md).
 | `exercises` | `book_id`, `id` ("9.4"), `unit`, `position`, `page`, `instruction`, `image` (base64), `image_type`, `width`, `height`, `is_open`, `note`, `key_text`, `items` (JSON: number, key, gaps) |
 | `exercise_answers` | `user_id`, `book_id`, `exercise_id`, `answers` (JSON by item), `results` (JSON: each item's result, the player's marks), `score`, `total`, `checked_at` (null for a draft), `updated_at` |
 
+### Language courses
+
+The player's answers to the exercises of the language courses. See [Language courses](language-courses.md#progress).
+
+| Table | Content |
+|---|---|
+| `lesson_answers` | `user_id`, `course`, `lesson`, `exercise` (the key), `answers` (JSON list), `results` (JSON: each blank's result), `overrides` (JSON: blanks marked right by the player), `score`, `total`, `checked_at` |
+
 ### `schema_migrations`
 
 The versions of the migrations already applied.
@@ -270,6 +278,7 @@ runs: add tables and columns, rename or drop later.
 | `032_four_levels` | `quiz_results.level` accepts the new levels of the four-level tests (*Débutant* and *Expert* everywhere, *Avancé* for Linux, SQL and chemical equations). The old ids stay, as *Intermédiaire* and *Avancé*. SQLite rebuilds `quiz_results`, keeping its rows. |
 | `033_vocab_images` | `vocab_images`, the pictures of picture dictionaries; `image` and `part` on `vocab_entries` (docs/vocabulary.md#pictures) |
 | `034_vocab_info` | `info` on `vocab_entries`: an entry's type, readings by language and functions, from a format-3 file (docs/vocabulary.md#format-3) |
+| `035_lesson_answers` | `lesson_answers`, the answers to the language courses' exercises (docs/language-courses.md#progress) |
 
 **File names.**
 
