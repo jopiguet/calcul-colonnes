@@ -177,9 +177,11 @@ const scopeOf = (ctx: VocabContext): string => (ctx.book ? `book:${ctx.book.id}`
 const newOrder = (book: VocabBookInfo): "book" | "random" =>
   prefs.order[book.id] ?? (book.order === "alphabetical" ? "random" : "book");
 
-/** "Vocabulaire espagnol", "Vocabulaire anglais": the book's language studied; "Kanji et kana". */
+/** "Vocabulaire espagnol", "Vocabulaire anglais": the book's language studied; "Kanji et kana", "Lettres malayalam". */
 export const bookTitle = (book: VocabBookInfo): string =>
-  book.kind === "characters" ? vt("charactersTitle") : vt("title", { lang: langName(book.term) });
+  book.kind === "characters"
+    ? book.term === "ja" ? vt("charactersTitle") : vt("lettersTitle", { lang: langName(book.term) })
+    : vt("title", { lang: langName(book.term) });
 
 /** "12 mots", or "12 caractères" in the Characters book. */
 const countOf = (book: VocabBookInfo, count: number): string => vt(book.kind === "characters" ? "characters" : "words", { count });
@@ -856,10 +858,12 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   const glyphShown = card.script !== undefined && card.direction !== "recall";
   const glyphChosen = card.script !== undefined && card.direction === "recall";
   if (card.script) wrap.classList.add("is-characters");
+  // Kana and kanji, or the letters of another script (Malayalam): "Which kana?" or "Which letter?".
+  const letters = card.script !== undefined && (card.direction === "recall" ? card.answerLang : card.promptLang) !== "ja";
   const ask = card.script
     ? vt(
         card.direction === "read" ? "askReading"
-          : card.direction === "recall" ? (card.script === "kana" ? "askKana" : "askKanji")
+          : card.direction === "recall" ? (letters ? "askLetter" : card.script === "kana" ? "askKana" : "askKanji")
           : card.script === "kana" ? "askSound" : "askMeaning",
       )
     : recognise ? vt("askMeaning") : card.promptLang === card.answerLang ? vt("askWord") : vt("askIn", { lang: langName(card.answerLang) });
@@ -968,7 +972,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
         "span",
         "field-label",
         card.direction === "read" ? vt("answerReading")
-          : card.script === "kana" ? vt("answerSound")
+          : card.script === "kana" ? vt(card.promptLang === "ja" ? "answerSound" : "answerSoundLatin")
           : answerLang === "ja" ? vt("answerJa")
           : answerLang === "ar" ? vt("answerAr")
           : SCRIPT_LANGS.has(answerLang) ? vt("answerScript", { lang: langName(answerLang) }) : vt("answerIn", { lang: langName(answerLang) }),

@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "വേണം", "reading": "vēṇaṁ", "meaning": "is wanted, needed", "translations": { "fr": "il faut, je veux", "es": "hace falta, quiero" }, "type": "verb", "forms": [{ "label": "negative", "value": "വേണ്ട" }] },
+    { "term": "കഴിയും", "reading": "kaḻiyuṁ", "meaning": "can, is possible", "translations": { "fr": "pouvoir, c'est possible", "es": "poder, es posible" }, "type": "verb", "forms": [{ "label": "negative", "value": "കഴിയില്ല" }] },
+    { "term": "അറിയാം", "reading": "aṟiyāṁ", "meaning": "know(s)", "translations": { "fr": "savoir, connaître", "es": "saber, conocer" }, "type": "verb", "forms": [{ "label": "negative", "value": "അറിയില്ല" }] },
+    { "term": "ഇഷ്ടം", "reading": "iṣṭaṁ", "meaning": "liking", "translations": { "fr": "goût, affection", "es": "gusto, afecto" }, "type": "noun" },
+    { "term": "കുറച്ച്", "reading": "kuṟaccŭ", "meaning": "a little", "translations": { "fr": "un peu", "es": "un poco" }, "type": "adverb" },
+    { "term": "നീന്തുക", "reading": "nīntuka", "meaning": "to swim", "translations": { "fr": "nager", "es": "nadar" }, "type": "verb" },
+    { "term": "എന്ത്", "reading": "entŭ", "meaning": "what", "translations": { "fr": "quoi, que", "es": "qué" }, "type": "pronoun" }
+  ]
+}

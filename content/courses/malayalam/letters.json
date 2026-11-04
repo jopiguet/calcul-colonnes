@@ -1,0 +1,618 @@
+{
+ "book": {
+  "title": "Malayalam letters",
+  "credit": "Written for Luma's Malayalam course (docs/language-courses.md)"
+ },
+ "lessons": [
+  {
+   "title": "സ്വരങ്ങൾ",
+   "subtitle": "svaraṅṅaḷ",
+   "sections": [
+    {
+     "title": "അ ആ ഇ ഈ ഉ ഊ ഋ",
+     "subtitle": "a ā i ī u ū r̥",
+     "entries": [
+      {
+       "term": "അ",
+       "meaning": "a",
+       "note": "അമ്മ ammā"
+      },
+      {
+       "term": "ആ",
+       "meaning": "ā",
+       "note": "ആന āna"
+      },
+      {
+       "term": "ഇ",
+       "meaning": "i",
+       "note": "ഇല ila"
+      },
+      {
+       "term": "ഈ",
+       "meaning": "ī",
+       "note": "ഈച്ച īcca"
+      },
+      {
+       "term": "ഉ",
+       "meaning": "u",
+       "note": "ഉപ്പ് uppŭ"
+      },
+      {
+       "term": "ഊ",
+       "meaning": "ū",
+       "note": "ഊഞ്ഞാൽ ūññāl"
+      },
+      {
+       "term": "ഋ",
+       "meaning": "r̥",
+       "note": "ഋഷി r̥ṣi"
+      }
+     ]
+    },
+    {
+     "title": "എ ഏ ഐ ഒ ഓ ഔ",
+     "subtitle": "e ē ai o ō au",
+     "entries": [
+      {
+       "term": "എ",
+       "meaning": "e",
+       "note": "എലി eli"
+      },
+      {
+       "term": "ഏ",
+       "meaning": "ē",
+       "note": "ഏണി ēṇi"
+      },
+      {
+       "term": "ഐ",
+       "meaning": "ai",
+       "note": "ഐക്യം aikyaṁ"
+      },
+      {
+       "term": "ഒ",
+       "meaning": "o",
+       "note": "ഒട്ടകം oṭṭakaṁ"
+      },
+      {
+       "term": "ഓ",
+       "meaning": "ō",
+       "note": "ഓണം ōṇaṁ"
+      },
+      {
+       "term": "ഔ",
+       "meaning": "au",
+       "note": "ഔഷധം auṣadhaṁ"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "വ്യഞ്ജനങ്ങൾ",
+   "subtitle": "vyañjanaṅṅaḷ",
+   "sections": [
+    {
+     "title": "ക ഖ ഗ ഘ ങ",
+     "subtitle": "ka kha ga gha ṅa",
+     "entries": [
+      {
+       "term": "ക",
+       "meaning": "ka",
+       "note": "കടൽ kaṭal"
+      },
+      {
+       "term": "ഖ",
+       "meaning": "kha",
+       "note": "ഖനി khani"
+      },
+      {
+       "term": "ഗ",
+       "meaning": "ga",
+       "note": "ഗുഹ guha"
+      },
+      {
+       "term": "ഘ",
+       "meaning": "gha",
+       "note": "ഘടികാരം ghaṭikāraṁ"
+      },
+      {
+       "term": "ങ",
+       "meaning": "ṅa",
+       "note": "മാങ്ങ māṅṅa"
+      }
+     ]
+    },
+    {
+     "title": "ച ഛ ജ ഝ ഞ",
+     "subtitle": "ca cha ja jha ña",
+     "entries": [
+      {
+       "term": "ച",
+       "meaning": "ca",
+       "note": "ചക്ക cakka"
+      },
+      {
+       "term": "ഛ",
+       "meaning": "cha",
+       "note": "ഛായ chāya"
+      },
+      {
+       "term": "ജ",
+       "meaning": "ja",
+       "note": "ജനൽ janal"
+      },
+      {
+       "term": "ഝ",
+       "meaning": "jha"
+      },
+      {
+       "term": "ഞ",
+       "meaning": "ña",
+       "note": "ഞണ്ട് ñaṇṭŭ"
+      }
+     ]
+    },
+    {
+     "title": "ട ഠ ഡ ഢ ണ",
+     "subtitle": "ṭa ṭha ḍa ḍha ṇa",
+     "entries": [
+      {
+       "term": "ട",
+       "meaning": "ṭa",
+       "note": "പട്ടം paṭṭaṁ"
+      },
+      {
+       "term": "ഠ",
+       "meaning": "ṭha",
+       "note": "കഠിനം kaṭhinaṁ"
+      },
+      {
+       "term": "ഡ",
+       "meaning": "ḍa",
+       "note": "ഡോക്ടർ ḍōkṭar"
+      },
+      {
+       "term": "ഢ",
+       "meaning": "ḍha"
+      },
+      {
+       "term": "ണ",
+       "meaning": "ṇa",
+       "note": "പണം paṇaṁ"
+      }
+     ]
+    },
+    {
+     "title": "ത ഥ ദ ധ ന",
+     "subtitle": "ta tha da dha na",
+     "entries": [
+      {
+       "term": "ത",
+       "meaning": "ta",
+       "note": "തല tala"
+      },
+      {
+       "term": "ഥ",
+       "meaning": "tha",
+       "note": "കഥ katha"
+      },
+      {
+       "term": "ദ",
+       "meaning": "da",
+       "note": "ദൈവം daivaṁ"
+      },
+      {
+       "term": "ധ",
+       "meaning": "dha",
+       "note": "ധനം dhanaṁ"
+      },
+      {
+       "term": "ന",
+       "meaning": "na",
+       "note": "നദി nadi"
+      }
+     ]
+    },
+    {
+     "title": "പ ഫ ബ ഭ മ",
+     "subtitle": "pa pha ba bha ma",
+     "entries": [
+      {
+       "term": "പ",
+       "meaning": "pa",
+       "note": "പൂവ് pūvŭ"
+      },
+      {
+       "term": "ഫ",
+       "meaning": "pha",
+       "note": "ഫലം phalaṁ"
+      },
+      {
+       "term": "ബ",
+       "meaning": "ba",
+       "note": "ബസ് bas"
+      },
+      {
+       "term": "ഭ",
+       "meaning": "bha",
+       "note": "ഭാഷ bhāṣa"
+      },
+      {
+       "term": "മ",
+       "meaning": "ma",
+       "note": "മരം maraṁ"
+      }
+     ]
+    },
+    {
+     "title": "യ ര ല വ",
+     "subtitle": "ya ra la va",
+     "entries": [
+      {
+       "term": "യ",
+       "meaning": "ya",
+       "note": "യാത്ര yātra"
+      },
+      {
+       "term": "ര",
+       "meaning": "ra",
+       "note": "രാജാവ് rājāvŭ"
+      },
+      {
+       "term": "ല",
+       "meaning": "la",
+       "note": "ലോകം lōkaṁ"
+      },
+      {
+       "term": "വ",
+       "meaning": "va",
+       "note": "വീട് vīṭŭ"
+      }
+     ]
+    },
+    {
+     "title": "ശ ഷ സ ഹ",
+     "subtitle": "śa ṣa sa ha",
+     "entries": [
+      {
+       "term": "ശ",
+       "meaning": "śa",
+       "note": "ശബ്ദം śabdaṁ"
+      },
+      {
+       "term": "ഷ",
+       "meaning": "ṣa",
+       "note": "ഷർട്ട് ṣarṭṭŭ"
+      },
+      {
+       "term": "സ",
+       "meaning": "sa",
+       "note": "സമയം samayaṁ"
+      },
+      {
+       "term": "ഹ",
+       "meaning": "ha",
+       "note": "ഹൃദയം hr̥dayaṁ"
+      }
+     ]
+    },
+    {
+     "title": "ള ഴ റ",
+     "subtitle": "ḷa ḻa ṟa",
+     "entries": [
+      {
+       "term": "ള",
+       "meaning": "ḷa",
+       "note": "വെള്ളം veḷḷaṁ"
+      },
+      {
+       "term": "ഴ",
+       "meaning": "ḻa / zha",
+       "note": "മഴ maḻa"
+      },
+      {
+       "term": "റ",
+       "meaning": "ṟa",
+       "note": "കറി kaṟi"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "സ്വരചിഹ്നങ്ങൾ",
+   "subtitle": "svaracihnaṅṅaḷ",
+   "sections": [
+    {
+     "title": "കാ കി കീ കു കൂ കൃ",
+     "subtitle": "kā ki kī ku kū kr̥",
+     "entries": [
+      {
+       "term": "കാ",
+       "meaning": "kā"
+      },
+      {
+       "term": "കി",
+       "meaning": "ki"
+      },
+      {
+       "term": "കീ",
+       "meaning": "kī"
+      },
+      {
+       "term": "കു",
+       "meaning": "ku"
+      },
+      {
+       "term": "കൂ",
+       "meaning": "kū"
+      },
+      {
+       "term": "കൃ",
+       "meaning": "kr̥"
+      }
+     ]
+    },
+    {
+     "title": "കെ കേ കൈ കൊ കോ കൗ",
+     "subtitle": "ke kē kai ko kō kau",
+     "entries": [
+      {
+       "term": "കെ",
+       "meaning": "ke"
+      },
+      {
+       "term": "കേ",
+       "meaning": "kē"
+      },
+      {
+       "term": "കൈ",
+       "meaning": "kai"
+      },
+      {
+       "term": "കൊ",
+       "meaning": "ko"
+      },
+      {
+       "term": "കോ",
+       "meaning": "kō"
+      },
+      {
+       "term": "കൗ",
+       "meaning": "kau"
+      }
+     ]
+    },
+    {
+     "title": "ക് കം കഃ",
+     "subtitle": "k kaṁ kaḥ",
+     "entries": [
+      {
+       "term": "ക്",
+       "meaning": "k",
+       "note": "ഉപ്പ് uppŭ"
+      },
+      {
+       "term": "കം",
+       "meaning": "kaṁ",
+       "note": "മരം maraṁ"
+      },
+      {
+       "term": "കഃ",
+       "meaning": "kaḥ",
+       "note": "ദുഃഖം duḥkhaṁ"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ചില്ലക്ഷരങ്ങൾ",
+   "subtitle": "cillakṣaraṅṅaḷ",
+   "sections": [
+    {
+     "title": "ൺ ൻ ർ ൽ ൾ",
+     "subtitle": "ṇ n r l ḷ",
+     "entries": [
+      {
+       "term": "ൺ",
+       "meaning": "ṇ",
+       "note": "കൺ kaṇ"
+      },
+      {
+       "term": "ൻ",
+       "meaning": "n",
+       "note": "അവൻ avan"
+      },
+      {
+       "term": "ർ",
+       "meaning": "r",
+       "note": "അവർ avar"
+      },
+      {
+       "term": "ൽ",
+       "meaning": "l",
+       "note": "കടൽ kaṭal"
+      },
+      {
+       "term": "ൾ",
+       "meaning": "ḷ",
+       "note": "അവൾ avaḷ"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "കൂട്ടക്ഷരങ്ങൾ",
+   "subtitle": "kūṭṭakṣaraṅṅaḷ",
+   "sections": [
+    {
+     "title": "ക്ക ങ്ങ ച്ച ഞ്ഞ ട്ട ണ്ണ",
+     "subtitle": "kka ṅṅa cca ñña ṭṭa ṇṇa",
+     "entries": [
+      {
+       "term": "ക്ക",
+       "meaning": "kka",
+       "note": "ചക്ക cakka"
+      },
+      {
+       "term": "ങ്ങ",
+       "meaning": "ṅṅa",
+       "note": "മാങ്ങ māṅṅa"
+      },
+      {
+       "term": "ച്ച",
+       "meaning": "cca",
+       "note": "പൂച്ച pūcca"
+      },
+      {
+       "term": "ഞ്ഞ",
+       "meaning": "ñña",
+       "note": "മഞ്ഞ mañña"
+      },
+      {
+       "term": "ട്ട",
+       "meaning": "ṭṭa",
+       "note": "പട്ടം paṭṭaṁ"
+      },
+      {
+       "term": "ണ്ണ",
+       "meaning": "ṇṇa",
+       "note": "കണ്ണ് kaṇṇŭ"
+      }
+     ]
+    },
+    {
+     "title": "ത്ത ന്ന പ്പ മ്മ ല്ല ള്ള",
+     "subtitle": "tta nna ppa mma lla ḷḷa",
+     "entries": [
+      {
+       "term": "ത്ത",
+       "meaning": "tta",
+       "note": "പത്ത് pattŭ"
+      },
+      {
+       "term": "ന്ന",
+       "meaning": "nna",
+       "note": "ഒന്ന് onnŭ"
+      },
+      {
+       "term": "പ്പ",
+       "meaning": "ppa",
+       "note": "ഉപ്പ് uppŭ"
+      },
+      {
+       "term": "മ്മ",
+       "meaning": "mma",
+       "note": "അമ്മ ammā"
+      },
+      {
+       "term": "ല്ല",
+       "meaning": "lla",
+       "note": "ഇല്ല illa"
+      },
+      {
+       "term": "ള്ള",
+       "meaning": "ḷḷa",
+       "note": "വെള്ളം veḷḷaṁ"
+      }
+     ]
+    },
+    {
+     "title": "റ്റ ന്റ ങ്ക ഞ്ച ണ്ട ന്ത",
+     "subtitle": "ṯṯa nṯa ṅka ñca ṇṭa nta",
+     "entries": [
+      {
+       "term": "റ്റ",
+       "meaning": "ṯṯa",
+       "note": "കാറ്റ് kāṯṯŭ"
+      },
+      {
+       "term": "ന്റ",
+       "meaning": "nṯa",
+       "note": "എന്റെ enṯe"
+      },
+      {
+       "term": "ങ്ക",
+       "meaning": "ṅka",
+       "note": "അങ്കം aṅkaṁ"
+      },
+      {
+       "term": "ഞ്ച",
+       "meaning": "ñca",
+       "note": "അഞ്ച് añcŭ"
+      },
+      {
+       "term": "ണ്ട",
+       "meaning": "ṇṭa",
+       "note": "രണ്ട് raṇṭŭ"
+      },
+      {
+       "term": "ന്ത",
+       "meaning": "nta",
+       "note": "ചന്ത canta"
+      }
+     ]
+    },
+    {
+     "title": "മ്പ ന്ദ ക്ഷ ജ്ഞ സ്ത ത്ര",
+     "subtitle": "mpa nda kṣa jña sta tra",
+     "entries": [
+      {
+       "term": "മ്പ",
+       "meaning": "mpa",
+       "note": "പാമ്പ് pāmpŭ"
+      },
+      {
+       "term": "ന്ദ",
+       "meaning": "nda",
+       "note": "ആനന്ദം ānandaṁ"
+      },
+      {
+       "term": "ക്ഷ",
+       "meaning": "kṣa",
+       "note": "പക്ഷി pakṣi"
+      },
+      {
+       "term": "ജ്ഞ",
+       "meaning": "jña",
+       "note": "ജ്ഞാനം jñānaṁ"
+      },
+      {
+       "term": "സ്ത",
+       "meaning": "sta",
+       "note": "പുസ്തകം pustakaṁ"
+      },
+      {
+       "term": "ത്ര",
+       "meaning": "tra",
+       "note": "യാത്ര yātra"
+      }
+     ]
+    },
+    {
+     "title": "ദ്യ ക്ര സ്വ",
+     "subtitle": "dya kra sva",
+     "entries": [
+      {
+       "term": "ദ്യ",
+       "meaning": "dya",
+       "note": "വിദ്യ vidya"
+      },
+      {
+       "term": "ക്ര",
+       "meaning": "kra",
+       "note": "ക്രമം kramaṁ"
+      },
+      {
+       "term": "സ്വ",
+       "meaning": "sva",
+       "note": "സ്വരം svaraṁ"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

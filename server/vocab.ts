@@ -544,13 +544,14 @@ export class VocabStore {
   }
 
   /**
-   * The words a player has started in the Japanese books other than a
-   * Characters book, as one text: a character is "met" when it is in it.
+   * The words a player has started in the books other than a characters book,
+   * in a language that has one (Japanese, Malayalam), as one text: a character
+   * is "met" when it is in it.
    */
   private async wordsStarted(userId: number): Promise<string> {
     const rows = await this.db.query(
       `SELECT DISTINCT e.term ${ENTRY_JOINS}
-        WHERE b.term_lang = 'ja' AND b.kind <> 'characters'
+        WHERE b.kind <> 'characters' AND b.term_lang IN (SELECT term_lang FROM vocab_books WHERE kind = 'characters')
           AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1)`,
       [userId],
     );
@@ -890,7 +891,7 @@ export class VocabStore {
         result.meaning = display(entry.meaning);
         result.readings = entry.readings;
       }
-      const words = await this.wordsWith(answer.userId, entry.term, answer.lang);
+      const words = await this.wordsWith(answer.userId, entry.term, entry.book.termLang, answer.lang);
       if (words.length) result.inWords = words;
     } else if (entry.book.termLang === "ja") {
       const kanji = await this.charactersOf(answer.userId, entry.term, answer.lang);
@@ -899,15 +900,15 @@ export class VocabStore {
     return result;
   }
 
-  /** Up to three words the player has started (other Japanese books) that use a kanji. */
-  private async wordsWith(userId: number, kanji: string, lang: string | undefined): Promise<VocabRelated[]> {
-    if (kanjiOf(kanji).length === 0) return [];
+  /** Up to three words the player has started (other books of the language) that use a kanji or a letter. */
+  private async wordsWith(userId: number, kanji: string, termLang: string, lang: string | undefined): Promise<VocabRelated[]> {
+    if (termLang === "ja" && kanjiOf(kanji).length === 0) return [];
     const rows = await this.db.query(
       `SELECT ${ENTRY_COLUMNS} ${ENTRY_JOINS}
-        WHERE b.term_lang = 'ja' AND b.kind <> 'characters' AND e.term LIKE $2
+        WHERE b.term_lang = $3 AND b.kind <> 'characters' AND e.term LIKE $2
           AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1)
         ORDER BY e.id LIMIT 3`,
-      [userId, `%${kanji}%`],
+      [userId, `%${kanji}%`, termLang],
     );
     return rows.map((row) => {
       const word = localise(toEntry(row), lang);

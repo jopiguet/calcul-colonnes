@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.7.0",
+    fr: ["Cours de langues : le malayalam, en 18 leçons, de l'écriture et ses ligatures aux cas, aux temps et aux participes, la langue parlée du Kerala, le calendrier de Kollam, puis les proverbes, Ezhuthachan et Kumaran Asan. Les réponses se tapent en malayalam, en ISO ou en « manglish » : « keralam » vaut കേരളം. Et 96 cartes des lettres, comme pour les kana."],
+    es: ["Cursos de idiomas: el malayalam, en 18 lecciones, de la escritura y sus ligaduras a los casos, los tiempos y los participios, la lengua hablada de Kerala, el calendario de Kollam, y luego los refranes, Ezhuthachan y Kumaran Asan. Las respuestas se escriben en malayalam, en ISO o en «manglish»: «keralam» vale കേരളം. Y 96 tarjetas de las letras, como para los kana."],
+    en: ["Language courses: Malayalam, 18 lessons from the script and its conjuncts to the cases, tenses and participles, the spoken language of Kerala, the Kollam calendar, then proverbs, Ezhuthachan and Kumaran Asan. Answers can be typed in Malayalam, ISO or Manglish: \"keralam\" counts as കേരളം. Plus 96 letter cards, as for the kana."],
+  },
+  {
     version: "7.6.0",
     fr: ["Cours de langues : l'hébreu, en 19 leçons, de l'alef-bet et du niqqud aux binyanim, aux temps et à la smikhout, l'hébreu parlé d'aujourd'hui, puis l'hébreu biblique : Genèse 1, le Chema, la bénédiction sacerdotale, le psaume 23 et l'Ecclésiaste. Les réponses se tapent en hébreu ou en lettres latines : « shalom » vaut שלום."],
     es: ["Cursos de idiomas: el hebreo, en 19 lecciones, del alef-bet y el niqud a los binyanim, los tiempos y la smijut, el hebreo hablado de hoy, y luego el hebreo bíblico: Génesis 1, el Shemá, la bendición sacerdotal, el salmo 23 y el Eclesiastés. Las respuestas se escriben en hebreo o en letras latinas: «shalom» vale שלום."],

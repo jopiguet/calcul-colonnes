@@ -1,0 +1,16 @@
+{
+  "entries": [
+    { "term": "അധ്യാപകൻ", "reading": "adhyāpakan", "meaning": "teacher (man)", "translations": { "fr": "professeur (homme)", "es": "profesor" }, "type": "noun", "forms": [{ "label": "feminine", "value": "അധ്യാപിക" }, { "label": "plural", "value": "അധ്യാപകർ" }] },
+    { "term": "നല്ല", "reading": "nalla", "meaning": "good", "translations": { "fr": "bon", "es": "bueno" }, "type": "adjective" },
+    { "term": "വലിയ", "reading": "valiya", "meaning": "big", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective" },
+    { "term": "ചെറിയ", "reading": "ceṟiya", "meaning": "small", "translations": { "fr": "petit", "es": "pequeño" }, "type": "adjective" },
+    { "term": "പുതിയ", "reading": "putiya", "meaning": "new", "translations": { "fr": "nouveau, neuf", "es": "nuevo" }, "type": "adjective" },
+    { "term": "പഴയ", "reading": "paḻaya", "meaning": "old (of things)", "translations": { "fr": "vieux (choses)", "es": "viejo (cosas)" }, "type": "adjective" },
+    { "term": "ഈ", "reading": "ī", "meaning": "this (before a noun)", "translations": { "fr": "ce, cette (devant un nom)", "es": "este, esta (ante un sustantivo)" }, "type": "pronoun" },
+    { "term": "ആ", "reading": "ā", "meaning": "that (before a noun)", "translations": { "fr": "ce…-là (devant un nom)", "es": "ese, aquel (ante un sustantivo)" }, "type": "pronoun" },
+    { "term": "ഇത്", "reading": "itŭ", "meaning": "this (one)", "translations": { "fr": "ceci", "es": "esto" }, "type": "pronoun" },
+    { "term": "അത്", "reading": "atŭ", "meaning": "that (one), it", "translations": { "fr": "cela, ça", "es": "eso" }, "type": "pronoun" },
+    { "term": "ഇവിടെ", "reading": "iviṭe", "meaning": "here", "translations": { "fr": "ici", "es": "aquí" }, "type": "adverb" },
+    { "term": "അവിടെ", "reading": "aviṭe", "meaning": "there", "translations": { "fr": "là-bas", "es": "allí" }, "type": "adverb" }
+  ]
+}

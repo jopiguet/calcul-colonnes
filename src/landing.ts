@@ -17,7 +17,7 @@ const texts = {
     signUp: "Créer un compte",
     haveAccount: "J'ai déjà un compte",
     title: "Le calcul posé, comme dans le cahier.",
-    lead: "Additions, soustractions, multiplications et divisions en colonnes, écrites des unités vers la gauche avec les retenues. Des QCM de mathématiques pour le lycée et la première année d'université. Et du vocabulaire, espagnol et anglais, qui revient au bon moment.",
+    lead: "Additions, soustractions, multiplications et divisions en colonnes, écrites des unités vers la gauche avec les retenues. Des QCM de mathématiques pour le lycée et la première année d'université. Du vocabulaire qui revient au bon moment. Et neuf cours de langues complets, du latin au malayalam.",
     figure: "Une addition posée : 478 plus 356 égale 834, avec deux retenues.",
     columnsTitle: "Le calcul en colonnes",
     columnsText: "Les quatre opérations, disposées comme sur papier. On écrit les unités d'abord, la retenue au-dessus de la colonne suivante. La multiplication par deux chiffres a une ligne par produit partiel ; la division a sa potence, avec le reste.",
@@ -31,6 +31,9 @@ const texts = {
     vocabTitle: "Le vocabulaire, par répétition espacée",
     vocabText: "Espagnol avec traductions, anglais avec définitions : les chapitres d'un livre de vocabulaire deviennent des leçons. Chaque mot revient après 10 minutes, puis 1, 3, 7, 16 et 35 jours, et repart du début après une erreur. Choix multiples quand il est nouveau, réponse écrite quand il est connu.",
     vocabMore: "Un accent oublié est pardonné, un article faux ne l'est pas.",
+    coursesTitle: "Neuf cours de langues complets",
+    coursesText: "Latin, égyptien hiéroglyphique, sumérien, akkadien, grec ancien, persan, arabe, hébreu et malayalam : de l'écriture à la grammaire, puis les textes, de César et Homère au Coran, aux Psaumes et à Kumaran Asan. Chaque leçon a ses tableaux, ses exercices corrigés et ses mots, qui rejoignent la répétition espacée.",
+    coursesMore: "Les réponses se tapent dans l'écriture ou en lettres latines : « logos » vaut λόγος, « shalom » vaut שלום.",
     familyTitle: "Un compte pour l'adulte, un accès pour chaque enfant",
     familyText: "Le parent ou l'enseignant crée le compte et les joueurs. Chaque enfant peut recevoir son propre identifiant : il ne voit alors que ses exercices et ses résultats.",
     privacy: "Pas de publicité, pas de traceur, aucune ressource chargée depuis un autre site.",
@@ -44,7 +47,7 @@ const texts = {
     signUp: "Crear una cuenta",
     haveAccount: "Ya tengo una cuenta",
     title: "Cálculo en columnas, como en el cuaderno.",
-    lead: "Sumas, restas, multiplicaciones y divisiones en columnas, escritas de las unidades hacia la izquierda con las llevadas. Tests de matemáticas para bachillerato y primer año de universidad. Y vocabulario, de español y de inglés, que vuelve en el momento justo.",
+    lead: "Sumas, restas, multiplicaciones y divisiones en columnas, escritas de las unidades hacia la izquierda con las llevadas. Tests de matemáticas para bachillerato y primer año de universidad. Vocabulario que vuelve en el momento justo. Y nueve cursos de idiomas completos, del latín al malayalam.",
     figure: "Una suma en columnas: 478 más 356 es 834, con dos llevadas.",
     columnsTitle: "Cálculo en columnas",
     columnsText: "Las cuatro operaciones, dispuestas como en papel. Se escriben primero las unidades y la llevada encima de la columna siguiente. La multiplicación por dos cifras tiene una línea por producto parcial; la división, su galera con el resto.",
@@ -58,6 +61,9 @@ const texts = {
     vocabTitle: "Vocabulario, con repetición espaciada",
     vocabText: "Español con traducciones, inglés con definiciones: los capítulos de un libro de vocabulario se convierten en lecciones. Cada palabra vuelve a los 10 minutos, luego a 1, 3, 7, 16 y 35 días, y empieza de nuevo tras un error. Opción múltiple cuando es nueva, respuesta escrita cuando ya se conoce.",
     vocabMore: "Una tilde olvidada se perdona, un artículo equivocado no.",
+    coursesTitle: "Nueve cursos de idiomas completos",
+    coursesText: "Latín, egipcio jeroglífico, sumerio, acadio, griego antiguo, persa, árabe, hebreo y malayalam: de la escritura a la gramática, y luego los textos, de César y Homero al Corán, los Salmos y Kumaran Asan. Cada lección tiene sus tablas, sus ejercicios corregidos y sus palabras, que pasan a la repetición espaciada.",
+    coursesMore: "Las respuestas se escriben en la escritura o en letras latinas: «logos» vale λόγος, «shalom» vale שלום.",
     familyTitle: "Una cuenta para el adulto, un acceso para cada niño",
     familyText: "El padre, la madre o el profesor crea la cuenta y los jugadores. Cada niño puede recibir su propio usuario: entonces solo ve sus ejercicios y sus resultados.",
     privacy: "Sin publicidad, sin rastreadores, ningún recurso cargado desde otro sitio.",
@@ -71,7 +77,7 @@ const texts = {
     signUp: "Create an account",
     haveAccount: "I already have an account",
     title: "Column arithmetic, the way it's written in the exercise book.",
-    lead: "Addition, subtraction, multiplication and division in columns, written from the units leftwards, with carries. Multiple-choice maths tests for secondary school and first-year university. And vocabulary, Spanish and English, that comes back at the right time.",
+    lead: "Addition, subtraction, multiplication and division in columns, written from the units leftwards, with carries. Multiple-choice maths tests for secondary school and first-year university. Vocabulary that comes back at the right time. And nine complete language courses, from Latin to Malayalam.",
     figure: "A column addition: 478 plus 356 equals 834, with two carries.",
     columnsTitle: "Column arithmetic",
     columnsText: "The four operations, laid out as on paper. The units are written first, and the carry above the next column. Multiplying by two digits gives one line per partial product; division has its bracket and remainder.",
@@ -85,6 +91,9 @@ const texts = {
     vocabTitle: "Vocabulary, with spaced repetition",
     vocabText: "Spanish with translations, English with definitions: the chapters of a vocabulary book become lessons. Each word comes back after 10 minutes, then 1, 3, 7, 16 and 35 days, and starts again after a mistake. Multiple choice while it is new, a written answer once it is known.",
     vocabMore: "A forgotten accent is forgiven, a wrong article is not.",
+    coursesTitle: "Nine complete language courses",
+    coursesText: "Latin, hieroglyphic Egyptian, Sumerian, Akkadian, Ancient Greek, Persian, Arabic, Hebrew and Malayalam: from the script to the grammar, then the texts, from Caesar and Homer to the Quran, the Psalms and Kumaran Asan. Each lesson has its tables, marked exercises and words, which join the spaced repetition.",
+    coursesMore: "Answers can be typed in the script or in Latin letters: \"logos\" counts as λόγος, \"shalom\" as שלום.",
     familyTitle: "One account for the adult, a sign-in for each child",
     familyText: "The parent or teacher creates the account and the players. Each child can get a username of their own: they then see only their own exercises and results.",
     privacy: "No ads, no trackers, nothing loaded from another site.",
@@ -165,6 +174,25 @@ function vocabSample(): HTMLElement {
   return box;
 }
 
+/** One word in each of four of the courses' scripts, with its reading, as the lessons show them. */
+function scriptsSample(): HTMLElement {
+  const box = el("div", "sample-scripts");
+  box.setAttribute("aria-hidden", "true");
+  const words: [string, string, string][] = [
+    ["λόγος", "grc", "logos"],
+    ["שָׁלוֹם", "he", "shalom"],
+    ["كِتَاب", "ar", "kitāb"],
+    ["𓋹", "egy", "ꜥnḫ"],
+  ];
+  for (const [word, lang, reading] of words) {
+    const w = el("span", "sample-scripts-word", word);
+    w.lang = lang;
+    w.dir = "auto";
+    box.append(w, el("span", "sample-scripts-reading", reading));
+  }
+  return box;
+}
+
 export interface LandingContext {
   options: AuthOptions;
   /** The page's top bar (language selector), shared with the app. */
@@ -222,6 +250,7 @@ export function landingView({ options, topBar }: LandingContext): HTMLElement {
     feature("quizTitle", "quizText", "quizMore", formulaSample()),
     feature("reviewTitle", "reviewText", null, reviewSample()),
     feature("vocabTitle", "vocabText", "vocabMore", vocabSample()),
+    feature("coursesTitle", "coursesText", "coursesMore", scriptsSample()),
   );
 
   const family = el("section", "family");

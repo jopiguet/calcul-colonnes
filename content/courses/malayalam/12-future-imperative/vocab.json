@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "നാളെ", "reading": "nāḷe", "meaning": "tomorrow", "translations": { "fr": "demain", "es": "mañana" }, "type": "adverb" },
+    { "term": "ഇന്ന്", "reading": "innŭ", "meaning": "today", "translations": { "fr": "aujourd'hui", "es": "hoy" }, "type": "adverb" },
+    { "term": "എന്നും", "reading": "ennuṁ", "meaning": "always, every day", "translations": { "fr": "toujours, chaque jour", "es": "siempre, cada día" }, "type": "adverb" },
+    { "term": "ദയവായി", "reading": "dayavāyi", "meaning": "please", "translations": { "fr": "s'il vous plaît", "es": "por favor" }, "type": "adverb" },
+    { "term": "പുകവലിക്കുക", "reading": "pukavalikkuka", "meaning": "to smoke", "translations": { "fr": "fumer", "es": "fumar" }, "type": "verb" },
+    { "term": "നിൽക്കുക", "reading": "nilkkuka", "meaning": "to stand, stop, wait", "translations": { "fr": "se tenir debout, s'arrêter, attendre", "es": "estar de pie, pararse, esperar" }, "type": "verb", "forms": [{ "label": "past", "value": "നിന്നു" }] },
+    { "term": "വേഗം", "reading": "vēgaṁ", "meaning": "quickly; speed", "translations": { "fr": "vite ; vitesse", "es": "deprisa; velocidad" }, "type": "adverb" }
+  ]
+}

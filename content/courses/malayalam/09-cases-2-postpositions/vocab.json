@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "മുറി", "reading": "muṟi", "meaning": "room", "translations": { "fr": "pièce, chambre", "es": "habitación" }, "type": "noun" },
+    { "term": "മേശ", "reading": "mēśa", "meaning": "table", "translations": { "fr": "table", "es": "mesa" }, "type": "noun" },
+    { "term": "പേന", "reading": "pēna", "meaning": "pen", "translations": { "fr": "stylo", "es": "bolígrafo" }, "type": "noun" },
+    { "term": "നാട്", "reading": "nāṭŭ", "meaning": "home country, region", "translations": { "fr": "pays natal, région", "es": "tierra natal, región" }, "type": "noun" },
+    { "term": "കൂടെ", "reading": "kūṭe", "meaning": "with, together with", "translations": { "fr": "avec, en compagnie de", "es": "con, junto a" }, "type": "preposition" },
+    { "term": "മുകളിൽ", "reading": "mukaḷil", "meaning": "on, above", "translations": { "fr": "sur, au-dessus", "es": "sobre, encima" }, "type": "preposition" },
+    { "term": "താഴെ", "reading": "tāḻe", "meaning": "under, below", "translations": { "fr": "sous, en dessous", "es": "debajo" }, "type": "preposition" },
+    { "term": "പോലെ", "reading": "pōle", "meaning": "like, as", "translations": { "fr": "comme", "es": "como" }, "type": "preposition" }
+  ]
+}

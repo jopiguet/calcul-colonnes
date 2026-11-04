@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "പഴഞ്ചൊല്ല്", "reading": "paḻañcollŭ", "meaning": "proverb", "translations": { "fr": "proverbe", "es": "refrán" }, "type": "noun" },
+    { "term": "മുല്ല", "reading": "mulla", "meaning": "jasmine", "translations": { "fr": "jasmin", "es": "jazmín" }, "type": "noun" },
+    { "term": "മണം", "reading": "maṇaṁ", "meaning": "scent, smell", "translations": { "fr": "parfum, odeur", "es": "aroma, olor" }, "type": "noun" },
+    { "term": "ആശ", "reading": "āśa", "meaning": "hope, desire", "translations": { "fr": "espoir, désir", "es": "esperanza, deseo" }, "type": "noun" },
+    { "term": "കാക്ക", "reading": "kākka", "meaning": "crow", "translations": { "fr": "corneille", "es": "cuervo" }, "type": "noun" },
+    { "term": "അണ്ണാൻ", "reading": "aṇṇān", "meaning": "squirrel", "translations": { "fr": "écureuil", "es": "ardilla" }, "type": "noun" },
+    { "term": "കിളി", "reading": "kiḷi", "meaning": "parrot, bird", "translations": { "fr": "perroquet, oiseau", "es": "loro, pájaro" }, "type": "noun" },
+    { "term": "പുഷ്പം", "reading": "puṣpaṁ", "meaning": "flower (literary)", "translations": { "fr": "fleur (littéraire)", "es": "flor (literario)" }, "type": "noun" },
+    { "term": "രാജ്ഞി", "reading": "rājñi", "meaning": "queen", "translations": { "fr": "reine", "es": "reina" }, "type": "noun" },
+    { "term": "കവിത", "reading": "kavita", "meaning": "poem, poetry", "translations": { "fr": "poème, poésie", "es": "poema, poesía" }, "type": "noun" }
+  ]
+}

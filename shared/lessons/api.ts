@@ -16,6 +16,8 @@ export interface CourseInfo {
   done: number;
   /** The slug of the course's vocabulary book, if it has one. */
   vocabBook: string | null;
+  /** The slug of the course's letter cards, if it has them (Malayalam). */
+  lettersBook: string | null;
 }
 
 export interface CourseLessonInfo {

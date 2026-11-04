@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "വീട്", "reading": "vīṭŭ", "meaning": "house, home", "translations": { "fr": "maison", "es": "casa" }, "type": "noun" },
+    { "term": "മരം", "reading": "maraṁ", "meaning": "tree", "translations": { "fr": "arbre", "es": "árbol" }, "type": "noun" },
+    { "term": "പൂവ്", "reading": "pūvŭ", "meaning": "flower", "translations": { "fr": "fleur", "es": "flor" }, "type": "noun" },
+    { "term": "കടൽ", "reading": "kaṭal", "meaning": "sea", "translations": { "fr": "mer", "es": "mar" }, "type": "noun" },
+    { "term": "കാൽ", "reading": "kāl", "meaning": "leg, foot", "translations": { "fr": "jambe, pied", "es": "pierna, pie" }, "type": "noun" },
+    { "term": "പാൽ", "reading": "pāl", "meaning": "milk", "translations": { "fr": "lait", "es": "leche" }, "type": "noun" }
+  ]
+}

@@ -33,6 +33,8 @@ import "@fontsource/amiri/arabic-400.css";
 import "@fontsource/amiri/arabic-700.css";
 import "@fontsource/noto-sans-hebrew/hebrew-400.css";
 import "@fontsource/noto-sans-hebrew/hebrew-600.css";
+import "@fontsource/noto-sans-malayalam/malayalam-400.css";
+import "@fontsource/noto-sans-malayalam/malayalam-600.css";
 import "@fontsource/noto-sans-cuneiform/400.css";
 import "@fontsource/noto-sans-egyptian-hieroglyphs/400.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";

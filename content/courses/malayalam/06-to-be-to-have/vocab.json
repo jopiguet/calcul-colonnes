@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "ആണ്", "reading": "āṇŭ", "meaning": "is, am, are (identity)", "translations": { "fr": "est, suis, sont (identité)", "es": "es, soy, son (identidad)" }, "type": "verb" },
+    { "term": "അല്ല", "reading": "alla", "meaning": "is not (identity)", "translations": { "fr": "n'est pas (identité)", "es": "no es (identidad)" }, "type": "verb" },
+    { "term": "ഉണ്ട്", "reading": "uṇṭŭ", "meaning": "there is, exists", "translations": { "fr": "il y a, existe", "es": "hay, existe" }, "type": "verb" },
+    { "term": "ഇല്ല", "reading": "illa", "meaning": "there is not; no", "translations": { "fr": "il n'y a pas ; non", "es": "no hay; no" }, "type": "verb" },
+    { "term": "എനിക്ക്", "reading": "enikkŭ", "meaning": "to me, for me", "translations": { "fr": "à moi, pour moi", "es": "a mí, para mí" }, "type": "pronoun" },
+    { "term": "സമയം", "reading": "samayaṁ", "meaning": "time", "translations": { "fr": "temps", "es": "tiempo" }, "type": "noun" },
+    { "term": "ചായ", "reading": "cāya", "meaning": "tea", "translations": { "fr": "thé", "es": "té" }, "type": "noun" },
+    { "term": "കുട്ടി", "reading": "kuṭṭi", "meaning": "child", "translations": { "fr": "enfant", "es": "niño, niña" }, "type": "noun" },
+    { "term": "ഒരു", "reading": "oru", "meaning": "a, one (before a noun)", "translations": { "fr": "un, une (devant un nom)", "es": "un, una (ante un sustantivo)" }, "type": "numeral" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "പൂച്ച", "reading": "pūcca", "meaning": "cat", "translations": { "fr": "chat", "es": "gato" }, "type": "noun" },
+    { "term": "കണ്ണ്", "reading": "kaṇṇŭ", "meaning": "eye", "translations": { "fr": "œil", "es": "ojo" }, "type": "noun" },
+    { "term": "പുസ്തകം", "reading": "pustakaṁ", "meaning": "book", "translations": { "fr": "livre", "es": "libro" }, "type": "noun" },
+    { "term": "കാറ്റ്", "reading": "kāṯṯŭ", "meaning": "wind", "translations": { "fr": "vent", "es": "viento" }, "type": "noun" },
+    { "term": "പക്ഷി", "reading": "pakṣi", "meaning": "bird", "translations": { "fr": "oiseau", "es": "pájaro" }, "type": "noun" },
+    { "term": "വെള്ളം", "reading": "veḷḷaṁ", "meaning": "water", "translations": { "fr": "eau", "es": "agua" }, "type": "noun" },
+    { "term": "മാങ്ങ", "reading": "māṅṅa", "meaning": "mango", "translations": { "fr": "mangue", "es": "mango" }, "type": "noun" }
+  ]
+}

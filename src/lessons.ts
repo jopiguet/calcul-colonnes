@@ -42,6 +42,7 @@ async function coursePage(ctx: LessonsContext): Promise<HTMLElement> {
   const actions = el("div", "actions wrap");
   if (next) actions.append(button("primary lessons-continue", next.checked === 0 && next.n === 1 ? lt("start") : lt("continue", { n: next.n }), () => ctx.openLesson(next.slug)));
   if (c.vocabBook) actions.append(button("ghost lessons-practise", lt("practise"), () => ctx.openVocab(c.vocabBook!)));
+  if (c.lettersBook) actions.append(button("ghost lessons-letters", lt("letters"), () => ctx.openVocab(c.lettersBook!)));
   wrap.append(actions);
   const list = el("ol", "lessons-list");
   for (const l of view.lessons) {

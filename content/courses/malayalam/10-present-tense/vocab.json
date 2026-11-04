@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "പോകുക", "reading": "pōkuka", "meaning": "to go", "translations": { "fr": "aller", "es": "ir" }, "type": "verb" },
+    { "term": "വരുക", "reading": "varuka", "meaning": "to come", "translations": { "fr": "venir", "es": "venir" }, "type": "verb" },
+    { "term": "കാണുക", "reading": "kāṇuka", "meaning": "to see", "translations": { "fr": "voir", "es": "ver" }, "type": "verb" },
+    { "term": "പഠിക്കുക", "reading": "paṭhikkuka", "meaning": "to study, learn", "translations": { "fr": "étudier, apprendre", "es": "estudiar, aprender" }, "type": "verb" },
+    { "term": "കുടിക്കുക", "reading": "kuṭikkuka", "meaning": "to drink", "translations": { "fr": "boire", "es": "beber" }, "type": "verb" },
+    { "term": "വായിക്കുക", "reading": "vāyikkuka", "meaning": "to read", "translations": { "fr": "lire", "es": "leer" }, "type": "verb" },
+    { "term": "എഴുതുക", "reading": "eḻutuka", "meaning": "to write", "translations": { "fr": "écrire", "es": "escribir" }, "type": "verb" },
+    { "term": "സംസാരിക്കുക", "reading": "saṁsārikkuka", "meaning": "to speak", "translations": { "fr": "parler", "es": "hablar" }, "type": "verb" },
+    { "term": "ചെയ്യുക", "reading": "ceyyuka", "meaning": "to do, make", "translations": { "fr": "faire", "es": "hacer" }, "type": "verb" }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "entries": [
+    { "term": "നമസ്കാരം", "reading": "namaskāraṁ", "meaning": "hello (formal)", "translations": { "fr": "bonjour (soutenu)", "es": "hola (formal)" }, "type": "interjection" },
+    { "term": "നന്ദി", "reading": "nandi", "meaning": "thank you", "translations": { "fr": "merci", "es": "gracias" }, "type": "interjection" },
+    { "term": "ശരി", "reading": "śari", "meaning": "OK, right", "translations": { "fr": "d'accord, juste", "es": "vale, correcto" }, "type": "adverb" },
+    { "term": "പേര്", "reading": "pērŭ", "meaning": "name", "translations": { "fr": "nom", "es": "nombre" }, "type": "noun" },
+    { "term": "സുഖം", "reading": "sukhaṁ", "meaning": "well-being, comfort", "translations": { "fr": "bien-être, aise", "es": "bienestar, comodidad" }, "type": "noun" },
+    { "term": "ഞാൻ", "reading": "ñān", "meaning": "I", "translations": { "fr": "je, moi", "es": "yo" }, "type": "pronoun" },
+    { "term": "നീ", "reading": "nī", "meaning": "you (familiar)", "translations": { "fr": "tu, toi", "es": "tú" }, "type": "pronoun" },
+    { "term": "നിങ്ങൾ", "reading": "niṅṅaḷ", "meaning": "you (polite, plural)", "translations": { "fr": "vous", "es": "usted, vosotros" }, "type": "pronoun" },
+    { "term": "അവൻ", "reading": "avan", "meaning": "he", "translations": { "fr": "il, lui", "es": "él" }, "type": "pronoun" },
+    { "term": "അവൾ", "reading": "avaḷ", "meaning": "she", "translations": { "fr": "elle", "es": "ella" }, "type": "pronoun" },
+    { "term": "നമ്മൾ", "reading": "nammaḷ", "meaning": "we (with you)", "translations": { "fr": "nous (avec vous)", "es": "nosotros (con el oyente)" }, "type": "pronoun" },
+    { "term": "ഞങ്ങൾ", "reading": "ñaṅṅaḷ", "meaning": "we (not you)", "translations": { "fr": "nous (sans vous)", "es": "nosotros (sin el oyente)" }, "type": "pronoun" }
+  ]
+}

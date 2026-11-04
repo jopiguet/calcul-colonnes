@@ -238,3 +238,38 @@ test("Hebrew: right-to-left runs, answers in the script or in transliteration", 
   await card.locator(".lesson-check").click();
   await expect(card.locator(".lesson-exercise-score")).toHaveText("4/5");
 });
+
+test("Malayalam: its font, answers in the script, ISO or Manglish, and the letter cards", async ({ page }) => {
+  await newPlayer(page, "Meera");
+  await openActivity(page, "lessons-malayalam");
+  await expect(page.locator(".lessons-item")).toHaveCount(18);
+  await page.locator(".lessons-item").nth(2).click();
+  await expect(page.locator(".lesson-title")).toContainText("3.");
+  const run = page.locator(".script-malayalam").first();
+  await expect(run).toHaveAttribute("lang", "ml");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Noto Sans Malayalam");
+  const card = page.locator(".lesson-exercise[data-exercise='read']");
+  const inputs = card.locator(".lesson-input");
+  // വീട് typed as Manglish, മരം in the script, പൂവ് with ISO marks, കടൽ with d for ṭ.
+  for (const [i, v] of [[0, "veedu"], [1, "മരം"], [2, "pūvŭ"], [3, "kadal"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/4");
+  await inputs.nth(3).fill("kalam");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
+
+  // The letter cards: a book of kind "characters", as the kana.
+  await openActivity(page, "lessons-malayalam");
+  await page.locator(".lessons-letters").click();
+  await expect(page.locator(".vocab-home h1")).toHaveText("Alphabet malayalam");
+  const lesson = page.locator(".vocab-lesson").first();
+  await lesson.locator("summary").click();
+  await lesson.locator(".vocab-section button").first().click();
+  await expect(page.locator(".vocab-ask")).toHaveText("Quel son ?");
+  await expect(page.locator(".vocab-prompt")).toHaveClass(/vocab-glyph/);
+  const sounds: Record<string, string> = { "അ": "a", "ആ": "ā", "ഇ": "i", "ഈ": "ī", "ഉ": "u", "ഊ": "ū", "ഋ": "r̥" };
+  const letter = await page.locator(".vocab-prompt").innerText();
+  const options = await page.locator(".choice-text").allInnerTexts();
+  await page.keyboard.press(String(options.indexOf(sounds[letter]!) + 1));
+  await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
+});

@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "ചേട്ടൻ", "reading": "cēṭṭan", "meaning": "elder brother", "translations": { "fr": "frère aîné", "es": "hermano mayor" }, "type": "noun", "forms": [{ "label": "vocative", "value": "ചേട്ടാ" }] },
+    { "term": "ചേച്ചി", "reading": "cēcci", "meaning": "elder sister", "translations": { "fr": "sœur aînée", "es": "hermana mayor" }, "type": "noun", "forms": [{ "label": "vocative", "value": "ചേച്ചീ" }] },
+    { "term": "അനിയൻ", "reading": "aniyan", "meaning": "younger brother", "translations": { "fr": "frère cadet", "es": "hermano menor" }, "type": "noun" },
+    { "term": "അനിയത്തി", "reading": "aniyatti", "meaning": "younger sister", "translations": { "fr": "sœur cadette", "es": "hermana menor" }, "type": "noun" },
+    { "term": "മോൻ", "reading": "mōn", "meaning": "son; boy (spoken)", "translations": { "fr": "fils ; garçon (oral)", "es": "hijo; chico (hablado)" }, "type": "noun" },
+    { "term": "മോൾ", "reading": "mōḷ", "meaning": "daughter; girl (spoken)", "translations": { "fr": "fille (enfant) ; fillette (oral)", "es": "hija; chica (hablado)" }, "type": "noun" },
+    { "term": "ബസ്", "reading": "bas", "meaning": "bus", "translations": { "fr": "bus", "es": "autobús" }, "type": "noun" },
+    { "term": "ഫോൺ", "reading": "phōṇ", "meaning": "phone", "translations": { "fr": "téléphone", "es": "teléfono" }, "type": "noun" }
+  ]
+}

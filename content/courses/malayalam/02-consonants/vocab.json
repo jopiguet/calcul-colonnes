@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "മല", "reading": "mala", "meaning": "mountain", "translations": { "fr": "montagne", "es": "montaña" }, "type": "noun" },
+    { "term": "തല", "reading": "tala", "meaning": "head", "translations": { "fr": "tête", "es": "cabeza" }, "type": "noun" },
+    { "term": "വല", "reading": "vala", "meaning": "net", "translations": { "fr": "filet", "es": "red" }, "type": "noun" },
+    { "term": "കര", "reading": "kara", "meaning": "shore, land", "translations": { "fr": "rive, terre ferme", "es": "orilla, tierra firme" }, "type": "noun" },
+    { "term": "മഴ", "reading": "maḻa", "meaning": "rain", "translations": { "fr": "pluie", "es": "lluvia" }, "type": "noun" },
+    { "term": "കഥ", "reading": "katha", "meaning": "story", "translations": { "fr": "histoire, conte", "es": "historia, cuento" }, "type": "noun" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "ഇന്നലെ", "reading": "innale", "meaning": "yesterday", "translations": { "fr": "hier", "es": "ayer" }, "type": "adverb" },
+    { "term": "കഴിക്കുക", "reading": "kaḻikkuka", "meaning": "to eat", "translations": { "fr": "manger", "es": "comer" }, "type": "verb", "forms": [{ "label": "past", "value": "കഴിച്ചു" }] },
+    { "term": "പറയുക", "reading": "paṟayuka", "meaning": "to say, tell", "translations": { "fr": "dire", "es": "decir" }, "type": "verb", "forms": [{ "label": "past", "value": "പറഞ്ഞു" }] },
+    { "term": "കേൾക്കുക", "reading": "kēḷkkuka", "meaning": "to hear, listen", "translations": { "fr": "entendre, écouter", "es": "oír, escuchar" }, "type": "verb", "forms": [{ "label": "past", "value": "കേട്ടു" }] },
+    { "term": "വാങ്ങുക", "reading": "vāṅṅuka", "meaning": "to buy", "translations": { "fr": "acheter", "es": "comprar" }, "type": "verb", "forms": [{ "label": "past", "value": "വാങ്ങി" }] },
+    { "term": "ഉറങ്ങുക", "reading": "uṟaṅṅuka", "meaning": "to sleep", "translations": { "fr": "dormir", "es": "dormir" }, "type": "verb", "forms": [{ "label": "past", "value": "ഉറങ്ങി" }] },
+    { "term": "ഇരിക്കുക", "reading": "irikkuka", "meaning": "to sit; to be, stay", "translations": { "fr": "s'asseoir ; être, rester", "es": "sentarse; estar, quedarse" }, "type": "verb", "forms": [{ "label": "past", "value": "ഇരുന്നു" }] },
+    { "term": "ചോറ്", "reading": "cōṟŭ", "meaning": "cooked rice, a meal", "translations": { "fr": "riz cuit, repas", "es": "arroz cocido, comida" }, "type": "noun" }
+  ]
+}

@@ -60,6 +60,13 @@ expect("hebrew: b/v, k/kh, final letters", [new Set(fh(["בוקר טוב", "boke
 expect("hebrew: consonant vav, tsadi, yod", [new Set(fh(["ורד", "vered"])).size, new Set(fh(["ארץ", "erets", "eretz"])).size, new Set(fh(["ישראל", "yisrael", "Yisraʾel"])).size, new Set(fh(["בית", "bayit"])).size], [1, 1, 1, 1]);
 expect("hebrew: different words differ", fold("שלום", [...he]) === fold("שלוש", [...he]), false);
 expect("hebrew: free answers keep their letters", markBlank({ kind: "free", answers: ["The house."] } as Parameters<typeof markBlank>[0], "the horse", [...he]), "check");
+const ml = ["malayalam"] as const;
+const fm = (xs: string[]) => xs.map((x) => fold(x, [...ml]));
+expect("malayalam: script, ISO 15919, Manglish", [new Set(fm(["കേരളം", "kēraḷaṁ", "keralam"])).size, new Set(fm(["മലയാളം", "malayāḷaṁ", "malayalam"])).size, new Set(fm(["പഴം", "paḻaṁ", "pazham"])).size], [1, 1, 1]);
+expect("malayalam: ñ as nj, c as ch, ī as ee, ū as oo", [new Set(fm(["ഞാൻ", "ñān", "njan"])).size, new Set(fm(["ചായ", "cāya", "chaaya"])).size, new Set(fm(["മീൻ", "mīn", "meen"])).size, new Set(fm(["പൂച്ച", "pūcca", "poocha"])).size], [1, 1, 1, 1]);
+expect("malayalam: final half-u, dental th, ṣ as sh", [new Set(fm(["അവന്", "avanŭ", "avanu", "avan"])).size, new Set(fm(["തിരുവനന്തപുരം", "thiruvananthapuram"])).size, new Set(fm(["കൃഷ്ണൻ", "kr̥ṣṇan", "krishnan"])).size], [1, 1, 1]);
+expect("malayalam: different words differ", [fold("പഴം", [...ml]) === fold("പണം", [...ml]), fold("വീട്", [...ml]) === fold("വിട", [...ml])], [false, false]);
+expect("malayalam: free answers keep their letters", markBlank({ kind: "free", answers: ["The house."] } as Parameters<typeof markBlank>[0], "the horse", [...ml]), "check");
 const egy = ["egyptian"] as const;
 expect("egyptian: ankh however typed", ["ꜥnḫ", "ankh", "anx", "'nḫ", "Anh"].map((t) => fold(t, [...egy])), ["nh", "nh", "nh", "nh", "nh"]);
 expect("egyptian: pronunciation and transliteration", [fold("nefer", [...egy]), fold("nfr", [...egy]), fold("sḏm.n.f", [...egy]), fold("sedjem-en-ef", [...egy])], ["nfr", "nfr", "sdmnf", "sdmnf"]);

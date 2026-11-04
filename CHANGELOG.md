@@ -1,5 +1,24 @@
 # Changelog
 
+## 7.7.0
+
+- **🌴 Malayalam**, the ninth language course: 18 lessons, 72 exercises, 150 words, in French, Spanish and English. See [Language courses](docs/language-courses.md).
+  - **Script:** the vowels, the five rows of consonants and ള ഴ റ, vowel signs, the virama and the half-u, the chillus, conjuncts and their special readings, reformed and traditional print.
+  - **Grammar:** greetings and the two "we", ആണ് and ഉണ്ട്, "to have" with the dative, plurals, adjectives and demonstratives, the seven cases and postpositions, present, past and future, imperatives and prohibitions, the infinitive and dative constructions (വേണം, -അണം, കഴിയും, അറിയാം, ഇഷ്ടം), participles, "if" and "when", questions and -ഉം.
+  - **Malayalam today:** numbers, the clock, the Kollam era (1202 since August 2026), the spoken language, kinship terms of address, districts and Manglish.
+  - **Readings:** five proverbs, the opening of Ezhuthachan's Ramayana, the first stanza of Kumaran Asan's *Veena Poovu*.
+- **Letter cards:** a course may ship `letters.json`, a book of kind `characters` imported and shared with it; Malayalam has 96 cards (vowels, consonants, vowel signs, chillus, conjuncts), asked as the kana are. *🔤 Letter cards* on the course page. Characters books other than Japanese say "Which letter?" and "The sound, in Latin letters"; characters are met in the words of any book of their language.
+- **Malayalam typed on any keyboard:** a course fold, `malayalam`, compares strict answers in a Latin key: കേരളം, *kēraḷaṁ* and *keralam* are one answer, *veedu* is വീട്, *njan* is ഞാൻ. The vocabulary book grades Malayalam the same way (exact: right; by the fold: accent).
+- **Malayalam in lessons** is set in Noto Sans Malayalam (Malayalam subset), slightly larger than the text.
+- **Word lists:** form labels *past*, *future*, *negative*, *vocative* are translated; the language names Persian, Hebrew and Malayalam too.
+- **Landing page:** nine courses.
+- **Checks:** `check:lessons` tests the new fold (script, ISO, Manglish, chillus, conjuncts, half-u; different words stay different): 179 lessons, 718 exercises, 1585 words in all.
+- **Tests:** `tests/e2e/lessons.spec.ts` checks the Malayalam font, answers in Manglish, ISO and the script, a wrong word, and a letter card.
+
+## 7.6.1
+
+- **Landing page:** the lead mentions the eight language courses, and a new section presents them, with one word in Greek, Hebrew, Arabic and hieroglyphs and its reading.
+
 ## 7.6.0
 
 - **📜 Hebrew**, the eighth language course: 19 lessons, 76 exercises, 165 words, in French, Spanish and English. Modern Hebrew first, then Biblical Hebrew. See [Language courses](docs/language-courses.md).

@@ -49,6 +49,8 @@ export interface LoadedLesson {
 export interface LoadedCourse {
   meta: CourseMeta;
   lessons: LoadedLesson[];
+  /** The course's letter cards (letters.json): a book of kind "characters", as the kana. */
+  letters: VocabFile | null;
 }
 
 /** content/courses beside the sources, or beside the bundle (dist-server/content/courses). */
@@ -106,7 +108,18 @@ export function loadCourse(dir: string): LoadedCourse {
     }
     return { slug, n: i + 1, byLang: parsed, vocab };
   });
-  return { meta, lessons };
+  // The letter cards: a format-3 book of kind "characters", its id and language set here.
+  const lettersPath = join(dir, "letters.json");
+  let letters: VocabFile | null = null;
+  if (existsSync(lettersPath)) {
+    const raw = JSON.parse(readFileSync(lettersPath, "utf8")) as { book?: Record<string, unknown>; lessons?: unknown };
+    letters = parseVocabFile({
+      format: 3,
+      book: { ...raw.book, id: lettersBookId(id), kind: "characters", term: meta.language, meaning: "en", order: "book" },
+      lessons: raw.lessons,
+    });
+  }
+  return { meta, lessons, letters };
 }
 
 let cache: Map<string, LoadedCourse> | null = null;
@@ -146,22 +159,23 @@ export function vocabBookOf(course: LoadedCourse): VocabFile | null {
 }
 
 export const vocabBookId = (course: string): string => `course-${course}`;
+export const lettersBookId = (course: string): string => `course-${course}-letters`;
 
 /** A course's vocabulary book, imported when it changed since the last start (its hash in app_settings), shared with every account. */
 export async function importCourseVocab(db: Database, importBook: (file: VocabFile) => Promise<unknown>, setShared: (slug: string) => Promise<void>): Promise<string[]> {
   const done: string[] = [];
   for (const course of courses().values()) {
-    const file = vocabBookOf(course);
-    if (!file) continue;
-    const hash = createHash("sha256").update(JSON.stringify(file)).digest("hex");
-    const key = `course-vocab:${course.meta.id}`;
-    const known = (await db.query("SELECT value FROM app_settings WHERE key = $1", [key]))[0]?.value;
-    if (known === hash) continue;
-    await importBook(file);
-    await setShared(file.book.id);
-    await db.query("DELETE FROM app_settings WHERE key = $1", [key]);
-    await db.query("INSERT INTO app_settings (key, value) VALUES ($1, $2)", [key, hash]);
-    done.push(file.book.id);
+    for (const [file, key] of [[vocabBookOf(course), `course-vocab:${course.meta.id}`], [course.letters, `course-letters:${course.meta.id}`]] as const) {
+      if (!file) continue;
+      const hash = createHash("sha256").update(JSON.stringify(file)).digest("hex");
+      const known = (await db.query("SELECT value FROM app_settings WHERE key = $1", [key]))[0]?.value;
+      if (known === hash) continue;
+      await importBook(file);
+      await setShared(file.book.id);
+      await db.query("DELETE FROM app_settings WHERE key = $1", [key]);
+      await db.query("INSERT INTO app_settings (key, value) VALUES ($1, $2)", [key, hash]);
+      done.push(file.book.id);
+    }
   }
   return done;
 }
@@ -226,6 +240,7 @@ export class LessonStore {
         exercises: lessons.reduce((t, l) => t + l.exercises, 0),
         done: lessons.reduce((t, l) => t + l.done, 0),
         vocabBook: vocabBookOf(c) ? vocabBookId(c.meta.id) : null,
+        lettersBook: c.letters ? lettersBookId(c.meta.id) : null,
       });
     }
     return out;

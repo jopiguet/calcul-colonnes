@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "പെയ്യുക", "reading": "peyyuka", "meaning": "to fall (rain)", "translations": { "fr": "tomber (pluie)", "es": "caer (lluvia)" }, "type": "verb", "forms": [{ "label": "past", "value": "പെയ്തു" }] },
+    { "term": "എത്തുക", "reading": "ettuka", "meaning": "to arrive, reach", "translations": { "fr": "arriver, atteindre", "es": "llegar, alcanzar" }, "type": "verb", "forms": [{ "label": "past", "value": "എത്തി" }] },
+    { "term": "വിളിക്കുക", "reading": "viḷikkuka", "meaning": "to call", "translations": { "fr": "appeler", "es": "llamar" }, "type": "verb", "forms": [{ "label": "past", "value": "വിളിച്ചു" }] },
+    { "term": "പിന്നെ", "reading": "pinne", "meaning": "then, later", "translations": { "fr": "puis, plus tard", "es": "luego, después" }, "type": "adverb" },
+    { "term": "സന്തോഷം", "reading": "santōṣaṁ", "meaning": "happiness, joy", "translations": { "fr": "bonheur, joie", "es": "felicidad, alegría" }, "type": "noun" },
+    { "term": "എഴുത്ത്", "reading": "eḻuttŭ", "meaning": "writing, letter", "translations": { "fr": "écriture, lettre", "es": "escritura, carta" }, "type": "noun" }
+  ]
+}

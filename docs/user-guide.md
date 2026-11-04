@@ -786,7 +786,7 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan**, **🌙 Arabe** and **📜 Hébreu**, with the exercises done (*12 exercices sur 126 réussis*). See
+**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan**, **🌙 Arabe**, **📜 Hébreu** and **🌴 Malayalam**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
 **The course page** lists the lessons (31 in Latin), each with its exercises done
@@ -849,6 +849,14 @@ letters א ה ע י are not compared, so the masculine and feminine numbers and
 the future prefixes are tested by choices, as are כ and ח. The buttons write
 the 22 letters and the final forms. The biblical lessons give the vocalised
 text with translations; the divine name is read *Adonai*.
+
+Malayalam answers can be typed in the script, in ISO 15919 (*kēraḷaṁ*) or
+in Manglish (*keralam*, *veedu*, *njan*): long and short vowels and the
+retroflex consonants are not told apart when typed, so they are tested by
+choices. The buttons write the ISO letters. *🔤 Cartes des lettres* on the
+course page opens the Malayalam letters as cards, like the kana: the letter
+shown and its sound chosen or typed, then the sound shown and the letter
+chosen.
 
 A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
 shows them checked, and *Recommencer la leçon* empties it.

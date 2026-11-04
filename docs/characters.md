@@ -18,6 +18,12 @@ That makes 2,359 characters. Within a grade, the most frequent kanji come first.
 - [Licence](#licence)
 - [Code](#code)
 
+A language course may carry a book of the same kind for its own script:
+the **Malayalam letters** (96 cards, see
+[Language courses](language-courses.md#letter-cards)). It is asked like the
+kana, with "Which letter?" and "The sound, in Latin letters" for wording;
+characters are *met* in the started words of any book in the same language.
+
 ## What is asked
 
 | Card | Shows | Asks | How |

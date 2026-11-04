@@ -1,0 +1,59 @@
+{
+  "id": "malayalam",
+  "language": "ml",
+  "icon": "🌴",
+  "folds": [
+    "malayalam"
+  ],
+  "title": {
+    "fr": "Malayalam",
+    "es": "Malayalam",
+    "en": "Malayalam"
+  },
+  "description": {
+    "fr": "La langue du Kerala : son écriture, lettre par lettre et avec des cartes, la grammaire d'une langue dravidienne, ses cas et ses verbes, la langue parlée, puis les proverbes, Ezhuthachan et Kumaran Asan.",
+    "es": "La lengua de Kerala: su escritura, letra a letra y con tarjetas, la gramática de una lengua drávida, sus casos y sus verbos, la lengua hablada, y luego los refranes, Ezhuthachan y Kumaran Asan.",
+    "en": "The language of Kerala: its script, letter by letter and with cards, the grammar of a Dravidian language, its cases and verbs, the spoken language, then proverbs, Ezhuthachan and Kumaran Asan."
+  },
+  "vocabLesson": "Lesson {n}",
+  "keys": [
+    "ā",
+    "ī",
+    "ū",
+    "ē",
+    "ō",
+    "ŭ",
+    "ṭ",
+    "ḍ",
+    "ṇ",
+    "ḷ",
+    "ḻ",
+    "ṟ",
+    "ñ",
+    "ṅ",
+    "ś",
+    "ṣ",
+    "ṁ",
+    "r̥"
+  ],
+  "lessons": [
+    "01-script-vowels",
+    "02-consonants",
+    "03-vowel-signs-chillus",
+    "04-conjuncts",
+    "05-greetings-pronouns",
+    "06-to-be-to-have",
+    "07-nouns-plural-adjectives",
+    "08-cases-1",
+    "09-cases-2-postpositions",
+    "10-present-tense",
+    "11-past-tense",
+    "12-future-imperative",
+    "13-infinitive-modals",
+    "14-participles-conditions",
+    "15-questions",
+    "16-numbers-time-calendar",
+    "17-spoken-malayalam",
+    "18-proverbs-poetry"
+  ]
+}

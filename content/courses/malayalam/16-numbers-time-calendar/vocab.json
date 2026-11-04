@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "ഒന്ന്", "reading": "onnŭ", "meaning": "one", "translations": { "fr": "un", "es": "uno" }, "type": "numeral" },
+    { "term": "രണ്ട്", "reading": "raṇṭŭ", "meaning": "two", "translations": { "fr": "deux", "es": "dos" }, "type": "numeral" },
+    { "term": "മൂന്ന്", "reading": "mūnnŭ", "meaning": "three", "translations": { "fr": "trois", "es": "tres" }, "type": "numeral" },
+    { "term": "പത്ത്", "reading": "pattŭ", "meaning": "ten", "translations": { "fr": "dix", "es": "diez" }, "type": "numeral" },
+    { "term": "നൂറ്", "reading": "nūṟŭ", "meaning": "hundred", "translations": { "fr": "cent", "es": "cien" }, "type": "numeral" },
+    { "term": "ആയിരം", "reading": "āyiraṁ", "meaning": "thousand", "translations": { "fr": "mille", "es": "mil" }, "type": "numeral" },
+    { "term": "മണി", "reading": "maṇi", "meaning": "hour, o'clock; bell", "translations": { "fr": "heure ; cloche", "es": "hora; campana" }, "type": "noun" },
+    { "term": "ആഴ്ച", "reading": "āḻca", "meaning": "week", "translations": { "fr": "semaine", "es": "semana" }, "type": "noun" },
+    { "term": "മാസം", "reading": "māsaṁ", "meaning": "month", "translations": { "fr": "mois", "es": "mes" }, "type": "noun" },
+    { "term": "വർഷം", "reading": "varṣaṁ", "meaning": "year", "translations": { "fr": "année", "es": "año" }, "type": "noun" },
+    { "term": "വയസ്സ്", "reading": "vayassŭ", "meaning": "age, years old", "translations": { "fr": "âge, ans", "es": "edad, años" }, "type": "noun" }
+  ]
+}

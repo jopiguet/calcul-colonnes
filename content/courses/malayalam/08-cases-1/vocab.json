@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "എന്റെ", "reading": "enṯe", "meaning": "my", "translations": { "fr": "mon, ma, mes", "es": "mi, mis" }, "type": "pronoun" },
+    { "term": "നിന്റെ", "reading": "ninṯe", "meaning": "your (familiar)", "translations": { "fr": "ton, ta, tes", "es": "tu, tus" }, "type": "pronoun" },
+    { "term": "അവരുടെ", "reading": "avaruṭe", "meaning": "their", "translations": { "fr": "leur, leurs", "es": "su, sus (de ellos)" }, "type": "pronoun" },
+    { "term": "നമ്മുടെ", "reading": "nammuṭe", "meaning": "our (with you)", "translations": { "fr": "notre (avec vous)", "es": "nuestro (con el oyente)" }, "type": "pronoun" },
+    { "term": "അച്ഛൻ", "reading": "acchan", "meaning": "father", "translations": { "fr": "père", "es": "padre" }, "type": "noun" },
+    { "term": "സുഹൃത്ത്", "reading": "suhr̥ttŭ", "meaning": "friend", "translations": { "fr": "ami, amie", "es": "amigo, amiga" }, "type": "noun" },
+    { "term": "കണ്ടു", "reading": "kaṇṭu", "meaning": "saw", "translations": { "fr": "a vu", "es": "vio" }, "type": "verb" }
+  ]
+}

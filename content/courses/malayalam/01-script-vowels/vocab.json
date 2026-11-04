@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "അമ്മ", "reading": "amma", "meaning": "mother", "translations": { "fr": "mère", "es": "madre" }, "type": "noun" },
+    { "term": "ആന", "reading": "āna", "meaning": "elephant", "translations": { "fr": "éléphant", "es": "elefante" }, "type": "noun" },
+    { "term": "ഇല", "reading": "ila", "meaning": "leaf", "translations": { "fr": "feuille", "es": "hoja" }, "type": "noun" },
+    { "term": "ഉപ്പ്", "reading": "uppŭ", "meaning": "salt", "translations": { "fr": "sel", "es": "sal" }, "type": "noun" },
+    { "term": "ഓണം", "reading": "ōṇaṁ", "meaning": "Onam, Kerala's harvest festival", "translations": { "fr": "Onam, la fête des récoltes du Kerala", "es": "Onam, la fiesta de la cosecha de Kerala" }, "type": "noun" },
+    { "term": "മലയാളം", "reading": "malayāḷaṁ", "meaning": "Malayalam", "translations": { "fr": "malayalam", "es": "malayalam" }, "type": "noun" },
+    { "term": "കേരളം", "reading": "kēraḷaṁ", "meaning": "Kerala", "translations": { "fr": "Kerala", "es": "Kerala" }, "type": "noun" }
+  ]
+}

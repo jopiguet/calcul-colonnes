@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -144,6 +144,75 @@ export function hebrewKey(text: string): string {
   return t.replace(/(.)\1+/g, "$1");
 }
 
+/** Malayalam letters in a plain Latin transliteration (ISO 15919 without its marks): consonants, vowels, vowel signs. */
+const ML_VOWELS: Record<string, string> = {
+  "അ": "a", "ആ": "aa", "ഇ": "i", "ഈ": "ii", "ഉ": "u", "ഊ": "uu", "ഋ": "ri", "എ": "e", "ഏ": "e", "ഐ": "ai", "ഒ": "o", "ഓ": "o", "ഔ": "au",
+};
+const ML_SIGNS: Record<string, string> = {
+  "\u0D3E": "aa", "\u0D3F": "i", "\u0D40": "ii", "\u0D41": "u", "\u0D42": "uu", "\u0D43": "ri", "\u0D46": "e", "\u0D47": "e",
+  "\u0D48": "ai", "\u0D4A": "o", "\u0D4B": "o", "\u0D4C": "au", "\u0D57": "au",
+};
+const ML_CONSONANTS: Record<string, string> = {
+  "ക": "k", "ഖ": "kh", "ഗ": "g", "ഘ": "gh", "ങ": "ng", "ച": "c", "ഛ": "ch", "ജ": "j", "ഝ": "jh", "ഞ": "ny",
+  "ട": "t", "ഠ": "th", "ഡ": "d", "ഢ": "dh", "ണ": "n", "ത": "t", "ഥ": "th", "ദ": "d", "ധ": "dh", "ന": "n",
+  "പ": "p", "ഫ": "ph", "ബ": "b", "ഭ": "bh", "മ": "m", "യ": "y", "ര": "r", "ല": "l", "വ": "v", "ശ": "s",
+  "ഷ": "s", "സ": "s", "ഹ": "h", "ള": "l", "ഴ": "zh", "റ": "r", "ഩ": "n", "ഺ": "t",
+};
+/** The chillu letters (consonants without a vowel) and the anusvara. */
+const ML_FINALS: Record<string, string> = { "ൺ": "n", "ൻ": "n", "ർ": "r", "ൽ": "l", "ൾ": "l", "ൿ": "k", "ൔ": "m", "ൕ": "y", "ൖ": "zh", "ം": "m", "ഃ": "h", "ൎ": "r" };
+
+/** Malayalam script as Latin letters: each consonant with its vowel sign, its inherent a, or none after the virama. */
+function malayalamLatin(text: string): string {
+  // റ്റ and ന്റ are read tt and nt (the alveolar stop), not rr and nr.
+  const chars = [...text.replace(/[\u200C\u200D]/g, "").replace(/റ്റ/g, "ട്ട").replace(/ന്റ|ൻറ/g, "ന്ട")];
+  let out = "";
+  for (let i = 0; i < chars.length; i++) {
+    const c = chars[i]!;
+    const next = chars[i + 1] ?? "";
+    if (c in ML_CONSONANTS) {
+      out += ML_CONSONANTS[c];
+      if (next === "്") {
+        // Virama: no vowel; at the end of a word the half-u (ŭ) is heard.
+        const after = chars[i + 2] ?? "";
+        if (!(after in ML_CONSONANTS)) out += "u";
+        i++;
+      } else if (next in ML_SIGNS) {
+        out += ML_SIGNS[next];
+        i++;
+      } else out += "a";
+    } else if (c in ML_VOWELS) out += ML_VOWELS[c];
+    else if (c in ML_FINALS) out += ML_FINALS[c];
+    else if (c === "്" || c in ML_SIGNS) continue;
+    else out += c;
+  }
+  return out;
+}
+
+/** Latin spellings of Malayalam folded together, longest first: Manglish "zh", "ch", "th", "ee", "oo"… */
+const ML_LATIN: [RegExp, string][] = [
+  [/[ṟr]/g, "r"], [/[ṭt]h|[ṭt]/g, "t"], [/[ḍd]h|[ḍd]/g, "t"], [/c+h+|c/g, "c"], [/[śṣ]|sh/g, "s"],
+  [/kh/g, "k"], [/gh/g, "g"], [/ph|f/g, "p"], [/bh/g, "b"], [/jh/g, "j"], [/[ṅñṇ]|ng|ny|nj/g, "n"], [/[ḷ]/g, "l"],
+  [/w/g, "v"], [/[ṁṃ]/g, "m"], [/[ḥ]/g, "h"], [/q/g, "k"], [/x/g, "ks"], [/z/g, "Z"],
+];
+
+/**
+ * Malayalam compared in its script or in transliteration, scholarly or as typed in "Manglish": കേരളം = kēraḷaṁ = keralam,
+ * മലയാളം = malayāḷaṁ = malayalam, പഴം = pazham. Long and short vowels are one (ee and oo, as typed for ī and ū, are i and u), and so
+ * are the retroflex and dental pairs (ട ത, ണ ന, ള ല), t and d (വീട് is typed veedu), the sibilants (ശ ഷ സ), ര and റ, aspirated and plain
+ * consonants; ഴ (zh) stays itself. Doubled letters count once, and a final half-u (ŭ, ്) may be left out.
+ */
+export function malayalamKey(text: string): string {
+  let t = malayalamLatin(text.normalize("NFC")).toLowerCase();
+  t = t.replace(/r̥|ṛ/g, "ri").replace(/ḻ|l̤|zh/g, "Z");
+  t = t.normalize("NFD").replace(/[̀-̂̄-ͯ]/g, "").normalize("NFC");
+  for (const [from, to] of ML_LATIN) t = t.replace(from, to);
+  t = t.replace(/ee/g, "i").replace(/oo/g, "u").replace(/[^a-zZ0-9\s]/g, "");
+  t = t.replace(/(.)\1+/g, "$1");
+  // A final half-u: written ് and read ŭ, often typed u or left out.
+  t = t.replace(/([^aeiou\s])u(?=\s|$)/g, "$1");
+  return t.replace(/\s+/g, " ").trim();
+}
+
 /** Egyptian and Akkadian transliterations as typed on a keyboard: ꜣ as 3 or a, ꜥ as ' or e, ḥ as h… */
 const TRANSLIT: [RegExp, string][] = [
   [/[ꜣꜢ]/g, "a"],
@@ -174,6 +243,7 @@ export function fold(text: string, folds: readonly Fold[]): string {
   if (folds.includes("persian")) return persianKey(t);
   if (folds.includes("arabic")) return arabicKey(t);
   if (folds.includes("hebrew")) return hebrewKey(t);
+  if (folds.includes("malayalam")) return malayalamKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -201,7 +271,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew"].includes(x));
+    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam"].includes(x));
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

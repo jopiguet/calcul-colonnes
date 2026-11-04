@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "ആര്", "reading": "ārŭ", "meaning": "who", "translations": { "fr": "qui", "es": "quién" }, "type": "pronoun" },
+    { "term": "എവിടെ", "reading": "eviṭe", "meaning": "where", "translations": { "fr": "où", "es": "dónde" }, "type": "adverb" },
+    { "term": "എപ്പോൾ", "reading": "eppōḷ", "meaning": "when", "translations": { "fr": "quand", "es": "cuándo" }, "type": "adverb" },
+    { "term": "എങ്ങനെ", "reading": "eṅṅane", "meaning": "how", "translations": { "fr": "comment", "es": "cómo" }, "type": "adverb" },
+    { "term": "എത്ര", "reading": "etra", "meaning": "how much, how many", "translations": { "fr": "combien", "es": "cuánto" }, "type": "adverb" },
+    { "term": "ഏത്", "reading": "ētŭ", "meaning": "which", "translations": { "fr": "quel, lequel", "es": "cuál" }, "type": "pronoun" },
+    { "term": "അതെ", "reading": "ate", "meaning": "yes", "translations": { "fr": "oui", "es": "sí" }, "type": "interjection" },
+    { "term": "താമസിക്കുക", "reading": "tāmasikkuka", "meaning": "to live, stay", "translations": { "fr": "habiter, séjourner", "es": "vivir, alojarse" }, "type": "verb" },
+    { "term": "രൂപ", "reading": "rūpa", "meaning": "rupee", "translations": { "fr": "roupie", "es": "rupia" }, "type": "noun" },
+    { "term": "കാപ്പി", "reading": "kāppi", "meaning": "coffee", "translations": { "fr": "café", "es": "café" }, "type": "noun" }
+  ]
+}

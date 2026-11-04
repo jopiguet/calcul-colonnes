@@ -162,6 +162,9 @@ const fr = {
   romajiHide: "Après la réponse",
   romajiHint: "Après la réponse : le japonais seul pendant la question, le rōmaji ensuite.",
   charactersTitle: "Kanji et kana",
+  lettersTitle: "Alphabet {lang}",
+  askLetter: "Quelle lettre ?",
+  answerSoundLatin: "Le son, en lettres latines",
   characters: "{count} caractères",
   metOne: "1 caractère de vos mots attend : il vient avec les nouveaux, qui suivent aussi le livre.",
   metMany: "{count} caractères de vos mots attendent : jusqu'à la moitié des nouveaux, le reste suit le livre.",
@@ -345,6 +348,9 @@ const es: Record<Key, string> = {
   romajiHide: "Tras la respuesta",
   romajiHint: "Tras la respuesta: solo el japonés durante la pregunta, el rōmaji después.",
   charactersTitle: "Kanji y kana",
+  lettersTitle: "Alfabeto {lang}",
+  askLetter: "¿Qué letra?",
+  answerSoundLatin: "El sonido, en letras latinas",
   characters: "{count} caracteres",
   metOne: "1 carácter de tus palabras espera: viene con los nuevos, que también siguen el libro.",
   metMany: "{count} caracteres de tus palabras esperan: hasta la mitad de los nuevos, el resto sigue el libro.",
@@ -526,6 +532,9 @@ const en: Record<Key, string> = {
   romajiHide: "After the answer",
   romajiHint: "After the answer: only the Japanese during the question, the rōmaji afterwards.",
   charactersTitle: "Kanji and kana",
+  lettersTitle: "{lang} letters",
+  askLetter: "Which letter?",
+  answerSoundLatin: "The sound, in Latin letters",
   characters: "{count} characters",
   metOne: "1 character from your words is waiting: it comes with the new ones, which also follow the book.",
   metMany: "{count} characters from your words are waiting: up to half the new ones, the rest follows the book.",
@@ -555,9 +564,9 @@ export function vt(key: Key, values: Record<string, string | number> = {}): stri
 
 /** A language's name in the interface's language, as used in "Vocabulaire {lang}". */
 const LANGUAGE_NAMES: Record<Lang, Record<string, string>> = {
-  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe", pt: "portugais", sw: "swahili", zh: "chinois", sux: "sumérien", egy: "égyptien ancien", akk: "akkadien", la: "latin", grc: "grec ancien" },
-  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe", pt: "portugués", sw: "suajili", zh: "chino", sux: "sumerio", egy: "egipcio antiguo", akk: "acadio", la: "latín", grc: "griego antiguo" },
-  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic", pt: "Portuguese", sw: "Swahili", zh: "Chinese", sux: "Sumerian", egy: "Ancient Egyptian", akk: "Akkadian", la: "Latin", grc: "Ancient Greek" },
+  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe", pt: "portugais", sw: "swahili", zh: "chinois", sux: "sumérien", egy: "égyptien ancien", akk: "akkadien", la: "latin", grc: "grec ancien", fa: "persan", he: "hébreu", ml: "malayalam" },
+  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe", pt: "portugués", sw: "suajili", zh: "chino", sux: "sumerio", egy: "egipcio antiguo", akk: "acadio", la: "latín", grc: "griego antiguo", fa: "persa", he: "hebreo", ml: "malayalam" },
+  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic", pt: "Portuguese", sw: "Swahili", zh: "Chinese", sux: "Sumerian", egy: "Ancient Egyptian", akk: "Akkadian", la: "Latin", grc: "Ancient Greek", fa: "Persian", he: "Hebrew", ml: "Malayalam" },
 };
 
 export function langName(code: string): string {
@@ -566,7 +575,7 @@ export function langName(code: string): string {
 
 /** A reading's language as files write it: a code ("sux") or an English name ("sumerian"). */
 const LANGUAGE_ALIASES: Record<string, string> = {
-  sumerian: "sux", akkadian: "akk", egyptian: "egy", chinese: "zh", japanese: "ja", arabic: "ar",
+  sumerian: "sux", akkadian: "akk", egyptian: "egy", chinese: "zh", japanese: "ja", arabic: "ar", malayalam: "ml",
 };
 
 /** The name of a reading's language, in the interface's language; a name the app does not know, as written. */
@@ -585,7 +594,7 @@ const INFO_LABELS: Record<Lang, Record<string, string>> = {
     numeral: "nombre", ideogram: "idéogramme", radical: "clé",
     noun: "nom", verb: "verbe", adjective: "adjectif", adverb: "adverbe", pronoun: "pronom", preposition: "préposition", conjunction: "conjonction", interjection: "interjection", particle: "particule",
     masculine: "masculin", feminine: "féminin", neuter: "neutre", common: "commun", plural: "pluriel", dual: "duel", genitive: "génitif", dative: "datif", perfect: "parfait", comparative: "comparatif", superlative: "superlatif",
-    imperfect: "inaccompli", accusative: "accusatif", article: "article", "with f. noun": "avec un nom f.", "plural f.": "pluriel f.", "with m. noun": "avec un nom m.", construct: "état construit",
+    imperfect: "inaccompli", accusative: "accusatif", article: "article", "with f. noun": "avec un nom f.", "plural f.": "pluriel f.", "with m. noun": "avec un nom m.", construct: "état construit", past: "passé", negative: "négatif", vocative: "vocatif", future: "futur", "predicate": "attribut",
   },
   es: {
     sign: "signo", word: "palabra", phrase: "expresión", character: "carácter", compound: "compuesto",
@@ -594,7 +603,7 @@ const INFO_LABELS: Record<Lang, Record<string, string>> = {
     numeral: "número", ideogram: "ideograma", radical: "radical",
     noun: "sustantivo", verb: "verbo", adjective: "adjetivo", adverb: "adverbio", pronoun: "pronombre", preposition: "preposición", conjunction: "conjunción", interjection: "interjección", particle: "partícula",
     masculine: "masculino", feminine: "femenino", neuter: "neutro", common: "común", plural: "plural", dual: "dual", genitive: "genitivo", dative: "dativo", perfect: "perfecto", comparative: "comparativo", superlative: "superlativo",
-    imperfect: "imperfectivo", accusative: "acusativo", article: "artículo", "with f. noun": "con sustantivo f.", "plural f.": "plural f.", "with m. noun": "con sustantivo m.", construct: "estado constructo",
+    imperfect: "imperfectivo", accusative: "acusativo", article: "artículo", "with f. noun": "con sustantivo f.", "plural f.": "plural f.", "with m. noun": "con sustantivo m.", construct: "estado constructo", past: "pasado", negative: "negativo", vocative: "vocativo", future: "futuro", "predicate": "atributo",
   },
   en: {},
 };

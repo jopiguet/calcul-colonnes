@@ -17,7 +17,7 @@
   --warn: #93600a;
   --square: 1.25rem;
   --radius: 0.75rem;
-  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
+  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
   --digits: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
   /* The physics playground: a ball, grass, light. */
   --ball: #d9541e;
@@ -1556,7 +1556,8 @@ a:focus-visible {
 .sample-division,
 .sample-formula,
 .sample-review,
-.sample-vocab {
+.sample-vocab,
+.sample-scripts {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -1679,7 +1680,8 @@ a:focus-visible {
   .sample-division,
   .sample-formula,
   .sample-review,
-  .sample-vocab {
+  .sample-vocab,
+  .sample-scripts {
     justify-self: start;
     min-width: 13rem;
   }
@@ -2068,6 +2070,31 @@ button.vocab-letter {
 .sample-vocab-answer {
   color: var(--accent);
   font-weight: 600;
+}
+
+/* Four scripts of the language courses, each word with its reading. */
+.sample-scripts {
+  grid-template-columns: auto auto;
+  place-content: center;
+  gap: 0.35rem 1rem;
+  align-items: baseline;
+}
+
+.sample-scripts-word {
+  justify-self: end;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.sample-scripts-word:lang(egy) {
+  font-family: "Noto Sans Egyptian Hieroglyphs", var(--font);
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.sample-scripts-reading {
+  color: var(--accent);
+  font-style: italic;
 }
 
 /* ---- home page: activities by subject ---- */
@@ -6699,6 +6726,14 @@ button.tiny {
   unicode-bidi: isolate;
 }
 .lesson-vocab-sign:lang(he) {
+  font-size: 1.3em;
+}
+.script-malayalam,
+.lesson-vocab-sign:lang(ml) {
+  font-family: "Noto Sans Malayalam", var(--font);
+  font-size: 1.12em;
+}
+.lesson-vocab-sign:lang(ml) {
   font-size: 1.3em;
 }
 .lesson-vocab-sign:lang(fa) {
