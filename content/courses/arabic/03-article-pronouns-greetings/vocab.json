@@ -1,0 +1,15 @@
+{
+  "entries": [
+    { "term": "قَمَر", "reading": "qamar", "meaning": "moon", "translations": { "fr": "lune", "es": "luna" }, "type": "noun", "gender": "masculine" },
+    { "term": "رَجُل", "reading": "rajul", "meaning": "man", "translations": { "fr": "homme", "es": "hombre" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "رِجَال" }] },
+    { "term": "طَالِب", "reading": "ṭālib", "meaning": "student", "translations": { "fr": "étudiant", "es": "estudiante" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "طُلَّاب" }] },
+    { "term": "كَبِير", "reading": "kabīr", "meaning": "big, old (person)", "translations": { "fr": "grand, âgé", "es": "grande, mayor" }, "type": "adjective" },
+    { "term": "أَنَا", "reading": "anā", "meaning": "I", "translations": { "fr": "je, moi", "es": "yo" }, "type": "pronoun" },
+    { "term": "نَحْنُ", "reading": "naḥnu", "meaning": "we", "translations": { "fr": "nous", "es": "nosotros" }, "type": "pronoun" },
+    { "term": "هُوَ", "reading": "huwa", "meaning": "he, it", "translations": { "fr": "il, lui", "es": "él" }, "type": "pronoun" },
+    { "term": "هِيَ", "reading": "hiya", "meaning": "she, it", "translations": { "fr": "elle", "es": "ella" }, "type": "pronoun" },
+    { "term": "شُكْرًا", "reading": "shukran", "meaning": "thank you", "translations": { "fr": "merci", "es": "gracias" }, "type": "interjection" },
+    { "term": "سَلَام", "reading": "salām", "meaning": "peace", "translations": { "fr": "paix", "es": "paz" }, "type": "noun", "gender": "masculine" },
+    { "term": "فِي", "reading": "fī", "meaning": "in", "translations": { "fr": "dans, à", "es": "en" }, "type": "preposition" }
+  ]
+}

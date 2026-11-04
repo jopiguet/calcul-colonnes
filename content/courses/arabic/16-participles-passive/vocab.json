@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "مُعَلِّم", "reading": "muʿallim", "meaning": "teacher", "translations": { "fr": "enseignant, maître", "es": "maestro, profesor" }, "type": "noun", "gender": "masculine" },
+    { "term": "مُسْلِم", "reading": "muslim", "meaning": "Muslim", "translations": { "fr": "musulman", "es": "musulmán" }, "type": "noun", "gender": "masculine" },
+    { "term": "مُسْتَقِيم", "reading": "mustaqīm", "meaning": "straight, upright", "translations": { "fr": "droit", "es": "recto" }, "type": "adjective" },
+    { "term": "مَكْتُوب", "reading": "maktūb", "meaning": "written; letter", "translations": { "fr": "écrit ; lettre", "es": "escrito; carta" }, "type": "adjective" },
+    { "term": "مُسْتَقْبَل", "reading": "mustaqbal", "meaning": "future", "translations": { "fr": "avenir", "es": "futuro" }, "type": "noun", "gender": "masculine" },
+    { "term": "هَدَى", "reading": "hadā", "meaning": "to guide", "translations": { "fr": "guider", "es": "guiar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَهْدِي" }] },
+    { "term": "صِيَام", "reading": "ṣiyām", "meaning": "fasting", "translations": { "fr": "jeûne", "es": "ayuno" }, "type": "noun", "gender": "masculine" },
+    { "term": "قِرَاءَة", "reading": "qirāʾa", "meaning": "reading, recitation", "translations": { "fr": "lecture, récitation", "es": "lectura, recitación" }, "type": "noun", "gender": "feminine" },
+    { "term": "أَحَبَّ", "reading": "aḥabba", "meaning": "to love, like", "translations": { "fr": "aimer", "es": "amar, gustar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يُحِبُّ" }] }
+  ]
+}

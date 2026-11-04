@@ -185,3 +185,29 @@ test("Persian: right-to-left runs in their font, answers in the script or in tra
   await card.locator(".lesson-check").click();
   await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
 });
+
+test("Arabic: Naskh for the Arabic text, answers in the script or in transliteration", async ({ page }) => {
+  await newPlayer(page, "Khalil");
+  await openActivity(page, "lessons-arabic");
+  await expect(page.locator(".lessons-item")).toHaveCount(22);
+  await page.locator(".lessons-item").first().click();
+  await expect(page.locator(".lesson-title")).toContainText("1.");
+  const run = page.locator("bdi.script-arabic").first();
+  await expect(run).toHaveAttribute("dir", "rtl");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Amiri");
+  await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("kitāb");
+  const card = page.locator(".lesson-exercise[data-exercise='read']");
+  const inputs = card.locator(".lesson-input");
+  await inputs.nth(0).fill("bab");
+  // بيت from the key row.
+  await inputs.nth(1).click();
+  for (const k of ["ب", "ي", "ت"]) await card.locator(".lesson-key", { hasText: new RegExp(`^${k}$`) }).click();
+  await expect(inputs.nth(1)).toHaveValue("بيت");
+  for (const [i, v] of [[2, "nūr"], [3, "shams"], [4, "qalam"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("5/5");
+  // A wrong word stays wrong: kalb is not qalam.
+  await inputs.nth(4).fill("kalb");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/5");
+});

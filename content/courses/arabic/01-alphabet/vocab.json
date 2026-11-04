@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "كِتَاب", "reading": "kitāb", "meaning": "book", "translations": { "fr": "livre", "es": "libro" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "كُتُب" }] },
+    { "term": "بَاب", "reading": "bāb", "meaning": "door, gate; chapter", "translations": { "fr": "porte ; chapitre", "es": "puerta; capítulo" }, "type": "noun", "gender": "masculine" },
+    { "term": "بَيْت", "reading": "bayt", "meaning": "house; verse (of poetry)", "translations": { "fr": "maison ; vers", "es": "casa; verso" }, "type": "noun", "gender": "masculine" },
+    { "term": "نُور", "reading": "nūr", "meaning": "light", "translations": { "fr": "lumière", "es": "luz" }, "type": "noun", "gender": "masculine" },
+    { "term": "شَمْس", "reading": "shams", "meaning": "sun", "translations": { "fr": "soleil", "es": "sol" }, "type": "noun", "gender": "feminine" },
+    { "term": "قَلَم", "reading": "qalam", "meaning": "pen", "translations": { "fr": "plume, stylo", "es": "pluma, bolígrafo" }, "type": "noun", "gender": "masculine" },
+    { "term": "قَلْب", "reading": "qalb", "meaning": "heart", "translations": { "fr": "cœur", "es": "corazón" }, "type": "noun", "gender": "masculine" },
+    { "term": "خُبْز", "reading": "khubz", "meaning": "bread", "translations": { "fr": "pain", "es": "pan" }, "type": "noun", "gender": "masculine" }
+  ]
+}

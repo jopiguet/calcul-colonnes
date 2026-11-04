@@ -64,6 +64,8 @@ async function lessonPage(ctx: LessonsContext, slug: string): Promise<HTMLElemen
   const view = await lessons.lesson(ctx.user.id, ctx.course, slug);
   const wrap = el("article", "sheet lesson-page");
   wrap.lang = document.documentElement.lang;
+  // The language taught, for its fonts (Arabic in Naskh).
+  wrap.dataset.script = view.course.language;
 
   const nav = el("nav", "lesson-nav");
   nav.append(button("ghost small", lt("backToCourse", { course: `${view.course.icon} ${view.course.title}` }), () => ctx.openLesson(null)));

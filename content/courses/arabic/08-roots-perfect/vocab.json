@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "كَتَبَ", "reading": "kataba", "meaning": "to write", "translations": { "fr": "écrire", "es": "escribir" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَكْتُبُ" }] },
+    { "term": "دَرَسَ", "reading": "darasa", "meaning": "to study", "translations": { "fr": "étudier", "es": "estudiar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَدْرُسُ" }] },
+    { "term": "عَلِمَ", "reading": "ʿalima", "meaning": "to know", "translations": { "fr": "savoir", "es": "saber" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَعْلَمُ" }] },
+    { "term": "شَرِبَ", "reading": "shariba", "meaning": "to drink", "translations": { "fr": "boire", "es": "beber" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَشْرَبُ" }] },
+    { "term": "كَاتِب", "reading": "kātib", "meaning": "writer, clerk", "translations": { "fr": "écrivain, secrétaire", "es": "escritor, secretario" }, "type": "noun", "gender": "masculine" },
+    { "term": "مَكْتَبَة", "reading": "maktaba", "meaning": "library, bookshop", "translations": { "fr": "bibliothèque, librairie", "es": "biblioteca, librería" }, "type": "noun", "gender": "feminine" },
+    { "term": "عَالِم", "reading": "ʿālim", "meaning": "scholar, learned", "translations": { "fr": "savant", "es": "sabio, erudito" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "عُلَمَاء" }] },
+    { "term": "قُرْآن", "reading": "qurʾān", "meaning": "Quran, recitation", "translations": { "fr": "Coran, récitation", "es": "Corán, recitación" }, "type": "noun", "gender": "masculine" },
+    { "term": "رِسَالَة", "reading": "risāla", "meaning": "letter, message", "translations": { "fr": "lettre, message", "es": "carta, mensaje" }, "type": "noun", "gender": "feminine" },
+    { "term": "قَهْوَة", "reading": "qahwa", "meaning": "coffee", "translations": { "fr": "café", "es": "café" }, "type": "noun", "gender": "feminine" }
+  ]
+}

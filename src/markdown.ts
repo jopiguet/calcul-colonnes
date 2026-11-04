@@ -39,17 +39,18 @@ export function inline(text: string, target: HTMLElement = el("span")): HTMLElem
 
 /**
  * Hieroglyphs and cuneiform signs: drawn larger than the text around them, in their own font.
- * Persian and Arabic: each run of words set apart, right to left, so it reads in its order inside a left-to-right line.
+ * Persian, Arabic and Hebrew: each run of words set apart, right to left, so it reads in its order inside a left-to-right line.
  */
-const ARABIC = "\\u0600-\\u06FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF";
-const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${ARABIC}](?:[${ARABIC}\\u200C\\u200D ]*[${ARABIC}])?)`, "u");
+const RTL = "\\u0590-\\u05FF\\uFB1D-\\uFB4F\\u0600-\\u06FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF";
+// A run may end on "…", the gap of an exercise, so that the gap sits at the end of the right-to-left words.
+const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${RTL}](?:[${RTL}\\u200C\\u200D ]*(?:[${RTL}]|…))?)`, "u");
 
 function signs(text: string, target: HTMLElement): void {
   text.split(SIGNS).forEach((piece, i) => {
     if (!piece) return;
     if (i % 2 === 0) target.append(piece);
-    else if (/[\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF]/u.test(piece)) {
-      const run = el("bdi", "script-arabic", piece);
+    else if (/[\u0590-\u05FF\uFB1D-\uFB4F\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF]/u.test(piece)) {
+      const run = el("bdi", /[\u0590-\u05FF\uFB1D-\uFB4F]/u.test(piece) ? "script-hebrew" : "script-arabic", piece);
       run.dir = "rtl";
       target.append(run);
     } else target.append(el("span", /[\u{13000}-\u{1345F}]/u.test(piece) ? "script-signs hiero" : "script-signs cuneiform", piece));

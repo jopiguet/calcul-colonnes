@@ -1,5 +1,18 @@
 # Changelog
 
+## 7.5.0
+
+- **🌙 Arabic**, the seventh language course: 22 lessons, 88 exercises, 182 words, in French, Spanish and English. Modern Standard Arabic, with Quranic examples throughout. See [Language courses](docs/language-courses.md).
+  - **Script:** the letters and their joining, vowel marks, shadda, tanwīn, hamza, tāʾ marbūṭa; the article and the sun letters.
+  - **Grammar:** the nominal sentence, gender and agreement, demonstratives, iḍāfa and possessive suffixes, the three cases, prepositions, sound and broken plurals and the dual; roots and patterns, perfect and imperfect, negation, the ten verb forms, weak verbs, subjunctive, jussive and imperative, كان and إنّ and their sisters, relative clauses and questions, numbers and the Hijri calendar, participles, verbal nouns and the passive, conditions and time clauses.
+  - **The Quran:** its structure and the script of the muṣḥaf (alif waṣla, dagger alif, verse and pause signs, tajwīd); al-Fatiha word by word; suras 112, 103 and 114; al-ʿAlaq 96:1–5 and the beginning of the Throne Verse. The Arabic text is quoted in the Ḥafṣ reading, with translations of the meaning.
+  - **Arabic today:** the standard and the dialects (Egypt, the Levant, the Gulf, Morocco).
+- **Arabic typed on any keyboard:** a course fold, `arabic`, compares strict answers by their consonants, in the script with or without vowels or in transliteration with or without dots: كتاب, *kitāb* and *kitab* are one answer, *ash-shams* is الشمس, *bismillah* is بسم الله. A row of buttons writes the letters.
+- **Naskh:** Arabic in the Arabic course is set in Amiri (Arabic subset), with full vowel marks and verse signs; the lesson page carries the language taught (`data-script`). Gaps "…" stay at the end of a right-to-left run.
+- **Word lists:** form labels *imperfect*, *accusative*, *article* are translated.
+- **Checks:** `check:lessons` tests the new fold (script, vowelled script, transliteration, sun letters, digraphs, emphatics; different words stay different): 142 lessons, 570 exercises, 1270 words in all.
+- **Tests:** `tests/e2e/lessons.spec.ts` checks the Naskh font, the right-to-left runs, answers in transliteration, in the script and from the key row, and a wrong word marked wrong.
+
 ## 7.4.0
 
 - **🌹 Persian**, the sixth language course: 18 lessons, 72 exercises, 150 words, in French, Spanish and English, on the same template. See [Language courses](docs/language-courses.md).

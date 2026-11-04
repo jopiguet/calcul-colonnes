@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "الفُصْحَى", "reading": "al-fuṣḥā", "meaning": "standard (classical) Arabic", "translations": { "fr": "l'arabe standard (classique)", "es": "el árabe estándar (clásico)" }, "type": "noun", "gender": "feminine" },
+    { "term": "لَهْجَة", "reading": "lahja", "meaning": "dialect, accent", "translations": { "fr": "dialecte, accent", "es": "dialecto, acento" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "لَهَجَات" }] },
+    { "term": "إِنْ شَاءَ اللَّهُ", "reading": "in shāʾa llāh", "meaning": "God willing", "translations": { "fr": "si Dieu le veut", "es": "si Dios quiere" }, "type": "phrase" },
+    { "term": "يَعْنِي", "reading": "yaʿnī", "meaning": "that is, I mean", "translations": { "fr": "c'est-à-dire", "es": "o sea, es decir" }, "type": "phrase" },
+    { "term": "خَلَاص", "reading": "khalāṣ", "meaning": "enough, that's it", "translations": { "fr": "ça suffit, c'est fini", "es": "basta, ya está" }, "type": "interjection" },
+    { "term": "حَبِيب", "reading": "ḥabīb", "meaning": "beloved, dear", "translations": { "fr": "bien-aimé, cher", "es": "querido, amado" }, "type": "noun", "gender": "masculine" },
+    { "term": "الآنَ", "reading": "al-āna", "meaning": "now", "translations": { "fr": "maintenant", "es": "ahora" }, "type": "adverb" },
+    { "term": "لُغَة", "reading": "lugha", "meaning": "language", "translations": { "fr": "langue", "es": "lengua, idioma" }, "type": "noun", "gender": "feminine" }
+  ]
+}

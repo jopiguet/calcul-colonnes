@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "مَدْرَسَة", "reading": "madrasa", "meaning": "school", "translations": { "fr": "école", "es": "escuela" }, "type": "noun", "gender": "feminine" },
+    { "term": "مُدَرِّس", "reading": "mudarris", "meaning": "teacher", "translations": { "fr": "enseignant", "es": "profesor" }, "type": "noun", "gender": "masculine" },
+    { "term": "دَرْس", "reading": "dars", "meaning": "lesson", "translations": { "fr": "leçon", "es": "lección" }, "type": "noun", "gender": "masculine" },
+    { "term": "سَمَاء", "reading": "samāʾ", "meaning": "sky, heaven", "translations": { "fr": "ciel", "es": "cielo" }, "type": "noun", "gender": "feminine" },
+    { "term": "بِنْت", "reading": "bint", "meaning": "girl, daughter", "translations": { "fr": "fille", "es": "chica, hija" }, "type": "noun", "gender": "feminine" },
+    { "term": "وَلَد", "reading": "walad", "meaning": "boy, child", "translations": { "fr": "garçon, enfant", "es": "chico, niño" }, "type": "noun", "gender": "masculine" },
+    { "term": "أُمّ", "reading": "umm", "meaning": "mother", "translations": { "fr": "mère", "es": "madre" }, "type": "noun", "gender": "feminine" },
+    { "term": "عَلَى", "reading": "ʿalā", "meaning": "on, upon", "translations": { "fr": "sur", "es": "sobre" }, "type": "preposition" }
+  ]
+}

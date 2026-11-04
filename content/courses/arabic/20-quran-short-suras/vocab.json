@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "صَمَد", "reading": "ṣamad", "meaning": "eternal refuge (a name of God)", "translations": { "fr": "le seul imploré (nom de Dieu)", "es": "el eterno, de quien todo depende (nombre de Dios)" }, "type": "noun" },
+    { "term": "عَصْر", "reading": "ʿaṣr", "meaning": "time, age; afternoon", "translations": { "fr": "temps, époque ; après-midi", "es": "tiempo, época; tarde" }, "type": "noun", "gender": "masculine" },
+    { "term": "خُسْر", "reading": "khusr", "meaning": "loss", "translations": { "fr": "perte, perdition", "es": "pérdida, perdición" }, "type": "noun", "gender": "masculine" },
+    { "term": "آمَنَ", "reading": "āmana", "meaning": "to believe", "translations": { "fr": "croire", "es": "creer" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يُؤْمِنُ" }] },
+    { "term": "حَقّ", "reading": "ḥaqq", "meaning": "truth; right", "translations": { "fr": "vérité ; droit", "es": "verdad; derecho" }, "type": "noun", "gender": "masculine" },
+    { "term": "صَبْر", "reading": "ṣabr", "meaning": "patience", "translations": { "fr": "patience", "es": "paciencia" }, "type": "noun", "gender": "masculine" },
+    { "term": "نَاس", "reading": "nās", "meaning": "people, mankind", "translations": { "fr": "gens, hommes", "es": "gente, humanidad" }, "type": "noun", "gender": "masculine" },
+    { "term": "عَاذَ", "reading": "ʿādha", "meaning": "to seek refuge", "translations": { "fr": "chercher refuge", "es": "refugiarse" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَعُوذُ" }] },
+    { "term": "شَرّ", "reading": "sharr", "meaning": "evil", "translations": { "fr": "mal", "es": "mal" }, "type": "noun", "gender": "masculine" }
+  ]
+}

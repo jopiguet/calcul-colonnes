@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "عَلَّمَ", "reading": "ʿallama", "meaning": "to teach", "translations": { "fr": "enseigner", "es": "enseñar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يُعَلِّمُ" }] },
+    { "term": "تَعَلَّمَ", "reading": "taʿallama", "meaning": "to learn", "translations": { "fr": "apprendre", "es": "aprender" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَتَعَلَّمُ" }] },
+    { "term": "أَرْسَلَ", "reading": "arsala", "meaning": "to send", "translations": { "fr": "envoyer", "es": "enviar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يُرْسِلُ" }] },
+    { "term": "اِجْتَمَعَ", "reading": "ijtamaʿa", "meaning": "to meet, gather", "translations": { "fr": "se réunir", "es": "reunirse" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَجْتَمِعُ" }] },
+    { "term": "اِسْتَغْفَرَ", "reading": "istaghfara", "meaning": "to ask forgiveness", "translations": { "fr": "demander pardon", "es": "pedir perdón" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَسْتَغْفِرُ" }] },
+    { "term": "إِسْلَام", "reading": "islām", "meaning": "submission (to God); Islam", "translations": { "fr": "soumission (à Dieu) ; islam", "es": "sumisión (a Dios); islam" }, "type": "noun", "gender": "masculine" },
+    { "term": "العَرَبِيَّة", "reading": "al-ʿarabiyya", "meaning": "Arabic (language)", "translations": { "fr": "l'arabe (langue)", "es": "el árabe (lengua)" }, "type": "noun", "gender": "feminine" }
+  ]
+}

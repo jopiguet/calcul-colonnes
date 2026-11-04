@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "وَاحِد", "reading": "wāḥid", "meaning": "one", "translations": { "fr": "un", "es": "uno" }, "type": "numeral", "forms": [{ "label": "feminine", "value": "وَاحِدَة" }] },
+    { "term": "ثَلَاثَة", "reading": "thalātha", "meaning": "three", "translations": { "fr": "trois", "es": "tres" }, "type": "numeral", "forms": [{ "label": "with f. noun", "value": "ثَلَاث" }] },
+    { "term": "عَشَرَة", "reading": "ʿashara", "meaning": "ten", "translations": { "fr": "dix", "es": "diez" }, "type": "numeral", "forms": [{ "label": "with f. noun", "value": "عَشْر" }] },
+    { "term": "أَلْف", "reading": "alf", "meaning": "thousand", "translations": { "fr": "mille", "es": "mil" }, "type": "numeral" },
+    { "term": "سَاعَة", "reading": "sāʿa", "meaning": "hour; clock", "translations": { "fr": "heure ; montre", "es": "hora; reloj" }, "type": "noun", "gender": "feminine" },
+    { "term": "شَهْر", "reading": "shahr", "meaning": "month", "translations": { "fr": "mois", "es": "mes" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "أَشْهُر، شُهُور" }] },
+    { "term": "الجُمُعَة", "reading": "al-jumuʿa", "meaning": "Friday", "translations": { "fr": "vendredi", "es": "viernes" }, "type": "noun", "gender": "feminine" },
+    { "term": "الهِجْرَة", "reading": "al-hijra", "meaning": "the Hijra, emigration", "translations": { "fr": "l'Hégire, l'émigration", "es": "la Hégira, la emigración" }, "type": "noun", "gender": "feminine" }
+  ]
+}

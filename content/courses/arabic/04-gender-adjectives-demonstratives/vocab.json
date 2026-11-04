@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "جَمِيل", "reading": "jamīl", "meaning": "beautiful", "translations": { "fr": "beau", "es": "bonito, hermoso" }, "type": "adjective" },
+    { "term": "صَغِير", "reading": "ṣaghīr", "meaning": "small, young", "translations": { "fr": "petit, jeune", "es": "pequeño, joven" }, "type": "adjective" },
+    { "term": "أَرْض", "reading": "arḍ", "meaning": "earth, land", "translations": { "fr": "terre", "es": "tierra" }, "type": "noun", "gender": "feminine" },
+    { "term": "يَد", "reading": "yad", "meaning": "hand", "translations": { "fr": "main", "es": "mano" }, "type": "noun", "gender": "feminine" },
+    { "term": "سَيَّارَة", "reading": "sayyāra", "meaning": "car", "translations": { "fr": "voiture", "es": "coche" }, "type": "noun", "gender": "feminine" },
+    { "term": "هَذَا", "reading": "hādhā", "meaning": "this (m.)", "translations": { "fr": "ceci, ce (m.)", "es": "este (m.)" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "هَذِهِ" }] },
+    { "term": "ذَلِكَ", "reading": "dhālika", "meaning": "that (m.)", "translations": { "fr": "cela, ce… -là (m.)", "es": "aquel, ese (m.)" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "تِلْكَ" }] },
+    { "term": "رَيْب", "reading": "rayb", "meaning": "doubt", "translations": { "fr": "doute", "es": "duda" }, "type": "noun", "gender": "masculine" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "الَّذِي", "reading": "alladhī", "meaning": "who, which (m.)", "translations": { "fr": "qui, que (m.)", "es": "que, el cual (m.)" }, "type": "pronoun", "forms": [{ "label": "feminine", "value": "الَّتِي" }, { "label": "plural", "value": "الَّذِينَ" }] },
+    { "term": "مَنْ", "reading": "man", "meaning": "who; whoever", "translations": { "fr": "qui ; quiconque", "es": "quién; quienquiera" }, "type": "pronoun" },
+    { "term": "مَاذَا", "reading": "mādhā", "meaning": "what", "translations": { "fr": "quoi, que", "es": "qué" }, "type": "pronoun" },
+    { "term": "مَتَى", "reading": "matā", "meaning": "when", "translations": { "fr": "quand", "es": "cuándo" }, "type": "adverb" },
+    { "term": "كَيْفَ", "reading": "kayfa", "meaning": "how", "translations": { "fr": "comment", "es": "cómo" }, "type": "adverb" },
+    { "term": "لِمَاذَا", "reading": "limādhā", "meaning": "why", "translations": { "fr": "pourquoi", "es": "por qué" }, "type": "adverb" },
+    { "term": "كَمْ", "reading": "kam", "meaning": "how many, how much", "translations": { "fr": "combien", "es": "cuánto" }, "type": "adverb" },
+    { "term": "مَدِينَة", "reading": "madīna", "meaning": "city", "translations": { "fr": "ville", "es": "ciudad" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "مُدُن" }] },
+    { "term": "سَكَنَ", "reading": "sakana", "meaning": "to live, dwell", "translations": { "fr": "habiter", "es": "vivir, habitar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَسْكُنُ" }] },
+    { "term": "صِرَاط", "reading": "ṣirāṭ", "meaning": "path, way", "translations": { "fr": "chemin, voie", "es": "camino, senda" }, "type": "noun", "gender": "masculine" }
+  ]
+}

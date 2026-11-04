@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "رَبّ", "reading": "rabb", "meaning": "lord", "translations": { "fr": "seigneur", "es": "señor" }, "type": "noun", "gender": "masculine" },
+    { "term": "عَالَم", "reading": "ʿālam", "meaning": "world", "translations": { "fr": "monde", "es": "mundo" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "عَالَمُون، عَالَمِين" }] },
+    { "term": "يَوْم", "reading": "yawm", "meaning": "day", "translations": { "fr": "jour", "es": "día" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "أَيَّام" }] },
+    { "term": "دِين", "reading": "dīn", "meaning": "religion; judgement", "translations": { "fr": "religion ; jugement", "es": "religión; juicio" }, "type": "noun", "gender": "masculine" },
+    { "term": "جَدِيد", "reading": "jadīd", "meaning": "new", "translations": { "fr": "nouveau", "es": "nuevo" }, "type": "adjective" },
+    { "term": "عِنْدَ", "reading": "ʿinda", "meaning": "at, with (to have)", "translations": { "fr": "chez (avoir)", "es": "junto a (tener)" }, "type": "preposition" },
+    { "term": "أَخ", "reading": "akh", "meaning": "brother", "translations": { "fr": "frère", "es": "hermano" }, "type": "noun", "gender": "masculine" },
+    { "term": "أَيْنَ", "reading": "ayna", "meaning": "where", "translations": { "fr": "où", "es": "dónde" }, "type": "adverb" }
+  ]
+}

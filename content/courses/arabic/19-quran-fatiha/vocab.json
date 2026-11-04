@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "الفَاتِحَة", "reading": "al-fātiḥa", "meaning": "the Opening (first sura)", "translations": { "fr": "l'Ouverture (première sourate)", "es": "la Apertura (primera sura)" }, "type": "noun", "gender": "feminine" },
+    { "term": "حَمْد", "reading": "ḥamd", "meaning": "praise", "translations": { "fr": "louange", "es": "alabanza" }, "type": "noun", "gender": "masculine" },
+    { "term": "مَالِك", "reading": "mālik", "meaning": "owner, master", "translations": { "fr": "possesseur, maître", "es": "dueño, señor" }, "type": "noun", "gender": "masculine" },
+    { "term": "أَنْعَمَ", "reading": "anʿama", "meaning": "to bestow favour, bless", "translations": { "fr": "combler de bienfaits", "es": "agraciar, favorecer" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يُنْعِمُ" }] },
+    { "term": "غَضِبَ", "reading": "ghaḍiba", "meaning": "to be angry", "translations": { "fr": "se mettre en colère", "es": "enojarse" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَغْضَبُ" }] },
+    { "term": "ضَلَّ", "reading": "ḍalla", "meaning": "to go astray", "translations": { "fr": "s'égarer", "es": "extraviarse" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَضِلُّ" }] },
+    { "term": "غَيْر", "reading": "ghayr", "meaning": "other than, not", "translations": { "fr": "autre que, non", "es": "otro que, no" }, "type": "noun" },
+    { "term": "آمِين", "reading": "āmīn", "meaning": "amen", "translations": { "fr": "amen", "es": "amén" }, "type": "interjection" }
+  ]
+}

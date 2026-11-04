@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "مِنْ", "reading": "min", "meaning": "from, of", "translations": { "fr": "de, depuis", "es": "de, desde" }, "type": "preposition" },
+    { "term": "إِلَى", "reading": "ilā", "meaning": "to, towards", "translations": { "fr": "vers, à", "es": "a, hacia" }, "type": "preposition" },
+    { "term": "مَعَ", "reading": "maʿa", "meaning": "with", "translations": { "fr": "avec", "es": "con" }, "type": "preposition" },
+    { "term": "بَيْنَ", "reading": "bayna", "meaning": "between", "translations": { "fr": "entre", "es": "entre" }, "type": "preposition" },
+    { "term": "قَرَأَ", "reading": "qaraʾa", "meaning": "to read, recite", "translations": { "fr": "lire, réciter", "es": "leer, recitar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَقْرَأُ" }] },
+    { "term": "ذَهَبَ", "reading": "dhahaba", "meaning": "to go", "translations": { "fr": "aller", "es": "ir" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَذْهَبُ" }] },
+    { "term": "مَكْتَب", "reading": "maktab", "meaning": "desk, office", "translations": { "fr": "bureau", "es": "escritorio, oficina" }, "type": "noun", "gender": "masculine" },
+    { "term": "ظُلُمَات", "reading": "ẓulumāt", "meaning": "darknesses", "translations": { "fr": "ténèbres", "es": "tinieblas" }, "type": "noun", "gender": "feminine" }
+  ]
+}

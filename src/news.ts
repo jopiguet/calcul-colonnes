@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.5.0",
+    fr: ["Cours de langues : l'arabe, en 22 leçons, de l'alphabet aux formes verbales, avec des exemples coraniques tout au long, puis l'écriture du Coran, la Fâtiha et les sourates courtes, et les dialectes d'aujourd'hui. Les réponses se tapent en arabe ou en lettres latines : « kitab » vaut كتاب."],
+    es: ["Cursos de idiomas: el árabe, en 22 lecciones, del alfabeto a las formas verbales, con ejemplos coránicos a lo largo del curso, y luego la escritura del Corán, la Fátiha y las suras breves, y los dialectos de hoy. Las respuestas se escriben en árabe o en letras latinas: «kitab» vale كتاب."],
+    en: ["Language courses: Arabic, 22 lessons from the alphabet to the verb forms, with Quranic examples throughout, then the script of the Quran, al-Fatiha and the short suras, and today's dialects. Answers can be typed in Arabic or Latin letters: \"kitab\" counts as كتاب."],
+  },
+  {
     version: "7.4.0",
     fr: ["Cours de langues : le persan, en 18 leçons, de l'alphabet au persan parlé de Téhéran, puis Ferdowsi, Saadi, Rûmî, Hâfez et Khayyâm. Le persan s'affiche de droite à gauche, et les réponses se tapent en persan ou en lettres latines : « ketab » vaut کتاب."],
     es: ["Cursos de idiomas: el persa, en 18 lecciones, del alfabeto al persa hablado de Teherán, y luego Ferdousí, Saadí, Rumi, Hafez y Jayam. El persa se muestra de derecha a izquierda, y las respuestas se escriben en persa o en letras latinas: «ketab» vale کتاب."],

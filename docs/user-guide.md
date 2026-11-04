@@ -786,7 +786,7 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien** and **🌹 Persan**, with the exercises done (*12 exercices sur 126 réussis*). See
+**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan** and **🌙 Arabe**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
 **The course page** lists the lessons (31 in Latin), each with its exercises done
@@ -834,6 +834,14 @@ are the same answer; *kh*, *sh*, *ch*, *zh*, *gh* stand for خ ش چ ژ غ. Sinc
 the short vowels are not written in Persian, answers are compared by their
 consonants, and letters that sound alike (س ص ث) are tested by choices. The
 buttons write the 32 letters.
+
+Arabic works the same way: answers in the script, with or without vowel marks,
+or in Latin letters, with or without dots and lines (*kitab*, *kitāb*, كتاب);
+*th*, *dh*, *kh*, *sh*, *gh* stand for ث ذ خ ش غ, and *ash-shams* is read as
+الشمس. The emphatic letters (ص ض ط ظ) and ح are compared with their plain
+neighbours, so they are tested by choices. Arabic is shown in a Naskh type
+with full vowel marks; the Quranic lessons give the Arabic text with
+translations of the meaning.
 
 A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
 shows them checked, and *Recommencer la leçon* empties it.

@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "إِذَا", "reading": "idhā", "meaning": "if, when", "translations": { "fr": "si, quand", "es": "si, cuando" }, "type": "conjunction" },
+    { "term": "لَوْ", "reading": "law", "meaning": "if (unreal)", "translations": { "fr": "si (irréel)", "es": "si (irreal)" }, "type": "conjunction" },
+    { "term": "عِنْدَمَا", "reading": "ʿindamā", "meaning": "when", "translations": { "fr": "quand, lorsque", "es": "cuando" }, "type": "conjunction" },
+    { "term": "مُنْذُ", "reading": "mundhu", "meaning": "since, for", "translations": { "fr": "depuis", "es": "desde, hace" }, "type": "preposition" },
+    { "term": "نَصْر", "reading": "naṣr", "meaning": "help, victory", "translations": { "fr": "secours, victoire", "es": "auxilio, victoria" }, "type": "noun", "gender": "masculine" },
+    { "term": "سَافَرَ", "reading": "sāfara", "meaning": "to travel", "translations": { "fr": "voyager", "es": "viajar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يُسَافِرُ" }] },
+    { "term": "غَنِيّ", "reading": "ghaniyy", "meaning": "rich", "translations": { "fr": "riche", "es": "rico" }, "type": "adjective" },
+    { "term": "سَنَة", "reading": "sana", "meaning": "year", "translations": { "fr": "année", "es": "año" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "dual", "value": "سَنَتَانِ" }] }
+  ]
+}

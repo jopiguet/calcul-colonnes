@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "صَارَ", "reading": "ṣāra", "meaning": "to become", "translations": { "fr": "devenir", "es": "volverse, llegar a ser" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَصِيرُ" }] },
+    { "term": "مَا زَالَ", "reading": "mā zāla", "meaning": "to be still", "translations": { "fr": "être encore", "es": "seguir siendo" }, "type": "verb" },
+    { "term": "إِنَّ", "reading": "inna", "meaning": "indeed, truly", "translations": { "fr": "certes, en vérité", "es": "ciertamente, en verdad" }, "type": "particle" },
+    { "term": "لَكِنَّ", "reading": "lākinna", "meaning": "but", "translations": { "fr": "mais", "es": "pero" }, "type": "particle" },
+    { "term": "لَعَلَّ", "reading": "laʿalla", "meaning": "perhaps", "translations": { "fr": "peut-être", "es": "quizá" }, "type": "particle" },
+    { "term": "غَفُور", "reading": "ghafūr", "meaning": "forgiving", "translations": { "fr": "pardonneur", "es": "perdonador" }, "type": "adjective" },
+    { "term": "رَحِيم", "reading": "raḥīm", "meaning": "merciful", "translations": { "fr": "miséricordieux", "es": "misericordioso" }, "type": "adjective" },
+    { "term": "إِنْسَان", "reading": "insān", "meaning": "human being, man", "translations": { "fr": "être humain, homme", "es": "ser humano, hombre" }, "type": "noun", "gender": "masculine" },
+    { "term": "جَوّ", "reading": "jaww", "meaning": "weather; air", "translations": { "fr": "temps (météo) ; air", "es": "tiempo (clima); aire" }, "type": "noun", "gender": "masculine" }
+  ]
+}

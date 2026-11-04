@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "قَالَ", "reading": "qāla", "meaning": "to say", "translations": { "fr": "dire", "es": "decir" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَقُولُ" }] },
+    { "term": "كَانَ", "reading": "kāna", "meaning": "to be (past)", "translations": { "fr": "être (passé)", "es": "ser, estar (pasado)" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَكُونُ" }] },
+    { "term": "وَصَلَ", "reading": "waṣala", "meaning": "to arrive", "translations": { "fr": "arriver", "es": "llegar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَصِلُ" }] },
+    { "term": "وَجَدَ", "reading": "wajada", "meaning": "to find", "translations": { "fr": "trouver", "es": "encontrar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَجِدُ" }] },
+    { "term": "أَخَذَ", "reading": "akhadha", "meaning": "to take", "translations": { "fr": "prendre", "es": "tomar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَأْخُذُ" }] },
+    { "term": "دَعَا", "reading": "daʿā", "meaning": "to call, pray", "translations": { "fr": "appeler, prier", "es": "llamar, rezar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَدْعُو" }] },
+    { "term": "جَاءَ", "reading": "jāʾa", "meaning": "to come", "translations": { "fr": "venir", "es": "venir" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَجِيءُ" }] },
+    { "term": "أَحَد", "reading": "aḥad", "meaning": "one, anyone", "translations": { "fr": "un, quelqu'un", "es": "uno, alguien" }, "type": "noun", "gender": "masculine" },
+    { "term": "أَهْلًا وَسَهْلًا", "reading": "ahlan wa-sahlan", "meaning": "welcome", "translations": { "fr": "bienvenue", "es": "bienvenido" }, "type": "phrase" }
+  ]
+}

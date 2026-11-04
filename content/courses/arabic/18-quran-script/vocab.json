@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "سُورَة", "reading": "sūra", "meaning": "sura, chapter of the Quran", "translations": { "fr": "sourate", "es": "sura" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "سُوَر" }] },
+    { "term": "آيَة", "reading": "āya", "meaning": "verse; sign", "translations": { "fr": "verset ; signe", "es": "aleya, versículo; signo" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "plural", "value": "آيَات" }] },
+    { "term": "الرَّحْمَٰن", "reading": "ar-raḥmān", "meaning": "the Most Gracious", "translations": { "fr": "le Tout Miséricordieux", "es": "el Clemente" }, "type": "noun" },
+    { "term": "مُصْحَف", "reading": "muṣḥaf", "meaning": "copy of the Quran", "translations": { "fr": "exemplaire du Coran", "es": "ejemplar del Corán" }, "type": "noun", "gender": "masculine" },
+    { "term": "تِلَاوَة", "reading": "tilāwa", "meaning": "recitation (of the Quran)", "translations": { "fr": "récitation (du Coran)", "es": "recitación (del Corán)" }, "type": "noun", "gender": "feminine" },
+    { "term": "كَرِيم", "reading": "karīm", "meaning": "noble, generous", "translations": { "fr": "noble, généreux", "es": "noble, generoso" }, "type": "adjective" },
+    { "term": "نَبِيّ", "reading": "nabiyy", "meaning": "prophet", "translations": { "fr": "prophète", "es": "profeta" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "أَنْبِيَاء" }] }
+  ]
+}

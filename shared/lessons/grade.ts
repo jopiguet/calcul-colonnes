@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -83,6 +83,67 @@ export function persianKey(text: string): string {
   return t.replace(/[aeiouâāēīōūyvwh'ʼ’ʿʾ`\-\s.]/g, "").replace(/[^\p{L}\p{N}]/gu, "").replace(/[\u0600-\u06FF]/g, "");
 }
 
+/** Romanised Arabic read as Arabic letters, digraphs and dotted letters first; vowels, w, y, h-less glottals dropped. */
+const ARABIC_FROM_LATIN: [RegExp, string][] = [
+  [/th|ṯ/g, "ث"], [/dh|ḏ/g, "ذ"], [/kh|x|ḫ|ḵ/g, "خ"], [/sh|š/g, "ش"], [/gh|ġ|ḡ/g, "غ"], [/ḥ/g, "ه"], [/ṣ/g, "س"], [/ḍ/g, "د"],
+  [/ṭ/g, "ت"], [/ẓ/g, "ز"], [/ǧ|dj/g, "ج"],
+];
+const ARABIC_LATIN_LETTERS: Record<string, string> = {
+  b: "ب", t: "ت", j: "ج", g: "ج", d: "د", r: "ر", z: "ز", s: "س", f: "ف", q: "ق", k: "ك", c: "ك", l: "ل", m: "م", n: "ن", h: "ه", p: "ب", v: "ف",
+};
+/** Arabic letters folded together: the emphatics with their plain partners, ح with ه, Persian forms with Arabic ones. */
+const ARABIC_LETTERS: Record<string, string> = {
+  "ص": "س", "ض": "د", "ط": "ت", "ظ": "ز", "ح": "ه", "ک": "ك", "ی": "", "ي": "", "ى": "", "و": "", "ا": "", "أ": "", "إ": "", "آ": "", "ٱ": "",
+  "ء": "", "ؤ": "", "ئ": "", "ع": "", "ة": "", "گ": "ج", "پ": "ب", "چ": "ج", "ژ": "ز",
+};
+
+/**
+ * Arabic compared by its consonants, in the script (with or without vowel marks) or in transliteration:
+ * كتاب = kitāb = kitab, الشمس = ash-shams = al-shams. Short vowels are not written, so vowels, the letters
+ * that carry long vowels (ا و ي ى), hamza, ʿayn and tāʾ marbūṭa are dropped; the emphatic letters fold into
+ * the plain ones (ص س، ض د، ط ت، ظ ز، ح ه) and doubled consonants count once: these are tested by choices.
+ */
+export function arabicKey(text: string): string {
+  let t = text.normalize("NFC").toLowerCase();
+  t = t.replace(/[\u064B-\u065F\u0670\u0640\u06D6-\u06ED\u200C\u200D]/g, "");
+  // The article before a "sun letter": ash-shams, ar-raḥmān are al-shams, al-raḥmān.
+  t = t.replace(/(^|[\s])[ae]([tdrzsnl]h?|sh|[šṯḏṣḍṭẓ])-(?=\2)/g, "$1al-");
+  for (const [from, to] of ARABIC_FROM_LATIN) t = t.replace(from, to);
+  t = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").normalize("NFC");
+  t = [...t].map((c) => ARABIC_LATIN_LETTERS[c] ?? ARABIC_LETTERS[c] ?? c).join("");
+  t = t.replace(/[٠-٩]/g, (d) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d))).replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)));
+  t = t.replace(/[^\u0621-\u064A0-9]/g, "");
+  return t.replace(/(.)\1+/g, "$1");
+}
+
+/** Romanised Hebrew read as Hebrew letters: kh, ch, ḥ and x are כ (with ח), ts and tz צ, sh ש; b and v both ב. */
+const HEBREW_FROM_LATIN: [RegExp, string][] = [
+  [/ts|tz|ṣ|ẓ/g, "צ"], [/sh|š|ś/g, "ש"], [/kh|ch|ḥ|ḫ|x/g, "כ"], [/zh|ž/g, "ז"], [/ph/g, "פ"],
+];
+const HEBREW_LATIN_LETTERS: Record<string, string> = {
+  b: "ב", v: "ב", g: "ג", j: "ג", d: "ד", z: "ז", t: "ת", k: "כ", q: "כ", c: "כ", l: "ל", m: "מ", n: "נ", s: "ש", p: "פ", f: "פ", r: "ר",
+};
+const HEBREW_LETTERS: Record<string, string> = {
+  "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ", "ח": "כ", "ק": "כ", "ט": "ת", "ס": "ש", "א": "", "ה": "", "ע": "", "י": "",
+};
+
+/**
+ * Hebrew compared by its consonants, in the script (with or without niqqud) or in transliteration:
+ * שלום = shalom, בוקר טוב = boker tov, לחם = lechem = leḥem. Vowels, א ה ע י and a vowel ו are dropped; a ו at the
+ * start of a word or doubled (וו) is the consonant v, read as ב; letters of one sound fold together (כ ח ק, ת ט, ש ס)
+ * and doubled consonants count once: these are tested by choices.
+ */
+export function hebrewKey(text: string): string {
+  let t = text.normalize("NFC").toLowerCase();
+  t = t.replace(/[\u0591-\u05C7\u05F3\u05F4'"׳״]/g, "");
+  t = t.replace(/(^|[\s\-])ו(?!ו)/g, "$1ב").replace(/וו/g, "ב").replace(/ו/g, "");
+  for (const [from, to] of HEBREW_FROM_LATIN) t = t.replace(from, to);
+  t = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").normalize("NFC");
+  t = [...t].map((c) => HEBREW_LATIN_LETTERS[c] ?? (c in HEBREW_LETTERS ? HEBREW_LETTERS[c] : c)).join("");
+  t = t.replace(/[^\u05D0-\u05EA0-9]/g, "");
+  return t.replace(/(.)\1+/g, "$1");
+}
+
 /** Egyptian and Akkadian transliterations as typed on a keyboard: ꜣ as 3 or a, ꜥ as ' or e, ḥ as h… */
 const TRANSLIT: [RegExp, string][] = [
   [/[ꜣꜢ]/g, "a"],
@@ -111,6 +172,8 @@ export function fold(text: string, folds: readonly Fold[]): string {
   if (folds.includes("egyptian")) return egyptianKey(t);
   if (folds.includes("greek")) return greekKey(t);
   if (folds.includes("persian")) return persianKey(t);
+  if (folds.includes("arabic")) return arabicKey(t);
+  if (folds.includes("hebrew")) return hebrewKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -138,7 +201,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => x !== "egyptian" && x !== "greek" && x !== "persian");
+    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew"].includes(x));
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

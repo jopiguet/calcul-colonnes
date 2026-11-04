@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "خَلَقَ", "reading": "khalaqa", "meaning": "to create", "translations": { "fr": "créer", "es": "crear" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَخْلُقُ" }] },
+    { "term": "إِلَٰه", "reading": "ilāh", "meaning": "god, deity", "translations": { "fr": "dieu, divinité", "es": "dios, divinidad" }, "type": "noun", "gender": "masculine" },
+    { "term": "إِلَّا", "reading": "illā", "meaning": "except", "translations": { "fr": "sauf, excepté", "es": "excepto, salvo" }, "type": "particle" },
+    { "term": "حَيّ", "reading": "ḥayy", "meaning": "living, alive", "translations": { "fr": "vivant", "es": "vivo, viviente" }, "type": "adjective" },
+    { "term": "نَوْم", "reading": "nawm", "meaning": "sleep", "translations": { "fr": "sommeil", "es": "sueño" }, "type": "noun", "gender": "masculine" },
+    { "term": "كُرْسِيّ", "reading": "kursiyy", "meaning": "chair, seat, throne", "translations": { "fr": "chaise, siège, trône", "es": "silla, asiento, trono" }, "type": "noun", "gender": "masculine" },
+    { "term": "سَمَاوَات", "reading": "samāwāt", "meaning": "heavens", "translations": { "fr": "cieux", "es": "cielos" }, "type": "noun", "note": "جَمْع سَمَاء" },
+    { "term": "شَهَادَة", "reading": "shahāda", "meaning": "testimony; profession of faith; diploma", "translations": { "fr": "témoignage ; profession de foi ; diplôme", "es": "testimonio; profesión de fe; diploma" }, "type": "noun", "gender": "feminine" }
+  ]
+}

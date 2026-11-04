@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "أَرَادَ", "reading": "arāda", "meaning": "to want", "translations": { "fr": "vouloir", "es": "querer" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يُرِيدُ" }] },
+    { "term": "أَنْ", "reading": "an", "meaning": "that, to (+ subjunctive)", "translations": { "fr": "que, de (+ subjonctif)", "es": "que (+ subjuntivo)" }, "type": "particle" },
+    { "term": "لَمْ", "reading": "lam", "meaning": "did not (+ jussive)", "translations": { "fr": "n'a pas (+ apocopé)", "es": "no (pasado, + yusivo)" }, "type": "particle" },
+    { "term": "لَنْ", "reading": "lan", "meaning": "will not (+ subjunctive)", "translations": { "fr": "ne… pas (futur, + subjonctif)", "es": "no (futuro, + subjuntivo)" }, "type": "particle" },
+    { "term": "حَزِنَ", "reading": "ḥazina", "meaning": "to be sad, grieve", "translations": { "fr": "être triste, s'affliger", "es": "estar triste, entristecerse" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَحْزَنُ" }] },
+    { "term": "وَلَدَ", "reading": "walada", "meaning": "to give birth, beget", "translations": { "fr": "enfanter, engendrer", "es": "dar a luz, engendrar" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَلِدُ" }] },
+    { "term": "اِسْم", "reading": "ism", "meaning": "name; noun", "translations": { "fr": "nom", "es": "nombre" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "أَسْمَاء" }] }
+  ]
+}

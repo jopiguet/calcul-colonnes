@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "عَبَدَ", "reading": "ʿabada", "meaning": "to worship, serve", "translations": { "fr": "adorer, servir", "es": "adorar, servir" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَعْبُدُ" }] },
+    { "term": "عَرَفَ", "reading": "ʿarafa", "meaning": "to know, recognise", "translations": { "fr": "connaître, reconnaître", "es": "conocer, reconocer" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَعْرِفُ" }] },
+    { "term": "جَلَسَ", "reading": "jalasa", "meaning": "to sit", "translations": { "fr": "s'asseoir", "es": "sentarse" }, "type": "verb", "forms": [{ "label": "imperfect", "value": "يَجْلِسُ" }] },
+    { "term": "لَيْسَ", "reading": "laysa", "meaning": "is not", "translations": { "fr": "n'est pas", "es": "no es" }, "type": "verb" },
+    { "term": "لَا", "reading": "lā", "meaning": "no, not", "translations": { "fr": "non, ne… pas", "es": "no" }, "type": "particle" },
+    { "term": "غَدًا", "reading": "ghadan", "meaning": "tomorrow", "translations": { "fr": "demain", "es": "mañana" }, "type": "adverb" },
+    { "term": "هُنَا", "reading": "hunā", "meaning": "here", "translations": { "fr": "ici", "es": "aquí" }, "type": "adverb" }
+  ]
+}

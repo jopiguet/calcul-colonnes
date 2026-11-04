@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "كُتُب", "reading": "kutub", "meaning": "books", "translations": { "fr": "livres", "es": "libros" }, "type": "noun", "note": "جَمْع كِتَاب" },
+    { "term": "أَوْلَاد", "reading": "awlād", "meaning": "children, boys", "translations": { "fr": "enfants, garçons", "es": "niños, chicos" }, "type": "noun", "note": "جَمْع وَلَد" },
+    { "term": "بُيُوت", "reading": "buyūt", "meaning": "houses", "translations": { "fr": "maisons", "es": "casas" }, "type": "noun", "note": "جَمْع بَيْت" },
+    { "term": "مُؤْمِن", "reading": "muʾmin", "meaning": "believer", "translations": { "fr": "croyant", "es": "creyente" }, "type": "noun", "gender": "masculine", "forms": [{ "label": "plural", "value": "مُؤْمِنُون" }] },
+    { "term": "كَثِير", "reading": "kathīr", "meaning": "much, many", "translations": { "fr": "nombreux, beaucoup", "es": "mucho, numeroso" }, "type": "adjective" },
+    { "term": "قَدِيم", "reading": "qadīm", "meaning": "old, ancient", "translations": { "fr": "ancien, vieux", "es": "antiguo, viejo" }, "type": "adjective" },
+    { "term": "صَالِح", "reading": "ṣāliḥ", "meaning": "good, righteous", "translations": { "fr": "bon, vertueux", "es": "bueno, justo" }, "type": "adjective", "forms": [{ "label": "plural f.", "value": "صَالِحَات" }] }
+  ]
+}
