@@ -1,0 +1,16 @@
+{
+  "entries": [
+    { "term": "کردن", "reading": "kardan", "meaning": "to do, make", "translations": { "fr": "faire", "es": "hacer" }, "type": "verb", "principal_parts": ["کردن", "کن"] },
+    { "term": "رفتن", "reading": "raftan", "meaning": "to go", "translations": { "fr": "aller", "es": "ir" }, "type": "verb", "principal_parts": ["رفتن", "رو"] },
+    { "term": "آمدن", "reading": "âmadan", "meaning": "to come", "translations": { "fr": "venir", "es": "venir" }, "type": "verb", "principal_parts": ["آمدن", "آ"] },
+    { "term": "دیدن", "reading": "didan", "meaning": "to see", "translations": { "fr": "voir", "es": "ver" }, "type": "verb", "principal_parts": ["دیدن", "بین"] },
+    { "term": "گفتن", "reading": "goftan", "meaning": "to say", "translations": { "fr": "dire", "es": "decir" }, "type": "verb", "principal_parts": ["گفتن", "گو"] },
+    { "term": "خوردن", "reading": "khordan", "meaning": "to eat, drink", "translations": { "fr": "manger, boire", "es": "comer, beber" }, "type": "verb", "principal_parts": ["خوردن", "خور"] },
+    { "term": "خواندن", "reading": "khândan", "meaning": "to read; to sing", "translations": { "fr": "lire ; chanter", "es": "leer; cantar" }, "type": "verb", "principal_parts": ["خواندن", "خوان"] },
+    { "term": "نوشتن", "reading": "neveshtan", "meaning": "to write", "translations": { "fr": "écrire", "es": "escribir" }, "type": "verb", "principal_parts": ["نوشتن", "نویس"] },
+    { "term": "دانستن", "reading": "dânestan", "meaning": "to know", "translations": { "fr": "savoir", "es": "saber" }, "type": "verb", "principal_parts": ["دانستن", "دان"] },
+    { "term": "خواستن", "reading": "khâstan", "meaning": "to want", "translations": { "fr": "vouloir", "es": "querer" }, "type": "verb", "principal_parts": ["خواستن", "خواه"] },
+    { "term": "نامه", "reading": "nâme", "meaning": "letter", "translations": { "fr": "lettre", "es": "carta" }, "type": "noun" },
+    { "term": "فارسی", "reading": "fârsi", "meaning": "Persian (language)", "translations": { "fr": "persan (langue)", "es": "persa (lengua)" }, "type": "noun" }
+  ]
+}

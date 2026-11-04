@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "آره", "reading": "âre", "meaning": "yeah, yes (spoken)", "translations": { "fr": "ouais, oui (parlé)", "es": "sí (hablado)" }, "type": "interjection" },
+    { "term": "چی", "reading": "chi", "meaning": "what (spoken)", "translations": { "fr": "quoi (parlé)", "es": "qué (hablado)" }, "type": "pronoun" },
+    { "term": "میشه", "reading": "mishe", "meaning": "it's possible; can I? (spoken)", "translations": { "fr": "c'est possible ; est-ce que je peux ? (parlé)", "es": "se puede; ¿puedo? (hablado)" }, "type": "phrase" },
+    { "term": "کمک", "reading": "komak", "meaning": "help", "translations": { "fr": "aide", "es": "ayuda" }, "type": "noun" },
+    { "term": "دادن", "reading": "dâdan", "meaning": "to give", "translations": { "fr": "donner", "es": "dar" }, "type": "verb", "principal_parts": ["دادن", "ده"] },
+    { "term": "تهران", "reading": "Tehrân", "meaning": "Tehran", "translations": { "fr": "Téhéran", "es": "Teherán" }, "type": "noun" }
+  ]
+}

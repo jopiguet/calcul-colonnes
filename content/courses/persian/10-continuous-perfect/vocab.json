@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "رسیدن", "reading": "residan", "meaning": "to arrive, reach", "translations": { "fr": "arriver, atteindre", "es": "llegar, alcanzar" }, "type": "verb", "principal_parts": ["رسیدن", "رس"] },
+    { "term": "هنوز", "reading": "hanuz", "meaning": "still; (not) yet", "translations": { "fr": "encore ; (pas) encore", "es": "todavía; aún (no)" }, "type": "adverb" },
+    { "term": "وقتی", "reading": "vaghti", "meaning": "when (conjunction)", "translations": { "fr": "quand, lorsque", "es": "cuando" }, "type": "conjunction" },
+    { "term": "مدرسه", "reading": "madrese", "meaning": "school", "translations": { "fr": "école", "es": "escuela" }, "type": "noun" },
+    { "term": "غذا", "reading": "ghazâ", "meaning": "food, meal", "translations": { "fr": "nourriture, repas", "es": "comida" }, "type": "noun" },
+    { "term": "تا حالا", "reading": "tâ hâlâ", "meaning": "so far, ever", "translations": { "fr": "jusqu'ici, déjà", "es": "hasta ahora, alguna vez" }, "type": "adverb" },
+    { "term": "هر روز", "reading": "har ruz", "meaning": "every day", "translations": { "fr": "chaque jour", "es": "cada día" }, "type": "adverb" }
+  ]
+}

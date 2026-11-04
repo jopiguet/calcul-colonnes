@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "اگر", "reading": "agar", "meaning": "if", "translations": { "fr": "si", "es": "si" }, "type": "conjunction" },
+    { "term": "کاش", "reading": "kâsh", "meaning": "if only, I wish", "translations": { "fr": "si seulement", "es": "ojalá" }, "type": "particle" },
+    { "term": "پول", "reading": "pul", "meaning": "money", "translations": { "fr": "argent", "es": "dinero" }, "type": "noun" },
+    { "term": "ماشین", "reading": "mâshin", "meaning": "car; machine", "translations": { "fr": "voiture ; machine", "es": "coche; máquina" }, "type": "noun" },
+    { "term": "خریدن", "reading": "kharidan", "meaning": "to buy", "translations": { "fr": "acheter", "es": "comprar" }, "type": "verb", "principal_parts": ["خریدن", "خر"] },
+    { "term": "خوشحال", "reading": "khoshhâl", "meaning": "happy, glad", "translations": { "fr": "content, heureux", "es": "contento, feliz" }, "type": "adjective" },
+    { "term": "اینجا", "reading": "injâ", "meaning": "here", "translations": { "fr": "ici", "es": "aquí" }, "type": "adverb" }
+  ]
+}

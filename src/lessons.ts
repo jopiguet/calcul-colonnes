@@ -120,6 +120,7 @@ function vocabTable(ctx: LessonsContext, view: LessonView): HTMLElement {
     const term = el("td", "lesson-vocab-term");
     const sign = el("span", "lesson-vocab-sign", w.term);
     sign.lang = view.course.language;
+    sign.dir = "auto";
     term.append(sign);
     if (w.reading) term.append(el("span", "lesson-vocab-reading", w.reading));
     const i = w.info;

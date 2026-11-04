@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "ساختن", "reading": "sâkhtan", "meaning": "to build, make", "translations": { "fr": "construire, fabriquer", "es": "construir, fabricar" }, "type": "verb", "principal_parts": ["ساختن", "ساز"] },
+    { "term": "فرستادن", "reading": "ferestâdan", "meaning": "to send", "translations": { "fr": "envoyer", "es": "enviar" }, "type": "verb", "principal_parts": ["فرستادن", "فرست"] },
+    { "term": "ببخشید", "reading": "bebakhshid", "meaning": "excuse me, sorry", "translations": { "fr": "excusez-moi, pardon", "es": "perdone, disculpe" }, "type": "phrase" },
+    { "term": "خواهش می‌کنم", "reading": "khâhesh mikonam", "meaning": "please; you're welcome", "translations": { "fr": "s'il vous plaît ; je vous en prie", "es": "por favor; de nada" }, "type": "phrase" },
+    { "term": "فرمودن", "reading": "farmudan", "meaning": "to say, do (respectful)", "translations": { "fr": "dire, faire (respectueux)", "es": "decir, hacer (respetuoso)" }, "type": "verb", "principal_parts": ["فرمودن", "فرما"] },
+    { "term": "تعارف", "reading": "ta'ârof", "meaning": "ritual politeness, compliments", "translations": { "fr": "politesse rituelle, compliments", "es": "cortesía ritual, cumplidos" }, "type": "noun" },
+    { "term": "خسته نباشید", "reading": "khaste nabâshid", "meaning": "thanks for your effort (lit. may you not be tired)", "translations": { "fr": "merci pour vos efforts (litt. ne soyez pas fatigué)", "es": "gracias por su esfuerzo (lit. que no esté cansado)" }, "type": "phrase" }
+  ]
+}

@@ -786,7 +786,7 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien** and **🏺 Grec ancien**, with the exercises done (*12 exercices sur 126 réussis*). See
+**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien** and **🌹 Persan**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
 **The course page** lists the lessons (31 in Latin), each with its exercises done
@@ -826,6 +826,14 @@ same answer, and so are *psychē* and *psuche*. The buttons write the Greek
 letters. Since ε and η, ο and ω are not told apart when typed, the long and
 short vowels are tested by choices. Each word in the lists shows its
 transliteration under it.
+
+In Persian, the Persian words read right to left inside the text, and answer
+fields turn right to left as soon as you type Persian. Answers can be typed in
+the script or in Latin letters, with or without â: *ketab*, *ketâb* and کتاب
+are the same answer; *kh*, *sh*, *ch*, *zh*, *gh* stand for خ ش چ ژ غ. Since
+the short vowels are not written in Persian, answers are compared by their
+consonants, and letters that sound alike (س ص ث) are tested by choices. The
+buttons write the 32 letters.
 
 A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
 shows them checked, and *Recommencer la leçon* empties it.

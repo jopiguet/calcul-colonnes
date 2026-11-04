@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "کار کردن", "reading": "kâr kardan", "meaning": "to work", "translations": { "fr": "travailler", "es": "trabajar" }, "type": "verb" },
+    { "term": "صحبت کردن", "reading": "sohbat kardan", "meaning": "to speak, talk", "translations": { "fr": "parler", "es": "hablar" }, "type": "verb" },
+    { "term": "زندگی کردن", "reading": "zendegi kardan", "meaning": "to live", "translations": { "fr": "vivre, habiter", "es": "vivir" }, "type": "verb" },
+    { "term": "یاد گرفتن", "reading": "yâd gereftan", "meaning": "to learn", "translations": { "fr": "apprendre", "es": "aprender" }, "type": "verb", "principal_parts": ["گرفتن", "گیر"] },
+    { "term": "گوش دادن", "reading": "gush dâdan", "meaning": "to listen", "translations": { "fr": "écouter", "es": "escuchar" }, "type": "verb", "principal_parts": ["دادن", "ده"] },
+    { "term": "دوست داشتن", "reading": "dust dâshtan", "meaning": "to like, love", "translations": { "fr": "aimer", "es": "gustar, querer" }, "type": "verb" },
+    { "term": "شدن", "reading": "shodan", "meaning": "to become", "translations": { "fr": "devenir", "es": "volverse, llegar a ser" }, "type": "verb", "principal_parts": ["شدن", "شو"] },
+    { "term": "زنگ زدن", "reading": "zang zadan", "meaning": "to phone, ring", "translations": { "fr": "téléphoner, sonner", "es": "llamar por teléfono" }, "type": "verb", "principal_parts": ["زدن", "زن"] },
+    { "term": "موسیقی", "reading": "musighi", "meaning": "music", "translations": { "fr": "musique", "es": "música" }, "type": "noun" }
+  ]
+}

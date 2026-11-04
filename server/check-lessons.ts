@@ -39,6 +39,12 @@ expect("greek: Greek or transliteration, no accents", ["λόγος", "logos", "L
 expect("greek: digraphs and long vowels", [fold("ψυχή", [...grc]), fold("psychē", [...grc]), fold("psuche", [...grc]), fold("ἄνθρωπος", [...grc]), fold("anthrōpos", [...grc])], ["ψυχε", "ψυχε", "ψυχε", "ανθροποσ", "ανθροποσ"]);
 expect("greek: breathings, nasal gamma, iota subscript", [fold("ὁ ἵππος", [...grc]), fold("ho hippos", [...grc]), fold("ἄγγελος", [...grc]), fold("angelos", [...grc]), fold("τῷ λόγῳ", [...grc]), fold("tō logō", [...grc]), fold("rhētōr", [...grc]), fold("ῥήτωρ", [...grc])], ["ο ιπποσ", "ο ιπποσ", "ανγελοσ", "ανγελοσ", "το λογο", "το λογο", "ρετορ", "ρετορ"]);
 expect("greek: free answers keep their letters", markBlank({ kind: "free", answers: ["The word."] } as Parameters<typeof markBlank>[0], "the world", [...grc]), "check");
+const fa = ["persian"] as const;
+expect("persian: script or transliteration", ["کتاب", "ketâb", "ketab", "Ketāb"].map((t) => fold(t, [...fa])), ["ktb", "ktb", "ktb", "ktb"]);
+expect("persian: digraphs, ZWNJ, ezafe", [fold("می‌خواهم", [...fa]), fold("mikhâham", [...fa]), fold("mixaham", [...fa]), fold("کتابِ من", [...fa]), fold("ketâb-e man", [...fa])], ["mxm", "mxm", "mxm", "ktbmn", "ktbmn"]);
+expect("persian: sh, ch, zh, gh/q; letters for one sound", [fold("شب", [...fa]), fold("shab", [...fa]), fold("چای", [...fa]), fold("chây", [...fa]), fold("ژاله", [...fa]), fold("zhâle", [...fa]), fold("قند", [...fa]), fold("ghand", [...fa]), fold("صد", [...fa]), fold("sad", [...fa]), fold("ظهر", [...fa]), fold("zohr", [...fa])], ["šb", "šb", "č", "č", "žl", "žl", "qnd", "qnd", "sd", "sd", "zr", "zr"]);
+expect("persian: Arabic letter forms", [fold("كتاب", [...fa]), fold("ي", [...fa]) === fold("ی", [...fa])], ["ktb", true]);
+expect("persian: free answers keep their letters", markBlank({ kind: "free", answers: ["The book."] } as Parameters<typeof markBlank>[0], "the boot", [...fa]), "check");
 const egy = ["egyptian"] as const;
 expect("egyptian: ankh however typed", ["ꜥnḫ", "ankh", "anx", "'nḫ", "Anh"].map((t) => fold(t, [...egy])), ["nh", "nh", "nh", "nh", "nh"]);
 expect("egyptian: pronunciation and transliteration", [fold("nefer", [...egy]), fold("nfr", [...egy]), fold("sḏm.n.f", [...egy]), fold("sedjem-en-ef", [...egy])], ["nfr", "nfr", "sdmnf", "sdmnf"]);

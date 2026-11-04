@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "آب", "reading": "âb", "meaning": "water", "translations": { "fr": "eau", "es": "agua" }, "type": "noun" },
+    { "term": "اسب", "reading": "asb", "meaning": "horse", "translations": { "fr": "cheval", "es": "caballo" }, "type": "noun" },
+    { "term": "خانه", "reading": "khâne", "meaning": "house, home", "translations": { "fr": "maison", "es": "casa" }, "type": "noun" },
+    { "term": "خواهر", "reading": "khâhar", "meaning": "sister", "translations": { "fr": "sœur", "es": "hermana" }, "type": "noun" },
+    { "term": "دوست", "reading": "dust", "meaning": "friend", "translations": { "fr": "ami", "es": "amigo" }, "type": "noun" },
+    { "term": "امروز", "reading": "emruz", "meaning": "today", "translations": { "fr": "aujourd'hui", "es": "hoy" }, "type": "adverb" },
+    { "term": "مادر", "reading": "mâdar", "meaning": "mother", "translations": { "fr": "mère", "es": "madre" }, "type": "noun" },
+    { "term": "دختر", "reading": "dokhtar", "meaning": "girl, daughter", "translations": { "fr": "fille", "es": "chica, hija" }, "type": "noun" },
+    { "term": "پسر", "reading": "pesar", "meaning": "boy, son", "translations": { "fr": "garçon, fils", "es": "chico, hijo" }, "type": "noun" },
+    { "term": "اسم", "reading": "esm", "meaning": "name", "translations": { "fr": "nom", "es": "nombre" }, "type": "noun" }
+  ]
+}

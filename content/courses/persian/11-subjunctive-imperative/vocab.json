@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "باید", "reading": "bâyad", "meaning": "must, have to", "translations": { "fr": "il faut, devoir", "es": "hay que, deber" }, "type": "verb" },
+    { "term": "شاید", "reading": "shâyad", "meaning": "maybe, perhaps", "translations": { "fr": "peut-être", "es": "quizá, tal vez" }, "type": "adverb" },
+    { "term": "توانستن", "reading": "tavânestan", "meaning": "to be able, can", "translations": { "fr": "pouvoir", "es": "poder" }, "type": "verb", "principal_parts": ["توانستن", "توان"] },
+    { "term": "نشستن", "reading": "neshastan", "meaning": "to sit", "translations": { "fr": "s'asseoir", "es": "sentarse" }, "type": "verb", "principal_parts": ["نشستن", "نشین"] },
+    { "term": "بفرمایید", "reading": "befarmâyid", "meaning": "please, go ahead", "translations": { "fr": "je vous en prie, allez-y", "es": "por favor, adelante" }, "type": "phrase" },
+    { "term": "لطفاً", "reading": "lotfan", "meaning": "please", "translations": { "fr": "s'il vous plaît", "es": "por favor" }, "type": "adverb" },
+    { "term": "که", "reading": "ke", "meaning": "that; so that; who, which", "translations": { "fr": "que ; pour que ; qui", "es": "que; para que; quien" }, "type": "conjunction" }
+  ]
+}

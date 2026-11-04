@@ -37,14 +37,22 @@ export function inline(text: string, target: HTMLElement = el("span")): HTMLElem
   return target;
 }
 
-/** Hieroglyphs and cuneiform signs: drawn larger than the text around them, in their own font. */
-const SIGNS = /([\u{13000}-\u{1345F}\u{12000}-\u{1254F}]+)/u;
+/**
+ * Hieroglyphs and cuneiform signs: drawn larger than the text around them, in their own font.
+ * Persian and Arabic: each run of words set apart, right to left, so it reads in its order inside a left-to-right line.
+ */
+const ARABIC = "\\u0600-\\u06FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF";
+const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${ARABIC}](?:[${ARABIC}\\u200C\\u200D ]*[${ARABIC}])?)`, "u");
 
 function signs(text: string, target: HTMLElement): void {
   text.split(SIGNS).forEach((piece, i) => {
     if (!piece) return;
     if (i % 2 === 0) target.append(piece);
-    else target.append(el("span", /[\u{13000}-\u{1345F}]/u.test(piece) ? "script-signs hiero" : "script-signs cuneiform", piece));
+    else if (/[\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF]/u.test(piece)) {
+      const run = el("bdi", "script-arabic", piece);
+      run.dir = "rtl";
+      target.append(run);
+    } else target.append(el("span", /[\u{13000}-\u{1345F}]/u.test(piece) ? "script-signs hiero" : "script-signs cuneiform", piece));
   });
 }
 

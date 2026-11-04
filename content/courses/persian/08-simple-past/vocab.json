@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "بودن", "reading": "budan", "meaning": "to be", "translations": { "fr": "être", "es": "ser, estar" }, "type": "verb", "principal_parts": ["بودن", "باش"] },
+    { "term": "دیروز", "reading": "diruz", "meaning": "yesterday", "translations": { "fr": "hier", "es": "ayer" }, "type": "adverb" },
+    { "term": "دیشب", "reading": "dishab", "meaning": "last night", "translations": { "fr": "hier soir", "es": "anoche" }, "type": "adverb" },
+    { "term": "پارسال", "reading": "pârsâl", "meaning": "last year", "translations": { "fr": "l'an dernier", "es": "el año pasado" }, "type": "adverb" },
+    { "term": "سال", "reading": "sâl", "meaning": "year", "translations": { "fr": "année, an", "es": "año" }, "type": "noun" },
+    { "term": "پیش", "reading": "pish", "meaning": "ago; before; near", "translations": { "fr": "il y a ; avant ; près de", "es": "hace; antes; junto a" }, "type": "adverb" },
+    { "term": "چه", "reading": "che", "meaning": "what", "translations": { "fr": "quoi, que", "es": "qué" }, "type": "pronoun" },
+    { "term": "دو", "reading": "do", "meaning": "two", "translations": { "fr": "deux", "es": "dos" }, "type": "numeral" }
+  ]
+}

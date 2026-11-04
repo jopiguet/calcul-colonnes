@@ -13,17 +13,19 @@ structure and the same exercises.
 | 𒀭 Sumerian (`sumerian`) | 7.2.0 | 12 | 48 | 86 |
 | 𒀝 Akkadian (`akkadian`) | 7.2.0 | 14 | 56 | 101 |
 | 🏺 Ancient Greek (`greek`) | 7.3.0 | 24 | 96 | 173 |
+| 🌹 Persian (`persian`) | 7.4.0 | 18 | 72 | 150 |
 
 The content is original, written for the app, and ships with it; quoted texts
 (Caesar, Catullus, Virgil; Sinuhe, the Shipwrecked Sailor, the offering
 formula; Gudea, Ur-Namma, the Laws of Hammurabi, Gilgamesh; Homer, Sophocles,
-Heraclitus, Plato, the Gospel of John) are in the public domain.
+Heraclitus, Plato, the Gospel of John; Ferdowsi, Saadi, Rumi, Hafez, Khayyam) are
+in the public domain.
 
 ## Files
 
 ```text
 content/courses/
-  index.json                      ["latin", "egyptian", "sumerian", "akkadian", "greek"]: the courses, in order
+  index.json                      ["latin", "egyptian", "sumerian", "akkadian", "greek", "persian"]: the courses, in order
   latin/
     course.json                   id, language, icon, folds, titles, the lesson list
     01-letters-and-sounds/
@@ -48,7 +50,7 @@ content/courses/
 }
 ```
 
-`vocabLesson` names the lessons of the vocabulary book. `keys` (optional) lists letters a keyboard lacks; at most 40, each up to four characters; they are offered as buttons under every exercise with fields and write at the cursor of the field last used (Egyptian: `["ꜣ", "ꜥ", "ḥ", "ḫ", "ẖ", "š", "ḳ", "ṯ", "ḏ"]`; Sumerian: `["š", "ĝ", "ḫ", "₂", "₃", "₄", "₅"]`; Akkadian: `["š", "ṣ", "ṭ", "ḫ", "ā", "ē", "ī", "ū", "â", "ê", "î", "û"]`; Greek: the 24 letters and ς). Fields follow the direction of the script typed (`dir="auto"`). `lessons` lists the lesson folders in order; a folder not listed is not
+`vocabLesson` names the lessons of the vocabulary book. `keys` (optional) lists letters a keyboard lacks; at most 40, each up to four characters; they are offered as buttons under every exercise with fields and write at the cursor of the field last used (Egyptian: `["ꜣ", "ꜥ", "ḥ", "ḫ", "ẖ", "š", "ḳ", "ṯ", "ḏ"]`; Sumerian: `["š", "ĝ", "ḫ", "₂", "₃", "₄", "₅"]`; Akkadian: `["š", "ṣ", "ṭ", "ḫ", "ā", "ē", "ī", "ū", "â", "ê", "î", "û"]`; Greek: the 24 letters and ς; Persian: the 32 letters and آ). Fields follow the direction of the script typed (`dir="auto"`). `lessons` lists the lesson folders in order; a folder not listed is not
 loaded. `build:server` copies `content/courses` into `dist-server/`.
 
 ## A lesson
@@ -68,7 +70,9 @@ The Markdown is the courses' small dialect (headings, paragraphs, lists,
 tables, `*italics*`, `**bold**`, italics holding bold); a line ending in `\`
 is a line break, for verse. Hieroglyphs (U+13000–1345F) and cuneiform
 (U+12000–1254F) in the text are drawn larger, in their Noto font, wherever
-they appear: text, tables, options. A blank never sits inside emphasis: an
+they appear: text, tables, options. A run of Persian or Arabic words is set
+apart in a right-to-left `bdi` in Vazirmatn, so that it keeps its order inside
+a left-to-right line. A blank never sits inside emphasis: an
 exercise line with a blank has no italics. Two blocks are added:
 
 ```markdown
@@ -114,13 +118,15 @@ course's folds.
 | `aleph3` | *3* = *ꜣ* | Egyptian typed on a keyboard |
 | `subscripts` | *₂* = *2* | Sumerian sign indices |
 | `greek` | strict blanks compared in Greek letters without accents, breathings or iota subscript; transliteration read as Greek (*th* θ, *ph* φ, *ch*/*kh* χ, *ps* ψ, *y*/*u* υ, *h* dropped); η = ε, ω = ο, ς = σ, γγ = νγ; free answers unchanged | Greek typed on any keyboard: *psychē*, *psuche*, ψυχη |
+| `persian` | strict blanks compared by their consonants, in Persian script or in transliteration: vowels and ا و ی dropped, as are ه ح ع ء and *h*, *v*, *y*, *'*; letters of one sound merged (ث س ص, ذ ز ض ظ, ت ط, غ ق and *gh*, *q*); *kh* *sh* *ch* *zh* read as خ ش چ ژ; Arabic ي ك read as ی ک; ZWNJ, spaces and hyphens dropped; free answers unchanged | Persian typed on any keyboard: *mikhâham*, *mixaham*, می‌خواهم |
 | `egyptian` | strict blanks compared by their consonants: *ꜣ ꜥ* (*3*, *'*) and the vowels *a e o* dropped, *j i y* one letter, *w u* one, *ḥ ḫ ẖ kh x* = *h*, *š sh* = *s*, *ṯ tj* = *t*, *ḏ dj* = *d*, *ḳ q* = *k*, dots and hyphens dropped; free answers keep their vowels | Egyptian typed as it is read: *ankh*, *nefer*, *sedjem.n.ef* |
 
 Course folds: Latin `macrons ij uv`, Egyptian `egyptian`, Sumerian
 `translit subscripts` (*diĝir* typed *digir*, *e₂* typed *e2*), Akkadian
-`translit macrons` (*šalmāku* typed *shalmaku*), Greek `greek` (*logos*, λογος and λόγος are one answer).
+`translit macrons` (*šalmāku* typed *shalmaku*), Greek `greek` (*logos*, λογος and λόγος are one answer), Persian `persian` (کتاب, *ketâb* and *ketab* are one answer).
 
-The `egyptian` fold makes *h* and *ḥ* one answer, the `greek` fold ε and η:
+The `egyptian` fold makes *h* and *ḥ* one answer, the `greek` fold ε and η,
+the `persian` fold the letters of one sound (س ص ث) and the plural ـها:
 exercises that test the difference between such letters are choices, not
 typed blanks.
 
@@ -134,7 +140,9 @@ English and `translations` gives French and Spanish. Notes are not
 translated, so they are written in the language taught (*domī, domum, domō*).
 Akkadian words are written in transliteration (*šarrum*), with the Sumerogram,
 when there is one, in `readings`. Greek words are written in Greek with their
-article (ὁ λόγος), their transliteration in `reading` (*ho logos*).
+article (ὁ λόγος), their transliteration in `reading` (*ho logos*); Persian
+words in the script, with an Iranian transliteration in `reading` (کتاب,
+*ketâb*).
 
 At start, the server builds one vocabulary book per course from these files,
 `course-<id>`, one lesson per course lesson, imports it when it changed (a

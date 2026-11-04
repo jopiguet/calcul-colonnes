@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "توانا", "reading": "tavânâ", "meaning": "able, powerful", "translations": { "fr": "capable, puissant", "es": "capaz, poderoso" }, "type": "adjective" },
+    { "term": "دانا", "reading": "dânâ", "meaning": "wise, learned", "translations": { "fr": "savant, sage", "es": "sabio" }, "type": "adjective" },
+    { "term": "دانش", "reading": "dânesh", "meaning": "knowledge", "translations": { "fr": "savoir, connaissance", "es": "saber, conocimiento" }, "type": "noun" },
+    { "term": "دل", "reading": "del", "meaning": "heart", "translations": { "fr": "cœur", "es": "corazón" }, "type": "noun" },
+    { "term": "پیر", "reading": "pir", "meaning": "old (person)", "translations": { "fr": "vieux (personne)", "es": "viejo (persona)" }, "type": "adjective" },
+    { "term": "آفرینش", "reading": "âfarinesh", "meaning": "creation", "translations": { "fr": "création", "es": "creación" }, "type": "noun" },
+    { "term": "درد", "reading": "dard", "meaning": "pain", "translations": { "fr": "douleur", "es": "dolor" }, "type": "noun" },
+    { "term": "دیگر", "reading": "digar", "meaning": "other; anymore", "translations": { "fr": "autre ; plus (ne… plus)", "es": "otro; ya (no)" }, "type": "adjective" }
+  ]
+}

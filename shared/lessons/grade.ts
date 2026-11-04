@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -54,6 +54,35 @@ export function greekKey(text: string): string {
   return t.replace(/η/g, "ε").replace(/ω/g, "ο").replace(/ς/g, "σ").replace(/γ([γκξχ])/g, "ν$1");
 }
 
+/** Persian letters to the consonant they write; vowels, ه and ع are dropped (see persianKey). */
+const PERSIAN_LETTERS: Record<string, string> = {
+  "ب": "b", "پ": "p", "ت": "t", "ط": "t", "ث": "s", "س": "s", "ص": "s", "ج": "j", "چ": "č", "خ": "x",
+  "د": "d", "ذ": "z", "ز": "z", "ض": "z", "ظ": "z", "ر": "r", "ژ": "ž", "ش": "š", "غ": "q", "ق": "q",
+  "ف": "f", "ک": "k", "ك": "k", "گ": "g", "ل": "l", "م": "m", "ن": "n",
+};
+
+/** Romanised Persian as typed: digraphs first, then the vowels, h, v, y and ' dropped like their letters. */
+const PERSIAN_FROM_LATIN: [RegExp, string][] = [
+  [/kh|x|ḵ/g, "x"], [/sh|š/g, "š"], [/ch|č/g, "č"], [/zh|ž/g, "ž"], [/gh|ğ|ġ|q/g, "q"], [/c/g, "k"],
+];
+
+/**
+ * Persian compared by its consonants, in Persian script or in transliteration: کتاب = ketâb = ketab,
+ * می‌خواهم = mikhâham. Short vowels are not written in Persian, so every vowel is dropped, and with them
+ * the letters that also write vowels (ا و ی), and ه ح ع ء: h, v, y and the glottal stop are tested by choices.
+ */
+export function persianKey(text: string): string {
+  let t = text.normalize("NFC").toLowerCase();
+  t = t.replace(/[\u064B-\u065F\u0670\u0640\u200C\u200D]/g, "");
+  for (const [from, to] of PERSIAN_FROM_LATIN) t = t.replace(from, to);
+  t = t.replace(/[šžč]/g, (c) => ({ š: "\u0001", ž: "\u0002", č: "\u0003" })[c] ?? c);
+  t = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").normalize("NFC");
+  t = t.replace(/[\u0001\u0002\u0003]/g, (c) => ({ "\u0001": "š", "\u0002": "ž", "\u0003": "č" })[c] ?? c);
+  t = t.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)));
+  t = [...t].map((c) => PERSIAN_LETTERS[c] ?? c).join("");
+  return t.replace(/[aeiouâāēīōūyvwh'ʼ’ʿʾ`\-\s.]/g, "").replace(/[^\p{L}\p{N}]/gu, "").replace(/[\u0600-\u06FF]/g, "");
+}
+
 /** Egyptian and Akkadian transliterations as typed on a keyboard: ꜣ as 3 or a, ꜥ as ' or e, ḥ as h… */
 const TRANSLIT: [RegExp, string][] = [
   [/[ꜣꜢ]/g, "a"],
@@ -81,6 +110,7 @@ export function fold(text: string, folds: readonly Fold[]): string {
   t = t.replace(/\s*[,;:!?¡¿«»"“”]\s*/g, " ").replace(/\s+/g, " ").trim();
   if (folds.includes("egyptian")) return egyptianKey(t);
   if (folds.includes("greek")) return greekKey(t);
+  if (folds.includes("persian")) return persianKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -108,7 +138,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => x !== "egyptian" && x !== "greek");
+    const f = folds.filter((x) => x !== "egyptian" && x !== "greek" && x !== "persian");
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

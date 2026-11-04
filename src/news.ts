@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.4.0",
+    fr: ["Cours de langues : le persan, en 18 leçons, de l'alphabet au persan parlé de Téhéran, puis Ferdowsi, Saadi, Rûmî, Hâfez et Khayyâm. Le persan s'affiche de droite à gauche, et les réponses se tapent en persan ou en lettres latines : « ketab » vaut کتاب."],
+    es: ["Cursos de idiomas: el persa, en 18 lecciones, del alfabeto al persa hablado de Teherán, y luego Ferdousí, Saadí, Rumi, Hafez y Jayam. El persa se muestra de derecha a izquierda, y las respuestas se escriben en persa o en letras latinas: «ketab» vale کتاب."],
+    en: ["Language courses: Persian, 18 lessons from the alphabet to the spoken Persian of Tehran, then Ferdowsi, Saadi, Rumi, Hafez and Khayyam. Persian is shown right to left, and answers can be typed in Persian or Latin letters: \"ketab\" counts as کتاب."],
+  },
+  {
     version: "7.3.0",
     fr: ["Cours de langues : le grec ancien, en 24 leçons, de l'alphabet et des accents à l'optatif et aux verbes en -μι, puis Homère, Platon et l'Évangile de Jean. Les réponses se tapent en lettres grecques ou latines : « logos » vaut λόγος."],
     es: ["Cursos de idiomas: el griego antiguo, en 24 lecciones, del alfabeto y los acentos al optativo y los verbos en -μι, y luego Homero, Platón y el Evangelio de Juan. Las respuestas se escriben en letras griegas o latinas: «logos» vale λόγος."],

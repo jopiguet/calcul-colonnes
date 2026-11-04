@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "بزرگ", "reading": "bozorg", "meaning": "big, great", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective" },
+    { "term": "کوچک", "reading": "kuchek", "meaning": "small", "translations": { "fr": "petit", "es": "pequeño" }, "type": "adjective" },
+    { "term": "بهتر", "reading": "behtar", "meaning": "better", "translations": { "fr": "meilleur, mieux", "es": "mejor" }, "type": "adjective" },
+    { "term": "زیبا", "reading": "zibâ", "meaning": "beautiful", "translations": { "fr": "beau", "es": "hermoso" }, "type": "adjective" },
+    { "term": "قدیمی", "reading": "ghadimi", "meaning": "old (things)", "translations": { "fr": "ancien, vieux", "es": "antiguo, viejo" }, "type": "adjective" },
+    { "term": "جدید", "reading": "jadid", "meaning": "new", "translations": { "fr": "nouveau", "es": "nuevo" }, "type": "adjective" },
+    { "term": "از", "reading": "az", "meaning": "from; than", "translations": { "fr": "de ; que (comparaison)", "es": "de, desde; que (comparación)" }, "type": "preposition" }
+  ]
+}

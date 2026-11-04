@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "داشتن", "reading": "dâshtan", "meaning": "to have", "translations": { "fr": "avoir", "es": "tener" }, "type": "verb", "principal_parts": ["داشتن", "دار"] },
+    { "term": "میز", "reading": "miz", "meaning": "table, desk", "translations": { "fr": "table", "es": "mesa" }, "type": "noun" },
+    { "term": "اتاق", "reading": "otâgh", "meaning": "room", "translations": { "fr": "pièce, chambre", "es": "habitación" }, "type": "noun" },
+    { "term": "وقت", "reading": "vaght", "meaning": "time", "translations": { "fr": "temps", "es": "tiempo" }, "type": "noun" },
+    { "term": "با", "reading": "bâ", "meaning": "with", "translations": { "fr": "avec", "es": "con" }, "type": "preposition" },
+    { "term": "برای", "reading": "barâye", "meaning": "for", "translations": { "fr": "pour", "es": "para" }, "type": "preposition" },
+    { "term": "روی", "reading": "ru-ye", "meaning": "on", "translations": { "fr": "sur", "es": "sobre" }, "type": "preposition" },
+    { "term": "دریا", "reading": "daryâ", "meaning": "sea", "translations": { "fr": "mer", "es": "mar" }, "type": "noun" },
+    { "term": "فردا", "reading": "fardâ", "meaning": "tomorrow", "translations": { "fr": "demain", "es": "mañana" }, "type": "adverb" }
+  ]
+}

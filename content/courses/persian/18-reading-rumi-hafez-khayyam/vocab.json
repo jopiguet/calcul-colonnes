@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "نی", "reading": "ney", "meaning": "reed; reed flute", "translations": { "fr": "roseau ; flûte de roseau", "es": "caña; flauta de caña" }, "type": "noun" },
+    { "term": "شنیدن", "reading": "shenidan", "meaning": "to hear, listen", "translations": { "fr": "entendre, écouter", "es": "oír, escuchar" }, "type": "verb", "principal_parts": ["شنیدن", "شنو"] },
+    { "term": "جدایی", "reading": "jodâyi", "meaning": "separation", "translations": { "fr": "séparation", "es": "separación" }, "type": "noun" },
+    { "term": "عشق", "reading": "eshgh", "meaning": "love", "translations": { "fr": "amour", "es": "amor" }, "type": "noun" },
+    { "term": "آسان", "reading": "âsân", "meaning": "easy", "translations": { "fr": "facile", "es": "fácil" }, "type": "adjective" },
+    { "term": "ساقی", "reading": "sâghi", "meaning": "cup-bearer", "translations": { "fr": "échanson", "es": "copero" }, "type": "noun" },
+    { "term": "عمر", "reading": "omr", "meaning": "life, lifetime", "translations": { "fr": "vie, durée de vie", "es": "vida, duración de la vida" }, "type": "noun" },
+    { "term": "گذشتن", "reading": "gozashtan", "meaning": "to pass", "translations": { "fr": "passer", "es": "pasar" }, "type": "verb", "principal_parts": ["گذشتن", "گذر"] },
+    { "term": "غم", "reading": "gham", "meaning": "grief, sorrow", "translations": { "fr": "chagrin, peine", "es": "pena, tristeza" }, "type": "noun" }
+  ]
+}

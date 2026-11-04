@@ -27,6 +27,8 @@ import "@fontsource/noto-sans/greek-400.css";
 import "@fontsource/noto-sans/greek-ext-400.css";
 import "@fontsource/noto-sans/greek-600.css";
 import "@fontsource/noto-sans/greek-ext-600.css";
+import "@fontsource/vazirmatn/arabic-400.css";
+import "@fontsource/vazirmatn/arabic-600.css";
 import "@fontsource/noto-sans-cuneiform/400.css";
 import "@fontsource/noto-sans-egyptian-hieroglyphs/400.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";

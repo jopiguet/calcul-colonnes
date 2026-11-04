@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "مرد", "reading": "mard", "meaning": "man", "translations": { "fr": "homme", "es": "hombre" }, "type": "noun" },
+    { "term": "زن", "reading": "zan", "meaning": "woman, wife", "translations": { "fr": "femme", "es": "mujer, esposa" }, "type": "noun" },
+    { "term": "بچه", "reading": "bachche", "meaning": "child", "translations": { "fr": "enfant", "es": "niño" }, "type": "noun" },
+    { "term": "یک", "reading": "yek", "meaning": "one, a", "translations": { "fr": "un", "es": "uno, un" }, "type": "numeral" },
+    { "term": "سه", "reading": "se", "meaning": "three", "translations": { "fr": "trois", "es": "tres" }, "type": "numeral" },
+    { "term": "ایرانی", "reading": "irâni", "meaning": "Iranian", "translations": { "fr": "iranien", "es": "iraní" }, "type": "adjective" },
+    { "term": "شهر", "reading": "shahr", "meaning": "city, town", "translations": { "fr": "ville", "es": "ciudad" }, "type": "noun" },
+    { "term": "کشور", "reading": "keshvar", "meaning": "country", "translations": { "fr": "pays", "es": "país" }, "type": "noun" }
+  ]
+}

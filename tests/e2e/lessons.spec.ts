@@ -155,3 +155,33 @@ test("Ancient Greek: answers in Greek letters or in transliteration, the Greek k
   await expect(write.locator(".lesson-exercise-score")).toHaveText("4/4");
   await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("ho anthrōpos");
 });
+
+test("Persian: right-to-left runs in their font, answers in the script or in transliteration", async ({ page }) => {
+  await newPlayer(page, "Parvin");
+  await openActivity(page, "lessons-persian");
+  await expect(page.locator(".lessons-item")).toHaveCount(18);
+  await page.locator(".lessons-item").first().click();
+  await expect(page.locator(".lesson-title")).toContainText("1.");
+  // Persian words inside the text are isolated right-to-left runs, in Vazirmatn.
+  const run = page.locator("bdi.script-arabic").first();
+  await expect(run).toHaveAttribute("dir", "rtl");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Vazirmatn");
+  await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("ketâb");
+  // Lesson 7: transliteration, script, key row.
+  await openActivity(page, "lessons-persian");
+  await page.locator(".lessons-item").nth(6).click();
+  const card = page.locator(".lesson-exercise[data-exercise='conjugate']");
+  const inputs = card.locator(".lesson-input");
+  await inputs.nth(0).fill("miravam");
+  await inputs.nth(1).fill("می‌بینیم");
+  await inputs.nth(2).click();
+  for (const k of ["م", "ی", "گ", "و", "ی", "ن", "د"]) await card.locator(".lesson-key", { hasText: new RegExp(`^${k}$`) }).click();
+  await expect(inputs.nth(2)).toHaveValue("میگویند");
+  await inputs.nth(3).fill("nemidanam");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/4");
+  // A wrong verb is still wrong.
+  await inputs.nth(0).fill("raftam");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
+});

@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "چهار", "reading": "chahâr", "meaning": "four", "translations": { "fr": "quatre", "es": "cuatro" }, "type": "numeral" },
+    { "term": "پنج", "reading": "panj", "meaning": "five", "translations": { "fr": "cinq", "es": "cinco" }, "type": "numeral" },
+    { "term": "ده", "reading": "dah", "meaning": "ten", "translations": { "fr": "dix", "es": "diez" }, "type": "numeral" },
+    { "term": "صد", "reading": "sad", "meaning": "hundred", "translations": { "fr": "cent", "es": "cien" }, "type": "numeral" },
+    { "term": "هزار", "reading": "hezâr", "meaning": "thousand", "translations": { "fr": "mille", "es": "mil" }, "type": "numeral" },
+    { "term": "ساعت", "reading": "sâ'at", "meaning": "hour; clock, watch", "translations": { "fr": "heure ; montre, horloge", "es": "hora; reloj" }, "type": "noun" },
+    { "term": "روز", "reading": "ruz", "meaning": "day", "translations": { "fr": "jour", "es": "día" }, "type": "noun" },
+    { "term": "شنبه", "reading": "shanbe", "meaning": "Saturday", "translations": { "fr": "samedi", "es": "sábado" }, "type": "noun" },
+    { "term": "جمعه", "reading": "jom'e", "meaning": "Friday", "translations": { "fr": "vendredi", "es": "viernes" }, "type": "noun" },
+    { "term": "نوروز", "reading": "nowruz", "meaning": "Nowruz, Persian New Year", "translations": { "fr": "Norouz, Nouvel An persan", "es": "Nouruz, Año Nuevo persa" }, "type": "noun" }
+  ]
+}

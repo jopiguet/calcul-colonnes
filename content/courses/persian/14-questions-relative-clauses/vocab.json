@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "چرا", "reading": "cherâ", "meaning": "why", "translations": { "fr": "pourquoi", "es": "por qué" }, "type": "adverb" },
+    { "term": "چطور", "reading": "chetor", "meaning": "how", "translations": { "fr": "comment", "es": "cómo" }, "type": "adverb" },
+    { "term": "چند", "reading": "chand", "meaning": "how many; a few", "translations": { "fr": "combien ; quelques", "es": "cuántos; algunos" }, "type": "adverb" },
+    { "term": "کدام", "reading": "kodâm", "meaning": "which", "translations": { "fr": "lequel, quel", "es": "cuál" }, "type": "pronoun" },
+    { "term": "کی", "reading": "ki", "meaning": "who", "translations": { "fr": "qui", "es": "quién" }, "type": "pronoun", "note": "کی key: when" },
+    { "term": "بله", "reading": "bale", "meaning": "yes", "translations": { "fr": "oui", "es": "sí" }, "type": "interjection" },
+    { "term": "شناختن", "reading": "shenâkhtan", "meaning": "to know (a person), recognise", "translations": { "fr": "connaître, reconnaître", "es": "conocer, reconocer" }, "type": "verb", "principal_parts": ["شناختن", "شناس"] },
+    { "term": "دیر", "reading": "dir", "meaning": "late", "translations": { "fr": "tard, en retard", "es": "tarde" }, "type": "adverb" }
+  ]
+}

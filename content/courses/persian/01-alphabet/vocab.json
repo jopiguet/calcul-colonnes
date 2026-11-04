@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "کتاب", "reading": "ketâb", "meaning": "book", "translations": { "fr": "livre", "es": "libro" }, "type": "noun" },
+    { "term": "پدر", "reading": "pedar", "meaning": "father", "translations": { "fr": "père", "es": "padre" }, "type": "noun" },
+    { "term": "دست", "reading": "dast", "meaning": "hand", "translations": { "fr": "main", "es": "mano" }, "type": "noun" },
+    { "term": "شب", "reading": "shab", "meaning": "night", "translations": { "fr": "nuit", "es": "noche" }, "type": "noun" },
+    { "term": "گل", "reading": "gol", "meaning": "flower, rose", "translations": { "fr": "fleur, rose", "es": "flor, rosa" }, "type": "noun" },
+    { "term": "نان", "reading": "nân", "meaning": "bread", "translations": { "fr": "pain", "es": "pan" }, "type": "noun" },
+    { "term": "چای", "reading": "chây", "meaning": "tea", "translations": { "fr": "thé", "es": "té" }, "type": "noun" },
+    { "term": "بازار", "reading": "bâzâr", "meaning": "market, bazaar", "translations": { "fr": "marché, bazar", "es": "mercado, bazar" }, "type": "noun" }
+  ]
+}

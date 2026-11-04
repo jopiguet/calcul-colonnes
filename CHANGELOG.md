@@ -1,5 +1,17 @@
 # Changelog
 
+## 7.4.0
+
+- **🌹 Persian**, the sixth language course: 18 lessons, 72 exercises, 150 words, in French, Spanish and English, on the same template. See [Language courses](docs/language-courses.md).
+  - **The script:** the 32 letters and how they join, the six vowels and why three are not written, the half-space, tashdid and the silent و.
+  - **Grammar:** pronouns and "to be", nouns, the plural and the ezafe, possessive suffixes and comparison, داشتن and the prepositions, the two verb stems, present and را, simple past, compound verbs, continuous and perfect tenses, subjunctive and imperative, future and conditions, numbers, time and the Solar Hijri calendar, questions and relative clauses, the passive and polite speech (تعارف).
+  - **Spoken Persian:** the colloquial language of Tehran, rule by rule (نون، خونه، میرم، میخوام، رو).
+  - **Readings:** Ferdowsi and Saadi; Rumi, Hafez and a quatrain attributed to Khayyam.
+- **Persian typed on any keyboard:** a course fold, `persian`, compares strict answers by their consonants, in the script or in transliteration: کتاب, *ketâb* and *ketab* are one answer, *mikhâham* and *mixaham* are می‌خواهم. A row of buttons writes the 32 letters and آ.
+- **Right to left:** Persian (and Arabic) words in lessons are isolated right-to-left runs in Vazirmatn (Arabic subset), in text, tables and options; answer fields and word lists follow the direction of the script.
+- **Checks:** `check:lessons` tests the new fold (script and transliteration, digraphs, half-space and ezafe, letters of one sound, Arabic letter forms; free answers unchanged): 120 lessons, 482 exercises, 1088 words in all.
+- **Tests:** `tests/e2e/lessons.spec.ts` checks the right-to-left runs and their font, answers in transliteration, in the script and from the key row, and a wrong verb still marked wrong.
+
 ## 7.3.0
 
 - **🏺 Ancient Greek**, the fifth language course: 24 lessons, 96 exercises, 173 words, in French, Spanish and English, on the same template. See [Language courses](docs/language-courses.md).

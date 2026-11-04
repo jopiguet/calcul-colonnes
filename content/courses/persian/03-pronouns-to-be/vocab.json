@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "من", "reading": "man", "meaning": "I", "translations": { "fr": "je, moi", "es": "yo" }, "type": "pronoun" },
+    { "term": "شما", "reading": "shomâ", "meaning": "you (plural, polite)", "translations": { "fr": "vous", "es": "vosotros, usted" }, "type": "pronoun" },
+    { "term": "آنها", "reading": "ânhâ", "meaning": "they", "translations": { "fr": "ils, elles", "es": "ellos, ellas" }, "type": "pronoun" },
+    { "term": "سلام", "reading": "salâm", "meaning": "hello", "translations": { "fr": "bonjour, salut", "es": "hola" }, "type": "interjection" },
+    { "term": "خداحافظ", "reading": "khodâhâfez", "meaning": "goodbye", "translations": { "fr": "au revoir", "es": "adiós" }, "type": "interjection" },
+    { "term": "ممنون", "reading": "mamnun", "meaning": "thank you, grateful", "translations": { "fr": "merci, reconnaissant", "es": "gracias, agradecido" }, "type": "adjective" },
+    { "term": "خوب", "reading": "khub", "meaning": "good, well", "translations": { "fr": "bon, bien", "es": "bueno, bien" }, "type": "adjective" },
+    { "term": "خسته", "reading": "khaste", "meaning": "tired", "translations": { "fr": "fatigué", "es": "cansado" }, "type": "adjective" },
+    { "term": "دانشجو", "reading": "dâneshju", "meaning": "(university) student", "translations": { "fr": "étudiant", "es": "estudiante (universitario)" }, "type": "noun" },
+    { "term": "کجا", "reading": "kojâ", "meaning": "where", "translations": { "fr": "où", "es": "dónde" }, "type": "adverb" }
+  ]
+}
