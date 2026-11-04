@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "nadānum", "meaning": "to give", "translations": { "fr": "donner", "es": "dar" }, "type": "verb", "principal_parts": ["nadānum", "iddin", "inaddin"] },
+    { "term": "amārum", "meaning": "to see", "translations": { "fr": "voir", "es": "ver" }, "type": "verb", "principal_parts": ["amārum", "īmur", "immar"] },
+    { "term": "epēšum", "meaning": "to do; make", "translations": { "fr": "faire", "es": "hacer" }, "type": "verb", "principal_parts": ["epēšum", "īpuš", "ippeš"] },
+    { "term": "akālum", "meaning": "to eat", "translations": { "fr": "manger", "es": "comer" }, "type": "verb", "principal_parts": ["akālum", "īkul", "ikkal"] },
+    { "term": "banûm", "meaning": "to build", "translations": { "fr": "bâtir", "es": "construir" }, "type": "verb", "principal_parts": ["banûm", "ibni", "ibanni"] },
+    { "term": "leqûm", "meaning": "to take", "translations": { "fr": "prendre", "es": "tomar" }, "type": "verb", "principal_parts": ["leqûm", "ilqe", "ileqqe"] },
+    { "term": "alākum", "meaning": "to go", "translations": { "fr": "aller", "es": "ir" }, "type": "verb", "principal_parts": ["alākum", "illik", "illak", "ittalak"] },
+    { "term": "târum", "meaning": "to return", "translations": { "fr": "revenir", "es": "volver" }, "type": "verb", "principal_parts": ["târum", "itūr", "itâr"] },
+    { "term": "mâtum", "meaning": "to die", "translations": { "fr": "mourir", "es": "morir" }, "type": "verb", "principal_parts": ["mâtum", "imūt", "imât"] },
+    { "term": "kaspum", "meaning": "silver; money", "translations": { "fr": "argent (métal) ; monnaie", "es": "plata; dinero" }, "type": "noun", "gender": "masculine" }
+  ]
+}

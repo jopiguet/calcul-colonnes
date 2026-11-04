@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "damqum", "meaning": "good; beautiful", "translations": { "fr": "bon ; beau", "es": "bueno; hermoso" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "damiqtum" }] },
+    { "term": "šalmum", "meaning": "well; healthy; intact", "translations": { "fr": "sain ; en bonne santé ; intact", "es": "sano; intacto" }, "type": "adjective" },
+    { "term": "šalmāku", "meaning": "I am well", "translations": { "fr": "je vais bien", "es": "estoy bien" }, "type": "phrase" },
+    { "term": "wašābum", "meaning": "to sit; dwell", "translations": { "fr": "s'asseoir ; habiter", "es": "sentarse; habitar" }, "type": "verb", "principal_parts": ["wašābum", "ūšib", "uššab"] },
+    { "term": "marṣum", "meaning": "sick; difficult", "translations": { "fr": "malade ; difficile", "es": "enfermo; difícil" }, "type": "adjective" },
+    { "term": "šulmum", "meaning": "well-being; greeting", "translations": { "fr": "bien-être ; salut", "es": "bienestar; saludo" }, "type": "noun", "gender": "masculine" }
+  ]
+}

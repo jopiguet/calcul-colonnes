@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "𒆳", "reading": "kur", "meaning": "mountain; foreign land", "translations": { "fr": "montagne ; pays étranger", "es": "montaña; país extranjero" }, "type": "noun", "readings": [{ "value": "kur", "language": "sux" }] },
+    { "term": "𒇻", "reading": "udu", "meaning": "sheep", "translations": { "fr": "mouton", "es": "oveja" }, "type": "noun", "readings": [{ "value": "udu", "language": "sux" }] },
+    { "term": "𒉆𒈗", "reading": "nam-lugal", "meaning": "kingship", "translations": { "fr": "royauté", "es": "realeza" }, "type": "noun", "readings": [{ "value": "nam-lugal", "language": "sux" }] },
+    { "term": "𒉆𒋾", "reading": "nam-ti", "meaning": "life", "translations": { "fr": "vie", "es": "vida" }, "type": "noun", "readings": [{ "value": "nam-ti", "language": "sux" }] },
+    { "term": "𒌉", "reading": "tur", "meaning": "small; young", "translations": { "fr": "petit ; jeune", "es": "pequeño; joven" }, "type": "adjective", "readings": [{ "value": "tur", "language": "sux" }] },
+    { "term": "𒉈𒄀", "reading": "gibil", "meaning": "new", "translations": { "fr": "neuf ; nouveau", "es": "nuevo" }, "type": "adjective", "readings": [{ "value": "gibil", "language": "sux" }] },
+    { "term": "𒈗𒂊𒉈", "reading": "lugal-e-ne", "meaning": "kings", "translations": { "fr": "des rois", "es": "reyes" }, "type": "noun", "readings": [{ "value": "lugal-e-ne", "language": "sux" }] },
+    { "term": "𒆳𒆳", "reading": "kur-kur", "meaning": "all the lands", "translations": { "fr": "tous les pays", "es": "todos los países" }, "type": "noun", "readings": [{ "value": "kur-kur", "language": "sux" }] }
+  ]
+}

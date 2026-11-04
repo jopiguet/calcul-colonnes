@@ -1,0 +1,9 @@
+{
+  "entries": [
+    { "term": "lamādum", "meaning": "to learn", "translations": { "fr": "apprendre", "es": "aprender" }, "type": "verb", "principal_parts": ["lamādum", "ilmad", "ilammad"] },
+    { "term": "šulmudum", "meaning": "to teach", "translations": { "fr": "enseigner", "es": "enseñar" }, "type": "verb", "principal_parts": ["šulmudum", "ušalmid", "ušalmad"], "note": "Š lamādum" },
+    { "term": "šebērum", "meaning": "to break", "translations": { "fr": "briser", "es": "romper" }, "type": "verb", "principal_parts": ["šebērum", "išbir", "išebber"] },
+    { "term": "damāqum", "meaning": "to be good", "translations": { "fr": "être bon", "es": "ser bueno" }, "type": "verb", "principal_parts": ["damāqum", "idmiq", "idammiq"] },
+    { "term": "naṣbutum", "meaning": "to be seized", "translations": { "fr": "être saisi", "es": "ser agarrado" }, "type": "verb", "principal_parts": ["naṣbutum", "iṣṣabit", "iṣṣabbat"], "note": "N ṣabātum" }
+  ]
+}

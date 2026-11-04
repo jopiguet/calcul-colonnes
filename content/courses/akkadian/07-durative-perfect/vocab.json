@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "iparras", "meaning": "he decides; he will decide", "translations": { "fr": "il décide ; il décidera", "es": "decide; decidirá" }, "type": "verb" },
+    { "term": "iptaras", "meaning": "he has decided", "translations": { "fr": "il a décidé", "es": "ha decidido" }, "type": "verb" },
+    { "term": "šemûm", "meaning": "to hear; obey", "translations": { "fr": "entendre ; obéir", "es": "oír; obedecer" }, "type": "verb", "principal_parts": ["šemûm", "išme", "išemme"] },
+    { "term": "dâkum", "meaning": "to kill", "translations": { "fr": "tuer", "es": "matar" }, "type": "verb", "principal_parts": ["dâkum", "idūk", "idâk"] },
+    { "term": "ṭuppaka", "meaning": "your tablet; your letter", "translations": { "fr": "ta tablette ; ta lettre", "es": "tu tablilla; tu carta" }, "type": "phrase" },
+    { "term": "išakkan", "meaning": "he places; he will place", "translations": { "fr": "il place ; il placera", "es": "coloca; colocará" }, "type": "verb" }
+  ]
+}

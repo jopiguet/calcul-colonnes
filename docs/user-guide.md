@@ -786,10 +786,10 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-and **𓋹 Égyptien hiéroglyphique**, with the exercises done (*12 exercices sur 126 réussis*). See
+**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien** and **𒀝 Akkadien**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
-**The course page** lists the 31 lessons, each with its exercises done
+**The course page** lists the lessons (31 in Latin), each with its exercises done
 (*3/4 exercices réussis*). *Continuer : leçon 5* opens the first lesson not finished;
 *📚 Réviser le vocabulaire du cours* opens the course's words as a vocabulary
 book, with the usual spaced repetition.
@@ -813,6 +813,12 @@ letters a keyboard lacks (ꜣ ꜥ ḥ ḫ ẖ š ḳ ṯ ḏ) where the cursor i
 transliteration can be typed as it is read: *ankh*, *nefer*, *netjer* are
 right for *ꜥnḫ*, *nfr*, *nṯr*. The hieroglyphs are drawn large, and each word
 of the lesson shows its reading under its signs.
+
+Sumerian and Akkadian work the same way, with cuneiform signs. In Sumerian,
+sign indices can be typed as digits and *ĝ* as *g* (*e2*, *du3*, *digir*); in
+Akkadian, *š* can be typed *sh* and long vowels without their marks
+(*sharraku* for *šarrāku*). Akkadian words are in transliteration, with the
+Sumerian sign that writes them, when there is one, in the word list.
 
 A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
 shows them checked, and *Recommencer la leçon* empties it.

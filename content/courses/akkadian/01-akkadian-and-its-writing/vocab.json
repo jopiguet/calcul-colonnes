@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "šarrum", "meaning": "king", "translations": { "fr": "roi", "es": "rey" }, "type": "noun", "gender": "masculine", "readings": [{ "value": "LUGAL", "language": "sux", "note": "𒈗" }] },
+    { "term": "awīlum", "meaning": "man; free person", "translations": { "fr": "homme ; homme libre", "es": "hombre; persona libre" }, "type": "noun", "gender": "masculine" },
+    { "term": "mātum", "meaning": "land; country", "translations": { "fr": "pays", "es": "país; tierra" }, "type": "noun", "gender": "feminine" },
+    { "term": "ina", "meaning": "in; from; with", "translations": { "fr": "dans ; de ; avec", "es": "en; desde; con" }, "type": "preposition" },
+    { "term": "ana", "meaning": "to; for", "translations": { "fr": "à ; vers ; pour", "es": "a; hacia; para" }, "type": "preposition" },
+    { "term": "ilum", "meaning": "god", "translations": { "fr": "dieu", "es": "dios" }, "type": "noun", "gender": "masculine", "readings": [{ "value": "DINGIR", "language": "sux", "note": "𒀭" }] },
+    { "term": "Marduk", "meaning": "Marduk (god of Babylon)", "translations": { "fr": "Marduk (dieu de Babylone)", "es": "Marduk (dios de Babilonia)" }, "type": "noun", "gender": "masculine" }
+  ]
+}

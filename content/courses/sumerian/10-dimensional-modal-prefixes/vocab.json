@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "𒈬𒈾𒆕", "reading": "mu-na-du₃", "meaning": "he built (it) for him", "translations": { "fr": "il l'a bâti pour lui", "es": "lo construyó para él" }, "type": "verb", "readings": [{ "value": "mu-na-du₃", "language": "sux" }] },
+    { "term": "𒉡𒌦𒆕", "reading": "nu-un-du₃", "meaning": "he did not build", "translations": { "fr": "il n'a pas bâti", "es": "no construyó" }, "type": "verb", "readings": [{ "value": "nu-un-du₃", "language": "sux" }] },
+    { "term": "𒃶", "reading": "ḫe₂-", "meaning": "may (precative prefix)", "translations": { "fr": "puisse (préfixe précatif)", "es": "ojalá (prefijo precativo)" }, "type": "particle", "readings": [{ "value": "ḫe₂", "language": "sux" }] },
+    { "term": "𒂵", "reading": "ga-", "meaning": "let me (cohortative prefix)", "translations": { "fr": "que je (préfixe cohortatif)", "es": "que yo (prefijo cohortativo)" }, "type": "particle", "readings": [{ "value": "ga", "language": "sux" }] },
+    { "term": "𒈾", "reading": "-na-", "meaning": "for him (dative prefix)", "translations": { "fr": "pour lui (préfixe datif)", "es": "para él (prefijo dativo)" }, "type": "particle", "readings": [{ "value": "na", "language": "sux" }] },
+    { "term": "𒌓𒁺", "reading": "e₃", "meaning": "to go out; rise", "translations": { "fr": "sortir ; se lever", "es": "salir; levantarse" }, "type": "verb", "readings": [{ "value": "e₃", "language": "sux" }] }
+  ]
+}

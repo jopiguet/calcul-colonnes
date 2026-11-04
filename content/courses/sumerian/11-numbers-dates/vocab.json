@@ -1,0 +1,12 @@
+{
+  "entries": [
+    {"term": "𒁹", "reading": "diš", "meaning": "one", "translations": {"fr": "un", "es": "uno"}, "type": "numeral", "readings": [{"value": "diš", "language": "sux"}, {"value": "ĝeš₂", "language": "sux", "note": "60"}]},
+    {"term": "𒁹𒁹", "reading": "min", "meaning": "two", "translations": {"fr": "deux", "es": "dos"}, "type": "numeral", "readings": [{"value": "min", "language": "sux"}]},
+    {"term": "𒌋", "reading": "u", "meaning": "ten", "translations": {"fr": "dix", "es": "diez"}, "type": "numeral", "readings": [{"value": "u", "language": "sux"}]},
+    {"term": "𒊹", "reading": "šar₂", "meaning": "3,600; totality", "translations": {"fr": "3 600 ; totalité", "es": "3600; totalidad"}, "type": "numeral", "readings": [{"value": "šar₂", "language": "sux"}]},
+    {"term": "𒊺", "reading": "še", "meaning": "barley; grain", "translations": {"fr": "orge ; grain", "es": "cebada; grano"}, "type": "noun", "readings": [{"value": "še", "language": "sux"}]},
+    {"term": "𒆬𒌓", "reading": "ku₃-babbar", "meaning": "silver", "translations": {"fr": "argent (métal)", "es": "plata"}, "type": "noun", "readings": [{"value": "ku₃-babbar", "language": "sux"}]},
+    {"term": "𒌅", "reading": "gin₂", "meaning": "shekel", "translations": {"fr": "sicle", "es": "siclo"}, "type": "noun", "readings": [{"value": "gin₂", "language": "sux"}]},
+    {"term": "𒈠𒈾", "reading": "ma-na", "meaning": "mina (60 shekels)", "translations": {"fr": "mine (60 sicles)", "es": "mina (60 siclos)"}, "type": "noun", "readings": [{"value": "ma-na", "language": "sux"}]}
+  ]
+}

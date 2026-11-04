@@ -95,3 +95,39 @@ test("Egyptian: hieroglyphs in their font, the special letters, answers typed as
   // The lesson's words: the signs, their reading under them.
   await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("nfr");
 });
+
+test("Sumerian: cuneiform in its font, sign indices typed as digits", async ({ page }) => {
+  await newPlayer(page, "Enheduana");
+  await openActivity(page, "lessons-sumerian");
+  await expect(page.locator(".lessons-item")).toHaveCount(12);
+  await page.locator(".lessons-item").first().click();
+  await expect(page.locator(".lesson-title")).toContainText("1.");
+  const sign = page.locator(".script-signs.cuneiform").first();
+  await expect(sign).toBeVisible();
+  expect(await sign.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Cuneiform");
+  // ĝ typed as g, ₂ as 2: diĝir, e₂, du₃.
+  const card = page.locator(".lesson-exercise[data-exercise='values']");
+  const inputs = card.locator(".lesson-input");
+  for (const [i, v] of ["an", "digir", "e2", "ki", "lugal", "du3"].entries()) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("6/6");
+  await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("an");
+});
+
+test("Akkadian: the special letters, š typed as sh, macrons optional", async ({ page }) => {
+  await newPlayer(page, "Hammurabi");
+  await openActivity(page, "lessons-akkadian");
+  await expect(page.locator(".lessons-item")).toHaveCount(14);
+  await page.locator(".lessons-item").nth(8).click();
+  await expect(page.locator(".lesson-title")).toContainText("9.");
+  const card = page.locator(".lesson-exercise[data-exercise='forms']");
+  const inputs = card.locator(".lesson-input");
+  await inputs.nth(0).fill("damqat");
+  await inputs.nth(1).click();
+  await card.locator(".lesson-key", { hasText: "š" }).click();
+  await inputs.nth(1).pressSequentially("almāku");
+  await expect(inputs.nth(1)).toHaveValue("šalmāku");
+  for (const [i, v] of [[2, "sharraku"], [3, "shalmu"], [4, "šalmata"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("5/5");
+});

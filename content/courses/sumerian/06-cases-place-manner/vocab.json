@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "𒌨𒊕", "reading": "ur-saĝ", "meaning": "hero; warrior", "translations": { "fr": "héros ; guerrier", "es": "héroe; guerrero" }, "type": "noun", "readings": [{ "value": "ur-saĝ", "language": "sux" }] },
+    { "term": "𒀀𒀊𒁀", "reading": "a-ab-ba", "meaning": "sea", "translations": { "fr": "mer", "es": "mar" }, "type": "noun", "readings": [{ "value": "a-ab-ba", "language": "sux" }] },
+    { "term": "𒌓", "reading": "u₄", "meaning": "day; storm; light", "translations": { "fr": "jour ; tempête ; lumière", "es": "día; tormenta; luz" }, "type": "noun", "readings": [{ "value": "u₄", "language": "sux" }, { "value": "ud", "language": "sux" }] },
+    { "term": "𒁶", "reading": "-gin₇", "meaning": "like; as (equative)", "translations": { "fr": "comme (équatif)", "es": "como (ecuativo)" }, "type": "particle", "readings": [{ "value": "gin₇", "language": "sux" }] },
+    { "term": "𒂠", "reading": "-še₃", "meaning": "to; towards (terminative)", "translations": { "fr": "vers (terminatif)", "es": "hacia (terminativo)" }, "type": "particle", "readings": [{ "value": "še₃", "language": "sux" }] },
+    { "term": "𒋫", "reading": "-ta", "meaning": "from (ablative)", "translations": { "fr": "de, depuis (ablatif)", "es": "desde (ablativo)" }, "type": "particle", "readings": [{ "value": "ta", "language": "sux" }] },
+    { "term": "𒁕", "reading": "-da", "meaning": "with (comitative)", "translations": { "fr": "avec (comitatif)", "es": "con (comitativo)" }, "type": "particle", "readings": [{ "value": "da", "language": "sux" }] }
+  ]
+}

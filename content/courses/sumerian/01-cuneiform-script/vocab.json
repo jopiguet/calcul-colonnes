@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "𒀭", "reading": "an", "meaning": "sky; heaven", "translations": { "fr": "ciel", "es": "cielo" }, "type": "noun", "readings": [{ "value": "an", "language": "sux" }] },
+    { "term": "𒀭", "reading": "diĝir", "meaning": "god", "translations": { "fr": "dieu", "es": "dios" }, "type": "noun", "readings": [{ "value": "diĝir", "language": "sux" }], "functions": ["logogram", "determinative"] },
+    { "term": "𒆠", "reading": "ki", "meaning": "earth; place", "translations": { "fr": "terre ; lieu", "es": "tierra; lugar" }, "type": "noun", "readings": [{ "value": "ki", "language": "sux" }] },
+    { "term": "𒂍", "reading": "e₂", "meaning": "house; temple", "translations": { "fr": "maison ; temple", "es": "casa; templo" }, "type": "noun", "readings": [{ "value": "e₂", "language": "sux" }] },
+    { "term": "𒀀", "reading": "a", "meaning": "water", "translations": { "fr": "eau", "es": "agua" }, "type": "noun", "readings": [{ "value": "a", "language": "sux" }] },
+    { "term": "𒈗", "reading": "lugal", "meaning": "king", "translations": { "fr": "roi", "es": "rey" }, "type": "noun", "readings": [{ "value": "lugal", "language": "sux" }, { "value": "šarrum", "language": "akk" }] },
+    { "term": "𒂍𒃲", "reading": "e₂-gal", "meaning": "palace", "translations": { "fr": "palais", "es": "palacio" }, "type": "noun", "readings": [{ "value": "e₂-gal", "language": "sux" }, { "value": "ekallum", "language": "akk" }] },
+    { "term": "𒆕", "reading": "du₃", "meaning": "to build", "translations": { "fr": "bâtir", "es": "construir" }, "type": "verb", "readings": [{ "value": "du₃", "language": "sux" }] }
+  ]
+}

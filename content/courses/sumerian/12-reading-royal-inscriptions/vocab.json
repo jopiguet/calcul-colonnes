@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "𒉺𒋼𒋛", "reading": "ensi₂", "meaning": "ruler; city governor", "translations": { "fr": "souverain ; gouverneur de ville", "es": "soberano; gobernador de ciudad" }, "type": "noun", "readings": [{ "value": "ensi₂", "language": "sux" }] },
+    { "term": "𒆗𒂵", "reading": "kalag-ga", "meaning": "mighty; strong", "translations": { "fr": "puissant ; fort", "es": "poderoso; fuerte" }, "type": "adjective", "readings": [{ "value": "kalag-ga", "language": "sux" }] },
+    { "term": "𒀭𒂗𒆤", "reading": "ᵈen-lil₂", "meaning": "Enlil", "translations": { "fr": "Enlil", "es": "Enlil" }, "type": "noun", "readings": [{ "value": "en-lil₂", "language": "sux" }] },
+    { "term": "𒀭𒋀𒆠", "reading": "ᵈnanna", "meaning": "Nanna (moon god of Ur)", "translations": { "fr": "Nanna (dieu lune d'Ur)", "es": "Nanna (dios luna de Ur)" }, "type": "noun", "readings": [{ "value": "nanna", "language": "sux" }] },
+    { "term": "𒂗", "reading": "en", "meaning": "lord; high priest", "translations": { "fr": "seigneur ; grand prêtre", "es": "señor; sumo sacerdote" }, "type": "noun", "readings": [{ "value": "en", "language": "sux" }] },
+    { "term": "𒈗𒀀𒉌", "reading": "lugal-a-ni", "meaning": "his lord; his king", "translations": { "fr": "son seigneur ; son roi", "es": "su señor; su rey" }, "type": "phrase", "readings": [{ "value": "lugal-a-ni", "language": "sux" }] },
+    { "term": "𒂍𒀀𒉌", "reading": "e₂-a-ni", "meaning": "his temple; his house", "translations": { "fr": "son temple ; sa maison", "es": "su templo; su casa" }, "type": "phrase", "readings": [{ "value": "e₂-a-ni", "language": "sux" }] }
+  ]
+}

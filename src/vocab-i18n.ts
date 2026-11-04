@@ -584,7 +584,7 @@ const INFO_LABELS: Record<Lang, Record<string, string>> = {
     phonogram: "phonogramme", phonetic: "phonétique", determinative: "déterminatif", "phonetic complement": "complément phonétique",
     numeral: "nombre", ideogram: "idéogramme", radical: "clé",
     noun: "nom", verb: "verbe", adjective: "adjectif", adverb: "adverbe", pronoun: "pronom", preposition: "préposition", conjunction: "conjonction", interjection: "interjection", particle: "particule",
-    masculine: "masculin", feminine: "féminin", neuter: "neutre", common: "commun", plural: "pluriel", genitive: "génitif", dative: "datif", perfect: "parfait", comparative: "comparatif", superlative: "superlatif",
+    masculine: "masculin", feminine: "féminin", neuter: "neutre", common: "commun", plural: "pluriel", dual: "duel", genitive: "génitif", dative: "datif", perfect: "parfait", comparative: "comparatif", superlative: "superlatif",
   },
   es: {
     sign: "signo", word: "palabra", phrase: "expresión", character: "carácter", compound: "compuesto",
@@ -592,7 +592,7 @@ const INFO_LABELS: Record<Lang, Record<string, string>> = {
     phonogram: "fonograma", phonetic: "fonético", determinative: "determinativo", "phonetic complement": "complemento fonético",
     numeral: "número", ideogram: "ideograma", radical: "radical",
     noun: "sustantivo", verb: "verbo", adjective: "adjetivo", adverb: "adverbio", pronoun: "pronombre", preposition: "preposición", conjunction: "conjunción", interjection: "interjección", particle: "partícula",
-    masculine: "masculino", feminine: "femenino", neuter: "neutro", common: "común", plural: "plural", genitive: "genitivo", dative: "dativo", perfect: "perfecto", comparative: "comparativo", superlative: "superlativo",
+    masculine: "masculino", feminine: "femenino", neuter: "neutro", common: "común", plural: "plural", dual: "dual", genitive: "genitivo", dative: "dativo", perfect: "perfecto", comparative: "comparativo", superlative: "superlativo",
   },
   en: {},
 };

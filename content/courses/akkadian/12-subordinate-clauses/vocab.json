@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "šumma", "meaning": "if", "translations": { "fr": "si", "es": "si" }, "type": "conjunction" },
+    { "term": "inūma", "meaning": "when", "translations": { "fr": "quand", "es": "cuando" }, "type": "conjunction" },
+    { "term": "kīma", "meaning": "as; like; that", "translations": { "fr": "comme ; que", "es": "como; que" }, "type": "conjunction" },
+    { "term": "adi", "meaning": "until; up to", "translations": { "fr": "jusqu'à (ce que)", "es": "hasta (que)" }, "type": "conjunction" },
+    { "term": "aššum", "meaning": "because; concerning", "translations": { "fr": "parce que ; au sujet de", "es": "porque; acerca de" }, "type": "conjunction" },
+    { "term": "qabûm", "meaning": "to say; speak", "translations": { "fr": "dire ; parler", "es": "decir; hablar" }, "type": "verb", "principal_parts": ["qabûm", "iqbi", "iqabbi"] }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "anāku", "meaning": "I", "translations": { "fr": "je, moi", "es": "yo" }, "type": "pronoun" },
+    { "term": "atta", "meaning": "you (masculine)", "translations": { "fr": "tu, toi (masculin)", "es": "tú (masculino)" }, "type": "pronoun" },
+    { "term": "atti", "meaning": "you (feminine)", "translations": { "fr": "tu, toi (féminin)", "es": "tú (femenino)" }, "type": "pronoun" },
+    { "term": "šū", "meaning": "he", "translations": { "fr": "il, lui", "es": "él" }, "type": "pronoun" },
+    { "term": "šī", "meaning": "she", "translations": { "fr": "elle", "es": "ella" }, "type": "pronoun" },
+    { "term": "nīnu", "meaning": "we", "translations": { "fr": "nous", "es": "nosotros" }, "type": "pronoun" },
+    { "term": "šunu", "meaning": "they (masculine)", "translations": { "fr": "ils, eux", "es": "ellos" }, "type": "pronoun" },
+    { "term": "bēlī", "meaning": "my lord", "translations": { "fr": "mon seigneur", "es": "mi señor" }, "type": "phrase" }
+  ]
+}

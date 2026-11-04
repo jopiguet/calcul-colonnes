@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "𒈬𒌦𒆕", "reading": "mu-un-du₃", "meaning": "he built (it)", "translations": { "fr": "il l'a bâti", "es": "lo construyó" }, "type": "verb", "readings": [{ "value": "mu-un-du₃", "language": "sux" }] },
+    { "term": "𒈬𒆕𒂊", "reading": "mu-du₃-e", "meaning": "he builds; he will build", "translations": { "fr": "il bâtit ; il bâtira", "es": "construye; construirá" }, "type": "verb", "readings": [{ "value": "mu-du₃-e", "language": "sux" }] },
+    { "term": "𒅗", "reading": "dug₄", "meaning": "to speak; say", "translations": { "fr": "parler ; dire", "es": "hablar; decir" }, "type": "verb", "readings": [{ "value": "dug₄", "language": "sux" }, { "value": "e", "language": "sux" }] },
+    { "term": "𒈬𒌦𒊬", "reading": "mu-un-sar", "meaning": "he wrote (it)", "translations": { "fr": "il l'a écrit", "es": "lo escribió" }, "type": "verb", "readings": [{ "value": "mu-un-sar", "language": "sux" }] },
+    { "term": "𒋧", "reading": "šum₂", "meaning": "to give", "translations": { "fr": "donner", "es": "dar" }, "type": "verb", "readings": [{ "value": "šum₂", "language": "sux" }] },
+    { "term": "𒌦", "reading": "-n-", "meaning": "he (agent prefix, perfective)", "translations": { "fr": "il (préfixe d'agent, perfectif)", "es": "él (prefijo de agente, perfectivo)" }, "type": "particle", "readings": [{ "value": "n", "language": "sux" }] }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "𒌉", "reading": "dumu", "meaning": "child; son", "translations": { "fr": "enfant ; fils", "es": "niño; hijo" }, "type": "noun", "readings": [{ "value": "dumu", "language": "sux" }, { "value": "mārum", "language": "akk" }] },
+    { "term": "𒌉𒊩", "reading": "dumu-munus", "meaning": "daughter", "translations": { "fr": "fille", "es": "hija" }, "type": "noun", "readings": [{ "value": "dumu-munus", "language": "sux" }] },
+    { "term": "𒋀", "reading": "šeš", "meaning": "brother", "translations": { "fr": "frère", "es": "hermano" }, "type": "noun", "readings": [{ "value": "šeš", "language": "sux" }] },
+    { "term": "𒁾𒊬", "reading": "dub-sar", "meaning": "scribe", "translations": { "fr": "scribe", "es": "escriba" }, "type": "noun", "readings": [{ "value": "dub-sar", "language": "sux" }] },
+    { "term": "𒂍𒁾𒁀", "reading": "e₂-dub-ba", "meaning": "school", "translations": { "fr": "école", "es": "escuela" }, "type": "noun", "readings": [{ "value": "e₂-dub-ba", "language": "sux" }] },
+    { "term": "𒁾", "reading": "dub", "meaning": "clay tablet", "translations": { "fr": "tablette d'argile", "es": "tablilla de arcilla" }, "type": "noun", "readings": [{ "value": "dub", "language": "sux" }] },
+    { "term": "𒄑", "reading": "ĝeš", "meaning": "tree; wood", "translations": { "fr": "arbre ; bois", "es": "árbol; madera" }, "type": "noun", "readings": [{ "value": "ĝeš", "language": "sux" }], "functions": ["logogram", "determinative"] },
+    { "term": "𒇽", "reading": "lu₂", "meaning": "man; person", "translations": { "fr": "homme ; personne", "es": "hombre; persona" }, "type": "noun", "readings": [{ "value": "lu₂", "language": "sux" }, { "value": "awīlum", "language": "akk" }] },
+    { "term": "𒃲", "reading": "gal", "meaning": "big; great", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective", "readings": [{ "value": "gal", "language": "sux" }] }
+  ]
+}

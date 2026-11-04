@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "ištēn", "meaning": "one", "translations": { "fr": "un", "es": "uno" }, "type": "numeral", "forms": [{ "label": "feminine", "value": "ištiat" }] },
+    { "term": "šinā", "meaning": "two", "translations": { "fr": "deux", "es": "dos" }, "type": "numeral", "forms": [{ "label": "feminine", "value": "šittā" }] },
+    { "term": "šalāšum", "meaning": "three", "translations": { "fr": "trois", "es": "tres" }, "type": "numeral", "note": "šalāšat ūmū" },
+    { "term": "ešrum", "meaning": "ten", "translations": { "fr": "dix", "es": "diez" }, "type": "numeral" },
+    { "term": "ūmum", "meaning": "day", "translations": { "fr": "jour", "es": "día" }, "type": "noun", "gender": "masculine" },
+    { "term": "umma", "meaning": "thus (says)", "translations": { "fr": "ainsi (parle)", "es": "así (dice)" }, "type": "particle" },
+    { "term": "wardum", "meaning": "servant; slave", "translations": { "fr": "serviteur ; esclave", "es": "siervo; esclavo" }, "type": "noun", "gender": "masculine" }
+  ]
+}

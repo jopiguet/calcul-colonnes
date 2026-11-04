@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "ul", "meaning": "not (in statements)", "translations": { "fr": "ne … pas (dans les affirmations)", "es": "no (en afirmaciones)" }, "type": "particle" },
+    { "term": "lā", "meaning": "not (subordinate, prohibition)", "translations": { "fr": "ne … pas (subordonnées, défense)", "es": "no (subordinadas, prohibición)" }, "type": "particle" },
+    { "term": "purus", "meaning": "decide! (imperative)", "translations": { "fr": "décide ! (impératif)", "es": "¡decide! (imperativo)" }, "type": "verb" },
+    { "term": "liprus", "meaning": "may he decide (precative)", "translations": { "fr": "qu'il décide (précatif)", "es": "que decida (precativo)" }, "type": "verb" },
+    { "term": "šupram", "meaning": "write to me!; send me!", "translations": { "fr": "écris-moi ! ; envoie-moi !", "es": "¡escríbeme!; ¡envíame!" }, "type": "verb" },
+    { "term": "bulluṭum", "meaning": "to keep alive; heal", "translations": { "fr": "garder en vie ; guérir", "es": "mantener con vida; curar" }, "type": "verb", "principal_parts": ["bulluṭum", "uballiṭ", "uballaṭ"] },
+    { "term": "ilū", "meaning": "the gods", "translations": { "fr": "les dieux", "es": "los dioses" }, "type": "noun", "gender": "masculine" }
+  ]
+}

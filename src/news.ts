@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.2.0",
+    fr: ["Cours de langues : le sumérien, en 12 leçons, et l'akkadien, en 14, de l'écriture cunéiforme aux inscriptions royales, au Code de Hammurabi et à Gilgamesh. Les signes sont dessinés en cunéiforme, et « digir » ou « sharraku » se tapent sans clavier spécial."],
+    es: ["Cursos de idiomas: el sumerio, en 12 lecciones, y el acadio, en 14, de la escritura cuneiforme a las inscripciones reales, el Código de Hammurabi y Gilgamesh. Los signos se dibujan en cuneiforme, y «digir» o «sharraku» se escriben sin teclado especial."],
+    en: ["Language courses: Sumerian in 12 lessons and Akkadian in 14, from cuneiform writing to royal inscriptions, the Laws of Hammurabi and Gilgamesh. The signs are drawn in cuneiform, and \"digir\" or \"sharraku\" can be typed on any keyboard."],
+  },
+  {
     version: "7.1.0",
     fr: ["Cours de langues : l'égyptien hiéroglyphique, en 21 leçons, des signes à Sinouhé, avec la formule d'offrande, les noms des rois et les symboles. Les lettres spéciales ont leurs boutons, et « ankh » vaut ꜥnḫ."],
     es: ["Cursos de idiomas: el egipcio jeroglífico, en 21 lecciones, de los signos a Sinuhé, con la fórmula de ofrenda, los nombres de los reyes y los símbolos. Las letras especiales tienen sus botones, y «ankh» vale ꜥnḫ."],

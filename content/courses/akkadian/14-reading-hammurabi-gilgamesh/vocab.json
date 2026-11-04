@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "ḫapādum", "meaning": "to put out (an eye), blind", "translations": { "fr": "crever (un œil), aveugler", "es": "reventar (un ojo), cegar" }, "type": "verb", "note": "D: uḫappid, uḫappad, uḫtappid" },
+    { "term": "eṣemtum", "meaning": "bone", "translations": { "fr": "os", "es": "hueso" }, "type": "noun", "gender": "feminine" },
+    { "term": "šinnum", "meaning": "tooth", "translations": { "fr": "dent", "es": "diente" }, "type": "noun", "gender": "feminine" },
+    { "term": "naqbum", "meaning": "the Deep; underground water", "translations": { "fr": "l'Abîme ; eaux souterraines", "es": "el Abismo; aguas subterráneas" }, "type": "noun", "gender": "masculine" },
+    { "term": "išdum", "meaning": "foundation", "translations": { "fr": "fondement", "es": "cimiento" }, "type": "noun", "gender": "masculine" },
+    { "term": "enšum", "meaning": "weak", "translations": { "fr": "faible", "es": "débil" }, "type": "adjective" },
+    { "term": "ḫabālum", "meaning": "to wrong, oppress", "translations": { "fr": "faire tort, opprimer", "es": "agraviar, oprimir" }, "type": "verb", "principal_parts": ["ḫabālum", "iḫbul", "iḫabbal"] },
+    { "term": "qaqqarum", "meaning": "ground; land", "translations": { "fr": "sol ; terre", "es": "suelo; tierra" }, "type": "noun", "gender": "masculine" }
+  ]
+}

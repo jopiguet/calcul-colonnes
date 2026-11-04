@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "mārum", "meaning": "son", "translations": { "fr": "fils", "es": "hijo" }, "type": "noun", "gender": "masculine", "readings": [{ "value": "DUMU", "language": "sux" }] },
+    { "term": "mārtum", "meaning": "daughter", "translations": { "fr": "fille", "es": "hija" }, "type": "noun", "gender": "feminine" },
+    { "term": "libbum", "meaning": "heart; inside; centre", "translations": { "fr": "cœur ; intérieur ; centre", "es": "corazón; interior; centro" }, "type": "noun", "gender": "masculine" },
+    { "term": "dannum", "meaning": "mighty; strong", "translations": { "fr": "puissant ; fort", "es": "poderoso; fuerte" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "dannatum" }, { "label": "plural", "value": "dannūtum" }] },
+    { "term": "šamû", "meaning": "heaven; sky", "translations": { "fr": "ciel ; cieux", "es": "cielo" }, "type": "noun", "gender": "masculine", "note": "šamê" },
+    { "term": "šar", "meaning": "king of (construct)", "translations": { "fr": "roi de (état construit)", "es": "rey de (constructo)" }, "type": "noun", "gender": "masculine" },
+    { "term": "bīt ilim", "meaning": "temple, house of the god", "translations": { "fr": "temple, maison du dieu", "es": "templo, casa del dios" }, "type": "phrase" }
+  ]
+}

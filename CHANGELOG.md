@@ -1,5 +1,15 @@
 # Changelog
 
+## 7.2.0
+
+- **𒀭 Sumerian and 𒀝 Akkadian**, the third and fourth language courses, in French, Spanish and English, on the same template. See [Language courses](docs/language-courses.md).
+  - **Sumerian**, 12 lessons, 48 exercises, 86 words: cuneiform and its history, logograms, syllables and determinatives, the conventions of transliteration (indices, *ĝ*, sign names in capitals); nouns and the human and non-human classes, the plural, possessive suffixes, the cases (ergative, absolutive, genitive, dative, locative, terminative, comitative, equative), the copula and pronouns, the verbal chain from the intransitive to the transitive, the dimensional and modal prefixes, numbers and dates; reading royal inscriptions.
+  - **Akkadian**, 14 lessons, 56 exercises, 101 words: the language and its syllabic writing, sounds and spelling, case and number, the construct state and adjectives, pronouns and suffixes, the root and the preterite, the durative and the perfect, imperative, precative and negation, the stative, the derived stems D, Š and N, the weak verbs, subordinate clauses and the subjunctive, numbers and the letter formula; reading the Laws of Hammurabi (§§ 196, 197, 200, the prologue) and the first line of Gilgamesh.
+  - **Cuneiform as Unicode signs**, drawn in Noto Sans Cuneiform, larger than the text, in tables, exercises and the word lists, with the reading under each sign.
+- **Answers typed on any keyboard:** Sumerian *digir*, *e2*, *du3* are *diĝir*, *e₂*, *du₃*; Akkadian *sharraku*, *shalmata* are *šarrāku*, *šalmāta*. Each course has its row of special letters.
+- **Checks:** `check:lessons` reads the two new courses: 78 lessons, 314 exercises, 765 words in all.
+- **Tests:** `tests/e2e/lessons.spec.ts` checks the cuneiform font, sign indices typed as digits, the Akkadian key row and *š* typed as *sh*.
+
 ## 7.1.0
 
 - **𓋹 Hieroglyphic Egyptian**, the second language course: 21 lessons, 84 exercises, 168 words, in French, Spanish and English, on the template of the Latin course. See [Language courses](docs/language-courses.md).

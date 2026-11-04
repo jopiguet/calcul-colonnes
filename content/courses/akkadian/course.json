@@ -1,0 +1,50 @@
+{
+  "id": "akkadian",
+  "language": "akk",
+  "icon": "𒀝",
+  "folds": [
+    "translit",
+    "macrons"
+  ],
+  "keys": [
+    "š",
+    "ṣ",
+    "ṭ",
+    "ḫ",
+    "ā",
+    "ē",
+    "ī",
+    "ū",
+    "â",
+    "ê",
+    "î",
+    "û"
+  ],
+  "title": {
+    "fr": "Akkadien",
+    "es": "Acadio",
+    "en": "Akkadian"
+  },
+  "description": {
+    "fr": "La langue de Babylone et d'Assyrie : l'écriture syllabique, les noms et leurs cas, le verbe sémitique et ses thèmes, jusqu'au Code de Hammurabi et à Gilgamesh.",
+    "es": "La lengua de Babilonia y Asiria: la escritura silábica, los sustantivos y sus casos, el verbo semítico y sus temas, hasta el Código de Hammurabi y Gilgamesh.",
+    "en": "The language of Babylon and Assyria: syllabic writing, nouns and their cases, the Semitic verb and its stems, up to the Code of Hammurabi and Gilgamesh."
+  },
+  "vocabLesson": "Lesson {n}",
+  "lessons": [
+    "01-akkadian-and-its-writing",
+    "02-sounds-and-spelling",
+    "03-nouns-case-number",
+    "04-construct-state-adjectives",
+    "05-pronouns-suffixes",
+    "06-verb-root-preterite",
+    "07-durative-perfect",
+    "08-commands-wishes-negation",
+    "09-stative",
+    "10-derived-stems",
+    "11-weak-verbs",
+    "12-subordinate-clauses",
+    "13-numbers-letters",
+    "14-reading-hammurabi-gilgamesh"
+  ]
+}

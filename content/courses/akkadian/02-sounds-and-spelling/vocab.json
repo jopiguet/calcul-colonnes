@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "bītum", "meaning": "house", "translations": { "fr": "maison", "es": "casa" }, "type": "noun", "gender": "masculine", "readings": [{ "value": "É", "language": "sux" }] },
+    { "term": "bēlum", "meaning": "lord; master; owner", "translations": { "fr": "seigneur ; maître ; propriétaire", "es": "señor; amo; dueño" }, "type": "noun", "gender": "masculine", "readings": [{ "value": "EN", "language": "sux" }] },
+    { "term": "ṭuppum", "meaning": "clay tablet; document", "translations": { "fr": "tablette ; document", "es": "tablilla; documento" }, "type": "noun", "gender": "masculine", "readings": [{ "value": "DUB", "language": "sux" }] },
+    { "term": "qātum", "meaning": "hand", "translations": { "fr": "main", "es": "mano" }, "type": "noun", "gender": "feminine" },
+    { "term": "aḫum", "meaning": "brother", "translations": { "fr": "frère", "es": "hermano" }, "type": "noun", "gender": "masculine" },
+    { "term": "ṣābum", "meaning": "troops; workers", "translations": { "fr": "troupes ; travailleurs", "es": "tropas; trabajadores" }, "type": "noun", "gender": "masculine" },
+    { "term": "rabûm", "meaning": "great; big", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective", "forms": [{ "label": "feminine", "value": "rabītum" }] }
+  ]
+}

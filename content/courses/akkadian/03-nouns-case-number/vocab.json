@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "šarratum", "meaning": "queen", "translations": { "fr": "reine", "es": "reina" }, "type": "noun", "gender": "feminine" },
+    { "term": "bēltum", "meaning": "lady; mistress", "translations": { "fr": "dame ; maîtresse", "es": "señora; dueña" }, "type": "noun", "gender": "feminine" },
+    { "term": "iltum", "meaning": "goddess", "translations": { "fr": "déesse", "es": "diosa" }, "type": "noun", "gender": "feminine" },
+    { "term": "ummum", "meaning": "mother", "translations": { "fr": "mère", "es": "madre" }, "type": "noun", "gender": "feminine" },
+    { "term": "ālum", "meaning": "city; town", "translations": { "fr": "ville", "es": "ciudad" }, "type": "noun", "gender": "masculine" },
+    { "term": "šēpum", "meaning": "foot", "translations": { "fr": "pied", "es": "pie" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "dual", "value": "šēpān" }] },
+    { "term": "īnum", "meaning": "eye", "translations": { "fr": "œil", "es": "ojo" }, "type": "noun", "gender": "feminine", "forms": [{ "label": "dual", "value": "īnān" }] },
+    { "term": "itti", "meaning": "with (a person)", "translations": { "fr": "avec (une personne)", "es": "con (una persona)" }, "type": "preposition" },
+    { "term": "ištu", "meaning": "from; since", "translations": { "fr": "depuis ; de", "es": "desde" }, "type": "preposition" },
+    { "term": "ša", "meaning": "of; the one of; who, which", "translations": { "fr": "de ; celui de ; qui", "es": "de; el de; que" }, "type": "pronoun" }
+  ]
+}

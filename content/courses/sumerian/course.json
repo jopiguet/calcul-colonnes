@@ -1,0 +1,43 @@
+{
+  "id": "sumerian",
+  "language": "sux",
+  "icon": "𒀭",
+  "folds": [
+    "translit",
+    "subscripts"
+  ],
+  "keys": [
+    "š",
+    "ĝ",
+    "ḫ",
+    "₂",
+    "₃",
+    "₄",
+    "₅"
+  ],
+  "title": {
+    "fr": "Sumérien",
+    "es": "Sumerio",
+    "en": "Sumerian"
+  },
+  "description": {
+    "fr": "La première langue écrite : le cunéiforme, ses signes et leurs lectures, la chaîne nominale et la chaîne verbale, jusqu'aux inscriptions de Gudea.",
+    "es": "La primera lengua escrita: el cuneiforme, sus signos y lecturas, la cadena nominal y la cadena verbal, hasta las inscripciones de Gudea.",
+    "en": "The first written language: cuneiform, its signs and readings, the noun chain and the verbal chain, up to the inscriptions of Gudea."
+  },
+  "vocabLesson": "Lesson {n}",
+  "lessons": [
+    "01-cuneiform-script",
+    "02-signs-values-determinatives",
+    "03-nouns-classes-plural",
+    "04-possessive-suffixes",
+    "05-cases-ergative-genitive-dative",
+    "06-cases-place-manner",
+    "07-copula-pronouns",
+    "08-verbal-chain-intransitive",
+    "09-transitive-verb",
+    "10-dimensional-modal-prefixes",
+    "11-numbers-dates",
+    "12-reading-royal-inscriptions"
+  ]
+}

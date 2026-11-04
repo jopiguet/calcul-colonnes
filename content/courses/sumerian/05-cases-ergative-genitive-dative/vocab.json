@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "𒁺", "reading": "ĝen", "meaning": "to go", "translations": { "fr": "aller", "es": "ir" }, "type": "verb", "readings": [{ "value": "ĝen", "language": "sux" }, { "value": "du", "language": "sux" }] },
+    { "term": "𒆪", "reading": "tuš", "meaning": "to sit; dwell", "translations": { "fr": "s'asseoir ; habiter", "es": "sentarse; habitar" }, "type": "verb", "readings": [{ "value": "tuš", "language": "sux" }] },
+    { "term": "𒊬", "reading": "sar", "meaning": "to write", "translations": { "fr": "écrire", "es": "escribir" }, "type": "verb", "readings": [{ "value": "sar", "language": "sux" }] },
+    { "term": "𒈬𒆕", "reading": "mu-du₃", "meaning": "he built (it)", "translations": { "fr": "il a bâti", "es": "construyó" }, "type": "verb", "readings": [{ "value": "mu-du₃", "language": "sux" }] },
+    { "term": "𒎏𒄈𒋢", "reading": "nin-ĝir₂-su", "meaning": "Ningirsu (god of Lagash)", "translations": { "fr": "Ningirsu (dieu de Lagash)", "es": "Ningirsu (dios de Lagash)" }, "type": "noun", "readings": [{ "value": "nin-ĝir₂-su", "language": "sux" }] },
+    { "term": "𒎏", "reading": "nin", "meaning": "lady; queen", "translations": { "fr": "dame ; reine", "es": "señora; reina" }, "type": "noun", "readings": [{ "value": "nin", "language": "sux" }] },
+    { "term": "𒈗𒊏", "reading": "lugal-ra", "meaning": "for the king", "translations": { "fr": "pour le roi", "es": "para el rey" }, "type": "phrase", "readings": [{ "value": "lugal-ra", "language": "sux" }] }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "entries": [
+    {"term": "𒈬", "reading": "-ĝu₁₀", "meaning": "my (suffix)", "translations": {"fr": "mon (suffixe)", "es": "mi (sufijo)"}, "type": "pronoun", "readings": [{"value": "ĝu₁₀", "language": "sux"}]},
+    {"term": "𒍪", "reading": "-zu", "meaning": "your (suffix)", "translations": {"fr": "ton (suffixe)", "es": "tu (sufijo)"}, "type": "pronoun", "readings": [{"value": "zu", "language": "sux"}]},
+    {"term": "𒀀𒉌", "reading": "-a-ni", "meaning": "his; her (human, suffix)", "translations": {"fr": "son, sa (humain, suffixe)", "es": "su (humano, sufijo)"}, "type": "pronoun", "readings": [{"value": "a-ni", "language": "sux"}]},
+    {"term": "𒁉", "reading": "-bi", "meaning": "its (non-human, suffix)", "translations": {"fr": "son, sa (non humain, suffixe)", "es": "su (no humano, sufijo)"}, "type": "pronoun", "readings": [{"value": "bi", "language": "sux"}]},
+    {"term": "𒈨", "reading": "-me", "meaning": "our (suffix)", "translations": {"fr": "notre (suffixe)", "es": "nuestro (sufijo)"}, "type": "pronoun", "readings": [{"value": "me", "language": "sux"}]},
+    {"term": "𒌷", "reading": "uru", "meaning": "city; town", "translations": {"fr": "ville ; cité", "es": "ciudad"}, "type": "noun", "readings": [{"value": "uru", "language": "sux"}, {"value": "ālum", "language": "akk"}]},
+    {"term": "𒈬", "reading": "mu", "meaning": "name; year", "translations": {"fr": "nom ; année", "es": "nombre; año"}, "type": "noun", "readings": [{"value": "mu", "language": "sux"}]}
+  ]
+}

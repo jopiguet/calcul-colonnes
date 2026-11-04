@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "parāsum", "meaning": "to decide; separate", "translations": { "fr": "décider ; séparer", "es": "decidir; separar" }, "type": "verb", "principal_parts": ["parāsum", "iprus", "iparras"] },
+    { "term": "šakānum", "meaning": "to place; set", "translations": { "fr": "placer ; poser", "es": "colocar; poner" }, "type": "verb", "principal_parts": ["šakānum", "iškun", "išakkan"] },
+    { "term": "ṣabātum", "meaning": "to seize; take", "translations": { "fr": "saisir ; prendre", "es": "agarrar; tomar" }, "type": "verb", "principal_parts": ["ṣabātum", "iṣbat", "iṣabbat"] },
+    { "term": "maqātum", "meaning": "to fall", "translations": { "fr": "tomber", "es": "caer" }, "type": "verb", "principal_parts": ["maqātum", "imqut", "imaqqut"] },
+    { "term": "šapārum", "meaning": "to send; write (to)", "translations": { "fr": "envoyer ; écrire (à)", "es": "enviar; escribir (a)" }, "type": "verb", "principal_parts": ["šapārum", "išpur", "išappar"] },
+    { "term": "kašādum", "meaning": "to reach; conquer", "translations": { "fr": "atteindre ; conquérir", "es": "alcanzar; conquistar" }, "type": "verb", "principal_parts": ["kašādum", "ikšud", "ikaššad"] },
+    { "term": "paqādum", "meaning": "to entrust; take care of", "translations": { "fr": "confier ; prendre soin de", "es": "confiar; cuidar de" }, "type": "verb", "principal_parts": ["paqādum", "ipqid", "ipaqqid"] }
+  ]
+}

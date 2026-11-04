@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {"term": "𒉌𒁺", "reading": "i₃-ĝen", "meaning": "he went", "translations": {"fr": "il est allé", "es": "fue"}, "type": "verb", "readings": [{"value": "i₃-ĝen", "language": "sux"}]},
+    {"term": "𒁀𒁁", "reading": "ba-ug₇", "meaning": "he died", "translations": {"fr": "il est mort", "es": "murió"}, "type": "verb", "readings": [{"value": "ba-ug₇", "language": "sux"}]},
+    {"term": "𒁁", "reading": "ug₇", "meaning": "to die", "translations": {"fr": "mourir", "es": "morir"}, "type": "verb", "readings": [{"value": "ug₇", "language": "sux"}]},
+    {"term": "𒈬", "reading": "mu-", "meaning": "(conjugation prefix, towards)", "translations": {"fr": "(préfixe de conjugaison, vers)", "es": "(prefijo de conjugación, hacia)"}, "type": "particle", "readings": [{"value": "mu", "language": "sux"}]},
+    {"term": "𒁀", "reading": "ba-", "meaning": "(conjugation prefix, away)", "translations": {"fr": "(préfixe de conjugaison, éloignement)", "es": "(prefijo de conjugación, alejamiento)"}, "type": "particle", "readings": [{"value": "ba", "language": "sux"}]},
+    {"term": "𒉌𒆪", "reading": "i₃-tuš", "meaning": "he sat; he lived", "translations": {"fr": "il s'est assis ; il habitait", "es": "se sentó; vivía"}, "type": "verb", "readings": [{"value": "i₃-tuš", "language": "sux"}]}
+  ]
+}

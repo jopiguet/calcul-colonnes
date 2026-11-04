@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "𒀭", "reading": "-am₃", "meaning": "is (copula, 3rd person)", "translations": { "fr": "est (copule, 3e personne)", "es": "es (cópula, 3.ª persona)" }, "type": "verb", "readings": [{ "value": "am₃", "language": "sux" }] },
+    { "term": "𒈨𒂗", "reading": "-me-en", "meaning": "I am; you are (copula)", "translations": { "fr": "je suis ; tu es (copule)", "es": "soy; eres (cópula)" }, "type": "verb", "readings": [{ "value": "me-en", "language": "sux" }] },
+    { "term": "𒂷𒂊", "reading": "ĝe₂-e", "meaning": "I (pronoun)", "translations": { "fr": "je, moi (pronom)", "es": "yo (pronombre)" }, "type": "pronoun", "readings": [{ "value": "ĝe₂-e", "language": "sux" }] },
+    { "term": "𒍝𒂊", "reading": "za-e", "meaning": "you (pronoun)", "translations": { "fr": "tu, toi (pronom)", "es": "tú (pronombre)" }, "type": "pronoun", "readings": [{ "value": "za-e", "language": "sux" }, { "value": "ze₂-e", "language": "sux" }] },
+    { "term": "𒀀𒉈", "reading": "a-ne", "meaning": "he; she (pronoun)", "translations": { "fr": "il, elle (pronom)", "es": "él, ella (pronombre)" }, "type": "pronoun", "readings": [{ "value": "a-ne", "language": "sux" }] },
+    { "term": "𒉡", "reading": "nu-", "meaning": "not (negative prefix)", "translations": { "fr": "ne … pas (préfixe négatif)", "es": "no (prefijo negativo)" }, "type": "particle", "readings": [{ "value": "nu", "language": "sux" }] },
+    { "term": "𒍣", "reading": "zi", "meaning": "true; life; breath", "translations": { "fr": "juste ; vie ; souffle", "es": "verdadero; vida; aliento" }, "type": "adjective", "readings": [{ "value": "zi", "language": "sux" }] }
+  ]
+}
