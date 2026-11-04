@@ -1,0 +1,92 @@
+{
+  "entries": [
+    {
+      "term": "ἡ πόλις",
+      "meaning": "city, city-state",
+      "translations": {
+        "fr": "la cité, la ville",
+        "es": "la ciudad, la ciudad-estado"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "πόλεως",
+      "reading": "hē polis"
+    },
+    {
+      "term": "ὁ βασιλεύς",
+      "meaning": "king",
+      "translations": {
+        "fr": "le roi",
+        "es": "el rey"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "βασιλέως",
+      "reading": "ho basileus"
+    },
+    {
+      "term": "τὸ γένος",
+      "meaning": "race, family, kind",
+      "translations": {
+        "fr": "la race, la famille, le genre",
+        "es": "el linaje, la familia, el género"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "γένους",
+      "reading": "to genos"
+    },
+    {
+      "term": "ἀληθής",
+      "meaning": "true",
+      "translations": {
+        "fr": "vrai",
+        "es": "verdadero"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "neuter",
+          "value": "ἀληθές"
+        },
+        {
+          "label": "genitive",
+          "value": "ἀληθοῦς"
+        }
+      ],
+      "reading": "alēthēs"
+    },
+    {
+      "term": "εὐδαίμων",
+      "meaning": "happy, fortunate",
+      "translations": {
+        "fr": "heureux",
+        "es": "feliz, dichoso"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "neuter",
+          "value": "εὔδαιμον"
+        },
+        {
+          "label": "genitive",
+          "value": "εὐδαίμονος"
+        }
+      ],
+      "reading": "eudaimōn"
+    },
+    {
+      "term": "τὸ ἔθνος",
+      "meaning": "people, nation",
+      "translations": {
+        "fr": "le peuple, la nation",
+        "es": "el pueblo, la nación"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "ἔθνους",
+      "reading": "to ethnos"
+    }
+  ]
+}

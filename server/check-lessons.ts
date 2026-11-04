@@ -34,6 +34,11 @@ expect("fold: macrons, j, v, case, final dot", fold("Iūlius vēnit.", latin), "
 expect("fold: transliteration", [fold("sḏm.n=f", translit), fold("sDm.n.f", translit)].map((s) => s.replace("dj", "d")), ["sdmnf", "sdmnf"]);
 expect("fold: ꜣ typed as 3", fold("ꜣbd", translit), fold("3bd", translit));
 expect("fold: subscripts", fold("du₃", ["translit", "subscripts"]), "du3");
+const grc = ["greek"] as const;
+expect("greek: Greek or transliteration, no accents", ["λόγος", "logos", "Lógos", "λογος"].map((t) => fold(t, [...grc])), ["λογοσ", "λογοσ", "λογοσ", "λογοσ"]);
+expect("greek: digraphs and long vowels", [fold("ψυχή", [...grc]), fold("psychē", [...grc]), fold("psuche", [...grc]), fold("ἄνθρωπος", [...grc]), fold("anthrōpos", [...grc])], ["ψυχε", "ψυχε", "ψυχε", "ανθροποσ", "ανθροποσ"]);
+expect("greek: breathings, nasal gamma, iota subscript", [fold("ὁ ἵππος", [...grc]), fold("ho hippos", [...grc]), fold("ἄγγελος", [...grc]), fold("angelos", [...grc]), fold("τῷ λόγῳ", [...grc]), fold("tō logō", [...grc]), fold("rhētōr", [...grc]), fold("ῥήτωρ", [...grc])], ["ο ιπποσ", "ο ιπποσ", "ανγελοσ", "ανγελοσ", "το λογο", "το λογο", "ρετορ", "ρετορ"]);
+expect("greek: free answers keep their letters", markBlank({ kind: "free", answers: ["The word."] } as Parameters<typeof markBlank>[0], "the world", [...grc]), "check");
 const egy = ["egyptian"] as const;
 expect("egyptian: ankh however typed", ["ꜥnḫ", "ankh", "anx", "'nḫ", "Anh"].map((t) => fold(t, [...egy])), ["nh", "nh", "nh", "nh", "nh"]);
 expect("egyptian: pronunciation and transliteration", [fold("nefer", [...egy]), fold("nfr", [...egy]), fold("sḏm.n.f", [...egy]), fold("sedjem-en-ef", [...egy])], ["nfr", "nfr", "sdmnf", "sdmnf"]);

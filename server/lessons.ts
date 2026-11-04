@@ -84,7 +84,7 @@ export function loadCourse(dir: string): LoadedCourse {
     description: byLang(raw.description, `${id}: description`),
     vocabLesson: text(raw.vocabLesson) ? raw.vocabLesson : "{n}",
     lessons: lessonsList as string[],
-    keys: Array.isArray(raw.keys) ? (raw.keys as unknown[]).filter((k): k is string => typeof k === "string" && k.length > 0 && k.length <= 4).slice(0, 24) : [],
+    keys: Array.isArray(raw.keys) ? (raw.keys as unknown[]).filter((k): k is string => typeof k === "string" && k.length > 0 && k.length <= 4).slice(0, 40) : [],
   };
   if (!/^[a-z]{2,3}$/.test(meta.language)) throw new Error(`${id}: "language" is a language code`);
   const lessons = meta.lessons.map((slug, i): LoadedLesson => {

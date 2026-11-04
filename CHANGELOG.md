@@ -1,5 +1,18 @@
 # Changelog
 
+## 7.3.0
+
+- **🏺 Ancient Greek**, the fifth language course: 24 lessons, 96 exercises, 173 words, in French, Spanish and English, on the same template. See [Language courses](docs/language-courses.md).
+  - **Script and sounds:** the alphabet and the pronunciation of classical Athens, the standard transliteration, breathings, accents, iota subscript and punctuation.
+  - **Nouns:** the cases, the three declensions with the article, adjectives and their positions, prepositions, pronouns (αὐτός and its three meanings, demonstratives, relative, τίς / τις), comparison and numbers.
+  - **The verb:** present, imperfect and augment, εἰμί, future, first and second aorist and aspect, middle and passive, contract verbs, participles and the genitive absolute, perfect and pluperfect, aorist and future passive, subjunctive, optative, the -μι verbs, conditions and indirect speech.
+  - **Readings:** Homer (the openings of the *Iliad* and the *Odyssey*, the dialect, the hexameter), Sophocles, Heraclitus, Plato's *Apology*, the Gospel of John.
+- **Greek typed on any keyboard:** a course fold, `greek`, compares strict answers in Greek letters without accents or breathings and reads transliteration as Greek: *logos*, λογος and λόγος are one answer, as are *psychē*, *psuche* and ψυχή. A row of buttons writes the Greek letters. Answer fields follow the direction of the script typed.
+- **Words with their reading:** every Greek word in the lessons' lists shows its transliteration under it, accepted as an answer in the vocabulary book.
+- **Font:** Greek, polytonic included, is drawn in Noto Sans (Greek subsets only).
+- **Checks:** `check:lessons` tests the new fold (accents, breathings, digraphs, nasal γ, iota subscript; free answers unchanged) and reads the course: 102 lessons, 410 exercises, 938 words in all.
+- **Tests:** `tests/e2e/lessons.spec.ts` checks answers in transliteration and in Greek letters, the key row, and the readings.
+
 ## 7.2.0
 
 - **𒀭 Sumerian and 𒀝 Akkadian**, the third and fourth language courses, in French, Spanish and English, on the same template. See [Language courses](docs/language-courses.md).

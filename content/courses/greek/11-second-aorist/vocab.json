@@ -1,0 +1,136 @@
+{
+  "entries": [
+    {
+      "term": "λαμβάνω",
+      "meaning": "to take, receive",
+      "translations": {
+        "fr": "prendre, recevoir",
+        "es": "tomar, recibir"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "λαμβάνω",
+        "λήψομαι",
+        "ἔλαβον"
+      ],
+      "reading": "lambanō"
+    },
+    {
+      "term": "βάλλω",
+      "meaning": "to throw, hit",
+      "translations": {
+        "fr": "jeter, frapper",
+        "es": "lanzar, golpear"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "βάλλω",
+        "βαλῶ",
+        "ἔβαλον"
+      ],
+      "reading": "ballō"
+    },
+    {
+      "term": "μανθάνω",
+      "meaning": "to learn, understand",
+      "translations": {
+        "fr": "apprendre, comprendre",
+        "es": "aprender, comprender"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "μανθάνω",
+        "μαθήσομαι",
+        "ἔμαθον"
+      ],
+      "reading": "manthanō"
+    },
+    {
+      "term": "φεύγω",
+      "meaning": "to flee, be in exile",
+      "translations": {
+        "fr": "fuir, être exilé",
+        "es": "huir, estar desterrado"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "φεύγω",
+        "φεύξομαι",
+        "ἔφυγον"
+      ],
+      "reading": "pheugō"
+    },
+    {
+      "term": "πάσχω",
+      "meaning": "to suffer, experience",
+      "translations": {
+        "fr": "souffrir, éprouver",
+        "es": "sufrir, experimentar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "πάσχω",
+        "πείσομαι",
+        "ἔπαθον"
+      ],
+      "reading": "paschō"
+    },
+    {
+      "term": "εὑρίσκω",
+      "meaning": "to find",
+      "translations": {
+        "fr": "trouver",
+        "es": "encontrar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "εὑρίσκω",
+        "εὑρήσω",
+        "ηὗρον"
+      ],
+      "reading": "heuriskō"
+    },
+    {
+      "term": "ὁράω",
+      "meaning": "to see",
+      "translations": {
+        "fr": "voir",
+        "es": "ver"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ὁράω",
+        "ὄψομαι",
+        "εἶδον"
+      ],
+      "reading": "horaō"
+    },
+    {
+      "term": "ἔρχομαι",
+      "meaning": "to come, go",
+      "translations": {
+        "fr": "venir, aller",
+        "es": "venir, ir"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἔρχομαι",
+        "εἶμι",
+        "ἦλθον"
+      ],
+      "reading": "erchomai"
+    },
+    {
+      "term": "οἱ πολέμιοι",
+      "meaning": "the enemy",
+      "translations": {
+        "fr": "les ennemis",
+        "es": "los enemigos"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "πολεμίων",
+      "reading": "hoi polemioi"
+    }
+  ]
+}

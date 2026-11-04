@@ -1,0 +1,81 @@
+{
+  "entries": [
+    {
+      "term": "εἰμί",
+      "meaning": "to be",
+      "translations": {
+        "fr": "être",
+        "es": "ser, estar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "εἰμί",
+        "ἦ",
+        "ἔσομαι"
+      ],
+      "reading": "eimi"
+    },
+    {
+      "term": "ἄγω",
+      "meaning": "to lead, drive",
+      "translations": {
+        "fr": "conduire, mener",
+        "es": "conducir, llevar"
+      },
+      "type": "verb",
+      "reading": "agō"
+    },
+    {
+      "term": "ἐθέλω",
+      "meaning": "to be willing, wish",
+      "translations": {
+        "fr": "vouloir bien, consentir",
+        "es": "querer, estar dispuesto"
+      },
+      "type": "verb",
+      "reading": "ethelō"
+    },
+    {
+      "term": "ἀποπέμπω",
+      "meaning": "to send away",
+      "translations": {
+        "fr": "renvoyer",
+        "es": "despedir, enviar lejos"
+      },
+      "type": "verb",
+      "reading": "apopempō"
+    },
+    {
+      "term": "σοφός",
+      "meaning": "wise, skilled",
+      "translations": {
+        "fr": "sage, habile",
+        "es": "sabio, hábil"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "σοφή"
+        },
+        {
+          "label": "neuter",
+          "value": "σοφόν"
+        }
+      ],
+      "reading": "sophos"
+    },
+    {
+      "term": "Σωκράτης",
+      "meaning": "Socrates",
+      "translations": {
+        "fr": "Socrate",
+        "es": "Sócrates"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "Σωκράτους",
+      "reading": "Sōkratēs"
+    }
+  ]
+}

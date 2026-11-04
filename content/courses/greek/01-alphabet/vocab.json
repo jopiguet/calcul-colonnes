@@ -1,0 +1,88 @@
+{
+  "entries": [
+    {
+      "term": "ὁ ἄνθρωπος",
+      "meaning": "human being, person",
+      "translations": {
+        "fr": "l'être humain, l'homme",
+        "es": "el ser humano, el hombre"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "ἀνθρώπου",
+      "reading": "ho anthrōpos"
+    },
+    {
+      "term": "ὁ θεός",
+      "meaning": "god",
+      "translations": {
+        "fr": "le dieu",
+        "es": "el dios"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "θεοῦ",
+      "reading": "ho theos"
+    },
+    {
+      "term": "ὁ λόγος",
+      "meaning": "word, speech, reason",
+      "translations": {
+        "fr": "la parole, le discours, la raison",
+        "es": "la palabra, el discurso, la razón"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "λόγου",
+      "reading": "ho logos"
+    },
+    {
+      "term": "ἡ ψυχή",
+      "meaning": "soul, life",
+      "translations": {
+        "fr": "l'âme, la vie",
+        "es": "el alma, la vida"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "ψυχῆς",
+      "reading": "hē psychē"
+    },
+    {
+      "term": "ὁ κόσμος",
+      "meaning": "order, world, ornament",
+      "translations": {
+        "fr": "l'ordre, le monde, la parure",
+        "es": "el orden, el mundo, el adorno"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "κόσμου",
+      "reading": "ho kosmos"
+    },
+    {
+      "term": "ὁ μῦθος",
+      "meaning": "story, tale",
+      "translations": {
+        "fr": "le récit, la fable",
+        "es": "el relato, la fábula"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "μύθου",
+      "reading": "ho mythos"
+    },
+    {
+      "term": "ἡ φιλοσοφία",
+      "meaning": "philosophy, love of wisdom",
+      "translations": {
+        "fr": "la philosophie, l'amour du savoir",
+        "es": "la filosofía, el amor al saber"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "φιλοσοφίας",
+      "reading": "hē philosophia"
+    }
+  ]
+}

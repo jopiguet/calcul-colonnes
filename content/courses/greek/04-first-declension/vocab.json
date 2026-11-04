@@ -1,0 +1,99 @@
+{
+  "entries": [
+    {
+      "term": "ἡ τιμή",
+      "meaning": "honour, price",
+      "translations": {
+        "fr": "l'honneur, le prix",
+        "es": "el honor, el precio"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "τιμῆς",
+      "reading": "hē timē"
+    },
+    {
+      "term": "ἡ χώρα",
+      "meaning": "land, country",
+      "translations": {
+        "fr": "le pays, la terre",
+        "es": "el país, la tierra"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "χώρας",
+      "reading": "hē chōra"
+    },
+    {
+      "term": "ἡ θάλαττα",
+      "meaning": "sea",
+      "translations": {
+        "fr": "la mer",
+        "es": "el mar"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "θαλάττης",
+      "note": "Ἰωνικῶς θάλασσα",
+      "reading": "hē thalatta"
+    },
+    {
+      "term": "ἡ θεά",
+      "meaning": "goddess",
+      "translations": {
+        "fr": "la déesse",
+        "es": "la diosa"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "θεᾶς",
+      "reading": "hē thea"
+    },
+    {
+      "term": "ἡ οἰκία",
+      "meaning": "house, household",
+      "translations": {
+        "fr": "la maison",
+        "es": "la casa"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "οἰκίας",
+      "reading": "hē oikia"
+    },
+    {
+      "term": "ἡ γλῶττα",
+      "meaning": "tongue, language",
+      "translations": {
+        "fr": "la langue",
+        "es": "la lengua"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "γλώττης",
+      "reading": "hē glōtta"
+    },
+    {
+      "term": "ὁ πολίτης",
+      "meaning": "citizen",
+      "translations": {
+        "fr": "le citoyen",
+        "es": "el ciudadano"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "πολίτου",
+      "reading": "ho politēs"
+    },
+    {
+      "term": "βλέπω",
+      "meaning": "to look, see",
+      "translations": {
+        "fr": "regarder, voir",
+        "es": "mirar, ver"
+      },
+      "type": "verb",
+      "reading": "blepō"
+    }
+  ]
+}

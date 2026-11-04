@@ -1,0 +1,188 @@
+{
+  "entries": [
+    {
+      "term": "ἐγώ",
+      "meaning": "I",
+      "translations": {
+        "fr": "je, moi",
+        "es": "yo"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "genitive",
+          "value": "ἐμοῦ, μου"
+        },
+        {
+          "label": "dative",
+          "value": "ἐμοί, μοι"
+        },
+        {
+          "label": "accusative",
+          "value": "ἐμέ, με"
+        }
+      ],
+      "reading": "egō"
+    },
+    {
+      "term": "σύ",
+      "meaning": "you (sg.)",
+      "translations": {
+        "fr": "tu, toi",
+        "es": "tú"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "genitive",
+          "value": "σοῦ"
+        },
+        {
+          "label": "dative",
+          "value": "σοί"
+        },
+        {
+          "label": "accusative",
+          "value": "σέ"
+        }
+      ],
+      "reading": "sy"
+    },
+    {
+      "term": "ἡμεῖς",
+      "meaning": "we",
+      "translations": {
+        "fr": "nous",
+        "es": "nosotros"
+      },
+      "type": "pronoun",
+      "reading": "hēmeis"
+    },
+    {
+      "term": "ὑμεῖς",
+      "meaning": "you (pl.)",
+      "translations": {
+        "fr": "vous",
+        "es": "vosotros"
+      },
+      "type": "pronoun",
+      "reading": "hymeis"
+    },
+    {
+      "term": "αὐτός",
+      "meaning": "self; same; him, her, it",
+      "translations": {
+        "fr": "lui-même ; le même ; lui, elle",
+        "es": "mismo; el mismo; él, ella"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "αὐτή"
+        },
+        {
+          "label": "neuter",
+          "value": "αὐτό"
+        }
+      ],
+      "reading": "autos"
+    },
+    {
+      "term": "οὗτος",
+      "meaning": "this",
+      "translations": {
+        "fr": "celui-ci, ce",
+        "es": "este"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "αὕτη"
+        },
+        {
+          "label": "neuter",
+          "value": "τοῦτο"
+        }
+      ],
+      "reading": "houtos"
+    },
+    {
+      "term": "ἐκεῖνος",
+      "meaning": "that",
+      "translations": {
+        "fr": "celui-là",
+        "es": "aquel"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "ἐκείνη"
+        },
+        {
+          "label": "neuter",
+          "value": "ἐκεῖνο"
+        }
+      ],
+      "reading": "ekeinos"
+    },
+    {
+      "term": "ὅς",
+      "meaning": "who, which (relative)",
+      "translations": {
+        "fr": "qui, que (relatif)",
+        "es": "que, el cual (relativo)"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "ἥ"
+        },
+        {
+          "label": "neuter",
+          "value": "ὅ"
+        }
+      ],
+      "reading": "hos"
+    },
+    {
+      "term": "τίς",
+      "meaning": "who? what?",
+      "translations": {
+        "fr": "qui ? quoi ?",
+        "es": "¿quién? ¿qué?"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "neuter",
+          "value": "τί"
+        },
+        {
+          "label": "genitive",
+          "value": "τίνος"
+        }
+      ],
+      "reading": "tis"
+    },
+    {
+      "term": "τις",
+      "meaning": "someone, a certain",
+      "translations": {
+        "fr": "quelqu'un, un certain",
+        "es": "alguien, cierto"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "neuter",
+          "value": "τι"
+        }
+      ],
+      "reading": "tis"
+    }
+  ]
+}

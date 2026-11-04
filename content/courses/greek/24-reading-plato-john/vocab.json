@@ -1,0 +1,85 @@
+{
+  "entries": [
+    {
+      "term": "ὁ βίος",
+      "meaning": "life, way of life",
+      "translations": {
+        "fr": "la vie, le genre de vie",
+        "es": "la vida, el modo de vida"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "βίου",
+      "reading": "ho bios"
+    },
+    {
+      "term": "ἡ ἀρχή",
+      "meaning": "beginning; rule, office",
+      "translations": {
+        "fr": "le commencement ; le pouvoir, la magistrature",
+        "es": "el principio; el poder, la magistratura"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "ἀρχῆς",
+      "reading": "hē archē"
+    },
+    {
+      "term": "ὁ ποταμός",
+      "meaning": "river",
+      "translations": {
+        "fr": "le fleuve",
+        "es": "el río"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "ποταμοῦ",
+      "reading": "ho potamos"
+    },
+    {
+      "term": "σεαυτόν",
+      "meaning": "yourself",
+      "translations": {
+        "fr": "toi-même",
+        "es": "a ti mismo"
+      },
+      "type": "pronoun",
+      "reading": "seauton"
+    },
+    {
+      "term": "ῥέω",
+      "meaning": "to flow",
+      "translations": {
+        "fr": "couler, s'écouler",
+        "es": "fluir"
+      },
+      "type": "verb",
+      "reading": "rheō"
+    },
+    {
+      "term": "δίς",
+      "meaning": "twice",
+      "translations": {
+        "fr": "deux fois",
+        "es": "dos veces"
+      },
+      "type": "adverb",
+      "reading": "dis"
+    },
+    {
+      "term": "ἐξετάζω",
+      "meaning": "to examine, test",
+      "translations": {
+        "fr": "examiner, éprouver",
+        "es": "examinar, poner a prueba"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἐξετάζω",
+        "ἐξετάσω",
+        "ἐξήτασα"
+      ],
+      "reading": "exetazō"
+    }
+  ]
+}

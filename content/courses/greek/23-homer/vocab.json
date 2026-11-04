@@ -1,0 +1,97 @@
+{
+  "entries": [
+    {
+      "term": "ἡ μῆνις",
+      "meaning": "wrath (of gods and heroes)",
+      "translations": {
+        "fr": "la colère (des dieux et des héros)",
+        "es": "la cólera (de dioses y héroes)"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "μήνιδος",
+      "reading": "hē mēnis"
+    },
+    {
+      "term": "ἀείδω",
+      "meaning": "to sing",
+      "translations": {
+        "fr": "chanter",
+        "es": "cantar"
+      },
+      "type": "verb",
+      "note": "Ἀττικῶς ᾄδω",
+      "reading": "aeidō"
+    },
+    {
+      "term": "ἐννέπω",
+      "meaning": "to tell, relate",
+      "translations": {
+        "fr": "dire, raconter",
+        "es": "contar, relatar"
+      },
+      "type": "verb",
+      "reading": "ennepō"
+    },
+    {
+      "term": "ἡ μοῦσα",
+      "meaning": "Muse; music, song",
+      "translations": {
+        "fr": "la Muse ; le chant",
+        "es": "la Musa; el canto"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "μούσης",
+      "reading": "hē mousa"
+    },
+    {
+      "term": "πολύτροπος",
+      "meaning": "of many turns, resourceful",
+      "translations": {
+        "fr": "aux mille détours, ingénieux",
+        "es": "de muchos ardides, ingenioso"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "neuter",
+          "value": "πολύτροπον"
+        }
+      ],
+      "reading": "polytropos"
+    },
+    {
+      "term": "τὸ ἄλγος",
+      "meaning": "pain, grief",
+      "translations": {
+        "fr": "la douleur, le chagrin",
+        "es": "el dolor, la pena"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "ἄλγους",
+      "reading": "to algos"
+    },
+    {
+      "term": "ἱερός",
+      "meaning": "holy, sacred",
+      "translations": {
+        "fr": "sacré, saint",
+        "es": "sagrado, santo"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "ἱερά"
+        },
+        {
+          "label": "neuter",
+          "value": "ἱερόν"
+        }
+      ],
+      "reading": "hieros"
+    }
+  ]
+}

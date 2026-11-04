@@ -12,17 +12,18 @@ structure and the same exercises.
 | 𓋹 Hieroglyphic Egyptian (`egyptian`) | 7.1.0 | 21 | 84 | 168 |
 | 𒀭 Sumerian (`sumerian`) | 7.2.0 | 12 | 48 | 86 |
 | 𒀝 Akkadian (`akkadian`) | 7.2.0 | 14 | 56 | 101 |
+| 🏺 Ancient Greek (`greek`) | 7.3.0 | 24 | 96 | 173 |
 
 The content is original, written for the app, and ships with it; quoted texts
 (Caesar, Catullus, Virgil; Sinuhe, the Shipwrecked Sailor, the offering
-formula; Gudea, Ur-Namma, the Laws of Hammurabi, Gilgamesh) are in the public
-domain.
+formula; Gudea, Ur-Namma, the Laws of Hammurabi, Gilgamesh; Homer, Sophocles,
+Heraclitus, Plato, the Gospel of John) are in the public domain.
 
 ## Files
 
 ```text
 content/courses/
-  index.json                      ["latin", "egyptian", "sumerian", "akkadian"]: the courses, in order
+  index.json                      ["latin", "egyptian", "sumerian", "akkadian", "greek"]: the courses, in order
   latin/
     course.json                   id, language, icon, folds, titles, the lesson list
     01-letters-and-sounds/
@@ -47,7 +48,7 @@ content/courses/
 }
 ```
 
-`vocabLesson` names the lessons of the vocabulary book. `keys` (optional) lists letters a keyboard lacks; they are offered as buttons under every exercise with fields and write at the cursor of the field last used (Egyptian: `["ꜣ", "ꜥ", "ḥ", "ḫ", "ẖ", "š", "ḳ", "ṯ", "ḏ"]`; Sumerian: `["š", "ĝ", "ḫ", "₂", "₃", "₄", "₅"]`; Akkadian: `["š", "ṣ", "ṭ", "ḫ", "ā", "ē", "ī", "ū", "â", "ê", "î", "û"]`). `lessons` lists the lesson folders in order; a folder not listed is not
+`vocabLesson` names the lessons of the vocabulary book. `keys` (optional) lists letters a keyboard lacks; at most 40, each up to four characters; they are offered as buttons under every exercise with fields and write at the cursor of the field last used (Egyptian: `["ꜣ", "ꜥ", "ḥ", "ḫ", "ẖ", "š", "ḳ", "ṯ", "ḏ"]`; Sumerian: `["š", "ĝ", "ḫ", "₂", "₃", "₄", "₅"]`; Akkadian: `["š", "ṣ", "ṭ", "ḫ", "ā", "ē", "ī", "ū", "â", "ê", "î", "û"]`; Greek: the 24 letters and ς). Fields follow the direction of the script typed (`dir="auto"`). `lessons` lists the lesson folders in order; a folder not listed is not
 loaded. `build:server` copies `content/courses` into `dist-server/`.
 
 ## A lesson
@@ -112,14 +113,16 @@ course's folds.
 | `translit` | *ḥ* = *h*, *š* = *sh*, *ꜥ* dropped, `-.=` dropped… | Akkadian transliteration |
 | `aleph3` | *3* = *ꜣ* | Egyptian typed on a keyboard |
 | `subscripts` | *₂* = *2* | Sumerian sign indices |
+| `greek` | strict blanks compared in Greek letters without accents, breathings or iota subscript; transliteration read as Greek (*th* θ, *ph* φ, *ch*/*kh* χ, *ps* ψ, *y*/*u* υ, *h* dropped); η = ε, ω = ο, ς = σ, γγ = νγ; free answers unchanged | Greek typed on any keyboard: *psychē*, *psuche*, ψυχη |
 | `egyptian` | strict blanks compared by their consonants: *ꜣ ꜥ* (*3*, *'*) and the vowels *a e o* dropped, *j i y* one letter, *w u* one, *ḥ ḫ ẖ kh x* = *h*, *š sh* = *s*, *ṯ tj* = *t*, *ḏ dj* = *d*, *ḳ q* = *k*, dots and hyphens dropped; free answers keep their vowels | Egyptian typed as it is read: *ankh*, *nefer*, *sedjem.n.ef* |
 
 Course folds: Latin `macrons ij uv`, Egyptian `egyptian`, Sumerian
 `translit subscripts` (*diĝir* typed *digir*, *e₂* typed *e2*), Akkadian
-`translit macrons` (*šalmāku* typed *shalmaku*).
+`translit macrons` (*šalmāku* typed *shalmaku*), Greek `greek` (*logos*, λογος and λόγος are one answer).
 
-The `egyptian` fold makes *h* and *ḥ* one answer: exercises that test the
-difference between such letters are choices, not typed blanks.
+The `egyptian` fold makes *h* and *ḥ* one answer, the `greek` fold ε and η:
+exercises that test the difference between such letters are choices, not
+typed blanks.
 
 ## Vocabulary
 
@@ -130,7 +133,8 @@ under the signs and accepted as the answer in the vocabulary book); `meaning` is
 English and `translations` gives French and Spanish. Notes are not
 translated, so they are written in the language taught (*domī, domum, domō*).
 Akkadian words are written in transliteration (*šarrum*), with the Sumerogram,
-when there is one, in `readings`.
+when there is one, in `readings`. Greek words are written in Greek with their
+article (ὁ λόγος), their transliteration in `reading` (*ho logos*).
 
 At start, the server builds one vocabulary book per course from these files,
 `course-<id>`, one lesson per course lesson, imports it when it changed (a

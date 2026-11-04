@@ -213,6 +213,8 @@ function exerciseCard(ctx: LessonsContext, view: LessonView, e: PublicExercise, 
         input.size = blank.size;
         input.autocomplete = "off";
         input.spellcheck = false;
+        // Greek, Persian or Latin: the field follows the script typed.
+        input.dir = "auto";
         input.setAttribute("autocapitalize", "off");
         input.setAttribute("aria-label", lt("blankAria", { n: number, i: i + 1 }));
         input.dataset.blank = String(i);

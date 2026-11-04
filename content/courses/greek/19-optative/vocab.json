@@ -1,0 +1,78 @@
+{
+  "entries": [
+    {
+      "term": "εἴθε",
+      "meaning": "if only, would that",
+      "translations": {
+        "fr": "si seulement, puisse",
+        "es": "ojalá"
+      },
+      "type": "particle",
+      "reading": "eithe"
+    },
+    {
+      "term": "ἡδέως",
+      "meaning": "gladly, with pleasure",
+      "translations": {
+        "fr": "volontiers, avec plaisir",
+        "es": "con gusto"
+      },
+      "type": "adverb",
+      "reading": "hēdeōs"
+    },
+    {
+      "term": "εὐτυχής",
+      "meaning": "fortunate, lucky",
+      "translations": {
+        "fr": "heureux, chanceux",
+        "es": "afortunado"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "neuter",
+          "value": "εὐτυχές"
+        },
+        {
+          "label": "comparative",
+          "value": "εὐτυχέστερος"
+        }
+      ],
+      "reading": "eutychēs"
+    },
+    {
+      "term": "ὁ παῖς",
+      "meaning": "child, boy, slave",
+      "translations": {
+        "fr": "l'enfant, le garçon, l'esclave",
+        "es": "el niño, el muchacho, el esclavo"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "παιδός",
+      "reading": "ho pais"
+    },
+    {
+      "term": "εἰ",
+      "meaning": "if",
+      "translations": {
+        "fr": "si",
+        "es": "si"
+      },
+      "type": "conjunction",
+      "reading": "ei"
+    },
+    {
+      "term": "ἡ τύχη",
+      "meaning": "fortune, chance",
+      "translations": {
+        "fr": "la fortune, le hasard",
+        "es": "la fortuna, el azar"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "τύχης",
+      "reading": "hē tychē"
+    }
+  ]
+}

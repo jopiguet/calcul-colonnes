@@ -1,0 +1,107 @@
+{
+  "entries": [
+    {
+      "term": "ἡ ἡμέρα",
+      "meaning": "day",
+      "translations": {
+        "fr": "le jour",
+        "es": "el día"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "ἡμέρας",
+      "reading": "hē hēmera"
+    },
+    {
+      "term": "ὁ ἵππος",
+      "meaning": "horse",
+      "translations": {
+        "fr": "le cheval",
+        "es": "el caballo"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "ἵππου",
+      "reading": "ho hippos"
+    },
+    {
+      "term": "ὁ ἥλιος",
+      "meaning": "sun",
+      "translations": {
+        "fr": "le soleil",
+        "es": "el sol"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "ἡλίου",
+      "reading": "ho hēlios"
+    },
+    {
+      "term": "ὁ ῥήτωρ",
+      "meaning": "orator, public speaker",
+      "translations": {
+        "fr": "l'orateur",
+        "es": "el orador"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "ῥήτορος",
+      "reading": "ho rhētōr"
+    },
+    {
+      "term": "ἡ ὁδός",
+      "meaning": "road, way",
+      "translations": {
+        "fr": "la route, le chemin",
+        "es": "el camino"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "ὁδοῦ",
+      "note": "θήλυ τῆς δευτέρας κλίσεως",
+      "reading": "hē hodos"
+    },
+    {
+      "term": "ἡ Ἑλλάς",
+      "meaning": "Greece",
+      "translations": {
+        "fr": "la Grèce",
+        "es": "Grecia"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "Ἑλλάδος",
+      "reading": "hē Hellas"
+    },
+    {
+      "term": "ἀγαθός",
+      "meaning": "good",
+      "translations": {
+        "fr": "bon",
+        "es": "bueno"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "ἀγαθή"
+        },
+        {
+          "label": "neuter",
+          "value": "ἀγαθόν"
+        }
+      ],
+      "reading": "agathos"
+    },
+    {
+      "term": "ἤ",
+      "meaning": "or; than",
+      "translations": {
+        "fr": "ou ; que (comparaison)",
+        "es": "o; que (comparación)"
+      },
+      "type": "conjunction",
+      "reading": "ē"
+    }
+  ]
+}

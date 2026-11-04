@@ -1,0 +1,110 @@
+{
+  "entries": [
+    {
+      "term": "ὁ φύλαξ",
+      "meaning": "guard",
+      "translations": {
+        "fr": "le gardien",
+        "es": "el guardián"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "φύλακος",
+      "reading": "ho phylax"
+    },
+    {
+      "term": "ἡ ἐλπίς",
+      "meaning": "hope, expectation",
+      "translations": {
+        "fr": "l'espoir, l'attente",
+        "es": "la esperanza"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "ἐλπίδος",
+      "reading": "hē elpis"
+    },
+    {
+      "term": "ὁ δαίμων",
+      "meaning": "divine power, spirit",
+      "translations": {
+        "fr": "la divinité, le génie",
+        "es": "la divinidad, el genio"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "δαίμονος",
+      "reading": "ho daimōn"
+    },
+    {
+      "term": "τὸ σῶμα",
+      "meaning": "body",
+      "translations": {
+        "fr": "le corps",
+        "es": "el cuerpo"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "σώματος",
+      "reading": "to sōma"
+    },
+    {
+      "term": "ὁ ἀνήρ",
+      "meaning": "man, husband",
+      "translations": {
+        "fr": "l'homme, le mari",
+        "es": "el hombre, el marido"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "ἀνδρός",
+      "reading": "ho anēr"
+    },
+    {
+      "term": "ἡ γυνή",
+      "meaning": "woman, wife",
+      "translations": {
+        "fr": "la femme, l'épouse",
+        "es": "la mujer, la esposa"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "γυναικός",
+      "reading": "hē gynē"
+    },
+    {
+      "term": "ὁ πατήρ",
+      "meaning": "father",
+      "translations": {
+        "fr": "le père",
+        "es": "el padre"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "πατρός",
+      "reading": "ho patēr"
+    },
+    {
+      "term": "ἡ μήτηρ",
+      "meaning": "mother",
+      "translations": {
+        "fr": "la mère",
+        "es": "la madre"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "μητρός",
+      "reading": "hē mētēr"
+    },
+    {
+      "term": "φυλάττω",
+      "meaning": "to guard",
+      "translations": {
+        "fr": "garder, protéger",
+        "es": "guardar, proteger"
+      },
+      "type": "verb",
+      "reading": "phylattō"
+    }
+  ]
+}

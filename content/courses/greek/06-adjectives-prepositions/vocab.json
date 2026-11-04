@@ -1,0 +1,124 @@
+{
+  "entries": [
+    {
+      "term": "καλός",
+      "meaning": "beautiful, fine, noble",
+      "translations": {
+        "fr": "beau, noble",
+        "es": "bello, noble"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "καλή"
+        },
+        {
+          "label": "neuter",
+          "value": "καλόν"
+        }
+      ],
+      "reading": "kalos"
+    },
+    {
+      "term": "δίκαιος",
+      "meaning": "just",
+      "translations": {
+        "fr": "juste",
+        "es": "justo"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "δικαία"
+        },
+        {
+          "label": "neuter",
+          "value": "δίκαιον"
+        }
+      ],
+      "reading": "dikaios"
+    },
+    {
+      "term": "ἄδικος",
+      "meaning": "unjust",
+      "translations": {
+        "fr": "injuste",
+        "es": "injusto"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "neuter",
+          "value": "ἄδικον"
+        }
+      ],
+      "reading": "adikos"
+    },
+    {
+      "term": "ἐν",
+      "meaning": "in, among (+ dat.)",
+      "translations": {
+        "fr": "dans, parmi (+ dat.)",
+        "es": "en, entre (+ dat.)"
+      },
+      "type": "preposition",
+      "reading": "en"
+    },
+    {
+      "term": "εἰς",
+      "meaning": "into, to (+ acc.)",
+      "translations": {
+        "fr": "dans, vers (+ acc.)",
+        "es": "a, hacia (+ ac.)"
+      },
+      "type": "preposition",
+      "reading": "eis"
+    },
+    {
+      "term": "ἐκ, ἐξ",
+      "meaning": "out of (+ gen.)",
+      "translations": {
+        "fr": "hors de (+ gén.)",
+        "es": "fuera de, desde (+ gen.)"
+      },
+      "type": "preposition",
+      "reading": "ek, ex"
+    },
+    {
+      "term": "μετά",
+      "meaning": "with (+ gen.); after (+ acc.)",
+      "translations": {
+        "fr": "avec (+ gén.) ; après (+ acc.)",
+        "es": "con (+ gen.); después de (+ ac.)"
+      },
+      "type": "preposition",
+      "reading": "meta"
+    },
+    {
+      "term": "ὁ φίλος",
+      "meaning": "friend",
+      "translations": {
+        "fr": "l'ami",
+        "es": "el amigo"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "φίλου",
+      "reading": "ho philos"
+    },
+    {
+      "term": "ὁ πόλεμος",
+      "meaning": "war",
+      "translations": {
+        "fr": "la guerre",
+        "es": "la guerra"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "πολέμου",
+      "reading": "ho polemos"
+    }
+  ]
+}

@@ -786,7 +786,7 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien** and **𒀝 Akkadien**, with the exercises done (*12 exercices sur 126 réussis*). See
+**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien** and **🏺 Grec ancien**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
 **The course page** lists the lessons (31 in Latin), each with its exercises done
@@ -819,6 +819,13 @@ sign indices can be typed as digits and *ĝ* as *g* (*e2*, *du3*, *digir*); in
 Akkadian, *š* can be typed *sh* and long vowels without their marks
 (*sharraku* for *šarrāku*). Akkadian words are in transliteration, with the
 Sumerian sign that writes them, when there is one, in the word list.
+
+In Ancient Greek, answers can be typed in Greek letters, with or without
+accents and breathings, or in Latin letters: *logos*, λογος and λόγος are the
+same answer, and so are *psychē* and *psuche*. The buttons write the Greek
+letters. Since ε and η, ο and ω are not told apart when typed, the long and
+short vowels are tested by choices. Each word in the lists shows its
+transliteration under it.
 
 A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
 shows them checked, and *Recommencer la leçon* empties it.

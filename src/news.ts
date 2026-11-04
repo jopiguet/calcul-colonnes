@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.3.0",
+    fr: ["Cours de langues : le grec ancien, en 24 leçons, de l'alphabet et des accents à l'optatif et aux verbes en -μι, puis Homère, Platon et l'Évangile de Jean. Les réponses se tapent en lettres grecques ou latines : « logos » vaut λόγος."],
+    es: ["Cursos de idiomas: el griego antiguo, en 24 lecciones, del alfabeto y los acentos al optativo y los verbos en -μι, y luego Homero, Platón y el Evangelio de Juan. Las respuestas se escriben en letras griegas o latinas: «logos» vale λόγος."],
+    en: ["Language courses: Ancient Greek, 24 lessons from the alphabet and accents to the optative and the -μι verbs, then Homer, Plato and the Gospel of John. Answers can be typed in Greek or Latin letters: \"logos\" counts as λόγος."],
+  },
+  {
     version: "7.2.0",
     fr: ["Cours de langues : le sumérien, en 12 leçons, et l'akkadien, en 14, de l'écriture cunéiforme aux inscriptions royales, au Code de Hammurabi et à Gilgamesh. Les signes sont dessinés en cunéiforme, et « digir » ou « sharraku » se tapent sans clavier spécial."],
     es: ["Cursos de idiomas: el sumerio, en 12 lecciones, y el acadio, en 14, de la escritura cuneiforme a las inscripciones reales, el Código de Hammurabi y Gilgamesh. Los signos se dibujan en cuneiforme, y «digir» o «sharraku» se escriben sin teclado especial."],

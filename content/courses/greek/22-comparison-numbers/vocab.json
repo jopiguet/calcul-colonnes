@@ -1,0 +1,158 @@
+{
+  "entries": [
+    {
+      "term": "μέγας",
+      "meaning": "big, great",
+      "translations": {
+        "fr": "grand",
+        "es": "grande"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "μεγάλη"
+        },
+        {
+          "label": "neuter",
+          "value": "μέγα"
+        },
+        {
+          "label": "comparative",
+          "value": "μείζων"
+        },
+        {
+          "label": "superlative",
+          "value": "μέγιστος"
+        }
+      ],
+      "reading": "megas"
+    },
+    {
+      "term": "πολύς",
+      "meaning": "much, many",
+      "translations": {
+        "fr": "nombreux, beaucoup",
+        "es": "mucho, numeroso"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "πολλή"
+        },
+        {
+          "label": "neuter",
+          "value": "πολύ"
+        },
+        {
+          "label": "comparative",
+          "value": "πλείων"
+        },
+        {
+          "label": "superlative",
+          "value": "πλεῖστος"
+        }
+      ],
+      "reading": "polys"
+    },
+    {
+      "term": "κακός",
+      "meaning": "bad, evil, cowardly",
+      "translations": {
+        "fr": "mauvais, méchant, lâche",
+        "es": "malo, cobarde"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "κακή"
+        },
+        {
+          "label": "neuter",
+          "value": "κακόν"
+        }
+      ],
+      "reading": "kakos"
+    },
+    {
+      "term": "ἄριστος",
+      "meaning": "best, noblest",
+      "translations": {
+        "fr": "le meilleur, le plus noble",
+        "es": "el mejor, el más noble"
+      },
+      "type": "adjective",
+      "note": "ἀγαθός, ἀμείνων, ἄριστος",
+      "reading": "aristos"
+    },
+    {
+      "term": "εἷς",
+      "meaning": "one",
+      "translations": {
+        "fr": "un",
+        "es": "uno"
+      },
+      "type": "numeral",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "μία"
+        },
+        {
+          "label": "neuter",
+          "value": "ἕν"
+        }
+      ],
+      "reading": "heis"
+    },
+    {
+      "term": "οὐδείς",
+      "meaning": "no one, nothing",
+      "translations": {
+        "fr": "personne, rien",
+        "es": "nadie, nada"
+      },
+      "type": "pronoun",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "οὐδεμία"
+        },
+        {
+          "label": "neuter",
+          "value": "οὐδέν"
+        }
+      ],
+      "reading": "oudeis"
+    },
+    {
+      "term": "τὸ ὕδωρ",
+      "meaning": "water",
+      "translations": {
+        "fr": "l'eau",
+        "es": "el agua"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "ὕδατος",
+      "reading": "to hydōr"
+    },
+    {
+      "term": "μένω",
+      "meaning": "to stay, wait for",
+      "translations": {
+        "fr": "rester, attendre",
+        "es": "quedarse, esperar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "μένω",
+        "μενῶ",
+        "ἔμεινα"
+      ],
+      "reading": "menō"
+    }
+  ]
+}

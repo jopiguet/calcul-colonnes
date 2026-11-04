@@ -1,0 +1,91 @@
+{
+  "entries": [
+    {
+      "term": "ἡ ἐπιστολή",
+      "meaning": "letter, message",
+      "translations": {
+        "fr": "la lettre, le message",
+        "es": "la carta, el mensaje"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "ἐπιστολῆς",
+      "reading": "hē epistolē"
+    },
+    {
+      "term": "κελεύω",
+      "meaning": "to order, command",
+      "translations": {
+        "fr": "ordonner",
+        "es": "ordenar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "κελεύω",
+        "κελεύσω",
+        "ἐκέλευσα"
+      ],
+      "reading": "keleuō"
+    },
+    {
+      "term": "θύω",
+      "meaning": "to sacrifice",
+      "translations": {
+        "fr": "sacrifier",
+        "es": "sacrificar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "θύω",
+        "θύσω",
+        "ἔθυσα"
+      ],
+      "reading": "thyō"
+    },
+    {
+      "term": "διώκω",
+      "meaning": "to pursue, prosecute",
+      "translations": {
+        "fr": "poursuivre",
+        "es": "perseguir, acusar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "διώκω",
+        "διώξω",
+        "ἐδίωξα"
+      ],
+      "reading": "diōkō"
+    },
+    {
+      "term": "κλέπτω",
+      "meaning": "to steal",
+      "translations": {
+        "fr": "voler, dérober",
+        "es": "robar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "κλέπτω",
+        "κλέψω",
+        "ἔκλεψα"
+      ],
+      "reading": "kleptō"
+    },
+    {
+      "term": "πιστεύω",
+      "meaning": "to trust, believe (+ dat.)",
+      "translations": {
+        "fr": "se fier à, croire (+ dat.)",
+        "es": "confiar en, creer (+ dat.)"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "πιστεύω",
+        "πιστεύσω",
+        "ἐπίστευσα"
+      ],
+      "reading": "pisteuō"
+    }
+  ]
+}

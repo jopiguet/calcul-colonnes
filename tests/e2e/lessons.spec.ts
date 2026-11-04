@@ -131,3 +131,27 @@ test("Akkadian: the special letters, š typed as sh, macrons optional", async ({
   await card.locator(".lesson-check").click();
   await expect(card.locator(".lesson-exercise-score")).toHaveText("5/5");
 });
+
+test("Ancient Greek: answers in Greek letters or in transliteration, the Greek key row", async ({ page }) => {
+  await newPlayer(page, "Sappho");
+  await openActivity(page, "lessons-greek");
+  await expect(page.locator(".lessons-item")).toHaveCount(24);
+  await page.locator(".lessons-item").first().click();
+  await expect(page.locator(".lesson-title")).toContainText("1.");
+  const card = page.locator(".lesson-exercise[data-exercise='transliterate']");
+  const inputs = card.locator(".lesson-input");
+  await inputs.nth(0).fill("logos");
+  // θεός typed with the key row, without accent.
+  await inputs.nth(1).click();
+  for (const k of ["θ", "ε", "ο", "ς"]) await card.locator(".lesson-key", { hasText: new RegExp(`^${k}$`) }).click();
+  await expect(inputs.nth(1)).toHaveValue("θεος");
+  for (const [i, v] of [[2, "psuche"], [3, "angelos"], [4, "khora"], [5, "mythos"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("6/6");
+  // A word in Greek letters, accents left out, for a Greek answer.
+  const write = page.locator(".lesson-exercise[data-exercise='write']");
+  for (const [i, v] of ["φιλοσοφια", "demokratia", "θεατρον", "kosmos"].entries()) await write.locator(".lesson-input").nth(i).fill(v);
+  await write.locator(".lesson-check").click();
+  await expect(write.locator(".lesson-exercise-score")).toHaveText("4/4");
+  await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("ho anthrōpos");
+});

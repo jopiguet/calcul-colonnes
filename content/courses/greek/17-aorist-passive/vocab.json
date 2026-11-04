@@ -1,0 +1,87 @@
+{
+  "entries": [
+    {
+      "term": "φαίνω",
+      "meaning": "to show (pass. appear)",
+      "translations": {
+        "fr": "montrer (passif : apparaître)",
+        "es": "mostrar (pasiva: aparecer)"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "φαίνω",
+        "φανῶ",
+        "ἔφηνα",
+        "ἐφάνην"
+      ],
+      "reading": "phainō"
+    },
+    {
+      "term": "βλάπτω",
+      "meaning": "to harm",
+      "translations": {
+        "fr": "nuire à, léser",
+        "es": "dañar, perjudicar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "βλάπτω",
+        "βλάψω",
+        "ἔβλαψα",
+        "ἐβλάβην"
+      ],
+      "reading": "blaptō"
+    },
+    {
+      "term": "πορεύομαι",
+      "meaning": "to march, travel",
+      "translations": {
+        "fr": "faire route, voyager",
+        "es": "marchar, viajar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "πορεύομαι",
+        "πορεύσομαι",
+        "ἐπορεύθην"
+      ],
+      "reading": "poreuomai"
+    },
+    {
+      "term": "ἡ νίκη",
+      "meaning": "victory",
+      "translations": {
+        "fr": "la victoire",
+        "es": "la victoria"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "νίκης",
+      "reading": "hē nikē"
+    },
+    {
+      "term": "τὸ στρατόπεδον",
+      "meaning": "camp, army",
+      "translations": {
+        "fr": "le camp, l'armée",
+        "es": "el campamento, el ejército"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "στρατοπέδου",
+      "reading": "to stratopedon"
+    },
+    {
+      "term": "ἡ μάχη",
+      "meaning": "battle",
+      "translations": {
+        "fr": "la bataille",
+        "es": "la batalla"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "μάχης",
+      "reading": "hē machē"
+    }
+  ]
+}

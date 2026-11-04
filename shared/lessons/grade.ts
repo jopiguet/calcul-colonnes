@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -33,6 +33,25 @@ export function egyptianKey(text: string): string {
   t = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").normalize("NFC");
   t = t.replace(/[ꞽỉ]/g, "i").replace(/[jy]/g, "i").replace(/u/g, "w").replace(/[qc]/g, "k");
   return t.replace(/[aeo]/g, "");
+}
+
+/** Latin letters as Greek ones, digraphs first: "logos", "anthrōpos", "psychē" spelt in Greek. */
+const GREEK_FROM_LATIN: [RegExp, string][] = [
+  [/rh/g, "ρ"], [/th/g, "θ"], [/ph/g, "φ"], [/[ck]h/g, "χ"], [/ps/g, "ψ"], [/ks/g, "ξ"],
+  [/h/g, ""], [/a/g, "α"], [/[bv]/g, "β"], [/g/g, "γ"], [/d/g, "δ"], [/e/g, "ε"], [/z/g, "ζ"],
+  [/[ij]/g, "ι"], [/[kcq]/g, "κ"], [/l/g, "λ"], [/m/g, "μ"], [/n/g, "ν"], [/x/g, "ξ"], [/o/g, "ο"],
+  [/p/g, "π"], [/r/g, "ρ"], [/s/g, "σ"], [/t/g, "τ"], [/[uyw]/g, "υ"], [/f/g, "φ"],
+];
+
+/**
+ * Ancient Greek compared without its accents and breathings, in Greek letters or in transliteration:
+ * λόγος = logos, ψυχή = psychē = psuche, ἄγγελος = angelos; η is ε and ω is ο, so the long vowels are tested by choices.
+ */
+export function greekKey(text: string): string {
+  let t = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").normalize("NFC").toLowerCase();
+  t = t.replace(/['’‘ʼ᾽`·\-.]/g, "").replace(/\s+/g, " ").trim();
+  for (const [from, to] of GREEK_FROM_LATIN) t = t.replace(from, to);
+  return t.replace(/η/g, "ε").replace(/ω/g, "ο").replace(/ς/g, "σ").replace(/γ([γκξχ])/g, "ν$1");
 }
 
 /** Egyptian and Akkadian transliterations as typed on a keyboard: ꜣ as 3 or a, ꜥ as ' or e, ḥ as h… */
@@ -61,6 +80,7 @@ export function fold(text: string, folds: readonly Fold[]): string {
   // Commas and the like inside an answer are the learner's choice: "amīce, venī" or "amice veni".
   t = t.replace(/\s*[,;:!?¡¿«»"“”]\s*/g, " ").replace(/\s+/g, " ").trim();
   if (folds.includes("egyptian")) return egyptianKey(t);
+  if (folds.includes("greek")) return greekKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -88,7 +108,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => x !== "egyptian");
+    const f = folds.filter((x) => x !== "egyptian" && x !== "greek");
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

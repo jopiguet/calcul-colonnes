@@ -1,0 +1,92 @@
+{
+  "entries": [
+    {
+      "term": "δίδωμι",
+      "meaning": "to give",
+      "translations": {
+        "fr": "donner",
+        "es": "dar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "δίδωμι",
+        "δώσω",
+        "ἔδωκα"
+      ],
+      "reading": "didōmi"
+    },
+    {
+      "term": "τίθημι",
+      "meaning": "to put, place, establish",
+      "translations": {
+        "fr": "poser, placer, établir",
+        "es": "poner, colocar, establecer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "τίθημι",
+        "θήσω",
+        "ἔθηκα"
+      ],
+      "reading": "tithēmi"
+    },
+    {
+      "term": "ἵστημι",
+      "meaning": "to make stand, set up",
+      "translations": {
+        "fr": "dresser, mettre debout",
+        "es": "levantar, poner en pie"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἵστημι",
+        "στήσω",
+        "ἔστησα / ἔστην",
+        "ἕστηκα"
+      ],
+      "reading": "histēmi"
+    },
+    {
+      "term": "φημί",
+      "meaning": "to say, affirm",
+      "translations": {
+        "fr": "dire, affirmer",
+        "es": "decir, afirmar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "φημί",
+        "φήσω",
+        "ἔφην"
+      ],
+      "reading": "phēmi"
+    },
+    {
+      "term": "τὸ τρόπαιον",
+      "meaning": "trophy (of victory)",
+      "translations": {
+        "fr": "le trophée",
+        "es": "el trofeo"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "τροπαίου",
+      "reading": "to tropaion"
+    },
+    {
+      "term": "ἀποδίδωμι",
+      "meaning": "to give back, pay",
+      "translations": {
+        "fr": "rendre, payer",
+        "es": "devolver, pagar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἀποδίδωμι",
+        "ἀποδώσω",
+        "ἀπέδωκα"
+      ],
+      "reading": "apodidōmi"
+    }
+  ]
+}

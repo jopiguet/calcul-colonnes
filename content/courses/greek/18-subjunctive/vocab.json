@@ -1,0 +1,70 @@
+{
+  "entries": [
+    {
+      "term": "ἵνα",
+      "meaning": "in order that (+ subj.)",
+      "translations": {
+        "fr": "afin que (+ subj.)",
+        "es": "para que (+ subj.)"
+      },
+      "type": "conjunction",
+      "reading": "hina"
+    },
+    {
+      "term": "ὅπως",
+      "meaning": "how; in order that",
+      "translations": {
+        "fr": "comment ; afin que",
+        "es": "cómo; para que"
+      },
+      "type": "conjunction",
+      "reading": "hopōs"
+    },
+    {
+      "term": "ἐάν",
+      "meaning": "if (ever) (+ subj.)",
+      "translations": {
+        "fr": "si (jamais) (+ subj.)",
+        "es": "si (alguna vez) (+ subj.)"
+      },
+      "type": "conjunction",
+      "reading": "ean"
+    },
+    {
+      "term": "ἄν",
+      "meaning": "particle of possibility",
+      "translations": {
+        "fr": "particule de possibilité",
+        "es": "partícula de posibilidad"
+      },
+      "type": "particle",
+      "reading": "an"
+    },
+    {
+      "term": "φοβέομαι",
+      "meaning": "to fear",
+      "translations": {
+        "fr": "craindre",
+        "es": "temer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "φοβέομαι",
+        "φοβήσομαι",
+        "ἐφοβήθην"
+      ],
+      "reading": "phobeomai"
+    },
+    {
+      "term": "εἶμι",
+      "meaning": "to go (fut. sense in Attic)",
+      "translations": {
+        "fr": "aller (sens futur en attique)",
+        "es": "ir (sentido futuro en ático)"
+      },
+      "type": "verb",
+      "note": "ἴωμεν, ἰέναι, ἰών",
+      "reading": "eimi"
+    }
+  ]
+}

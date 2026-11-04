@@ -1,0 +1,89 @@
+{
+  "entries": [
+    {
+      "term": "ὅτι",
+      "meaning": "that; because",
+      "translations": {
+        "fr": "que ; parce que",
+        "es": "que; porque"
+      },
+      "type": "conjunction",
+      "reading": "hoti"
+    },
+    {
+      "term": "νομίζω",
+      "meaning": "to think, believe; acknowledge",
+      "translations": {
+        "fr": "penser, croire ; reconnaître",
+        "es": "pensar, creer; reconocer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "νομίζω",
+        "νομιῶ",
+        "ἐνόμισα"
+      ],
+      "reading": "nomizō"
+    },
+    {
+      "term": "οἴομαι",
+      "meaning": "to suppose, think",
+      "translations": {
+        "fr": "croire, supposer",
+        "es": "suponer, creer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "οἴομαι",
+        "οἰήσομαι",
+        "ᾠήθην"
+      ],
+      "reading": "oiomai"
+    },
+    {
+      "term": "ἥκω",
+      "meaning": "to have come, be here",
+      "translations": {
+        "fr": "être arrivé, être là",
+        "es": "haber llegado, estar aquí"
+      },
+      "type": "verb",
+      "reading": "hēkō"
+    },
+    {
+      "term": "ἁμαρτάνω",
+      "meaning": "to miss, err",
+      "translations": {
+        "fr": "manquer, se tromper",
+        "es": "errar, equivocarse"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἁμαρτάνω",
+        "ἁμαρτήσομαι",
+        "ἥμαρτον"
+      ],
+      "reading": "hamartanō"
+    },
+    {
+      "term": "θνητός",
+      "meaning": "mortal",
+      "translations": {
+        "fr": "mortel",
+        "es": "mortal"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "θνητή"
+        },
+        {
+          "label": "neuter",
+          "value": "θνητόν"
+        }
+      ],
+      "reading": "thnētos"
+    }
+  ]
+}

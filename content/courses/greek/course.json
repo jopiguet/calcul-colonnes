@@ -1,0 +1,72 @@
+{
+  "id": "greek",
+  "language": "grc",
+  "icon": "🏺",
+  "folds": [
+    "greek"
+  ],
+  "keys": [
+    "α",
+    "β",
+    "γ",
+    "δ",
+    "ε",
+    "ζ",
+    "η",
+    "θ",
+    "ι",
+    "κ",
+    "λ",
+    "μ",
+    "ν",
+    "ξ",
+    "ο",
+    "π",
+    "ρ",
+    "σ",
+    "ς",
+    "τ",
+    "υ",
+    "φ",
+    "χ",
+    "ψ",
+    "ω"
+  ],
+  "title": {
+    "fr": "Grec ancien",
+    "es": "Griego antiguo",
+    "en": "Ancient Greek"
+  },
+  "description": {
+    "fr": "Le grec attique de Platon et de Thucydide, de l'alphabet et des accents aux verbes en -μι, au subjonctif et à l'optatif, puis Homère, Platon et l'Évangile de Jean.",
+    "es": "El griego ático de Platón y Tucídides, del alfabeto y los acentos a los verbos en -μι, el subjuntivo y el optativo, y luego Homero, Platón y el Evangelio de Juan.",
+    "en": "The Attic Greek of Plato and Thucydides, from the alphabet and accents to the -μι verbs, the subjunctive and the optative, then Homer, Plato and the Gospel of John."
+  },
+  "vocabLesson": "Lesson {n}",
+  "lessons": [
+    "01-alphabet",
+    "02-accents-breathings",
+    "03-present-active",
+    "04-first-declension",
+    "05-second-declension",
+    "06-adjectives-prepositions",
+    "07-eimi-imperfect",
+    "08-third-declension-consonants",
+    "09-third-declension-vowels",
+    "10-future-first-aorist",
+    "11-second-aorist",
+    "12-middle-passive",
+    "13-pronouns",
+    "14-contract-verbs",
+    "15-participles",
+    "16-perfect",
+    "17-aorist-passive",
+    "18-subjunctive",
+    "19-optative",
+    "20-mi-verbs",
+    "21-conditions-indirect-speech",
+    "22-comparison-numbers",
+    "23-homer",
+    "24-reading-plato-john"
+  ]
+}

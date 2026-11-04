@@ -1,0 +1,90 @@
+{
+  "entries": [
+    {
+      "term": "πᾶς",
+      "meaning": "all, every, whole",
+      "translations": {
+        "fr": "tout, chaque",
+        "es": "todo, cada"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "πᾶσα"
+        },
+        {
+          "label": "neuter",
+          "value": "πᾶν"
+        },
+        {
+          "label": "genitive",
+          "value": "παντός"
+        }
+      ],
+      "reading": "pas"
+    },
+    {
+      "term": "καίπερ",
+      "meaning": "although (+ participle)",
+      "translations": {
+        "fr": "bien que (+ participe)",
+        "es": "aunque (+ participio)"
+      },
+      "type": "particle",
+      "reading": "kaiper"
+    },
+    {
+      "term": "ἀκούω",
+      "meaning": "to hear (+ gen. of person)",
+      "translations": {
+        "fr": "entendre (+ gén. de personne)",
+        "es": "oír (+ gen. de persona)"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἀκούω",
+        "ἀκούσομαι",
+        "ἤκουσα"
+      ],
+      "reading": "akouō"
+    },
+    {
+      "term": "ἀπέρχομαι",
+      "meaning": "to go away",
+      "translations": {
+        "fr": "s'en aller",
+        "es": "irse, marcharse"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἀπέρχομαι",
+        "ἄπειμι",
+        "ἀπῆλθον"
+      ],
+      "reading": "aperchomai"
+    },
+    {
+      "term": "ὡς",
+      "meaning": "as; that; on the ground that",
+      "translations": {
+        "fr": "comme ; que ; sous prétexte que",
+        "es": "como; que; con el pretexto de que"
+      },
+      "type": "particle",
+      "reading": "hōs"
+    },
+    {
+      "term": "ὁ στρατιώτης",
+      "meaning": "soldier",
+      "translations": {
+        "fr": "le soldat",
+        "es": "el soldado"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "στρατιώτου",
+      "reading": "ho stratiōtēs"
+    }
+  ]
+}

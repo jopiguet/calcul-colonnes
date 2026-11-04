@@ -1,0 +1,118 @@
+{
+  "entries": [
+    {
+      "term": "βούλομαι",
+      "meaning": "to want, wish",
+      "translations": {
+        "fr": "vouloir",
+        "es": "querer, desear"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "βούλομαι",
+        "βουλήσομαι",
+        "ἐβουλήθην"
+      ],
+      "reading": "boulomai"
+    },
+    {
+      "term": "γίγνομαι",
+      "meaning": "to become, happen, be born",
+      "translations": {
+        "fr": "devenir, arriver, naître",
+        "es": "llegar a ser, suceder, nacer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "γίγνομαι",
+        "γενήσομαι",
+        "ἐγενόμην"
+      ],
+      "reading": "gignomai"
+    },
+    {
+      "term": "μάχομαι",
+      "meaning": "to fight (+ dat.)",
+      "translations": {
+        "fr": "combattre (+ dat.)",
+        "es": "luchar (+ dat.)"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "μάχομαι",
+        "μαχοῦμαι",
+        "ἐμαχεσάμην"
+      ],
+      "reading": "machomai"
+    },
+    {
+      "term": "παύω",
+      "meaning": "to stop (mid. cease)",
+      "translations": {
+        "fr": "arrêter (moyen : cesser)",
+        "es": "detener (media: cesar)"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "παύω",
+        "παύσω",
+        "ἔπαυσα"
+      ],
+      "reading": "pauō"
+    },
+    {
+      "term": "ὁ νόμος",
+      "meaning": "law, custom",
+      "translations": {
+        "fr": "la loi, la coutume",
+        "es": "la ley, la costumbre"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "νόμου",
+      "reading": "ho nomos"
+    },
+    {
+      "term": "ὑπό",
+      "meaning": "by (agent, + gen.); under",
+      "translations": {
+        "fr": "par (agent, + gén.) ; sous",
+        "es": "por (agente, + gen.); bajo"
+      },
+      "type": "preposition",
+      "reading": "hypo"
+    },
+    {
+      "term": "ὁ υἱός",
+      "meaning": "son",
+      "translations": {
+        "fr": "le fils",
+        "es": "el hijo"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "υἱοῦ",
+      "reading": "ho hyios"
+    },
+    {
+      "term": "Ἀθηναῖος",
+      "meaning": "Athenian",
+      "translations": {
+        "fr": "athénien",
+        "es": "ateniense"
+      },
+      "type": "adjective",
+      "forms": [
+        {
+          "label": "feminine",
+          "value": "Ἀθηναία"
+        },
+        {
+          "label": "neuter",
+          "value": "Ἀθηναῖον"
+        }
+      ],
+      "reading": "Athēnaios"
+    }
+  ]
+}

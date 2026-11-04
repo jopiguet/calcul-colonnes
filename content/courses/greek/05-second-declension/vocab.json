@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "τὸ δῶρον",
+      "meaning": "gift",
+      "translations": {
+        "fr": "le don, le présent",
+        "es": "el regalo"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "δώρου",
+      "reading": "to dōron"
+    },
+    {
+      "term": "τὸ τέκνον",
+      "meaning": "child",
+      "translations": {
+        "fr": "l'enfant",
+        "es": "el niño, el hijo"
+      },
+      "type": "noun",
+      "gender": "neuter",
+      "genitive": "τέκνου",
+      "reading": "to teknon"
+    },
+    {
+      "term": "ἡ νῆσος",
+      "meaning": "island",
+      "translations": {
+        "fr": "l'île",
+        "es": "la isla"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "νήσου",
+      "reading": "hē nēsos"
+    },
+    {
+      "term": "ἡ νόσος",
+      "meaning": "illness",
+      "translations": {
+        "fr": "la maladie",
+        "es": "la enfermedad"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "νόσου",
+      "reading": "hē nosos"
+    },
+    {
+      "term": "ἡ ἀρετή",
+      "meaning": "excellence, virtue",
+      "translations": {
+        "fr": "l'excellence, la vertu",
+        "es": "la excelencia, la virtud"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "ἀρετῆς",
+      "reading": "hē aretē"
+    },
+    {
+      "term": "πείθω",
+      "meaning": "to persuade",
+      "translations": {
+        "fr": "persuader",
+        "es": "persuadir"
+      },
+      "type": "verb",
+      "reading": "peithō"
+    },
+    {
+      "term": "ὁ, ἡ, τό",
+      "meaning": "the",
+      "translations": {
+        "fr": "le, la",
+        "es": "el, la, lo"
+      },
+      "type": "article",
+      "reading": "ho, hē, to"
+    }
+  ]
+}

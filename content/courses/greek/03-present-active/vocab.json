@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "λύω",
+      "meaning": "to loose, untie, free",
+      "translations": {
+        "fr": "délier, libérer",
+        "es": "desatar, liberar"
+      },
+      "type": "verb",
+      "reading": "lyō"
+    },
+    {
+      "term": "γράφω",
+      "meaning": "to write",
+      "translations": {
+        "fr": "écrire",
+        "es": "escribir"
+      },
+      "type": "verb",
+      "reading": "graphō"
+    },
+    {
+      "term": "λέγω",
+      "meaning": "to say, speak",
+      "translations": {
+        "fr": "dire, parler",
+        "es": "decir, hablar"
+      },
+      "type": "verb",
+      "reading": "legō"
+    },
+    {
+      "term": "ἔχω",
+      "meaning": "to have, hold",
+      "translations": {
+        "fr": "avoir, tenir",
+        "es": "tener"
+      },
+      "type": "verb",
+      "reading": "echō"
+    },
+    {
+      "term": "πέμπω",
+      "meaning": "to send",
+      "translations": {
+        "fr": "envoyer",
+        "es": "enviar"
+      },
+      "type": "verb",
+      "reading": "pempō"
+    },
+    {
+      "term": "παιδεύω",
+      "meaning": "to educate, teach",
+      "translations": {
+        "fr": "éduquer, instruire",
+        "es": "educar, instruir"
+      },
+      "type": "verb",
+      "reading": "paideuō"
+    },
+    {
+      "term": "οὐ, οὐκ, οὐχ",
+      "meaning": "not",
+      "translations": {
+        "fr": "ne… pas",
+        "es": "no"
+      },
+      "type": "adverb",
+      "reading": "ou, ouk, ouch"
+    },
+    {
+      "term": "μή",
+      "meaning": "not (commands, infinitives)",
+      "translations": {
+        "fr": "ne… pas (ordres, infinitifs)",
+        "es": "no (órdenes, infinitivos)"
+      },
+      "type": "adverb",
+      "reading": "mē"
+    }
+  ]
+}

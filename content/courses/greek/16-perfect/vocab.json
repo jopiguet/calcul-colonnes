@@ -1,0 +1,95 @@
+{
+  "entries": [
+    {
+      "term": "οἶδα",
+      "meaning": "to know",
+      "translations": {
+        "fr": "savoir",
+        "es": "saber"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "οἶδα",
+        "εἴσομαι",
+        "ᾔδη"
+      ],
+      "reading": "oida"
+    },
+    {
+      "term": "ἀποθνῄσκω",
+      "meaning": "to die",
+      "translations": {
+        "fr": "mourir",
+        "es": "morir"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἀποθνῄσκω",
+        "ἀποθανοῦμαι",
+        "ἀπέθανον",
+        "τέθνηκα"
+      ],
+      "reading": "apothnēskō"
+    },
+    {
+      "term": "γιγνώσκω",
+      "meaning": "to know, recognise",
+      "translations": {
+        "fr": "connaître, reconnaître",
+        "es": "conocer, reconocer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "γιγνώσκω",
+        "γνώσομαι",
+        "ἔγνων",
+        "ἔγνωκα"
+      ],
+      "reading": "gignōskō"
+    },
+    {
+      "term": "λείπω",
+      "meaning": "to leave",
+      "translations": {
+        "fr": "laisser, quitter",
+        "es": "dejar, abandonar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "λείπω",
+        "λείψω",
+        "ἔλιπον",
+        "λέλοιπα"
+      ],
+      "reading": "leipō"
+    },
+    {
+      "term": "ἀγγέλλω",
+      "meaning": "to announce",
+      "translations": {
+        "fr": "annoncer",
+        "es": "anunciar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ἀγγέλλω",
+        "ἀγγελῶ",
+        "ἤγγειλα",
+        "ἤγγελκα"
+      ],
+      "reading": "angellō"
+    },
+    {
+      "term": "ὁ δικαστής",
+      "meaning": "judge, juror",
+      "translations": {
+        "fr": "le juge",
+        "es": "el juez"
+      },
+      "type": "noun",
+      "gender": "masculine",
+      "genitive": "δικαστοῦ",
+      "reading": "ho dikastēs"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "entries": [
+    {
+      "term": "τιμάω",
+      "meaning": "to honour",
+      "translations": {
+        "fr": "honorer",
+        "es": "honrar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "τιμάω",
+        "τιμήσω",
+        "ἐτίμησα"
+      ],
+      "reading": "timaō"
+    },
+    {
+      "term": "ποιέω",
+      "meaning": "to make, do",
+      "translations": {
+        "fr": "faire",
+        "es": "hacer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ποιέω",
+        "ποιήσω",
+        "ἐποίησα"
+      ],
+      "reading": "poieō"
+    },
+    {
+      "term": "δηλόω",
+      "meaning": "to show, make clear",
+      "translations": {
+        "fr": "montrer, rendre clair",
+        "es": "mostrar, aclarar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "δηλόω",
+        "δηλώσω",
+        "ἐδήλωσα"
+      ],
+      "reading": "dēloō"
+    },
+    {
+      "term": "νικάω",
+      "meaning": "to win, conquer",
+      "translations": {
+        "fr": "vaincre",
+        "es": "vencer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "νικάω",
+        "νικήσω",
+        "ἐνίκησα"
+      ],
+      "reading": "nikaō"
+    },
+    {
+      "term": "ζητέω",
+      "meaning": "to seek",
+      "translations": {
+        "fr": "chercher",
+        "es": "buscar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "ζητέω",
+        "ζητήσω",
+        "ἐζήτησα"
+      ],
+      "reading": "zēteō"
+    },
+    {
+      "term": "φιλέω",
+      "meaning": "to love, be fond of",
+      "translations": {
+        "fr": "aimer",
+        "es": "amar, querer"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "φιλέω",
+        "φιλήσω",
+        "ἐφίλησα"
+      ],
+      "reading": "phileō"
+    },
+    {
+      "term": "καλέω",
+      "meaning": "to call, summon",
+      "translations": {
+        "fr": "appeler",
+        "es": "llamar"
+      },
+      "type": "verb",
+      "principal_parts": [
+        "καλέω",
+        "καλῶ",
+        "ἐκάλεσα"
+      ],
+      "reading": "kaleō"
+    },
+    {
+      "term": "ἡ ἀλήθεια",
+      "meaning": "truth",
+      "translations": {
+        "fr": "la vérité",
+        "es": "la verdad"
+      },
+      "type": "noun",
+      "gender": "feminine",
+      "genitive": "ἀληθείας",
+      "reading": "hē alētheia"
+    }
+  ]
+}
