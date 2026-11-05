@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { newPlayer, openActivity } from "./helpers";
+import { goHome, newPlayer, openActivity } from "./helpers";
 
 /** The first Latin lesson, opened from the course page. */
 async function firstLesson(page: Page): Promise<void> {
@@ -241,8 +241,15 @@ test("Hebrew: right-to-left runs, answers in the script or in transliteration", 
 
 test("Malayalam: its font, answers in the script, ISO or Manglish, and the letter cards", async ({ page }) => {
   await newPlayer(page, "Meera");
+  // The course's words and letters are on the home page with the other languages, even with no book of the language.
+  await goHome(page);
+  await expect(page.locator("[data-activity='vocab-course-malayalam']")).toContainText("Vocabulaire malayalam");
+  await expect(page.locator("[data-activity='vocab-course-malayalam'] .activity-text")).toHaveText("🌴 Malayalam");
+  await expect(page.locator("[data-activity='vocab-course-malayalam-letters']")).toContainText("Alphabet malayalam");
+  await expect(page.locator("[data-activity='vocab-course-hebrew']")).toContainText("Vocabulaire hébreu");
   await openActivity(page, "lessons-malayalam");
-  await expect(page.locator(".lessons-item")).toHaveCount(18);
+  // 18 lessons and the compendium of proverbs.
+  await expect(page.locator(".lessons-item")).toHaveCount(19);
   await page.locator(".lessons-item").nth(2).click();
   await expect(page.locator(".lesson-title")).toContainText("3.");
   const run = page.locator(".script-malayalam").first();

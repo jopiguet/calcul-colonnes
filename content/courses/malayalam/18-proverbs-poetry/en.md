@@ -14,6 +14,8 @@ Malayalam literature is old: the language took its own shape around the 9th to 1
 
 The jasmine in your own yard is the talent at home that nobody notices. The elephant: never raise hopes you will not fulfil, it is worse than any gift withheld. The squirrel comes from the Ramayana, where it helped build Rama's bridge by rolling in sand and shaking it off between the stones: every contribution counts. The crow's chick is every parent's child. The pestle is narrow: with unity, even hardship is bearable.
 
+Lesson 19 gathers these and twenty-eight more in a compendium, all of them in the course vocabulary.
+
 Note the forms: -ഉം "even" (കാക്കയ്ക്കും), -ആലും "even if" (കൊടുത്താലും), -എങ്കിൽ "if" (ഉണ്ടെങ്കിൽ), -അരുത് "must not".
 
 ## Ezhuthachan

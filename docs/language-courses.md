@@ -16,7 +16,7 @@ structure and the same exercises.
 | 🌹 Persian (`persian`) | 7.4.0 | 18 | 72 | 150 |
 | 🌙 Arabic (`arabic`) | 7.5.0 | 22 | 88 | 182 |
 | 📜 Hebrew (`hebrew`) | 7.6.0 | 19 | 76 | 165 |
-| 🌴 Malayalam (`malayalam`) | 7.7.0 | 18 | 72 | 150, and 96 letter cards |
+| 🌴 Malayalam (`malayalam`) | 7.7.0 | 19 | 76 | 188, and 96 letter cards |
 
 The content is original, written for the app, and ships with it; quoted texts
 (Caesar, Catullus, Virgil; Sinuhe, the Shipwrecked Sailor, the offering
@@ -172,7 +172,12 @@ counts as an accent).
 At start, the server builds one vocabulary book per course from these files,
 `course-<id>`, one lesson per course lesson, imports it when it changed (a
 hash in `app_settings`, key `course-vocab:<id>`), and shares it with every
-account. *📚 Practise the course vocabulary* opens it.
+account. *📚 Practise the course vocabulary* opens it, and so does its card
+under *Languages* on the home page (since 7.8.0): every course book is there
+with the player's own books, so a language studied only through its course
+has its card and its words due. A course book shares a card with the other
+books of its language (a shelf, `vocab-shelf-<lang>`), or has its own,
+`vocab-course-<id>`, labelled with the course's icon and title.
 
 ### Letter cards
 
@@ -188,6 +193,12 @@ the sound shown and the letter chosen among the letters of its section.
 *🔤 Letter cards* on the course page opens it. Malayalam has five lessons:
 vowels (13), consonants (36), vowel signs and marks (15), chillus (5),
 conjuncts (27).
+
+The Malayalam course ends with a **compendium of proverbs** (lesson 19):
+thirty-three proverbs by theme, each with its reading, a word-for-word
+rendering and its sense, all of them in the lesson's vocabulary (type
+`phrase`, the sense as the meaning), so they come back by spaced repetition
+as multiple choice.
 
 ## Progress
 

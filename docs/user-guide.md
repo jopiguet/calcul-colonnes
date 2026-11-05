@@ -856,7 +856,12 @@ retroflex consonants are not told apart when typed, so they are tested by
 choices. The buttons write the ISO letters. *🔤 Cartes des lettres* on the
 course page opens the Malayalam letters as cards, like the kana: the letter
 shown and its sound chosen or typed, then the sound shown and the letter
-chosen.
+chosen. The last lesson is a compendium of proverbs, all of them in the
+course vocabulary.
+
+Every course's words (and the Malayalam letters) also have their card under
+*Langues* on the home page, with the words to review, beside your own books
+of the same language.
 
 A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
 shows them checked, and *Recommencer la leçon* empties it.

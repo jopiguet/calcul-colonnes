@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.8.0",
+    fr: ["Le vocabulaire des cours de langues est maintenant sous « Langues » sur l'accueil, avec les mots à réviser, à côté de vos livres de la même langue : chaque langue des cours y a sa carte, même sans autre livre. Les lettres malayalam aussi.", "Malayalam : un recueil de trente-trois proverbes par thème (leçon 19), tous dans le vocabulaire du cours."],
+    es: ["El vocabulario de los cursos de idiomas está ahora en «Idiomas» en el inicio, con las palabras por repasar, junto a sus libros de la misma lengua: cada lengua de los cursos tiene su tarjeta, aunque no haya otro libro. Las letras malayalam también.", "Malayalam: un compendio de treinta y tres refranes por temas (lección 19), todos en el vocabulario del curso."],
+    en: ["The language courses' vocabulary is now under \"Languages\" on the home page, with its words to review, beside your own books of the same language: every course language has its card, even with no other book. The Malayalam letters too.", "Malayalam: a compendium of thirty-three proverbs by theme (lesson 19), all of them in the course vocabulary."],
+  },
+  {
     version: "7.7.0",
     fr: ["Cours de langues : le malayalam, en 18 leçons, de l'écriture et ses ligatures aux cas, aux temps et aux participes, la langue parlée du Kerala, le calendrier de Kollam, puis les proverbes, Ezhuthachan et Kumaran Asan. Les réponses se tapent en malayalam, en ISO ou en « manglish » : « keralam » vaut കേരളം. Et 96 cartes des lettres, comme pour les kana."],
     es: ["Cursos de idiomas: el malayalam, en 18 lecciones, de la escritura y sus ligaduras a los casos, los tiempos y los participios, la lengua hablada de Kerala, el calendario de Kollam, y luego los refranes, Ezhuthachan y Kumaran Asan. Las respuestas se escriben en malayalam, en ISO o en «manglish»: «keralam» vale കേരളം. Y 96 tarjetas de las letras, como para los kana."],

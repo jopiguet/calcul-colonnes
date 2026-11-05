@@ -197,6 +197,13 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
 }
 
 /** Every activity of the home page, by group: what an account can show or hide for a player. */
+/** A language course's books (course-<id>, course-<id>-letters): the course's icon and title, after a separator. */
+function courseLabel(book: VocabBookInfo, courses: CourseInfo[], before = ""): string {
+  if (!book.slug.startsWith("course-")) return "";
+  const c = courses.find((x) => book.slug === `course-${x.id}` || book.slug === `course-${x.id}-letters`);
+  return c ? `${before}${c.icon} ${c.title}` : "";
+}
+
 export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseBookInfo[] = [], courses: CourseInfo[] = []): { group: string; activities: { id: string; title: string }[] }[] {
   return [
     { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }, { id: "calc", title: qt("modeCalc") }] },
@@ -206,7 +213,7 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
     {
       group: ht("languages"),
       activities: [
-        ...books.filter((b) => !b.slug.startsWith("course-")).map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}` })),
+        ...books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}${courseLabel(b, courses, " · ")}` })),
       ],
     },
     { group: lt("group"), activities: courses.map((c) => ({ id: `lessons-${c.id}`, title: `${c.icon} ${c.title}` })) },
@@ -410,8 +417,10 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const shelf = el("div", "activity-grid");
   // A language with several books: one card for them all (its page opens each), unless the player keeps them apart.
   const hiddenBooks = new Set(ctx.user.hidden ?? []);
-  // A language course's words (course-<id>) are opened from the course, not shelved with the player's books.
-  const ownBooks = books.filter((b) => !b.slug.startsWith("course-"));
+  // Every book, the language courses' words and letters included (course-<id>, course-<id>-letters): a language
+  // studied only through its course still has its card, and its words due are counted with the others of the language.
+  const ownBooks = [...books].sort((a, b) => Number(a.slug.startsWith("course-")) - Number(b.slug.startsWith("course-")));
+  const labelOf = (b: VocabBookInfo): string => courseLabel(b, courses) || b.title;
   const shown = ownBooks.filter((b) => !hiddenBooks.has(`vocab-${b.slug}`));
   const grouped = new Map(shelvesOf(shown).filter((s) => !shelfApart(s.lang)).map((s) => [s.lang, s]));
   const placed = new Set<string>();
@@ -427,7 +436,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
         ? { text: due === 1 ? ht("oneWordDue") : ht("wordsDue", { count: due }), waiting: true }
         : started ? { text: ht("upToDate"), waiting: false } : { text: ht("notStarted", { count: words }), waiting: false };
       shelf.append(
-        card(`vocab-shelf-${together.lang}`, `📚 ${vt("title", { lang: langName(together.lang) })}`, together.books.map((b) => b.title).join(" · "), status, () =>
+        card(`vocab-shelf-${together.lang}`, `📚 ${vt("title", { lang: langName(together.lang) })}`, together.books.map(labelOf).join(" · "), status, () =>
           ctx.open({ mode: "shelf", lang: together.lang }),
         ),
       );
@@ -444,7 +453,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
           ? { text: ht("upToDate"), waiting: false }
           : { text: ht(signs ? "charsNotStarted" : "notStarted", { count: book.entries }), waiting: false };
     shelf.append(
-      card(`vocab-${book.slug}`, `${signs ? "✍️" : "💬"} ${bookTitle(book)}`, book.title, status, () =>
+      card(`vocab-${book.slug}`, `${signs ? "✍️" : "💬"} ${bookTitle(book)}`, labelOf(book), status, () =>
         ctx.open({ mode: "vocab", book: book.id }),
       ),
     );

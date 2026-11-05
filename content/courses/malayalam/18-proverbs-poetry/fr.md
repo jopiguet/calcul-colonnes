@@ -14,6 +14,8 @@ La littérature malayalam est ancienne : la langue a pris sa forme propre entre 
 
 Le jasmin de votre propre cour, c'est le talent de la maison que personne ne remarque. L'éléphant : ne jamais faire naître un espoir qu'on ne tiendra pas, c'est pire que n'importe quel cadeau refusé. L'écureuil vient du Ramayana, où il aidait à bâtir le pont de Rama en se roulant dans le sable et en le secouant entre les pierres : chaque contribution compte. Le petit de la corneille, c'est l'enfant de tout parent. Le pilon est étroit : dans l'union, même l'épreuve se supporte.
 
+La leçon 19 les rassemble avec vingt-huit autres dans un recueil, tous dans le vocabulaire du cours.
+
 Notez les formes : -ഉം « même » (കാക്കയ്ക്കും), -ആലും « même si » (കൊടുത്താലും), -എങ്കിൽ « si » (ഉണ്ടെങ്കിൽ), -അരുത് « il ne faut pas ».
 
 ## Ezhuthachan

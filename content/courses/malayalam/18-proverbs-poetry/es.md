@@ -14,6 +14,8 @@ La literatura malayalam es antigua: la lengua tomó forma propia entre los siglo
 
 El jazmín de su propio patio es el talento de casa que nadie ve. El elefante: nunca dar esperanzas que no se cumplirán, es peor que cualquier regalo negado. La ardilla viene del Ramayana, donde ayudaba a construir el puente de Rama revolcándose en la arena y sacudiéndola entre las piedras: toda aportación cuenta. La cría del cuervo es el hijo de cualquier padre. El mortero es estrecho: con unión, hasta la penuria se soporta.
 
+La lección 19 los reúne con otros veintiocho en un compendio, todos en el vocabulario del curso.
+
 Fíjese en las formas: -ഉം «incluso» (കാക്കയ്ക്കും), -ആലും «aunque» (കൊടുത്താലും), -എങ്കിൽ «si» (ഉണ്ടെങ്കിൽ), -അരുത് «no se debe».
 
 ## Ezhuthachan

@@ -1,0 +1,384 @@
+{
+ "entries": [
+  {
+   "term": "മുറ്റത്തെ മുല്ലയ്ക്ക് മണമില്ല",
+   "reading": "muṟṟatte mullaykkŭ maṇamilla",
+   "meaning": "what is close at hand is not valued",
+   "translations": {
+    "fr": "on ne voit pas la valeur de ce qui est proche",
+    "es": "no se valora lo que está cerca"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "മിന്നുന്നതെല്ലാം പൊന്നല്ല",
+   "reading": "minnunnatellāṁ ponnalla",
+   "meaning": "appearances deceive",
+   "translations": {
+    "fr": "les apparences sont trompeuses",
+    "es": "las apariencias engañan"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "നിറകുടം തുളുമ്പില്ല",
+   "reading": "niṟakuṭaṁ tuḷumpilla",
+   "meaning": "those who know much do not show off",
+   "translations": {
+    "fr": "qui sait beaucoup ne s'en vante pas",
+    "es": "quien mucho sabe no presume"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "കുരയ്ക്കും പട്ടി കടിക്കില്ല",
+   "reading": "kuraykkuṁ paṭṭi kaṭikkilla",
+   "meaning": "loud threats are seldom carried out",
+   "translations": {
+    "fr": "les grandes menaces s'exécutent rarement",
+    "es": "las amenazas ruidosas rara vez se cumplen"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ഇക്കരെ നിന്നാൽ അക്കരെ പച്ച",
+   "reading": "ikkare ninnāl akkare pacca",
+   "meaning": "the grass is always greener elsewhere",
+   "translations": {
+    "fr": "l'herbe est toujours plus verte ailleurs",
+    "es": "lo ajeno siempre parece mejor"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "കാക്ക കുളിച്ചാൽ കൊക്കാകുമോ?",
+   "reading": "kākka kuḷiccāl kokkākumō?",
+   "meaning": "nature does not change by washing the surface",
+   "translations": {
+    "fr": "on ne change pas sa nature en se lavant",
+    "es": "la naturaleza no cambia lavando la superficie"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "മൗനം വിദ്വാനു ഭൂഷണം",
+   "reading": "maunaṁ vidvānu bhūṣaṇaṁ",
+   "meaning": "the wise know when to keep quiet",
+   "translations": {
+    "fr": "le sage sait se taire",
+    "es": "el sabio sabe callar"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "കൊക്കെത്ര കുളം കണ്ടതാ",
+   "reading": "kokketra kuḷaṁ kaṇṭatā",
+   "meaning": "an old hand is not easily fooled",
+   "translations": {
+    "fr": "on ne trompe pas un vieux routier",
+    "es": "a perro viejo no hay tus tus"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ഇരിക്കുന്നതിന് മുമ്പ് കാൽ നീട്ടരുത്",
+   "reading": "irikkunnatinŭ mumpŭ kāl nīṭṭarutŭ",
+   "meaning": "first things first; do not rush",
+   "translations": {
+    "fr": "chaque chose en son temps",
+    "es": "cada cosa a su tiempo"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ആറ്റിൽ കളഞ്ഞാലും അളന്നു കളയണം",
+   "reading": "āṯṯil kaḷaññāluṁ aḷannu kaḷayaṇaṁ",
+   "meaning": "know what you spend, even when you waste it",
+   "translations": {
+    "fr": "sache ce que tu dépenses, même en pure perte",
+    "es": "sabe lo que gastas, aunque lo malgastes"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "പല തുള്ളി പെരുവെള്ളം",
+   "reading": "pala tuḷḷi peruveḷḷaṁ",
+   "meaning": "small amounts add up",
+   "translations": {
+    "fr": "les petits ruisseaux font les grandes rivières",
+    "es": "muchos pocos hacen un mucho"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ഓടുന്ന പട്ടിക്ക് ഒരു മുഴം മുമ്പേ എറിയണം",
+   "reading": "ōṭunna paṭṭikkŭ oru muḻaṁ mumpē eṟiyaṇaṁ",
+   "meaning": "anticipate; act one step ahead",
+   "translations": {
+    "fr": "il faut anticiper",
+    "es": "hay que adelantarse"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "സമ്പത്ത് കാലത്ത് തൈ പത്ത് വെച്ചാൽ ആപത്ത് കാലത്ത് കാ പത്ത് തിന്നാം",
+   "reading": "sampattŭ kālattŭ tai pattŭ veccāl āpattŭ kālattŭ kā pattŭ tinnāṁ",
+   "meaning": "provide in plenty for times of need",
+   "translations": {
+    "fr": "prévois dans l'abondance pour les temps de besoin",
+    "es": "en la abundancia, prevé la necesidad"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "അണ്ണാൻ കുഞ്ഞും തന്നാലായത്",
+   "reading": "aṇṇān kuññuṁ tannālāyatŭ",
+   "meaning": "everyone helps as they can",
+   "translations": {
+    "fr": "chacun aide selon ses moyens",
+    "es": "cada uno ayuda según puede"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ഒരു വെടിക്ക് രണ്ടു പക്ഷി",
+   "reading": "oru veṭikkŭ raṇṭu pakṣi",
+   "meaning": "two results from one effort",
+   "translations": {
+    "fr": "faire d'une pierre deux coups",
+    "es": "matar dos pájaros de un tiro"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "എലിയെ പേടിച്ച് ഇല്ലം ചുടുക",
+   "reading": "eliye pēṭiccŭ illaṁ cuṭuka",
+   "meaning": "a cure worse than the trouble",
+   "translations": {
+    "fr": "un remède pire que le mal",
+    "es": "un remedio peor que la enfermedad"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "കാക്കയ്ക്കും തൻ കുഞ്ഞ് പൊൻകുഞ്ഞ്",
+   "reading": "kākkaykkuṁ tan kuññŭ ponkuññŭ",
+   "meaning": "every parent finds their own child beautiful",
+   "translations": {
+    "fr": "chaque parent trouve son enfant beau",
+    "es": "a cada padre le parece hermoso su hijo"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ചക്കിക്കൊത്ത ചങ്കരൻ",
+   "reading": "cakkikkotta caṅkaran",
+   "meaning": "two of a kind, a well-matched pair",
+   "translations": {
+    "fr": "ils sont bien assortis",
+    "es": "Dios los cría y ellos se juntan"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "വിത്തുഗുണം പത്തുഗുണം",
+   "reading": "vittuguṇaṁ pattuguṇaṁ",
+   "meaning": "good stock gives good fruit",
+   "translations": {
+    "fr": "bon sang ne saurait mentir",
+    "es": "de casta le viene al galgo"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ചൊട്ടയിലെ ശീലം ചുടല വരെ",
+   "reading": "coṭṭayile śīlaṁ cuṭala vare",
+   "meaning": "habits formed young last a lifetime",
+   "translations": {
+    "fr": "les habitudes de l'enfance durent toute la vie",
+    "es": "genio y figura hasta la sepultura"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "തന്നോളം വളർന്നാൽ താനെന്ന് വിളിക്കണം",
+   "reading": "tannōḷaṁ vaḷarnnāl tānennŭ viḷikkaṇaṁ",
+   "meaning": "treat a grown child as an equal",
+   "translations": {
+    "fr": "un enfant devenu grand se traite en égal",
+    "es": "a un hijo mayor se le trata de igual a igual"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ഉപ്പോളം വരുമോ ഉപ്പിലിട്ടത്?",
+   "reading": "uppōḷaṁ varumō uppiliṭṭatŭ?",
+   "meaning": "the copy never equals the source",
+   "translations": {
+    "fr": "la copie ne vaut jamais l'original",
+    "es": "la copia nunca iguala al original"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "കണ്ണുള്ളപ്പോൾ കണ്ണിന്റെ വിലയറിയില്ല",
+   "reading": "kaṇṇuḷḷappōḷ kaṇṇinṯe vilayaṟiyilla",
+   "meaning": "we value things only once they are lost",
+   "translations": {
+    "fr": "on n'apprécie une chose qu'une fois perdue",
+    "es": "nadie sabe lo que tiene hasta que lo pierde"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ഒരുമയുണ്ടെങ്കിൽ ഉലക്കമേലും കിടക്കാം",
+   "reading": "orumayuṇṭeṅkil ulakkamēluṁ kiṭakkāṁ",
+   "meaning": "unity makes hardship bearable",
+   "translations": {
+    "fr": "l'union rend l'épreuve supportable",
+    "es": "la unión hace llevadera la penuria"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ആന കൊടുത്താലും ആശ കൊടുക്കരുത്",
+   "reading": "āna koṭuttāluṁ āśa koṭukkarutŭ",
+   "meaning": "never raise false hopes",
+   "translations": {
+    "fr": "ne jamais donner de faux espoirs",
+    "es": "nunca dar falsas esperanzas"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "അരിയെത്ര? പയറഞ്ഞാഴി",
+   "reading": "ariyetra? payaṟaññāḻi",
+   "meaning": "an answer beside the question",
+   "translations": {
+    "fr": "répondre à côté de la question",
+    "es": "responder lo que no se pregunta"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ആന വായിൽ അമ്പഴങ്ങ",
+   "reading": "āna vāyil ampaḻaṅṅa",
+   "meaning": "far too little for the need",
+   "translations": {
+    "fr": "bien trop peu pour le besoin",
+    "es": "muy poco para tanta necesidad"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "പട്ടി ചന്തയ്ക്ക് പോയ പോലെ",
+   "reading": "paṭṭi cantaykkŭ pōya pōle",
+   "meaning": "going about with no purpose and coming back with nothing",
+   "translations": {
+    "fr": "aller partout sans but et revenir les mains vides",
+    "es": "ir sin rumbo y volver con las manos vacías"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "അടി തെറ്റിയാൽ ആനയും വീഴും",
+   "reading": "aṭi teṯṯiyāl ānayuṁ vīḻuṁ",
+   "meaning": "even the strongest can fail",
+   "translations": {
+    "fr": "même les plus forts peuvent tomber",
+    "es": "hasta el más fuerte puede caer"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "അൽപ്പജ്ഞാനം ആപത്ത്",
+   "reading": "alppajñānaṁ āpattŭ",
+   "meaning": "a little learning is a dangerous thing",
+   "translations": {
+    "fr": "un peu de savoir est dangereux",
+    "es": "saber poco es peligroso"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "പൊന്നുരുക്കുന്നിടത്ത് പൂച്ചയ്ക്കെന്ത് കാര്യം",
+   "reading": "ponnurukkunniṭattŭ pūccaykkentŭ kāryaṁ",
+   "meaning": "keep out of what does not concern you",
+   "translations": {
+    "fr": "ne te mêle pas de ce qui ne te regarde pas",
+    "es": "no te metas donde no te llaman"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "ഗതികെട്ടാൽ പുലി പുല്ലും തിന്നും",
+   "reading": "gatikeṭṭāl puli pulluṁ tinnuṁ",
+   "meaning": "need makes anyone give in",
+   "translations": {
+    "fr": "nécessité fait loi",
+    "es": "la necesidad no tiene ley"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "വേലി തന്നെ വിളവ് തിന്നുക",
+   "reading": "vēli tanne viḷavŭ tinnuka",
+   "meaning": "betrayal by the one meant to protect",
+   "translations": {
+    "fr": "trahi par celui qui devait protéger",
+    "es": "el guardián que traiciona"
+   },
+   "type": "phrase"
+  },
+  {
+   "term": "പൊന്ന്",
+   "reading": "ponnŭ",
+   "meaning": "gold",
+   "translations": {
+    "fr": "or",
+    "es": "oro"
+   },
+   "type": "noun"
+  },
+  {
+   "term": "പട്ടി",
+   "reading": "paṭṭi",
+   "meaning": "dog",
+   "translations": {
+    "fr": "chien",
+    "es": "perro"
+   },
+   "type": "noun"
+  },
+  {
+   "term": "പുലി",
+   "reading": "puli",
+   "meaning": "tiger, leopard",
+   "translations": {
+    "fr": "tigre, léopard",
+    "es": "tigre, leopardo"
+   },
+   "type": "noun"
+  },
+  {
+   "term": "പച്ച",
+   "reading": "pacca",
+   "meaning": "green",
+   "translations": {
+    "fr": "vert",
+    "es": "verde"
+   },
+   "type": "adjective"
+  },
+  {
+   "term": "ഉലക്ക",
+   "reading": "ulakka",
+   "meaning": "pestle",
+   "translations": {
+    "fr": "pilon",
+    "es": "mano de mortero"
+   },
+   "type": "noun"
+  }
+ ]
+}

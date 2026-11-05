@@ -1,5 +1,11 @@
 # Changelog
 
+## 7.8.0
+
+- **Course words on the home page:** every language course's vocabulary book, and the Malayalam letters, now has its card under *Languages*, with its words or cards due, beside the player's own books (`src/home.ts`). A language studied only through its course appears there too. A course book joins the shelf of its language when there is another book in it (the Latin course and a Latin book share *📚 Vocabulaire latin*), and is labelled with the course's icon and title. Course books can be hidden in the settings like any book.
+- **🌴 Malayalam: a compendium of proverbs**, lesson 19: thirty-three proverbs in four themes (appearances, foresight, family and habit, folly and need), each with its reading, a word-for-word rendering and its sense, four exercises, and all of them in the course vocabulary as phrases, with five key words: 19 lessons, 76 exercises, 188 words. Lesson 18 points to it.
+- **Tests:** the Malayalam test checks the course cards on the home page and the 19 lessons.
+
 ## 7.7.0
 
 - **🌴 Malayalam**, the ninth language course: 18 lessons, 72 exercises, 150 words, in French, Spanish and English. See [Language courses](docs/language-courses.md).

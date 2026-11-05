@@ -94,7 +94,20 @@ export async function goHome(page: Page): Promise<void> {
  */
 export async function openActivity(page: Page, activity: string): Promise<void> {
   await goHome(page);
-  await page.locator(`[data-activity='${activity}']`).click();
+  const direct = page.locator(`[data-activity='${activity}']`);
+  if (activity.startsWith("vocab-") && !activity.startsWith("vocab-shelf-") && (await direct.count()) === 0) {
+    // A book that shares its language with a course's words sits on that language's shelf: opened from there.
+    const slug = activity.slice("vocab-".length);
+    const books = (await (await page.request.get("/api/vocab/books")).json()) as { slug: string; term: string }[];
+    const book = books.find((b) => b.slug === slug);
+    if (book) {
+      await page.locator(`[data-activity='vocab-shelf-${book.term}']`).click();
+      await page.locator(`.vocab-shelf-book[data-book='${slug}'] button`, { hasText: /Ouvrir|Abrir|Open/ }).click();
+      await page.locator(".vocab-home").first().waitFor();
+      return;
+    }
+  }
+  await direct.click();
   await page
     .locator(
       activity === "columns" ? ".board" : activity === "quiz" || activity === "chemistry" || activity === "linux" || activity === "chembio" || activity === "sql" || activity === "rust" || activity === "ts" || activity === "react" || activity === "gcp" || activity === "cf" || activity === "marx" || activity === "econ" || activity === "calc" ? ".quiz-setup, .quiz" : activity.startsWith("discover-") ? ".discover-lab" : activity.startsWith("workbook-") ? ".workbook-home, .workbook-unit-page" : activity.startsWith("lessons-") ? ".lessons-home, .lesson-page" : ".vocab-home",
