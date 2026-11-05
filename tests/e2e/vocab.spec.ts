@@ -1,4 +1,3 @@
-import { readFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import type { VocabProgress } from "../../shared/types.ts";
@@ -656,30 +655,4 @@ test("Latin in format 3: after the answer, the noun's gender and genitive, the v
   const form = page.locator(".vocab-info-form").first();
   await expect(form.locator(".vocab-info-label")).toHaveText(word.form[0]);
   await expect(form.locator(".vocab-info-value")).toHaveText(word.form[1]);
-});
-
-test("export: a book as a format-3 file from its page, every book in one file", async ({ page }) => {
-  await newPlayer(page, "Exp");
-  await openActivity(page, "vocab-test-latin");
-  const link = page.locator(".vocab-export-link").first();
-  await expect(link).toHaveText("⬇️ Exporter ce livre (JSON)");
-  const [download] = await Promise.all([page.waitForEvent("download"), link.click()]);
-  expect(download.suggestedFilename()).toBe("test-latin.json");
-  const file = JSON.parse(await readFile((await download.path())!, "utf8")) as {
-    format: number;
-    book: { id: string; term: string; kind: string };
-    lessons: { sections: { entries: { term: string; meaning: string; genitive?: string; principal_parts?: string[] }[] }[] }[];
-  };
-  expect(file.format).toBe(3);
-  expect(file.book).toMatchObject({ id: "test-latin", term: "la", kind: "translation" });
-  const entries = file.lessons.flatMap((l) => l.sections.flatMap((s) => s.entries));
-  expect(entries.length).toBe(4);
-  expect(entries.some((e) => e.genitive || e.principal_parts)).toBe(true);
-
-  // Everything at once: the course books too.
-  const all = (await (await page.request.get("/api/vocab/export")).json()) as { books: { book: { id: string } }[] };
-  const ids = all.books.map((b) => b.book.id);
-  expect(ids).toContain("test-latin");
-  expect(ids).toContain("course-malayalam");
-  expect(ids).toContain("course-malayalam-letters");
 });

@@ -119,10 +119,13 @@ try {
   const ownedEntry = Number((await db.query("SELECT e.id FROM vocab_entries e WHERE e.term = 'uno'"))[0]!.id);
   expect("member: a session of the owner's book refused", (await rosa("GET", `/api/vocab/session?userId=${player.id}&kind=all&id=${ownedId}&purpose=learn&size=15&mode=choice`)).status, 404);
   expect("member: an answer in it refused", (await rosa("POST", "/api/vocab/answers", { userId: player.id, entryId: ownedEntry, direction: "recognise", mode: "choice", given: "one" })).status, 404);
-  expect("member: the owner's book not exported", (await rosa("GET", `/api/vocab/books/${ownedId}/export`)).status, 404);
-  expect("member: not in the export of all", ((await rosa("GET", "/api/vocab/export")).json as { books: { book: { id: string } }[] }).books.map((b) => b.book.id), ["kana"]);
-  const ownedFile = (await owner("GET", `/api/vocab/books/${ownedId}/export`)).json as { format: number; book: { id: string }; lessons: unknown[] };
+  // The vocabulary export is the owner's, on the owner's page only.
+  expect("member: no export of a book", (await rosa("GET", `/api/admin/books/${ownedId}/export`)).status, 403);
+  expect("member: no export of all", (await rosa("GET", "/api/admin/vocab-export")).status, 403);
+  expect("no export outside the owner's page", [(await owner("GET", `/api/vocab/books/${ownedId}/export`)).status, (await owner("GET", "/api/vocab/export")).status], [404, 404]);
+  const ownedFile = (await owner("GET", `/api/admin/books/${ownedId}/export`)).json as { format: number; book: { id: string }; lessons: unknown[] };
   expect("owner: the book exported in format 3", [ownedFile.format, ownedFile.book.id, ownedFile.lessons.length > 0], [3, "owned", true]);
+  expect("owner: every book in one file", ((await owner("GET", "/api/admin/vocab-export")).json as { books: { book: { id: string } }[] }).books.map((b) => b.book.id), ["owned", "kana"]);
 
   // The owner's workbook: not hers either, nor its images, until shared.
   expect("member: no workbook", (await rosa("GET", `/api/exercises/books?userId=${player.id}`)).json, []);

@@ -1,4 +1,4 @@
-import { Hono, type MiddlewareHandler } from "hono";
+import { type Context, Hono, type MiddlewareHandler } from "hono";
 import type { AppEnv } from "./auth/middleware.ts";
 import type { AuthStore } from "./auth/store.ts";
 import type { Repository } from "./repository.ts";
@@ -22,6 +22,15 @@ const ownerOnly: MiddlewareHandler<AppEnv> = async (c, next) => {
   return next();
 };
 
+/** JSON sent as a file to save, never cached. */
+function download(c: Context<AppEnv>, name: string, body: unknown): Response {
+  return c.body(`${JSON.stringify(body, null, 1)}\n`, 200, {
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Disposition": `attachment; filename="${name}"`,
+    "Cache-Control": "no-store",
+  });
+}
+
 export function adminRoutes(deps: {
   store: AuthStore;
   repository: Repository;
@@ -39,11 +48,33 @@ export function adminRoutes(deps: {
     return c.json({
       registration: deps.registration,
       invites: await store.invites(),
-      books: books.map((b) => ({ id: b.id, title: b.title, kind: b.kind, term: b.term, visibility: b.visibility })),
+      books: books.map((b) => ({ id: b.id, slug: b.slug, title: b.title, kind: b.kind, term: b.term, entries: b.entries, visibility: b.visibility })),
       bank: (await repository.setting("bank_visibility")) === "shared" ? "shared" : "private",
       exerciseBooks: (await exercises.books(true, 0)).map((b) => ({ id: b.id, title: b.title, visibility: b.visibility })),
       feedback: await repository.feedback(FEEDBACK_SHOWN),
     });
+  });
+
+  /**
+   * A vocabulary book as a format-3 file, the format vocab:import reads
+   * (docs/vocabulary.md#listing-and-exporting): the owner's only, pictures left out.
+   */
+  admin.get("/books/:id/export", async (c) => {
+    const id = Number(c.req.param("id"));
+    if (!Number.isSafeInteger(id) || id <= 0) return c.json({ error: "invalid book" }, 400);
+    const out = await vocab.exportBook(id, true);
+    if (!out) return c.json({ error: "unknown book" }, 404);
+    return download(c, `${String(out.file.book.id)}.json`, out.file);
+  });
+
+  /** Every vocabulary book, each a format-3 file, in one download. */
+  admin.get("/vocab-export", async (c) => {
+    const files = [];
+    for (const book of await vocab.books(true)) {
+      const out = await vocab.exportBook(book.id, true);
+      if (out) files.push(out.file);
+    }
+    return download(c, `vocabulary-${new Date().toISOString().slice(0, 10)}.json`, { exported: new Date().toISOString(), books: files });
   });
 
   /** A new invitation: the link is shown once (only the code's hash is kept). */

@@ -27,7 +27,7 @@ from the app's own origin.
 | `POST` | [`/api/vocab/answers`](#post-apivocabanswers) | Record an answer; the server grades it |
 | `POST` | [`/api/feedback`](#family-release) | Send feedback to the owner |
 | `GET` | [`/api/export`](#family-release) | Everything stored about the account (account sessions only) |
-| `GET` `POST` `DELETE` `PUT` | [`/api/admin/…`](#family-release) | The owner's page: invitations, content visibility, feedback |
+| `GET` `POST` `DELETE` `PUT` | [`/api/admin/…`](#family-release) | The owner's page: invitations, content visibility, vocabulary export, feedback |
 
 The [authentication routes](#authentication) are under `/api/auth`.
 
@@ -61,6 +61,8 @@ See [Authentication › Family release](authentication.md#family-release).
 | `POST` | `/api/admin/invites` | `{ "note": "Tante Rosa" }` | `{ code, link, invite }`: the link is shown once |
 | `DELETE` | `/api/admin/invites/:id` | | |
 | `PUT` | `/api/admin/books/:id` | `{ "visibility": "shared" }` | `private` or `shared` |
+| `GET` | `/api/admin/books/:id/export` | | The book as a format-3 file, `<book id>.json`, pictures left out ([Vocabulary](vocabulary.md#listing-and-exporting)) |
+| `GET` | `/api/admin/vocab-export` | | Every book, `{ exported, books: [file, …] }`, `vocabulary-<date>.json` |
 | `PUT` | `/api/admin/bank` | `{ "visibility": "shared" }` | The written questions |
 
 ## Errors

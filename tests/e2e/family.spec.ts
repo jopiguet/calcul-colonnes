@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises";
 import { expect, test, type Page } from "@playwright/test";
 import { newPlayer, signIn, signUp, PASSWORD } from "./helpers";
 import { OWNER_EMAIL, OWNER_PASSWORD } from "./owner";
@@ -138,4 +139,36 @@ test("an invitation link opens the sign-up form; the sign-in screen links the pr
   await expect(page.locator(".privacy")).toBeVisible();
   // Signing up still works (open registration in the tests; invitations are checked by check:family).
   await signUp(page);
+});
+
+test("the vocabulary export is on the owner's page only, as format-3 files", async ({ page, browser }) => {
+  await ownerAccountPage(page);
+  const part = page.locator(".family-part", { hasText: "Exporter le vocabulaire" });
+  await expect(part.locator(".family-export").first()).toContainText("Tous les livres, en un fichier");
+  const line = part.locator(".family-export[data-book='test-latin']");
+  await expect(line).toContainText("· LA · 4 mots");
+  const [download] = await Promise.all([page.waitForEvent("download"), line.locator("a").click()]);
+  expect(download.suggestedFilename()).toBe("test-latin.json");
+  const file = JSON.parse(await readFile((await download.path())!, "utf8")) as {
+    format: number;
+    book: { id: string; term: string };
+    lessons: { sections: { entries: { genitive?: string; principal_parts?: string[] }[] }[] }[];
+  };
+  expect(file.format).toBe(3);
+  expect(file.book).toMatchObject({ id: "test-latin", term: "la" });
+  const entries = file.lessons.flatMap((l) => l.sections.flatMap((s) => s.entries));
+  expect(entries.length).toBe(4);
+  expect(entries.some((e) => e.genitive || e.principal_parts)).toBe(true);
+
+  // All at once, the course books included.
+  const [bundle] = await Promise.all([page.waitForEvent("download"), part.locator(".family-export").first().locator("a").click()]);
+  expect(bundle.suggestedFilename()).toMatch(/^vocabulary-\d{4}-\d{2}-\d{2}\.json$/);
+  const ids = (JSON.parse(await readFile((await bundle.path())!, "utf8")) as { books: { book: { id: string } }[] }).books.map((b) => b.book.id);
+  expect(ids).toEqual(expect.arrayContaining(["test-latin", "course-malayalam", "course-malayalam-letters"]));
+
+  // Another account: no owner's page, and the export refused.
+  const other = await browser.newPage();
+  await signUp(other);
+  expect((await other.request.get("/api/admin/vocab-export")).status()).toBe(403);
+  await other.close();
 });

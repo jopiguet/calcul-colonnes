@@ -24,9 +24,9 @@ interface News {
 export const NEWS: News[] = [
   {
     version: "7.9.0",
-    fr: ["Vocabulaire : chaque livre peut s'exporter en JSON depuis sa page (⬇️ Exporter ce livre), ou tout le vocabulaire d'un coup, cours de langues compris. Le fichier est au format que l'import relit."],
-    es: ["Vocabulario: cada libro puede exportarse en JSON desde su página (⬇️ Exportar este libro), o todo el vocabulario de una vez, cursos de idiomas incluidos. El archivo está en el formato que la importación vuelve a leer."],
-    en: ["Vocabulary: any book can be exported as JSON from its page (⬇️ Export this book), or all the vocabulary at once, language courses included. The file is in the format the import reads back."],
+    fr: ["Vocabulaire : le propriétaire du serveur peut exporter chaque livre en JSON, ou tous d'un coup, cours de langues compris, depuis sa page « Famille et amis ». Le fichier est au format que l'import relit."],
+    es: ["Vocabulario: el propietario del servidor puede exportar cada libro en JSON, o todos de una vez, cursos de idiomas incluidos, desde su página «Familia y amigos». El archivo está en el formato que la importación vuelve a leer."],
+    en: ["Vocabulary: the server's owner can export each book as JSON, or all of them at once, language courses included, from the \"Family and friends\" page. The file is in the format the import reads back."],
   },
   {
     version: "7.8.0",

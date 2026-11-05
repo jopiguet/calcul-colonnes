@@ -1,9 +1,14 @@
 # Changelog
 
+## 7.9.1
+
+- **Vocabulary export on the owner's page only.** The links on the book pages are gone, and so are `GET /api/vocab/books/<id>/export` and `GET /api/vocab/export`. The owner's Account page (*👪 Famille et amis*) has *Exporter le vocabulaire*: every book with its word count and a *⬇️ JSON* link, and every book in one file, served by `GET /api/admin/books/<id>/export` and `GET /api/admin/vocab-export` (owner only, 403 for other accounts). `npm run vocab:export` is unchanged.
+- **Checks:** `check:family` checks that other accounts get 403 and that the old routes are gone; the export's browser test moved to `tests/e2e/family.spec.ts`.
+
 ## 7.9.0
 
 - **Vocabulary export.** `npm run vocab:export -- --list` lists every book (id, kind, languages, words, visibility, title); `npm run vocab:export -- <id>… | --all [--out data/export] [--images]` writes each as `<id>.json` in format 3, the format `vocab:import` reads: an export imported again gives the same book (checked by a round trip on the course books and the test books, pictures included). See [Vocabulary](docs/vocabulary.md#listing-and-exporting).
-- **In the app:** a book's page has *⬇️ Export this book (JSON)* and *⬇️ All vocabulary (JSON)*: `GET /api/vocab/books/<id>/export` and `GET /api/vocab/export`, downloads that leave pictures out and follow the books' visibility.
+- **In the app:** a book's page has *⬇️ Export this book (JSON)* and *⬇️ All vocabulary (JSON)* (moved to the owner's page in 7.9.1).
 - **Checks:** `check:family` checks that a member cannot export the owner's private book and that the owner can; `tests/e2e/vocab.spec.ts` downloads a book from its page and reads it back.
 
 ## 7.8.0

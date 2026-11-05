@@ -1053,34 +1053,6 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
 
   routes.get("/books", async (c) => c.json(await store.books(owner(c))));
 
-  // A book as a format-3 file, ready for vocab:import (docs/vocabulary.md#export); pictures left out.
-  routes.get("/books/:id/export", async (c) => {
-    const id = Number(c.req.param("id"));
-    if (!isId(id)) return c.json({ error: "invalid book" }, 400);
-    const out = await store.exportBook(id, owner(c));
-    if (!out) return c.json({ error: "unknown book" }, 404);
-    return c.body(`${JSON.stringify(out.file, null, 1)}\n`, 200, {
-      "Content-Type": "application/json; charset=utf-8",
-      "Content-Disposition": `attachment; filename="${String(out.file.book.id)}.json"`,
-      "Cache-Control": "no-store",
-    });
-  });
-
-  // Every book seen, each a format-3 file, in one download.
-  routes.get("/export", async (c) => {
-    const files = [];
-    for (const book of await store.books(owner(c))) {
-      const out = await store.exportBook(book.id, owner(c));
-      if (out) files.push(out.file);
-    }
-    const day = new Date().toISOString().slice(0, 10);
-    return c.body(`${JSON.stringify({ exported: new Date().toISOString(), books: files }, null, 1)}\n`, 200, {
-      "Content-Type": "application/json; charset=utf-8",
-      "Content-Disposition": `attachment; filename="vocabulary-${day}.json"`,
-      "Cache-Control": "no-store",
-    });
-  });
-
   // A picture of a picture dictionary, by its SHA-256: the same bytes forever.
   routes.get("/images/:hash", async (c) => {
     const hash = c.req.param("hash");

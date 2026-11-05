@@ -79,6 +79,7 @@ session).
 - **👪 Famille et amis** (the owner's account only, the first one on the server):
   - **Invitations:** *Créer une invitation*, with a note saying for whom, gives a link valid once for two weeks; send it, and it opens the sign-up form. The list says which were used, and by whom.
   - **Ce que voient les autres comptes:** each vocabulary book, and the written physical chemistry questions: *Moi seulement* or *Tous les comptes*. A book you own stays *Moi seulement*; the kanji (open licences) can be shared.
+  - **Exporter le vocabulaire:** each vocabulary book (the language courses' included) as a JSON file, *⬇️ JSON* on its line, or every book in one file. The files are in the format the import reads back, without pictures or progress. Only the owner has this.
   - **Avis reçus:** what the others sent with *💬 Envoyer un avis*.
 
 In a player's own session, the 🚪 button at the top signs out.
@@ -760,12 +761,6 @@ for this book:
 - **The hardest words:** the 12 words with the most mistakes, with their rōmaji in Japanese.
 
 Days end at midnight where the browser is.
-
-**⬇️ Exporter ce livre (JSON)**, under it, downloads the book's words as a
-file (its lessons, meanings, translations, forms), in the format the import
-reads back; **⬇️ Tout le vocabulaire (JSON)** downloads every book you see,
-the language courses' included, in one file. Pictures and your progress
-are not in them.
 
 **Reviewing ahead of time** is practice: a word answered right before its date
 stays in its box, so an evening of revision does not push words weeks away. A

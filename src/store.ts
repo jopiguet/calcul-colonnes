@@ -96,7 +96,7 @@ export const auth = {
 export interface AdminState {
   registration: "open" | "invite" | "closed";
   invites: { id: string; note: string; createdAt: number; expiresAt: number; usedAt: number | null; usedBy: string | null }[];
-  books: { id: number; title: string; kind: string; term: string; visibility: "private" | "shared" }[];
+  books: { id: number; slug: string; title: string; kind: string; term: string; entries: number; visibility: "private" | "shared" }[];
   bank: "private" | "shared";
   exerciseBooks: { id: string; title: string; visibility: "private" | "shared" }[];
   feedback: { id: number; at: number; account: string | null; player: string | null; page: string; version: string; text: string }[];

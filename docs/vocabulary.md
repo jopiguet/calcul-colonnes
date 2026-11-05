@@ -360,13 +360,14 @@ picture, so the file imports on its own; with it, the pictures are written
 beside the files and named in the entries (`"image":
 "images/<sha-256>.png"`, with `"part"`).
 
-In the app, a book's page has **⬇️ Export this book (JSON)**
-(`GET /api/vocab/books/<id>/export`, a file named `<book id>.json`) and
-**⬇️ All vocabulary (JSON)** (`GET /api/vocab/export`, `{ "exported", "books":
-[file, …] }`, `vocabulary-<date>.json`). Both leave pictures out and follow
-the books' visibility: a member's export has the shared books only, the
-owner's every book. The language courses' books (`course-<id>`,
-`course-<id>-letters`) are exported like any other.
+In the app, only the owner can export, on its Account page (*👪 Famille et
+amis*, *Exporter le vocabulaire*): every book with its word count and a
+*⬇️ JSON* link (`GET /api/admin/books/<id>/export`, a file named
+`<book id>.json`), and every book in one file (`GET /api/admin/vocab-export`,
+`{ "exported", "books": [file, …] }`, `vocabulary-<date>.json`). Both leave
+pictures out; other accounts get 403, and book pages have no export. The
+language courses' books (`course-<id>`, `course-<id>-letters`) are exported
+like any other.
 
 ## The file format
 

@@ -88,6 +88,7 @@ export async function familySection(state: AuthState): Promise<HTMLElement[]> {
       note,
       invitations(),
       content(),
+      vocabExport(),
       feedback(),
     );
   };
@@ -203,6 +204,28 @@ export async function familySection(state: AuthState): Promise<HTMLElement[]> {
         data.bank = v;
       }),
     );
+    return part;
+  };
+
+  /** Each vocabulary book as a JSON file for vocab:import, and all of them in one (docs/vocabulary.md#listing-and-exporting). */
+  const vocabExport = (): HTMLElement => {
+    const part = el("div", "family-part");
+    part.append(el("h3", "field-label", at("exportTitle")), el("p", "hint left", at("exportHint")));
+    const link = (href: string, label: string): HTMLAnchorElement => {
+      const a = el("a", "button ghost small family-export-link", label);
+      a.href = href;
+      a.download = "";
+      return a;
+    };
+    const all = el("div", "family-export");
+    all.append(el("span", "family-content-name", at("exportAll")), link("/api/admin/vocab-export", "⬇️ JSON"));
+    part.append(all);
+    for (const book of data.books) {
+      const line = el("div", "family-export");
+      line.dataset.book = book.slug;
+      line.append(el("span", "family-content-name", `${book.title} · ${book.term.toUpperCase()} · ${at("exportWords", { n: book.entries })}`), link(`/api/admin/books/${book.id}/export`, "⬇️ JSON"));
+      part.append(line);
+    }
     return part;
   };
 
