@@ -48,6 +48,15 @@ const ENTRY_JOINS = `FROM vocab_entries e
   JOIN vocab_lessons l ON l.id = s.lesson_id
   JOIN vocab_books b ON b.id = l.book_id`;
 
+/** A stored picture's file extension, by its type. */
+const IMAGE_EXT: Record<string, string> = { "image/png": "png", "image/jpeg": "jpg", "image/gif": "gif", "image/webp": "webp" };
+
+/** A book exported: the format-3 file, and the pictures it names (docs/vocabulary.md#export). */
+export interface VocabExport {
+  file: { format: 3; book: Record<string, unknown>; lessons: { title: string; subtitle: string; sections: { title: string; subtitle: string; entries: Record<string, unknown>[] }[] }[] };
+  images: { hash: string; mime: string; path: string }[];
+}
+
 const bookKind = (value: unknown): BookKind =>
   value === "definition" || value === "characters" ? value : "translation";
 
@@ -506,6 +515,90 @@ export class VocabStore {
   }
 
   /** A picture, if an entry the player may see shows it. */
+  /**
+   * A book as a format-3 vocabulary file (docs/vocabulary.md#export): what
+   * vocab:import reads, so an export imported again gives the same book.
+   * With pictures, they are named images/<hash>.<ext>, to be written beside
+   * the file (vocab:export --images); without, an entry keeps its words and
+   * loses its picture, so the file imports on its own. Null for a book not seen.
+   */
+  async exportBook(slugOrId: string | number, owner = true, withImages = false): Promise<VocabExport | null> {
+    const books = await this.db.query(
+      `SELECT id, slug, title, kind, term_lang, meaning_lang, ordering, credit FROM vocab_books
+        WHERE ${typeof slugOrId === "number" ? "id" : "slug"} = $1 ${owner ? "" : "AND visibility = 'shared'"}`,
+      [slugOrId],
+    );
+    const b = books[0];
+    if (!b) return null;
+    const bookId = n(b.id);
+    const lessons = await this.db.query("SELECT id, title, subtitle FROM vocab_lessons WHERE book_id = $1 ORDER BY position", [bookId]);
+    const sections = await this.db.query(
+      `SELECT s.id, s.lesson_id, s.title, s.subtitle FROM vocab_sections s JOIN vocab_lessons l ON l.id = s.lesson_id
+        WHERE l.book_id = $1 ORDER BY l.position, s.position`,
+      [bookId],
+    );
+    const entries = await this.db.query(
+      `SELECT e.section_id, e.term, e.meaning, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations, e.image, e.part, e.info,
+              COALESCE(i.mime, '') AS mime
+         ${ENTRY_JOINS} LEFT JOIN vocab_images i ON i.hash = e.image
+        WHERE b.id = $1 ORDER BY l.position, s.position, e.position`,
+      [bookId],
+    );
+    const images = new Map<string, string>();
+    const bySection = new Map<number, Record<string, unknown>[]>();
+    for (const e of entries) {
+      const out: Record<string, unknown> = { term: String(e.term), meaning: String(e.meaning) };
+      if (e.grp) out.group = String(e.grp);
+      if (n(e.feminine)) out.feminine = true;
+      if (e.note) out.note = String(e.note);
+      if (e.reading) out.reading = String(e.reading);
+      const info = infoOf(e.info);
+      // A list of readings (format 3) or the kanji's readings as one text.
+      if (info?.readings?.length) out.readings = info.readings;
+      else if (e.readings) out.readings = String(e.readings);
+      const translations = translationsOf(e.translations);
+      if (Object.keys(translations).length) out.translations = translations;
+      if (info?.type) out.type = info.type;
+      if (info?.gender) out.gender = info.gender;
+      if (info?.genitive) out.genitive = info.genitive;
+      if (info?.principalParts?.length) out.principal_parts = info.principalParts;
+      if (info?.forms?.length) out.forms = info.forms;
+      if (info?.functions?.length) out.functions = info.functions;
+      const ext = IMAGE_EXT[String(e.mime)];
+      if (withImages && e.image && ext) {
+        out.image = `images/${String(e.image)}.${ext}`;
+        if (n(e.part)) out.part = n(e.part);
+        images.set(String(e.image), String(e.mime));
+      }
+      const list = bySection.get(n(e.section_id)) ?? [];
+      list.push(out);
+      bySection.set(n(e.section_id), list);
+    }
+    const file = {
+      format: 3 as const,
+      book: {
+        id: String(b.slug),
+        title: String(b.title),
+        kind: bookKind(b.kind),
+        term: String(b.term_lang),
+        meaning: String(b.meaning_lang),
+        order: b.ordering === "alphabetical" ? "alphabetical" : "book",
+        ...(b.credit ? { credit: String(b.credit) } : {}),
+      },
+      lessons: lessons
+        .map((l) => ({
+          title: String(l.title),
+          subtitle: String(l.subtitle ?? ""),
+          sections: sections
+            .filter((s) => n(s.lesson_id) === n(l.id))
+            .map((s) => ({ title: String(s.title), subtitle: String(s.subtitle ?? ""), entries: bySection.get(n(s.id)) ?? [] }))
+            .filter((s) => s.entries.length > 0),
+        }))
+        .filter((l) => l.sections.length > 0),
+    };
+    return { file, images: [...images].map(([hash, mime]) => ({ hash, mime, path: `images/${hash}.${IMAGE_EXT[mime]}` })) };
+  }
+
   async image(hash: string, owner: boolean): Promise<{ mime: string; data: string } | null> {
     const rows = await this.db.query(
       `SELECT i.mime, i.data FROM vocab_images i WHERE i.hash = $1 AND EXISTS (
@@ -959,6 +1052,34 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     store.visible(kind, id, owner(c)).then((ok) => !ok);
 
   routes.get("/books", async (c) => c.json(await store.books(owner(c))));
+
+  // A book as a format-3 file, ready for vocab:import (docs/vocabulary.md#export); pictures left out.
+  routes.get("/books/:id/export", async (c) => {
+    const id = Number(c.req.param("id"));
+    if (!isId(id)) return c.json({ error: "invalid book" }, 400);
+    const out = await store.exportBook(id, owner(c));
+    if (!out) return c.json({ error: "unknown book" }, 404);
+    return c.body(`${JSON.stringify(out.file, null, 1)}\n`, 200, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Disposition": `attachment; filename="${String(out.file.book.id)}.json"`,
+      "Cache-Control": "no-store",
+    });
+  });
+
+  // Every book seen, each a format-3 file, in one download.
+  routes.get("/export", async (c) => {
+    const files = [];
+    for (const book of await store.books(owner(c))) {
+      const out = await store.exportBook(book.id, owner(c));
+      if (out) files.push(out.file);
+    }
+    const day = new Date().toISOString().slice(0, 10);
+    return c.body(`${JSON.stringify({ exported: new Date().toISOString(), books: files }, null, 1)}\n`, 200, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Disposition": `attachment; filename="vocabulary-${day}.json"`,
+      "Cache-Control": "no-store",
+    });
+  });
 
   // A picture of a picture dictionary, by its SHA-256: the same bytes forever.
   routes.get("/images/:hash", async (c) => {

@@ -2469,6 +2469,23 @@ button.choice.is-glyph .choice-text {
   margin: 0 auto;
 }
 
+/* Export links under the statistics: small ghost buttons, side by side, wrapping on a phone. */
+.vocab-export {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+}
+
+a.button.vocab-export-link {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: var(--paper);
+  border-color: var(--line);
+}
+
 .vocab-stats > .ghost.small:first-child {
   align-self: flex-start;
 }

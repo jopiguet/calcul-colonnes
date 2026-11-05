@@ -761,6 +761,12 @@ for this book:
 
 Days end at midnight where the browser is.
 
+**⬇️ Exporter ce livre (JSON)**, under it, downloads the book's words as a
+file (its lessons, meanings, translations, forms), in the format the import
+reads back; **⬇️ Tout le vocabulaire (JSON)** downloads every book you see,
+the language courses' included, in one file. Pictures and your progress
+are not in them.
+
 **Reviewing ahead of time** is practice: a word answered right before its date
 stays in its box, so an evening of revision does not push words weeks away. A
 word answered wrong goes back to the start.

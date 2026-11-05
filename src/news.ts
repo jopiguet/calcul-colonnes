@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.9.0",
+    fr: ["Vocabulaire : chaque livre peut s'exporter en JSON depuis sa page (⬇️ Exporter ce livre), ou tout le vocabulaire d'un coup, cours de langues compris. Le fichier est au format que l'import relit."],
+    es: ["Vocabulario: cada libro puede exportarse en JSON desde su página (⬇️ Exportar este libro), o todo el vocabulario de una vez, cursos de idiomas incluidos. El archivo está en el formato que la importación vuelve a leer."],
+    en: ["Vocabulary: any book can be exported as JSON from its page (⬇️ Export this book), or all the vocabulary at once, language courses included. The file is in the format the import reads back."],
+  },
+  {
     version: "7.8.0",
     fr: ["Le vocabulaire des cours de langues est maintenant sous « Langues » sur l'accueil, avec les mots à réviser, à côté de vos livres de la même langue : chaque langue des cours y a sa carte, même sans autre livre. Les lettres malayalam aussi.", "Malayalam : un recueil de trente-trois proverbes par thème (leçon 19), tous dans le vocabulaire du cours."],
     es: ["El vocabulario de los cursos de idiomas está ahora en «Idiomas» en el inicio, con las palabras por repasar, junto a sus libros de la misma lengua: cada lengua de los cursos tiene su tarjeta, aunque no haya otro libro. Las letras malayalam también.", "Malayalam: un compendio de treinta y tres refranes por temas (lección 19), todos en el vocabulario del curso."],

@@ -159,6 +159,7 @@ npm start          # http://localhost:8787
 | `npm run check:quiz` | Generates thousands of tests and verifies every question (see [question generators](docs/question-generators.md#verification)) |
 | `npm run test:e2e` | Browser tests of the whole app, on a separate server and database (see [Development › Tests](docs/development.md#tests)) |
 | `npm run vocab:import -- data/vocab-english.json` | Imports a vocabulary book, keeping progress on unchanged entries (see [Vocabulary](docs/vocabulary.md)) |
+| `npm run vocab:export -- --list` / `--all` / `<book id>…` | Lists the vocabulary books, or writes them to `data/export/` as format-3 files that `vocab:import` reads back (`--images` for the pictures) |
 | `npm run quiz:import -- data/atkins-12-concepts.json` | Imports the question bank written from a textbook, keeping old tests exact (see [Question bank](docs/question-bank.md)) |
 | `npm run quiz:flags` | Lists the questions players flagged; `-- --resolve N` closes one |
 | `npm run check:vocab` | Checks the vocabulary grading, scheduling and statistics; with a file, every entry |

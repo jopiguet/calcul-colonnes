@@ -299,6 +299,14 @@ function sessionSettings(ctx: VocabContext): HTMLElement[] {
   return [size, how, el("p", "hint left", vt("howHint"))];
 }
 
+/** A link that downloads what the server sends (a file named by its Content-Disposition). */
+function downloadLink(href: string, label: string): HTMLAnchorElement {
+  const link = el("a", "button ghost small vocab-export-link", label);
+  link.href = href;
+  link.download = "";
+  return link;
+}
+
 async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   const book = ctx.book!;
   const wrap = el("section", "sheet vocab-home");
@@ -318,6 +326,10 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     ctx.rerender();
   });
   wrap.append(statsLink);
+  // The book as a format-3 file, ready for vocab:import; and every book in one file (docs/vocabulary.md#export).
+  const exports = el("p", "vocab-export");
+  exports.append(downloadLink(`/api/vocab/books/${book.id}/export`, vt("exportBook")), downloadLink("/api/vocab/export", vt("exportAll")));
+  wrap.append(exports);
   const lessons = book.lessons;
   const progress: VocabProgress = await vocab.progress(ctx.user.id);
   const mine = progress.books[book.id] ?? { due: 0, started: 0 };

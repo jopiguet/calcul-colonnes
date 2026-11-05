@@ -340,6 +340,34 @@ choices are remembered in the browser (`localStorage`), per shelf.
 A book the player's account hides is not on the shelf; a shelf left with one
 book is shown as that book.
 
+## Listing and exporting
+
+Every book the database holds can be listed and written back out as a
+[format-3](#format-3) file, the format `vocab:import` reads: importing an
+export gives the same book, lessons, sections, entries, translations and
+format-3 fields (type, gender, genitive, principal parts, forms, readings,
+functions) included. A player's progress is not exported.
+
+```bash
+npm run vocab:export -- --list                          # id, kind, languages, words, visibility, title
+npm run vocab:export -- course-malayalam test-german    # data/export/<id>.json
+npm run vocab:export -- --all --out data/export         # every book
+npm run vocab:export -- course-malayalam --images       # with its pictures, data/export/images/<hash>.<ext>
+```
+
+Without `--images`, an entry with a picture keeps its words and loses the
+picture, so the file imports on its own; with it, the pictures are written
+beside the files and named in the entries (`"image":
+"images/<sha-256>.png"`, with `"part"`).
+
+In the app, a book's page has **⬇️ Export this book (JSON)**
+(`GET /api/vocab/books/<id>/export`, a file named `<book id>.json`) and
+**⬇️ All vocabulary (JSON)** (`GET /api/vocab/export`, `{ "exported", "books":
+[file, …] }`, `vocabulary-<date>.json`). Both leave pictures out and follow
+the books' visibility: a member's export has the shared books only, the
+owner's every book. The language courses' books (`course-<id>`,
+`course-<id>-letters`) are exported like any other.
+
 ## The file format
 
 Format 2, one book per file:
@@ -709,6 +737,7 @@ directions.
 | `shared/vocab/session.ts` | Choice of cards and wrong options; sides of a card by book kind |
 | `server/vocab.ts` | Storage, import, sessions, answers; the `/api/vocab` routes |
 | `server/vocab-import.ts` | `npm run vocab:import`; reads the pictures beside the file |
+| `server/vocab-export.ts` | `npm run vocab:export`: lists the books, writes them as format-3 files (`VocabStore.exportBook`) |
 | `server/check-vocab.ts` | `npm run check:vocab` |
 | `src/vocab.ts`, `src/vocab-i18n.ts` | A book's page and a shelf's: lessons, cards, summary; texts in three languages |
 | `src/vocab-stats.ts` | A book's statistics page |

@@ -1,5 +1,11 @@
 # Changelog
 
+## 7.9.0
+
+- **Vocabulary export.** `npm run vocab:export -- --list` lists every book (id, kind, languages, words, visibility, title); `npm run vocab:export -- <id>… | --all [--out data/export] [--images]` writes each as `<id>.json` in format 3, the format `vocab:import` reads: an export imported again gives the same book (checked by a round trip on the course books and the test books, pictures included). See [Vocabulary](docs/vocabulary.md#listing-and-exporting).
+- **In the app:** a book's page has *⬇️ Export this book (JSON)* and *⬇️ All vocabulary (JSON)*: `GET /api/vocab/books/<id>/export` and `GET /api/vocab/export`, downloads that leave pictures out and follow the books' visibility.
+- **Checks:** `check:family` checks that a member cannot export the owner's private book and that the owner can; `tests/e2e/vocab.spec.ts` downloads a book from its page and reads it back.
+
 ## 7.8.0
 
 - **Course words on the home page:** every language course's vocabulary book, and the Malayalam letters, now has its card under *Languages*, with its words or cards due, beside the player's own books (`src/home.ts`). A language studied only through its course appears there too. A course book joins the shelf of its language when there is another book in it (the Latin course and a Latin book share *📚 Vocabulaire latin*), and is labelled with the course's icon and title. Course books can be hidden in the settings like any book.
