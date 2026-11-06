@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.10.1
+
+- **Home page:** a card with something waiting showed blue triangles at its rounded corners in every browser. Its cell was marked `is-due`, a class the vocabulary statistics already paint blue; it is now `activity-waiting`, and only the card's border turns red. `tests/e2e/home-arrange.spec.ts` checks that nothing is painted behind a waiting card.
+
 ## 7.10.0
 
 - **Home page, one line per group** (`src/home-layout.ts`, [Home page](docs/home.md)): each group shows its cards on one line, scrolled sideways, with its number of cards; its title (▸) opens it whole and closes it again. The groups now stand one under the other at every width. What is opened is kept per player.

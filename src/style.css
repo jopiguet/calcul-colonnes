@@ -2245,7 +2245,7 @@ button.activity-group-toggle::before {
   padding-right: 2.4rem;
 }
 
-.activity-cell.is-due > button.activity {
+.activity-cell.activity-waiting > button.activity {
   border-color: color-mix(in srgb, var(--bad) 40%, var(--line));
 }
 

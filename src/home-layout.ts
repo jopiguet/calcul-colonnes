@@ -392,7 +392,7 @@ export function arrangeHome(groups: HomeGroup[], o: ArrangeOptions): HTMLElement
       part.grid.replaceChildren(...shown.map((c) => c.cell), ...part.others);
       for (const c of shown) {
         c.cell.draggable = arranging;
-        c.cell.classList.toggle("is-due", c.due > 0);
+        c.cell.classList.toggle("activity-waiting", c.due > 0);
       }
       const isOpen = open.has(groupId);
       group.classList.toggle("is-line", !arranging && !isOpen);

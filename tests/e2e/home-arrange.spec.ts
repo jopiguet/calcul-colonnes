@@ -87,6 +87,8 @@ test("home: what waits comes first, the most first, then the set order again", a
   await page.reload();
   await goHome(page);
   await expect(page.locator("[data-cell='marx'] .activity-status")).toHaveText(/à revoir/);
+  // The waiting card is marked on its border only: nothing painted behind its rounded corners.
+  expect(await page.locator("[data-cell='marx']").evaluate((c) => getComputedStyle(c).backgroundColor)).toBe("rgba(0, 0, 0, 0)");
   // The Capital first in Economics, and Economics first on the page.
   expect(await cardIds(page, "economics")).toEqual(["marx", "econ"]);
   expect((await groupIds(page))[0]).toBe("economics");
