@@ -153,9 +153,30 @@ home page: **Que fait-on, Léa ?**
 Click an activity to open it. Every activity has *← Accueil* at the top to
 come back.
 
-**On a large screen** the page uses the width: subjects with one or two
-activities sit side by side, and a group's cards fill its row. On a phone the
-groups follow one another.
+**One line per group.** Each group shows its cards on one line, with the
+number of cards beside its title; swipe (or scroll sideways) to see the
+others. Click the title (▸) to show the whole group, and again to put it back
+on one line. Each player's choice is kept, on every device.
+
+**What waits comes first.** A card with something to do (words to review,
+notions to revise) moves to the front of its group, the largest number first,
+and its group to the top of the page, with *N en attente* beside its title.
+Once it is done, it goes back to its place.
+
+**Arranging the page.** Each card has a **⋯** in its corner:
+
+- **✥ Réorganiser l'accueil:** the cards tremble, as on a phone, and the page
+  is in arranging mode: **◀ ▶** move a card within its group (or drag it with
+  the mouse), **▲ ▼** move a group, **−** removes a card, **＋ Ajouter** beside
+  a group lists its removed activities to put back. *✓ Terminé* ends it.
+  Arranging shows the set order, without what waits first.
+- **＋ Ajouter une activité:** the same mode, with the group's list open.
+- **✕ Retirer de l'accueil:** the card goes at once. Removing a shelf
+  (*📚 Vocabulaire allemand*) removes its books.
+
+Removing and adding are the account's choices, the same as *Activités
+affichées* on the Account page: a player signed in on their own, or a player
+shared by another account, can arrange the order but not remove or add.
 
 **📈 Mes progrès**, next to the greeting, opens the overview of the player's
 progress (see [Progress](#progress-and-review-of-mistakes)).

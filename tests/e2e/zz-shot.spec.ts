@@ -1,0 +1,20 @@
+import { test } from "@playwright/test";
+import { goHome, newPlayer } from "./helpers";
+test("home shots", async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 1100 });
+  await newPlayer(page, "Shot");
+  await goHome(page);
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: "/tmp/claude-0/-home-claude/2e44e012-da60-548a-a4db-9816d109fa64/scratchpad/home-wide.png" });
+  await page.locator(".activity-group[data-group='languages'] .activity-group-toggle").click();
+  await page.waitForTimeout(300);
+  await page.locator("[data-cell='columns'] .activity-more").click();
+  await page.screenshot({ path: "/tmp/claude-0/-home-claude/2e44e012-da60-548a-a4db-9816d109fa64/scratchpad/home-menu.png" });
+  await page.locator(".activity-menu-item").first().click();
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: "/tmp/claude-0/-home-claude/2e44e012-da60-548a-a4db-9816d109fa64/scratchpad/home-arrange.png" });
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.locator(".home-arrange-done").click();
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: "/tmp/claude-0/-home-claude/2e44e012-da60-548a-a4db-9816d109fa64/scratchpad/home-phone.png" });
+});

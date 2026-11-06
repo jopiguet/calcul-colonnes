@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "7.10.0",
+    fr: ["Accueil : chaque groupe tient sur une ligne, son titre l'ouvre en entier.", "Ce qui attend (mots à réviser, notions à revoir) passe en tête, le plus nombreux d'abord, puis reprend sa place une fois fait.", "Le ⋯ de chaque carte réorganise l'accueil comme sur un téléphone : déplacer les cartes et les groupes, retirer, rajouter."],
+    es: ["Inicio: cada grupo cabe en una línea, su título lo abre entero.", "Lo pendiente (palabras por repasar, nociones por revisar) pasa delante, lo más numeroso primero, y vuelve a su sitio una vez hecho.", "El ⋯ de cada tarjeta reorganiza el inicio como en un teléfono: mover tarjetas y grupos, quitar, volver a añadir."],
+    en: ["Home page: each group fits on one line; its title opens it whole.", "What waits (words to review, notions to revise) comes first, the most first, then goes back to its place once done.", "Each card's ⋯ arranges the home page as on a phone: move cards and groups, remove, add back."],
+  },
+  {
     version: "7.9.0",
     fr: ["Vocabulaire : le propriétaire du serveur peut exporter chaque livre en JSON, ou tous d'un coup, cours de langues compris, depuis sa page « Famille et amis ». Le fichier est au format que l'import relit."],
     es: ["Vocabulario: el propietario del servidor puede exportar cada libro en JSON, o todos de una vez, cursos de idiomas incluidos, desde su página «Familia y amigos». El archivo está en el formato que la importación vuelve a leer."],

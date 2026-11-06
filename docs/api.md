@@ -100,6 +100,7 @@ Players sorted by name: the account's own, and those other accounts share with i
 | Field | |
 |---|---|
 | `hidden` | Activities taken off the player's home page: `columns`, `quiz`, `chemistry`, `vocab-<book slug>`, `discover-dice`, `discover-coins`, `discover-puzzles` |
+| `layout` | How the player arranged its home page: `{ groups, cards, open }` ([Home page](home.md#what-is-stored)); `{}` for the app's order |
 | `sharedBy` | Only for a player another account owns and shares with this one: that account's name |
 
 ## `POST /api/users`
@@ -138,6 +139,20 @@ shared player, or another account's, they answer `404`.
 
 Replaces the list. Ids are `[a-z0-9-]`, at most 200. Unknown ids are kept
 (a book imported later). `204`; `400` for an invalid list.
+
+### `PUT /api/users/:id/layout`
+
+```json
+{ "layout": { "groups": ["languages", "maths"], "cards": { "maths": ["quiz", "columns"] }, "open": ["languages"] } }
+```
+
+How the player arranged its home page ([Home page](home.md#what-is-stored)):
+the order of the groups, of the cards in each group, the groups shown whole.
+Allowed to the player's account and to the player in its own session (not to
+an account it is shared with: `404`). Replaces the layout, kept to what it may
+hold (unknown keys and badly formed ids dropped). `204`; `400` when `layout`
+is not an object or the body passes 20 kB. Returned as `layout` with the
+player.
 
 ### `POST /api/users/:id/invites`
 

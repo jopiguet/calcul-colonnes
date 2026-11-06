@@ -9,8 +9,20 @@ export interface User {
   createdAt: number; // epoch milliseconds
   /** Activities hidden from the player's home page ("columns", "vocab-collins-spanish"…). */
   hidden?: string[];
+  /** How the player arranged its home page (docs/home.md#arranging). */
+  layout?: HomeLayout;
   /** Set when another account owns the player and shares it with this one: that account's name. */
   sharedBy?: string;
+}
+
+/** The home page as a player arranged it: what is not listed keeps its place after what is. */
+export interface HomeLayout {
+  /** Group ids in order ("maths", "languages"…). */
+  groups?: string[];
+  /** Per group, its cards' activity ids in order. */
+  cards?: Record<string, string[]>;
+  /** Groups shown whole rather than on one line. */
+  open?: string[];
 }
 
 /** An account a player is shared with (seen by the player's own account). */

@@ -1,5 +1,13 @@
 # Changelog
 
+## 7.10.0
+
+- **Home page, one line per group** (`src/home-layout.ts`, [Home page](docs/home.md)): each group shows its cards on one line, scrolled sideways, with its number of cards; its title (▸) opens it whole and closes it again. The groups now stand one under the other at every width. What is opened is kept per player.
+- **What waits first:** a card with words to review or notions to revise comes first in its group, the largest number first, and its group first on the page, with *N en attente* beside the title; once done, both go back to the set order.
+- **Arranging, as on a phone:** every card has a ⋯ with *✥ Réorganiser l'accueil*, *＋ Ajouter une activité* and *✕ Retirer de l'accueil*. In arranging mode the cards tremble and show − and ◀ ▶ (or are dragged), groups show ▲ ▼ and *＋ Ajouter* with the group's removed activities; *✓ Terminé* ends it. Removing and adding use the account's hidden list (*Activités affichées*), so only the player's account may; the order may also be set by the player in its own session.
+- **Stored:** `users.layout` (migration 036), `PUT /api/users/:id/layout`, cleaned by the server (`layoutOf`).
+- **Tests:** `tests/e2e/home-arrange.spec.ts` (three tests); `check:family` checks the layout route; the wide-screen test follows the new layout.
+
 ## 7.9.1
 
 - **Vocabulary export on the owner's page only.** The links on the book pages are gone, and so are `GET /api/vocab/books/<id>/export` and `GET /api/vocab/export`. The owner's Account page (*👪 Famille et amis*) has *Exporter le vocabulaire*: every book with its word count and a *⬇️ JSON* link, and every book in one file, served by `GET /api/admin/books/<id>/export` and `GET /api/admin/vocab-export` (owner only, 403 for other accounts). `npm run vocab:export` is unchanged.

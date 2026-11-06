@@ -115,6 +115,11 @@ try {
   expect("owner: every book", ((await owner("GET", "/api/vocab/books")).json as { slug: string }[]).map((b) => b.slug), ["owned", "kana"]);
   expect("member: an empty bank", ((await rosa("GET", "/api/quiz/bank")).json as { revision: number }).revision, 0);
   const player = (await rosa("POST", "/api/users", { name: "Léo" })).json as { id: number };
+  // The home layout: the player's own account sets it, kept to what it may hold; another account cannot.
+  expect("layout: set by its account", (await rosa("PUT", `/api/users/${player.id}/layout`, { layout: { groups: ["languages", "maths", "Bad Id"], cards: { maths: ["quiz", "columns"] }, open: ["languages"], extra: 1 } })).status, 204);
+  expect("layout: read back, cleaned", ((await rosa("GET", "/api/users")).json as { id: number; layout?: unknown }[]).find((u) => u.id === player.id)?.layout, { groups: ["languages", "maths"], open: ["languages"], cards: { maths: ["quiz", "columns"] } });
+  expect("layout: not an object refused", (await rosa("PUT", `/api/users/${player.id}/layout`, { layout: ["maths"] })).status, 400);
+  expect("layout: another account's player refused", (await owner("PUT", `/api/users/${player.id}/layout`, { layout: {} })).status, 404);
   const ownedId = Number((await db.query("SELECT id FROM vocab_books WHERE slug = 'owned'"))[0]!.id);
   const ownedEntry = Number((await db.query("SELECT e.id FROM vocab_entries e WHERE e.term = 'uno'"))[0]!.id);
   expect("member: a session of the owner's book refused", (await rosa("GET", `/api/vocab/session?userId=${player.id}&kind=all&id=${ownedId}&purpose=learn&size=15&mode=choice`)).status, 404);

@@ -2123,22 +2123,15 @@ button.vocab-letter {
   max-width: 72rem;
 }
 
-/* Groups side by side, each as wide as its cards: three single-card subjects share a row. */
+/* The groups one under the other, each on one line of cards until its title opens it (docs/home.md#arranging). */
 .home-groups {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.75rem 1.25rem;
+  flex-direction: column;
+  gap: 1.4rem;
 }
 
 .home-groups > .activity-group {
-  flex: var(--cards, 1) 1 calc(var(--cards, 1) * 14rem + (var(--cards, 1) - 1) * 0.6rem);
   min-width: 0;
-}
-
-@media (max-width: 40rem) {
-  .home-groups > .activity-group {
-    flex-basis: 100%;
-  }
 }
 
 .activity-group {
@@ -2160,6 +2153,266 @@ button.vocab-letter {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
   gap: 0.6rem;
+}
+
+/* The title opens the group, or puts it back on one line; the count and what waits beside it. */
+.activity-group-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+}
+
+button.activity-group-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0;
+  font: inherit;
+  font-weight: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+button.activity-group-toggle::before {
+  content: "▸";
+  font-size: 0.8em;
+  color: var(--muted);
+  transition: transform 0.15s ease;
+}
+
+.activity-group.is-open button.activity-group-toggle::before,
+.is-arranging button.activity-group-toggle::before {
+  transform: rotate(90deg);
+}
+
+.activity-group-count {
+  padding: 0 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.activity-group-due {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--bad);
+}
+
+.activity-group-tools {
+  display: inline-flex;
+  gap: 0.3rem;
+  margin-left: auto;
+}
+
+.activity-group-due[hidden],
+.activity-group-tools[hidden],
+.activity-add[hidden],
+.home-arrange[hidden] {
+  display: none;
+}
+
+/* One line: the cards side by side, scrolled sideways (a swipe on a phone). */
+.activity-group.is-line .activity-grid {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(13.5rem, 15rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding: 0.1rem 0.1rem 0.5rem;
+  scrollbar-width: thin;
+}
+
+.activity-group.is-line .activity-cell {
+  scroll-snap-align: start;
+}
+
+/* A card and its "⋯"; in arranging, its − and its arrows. */
+.activity-cell {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
+.activity-cell > button.activity {
+  flex: 1;
+  width: 100%;
+  padding-right: 2.4rem;
+}
+
+.activity-cell.is-due > button.activity {
+  border-color: color-mix(in srgb, var(--bad) 40%, var(--line));
+}
+
+button.activity-more {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.activity-cell:hover button.activity-more,
+button.activity-more:focus-visible {
+  opacity: 1;
+  background: color-mix(in srgb, var(--line) 50%, transparent);
+}
+
+.activity-menu {
+  position: fixed;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  padding: 0.3rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.16);
+}
+
+button.activity-menu-item {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink);
+  background: none;
+  border: none;
+  border-radius: calc(var(--radius) - 2px);
+}
+
+button.activity-menu-item:hover,
+button.activity-menu-item:focus-visible {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+button.activity-remove,
+.activity-moves {
+  display: none;
+}
+
+/* Arranging: the cards tremble a little, like the apps of a phone; − removes, the arrows move. */
+.home-arrange {
+  position: sticky;
+  top: 0.5rem;
+  z-index: 15;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin-bottom: 1.2rem;
+  padding: 0.6rem 0.9rem;
+  background: var(--paper);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.1);
+}
+
+.home-arrange .hint {
+  flex: 1 1 16rem;
+  margin: 0;
+}
+
+.is-arranging button.activity-more {
+  display: none;
+}
+
+.is-arranging .activity-cell {
+  animation: tremble 0.32s ease-in-out infinite alternate;
+  cursor: grab;
+}
+
+.is-arranging .activity-cell:nth-child(2n) {
+  animation-delay: -0.16s;
+}
+
+.is-arranging .activity-cell > button.activity {
+  cursor: grab;
+}
+
+.activity-cell.is-dragged {
+  opacity: 0.4;
+}
+
+@keyframes tremble {
+  from {
+    transform: rotate(-0.5deg);
+  }
+  to {
+    transform: rotate(0.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-arranging .activity-cell {
+    animation: none;
+  }
+}
+
+.is-arranging button.activity-remove {
+  position: absolute;
+  top: -0.5rem;
+  left: -0.5rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  background: var(--bad);
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+}
+
+.is-arranging .activity-moves {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  display: flex;
+  gap: 0.25rem;
+}
+
+button.activity-move {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font-size: 0.75rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+
+button.activity-move:hover {
+  border-color: var(--accent);
+}
+
+.activity-add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.activity-add .hint {
+  margin: 0;
 }
 
 button.activity {
@@ -6773,4 +7026,8 @@ button.tiny {
 .lesson-key {
   min-width: 2.2rem;
   font-size: 1.05rem;
+}
+
+.is-arranging .activity-cell > button.activity {
+  padding-bottom: 2.9rem;
 }

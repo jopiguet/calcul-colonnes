@@ -1,5 +1,6 @@
 import "./style.css";
 import type { Operator } from "../shared/types";
+import { stopArranging } from "./home-layout";
 import { columnBoard, divisionBoard } from "./boards";
 import { button, el } from "./dom";
 import { randomExercise, type Exercise } from "./exercise";
@@ -299,7 +300,16 @@ async function render(): Promise<void> {
         return show("players");
       }
       state.user = fresh;
-      paint(topBar(), await homeView({ user: fresh, open, showProgress: () => openProgress(fresh, "play", "all") }));
+      paint(
+        topBar(),
+        await homeView({
+          user: fresh,
+          open,
+          showProgress: () => openProgress(fresh, "play", "all"),
+          canHide: !playerSession() && fresh.sharedBy === undefined,
+          rerender: () => void render(),
+        }),
+      );
     } else if (state.settings.mode === "vocab") {
       // The player's books: those the account hides are not on its shelves either.
       const hidden = state.user.hidden ?? [];
@@ -440,6 +450,7 @@ function openProgress(user: User, back: View, scope: ProgressScope = "all"): voi
 
 function show(view: View): void {
   leaveTour();
+  if (view !== "play") stopArranging();
   state.view = view;
   void render();
 }
@@ -478,6 +489,7 @@ async function hiddenNow(user: User): Promise<boolean> {
 
 /** Opens an activity from the home page. */
 function open(activity: Activity): void {
+  stopArranging();
   if (activity.mode === "vocab") updateSettings({ mode: "vocab", vocabBook: activity.book, vocabShelf: null });
   else if (activity.mode === "shelf") updateSettings({ mode: "vocab", vocabBook: null, vocabShelf: activity.lang });
   else if (activity.mode === "discover") updateSettings({ mode: "discover", discoverActivity: activity.activity });

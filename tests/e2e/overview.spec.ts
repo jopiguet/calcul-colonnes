@@ -6,21 +6,24 @@ async function noSidewaysScroll(page: Page, width: number): Promise<void> {
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
 }
 
-test("the home page uses a wide screen: small groups side by side; one column on a phone", async ({ page }) => {
+test("the home page uses a wide screen: one group per row, its cards on one line; no sideways scroll on a phone", async ({ page }) => {
   await page.setViewportSize({ width: 1400, height: 900 });
   await newPlayer(page, "Wid");
   await goHome(page);
   const top = async (title: string): Promise<number> =>
     (await page.locator(".activity-group", { has: page.locator(".activity-group-title", { hasText: new RegExp(`^${title}$`) }) }).boundingBox())!.y;
-  // Mathematics (two cards) and Sciences (one) on the same row; Computing (Linux, SQL) on the next.
-  expect(Math.abs((await top("Mathématiques")) - (await top("Sciences")))).toBeLessThan(2);
+  // Groups one under the other (docs/home.md#arranging).
+  expect(await top("Sciences")).toBeGreaterThan(await top("Mathématiques"));
   expect(await top("Informatique")).toBeGreaterThan(await top("Sciences"));
   expect(await page.locator("#app").evaluate((a) => a.getBoundingClientRect().width)).toBeGreaterThan(1000);
   await noSidewaysScroll(page, 1400);
 
+  // On a phone, a group's line scrolls inside itself, never the page.
   await page.setViewportSize({ width: 360, height: 740 });
   expect(await top("Sciences")).toBeGreaterThan(await top("Mathématiques"));
   await noSidewaysScroll(page, 360);
+  const line = page.locator(".activity-group[data-group='computing'] .activity-grid");
+  expect(await line.evaluate((g) => g.scrollWidth > g.clientWidth)).toBe(true);
   // Other pages keep the narrow column.
   await openActivity(page, "columns");
   await page.setViewportSize({ width: 1400, height: 900 });

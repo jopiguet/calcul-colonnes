@@ -28,7 +28,7 @@ import type { Provider } from "./auth/providers.ts";
 import { authRoutes } from "./auth/routes.ts";
 import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
-import { ACTIVITY_ID, HIDDEN_MAX, Repository, normalizeCode, type Scope } from "./repository.ts";
+import { ACTIVITY_ID, HIDDEN_MAX, Repository, layoutOf, normalizeCode, type Scope } from "./repository.ts";
 import { RateLimit } from "./auth/rate-limit.ts";
 import { VocabStore, vocabRoutes } from "./vocab.ts";
 import { BankStore, bankRoutes, bankVisible } from "./quiz-bank.ts";
@@ -158,6 +158,25 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
       return c.json({ error: "invalid hidden" }, 400);
     }
     await repository.setHidden(user.id, hidden as string[]);
+    return c.body(null, 204);
+  });
+
+  // How the player arranges its home page: its account, or the player in its own session (docs/home.md#arranging).
+  data.put("/users/:id/layout", async (c) => {
+    const id = Number(c.req.param("id"));
+    const user = isInt(id, 1, Number.MAX_SAFE_INTEGER) ? await repository.getUser(id, scope(c)) : null;
+    if (!user || user.sharedBy !== undefined) return c.json({ error: "unknown user" }, 404);
+    const raw = await c.req.text();
+    if (raw.length > 20_000) return c.json({ error: "invalid layout" }, 400);
+    const body = (() => {
+      try {
+        return JSON.parse(raw) as { layout?: unknown };
+      } catch {
+        return null;
+      }
+    })();
+    if (!body || typeof body.layout !== "object" || body.layout === null || Array.isArray(body.layout)) return c.json({ error: "invalid layout" }, 400);
+    await repository.setLayout(user.id, layoutOf(body.layout));
     return c.body(null, 204);
   });
 

@@ -4,6 +4,7 @@
  * from the ← link of every activity.
  */
 import { button, el } from "./dom";
+import { arrangeHome, dueCount } from "./home-layout";
 import { appFooter, newsBanner } from "./news";
 import { currentLang, type Lang } from "./i18n";
 import { qt } from "./quiz-i18n";
@@ -154,6 +155,10 @@ export interface HomeContext {
   open(activity: Activity): void;
   /** The overview of the player's progress in every activity. */
   showProgress(): void;
+  /** The player's account may hide and show activities: not a player's own login, not a shared player. */
+  canHide?: boolean;
+  /** Draws the home page again. */
+  rerender?: () => void;
 }
 
 let booksCache: { books: VocabBookInfo[]; at: number } | null = null;
@@ -279,6 +284,9 @@ function card(
   b.dataset.activity = activity;
   b.append(el("span", "activity-title", title), el("span", "activity-text", text));
   if (status) b.append(el("span", `activity-status${status.waiting ? " waiting" : ""}`, status.text));
+  // What waits there: such a card comes first in its group, and its group first (docs/home.md#arranging).
+  const due = dueCount(status);
+  if (due > 0) b.dataset.due = String(due);
   return b;
 }
 
@@ -435,11 +443,12 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
       const status = due > 0
         ? { text: due === 1 ? ht("oneWordDue") : ht("wordsDue", { count: due }), waiting: true }
         : started ? { text: ht("upToDate"), waiting: false } : { text: ht("notStarted", { count: words }), waiting: false };
-      shelf.append(
-        card(`vocab-shelf-${together.lang}`, `📚 ${vt("title", { lang: langName(together.lang) })}`, together.books.map(labelOf).join(" · "), status, () =>
-          ctx.open({ mode: "shelf", lang: together.lang }),
-        ),
+      const shelfCard = card(`vocab-shelf-${together.lang}`, `📚 ${vt("title", { lang: langName(together.lang) })}`, together.books.map(labelOf).join(" · "), status, () =>
+        ctx.open({ mode: "shelf", lang: together.lang }),
       );
+      // Removing the shelf from the home page hides its books.
+      shelfCard.dataset.hides = together.books.map((b) => `vocab-${b.slug}`).join(" ");
+      shelf.append(shelfCard);
       continue;
     }
     const mine = progress?.books[book.id];
@@ -514,22 +523,32 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   );
   astronomy.append(sky);
 
-  // Activities the player's account hides; a group left empty goes too.
-  const hidden = new Set(ctx.user.hidden ?? []);
-  // On a wide screen, groups sit side by side, each as wide as its cards need.
-  const groups = el("div", "home-groups");
-  // Chemistry and biology last: the other science groups come before it.
-  for (const group of [maths, sciences, computing, economics, courseGroup, languages, workbooks, discover, physics, astronomy, curiosities, chembio]) {
-    for (const node of group.querySelectorAll<HTMLElement>("[data-activity]")) {
-      if (hidden.has(node.dataset.activity!)) node.remove();
-    }
-    const empty = group.querySelector(".empty");
-    const cards = group.querySelectorAll("[data-activity]").length;
-    group.style.setProperty("--cards", String(Math.max(1, Math.min(cards, 4))));
-    if (cards > 0 || (empty && hidden.size === 0)) groups.append(group);
-  }
-  if (groups.childElementCount === 0) wrap.append(el("p", "empty", ht("nothingShown")));
-  else wrap.append(groups);
+  // Each group on one line, opened by its title; in the player's order, what waits first; arranged from a card's "⋯"
+  // (docs/home.md#arranging). Activities the player's account hides are not shown; a group left empty goes too.
+  const catalog = activityCatalog(books, exerciseBooks, courses);
+  const titled = (group: HTMLElement): string => group.querySelector(".activity-group-title")?.textContent ?? "";
+  const named: [string, HTMLElement][] = [
+    ["maths", maths], ["sciences", sciences], ["computing", computing], ["economics", economics], ["courses", courseGroup],
+    ["languages", languages], ["workbooks", workbooks], ["discover", discover], ["physics", physics], ["astronomy", astronomy],
+    ["curiosities", curiosities], ["chembio", chembio],
+  ];
+  const arranged = arrangeHome(
+    named.map(([id, group]) => ({ id, el: group })),
+    {
+      user: ctx.user,
+      canHide: ctx.canHide ?? false,
+      addable: (groupId, hidden) => {
+        const group = named.find(([id]) => id === groupId)?.[1];
+        const name = group ? titled(group) : "";
+        return (catalog.find((g) => g.group === name)?.activities ?? []).filter((a) => hidden.has(a.id));
+      },
+      saveLayout: (layout) => store.setLayout(ctx.user.id, layout),
+      saveHidden: (hidden) => store.setHidden(ctx.user.id, hidden),
+      rerender: () => ctx.rerender?.(),
+    },
+  );
+  if (arranged.querySelector(".activity-group") === null) wrap.append(el("p", "empty", ht("nothingShown")));
+  else wrap.append(arranged);
   // The release news once, then the foot: version, news, feedback, privacy.
   const news = newsBanner();
   if (news) head.after(news);

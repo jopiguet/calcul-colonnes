@@ -204,6 +204,7 @@ Settings are read from `.env` (see `.env.example`):
 | Document | For |
 |---|---|
 | [User guide](docs/user-guide.md) | Parents and teachers: every screen, setting and keyboard shortcut |
+| [Home page](docs/home.md) | Groups on one line, what waits first, arranging, moving, removing and adding cards; what is stored |
 | [Architecture](docs/architecture.md) | How the browser, server and shared code fit together; design decisions |
 | [Question generators](docs/question-generators.md) | The 110 maths, 122 chemistry, 53 Linux, 33 SQL, 40 Rust, 36 TypeScript, 44 React, 40 Google Cloud, 13 economics, 28 calculus and 6 balancing kinds of question, how a generator works, adding one, verification, versioning |
 | [Question bank](docs/question-bank.md) | The physical chemistry concept questions: file format, import, revisions, flags, writing questions |

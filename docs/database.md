@@ -41,6 +41,7 @@ this because the server enables `PRAGMA foreign_keys`.
 | `created_at` | bigint | |
 | `account_id` | integer, nullable | owning account; `NULL` only for players created before version 4, until the first account claims them |
 | `hidden` | text | JSON list of activities taken off the player's home page; `[]` shows everything, and new activities show |
+| `layout` | text | JSON: how the player arranged its home page, `{ groups, cards, open }` ([Home page](home.md#what-is-stored)); `{}` for the app's order |
 | `onboarded_at` | bigint, nullable | when the player first finished or skipped the [guided tour](user-guide.md#guided-tour) on their own login; `NULL` until then |
 
 ### `player_shares`, `player_invites`
@@ -279,6 +280,7 @@ runs: add tables and columns, rename or drop later.
 | `033_vocab_images` | `vocab_images`, the pictures of picture dictionaries; `image` and `part` on `vocab_entries` (docs/vocabulary.md#pictures) |
 | `034_vocab_info` | `info` on `vocab_entries`: an entry's type, readings by language and functions, from a format-3 file (docs/vocabulary.md#format-3) |
 | `035_lesson_answers` | `lesson_answers`, the answers to the language courses' exercises (docs/language-courses.md#progress) |
+| `036_home_layout` | `layout` on `users`: the order of the home page's groups and cards, the groups opened (common SQL, one file) |
 
 **File names.**
 

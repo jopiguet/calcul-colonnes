@@ -1,6 +1,7 @@
 import type {
   AuthOptions,
   AuthState,
+  HomeLayout,
   NewAttempt,
   NewQuizResult,
   PastTest,
@@ -131,6 +132,9 @@ export const store = {
   deleteUser: (id: number): Promise<void> => call(`/users/${id}`, { method: "DELETE" }),
   setHidden: (id: number, hidden: string[]): Promise<void> =>
     call(`/users/${id}/hidden`, { method: "PUT", body: JSON.stringify({ hidden }) }),
+  /** How the player arranged its home page: order of groups and cards, groups opened. */
+  setLayout: (id: number, layout: HomeLayout): Promise<void> =>
+    call(`/users/${id}/layout`, { method: "PUT", body: JSON.stringify({ layout }) }),
   /** A single-use code another account types to see this player too. */
   createInvite: (id: number): Promise<{ code: string; expiresAt: number }> => post(`/users/${id}/invites`),
   shares: (id: number): Promise<PlayerShare[]> => call(`/users/${id}/shares`),
