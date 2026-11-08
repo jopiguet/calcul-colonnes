@@ -2124,9 +2124,11 @@ button.vocab-letter {
 }
 
 /* The groups one under the other, each on one line of cards until its title opens it (docs/home.md#arranging). */
+/* Grids, not column flexboxes: Safari shrank a one-line group (a scroll container) below its cards and cut them. */
 .home-groups {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
   gap: 1.4rem;
 }
 
@@ -2135,8 +2137,9 @@ button.vocab-letter {
 }
 
 .activity-group {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
   gap: 0.6rem;
 }
 
@@ -2220,6 +2223,8 @@ button.activity-group-toggle::before {
 .activity-group.is-line .activity-grid {
   grid-template-columns: none;
   grid-auto-flow: column;
+  align-items: stretch;
+  flex-shrink: 0;
   grid-auto-columns: minmax(13.5rem, 15rem);
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -4429,26 +4434,30 @@ pre.quiz-code {
   tab-size: 4;
 }
 
-/* Four levels (every test): two by two on a phone, one row when there is room. */
+/* Four levels (every test): two by two on a phone, one row when there is room.
+   The grid is a div inside the fieldset: Safari does not lay out a fieldset as a grid. */
 .segmented.levels-four {
+  display: block;
+}
+.levels-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
 }
-.segmented.levels-four > legend,
-.segmented.levels-four > .mode-hint {
-  grid-column: 1 / -1;
-}
-.segmented.levels-four > .segment {
+.levels-grid > .segment {
   width: 100%;
 }
+.segmented.levels-four > .mode-hint {
+  margin-top: 0.4rem;
+}
 @media (min-width: 40rem) {
-  .segmented.levels-four {
+  .levels-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 /* Settings in two columns but the window not wide: four levels need two rows to keep their names whole. */
 @media (min-width: 52rem) and (max-width: 63.99rem) {
-  .quiz-setup .segmented.levels-four {
+  .quiz-setup .levels-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

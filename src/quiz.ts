@@ -329,14 +329,17 @@ function setupView(ctx: QuizContext): HTMLElement {
   }
 
   // Every test: Débutant, Intermédiaire, Avancé, Expert.
+  // The buttons in their own grid: Safari does not lay out a fieldset as a grid (its rows grew over the topics).
   const level = el("fieldset", "segmented levels-four");
   level.append(el("legend", "field-label", qt("level")));
+  const levelGrid = el("div", "levels-grid");
+  level.append(levelGrid);
   for (const value of SUBJECT_LEVELS[ctx.subject]) {
     const on = value === testLevel;
     const option = button(on ? "segment on" : "segment", levelName(value), () => save({ [LEVEL_SETTING[ctx.subject]]: value }));
     option.setAttribute("aria-pressed", String(on));
     option.dataset.focus = `level-${value}`;
-    level.append(option);
+    levelGrid.append(option);
   }
   level.append(el("p", "hint mode-hint", levelHint(testLevel)));
 

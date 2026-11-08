@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.0.1",
+    fr: ["Sur iPhone : les niveaux d'un test gardent leur taille, et les cartes d'une section sur une ligne ne sont plus coupées en bas."],
+    es: ["En iPhone: los niveles de un test conservan su tamaño, y las tarjetas de una sección en una línea ya no se cortan por abajo."],
+    en: ["On iPhone: a test's levels keep their size, and the cards of a section on one line are no longer cut at the bottom."],
+  },
+  {
     version: "8.0.0",
     fr: ["Les cours s'écoutent : en malayalam, égyptien, sumérien et akkadien, un ▶ après les mots, les lettres des tableaux et les proverbes dit le mot.", "Les cartes des lettres malayalam disent la lettre une fois la réponse donnée.", "Une voix de synthèse : pour les langues anciennes, la lecture des enseignants (nfr « nefer »), non le son perdu de la langue."],
     es: ["Los cursos se escuchan: en malayalam, egipcio, sumerio y acadio, un ▶ tras las palabras, las letras de las tablas y los proverbios dice la palabra.", "Las tarjetas de las letras malayalam dicen la letra una vez respondida.", "Una voz sintética: para las lenguas antiguas, la lectura de los profesores (nfr «nefer»), no el sonido perdido de la lengua."],

@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.0.1
+
+- **iPhone, a test's levels:** Safari does not lay out a `fieldset` as a grid, so the four level buttons grew several times their height and covered the topics. The buttons now sit in their own grid (`.levels-grid`) inside the fieldset.
+- **iPhone, the home page:** a group on one line (a sideways scroll container) was shrunk by Safari below its cards, cutting their bottom (the status, "N to review"). The groups are laid out as grids instead of nested column flexboxes, so each line is as tall as its tallest card.
+
 ## 8.0.0
 
 - **Sounds of the courses** ([Sounds](docs/sounds.md)): 🌴 Malayalam, 𓋹 Egyptian, Sumerian and Akkadian can be listened to. A ▶ follows each word of the lesson text that has a sound: the italics (the transliterations), the letters in the tables of signs, the Malayalam runs and proverbs; its tooltip gives the reading (*Écouter « nefer »*). The Malayalam letter cards show a ▶ once answered. Exercises have none, so nothing gives an answer away. One sound plays at a time.
