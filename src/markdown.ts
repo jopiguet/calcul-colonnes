@@ -6,7 +6,6 @@
  * but KaTeX's own output.
  */
 import katex from "katex";
-import "katex/dist/katex.min.css";
 import { el } from "./dom";
 
 export { parseMarkdown, type Block } from "./markdown-parse";

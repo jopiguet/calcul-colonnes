@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.0.0",
+    fr: ["Les cours s'écoutent : en malayalam, égyptien, sumérien et akkadien, un ▶ après les mots, les lettres des tableaux et les proverbes dit le mot.", "Les cartes des lettres malayalam disent la lettre une fois la réponse donnée.", "Une voix de synthèse : pour les langues anciennes, la lecture des enseignants (nfr « nefer »), non le son perdu de la langue."],
+    es: ["Los cursos se escuchan: en malayalam, egipcio, sumerio y acadio, un ▶ tras las palabras, las letras de las tablas y los proverbios dice la palabra.", "Las tarjetas de las letras malayalam dicen la letra una vez respondida.", "Una voz sintética: para las lenguas antiguas, la lectura de los profesores (nfr «nefer»), no el sonido perdido de la lengua."],
+    en: ["The courses can be listened to: in Malayalam, Egyptian, Sumerian and Akkadian, a ▶ after the words, the letters of the tables and the proverbs says the word.", "The Malayalam letter cards say the letter once answered.", "A synthetic voice: for the ancient languages, the reading teachers use (nfr “nefer”), not the lost sound of the language."],
+  },
+  {
     version: "7.10.0",
     fr: ["Accueil : chaque groupe tient sur une ligne, son titre l'ouvre en entier.", "Ce qui attend (mots à réviser, notions à revoir) passe en tête, le plus nombreux d'abord, puis reprend sa place une fois fait.", "Le ⋯ de chaque carte réorganise l'accueil comme sur un téléphone : déplacer les cartes et les groupes, retirer, rajouter."],
     es: ["Inicio: cada grupo cabe en una línea, su título lo abre entero.", "Lo pendiente (palabras por repasar, nociones por revisar) pasa delante, lo más numeroso primero, y vuelve a su sitio una vez hecho.", "El ⋯ de cada tarjeta reorganiza el inicio como en un teléfono: mover tarjetas y grupos, quitar, volver a añadir."],

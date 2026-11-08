@@ -1,0 +1,1053 @@
+{
+ "engine": "eSpeak NG",
+ "items": {
+  "-a": {
+   "file": "b22c8d39fb96.mp3",
+   "reading": "a"
+  },
+  "-a-": {
+   "file": "b22c8d39fb96.mp3",
+   "reading": "a"
+  },
+  "-a-ne-ne": {
+   "file": "6bf1d1db1d7b.mp3",
+   "reading": "anene"
+  },
+  "-a-ni": {
+   "file": "c9d217266967.mp3",
+   "reading": "ani"
+  },
+  "-ak": {
+   "file": "56aa676d0cd9.mp3",
+   "reading": "ak"
+  },
+  "-ak-ak": {
+   "file": "489c17fc9e0e.mp3",
+   "reading": "akak"
+  },
+  "-ak-e": {
+   "file": "d426b0398e6b.mp3",
+   "reading": "ake"
+  },
+  "-am₃": {
+   "file": "ce09c2f50b0c.mp3",
+   "reading": "am"
+  },
+  "-b-": {
+   "file": "0d871f41398b.mp3",
+   "reading": "b"
+  },
+  "-bi": {
+   "file": "e999ba90c8a8.mp3",
+   "reading": "bi"
+  },
+  "-da": {
+   "file": "42b01f6648a7.mp3",
+   "reading": "da"
+  },
+  "-da-": {
+   "file": "42b01f6648a7.mp3",
+   "reading": "da"
+  },
+  "-e": {
+   "file": "41ca66b9f8fb.mp3",
+   "reading": "e"
+  },
+  "-e-": {
+   "file": "41ca66b9f8fb.mp3",
+   "reading": "e"
+  },
+  "-en": {
+   "file": "9bd37e1c624b.mp3",
+   "reading": "en"
+  },
+  "-en-de₃-en": {
+   "file": "1919e0065839.mp3",
+   "reading": "endeen"
+  },
+  "-en-ze₂-en": {
+   "file": "0da5f15b71fe.mp3",
+   "reading": "enzeen"
+  },
+  "-ene": {
+   "file": "99250d348705.mp3",
+   "reading": "ene"
+  },
+  "-eš": {
+   "file": "b85816d382dd.mp3",
+   "reading": "esh"
+  },
+  "-gin₇": {
+   "file": "56c54ed033ae.mp3",
+   "reading": "gin"
+  },
+  "-ke₄": {
+   "file": "5445c132f211.mp3",
+   "reading": "ke"
+  },
+  "-m": {
+   "file": "7bfb735419ca.mp3",
+   "reading": "m"
+  },
+  "-ma-ke₄": {
+   "file": "431812f00f02.mp3",
+   "reading": "make"
+  },
+  "-me": {
+   "file": "9d82c82b2843.mp3",
+   "reading": "me"
+  },
+  "-me-en": {
+   "file": "d59772937358.mp3",
+   "reading": "meen"
+  },
+  "-me-en-de₃-en": {
+   "file": "05cda225e8ee.mp3",
+   "reading": "meendeen"
+  },
+  "-me-en-ze₂-en": {
+   "file": "d16a7a0fe58d.mp3",
+   "reading": "meenzeen"
+  },
+  "-me-eš": {
+   "file": "61fd19397b35.mp3",
+   "reading": "meesh"
+  },
+  "-n-": {
+   "file": "9dbfa5700007.mp3",
+   "reading": "n"
+  },
+  "-na-": {
+   "file": "4920531e65b6.mp3",
+   "reading": "na"
+  },
+  "-ne": {
+   "file": "1515a9f87f0d.mp3",
+   "reading": "ne"
+  },
+  "-ni": {
+   "file": "c0a52d509f14.mp3",
+   "reading": "ni"
+  },
+  "-ni-": {
+   "file": "c0a52d509f14.mp3",
+   "reading": "ni"
+  },
+  "-ra": {
+   "file": "67f3a20c3b64.mp3",
+   "reading": "ra"
+  },
+  "-ra-": {
+   "file": "67f3a20c3b64.mp3",
+   "reading": "ra"
+  },
+  "-ta": {
+   "file": "0a47216542e6.mp3",
+   "reading": "ta"
+  },
+  "-ta-": {
+   "file": "0a47216542e6.mp3",
+   "reading": "ta"
+  },
+  "-zu": {
+   "file": "811a760b15cb.mp3",
+   "reading": "zu"
+  },
+  "-zu-ne-ne": {
+   "file": "da2e564a1d38.mp3",
+   "reading": "zunene"
+  },
+  "-ĝu₁₀": {
+   "file": "4a6640c682e8.mp3",
+   "reading": "ngu"
+  },
+  "-še₃": {
+   "file": "49efbb67ddfb.mp3",
+   "reading": "she"
+  },
+  "-ši-": {
+   "file": "a6bf9a61b44b.mp3",
+   "reading": "shi"
+  },
+  "-ḫi-a": {
+   "file": "325b53a6f151.mp3",
+   "reading": "khia"
+  },
+  "a": {
+   "file": "b22c8d39fb96.mp3"
+  },
+  "a-ne": {
+   "file": "2f0aac5a63b2.mp3",
+   "reading": "ane"
+  },
+  "a-ne-ne": {
+   "file": "6bf1d1db1d7b.mp3",
+   "reading": "anene"
+  },
+  "ab": {
+   "file": "b10662bedb65.mp3"
+  },
+  "ama": {
+   "file": "73d94564e4b3.mp3"
+  },
+  "ama dumu-ni": {
+   "file": "400c931a055e.mp3",
+   "reading": "ama dumuni"
+  },
+  "am₃": {
+   "file": "ce09c2f50b0c.mp3",
+   "reading": "am"
+  },
+  "an": {
+   "file": "4a9a9a8c63e2.mp3"
+  },
+  "aš": {
+   "file": "94fe01493e50.mp3",
+   "reading": "ash"
+  },
+  "aš₃": {
+   "file": "94fe01493e50.mp3",
+   "reading": "ash"
+  },
+  "ba": {
+   "file": "3845b726d122.mp3"
+  },
+  "ba-": {
+   "file": "3845b726d122.mp3",
+   "reading": "ba"
+  },
+  "ba-an-": {
+   "file": "6edb41b8eac9.mp3",
+   "reading": "baan"
+  },
+  "ba-du₃": {
+   "file": "acebb43b2a76.mp3",
+   "reading": "badu"
+  },
+  "ba-ni-in-du₃": {
+   "file": "94b704672e56.mp3",
+   "reading": "baniindu"
+  },
+  "ba-ta-e₃": {
+   "file": "88388763c5e8.mp3",
+   "reading": "batae"
+  },
+  "ba-ug₇": {
+   "file": "69edd39d8cdd.mp3",
+   "reading": "baug"
+  },
+  "ba-ḫun": {
+   "file": "baa46445c408.mp3",
+   "reading": "bakhun"
+  },
+  "bad₃-a-ni mu-na-du₃": {
+   "file": "4fb2f30a3867.mp3",
+   "reading": "badani munadu"
+  },
+  "bi₂-": {
+   "file": "e999ba90c8a8.mp3",
+   "reading": "bi"
+  },
+  "diĝir": {
+   "file": "35be7659dd09.mp3",
+   "reading": "dingir"
+  },
+  "diš": {
+   "file": "b5bbb660b6c1.mp3",
+   "reading": "dish"
+  },
+  "du": {
+   "file": "ed8f602e924d.mp3"
+  },
+  "dub-sar": {
+   "file": "83d50617cda1.mp3",
+   "reading": "dubsar"
+  },
+  "dug₄": {
+   "file": "f385f813356f.mp3",
+   "reading": "dug"
+  },
+  "dumu": {
+   "file": "38a471813ee4.mp3"
+  },
+  "dumu lugal-a-ni": {
+   "file": "4b12d27888ae.mp3",
+   "reading": "dumu lugalani"
+  },
+  "dumu lugal-ak": {
+   "file": "31872e03facd.mp3",
+   "reading": "dumu lugalak"
+  },
+  "dumu lugal-la": {
+   "file": "088216daae0d.mp3",
+   "reading": "dumu lugalla"
+  },
+  "dumu tur": {
+   "file": "be937298fcf8.mp3"
+  },
+  "dumu-e": {
+   "file": "b6c0ecd705fe.mp3",
+   "reading": "dumue"
+  },
+  "dumu-munus": {
+   "file": "e42a178fb46b.mp3",
+   "reading": "dumumunus"
+  },
+  "dumu-ne": {
+   "file": "92ede724a380.mp3",
+   "reading": "dumune"
+  },
+  "dumu-ni": {
+   "file": "8c55dd0472f3.mp3",
+   "reading": "dumuni"
+  },
+  "dumu-ni-(ak)": {
+   "file": "87947c9a9e7b.mp3",
+   "reading": "dumuniak"
+  },
+  "dumu-ĝu₁₀": {
+   "file": "e25247322c7e.mp3",
+   "reading": "dumungu"
+  },
+  "dumu-ĝu₁₀-ra": {
+   "file": "6d80d21e0714.mp3",
+   "reading": "dumungura"
+  },
+  "dumu-ĝu₁₀-um": {
+   "file": "ac295cba4dfa.mp3",
+   "reading": "dumunguum"
+  },
+  "du₂": {
+   "file": "ed8f602e924d.mp3",
+   "reading": "du"
+  },
+  "du₃": {
+   "file": "ed8f602e924d.mp3",
+   "reading": "du"
+  },
+  "du₃-e": {
+   "file": "ed4207d2e5dd.mp3",
+   "reading": "due"
+  },
+  "dù": {
+   "file": "ed8f602e924d.mp3"
+  },
+  "dú": {
+   "file": "ed8f602e924d.mp3"
+  },
+  "e": {
+   "file": "41ca66b9f8fb.mp3"
+  },
+  "e-ne": {
+   "file": "99250d348705.mp3",
+   "reading": "ene"
+  },
+  "e-ne-ne": {
+   "file": "443e1d9cfc4d.mp3",
+   "reading": "enene"
+  },
+  "en-lil₂": {
+   "file": "06cf403c054b.mp3",
+   "reading": "enlil"
+  },
+  "en-lil₂-la₂-ra": {
+   "file": "481494709fea.mp3",
+   "reading": "enlillara"
+  },
+  "ensi₂": {
+   "file": "966902849106.mp3",
+   "reading": "ensi"
+  },
+  "eš₅": {
+   "file": "b85816d382dd.mp3",
+   "reading": "esh"
+  },
+  "e₂": {
+   "file": "41ca66b9f8fb.mp3",
+   "reading": "e"
+  },
+  "e₂ dumu lugal-la-ka": {
+   "file": "4ccfc65907e2.mp3",
+   "reading": "e dumu lugallaka"
+  },
+  "e₂ gibil": {
+   "file": "7527d54f4eec.mp3",
+   "reading": "e gibil"
+  },
+  "e₂ gibil lugal-la": {
+   "file": "f816b5ea26fc.mp3",
+   "reading": "e gibil lugalla"
+  },
+  "e₂ gibil-a-ni": {
+   "file": "4efe89f4c809.mp3",
+   "reading": "e gibilani"
+  },
+  "e₂ gibil-a-ni-a": {
+   "file": "dde92da14e90.mp3",
+   "reading": "e gibilania"
+  },
+  "e₂ lugal-ak": {
+   "file": "658338fab3b7.mp3",
+   "reading": "e lugalak"
+  },
+  "e₂ lugal-ak-a": {
+   "file": "8e18d57ee801.mp3",
+   "reading": "e lugalaka"
+  },
+  "e₂ lugal-la": {
+   "file": "fd2f305466d2.mp3",
+   "reading": "e lugalla"
+  },
+  "e₂ lugal-la(k)": {
+   "file": "466f0f324d90.mp3",
+   "reading": "e lugallak"
+  },
+  "e₂ lugal-la-ka": {
+   "file": "0c8becbb5fe2.mp3",
+   "reading": "e lugallaka"
+  },
+  "e₂ uru-bi": {
+   "file": "d8832f13c005.mp3",
+   "reading": "e urubi"
+  },
+  "e₂-a": {
+   "file": "ebc379c4710a.mp3",
+   "reading": "ea"
+  },
+  "e₂-a-ne-ne": {
+   "file": "990a81f79771.mp3",
+   "reading": "eanene"
+  },
+  "e₂-a-ni": {
+   "file": "03feb1e60021.mp3",
+   "reading": "eani"
+  },
+  "e₂-a-ni mu-na-du₃": {
+   "file": "cf242ef57176.mp3",
+   "reading": "eani munadu"
+  },
+  "e₂-bi": {
+   "file": "cf25a80d1e04.mp3",
+   "reading": "ebi"
+  },
+  "e₂-dub-ba": {
+   "file": "cf80573f6e51.mp3",
+   "reading": "edubba"
+  },
+  "e₂-e": {
+   "file": "d268f44b2641.mp3",
+   "reading": "ee"
+  },
+  "e₂-gal": {
+   "file": "42b9b2485f14.mp3",
+   "reading": "egal"
+  },
+  "e₂-me": {
+   "file": "9689fe0ccfdf.mp3",
+   "reading": "eme"
+  },
+  "e₂-ninnu-ni": {
+   "file": "66335b1dc32c.mp3",
+   "reading": "eninnuni"
+  },
+  "e₂-ninnu-ni mu-na-du₃": {
+   "file": "01dc4e20f536.mp3",
+   "reading": "eninnuni munadu"
+  },
+  "e₂-zu": {
+   "file": "7665782ddc92.mp3",
+   "reading": "ezu"
+  },
+  "e₂-zu-ne-ne": {
+   "file": "4b14f7468152.mp3",
+   "reading": "ezunene"
+  },
+  "e₂-ĝu₁₀": {
+   "file": "ae68bcf7bf75.mp3",
+   "reading": "engu"
+  },
+  "g": {
+   "file": "909b2a36377f.mp3"
+  },
+  "ga-": {
+   "file": "43b2fff306ff.mp3",
+   "reading": "ga"
+  },
+  "ga-an-du₃": {
+   "file": "35f6e7931ef9.mp3",
+   "reading": "gaandu"
+  },
+  "gal": {
+   "file": "31ef7f110ead.mp3"
+  },
+  "gibil": {
+   "file": "e266f4818a75.mp3"
+  },
+  "gin": {
+   "file": "56c54ed033ae.mp3"
+  },
+  "gin₂": {
+   "file": "56c54ed033ae.mp3",
+   "reading": "gin"
+  },
+  "gin₇": {
+   "file": "56c54ed033ae.mp3",
+   "reading": "gin"
+  },
+  "gub": {
+   "file": "8dd35eb9cdbf.mp3"
+  },
+  "gur": {
+   "file": "aae048c232c1.mp3"
+  },
+  "gu₂": {
+   "file": "8b787372222a.mp3",
+   "reading": "gu"
+  },
+  "gu₃-de₂-a": {
+   "file": "5015ad9a9659.mp3",
+   "reading": "gudea"
+  },
+  "gu₃-de₂-a ensi₂ lagaš": {
+   "file": "6ebf9ca5df5d.mp3",
+   "reading": "gudea ensi lagash"
+  },
+  "i": {
+   "file": "d9309f9500a3.mp3"
+  },
+  "ia₂": {
+   "file": "afcfef6a177e.mp3",
+   "reading": "ia"
+  },
+  "ib₂-du₃": {
+   "file": "0509585e2a33.mp3",
+   "reading": "ibdu"
+  },
+  "il": {
+   "file": "9dd338fda9a4.mp3"
+  },
+  "ilimmu": {
+   "file": "c0ab752152c9.mp3"
+  },
+  "imin": {
+   "file": "a3366b99a2bd.mp3"
+  },
+  "in": {
+   "file": "0aa6ef7c0a97.mp3"
+  },
+  "inim": {
+   "file": "6058d9c355d9.mp3"
+  },
+  "iti": {
+   "file": "0feb9adb1f45.mp3"
+  },
+  "iti še-kin-ku₅": {
+   "file": "5ffcc2e0ae94.mp3",
+   "reading": "iti shekinku"
+  },
+  "i₃-": {
+   "file": "d9309f9500a3.mp3",
+   "reading": "i"
+  },
+  "i₃-in-": {
+   "file": "da6c8d809eba.mp3",
+   "reading": "iin"
+  },
+  "i₃-ĝen": {
+   "file": "d6cbb111c3a9.mp3",
+   "reading": "ingen"
+  },
+  "i₃-ĝen-en": {
+   "file": "1a0903abd479.mp3",
+   "reading": "ingenen"
+  },
+  "i₃-ĝen-en-de₃-en": {
+   "file": "efeb83a76b56.mp3",
+   "reading": "ingenendeen"
+  },
+  "i₃-ĝen-en-ze₂-en": {
+   "file": "6ac3ff561257.mp3",
+   "reading": "ingenenzeen"
+  },
+  "i₃-ĝen-ne₂-eš": {
+   "file": "3af658241eae.mp3",
+   "reading": "ingenneesh"
+  },
+  "k": {
+   "file": "922586904587.mp3"
+  },
+  "ka": {
+   "file": "667a5c15aea1.mp3"
+  },
+  "kalag": {
+   "file": "4963b0c97cab.mp3"
+  },
+  "kh": {
+   "file": "c55d5269c0f0.mp3",
+   "reading": "kkh"
+  },
+  "ki": {
+   "file": "973c108c45ef.mp3"
+  },
+  "kur": {
+   "file": "dbb68d565b64.mp3"
+  },
+  "kur-kur": {
+   "file": "18f7847635e6.mp3",
+   "reading": "kurkur"
+  },
+  "kur-ta": {
+   "file": "d4ae8d801cc5.mp3",
+   "reading": "kurta"
+  },
+  "kurun₂-na": {
+   "file": "4478869ef7cd.mp3",
+   "reading": "kurunna"
+  },
+  "ku₃-babbar": {
+   "file": "c6988e1d85c9.mp3",
+   "reading": "kubabbar"
+  },
+  "la-": {
+   "file": "7a253de4d169.mp3",
+   "reading": "la"
+  },
+  "la-ba-an-du₃": {
+   "file": "919a24535843.mp3",
+   "reading": "labaandu"
+  },
+  "lagaš": {
+   "file": "c00aff49e0be.mp3",
+   "reading": "lagash"
+  },
+  "li-": {
+   "file": "bf922ee112e5.mp3",
+   "reading": "li"
+  },
+  "limmu₂": {
+   "file": "4712de50e341.mp3",
+   "reading": "limmu"
+  },
+  "lugal": {
+   "file": "b9bffb27aecd.mp3"
+  },
+  "lugal gal": {
+   "file": "994a31fb83ae.mp3"
+  },
+  "lugal nu-um": {
+   "file": "28b9238b6380.mp3",
+   "reading": "lugal nuum"
+  },
+  "lugal urim₂": {
+   "file": "237526a8c432.mp3",
+   "reading": "lugal urim"
+  },
+  "lugal-am₃": {
+   "file": "2005fd33428e.mp3",
+   "reading": "lugalam"
+  },
+  "lugal-da": {
+   "file": "85c2b4165e48.mp3",
+   "reading": "lugalda"
+  },
+  "lugal-e": {
+   "file": "20d1ee3a4c6a.mp3",
+   "reading": "lugale"
+  },
+  "lugal-e e₂ mu-un-du₃": {
+   "file": "8f76f230296a.mp3",
+   "reading": "lugale e muundu"
+  },
+  "lugal-e-ne": {
+   "file": "332a1234f747.mp3",
+   "reading": "lugalene"
+  },
+  "lugal-la": {
+   "file": "37bc86517791.mp3",
+   "reading": "lugalla"
+  },
+  "lugal-la(k)": {
+   "file": "a8d58745593f.mp3",
+   "reading": "lugallak"
+  },
+  "lugal-me-en": {
+   "file": "876fc65d83ec.mp3",
+   "reading": "lugalmeen"
+  },
+  "lugal-me-en-de₃-en": {
+   "file": "b9d2b93df13f.mp3",
+   "reading": "lugalmeendeen"
+  },
+  "lugal-me-en-ze₂-en": {
+   "file": "03e3fcd6137f.mp3",
+   "reading": "lugalmeenzeen"
+  },
+  "lugal-me-eš": {
+   "file": "80d4f6abe38d.mp3",
+   "reading": "lugalmeesh"
+  },
+  "lugal-ra": {
+   "file": "a2b5843f3fb5.mp3",
+   "reading": "lugalra"
+  },
+  "lu₂": {
+   "file": "3421d8c74796.mp3",
+   "reading": "lu"
+  },
+  "ma-": {
+   "file": "60490094863c.mp3",
+   "reading": "ma"
+  },
+  "ma-an-šum₂": {
+   "file": "13a232fa212b.mp3",
+   "reading": "maanshum"
+  },
+  "ma-na": {
+   "file": "84e93864fbde.mp3",
+   "reading": "mana"
+  },
+  "me": {
+   "file": "9d82c82b2843.mp3"
+  },
+  "me-en-ze₂-en": {
+   "file": "d16a7a0fe58d.mp3",
+   "reading": "meenzeen"
+  },
+  "min": {
+   "file": "e6a4d4cd82e8.mp3"
+  },
+  "mu": {
+   "file": "fe7c709da718.mp3"
+  },
+  "mu bad₃ ma-da ba-du₃": {
+   "file": "5d44b053728c.mp3",
+   "reading": "mu bad mada badu"
+  },
+  "mu us₂-sa": {
+   "file": "9d8c9dee3a85.mp3",
+   "reading": "mu ussa"
+  },
+  "mu-": {
+   "file": "fe7c709da718.mp3",
+   "reading": "mu"
+  },
+  "mu-da-ĝen": {
+   "file": "20215b3eaedc.mp3",
+   "reading": "mudangen"
+  },
+  "mu-du₃": {
+   "file": "73084ce821bc.mp3",
+   "reading": "mudu"
+  },
+  "mu-du₃-e": {
+   "file": "e0a3b406fad7.mp3",
+   "reading": "mudue"
+  },
+  "mu-du₃-en": {
+   "file": "01fe52ebc099.mp3",
+   "reading": "muduen"
+  },
+  "mu-du₃-ne": {
+   "file": "508bc89e60fe.mp3",
+   "reading": "mudune"
+  },
+  "mu-e-du₃": {
+   "file": "4d1d836b6c62.mp3",
+   "reading": "muedu"
+  },
+  "mu-n-du₃": {
+   "file": "250f5bf59fb0.mp3",
+   "reading": "mundu"
+  },
+  "mu-na-du₃": {
+   "file": "c244723d916e.mp3",
+   "reading": "munadu"
+  },
+  "mu-ra-an-šum₂": {
+   "file": "73b102e288b4.mp3",
+   "reading": "muraanshum"
+  },
+  "mu-ub-du₃": {
+   "file": "f50b5c3a618b.mp3",
+   "reading": "muubdu"
+  },
+  "mu-un-": {
+   "file": "1d6976766f2e.mp3",
+   "reading": "muun"
+  },
+  "mu-un-du₃": {
+   "file": "461550556bee.mp3",
+   "reading": "muundu"
+  },
+  "mu-un-du₃-uš": {
+   "file": "34fcbf128194.mp3",
+   "reading": "muunduush"
+  },
+  "mu-ši-ĝen": {
+   "file": "e3639473a3b0.mp3",
+   "reading": "mushingen"
+  },
+  "na": {
+   "file": "4920531e65b6.mp3"
+  },
+  "na-": {
+   "file": "4920531e65b6.mp3",
+   "reading": "na"
+  },
+  "na-an-du₃-e": {
+   "file": "59f0aaed0437.mp3",
+   "reading": "naandue"
+  },
+  "nam-": {
+   "file": "a46e172e2e1d.mp3",
+   "reading": "nam"
+  },
+  "nam-dumu": {
+   "file": "948bfa16db3f.mp3",
+   "reading": "namdumu"
+  },
+  "nam-lugal": {
+   "file": "5c743d41d1bc.mp3",
+   "reading": "namlugal"
+  },
+  "nam-ti": {
+   "file": "b6440af99f1e.mp3",
+   "reading": "namti"
+  },
+  "namma": {
+   "file": "35eaf9c2c458.mp3"
+  },
+  "namma lugal urim₂": {
+   "file": "43b598a7c0ee.mp3",
+   "reading": "namma lugal urim"
+  },
+  "nanna": {
+   "file": "2f4202183218.mp3"
+  },
+  "nanna lugal-a-ni": {
+   "file": "45511d0332b7.mp3",
+   "reading": "nanna lugalani"
+  },
+  "nanše": {
+   "file": "037d4a49a356.mp3",
+   "reading": "nanshe"
+  },
+  "ng": {
+   "file": "708663e463fd.mp3"
+  },
+  "ni": {
+   "file": "c0a52d509f14.mp3"
+  },
+  "nibru": {
+   "file": "f846afbb5719.mp3"
+  },
+  "nimin": {
+   "file": "e33ccae8f5e3.mp3"
+  },
+  "nin-ĝir₂-su": {
+   "file": "d090ae8a2a64.mp3",
+   "reading": "ninngirsu"
+  },
+  "nin-ĝir₂-su-ra": {
+   "file": "2026f5079102.mp3",
+   "reading": "ninngirsura"
+  },
+  "nin-ĝir₂-su-ra e₂-a-ni mu-na-du₃": {
+   "file": "0488069af87a.mp3",
+   "reading": "ninngirsura eani munadu"
+  },
+  "ninnu": {
+   "file": "e7d01fca1f0f.mp3"
+  },
+  "niĝ₂-lam₂": {
+   "file": "d4f9b2843a49.mp3",
+   "reading": "ninglam"
+  },
+  "niš": {
+   "file": "4241d5f1606c.mp3",
+   "reading": "nish"
+  },
+  "nu-": {
+   "file": "cab1e8e708e1.mp3",
+   "reading": "nu"
+  },
+  "nu-am": {
+   "file": "ac69b5aececf.mp3",
+   "reading": "nuam"
+  },
+  "nu-me-en": {
+   "file": "713718dfbbba.mp3",
+   "reading": "numeen"
+  },
+  "nu-um": {
+   "file": "fa837cdde170.mp3",
+   "reading": "nuum"
+  },
+  "nu-un-du₃": {
+   "file": "6145f33ea32b.mp3",
+   "reading": "nuundu"
+  },
+  "sh": {
+   "file": "a28b657b9c0d.mp3",
+   "reading": "skh"
+  },
+  "sila₃": {
+   "file": "83f9a01665ee.mp3",
+   "reading": "sila"
+  },
+  "sing": {
+   "file": "d6895a59e97a.mp3"
+  },
+  "tukul": {
+   "file": "07297fca7739.mp3"
+  },
+  "tuš": {
+   "file": "e3c7d3fab97c.mp3",
+   "reading": "tush"
+  },
+  "u": {
+   "file": "d4a43328cb3e.mp3"
+  },
+  "udu": {
+   "file": "6afa79c3fe7c.mp3"
+  },
+  "udu-ḫi-a": {
+   "file": "76fbd98dd6ab.mp3",
+   "reading": "udukhia"
+  },
+  "uga": {
+   "file": "0cca938d2d8d.mp3"
+  },
+  "um": {
+   "file": "6beeb61715a8.mp3"
+  },
+  "unug": {
+   "file": "8b9a6a79c533.mp3"
+  },
+  "ur-": {
+   "file": "32cc01e1c9d0.mp3",
+   "reading": "ur"
+  },
+  "ur-saĝ kalag-ga": {
+   "file": "f51a2f3218ee.mp3",
+   "reading": "ursang kalagga"
+  },
+  "ur-saĝ-gin₇": {
+   "file": "218ad3043d87.mp3",
+   "reading": "ursanggin"
+  },
+  "urim₂-ak": {
+   "file": "cd947c78356b.mp3",
+   "reading": "urimak"
+  },
+  "uru-še₃": {
+   "file": "e293afd3c4ca.mp3",
+   "reading": "urushe"
+  },
+  "ussu": {
+   "file": "04f0fc9107c1.mp3"
+  },
+  "utu": {
+   "file": "cf0c424608d5.mp3"
+  },
+  "ušu₃": {
+   "file": "3d2dc0a8f5c5.mp3",
+   "reading": "ushu"
+  },
+  "u₄": {
+   "file": "d4a43328cb3e.mp3",
+   "reading": "u"
+  },
+  "za-e": {
+   "file": "f46ad740face.mp3",
+   "reading": "zae"
+  },
+  "ze₂-e": {
+   "file": "74501d1a88bd.mp3",
+   "reading": "zee"
+  },
+  "zu": {
+   "file": "811a760b15cb.mp3"
+  },
+  "ĝa₂-e": {
+   "file": "09e8f0eabddf.mp3",
+   "reading": "ngae"
+  },
+  "ĝen": {
+   "file": "149f762964e6.mp3",
+   "reading": "ngen"
+  },
+  "ĝeš₂": {
+   "file": "98144b9fb7ca.mp3",
+   "reading": "ngesh"
+  },
+  "ĝeš₂-u": {
+   "file": "17517e7ddc0e.mp3",
+   "reading": "ngeshu"
+  },
+  "ĝe₂-e": {
+   "file": "8f6b17802312.mp3",
+   "reading": "ngee"
+  },
+  "ĝe₂-e lugal-me-en": {
+   "file": "8d4b7f619e6e.mp3",
+   "reading": "ngee lugalmeen"
+  },
+  "ĝu": {
+   "file": "4a6640c682e8.mp3",
+   "reading": "ngu"
+  },
+  "ĝu₁₀": {
+   "file": "4a6640c682e8.mp3",
+   "reading": "ngu"
+  },
+  "šar₂": {
+   "file": "a2ab859e7d56.mp3",
+   "reading": "shar"
+  },
+  "še": {
+   "file": "49efbb67ddfb.mp3",
+   "reading": "she"
+  },
+  "šeš": {
+   "file": "2bc4417bfdc1.mp3",
+   "reading": "shesh"
+  },
+  "šu": {
+   "file": "78ab1003ab25.mp3",
+   "reading": "shu"
+  },
+  "šum₂": {
+   "file": "b7decf1de21c.mp3",
+   "reading": "shum"
+  },
+  "šum₂-mu": {
+   "file": "861a7e3c391d.mp3",
+   "reading": "shummu"
+  },
+  "ḫa-": {
+   "file": "3419c687caff.mp3",
+   "reading": "kha"
+  },
+  "ḫa-ma-an-šum₂": {
+   "file": "f412cda1aabb.mp3",
+   "reading": "khamaanshum"
+  },
+  "ḫamṭu": {
+   "file": "449d983bb1a7.mp3",
+   "reading": "khamtu"
+  },
+  "ḫe₂": {
+   "file": "79003be867cb.mp3",
+   "reading": "khe"
+  },
+  "ḫe₂-": {
+   "file": "79003be867cb.mp3",
+   "reading": "khe"
+  },
+  "ḫe₂-en-du₃": {
+   "file": "aae4cf4ba453.mp3",
+   "reading": "kheendu"
+  }
+ }
+}

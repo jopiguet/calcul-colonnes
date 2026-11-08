@@ -885,6 +885,14 @@ Every course's words (and the Malayalam letters) also have their card under
 *Langues* on the home page, with the words to review, beside your own books
 of the same language.
 
+**Listening.** In the Malayalam, Egyptian, Sumerian and Akkadian courses a
+small ▶ follows the words of the lesson text, the letters of the tables of
+signs and the proverbs; a click says the word. Its tooltip gives the reading
+when it differs from the transliteration (*Écouter « nefer »*). On the
+Malayalam letter cards the ▶ comes with the answer. The voice is synthetic;
+for the ancient languages it says the readings teachers use, not the lost
+sound of the language. Exercises have no ▶. See [Sounds](sounds.md).
+
 A wrong answer shows the expected one (*Réponse : …*). The answers stay: a lesson reopened
 shows them checked, and *Recommencer la leçon* empties it.
 

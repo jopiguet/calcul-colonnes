@@ -42,7 +42,11 @@ content/courses/
     …
   malayalam/
     letters.json                  optional: the course's letter cards, a book of kind "characters"
+    sounds.json                   made by npm run sounds:build: the words that can be listened to
+    sounds/<hash>.mp3             their sounds (docs/sounds.md)
 ```
+
+Malayalam, Egyptian, Sumerian and Akkadian can be listened to: a ▶ after the words of the lesson text and on the letter cards, made at build time by eSpeak NG. See [Sounds](sounds.md).
 
 `course.json`:
 
@@ -220,6 +224,8 @@ players and those shared with it) and `lang` (`fr`, `es`, `en`).
 | `POST /api/courses/check` | `{userId, course, lesson, exercise, given[], lang}` | `ExerciseState`: results, expected answers, score |
 | `PUT /api/courses/override` | `{userId, course, lesson, exercise, blank, right, lang}` | `ExerciseState`: `right: true` marks a strict or free blank right, `false` or `null` takes the mark back; only once checked, never a choice |
 | `DELETE /api/courses/answers` | `?userId&course&lesson` | 204: the lesson's answers removed |
+| `GET /api/courses/:course/sounds` | | `CourseSounds`: a word as written → its file and reading; `{}` without sounds ([Sounds](sounds.md)) |
+| `GET /api/courses/:course/sounds/:file` | | the MP3, cached for good |
 
 Errors: `invalid query`, `invalid answers`, `invalid override` (400);
 `unknown user`, `unknown course`, `unknown lesson`, `unknown exercise`,
@@ -236,7 +242,10 @@ Errors: `invalid query`, `invalid answers`, `invalid override` (400);
   (headings, table lines, blocks);
 - the template above, no stray `$`, no italics cut by a blank;
 - every answer typed back is right, a wrong one is not, none folds to nothing;
-- at least five words per lesson, no word taught twice in a course.
+- at least five words per lesson, no word taught twice in a course;
+- how Egyptian, Akkadian, Sumerian and Malayalam words are turned into speech (`server/pronounce.ts`).
+
+`npm run check:sounds` checks that every word that can be listened to has its sound and that each `sounds.json` is up to date; after changing a lesson of those four courses, run `npm run sounds:build`.
 
 ## Adding a lesson
 

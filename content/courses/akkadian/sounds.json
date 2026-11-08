@@ -1,0 +1,1470 @@
+{
+ "engine": "eSpeak NG",
+ "items": {
+  "-a": {
+   "file": "b22c8d39fb96.mp3",
+   "reading": "a"
+  },
+  "-am": {
+   "file": "ce09c2f50b0c.mp3",
+   "reading": "am"
+  },
+  "-anni": {
+   "file": "d4ffbd7f8d56.mp3",
+   "reading": "anni"
+  },
+  "-at": {
+   "file": "ba8e7aba11e8.mp3",
+   "reading": "at"
+  },
+  "-at-": {
+   "file": "ba8e7aba11e8.mp3",
+   "reading": "at"
+  },
+  "-i": {
+   "file": "d9309f9500a3.mp3",
+   "reading": "i"
+  },
+  "-i-": {
+   "file": "d9309f9500a3.mp3",
+   "reading": "i"
+  },
+  "-im": {
+   "file": "a0fae5d095e6.mp3",
+   "reading": "im"
+  },
+  "-ka": {
+   "file": "667a5c15aea1.mp3",
+   "reading": "ka"
+  },
+  "-ki": {
+   "file": "973c108c45ef.mp3",
+   "reading": "ki"
+  },
+  "-kunu": {
+   "file": "cbe53697ed1f.mp3",
+   "reading": "kunu"
+  },
+  "-m": {
+   "file": "7bfb735419ca.mp3",
+   "reading": "m"
+  },
+  "-ma": {
+   "file": "60490094863c.mp3",
+   "reading": "ma"
+  },
+  "-ni": {
+   "file": "c0a52d509f14.mp3",
+   "reading": "ni"
+  },
+  "-parr-": {
+   "file": "ab09c5b8cfe1.mp3",
+   "reading": "parr"
+  },
+  "-t-": {
+   "file": "e212bcef699b.mp3",
+   "reading": "t"
+  },
+  "-ta-": {
+   "file": "0a47216542e6.mp3",
+   "reading": "ta"
+  },
+  "-u": {
+   "file": "d4a43328cb3e.mp3",
+   "reading": "u"
+  },
+  "-um": {
+   "file": "6beeb61715a8.mp3",
+   "reading": "um"
+  },
+  "-ā": {
+   "file": "c8a569cbaa33.mp3",
+   "reading": "ā"
+  },
+  "-āku": {
+   "file": "a52a52b90f08.mp3",
+   "reading": "āku"
+  },
+  "-ān": {
+   "file": "34874be41f0a.mp3",
+   "reading": "ān"
+  },
+  "-ānu": {
+   "file": "6cdd07f4cce1.mp3",
+   "reading": "ānu"
+  },
+  "-āta": {
+   "file": "b0c6e489f575.mp3",
+   "reading": "āta"
+  },
+  "-āti": {
+   "file": "46e6afda2530.mp3",
+   "reading": "āti"
+  },
+  "-ātim": {
+   "file": "520cb7752f69.mp3",
+   "reading": "ātim"
+  },
+  "-ātum": {
+   "file": "9b3ef189c2df.mp3",
+   "reading": "ātum"
+  },
+  "-ī": {
+   "file": "6bf0230b2051.mp3",
+   "reading": "ī"
+  },
+  "-īn": {
+   "file": "b105916525cd.mp3",
+   "reading": "īn"
+  },
+  "-ša": {
+   "file": "886d08377dc0.mp3",
+   "reading": "sha"
+  },
+  "-ši": {
+   "file": "a6bf9a61b44b.mp3",
+   "reading": "shi"
+  },
+  "-šu": {
+   "file": "78ab1003ab25.mp3",
+   "reading": "shu"
+  },
+  "-šunu": {
+   "file": "1df160d20079.mp3",
+   "reading": "shunu"
+  },
+  "-šunūti": {
+   "file": "e5734b3c0df9.mp3",
+   "reading": "shunūti"
+  },
+  "-ū": {
+   "file": "bda10a81039a.mp3",
+   "reading": "ū"
+  },
+  "-ūtum": {
+   "file": "2b65aab95c6c.mp3",
+   "reading": "ūtum"
+  },
+  "a": {
+   "file": "b22c8d39fb96.mp3"
+  },
+  "a e i u": {
+   "file": "42c200910866.mp3"
+  },
+  "a-": {
+   "file": "b22c8d39fb96.mp3",
+   "reading": "a"
+  },
+  "a-wi-lum": {
+   "file": "a1ef88d17c80.mp3",
+   "reading": "a wi lum"
+  },
+  "adi": {
+   "file": "f4495bb924fb.mp3"
+  },
+  "adi allaku": {
+   "file": "d0f1f02172c5.mp3"
+  },
+  "akālum": {
+   "file": "fe9ea0d004bb.mp3"
+  },
+  "alik": {
+   "file": "86f2f407ae18.mp3"
+  },
+  "alākum": {
+   "file": "1f02e577a0f9.mp3"
+  },
+  "am": {
+   "file": "ce09c2f50b0c.mp3"
+  },
+  "amārum": {
+   "file": "d023e8ddb23b.mp3"
+  },
+  "ana": {
+   "file": "ee2b82c66a57.mp3"
+  },
+  "ana bēli-šu": {
+   "file": "2cfeb3c07b80.mp3",
+   "reading": "ana bēli shu"
+  },
+  "ana bēliya": {
+   "file": "1b404ec0c525.mp3"
+  },
+  "ana bēlišu": {
+   "file": "734ac0152b29.mp3",
+   "reading": "ana bēlishu"
+  },
+  "ana kurnugi qaqqari lā târi": {
+   "file": "375bfa025812.mp3"
+  },
+  "ana lā ḫabālim": {
+   "file": "13595df352fa.mp3",
+   "reading": "ana lā khabālim"
+  },
+  "ana šarratim dannatim": {
+   "file": "ab207b13ae2b.mp3",
+   "reading": "ana sharratim dannatim"
+  },
+  "ana šarrim": {
+   "file": "f02c9acf711b.mp3",
+   "reading": "ana sharrim"
+  },
+  "ana šarrim dannim": {
+   "file": "58ec9f2a353f.mp3",
+   "reading": "ana sharrim dannim"
+  },
+  "anāku": {
+   "file": "b8154d1562b6.mp3"
+  },
+  "anāku šarrum": {
+   "file": "21911ccd9b43.mp3",
+   "reading": "anāku sharrum"
+  },
+  "aparras": {
+   "file": "d703f6b3aedb.mp3"
+  },
+  "aprus": {
+   "file": "610e16ca2dad.mp3"
+  },
+  "aptaras": {
+   "file": "a87394f3156d.mp3"
+  },
+  "atta": {
+   "file": "aa1c5fcc7f87.mp3"
+  },
+  "atti": {
+   "file": "42a52d8619ff.mp3"
+  },
+  "attina": {
+   "file": "535fe2a89c75.mp3"
+  },
+  "attunu": {
+   "file": "8b00a45c1939.mp3"
+  },
+  "awīlum": {
+   "file": "91b52df82151.mp3"
+  },
+  "awīlāta": {
+   "file": "14872922b73b.mp3"
+  },
+  "aššum": {
+   "file": "a2ceea74f80c.mp3",
+   "reading": "ashshum"
+  },
+  "aššum lā illiku": {
+   "file": "fadce0aa80ca.mp3",
+   "reading": "ashshum lā illiku"
+  },
+  "aḫum": {
+   "file": "b8a5c9269997.mp3",
+   "reading": "akhum"
+  },
+  "b p m w": {
+   "file": "c9800b574055.mp3"
+  },
+  "banûm": {
+   "file": "88cf71e3c379.mp3"
+  },
+  "be-lum": {
+   "file": "1a95826c248b.mp3",
+   "reading": "be lum"
+  },
+  "bi-lum": {
+   "file": "92a5d386c7fa.mp3",
+   "reading": "bi lum"
+  },
+  "bēl": {
+   "file": "43071e829c19.mp3"
+  },
+  "bēl ālim": {
+   "file": "4db91d89d0ce.mp3"
+  },
+  "bēl-šu": {
+   "file": "dd188192e4e3.mp3",
+   "reading": "bēl shu"
+  },
+  "bēlka": {
+   "file": "b497109c21b6.mp3"
+  },
+  "bēlki": {
+   "file": "2f4adc310dc5.mp3"
+  },
+  "bēlkunu": {
+   "file": "1cd829f78f4e.mp3"
+  },
+  "bēlni": {
+   "file": "291add75928c.mp3"
+  },
+  "bēltum": {
+   "file": "6207e2cdcee2.mp3"
+  },
+  "bēlum": {
+   "file": "bf966a2e755f.mp3"
+  },
+  "bēlī": {
+   "file": "ab48b0f07eb6.mp3"
+  },
+  "bēlša": {
+   "file": "55ae4e05f544.mp3",
+   "reading": "bēlsha"
+  },
+  "bēlšu": {
+   "file": "075c919d8445.mp3",
+   "reading": "bēlshu"
+  },
+  "bēlšunu": {
+   "file": "6b837aa4a27d.mp3",
+   "reading": "bēlshunu"
+  },
+  "bēt lèḥem": {
+   "file": "4bd26956154a.mp3",
+   "reading": "bēt lèkhem"
+  },
+  "bīssu": {
+   "file": "b22eaaff44a8.mp3"
+  },
+  "bīt": {
+   "file": "ae6c7a0ecf03.mp3"
+  },
+  "bīt ilim": {
+   "file": "53519f00e649.mp3"
+  },
+  "bīt-šu": {
+   "file": "b63f3c93b3cc.mp3",
+   "reading": "bīt shu"
+  },
+  "bītum": {
+   "file": "c40baba6752d.mp3"
+  },
+  "bītum ša ibnû": {
+   "file": "c32ff5544c5a.mp3",
+   "reading": "bītum sha ibnû"
+  },
+  "bītum ša šarrim": {
+   "file": "c8b88492cd4b.mp3",
+   "reading": "bītum sha sharrim"
+  },
+  "d": {
+   "file": "e5e31bf0f51f.mp3"
+  },
+  "d t ṭ": {
+   "file": "e8fca7d0ae78.mp3",
+   "reading": "d t t"
+  },
+  "da": {
+   "file": "42b01f6648a7.mp3"
+  },
+  "dam(i)q-at": {
+   "file": "da5f0a32defd.mp3",
+   "reading": "damiq at"
+  },
+  "damiq": {
+   "file": "cb596289d39b.mp3"
+  },
+  "damqat": {
+   "file": "45e22c2ad77e.mp3"
+  },
+  "damqu": {
+   "file": "526119f707b2.mp3"
+  },
+  "damqum": {
+   "file": "8ea3bb135444.mp3"
+  },
+  "damqā": {
+   "file": "744aec4122b3.mp3"
+  },
+  "damqāku": {
+   "file": "191354b0a76b.mp3"
+  },
+  "damqānu": {
+   "file": "2a38ea70bd76.mp3"
+  },
+  "damqāta": {
+   "file": "2f9e0393a005.mp3"
+  },
+  "damqāti": {
+   "file": "c09ebe61e625.mp3"
+  },
+  "damqū": {
+   "file": "c9ace02a3d5a.mp3"
+  },
+  "damāqum": {
+   "file": "fe1fa5c12bfe.mp3"
+  },
+  "dannatum": {
+   "file": "345d6b31d3fc.mp3"
+  },
+  "dannum": {
+   "file": "bd5a6bfdb084.mp3"
+  },
+  "dannum enšam ana lā ḫabālim": {
+   "file": "9c191eceaf3b.mp3",
+   "reading": "dannum ensham ana lā khabālim"
+  },
+  "dannātum": {
+   "file": "702e2fa25fd0.mp3"
+  },
+  "dannūtum": {
+   "file": "c5c7068c4341.mp3"
+  },
+  "e": {
+   "file": "41ca66b9f8fb.mp3"
+  },
+  "eli": {
+   "file": "e54d21b250b1.mp3"
+  },
+  "eli šarrim": {
+   "file": "c2a3781e76c4.mp3",
+   "reading": "eli sharrim"
+  },
+  "epēšum": {
+   "file": "cbb5cc68a081.mp3",
+   "reading": "epēshum"
+  },
+  "ešer": {
+   "file": "9209f2cac490.mp3",
+   "reading": "esher"
+  },
+  "ešeret": {
+   "file": "39494da0e30b.mp3",
+   "reading": "esheret"
+  },
+  "g": {
+   "file": "909b2a36377f.mp3"
+  },
+  "g k q": {
+   "file": "0ca1d54ab1df.mp3"
+  },
+  "i": {
+   "file": "d9309f9500a3.mp3"
+  },
+  "i niprus": {
+   "file": "aabedaff6b0f.mp3"
+  },
+  "i-": {
+   "file": "d9309f9500a3.mp3",
+   "reading": "i"
+  },
+  "i-ba-aš-ši": {
+   "file": "40ba97cd6a3f.mp3",
+   "reading": "i ba ash shi"
+  },
+  "ibanni": {
+   "file": "607bc346c5ea.mp3"
+  },
+  "ibašši": {
+   "file": "9372b1cc21e8.mp3",
+   "reading": "ibashshi"
+  },
+  "ibni": {
+   "file": "9814f5a8166d.mp3"
+  },
+  "ibnû": {
+   "file": "05db3b36299b.mp3"
+  },
+  "iddin": {
+   "file": "c0df6502f637.mp3"
+  },
+  "iddâk": {
+   "file": "c38d9eabebf0.mp3"
+  },
+  "ikkal": {
+   "file": "d1c3f42385b5.mp3"
+  },
+  "il": {
+   "file": "9dd338fda9a4.mp3"
+  },
+  "ileqqe": {
+   "file": "54058905e29e.mp3"
+  },
+  "illak": {
+   "file": "8d1465d7271c.mp3"
+  },
+  "illik": {
+   "file": "2322f0f5d47c.mp3"
+  },
+  "ilqe": {
+   "file": "80c9020c35b7.mp3"
+  },
+  "iltum": {
+   "file": "18d77dcf9e7b.mp3"
+  },
+  "ilum": {
+   "file": "db0e83349c20.mp3"
+  },
+  "ilū liballiṭūka": {
+   "file": "fadf834c6564.mp3",
+   "reading": "ilū liballitūka"
+  },
+  "imaqqut": {
+   "file": "62a8719abe10.mp3"
+  },
+  "immar": {
+   "file": "5cb2088653c9.mp3"
+  },
+  "imqut": {
+   "file": "192ee1e04e7d.mp3"
+  },
+  "imtaqut": {
+   "file": "4f563ce5780e.mp3"
+  },
+  "imūt": {
+   "file": "0d8f636e7699.mp3"
+  },
+  "in-paris": {
+   "file": "70ae7b604d4c.mp3",
+   "reading": "in paris"
+  },
+  "ina": {
+   "file": "2c486afaa80a.mp3"
+  },
+  "ina bītim": {
+   "file": "eff20bf7401f.mp3"
+  },
+  "inaddin": {
+   "file": "e87d65fd2aba.mp3"
+  },
+  "inaddû": {
+   "file": "842cc0f3c16b.mp3"
+  },
+  "indin": {
+   "file": "a5a4cbaaa1a9.mp3"
+  },
+  "inūma": {
+   "file": "36ec10a147b2.mp3"
+  },
+  "inūma šarrum illiku": {
+   "file": "b06f23bce60b.mp3",
+   "reading": "inūma sharrum illiku"
+  },
+  "ipaqqid": {
+   "file": "1646ff00e92e.mp3"
+  },
+  "iparras": {
+   "file": "ff3093b221b8.mp3"
+  },
+  "iparrasu": {
+   "file": "07dddddf23cd.mp3"
+  },
+  "iparrasū": {
+   "file": "4f70bc334c78.mp3"
+  },
+  "ipparis": {
+   "file": "886e96ff1be6.mp3"
+  },
+  "ipparras": {
+   "file": "b93789896027.mp3"
+  },
+  "ippeš": {
+   "file": "b67e75f6ff68.mp3",
+   "reading": "ippesh"
+  },
+  "ipqid": {
+   "file": "ba1b64715cf7.mp3"
+  },
+  "iprus": {
+   "file": "0eb82ee6c3f8.mp3"
+  },
+  "iprusu": {
+   "file": "a16bdd98c09d.mp3"
+  },
+  "iprusā": {
+   "file": "47521c8b7e66.mp3"
+  },
+  "iprusū": {
+   "file": "94b967a13edf.mp3"
+  },
+  "iptaqid": {
+   "file": "e4269d99c80b.mp3"
+  },
+  "iptaras": {
+   "file": "29af64220f28.mp3"
+  },
+  "iptarsū": {
+   "file": "4ecbe41c3eca.mp3"
+  },
+  "ittadi": {
+   "file": "4b5bb3484f36.mp3"
+  },
+  "ittalak": {
+   "file": "712c061fdd11.mp3"
+  },
+  "ittapras": {
+   "file": "29e48c008bf8.mp3"
+  },
+  "itti": {
+   "file": "b98817d94715.mp3"
+  },
+  "itti aḫim": {
+   "file": "2bb95dbb493a.mp3",
+   "reading": "itti akhim"
+  },
+  "itâr": {
+   "file": "c41841fcf632.mp3"
+  },
+  "itūr": {
+   "file": "d109344131ba.mp3"
+  },
+  "išdī": {
+   "file": "efd35a8a5a8b.mp3",
+   "reading": "ishdī"
+  },
+  "išebberū": {
+   "file": "100b5fb5201b.mp3",
+   "reading": "ishebberū"
+  },
+  "iškun": {
+   "file": "9aea05212dc5.mp3",
+   "reading": "ishkun"
+  },
+  "ištebir": {
+   "file": "435e35e0af8f.mp3",
+   "reading": "ishtebir"
+  },
+  "ištiat": {
+   "file": "1f18d998224b.mp3",
+   "reading": "ishtiat"
+  },
+  "ištu": {
+   "file": "7b3d4853ef85.mp3",
+   "reading": "ishtu"
+  },
+  "ištu ālim": {
+   "file": "fa6e0597fff0.mp3",
+   "reading": "ishtu ālim"
+  },
+  "ištēn": {
+   "file": "dbe52b093339.mp3",
+   "reading": "ishtēn"
+  },
+  "iššakin": {
+   "file": "cb6472f255d4.mp3",
+   "reading": "ishshakin"
+  },
+  "iṣabbat": {
+   "file": "94d95b8ca37f.mp3",
+   "reading": "isabbat"
+  },
+  "iṣbassi": {
+   "file": "5582a9ff3c7f.mp3",
+   "reading": "isbassi"
+  },
+  "iṣbassu": {
+   "file": "f074cea5ab6c.mp3",
+   "reading": "isbassu"
+  },
+  "iṣbassunūti": {
+   "file": "c8a6d4e07383.mp3",
+   "reading": "isbassunūti"
+  },
+  "iṣbat": {
+   "file": "20c328c0bfa5.mp3",
+   "reading": "isbat"
+  },
+  "iṣbatanni": {
+   "file": "61a4bf7e06d2.mp3",
+   "reading": "isbatanni"
+  },
+  "iṣbatka": {
+   "file": "ca93e557ca9d.mp3",
+   "reading": "isbatka"
+  },
+  "iṣtabat": {
+   "file": "0120422378f0.mp3",
+   "reading": "istabat"
+  },
+  "iṣṣabat": {
+   "file": "f27442853949.mp3",
+   "reading": "issabat"
+  },
+  "iṣṣabit": {
+   "file": "6ddac44518ec.mp3",
+   "reading": "issabit"
+  },
+  "k": {
+   "file": "922586904587.mp3"
+  },
+  "k-š-d": {
+   "file": "9c3614c2361f.mp3",
+   "reading": "k sh d"
+  },
+  "kašādum": {
+   "file": "d327b179caf1.mp3",
+   "reading": "kashādum"
+  },
+  "kh": {
+   "file": "c55d5269c0f0.mp3",
+   "reading": "kkh"
+  },
+  "kīma": {
+   "file": "04655b26c6d1.mp3"
+  },
+  "kīma taqbû": {
+   "file": "357f495c2e47.mp3"
+  },
+  "l r n y": {
+   "file": "4cffc822e851.mp3"
+  },
+  "l-": {
+   "file": "b6c5c002a1e6.mp3",
+   "reading": "l"
+  },
+  "l-q-ʾ": {
+   "file": "e4f0c1fc1ffc.mp3",
+   "reading": "l q '"
+  },
+  "lamādum": {
+   "file": "f0913ab008f6.mp3"
+  },
+  "leqûm": {
+   "file": "424c37ed3a5e.mp3"
+  },
+  "libbi": {
+   "file": "22e6073708c9.mp3"
+  },
+  "libbi ālim": {
+   "file": "7422e6d1d11b.mp3"
+  },
+  "libbum": {
+   "file": "b35d69d5e9e1.mp3"
+  },
+  "liprus": {
+   "file": "560128a6ebcc.mp3"
+  },
+  "liprusū": {
+   "file": "f0fedd8813fd.mp3"
+  },
+  "lišallimka": {
+   "file": "96617701c80d.mp3",
+   "reading": "lishallimka"
+  },
+  "luprus": {
+   "file": "bbeee7929bf9.mp3"
+  },
+  "lā": {
+   "file": "7bc90f8544ad.mp3"
+  },
+  "lā taparras": {
+   "file": "96a0e05a0c9a.mp3"
+  },
+  "lā târi": {
+   "file": "78414a4be9b2.mp3"
+  },
+  "lā šēmûm": {
+   "file": "0860dcbff43a.mp3",
+   "reading": "lā shēmûm"
+  },
+  "m-q-t": {
+   "file": "dfa22a1345bd.mp3",
+   "reading": "m q t"
+  },
+  "m-w-t": {
+   "file": "67517622d167.mp3",
+   "reading": "m w t"
+  },
+  "ma": {
+   "file": "60490094863c.mp3"
+  },
+  "ma-a-tum": {
+   "file": "631f481500c5.mp3",
+   "reading": "ma a tum"
+  },
+  "maqātum": {
+   "file": "9b44cb778cfe.mp3"
+  },
+  "me": {
+   "file": "9d82c82b2843.mp3"
+  },
+  "mâtum": {
+   "file": "f69e186f1b08.mp3"
+  },
+  "mār": {
+   "file": "278ab52e146f.mp3"
+  },
+  "mār awīlim": {
+   "file": "2999778d5984.mp3"
+  },
+  "mārum": {
+   "file": "a984f1a714e6.mp3"
+  },
+  "mārāku": {
+   "file": "beea81116988.mp3"
+  },
+  "mārū awīlim": {
+   "file": "8768c1f76b54.mp3"
+  },
+  "mārū-šu": {
+   "file": "dc5468946232.mp3",
+   "reading": "mārū shu"
+  },
+  "māti": {
+   "file": "dbf12d18f9a6.mp3"
+  },
+  "mātum": {
+   "file": "f69e186f1b08.mp3"
+  },
+  "n": {
+   "file": "9dbfa5700007.mp3"
+  },
+  "n-d-n": {
+   "file": "55fbb7c1db25.mp3",
+   "reading": "n d n"
+  },
+  "na": {
+   "file": "4920531e65b6.mp3"
+  },
+  "nadānum": {
+   "file": "43237efcd156.mp3"
+  },
+  "naprusum": {
+   "file": "0fcd7ec99983.mp3"
+  },
+  "ni-": {
+   "file": "c0a52d509f14.mp3",
+   "reading": "ni"
+  },
+  "niparras": {
+   "file": "deba76e3a6b2.mp3"
+  },
+  "niprus": {
+   "file": "19ead6230827.mp3"
+  },
+  "niptaras": {
+   "file": "dd1bba856a4d.mp3"
+  },
+  "nu-": {
+   "file": "cab1e8e708e1.mp3",
+   "reading": "nu"
+  },
+  "nīnu": {
+   "file": "cade6862a7c0.mp3"
+  },
+  "p-q-d": {
+   "file": "0ad2b8307156.mp3",
+   "reading": "p q d"
+  },
+  "p-r-s": {
+   "file": "dd013e16b4fb.mp3",
+   "reading": "p r s"
+  },
+  "paqādum": {
+   "file": "2d499ca046cd.mp3"
+  },
+  "paris": {
+   "file": "b3aabac93c18.mp3"
+  },
+  "parsum": {
+   "file": "40de6c2451de.mp3"
+  },
+  "parāsum": {
+   "file": "1630bd3f8696.mp3"
+  },
+  "piqdā": {
+   "file": "f776af5fa31a.mp3"
+  },
+  "piqdī": {
+   "file": "5fb205d1a8a3.mp3"
+  },
+  "piqid": {
+   "file": "d1e0d8cc3ee8.mp3"
+  },
+  "purrusum": {
+   "file": "9e291e2cf8af.mp3"
+  },
+  "pursā": {
+   "file": "045b190c9bb2.mp3"
+  },
+  "pursī": {
+   "file": "587394281b5d.mp3"
+  },
+  "purus": {
+   "file": "e158339151b2.mp3"
+  },
+  "q": {
+   "file": "0a62144b40af.mp3"
+  },
+  "qabûm": {
+   "file": "cc9ecef933fc.mp3"
+  },
+  "qibīma": {
+   "file": "746c7a8b5d2e.mp3"
+  },
+  "qāssu": {
+   "file": "b1d48dd133dd.mp3"
+  },
+  "qāt-šu": {
+   "file": "eed6ebcb308c.mp3",
+   "reading": "qāt shu"
+  },
+  "qātum": {
+   "file": "35c9feac69d1.mp3"
+  },
+  "rabi": {
+   "file": "5e86144bdeaa.mp3"
+  },
+  "rabi-um": {
+   "file": "0ad2c44c99bd.mp3",
+   "reading": "rabi um"
+  },
+  "rabûm": {
+   "file": "c5cdb8233353.mp3"
+  },
+  "ru": {
+   "file": "d9118f25434a.mp3"
+  },
+  "s": {
+   "file": "8f5fb5304216.mp3"
+  },
+  "sh": {
+   "file": "a28b657b9c0d.mp3",
+   "reading": "skh"
+  },
+  "sharrum": {
+   "file": "cbf4df7b029c.mp3",
+   "reading": "skharrum"
+  },
+  "t": {
+   "file": "e212bcef699b.mp3"
+  },
+  "ta": {
+   "file": "0a47216542e6.mp3"
+  },
+  "ta-": {
+   "file": "0a47216542e6.mp3",
+   "reading": "ta"
+  },
+  "taparras": {
+   "file": "5a0d26380f40.mp3"
+  },
+  "taprus": {
+   "file": "0b7244bcd267.mp3"
+  },
+  "taprusā": {
+   "file": "5433ea1e8ad5.mp3"
+  },
+  "taprusī": {
+   "file": "6849d5c7541f.mp3"
+  },
+  "taptaras": {
+   "file": "eaf6ee3a7df8.mp3"
+  },
+  "tu-": {
+   "file": "8fbbc5f87215.mp3",
+   "reading": "tu"
+  },
+  "târum": {
+   "file": "288b557b648b.mp3"
+  },
+  "u": {
+   "file": "d4a43328cb3e.mp3"
+  },
+  "u-": {
+   "file": "d4a43328cb3e.mp3",
+   "reading": "u"
+  },
+  "udammiq": {
+   "file": "57bc200caedf.mp3"
+  },
+  "ul": {
+   "file": "50b8ce5f5fd9.mp3"
+  },
+  "ul iprus": {
+   "file": "5445762e7382.mp3"
+  },
+  "um": {
+   "file": "6beeb61715a8.mp3"
+  },
+  "ummum": {
+   "file": "cdd25cb6c864.mp3"
+  },
+  "uparras": {
+   "file": "99ed7d384372.mp3"
+  },
+  "uparris": {
+   "file": "02516934020b.mp3"
+  },
+  "uptarris": {
+   "file": "28c1988c6581.mp3"
+  },
+  "uznān": {
+   "file": "3eb9caec92b0.mp3"
+  },
+  "ušalmid": {
+   "file": "79d18073e3a6.mp3",
+   "reading": "ushalmid"
+  },
+  "ušapras": {
+   "file": "d63cc3bd3d16.mp3",
+   "reading": "ushapras"
+  },
+  "ušapris": {
+   "file": "7ed07e5f3612.mp3",
+   "reading": "ushapris"
+  },
+  "ušebbir": {
+   "file": "641b57ea03a7.mp3",
+   "reading": "ushebbir"
+  },
+  "uštapris": {
+   "file": "aba0aad058e7.mp3",
+   "reading": "ushtapris"
+  },
+  "uššab": {
+   "file": "a8e25cf3e085.mp3",
+   "reading": "ushshab"
+  },
+  "uḫappadū": {
+   "file": "5383db41378a.mp3",
+   "reading": "ukhappadū"
+  },
+  "uḫtappid": {
+   "file": "d527049127ef.mp3",
+   "reading": "ukhtappid"
+  },
+  "w": {
+   "file": "d8f85af6c270.mp3"
+  },
+  "wašib": {
+   "file": "5e1a96103540.mp3",
+   "reading": "washib"
+  },
+  "wašābum": {
+   "file": "272cc00257c6.mp3",
+   "reading": "washābum"
+  },
+  "z": {
+   "file": "03a586347d7a.mp3"
+  },
+  "z s ṣ": {
+   "file": "d1b304829fa4.mp3",
+   "reading": "z s s"
+  },
+  "â": {
+   "file": "c8a569cbaa33.mp3"
+  },
+  "û": {
+   "file": "bda10a81039a.mp3"
+  },
+  "ā": {
+   "file": "c8a569cbaa33.mp3"
+  },
+  "ālam iṣabbat": {
+   "file": "ab865f0bf83e.mp3",
+   "reading": "ālam isabbat"
+  },
+  "ālam iṣbat": {
+   "file": "79a8a6673b12.mp3",
+   "reading": "ālam isbat"
+  },
+  "ālam iṣṣabat": {
+   "file": "d3796f2f35e7.mp3",
+   "reading": "ālam issabat"
+  },
+  "ālum šalim": {
+   "file": "6ad063fafce0.mp3",
+   "reading": "ālum shalim"
+  },
+  "ē": {
+   "file": "cdcc6b2b881a.mp3"
+  },
+  "ē taprus": {
+   "file": "73269db965e4.mp3"
+  },
+  "īmur": {
+   "file": "0befb85efb4f.mp3"
+  },
+  "īmuru": {
+   "file": "092e6e51ebcb.mp3"
+  },
+  "īnān": {
+   "file": "4e7c0b424a66.mp3"
+  },
+  "īpuš": {
+   "file": "0b6d3b295e01.mp3",
+   "reading": "īpush"
+  },
+  "š": {
+   "file": "ab806cfee0c6.mp3",
+   "reading": "sh"
+  },
+  "š-k-n": {
+   "file": "bbc86a0acc9d.mp3",
+   "reading": "sh k n"
+  },
+  "š-p-r": {
+   "file": "51eceb46dc4b.mp3",
+   "reading": "sh p r"
+  },
+  "ša": {
+   "file": "886d08377dc0.mp3",
+   "reading": "sha"
+  },
+  "ša lā iprusu": {
+   "file": "2f22ff305262.mp3",
+   "reading": "sha lā iprusu"
+  },
+  "ša lā iṣbatu": {
+   "file": "b795cc5cf732.mp3",
+   "reading": "sha lā isbatu"
+  },
+  "ša naqba īmuru": {
+   "file": "e1b53d0d1dff.mp3",
+   "reading": "sha naqba īmuru"
+  },
+  "ša naqba īmuru išdī māti": {
+   "file": "f56ca9d7ac6f.mp3",
+   "reading": "sha naqba īmuru ishdī māti"
+  },
+  "ša-": {
+   "file": "886d08377dc0.mp3",
+   "reading": "sha"
+  },
+  "ša-ar-ru-um": {
+   "file": "93dd263fed85.mp3",
+   "reading": "sha ar ru um"
+  },
+  "ša-ru-um": {
+   "file": "462885086a5d.mp3",
+   "reading": "sha ru um"
+  },
+  "šakin": {
+   "file": "54bbeb8f9f59.mp3",
+   "reading": "shakin"
+  },
+  "šakānum": {
+   "file": "1fa040ffeb8f.mp3",
+   "reading": "shakānum"
+  },
+  "šalim": {
+   "file": "ffd05ebfc13e.mp3",
+   "reading": "shalim"
+  },
+  "šalmat": {
+   "file": "36a91a04bdc1.mp3",
+   "reading": "shalmat"
+  },
+  "šalmum": {
+   "file": "a3ba34c4f32b.mp3",
+   "reading": "shalmum"
+  },
+  "šalmā": {
+   "file": "22b86c1c6a6f.mp3",
+   "reading": "shalmā"
+  },
+  "šalmāku": {
+   "file": "bda67846156d.mp3",
+   "reading": "shalmāku"
+  },
+  "šalmānu": {
+   "file": "76f887df35dd.mp3",
+   "reading": "shalmānu"
+  },
+  "šalmāta": {
+   "file": "50dda01f0590.mp3",
+   "reading": "shalmāta"
+  },
+  "šalmāti": {
+   "file": "0646ab7541f8.mp3",
+   "reading": "shalmāti"
+  },
+  "šalmū": {
+   "file": "52d75e4a5d9f.mp3",
+   "reading": "shalmū"
+  },
+  "šalāš": {
+   "file": "b4baf746cd38.mp3",
+   "reading": "shalāsh"
+  },
+  "šalāšat": {
+   "file": "b8c28a0a0bae.mp3",
+   "reading": "shalāshat"
+  },
+  "šalāšat ūmū": {
+   "file": "8054c2732ca4.mp3",
+   "reading": "shalāshat ūmū"
+  },
+  "šapārum": {
+   "file": "156f027f3f0a.mp3",
+   "reading": "shapārum"
+  },
+  "šar": {
+   "file": "a2ab859e7d56.mp3",
+   "reading": "shar"
+  },
+  "šar mātim": {
+   "file": "b8a3464c50fa.mp3",
+   "reading": "shar mātim"
+  },
+  "šar mātim rabītim": {
+   "file": "a855c866af5b.mp3",
+   "reading": "shar mātim rabītim"
+  },
+  "šar-ru-um": {
+   "file": "e1e9dde4b4e0.mp3",
+   "reading": "shar ru um"
+  },
+  "šarr-am": {
+   "file": "733f43013951.mp3",
+   "reading": "sharr am"
+  },
+  "šarr-im": {
+   "file": "bb66bb88182a.mp3",
+   "reading": "sharr im"
+  },
+  "šarr-um": {
+   "file": "76378e2e3320.mp3",
+   "reading": "sharr um"
+  },
+  "šarr-ātim": {
+   "file": "bdabd2f07e22.mp3",
+   "reading": "sharr ātim"
+  },
+  "šarr-ātum": {
+   "file": "886a263846d0.mp3",
+   "reading": "sharr ātum"
+  },
+  "šarr-ī": {
+   "file": "3e3391466f9b.mp3",
+   "reading": "sharr ī"
+  },
+  "šarr-ū": {
+   "file": "52d230d16006.mp3",
+   "reading": "sharr ū"
+  },
+  "šarram": {
+   "file": "6dbc5174dc9b.mp3",
+   "reading": "sharram"
+  },
+  "šarrat": {
+   "file": "1665e6c3c5c7.mp3",
+   "reading": "sharrat"
+  },
+  "šarrat šamê": {
+   "file": "9c223f6bc948.mp3",
+   "reading": "sharrat shamê"
+  },
+  "šarrat-am": {
+   "file": "ff3096ab733c.mp3",
+   "reading": "sharrat am"
+  },
+  "šarrat-im": {
+   "file": "b0cef490a90a.mp3",
+   "reading": "sharrat im"
+  },
+  "šarrat-um": {
+   "file": "69e8d248a0cd.mp3",
+   "reading": "sharrat um"
+  },
+  "šarratum": {
+   "file": "ed2a477f62a0.mp3",
+   "reading": "sharratum"
+  },
+  "šarratum dannatum": {
+   "file": "09c660dd63bc.mp3",
+   "reading": "sharratum dannatum"
+  },
+  "šarrim": {
+   "file": "ca977b332410.mp3",
+   "reading": "sharrim"
+  },
+  "šarru": {
+   "file": "b8a0971a0666.mp3",
+   "reading": "sharru"
+  },
+  "šarrum": {
+   "file": "de75619e7b20.mp3",
+   "reading": "sharrum"
+  },
+  "šarrum dannum": {
+   "file": "a4dfae1261ab.mp3",
+   "reading": "sharrum dannum"
+  },
+  "šarrum rabûm ša mātim": {
+   "file": "7a73310521b9.mp3",
+   "reading": "sharrum rabûm sha mātim"
+  },
+  "šarrum ālam iṣbat": {
+   "file": "e3c2cd54d47c.mp3",
+   "reading": "sharrum ālam isbat"
+  },
+  "šarrum ša ālam iṣbatu": {
+   "file": "7ac527f22a3c.mp3",
+   "reading": "sharrum sha ālam isbatu"
+  },
+  "šarrāku": {
+   "file": "46258aa79ebf.mp3",
+   "reading": "sharrāku"
+  },
+  "šarrātum dannātum": {
+   "file": "696d18d47078.mp3",
+   "reading": "sharrātum dannātum"
+  },
+  "šarrū dannūtum": {
+   "file": "528f44ed3a3a.mp3",
+   "reading": "sharrū dannūtum"
+  },
+  "šaʾālum": {
+   "file": "da9a75dd0614.mp3",
+   "reading": "sha'ālum"
+  },
+  "šebērum": {
+   "file": "7b0b2ab56120.mp3",
+   "reading": "shebērum"
+  },
+  "šina": {
+   "file": "3e4a69234fdb.mp3",
+   "reading": "shina"
+  },
+  "šinā": {
+   "file": "2499ab0781b5.mp3",
+   "reading": "shinā"
+  },
+  "šittā": {
+   "file": "b75e0f14fbef.mp3",
+   "reading": "shittā"
+  },
+  "šu-": {
+   "file": "78ab1003ab25.mp3",
+   "reading": "shu"
+  },
+  "šuknā": {
+   "file": "98d9b17274b3.mp3",
+   "reading": "shuknā"
+  },
+  "šuknī": {
+   "file": "405815a46c78.mp3",
+   "reading": "shuknī"
+  },
+  "šukun": {
+   "file": "db4d955841f3.mp3",
+   "reading": "shukun"
+  },
+  "šumma": {
+   "file": "0dcb54d8a034.mp3",
+   "reading": "shumma"
+  },
+  "šumma awīlum imūt": {
+   "file": "bfd922173cdc.mp3",
+   "reading": "shumma awīlum imūt"
+  },
+  "šunu": {
+   "file": "1df160d20079.mp3",
+   "reading": "shunu"
+  },
+  "šupram": {
+   "file": "8d471dde409a.mp3",
+   "reading": "shupram"
+  },
+  "šuprusum": {
+   "file": "af68e11ca2ef.mp3",
+   "reading": "shuprusum"
+  },
+  "šupur": {
+   "file": "d88957402784.mp3",
+   "reading": "shupur"
+  },
+  "šēp-ān": {
+   "file": "e5dbd4b84386.mp3",
+   "reading": "shēp ān"
+  },
+  "šēp-īn": {
+   "file": "e8b9af9f6b5c.mp3",
+   "reading": "shēp īn"
+  },
+  "šēpān": {
+   "file": "4ec3d511706d.mp3",
+   "reading": "shēpān"
+  },
+  "šī": {
+   "file": "4416033c0e10.mp3",
+   "reading": "shī"
+  },
+  "šū": {
+   "file": "ae1c13dcd2c7.mp3",
+   "reading": "shū"
+  },
+  "ū-": {
+   "file": "bda10a81039a.mp3",
+   "reading": "ū"
+  },
+  "ūmum": {
+   "file": "866ebb14f7c4.mp3"
+  },
+  "ūšib": {
+   "file": "55ad3212ab26.mp3",
+   "reading": "ūshib"
+  },
+  "ʾ": {
+   "file": "d5d7b3503f40.mp3",
+   "reading": "'"
+  },
+  "ʾ-k-l": {
+   "file": "8e08a357c4d7.mp3",
+   "reading": "' k l"
+  },
+  "ḫ": {
+   "file": "6febbb586fbb.mp3",
+   "reading": "kh"
+  },
+  "ḫamiš": {
+   "file": "d46232712399.mp3",
+   "reading": "khamish"
+  },
+  "ḫamšat": {
+   "file": "c6cbd117d270.mp3",
+   "reading": "khamshat"
+  },
+  "ṣ": {
+   "file": "8f5fb5304216.mp3",
+   "reading": "s"
+  },
+  "ṣ-b-t": {
+   "file": "2ab48eaf1393.mp3",
+   "reading": "s b t"
+  },
+  "ṣabat": {
+   "file": "e214c793f381.mp3",
+   "reading": "sabat"
+  },
+  "ṣabit": {
+   "file": "270719e7fe6a.mp3",
+   "reading": "sabit"
+  },
+  "ṣabtā": {
+   "file": "2af0ee3e384c.mp3",
+   "reading": "sabtā"
+  },
+  "ṣabtī": {
+   "file": "6c16e5fca7d2.mp3",
+   "reading": "sabtī"
+  },
+  "ṣabātum": {
+   "file": "823b51253ef2.mp3",
+   "reading": "sabātum"
+  },
+  "ṣābum": {
+   "file": "b134f9593b59.mp3",
+   "reading": "sābum"
+  },
+  "ṭ": {
+   "file": "e212bcef699b.mp3",
+   "reading": "t"
+  },
+  "ṭ q ṣ": {
+   "file": "09a88f711568.mp3",
+   "reading": "t q s"
+  },
+  "ṭa": {
+   "file": "0a47216542e6.mp3",
+   "reading": "ta"
+  },
+  "ṭuppaka ešteme": {
+   "file": "e34b20e5f25b.mp3",
+   "reading": "tuppaka eshteme"
+  },
+  "ṭuppum": {
+   "file": "7b882ff1ed13.mp3",
+   "reading": "tuppum"
+  }
+ }
+}

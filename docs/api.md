@@ -631,7 +631,7 @@ marks. Every route and its body are in
 
 `/api/courses/…`: the courses, a course with the player's progress, a
 lesson without its answers, checking an exercise, marking a free answer
-right, starting a lesson again. Every route and its body are in
+right, starting a lesson again, a course's sounds and their MP3 files. Every route and its body are in
 [Language courses › Routes](language-courses.md#routes).
 
 ## Authentication

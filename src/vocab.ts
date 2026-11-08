@@ -8,6 +8,8 @@
  */
 import { COUNTS_AS_RIGHT, SCRIPT_LANGS, type Verdict } from "../shared/vocab/grade";
 import { DAY, TOP_BOX, type ModePreference } from "../shared/vocab/schedule";
+import { courseSounds, soundButton } from "./sound";
+import { soundKey } from "./sound-targets";
 import { button, el } from "./dom";
 import { currentLang } from "./i18n";
 import {
@@ -1039,6 +1041,17 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     if (r.readings) feedback.append(kanjiFacts(r.meaning ?? "", r.readings, card.direction));
     if (r.info) feedback.append(infoFacts(r.info));
     if (r.note) feedback.append(el("span", "vocab-note", vt(card.script ? "exampleWords" : "example", { note: r.note })));
+    // A course's letter card: the letter said, once answered (before, it would give the sound away).
+    const course = /^course-(.+)-letters$/.exec(ctx.book?.slug ?? "")?.[1];
+    if (course && card.script) {
+      const letter = soundKey(card.promptLang === ctx.book!.term ? card.prompt : r.expected);
+      const slot = el("span", "vocab-sound");
+      feedback.append(slot);
+      void courseSounds(course).then((sounds) => {
+        const item = sounds[letter];
+        if (item) slot.append(soundButton(course, letter, item));
+      });
+    }
     if (r.inWords?.length) feedback.append(related(vt("inYourWords"), r.inWords, "words"));
     if (r.characters?.length) feedback.append(related(vt("itsKanji"), r.characters, "kanji"));
     feedback.append(el("span", "vocab-when", r.correct ? whenBack(r) : vt("again")));

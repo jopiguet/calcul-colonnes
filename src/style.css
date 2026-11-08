@@ -7031,3 +7031,30 @@ button.tiny {
 .is-arranging .activity-cell > button.activity {
   padding-bottom: 2.9rem;
 }
+
+/* Sounds of a course (docs/sounds.md): a small ▶ after the word. */
+.sound-play {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.55em;
+  block-size: 1.55em;
+  margin-inline: 0.3em 0.1em;
+  padding: 0 0 0 0.12em;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.7rem;
+  line-height: 1;
+  vertical-align: 0.15em;
+  cursor: pointer;
+}
+.sound-play:hover,
+.sound-play:focus-visible {
+  border-color: var(--accent);
+}
+.vocab-sound .sound-play {
+  font-size: 0.85rem;
+  margin-inline-start: 0.5em;
+}

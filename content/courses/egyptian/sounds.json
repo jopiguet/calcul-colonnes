@@ -1,0 +1,1716 @@
+{
+ "engine": "eSpeak NG",
+ "items": {
+  "-j": {
+   "file": "d9309f9500a3.mp3",
+   "reading": "i"
+  },
+  "-nw": {
+   "file": "cab1e8e708e1.mp3",
+   "reading": "nu"
+  },
+  "-t": {
+   "file": "51a68ac95805.mp3",
+   "reading": "te"
+  },
+  "-tj": {
+   "file": "f1ee0369ce1b.mp3",
+   "reading": "ti"
+  },
+  "-w": {
+   "file": "d4a43328cb3e.mp3",
+   "reading": "u"
+  },
+  "-wj": {
+   "file": "b39fbf7d7bdb.mp3",
+   "reading": "wi"
+  },
+  "-wt": {
+   "file": "5b4fc6c89e70.mp3",
+   "reading": "ut"
+  },
+  ".f": {
+   "file": "cd50e50ad7be.mp3",
+   "reading": "ef"
+  },
+  ".j": {
+   "file": "d9309f9500a3.mp3",
+   "reading": "i"
+  },
+  ".k": {
+   "file": "ef5128b976da.mp3",
+   "reading": "ek"
+  },
+  ".kj": {
+   "file": "973c108c45ef.mp3",
+   "reading": "ki"
+  },
+  ".n": {
+   "file": "130f3d75e4a9.mp3",
+   "reading": "en"
+  },
+  ".s": {
+   "file": "98d00b29a340.mp3",
+   "reading": "es"
+  },
+  ".sn": {
+   "file": "14f642fe80c1.mp3",
+   "reading": "sen"
+  },
+  ".t": {
+   "file": "3c413f9d4ceb.mp3",
+   "reading": "et"
+  },
+  ".tj": {
+   "file": "f1ee0369ce1b.mp3",
+   "reading": "ti"
+  },
+  ".w": {
+   "file": "d4a43328cb3e.mp3",
+   "reading": "u"
+  },
+  ".wjn": {
+   "file": "20e88a655b15.mp3",
+   "reading": "win"
+  },
+  ".ṯ": {
+   "file": "22f7925f3b03.mp3",
+   "reading": "etj"
+  },
+  ".ṯn": {
+   "file": "160de0913568.mp3",
+   "reading": "tjen"
+  },
+  "a": {
+   "file": "b22c8d39fb96.mp3"
+  },
+  "ankh": {
+   "file": "10dfbb9b0457.mp3"
+  },
+  "b": {
+   "file": "ed76855e5047.mp3",
+   "reading": "be"
+  },
+  "ba": {
+   "file": "3845b726d122.mp3"
+  },
+  "bjn": {
+   "file": "41c14ff1303e.mp3",
+   "reading": "bin"
+  },
+  "bjnt": {
+   "file": "816f300d63e6.mp3",
+   "reading": "binet"
+  },
+  "bꜣ": {
+   "file": "3845b726d122.mp3",
+   "reading": "ba"
+  },
+  "bꜣk n jpt nswt": {
+   "file": "7777e91a1608.mp3",
+   "reading": "bak ne ipet nesut"
+  },
+  "d": {
+   "file": "a61444bcff80.mp3",
+   "reading": "de"
+  },
+  "dd.f": {
+   "file": "a58287a11613.mp3",
+   "reading": "dedef"
+  },
+  "dj ꜥnḫ": {
+   "file": "1ee2dc47a197.mp3",
+   "reading": "di ankh"
+  },
+  "dj.f": {
+   "file": "0adb1fb953ad.mp3",
+   "reading": "dif"
+  },
+  "dj.f prt-ḫrw": {
+   "file": "ec1e5348c6f8.mp3",
+   "reading": "dif peret kheru"
+  },
+  "dj.f ꜥnḫ": {
+   "file": "7ff9a3263bfd.mp3",
+   "reading": "dif ankh"
+  },
+  "dšrt": {
+   "file": "d3932452dfda.mp3",
+   "reading": "desheret"
+  },
+  "f": {
+   "file": "ad94fa7d839e.mp3",
+   "reading": "fe"
+  },
+  "g": {
+   "file": "dea13bb6533f.mp3",
+   "reading": "ge"
+  },
+  "grḥ": {
+   "file": "9f721659748c.mp3",
+   "reading": "gereh"
+  },
+  "h": {
+   "file": "17a7f33889c4.mp3",
+   "reading": "he"
+  },
+  "hrw": {
+   "file": "5da0e584e45a.mp3",
+   "reading": "heru"
+  },
+  "hrw tpj": {
+   "file": "58505ec9697d.mp3",
+   "reading": "heru tepi"
+  },
+  "hrw ḫmtnw": {
+   "file": "08fdb8abb89b.mp3",
+   "reading": "heru khemetenu"
+  },
+  "i": {
+   "file": "d9309f9500a3.mp3"
+  },
+  "j": {
+   "file": "d9309f9500a3.mp3",
+   "reading": "i"
+  },
+  "j ꜥnḫw tpjw tꜣ": {
+   "file": "5c450818181f.mp3",
+   "reading": "i anekhu tepiu ta"
+  },
+  "jb": {
+   "file": "c76aeb973e15.mp3",
+   "reading": "ib"
+  },
+  "jj": {
+   "file": "8a3bf0e2044e.mp3",
+   "reading": "ii"
+  },
+  "jj.kj": {
+   "file": "ef1af6818f34.mp3",
+   "reading": "iiki"
+  },
+  "jj.n.f": {
+   "file": "c4b3f80318f5.mp3",
+   "reading": "iinef"
+  },
+  "jj.n.j mꜣ.j nfrw.k": {
+   "file": "e02b0f46535a.mp3",
+   "reading": "iini mai neferuk"
+  },
+  "jj.tj": {
+   "file": "b0401032be96.mp3",
+   "reading": "iiti"
+  },
+  "jj.w": {
+   "file": "b7db6617e010.mp3",
+   "reading": "iiu"
+  },
+  "jj.wjn": {
+   "file": "50983842c201.mp3",
+   "reading": "iiwin"
+  },
+  "jjt": {
+   "file": "3d93149b3608.mp3",
+   "reading": "iit"
+  },
+  "jm": {
+   "file": "a0fae5d095e6.mp3",
+   "reading": "im"
+  },
+  "jm.f": {
+   "file": "ee3618ebc5d2.mp3",
+   "reading": "imef"
+  },
+  "jm.sn": {
+   "file": "ba987f8dc821.mp3",
+   "reading": "imesen"
+  },
+  "jmj": {
+   "file": "69c3de94ab11.mp3",
+   "reading": "imi"
+  },
+  "jmj jr.f st": {
+   "file": "5a1ac7c0c471.mp3",
+   "reading": "imi iref set"
+  },
+  "jmj n.j": {
+   "file": "91d5b2ce06bb.mp3",
+   "reading": "imi ni"
+  },
+  "jmj-r pr": {
+   "file": "8729da1917ef.mp3",
+   "reading": "imi re per"
+  },
+  "jmn": {
+   "file": "feee30cf227e.mp3",
+   "reading": "imen"
+  },
+  "jmꜣḫ": {
+   "file": "95f74824213e.mp3",
+   "reading": "imakh"
+  },
+  "jn": {
+   "file": "0aa6ef7c0a97.mp3",
+   "reading": "in"
+  },
+  "jn nswt": {
+   "file": "38e4dddff76c.mp3",
+   "reading": "in nesut"
+  },
+  "jn.n.f": {
+   "file": "612ac67b6426.mp3",
+   "reading": "inenef"
+  },
+  "jnj": {
+   "file": "24bd860067e9.mp3",
+   "reading": "ini"
+  },
+  "jnk": {
+   "file": "5cbbe80413d9.mp3",
+   "reading": "inek"
+  },
+  "jnk sꜣ.k": {
+   "file": "6bffe347ac21.mp3",
+   "reading": "inek sak"
+  },
+  "jnk šmsw": {
+   "file": "ebeb1c70ff7c.mp3",
+   "reading": "inek shemesu"
+  },
+  "jnk šmsw šms nb.f": {
+   "file": "c8fc050062d1.mp3",
+   "reading": "inek shemesu shemes nebef"
+  },
+  "jnk šmsw šms nb.f, bꜣk n jpt nswt.": {
+   "file": "5934dda80006.mp3",
+   "reading": "inek shemesu shemes nebef bak ne ipet nesut"
+  },
+  "jnk ḏd sw": {
+   "file": "4d76b61c07b1.mp3",
+   "reading": "inek djed su"
+  },
+  "jnn": {
+   "file": "c9dc7bdd8da1.mp3",
+   "reading": "inen"
+  },
+  "jnt": {
+   "file": "da6b6d7f4551.mp3",
+   "reading": "inet"
+  },
+  "jr": {
+   "file": "38931fee02cf.mp3",
+   "reading": "ir"
+  },
+  "jr.f": {
+   "file": "eacbd05cb573.mp3",
+   "reading": "iref"
+  },
+  "jr.n.f": {
+   "file": "de017e0375c7.mp3",
+   "reading": "irenef"
+  },
+  "jrj": {
+   "file": "00e6d57c608f.mp3",
+   "reading": "iri"
+  },
+  "jrj-pꜥt": {
+   "file": "4339f1f83712.mp3",
+   "reading": "iri pat"
+  },
+  "jrr": {
+   "file": "62375ab71508.mp3",
+   "reading": "irer"
+  },
+  "jrr.f": {
+   "file": "2add6f5180f7.mp3",
+   "reading": "ireref"
+  },
+  "jrr.f mrrt nṯr": {
+   "file": "eba9fd23561e.mp3",
+   "reading": "ireref mereret netjer"
+  },
+  "jrrw mꜣꜥt": {
+   "file": "02136f9c583a.mp3",
+   "reading": "ireru maat"
+  },
+  "jrt": {
+   "file": "b8539fbdff27.mp3",
+   "reading": "iret"
+  },
+  "jrt.n.f": {
+   "file": "35af6cf11043.mp3",
+   "reading": "iretenef"
+  },
+  "js": {
+   "file": "e2cae0a266d3.mp3",
+   "reading": "is"
+  },
+  "jt": {
+   "file": "22e2437a4b1d.mp3",
+   "reading": "it"
+  },
+  "jtf": {
+   "file": "e4b983e34d82.mp3",
+   "reading": "itef"
+  },
+  "jw": {
+   "file": "0b7718ba6e88.mp3",
+   "reading": "iu"
+  },
+  "jw nswt r jwt": {
+   "file": "95abcd7647ca.mp3",
+   "reading": "iu nesut re iwt"
+  },
+  "jw pr qd.w": {
+   "file": "4d225d55a937.mp3",
+   "reading": "iu per kedu"
+  },
+  "jw sḏm.f": {
+   "file": "0c37bf9e7cbc.mp3",
+   "reading": "iu sedjemef"
+  },
+  "jw sḏm.n.f": {
+   "file": "d9587f4a9e73.mp3",
+   "reading": "iu sedjemenef"
+  },
+  "jw sḏm.n.j mdw.k": {
+   "file": "83b4adb77893.mp3",
+   "reading": "iu sedjemeni meduk"
+  },
+  "jw.f": {
+   "file": "2dfdc55cd6f2.mp3",
+   "reading": "iwf"
+  },
+  "jw.f jj.w": {
+   "file": "e9d54e99cf29.mp3",
+   "reading": "iwf iiu"
+  },
+  "jw.f jm": {
+   "file": "971d98f01970.mp3",
+   "reading": "iwf im"
+  },
+  "jw.f m jwt": {
+   "file": "ee51d24f419b.mp3",
+   "reading": "iwf me iwt"
+  },
+  "jw.f m pr": {
+   "file": "7c9fb96c50fc.mp3",
+   "reading": "iwf me per"
+  },
+  "jw.f m pr.f": {
+   "file": "994d03383328.mp3",
+   "reading": "iwf me peref"
+  },
+  "jw.f nfr.w": {
+   "file": "8c02e43e83b1.mp3",
+   "reading": "iwf neferu"
+  },
+  "jw.f r": {
+   "file": "0e260edec251.mp3",
+   "reading": "iwf re"
+  },
+  "jw.f r sḏm": {
+   "file": "f8c3cc65230e.mp3",
+   "reading": "iwf re sedjem"
+  },
+  "jw.f ḥr": {
+   "file": "f413ca0ed36e.mp3",
+   "reading": "iwf her"
+  },
+  "jw.f ḥr sḏm": {
+   "file": "ff326d117fbb.mp3",
+   "reading": "iwf her sedjem"
+  },
+  "jw.f ḥr sḏm mdw": {
+   "file": "ce2257c607f3.mp3",
+   "reading": "iwf her sedjem medu"
+  },
+  "jw.f ꜥnḫ.w": {
+   "file": "6931e9835a08.mp3",
+   "reading": "iwf anekhu"
+  },
+  "jw.f ꜥꜣ": {
+   "file": "a6b2fe5ac889.mp3",
+   "reading": "iwf aa"
+  },
+  "jw.j": {
+   "file": "4f9f4e387cc4.mp3",
+   "reading": "iwi"
+  },
+  "jw.s": {
+   "file": "7e21619f4afe.mp3",
+   "reading": "iws"
+  },
+  "jwt": {
+   "file": "b8caeb8d4b42.mp3",
+   "reading": "iwt"
+  },
+  "jwtj": {
+   "file": "dc032de73bca.mp3",
+   "reading": "iwti"
+  },
+  "jwtj sꜣ.f": {
+   "file": "058c080a366c.mp3",
+   "reading": "iwti saf"
+  },
+  "jꜥrt": {
+   "file": "a340289767eb.mp3",
+   "reading": "iaret"
+  },
+  "k": {
+   "file": "d650d486ac8f.mp3",
+   "reading": "ke"
+  },
+  "ka": {
+   "file": "667a5c15aea1.mp3"
+  },
+  "kmt": {
+   "file": "f2ea4b03fc2c.mp3",
+   "reading": "kemet"
+  },
+  "kꜣ": {
+   "file": "667a5c15aea1.mp3",
+   "reading": "ka"
+  },
+  "m": {
+   "file": "f6520fb1237d.mp3",
+   "reading": "me"
+  },
+  "m pr": {
+   "file": "b9b4472195fa.mp3",
+   "reading": "me per"
+  },
+  "m snḏ": {
+   "file": "edd230e351f1.mp3",
+   "reading": "me senedj"
+  },
+  "m sš": {
+   "file": "4bbceb1be72c.mp3",
+   "reading": "me sesh"
+  },
+  "m ḏd": {
+   "file": "42ea36ac674b.mp3",
+   "reading": "me djed"
+  },
+  "m-ḫt": {
+   "file": "d2feb7eed581.mp3",
+   "reading": "me khet"
+  },
+  "m-ḫt hrw": {
+   "file": "1659270ed52c.mp3",
+   "reading": "me khet heru"
+  },
+  "m-ꜥ": {
+   "file": "4b919cfec6f3.mp3",
+   "reading": "me a"
+  },
+  "m-ꜥ ḥqꜣ": {
+   "file": "ef46ad67663c.mp3",
+   "reading": "me a heka"
+  },
+  "md": {
+   "file": "1e06f7af9648.mp3",
+   "reading": "med"
+  },
+  "mdw": {
+   "file": "9d7bdf7cdbee.mp3",
+   "reading": "medu"
+  },
+  "mdw ḏdw.n.f": {
+   "file": "e76a741c343c.mp3",
+   "reading": "medu djedunef"
+  },
+  "mj": {
+   "file": "847a16444f6f.mp3",
+   "reading": "mi"
+  },
+  "mj n.j": {
+   "file": "337bde931526.mp3",
+   "reading": "mi ni"
+  },
+  "mj rꜥ": {
+   "file": "182f9a7b3699.mp3",
+   "reading": "mi ra"
+  },
+  "mk": {
+   "file": "9473ead055a7.mp3",
+   "reading": "mek"
+  },
+  "mk pḥ.n.n ẖnw": {
+   "file": "687371cec5e9.mp3",
+   "reading": "mek pehenen khenu"
+  },
+  "mk sw": {
+   "file": "93abd23e3982.mp3",
+   "reading": "mek su"
+  },
+  "mk sw m pr": {
+   "file": "88c9f6632f02.mp3",
+   "reading": "mek su me per"
+  },
+  "mk sw m pr.f": {
+   "file": "9b599f32daf8.mp3",
+   "reading": "mek su me peref"
+  },
+  "mk wj": {
+   "file": "1bb5bd6dad36.mp3",
+   "reading": "mek wi"
+  },
+  "mk wj m pr": {
+   "file": "18ddfe94c420.mp3",
+   "reading": "mek wi me per"
+  },
+  "mk wj r ḏd": {
+   "file": "88d668d25e91.mp3",
+   "reading": "mek wi re djed"
+  },
+  "mk wj ḥr ḏd": {
+   "file": "e686f4a5a980.mp3",
+   "reading": "mek wi her djed"
+  },
+  "mn": {
+   "file": "4b1875d1e808.mp3",
+   "reading": "men"
+  },
+  "mr": {
+   "file": "efde80ba5943.mp3",
+   "reading": "mer"
+  },
+  "mr.f": {
+   "file": "e88d242ed735.mp3",
+   "reading": "meref"
+  },
+  "mrj": {
+   "file": "20c2e0d40616.mp3",
+   "reading": "meri"
+  },
+  "mrr": {
+   "file": "4a5764888137.mp3",
+   "reading": "merer"
+  },
+  "mrr.f": {
+   "file": "65f2cbbbfe15.mp3",
+   "reading": "mereref"
+  },
+  "mrrt nṯr": {
+   "file": "87c8338040b8.mp3",
+   "reading": "mereret netjer"
+  },
+  "mrt": {
+   "file": "f79cca755db3.mp3",
+   "reading": "meret"
+  },
+  "mrt.f": {
+   "file": "adc1a3f64d23.mp3",
+   "reading": "meretef"
+  },
+  "mꜣ": {
+   "file": "60490094863c.mp3",
+   "reading": "ma"
+  },
+  "mꜣ.f": {
+   "file": "2a6471519314.mp3",
+   "reading": "maf"
+  },
+  "mꜣ.n.f": {
+   "file": "8ed2a8267f2d.mp3",
+   "reading": "manef"
+  },
+  "mꜣꜣ": {
+   "file": "3734aef1996f.mp3",
+   "reading": "maa"
+  },
+  "mꜣꜣ.f": {
+   "file": "fe09761009c4.mp3",
+   "reading": "maaf"
+  },
+  "mꜣꜣ.f n": {
+   "file": "f07a7f37c630.mp3",
+   "reading": "maaf ne"
+  },
+  "mꜣꜣ.f sj": {
+   "file": "88131da9d587.mp3",
+   "reading": "maaf si"
+  },
+  "mꜣꜣ.f sn": {
+   "file": "1a301d707665.mp3",
+   "reading": "maaf sen"
+  },
+  "mꜣꜣ.f sw": {
+   "file": "be150c28ce6f.mp3",
+   "reading": "maaf su"
+  },
+  "mꜣꜣ.f tw": {
+   "file": "e0b9ec868f5a.mp3",
+   "reading": "maaf tu"
+  },
+  "mꜣꜣ.f wj": {
+   "file": "3f94dcc805eb.mp3",
+   "reading": "maaf wi"
+  },
+  "mꜣꜣ.f ṯn": {
+   "file": "3d12242d0530.mp3",
+   "reading": "maaf tjen"
+  },
+  "mꜣꜥ": {
+   "file": "3734aef1996f.mp3",
+   "reading": "maa"
+  },
+  "mꜣꜥ-ḫrw": {
+   "file": "b73151ce6dc4.mp3",
+   "reading": "maa kheru"
+  },
+  "mꜣꜥt": {
+   "file": "5a30fbc2a88b.mp3",
+   "reading": "maat"
+  },
+  "n": {
+   "file": "5dcc0d552829.mp3",
+   "reading": "ne"
+  },
+  "n kꜣ n": {
+   "file": "0ae0c7327fed.mp3",
+   "reading": "ne ka ne"
+  },
+  "n nb.f": {
+   "file": "f7c67e85a94e.mp3",
+   "reading": "ne nebef"
+  },
+  "n sḏm.f": {
+   "file": "c6b5c362581d.mp3",
+   "reading": "ne sedjemef"
+  },
+  "n sḏm.n.f": {
+   "file": "48e11e55fdd2.mp3",
+   "reading": "ne sedjemenef"
+  },
+  "n zp": {
+   "file": "51108524353b.mp3",
+   "reading": "ne sep"
+  },
+  "n zp jr.j st": {
+   "file": "bec3fd3b6d6d.mp3",
+   "reading": "ne sep iri set"
+  },
+  "n.f": {
+   "file": "722be36424a1.mp3",
+   "reading": "nef"
+  },
+  "nb": {
+   "file": "435ff49fda06.mp3",
+   "reading": "neb"
+  },
+  "nb tꜣwj": {
+   "file": "9111003702b8.mp3",
+   "reading": "neb tawi"
+  },
+  "nb ḫꜥw": {
+   "file": "48c454e16d25.mp3",
+   "reading": "neb khau"
+  },
+  "nbt": {
+   "file": "521f73f44d41.mp3",
+   "reading": "nebet"
+  },
+  "nbt.s": {
+   "file": "309bcc78d708.mp3",
+   "reading": "nebetes"
+  },
+  "nbtj": {
+   "file": "c2478cfc8552.mp3",
+   "reading": "nebeti"
+  },
+  "nf": {
+   "file": "722be36424a1.mp3",
+   "reading": "nef"
+  },
+  "nfr": {
+   "file": "53dab7ba638f.mp3",
+   "reading": "nefer"
+  },
+  "nfr nswt": {
+   "file": "4131ffe44faf.mp3",
+   "reading": "nefer nesut"
+  },
+  "nfr sw": {
+   "file": "5afa5e07ba67.mp3",
+   "reading": "nefer su"
+  },
+  "nfr wj": {
+   "file": "31789387e853.mp3",
+   "reading": "nefer wi"
+  },
+  "nfr wj ḥr.k": {
+   "file": "d7fccd554307.mp3",
+   "reading": "nefer wi herek"
+  },
+  "nfr ḥr": {
+   "file": "ef94dc967771.mp3",
+   "reading": "nefer her"
+  },
+  "nfrt": {
+   "file": "3baae6278c28.mp3",
+   "reading": "neferet"
+  },
+  "nj": {
+   "file": "c0a52d509f14.mp3",
+   "reading": "ni"
+  },
+  "nj jnk js sš": {
+   "file": "e9415d7f959d.mp3",
+   "reading": "ni inek is sesh"
+  },
+  "nj nfr js": {
+   "file": "35f3c853aafc.mp3",
+   "reading": "ni nefer is"
+  },
+  "nj sꜣ.j js pw": {
+   "file": "eab203c0543a.mp3",
+   "reading": "ni sai is pu"
+  },
+  "nj-sw": {
+   "file": "b0c310c453d5.mp3",
+   "reading": "ni su"
+  },
+  "nn": {
+   "file": "cf44bfb51fbe.mp3",
+   "reading": "nen"
+  },
+  "nn mw": {
+   "file": "963ae6d6f023.mp3",
+   "reading": "nen mu"
+  },
+  "nn n": {
+   "file": "dd118f003040.mp3",
+   "reading": "nen ne"
+  },
+  "nn n sꜣw": {
+   "file": "9a3488f3a9ab.mp3",
+   "reading": "nen ne sau"
+  },
+  "nn rmṯ nb": {
+   "file": "fcc593dc0ac9.mp3",
+   "reading": "nen remetj neb"
+  },
+  "nn sw m pr": {
+   "file": "51fecd028e33.mp3",
+   "reading": "nen su me per"
+  },
+  "nn sḏm.f": {
+   "file": "af4934448166.mp3",
+   "reading": "nen sedjemef"
+  },
+  "nn sꜣ n.f": {
+   "file": "4794c556e0e8.mp3",
+   "reading": "nen sa nef"
+  },
+  "nswt": {
+   "file": "a225ae7976ba.mp3",
+   "reading": "nesut"
+  },
+  "nswt m pr nswt": {
+   "file": "68e4069c7e79.mp3",
+   "reading": "nesut me per nesut"
+  },
+  "nswt m pr.f": {
+   "file": "94120e5e6eb4.mp3",
+   "reading": "nesut me peref"
+  },
+  "nswt-bjtj": {
+   "file": "c242392fee46.mp3",
+   "reading": "nesut biti"
+  },
+  "nt": {
+   "file": "9defc4ded768.mp3",
+   "reading": "net"
+  },
+  "ntf": {
+   "file": "c8e1294b38f1.mp3",
+   "reading": "netef"
+  },
+  "ntf nb.j": {
+   "file": "a27bfa282f9c.mp3",
+   "reading": "netef nebi"
+  },
+  "ntj": {
+   "file": "5dbcf1b3253b.mp3",
+   "reading": "neti"
+  },
+  "ntj, ntt, ntjw": {
+   "file": "12c67e06379f.mp3",
+   "reading": "neti netet netiu"
+  },
+  "ntjw": {
+   "file": "3aae45901a32.mp3",
+   "reading": "netiu"
+  },
+  "ntjw m pr": {
+   "file": "d69f53559aff.mp3",
+   "reading": "netiu me per"
+  },
+  "ntk": {
+   "file": "bc6efd21a4e5.mp3",
+   "reading": "netek"
+  },
+  "nts": {
+   "file": "8c3b83228424.mp3",
+   "reading": "netes"
+  },
+  "ntsn": {
+   "file": "cbc88ec9aecd.mp3",
+   "reading": "netesen"
+  },
+  "ntt": {
+   "file": "c8c9dfdb9c4d.mp3",
+   "reading": "netet"
+  },
+  "nttn": {
+   "file": "82ad57778ea6.mp3",
+   "reading": "neteten"
+  },
+  "nw": {
+   "file": "cab1e8e708e1.mp3",
+   "reading": "nu"
+  },
+  "nwt": {
+   "file": "8b8d50e46cd1.mp3",
+   "reading": "nut"
+  },
+  "nwt ntt m tꜣ pn": {
+   "file": "855b2cf0a3d4.mp3",
+   "reading": "nut netet me ta pen"
+  },
+  "nwtj": {
+   "file": "b3ae9f052aa7.mp3",
+   "reading": "nuti"
+  },
+  "nḫt": {
+   "file": "e28da6f636b8.mp3",
+   "reading": "nekhet"
+  },
+  "nṯr": {
+   "file": "edf58c00a87c.mp3",
+   "reading": "netjer"
+  },
+  "nṯr nfr": {
+   "file": "e95c743848b8.mp3",
+   "reading": "netjer nefer"
+  },
+  "nṯr pw rꜥ": {
+   "file": "ea037172866e.mp3",
+   "reading": "netjer pu ra"
+  },
+  "nṯrj": {
+   "file": "d7f249e7dd9a.mp3",
+   "reading": "netjeri"
+  },
+  "nṯrt": {
+   "file": "e473e3e8ff2f.mp3",
+   "reading": "netjeret"
+  },
+  "nṯrw": {
+   "file": "0cbfec4a1720.mp3",
+   "reading": "netjeru"
+  },
+  "nꜣ": {
+   "file": "4920531e65b6.mp3",
+   "reading": "na"
+  },
+  "p": {
+   "file": "dc5c853db75f.mp3",
+   "reading": "pe"
+  },
+  "pf": {
+   "file": "8c0e9a91e605.mp3",
+   "reading": "pef"
+  },
+  "pn": {
+   "file": "dcb1b721ce8c.mp3",
+   "reading": "pen"
+  },
+  "pn, tn": {
+   "file": "fdf2270f67e7.mp3",
+   "reading": "pen ten"
+  },
+  "pr": {
+   "file": "134a7418ef2b.mp3",
+   "reading": "per"
+  },
+  "pr nswt": {
+   "file": "ef2ec7386a9d.mp3",
+   "reading": "per nesut"
+  },
+  "pr ntj sw jm.f": {
+   "file": "8321b58ee2d4.mp3",
+   "reading": "per neti su imef"
+  },
+  "pr-ꜥꜣ": {
+   "file": "a8f2c0f2f8ca.mp3",
+   "reading": "per aa"
+  },
+  "pr.f": {
+   "file": "4075bb3ee84a.mp3",
+   "reading": "peref"
+  },
+  "pr.j": {
+   "file": "aaaab08a04a4.mp3",
+   "reading": "peri"
+  },
+  "pr.k": {
+   "file": "dcb13f9aee16.mp3",
+   "reading": "perek"
+  },
+  "pr.n": {
+   "file": "7c62bcaf1b11.mp3",
+   "reading": "peren"
+  },
+  "pr.s": {
+   "file": "a7329a7c7c4b.mp3",
+   "reading": "peres"
+  },
+  "pr.sn": {
+   "file": "a1519529b3ac.mp3",
+   "reading": "peresen"
+  },
+  "pr.ṯ": {
+   "file": "9616f4b1ab2b.mp3",
+   "reading": "peretj"
+  },
+  "pr.ṯn": {
+   "file": "2f2a3fcf141a.mp3",
+   "reading": "peretjen"
+  },
+  "prj": {
+   "file": "aaaab08a04a4.mp3",
+   "reading": "peri"
+  },
+  "prt": {
+   "file": "337372751bbf.mp3",
+   "reading": "peret"
+  },
+  "prt-ḫrw": {
+   "file": "d2cb8457e006.mp3",
+   "reading": "peret kheru"
+  },
+  "pt": {
+   "file": "ccd2f0dd88a0.mp3",
+   "reading": "pet"
+  },
+  "pw": {
+   "file": "98e13d22bc85.mp3",
+   "reading": "pu"
+  },
+  "pḥ.n.n ẖnw": {
+   "file": "fe5db6f1d1fa.mp3",
+   "reading": "pehenen khenu"
+  },
+  "pꜣ": {
+   "file": "eb0b5f015196.mp3",
+   "reading": "pa"
+  },
+  "r": {
+   "file": "970486e1c36d.mp3",
+   "reading": "re"
+  },
+  "r nwt": {
+   "file": "3406c1e7068e.mp3",
+   "reading": "re nut"
+  },
+  "r tm sḏm": {
+   "file": "c4eb655f775d.mp3",
+   "reading": "re tem sedjem"
+  },
+  "r ꜣḫt.f": {
+   "file": "612f3343340c.mp3",
+   "reading": "re akhetef"
+  },
+  "rdj": {
+   "file": "5684a1919909.mp3",
+   "reading": "redi"
+  },
+  "rdj.n.f": {
+   "file": "0475997625b2.mp3",
+   "reading": "redinef"
+  },
+  "rdj.n.f jr.j st": {
+   "file": "fcdeccb30924.mp3",
+   "reading": "redinef iri set"
+  },
+  "rdj.n.f n.j jnw": {
+   "file": "1acf1f52e468.mp3",
+   "reading": "redinef ni inu"
+  },
+  "rdjt": {
+   "file": "ab604c0e0a2e.mp3",
+   "reading": "redit"
+  },
+  "rdwj": {
+   "file": "c1ac229d8991.mp3",
+   "reading": "redwi"
+  },
+  "rmṯ": {
+   "file": "f9dfbae845a8.mp3",
+   "reading": "remetj"
+  },
+  "rn": {
+   "file": "e70079562e4e.mp3",
+   "reading": "ren"
+  },
+  "rnp": {
+   "file": "8d948ebee2a2.mp3",
+   "reading": "renep"
+  },
+  "rnpt": {
+   "file": "0bd06cf1f6e8.mp3",
+   "reading": "renepet"
+  },
+  "rnpt-sp": {
+   "file": "3880039d1f46.mp3",
+   "reading": "renepet sep"
+  },
+  "rḫ": {
+   "file": "b79615839149.mp3",
+   "reading": "rekh"
+  },
+  "rḫ.n.j sw": {
+   "file": "de8c2a8d3e78.mp3",
+   "reading": "rekheni su"
+  },
+  "rꜥ": {
+   "file": "67f3a20c3b64.mp3",
+   "reading": "ra"
+  },
+  "s": {
+   "file": "cc3cf3fd5f42.mp3",
+   "reading": "se"
+  },
+  "s jr st": {
+   "file": "182c9b199a65.mp3",
+   "reading": "se ir set"
+  },
+  "sj": {
+   "file": "443d3b2dfb76.mp3",
+   "reading": "si"
+  },
+  "smꜣ": {
+   "file": "90fd57079baa.mp3",
+   "reading": "sema"
+  },
+  "smꜣ tꜣwj": {
+   "file": "9e3a8ffc77f8.mp3",
+   "reading": "sema tawi"
+  },
+  "sn": {
+   "file": "14f642fe80c1.mp3",
+   "reading": "sen"
+  },
+  "snnw": {
+   "file": "0017d2eb1b07.mp3",
+   "reading": "senenu"
+  },
+  "snt": {
+   "file": "17eea15aa46d.mp3",
+   "reading": "senet"
+  },
+  "sntj": {
+   "file": "af48db6b15d6.mp3",
+   "reading": "seneti"
+  },
+  "snw": {
+   "file": "96e763457aa2.mp3",
+   "reading": "senu"
+  },
+  "snw nfrw": {
+   "file": "f1307e6eadee.mp3",
+   "reading": "senu neferu"
+  },
+  "snw nw ḥqꜣ": {
+   "file": "c69fae896120.mp3",
+   "reading": "senu nu heka"
+  },
+  "snwj": {
+   "file": "211e65b3108c.mp3",
+   "reading": "senwi"
+  },
+  "snwt": {
+   "file": "d440c3bfdf88.mp3",
+   "reading": "senut"
+  },
+  "snwt nfrwt": {
+   "file": "1ddaa4323628.mp3",
+   "reading": "senut neferut"
+  },
+  "st": {
+   "file": "c759143bed88.mp3",
+   "reading": "set"
+  },
+  "sw": {
+   "file": "6f4ca03fc57f.mp3",
+   "reading": "su"
+  },
+  "sḏm": {
+   "file": "1b5855974e08.mp3",
+   "reading": "sedjem"
+  },
+  "sḏm mdw": {
+   "file": "8a5b5a1f522a.mp3",
+   "reading": "sedjem medu"
+  },
+  "sḏm r.k": {
+   "file": "d65e40910d2b.mp3",
+   "reading": "sedjem rek"
+  },
+  "sḏm sꜣ": {
+   "file": "c2afe49b51bd.mp3",
+   "reading": "sedjem sa"
+  },
+  "sḏm.f": {
+   "file": "98f6818baf1e.mp3",
+   "reading": "sedjemef"
+  },
+  "sḏm.f mdw": {
+   "file": "48de29a4201f.mp3",
+   "reading": "sedjemef medu"
+  },
+  "sḏm.f sw": {
+   "file": "b9de83c42feb.mp3",
+   "reading": "sedjemef su"
+  },
+  "sḏm.j": {
+   "file": "0260c5bf956e.mp3",
+   "reading": "sedjemi"
+  },
+  "sḏm.k": {
+   "file": "3841a36288be.mp3",
+   "reading": "sedjemek"
+  },
+  "sḏm.n": {
+   "file": "cdac265b8045.mp3",
+   "reading": "sedjemen"
+  },
+  "sḏm.n nswt": {
+   "file": "4f4c63b5479b.mp3",
+   "reading": "sedjemen nesut"
+  },
+  "sḏm.n.f": {
+   "file": "b9361dd1b776.mp3",
+   "reading": "sedjemenef"
+  },
+  "sḏm.n.j": {
+   "file": "e1ec394b160a.mp3",
+   "reading": "sedjemeni"
+  },
+  "sḏm.n.s": {
+   "file": "afd2e4aab403.mp3",
+   "reading": "sedjemenes"
+  },
+  "sḏm.n.sn": {
+   "file": "aa823d9fc29a.mp3",
+   "reading": "sedjemenesen"
+  },
+  "sḏm.n=f": {
+   "file": "b9361dd1b776.mp3",
+   "reading": "sedjemenef"
+  },
+  "sḏm.s": {
+   "file": "775cf0a571ee.mp3",
+   "reading": "sedjemes"
+  },
+  "sḏm.sn": {
+   "file": "2e4ad376b933.mp3",
+   "reading": "sedjemesen"
+  },
+  "sḫm": {
+   "file": "8b14bb6deef1.mp3",
+   "reading": "sekhem"
+  },
+  "sḫmtj": {
+   "file": "11141295a4da.mp3",
+   "reading": "sekhemeti"
+  },
+  "sꜣ": {
+   "file": "da06d627e4c4.mp3",
+   "reading": "sa"
+  },
+  "sꜣ n ḥqꜣ": {
+   "file": "d5cc9a07d2bd.mp3",
+   "reading": "sa ne heka"
+  },
+  "sꜣ nfr": {
+   "file": "f407816f7e07.mp3",
+   "reading": "sa nefer"
+  },
+  "sꜣ pn": {
+   "file": "4465f62d798a.mp3",
+   "reading": "sa pen"
+  },
+  "sꜣ wꜥ": {
+   "file": "b5ec8dc03ed0.mp3",
+   "reading": "sa wa"
+  },
+  "sꜣ.f": {
+   "file": "5c202c7332dd.mp3",
+   "reading": "saf"
+  },
+  "sꜣ.j pw": {
+   "file": "5ed725d89e4d.mp3",
+   "reading": "sai pu"
+  },
+  "sꜣb ꜥḏ-mr": {
+   "file": "69396f025068.mp3",
+   "reading": "sab adj mer"
+  },
+  "sꜣt": {
+   "file": "ab58f095aee2.mp3",
+   "reading": "sat"
+  },
+  "sꜣt nfrt": {
+   "file": "da0e0e1357c2.mp3",
+   "reading": "sat neferet"
+  },
+  "sꜣt nt ḥqꜣ": {
+   "file": "26dc5e0f5ca3.mp3",
+   "reading": "sat net heka"
+  },
+  "sꜣt tn": {
+   "file": "abd575c0c278.mp3",
+   "reading": "sat ten"
+  },
+  "sꜣwj": {
+   "file": "7e88d165f09e.mp3",
+   "reading": "sawi"
+  },
+  "t": {
+   "file": "51a68ac95805.mp3",
+   "reading": "te"
+  },
+  "t ḥnqt kꜣ ꜣpd": {
+   "file": "340a9b3d9360.mp3",
+   "reading": "te heneket ka aped"
+  },
+  "tf": {
+   "file": "bcc5769ce72f.mp3",
+   "reading": "tef"
+  },
+  "tjt": {
+   "file": "ebaa759799d6.mp3",
+   "reading": "tit"
+  },
+  "tm": {
+   "file": "0423a2884891.mp3",
+   "reading": "tem"
+  },
+  "tn": {
+   "file": "b046a0555aa8.mp3",
+   "reading": "ten"
+  },
+  "tp": {
+   "file": "794a2db611fc.mp3",
+   "reading": "tep"
+  },
+  "tpj": {
+   "file": "6226000ce6fc.mp3",
+   "reading": "tepi"
+  },
+  "tw": {
+   "file": "8fbbc5f87215.mp3",
+   "reading": "tu"
+  },
+  "tꜣ": {
+   "file": "0a47216542e6.mp3",
+   "reading": "ta"
+  },
+  "tꜣwj": {
+   "file": "86d4bbb9c2d0.mp3",
+   "reading": "tawi"
+  },
+  "w": {
+   "file": "d4a43328cb3e.mp3",
+   "reading": "u"
+  },
+  "wj": {
+   "file": "b39fbf7d7bdb.mp3",
+   "reading": "wi"
+  },
+  "wn": {
+   "file": "477ac6683ef3.mp3",
+   "reading": "un"
+  },
+  "wnm": {
+   "file": "ab673c442a17.mp3",
+   "reading": "unem"
+  },
+  "wnn": {
+   "file": "dbe6a060395a.mp3",
+   "reading": "unen"
+  },
+  "wr": {
+   "file": "32cc01e1c9d0.mp3",
+   "reading": "ur"
+  },
+  "wr nswt": {
+   "file": "d66fd732fa8a.mp3",
+   "reading": "ur nesut"
+  },
+  "wr pḥtj": {
+   "file": "2b39a0bbf1b1.mp3",
+   "reading": "ur peheti"
+  },
+  "wr r": {
+   "file": "286b891e9776.mp3",
+   "reading": "ur re"
+  },
+  "wr ḥqꜣ.n": {
+   "file": "4f01ba54b872.mp3",
+   "reading": "ur hekan"
+  },
+  "wsjr": {
+   "file": "42d41be5ee4d.mp3",
+   "reading": "usir"
+  },
+  "wsr": {
+   "file": "5105989c62ee.mp3",
+   "reading": "user"
+  },
+  "wḏꜣ jb.k": {
+   "file": "76d34beb14d7.mp3",
+   "reading": "udja ibek"
+  },
+  "wḏꜣt": {
+   "file": "4891550819ad.mp3",
+   "reading": "udjat"
+  },
+  "wꜣs": {
+   "file": "cb0d384ddbb7.mp3",
+   "reading": "was"
+  },
+  "wꜣḏ": {
+   "file": "51b81ff16b29.mp3",
+   "reading": "wadj"
+  },
+  "wꜥ": {
+   "file": "f616e23a7026.mp3",
+   "reading": "wa"
+  },
+  "y": {
+   "file": "d9309f9500a3.mp3",
+   "reading": "i"
+  },
+  "z": {
+   "file": "cc3cf3fd5f42.mp3",
+   "reading": "se"
+  },
+  "z, s": {
+   "file": "1ca3cd1dda1e.mp3",
+   "reading": "se se"
+  },
+  "š": {
+   "file": "6891b09dae0b.mp3",
+   "reading": "she"
+  },
+  "šm": {
+   "file": "d09a0e12f7e1.mp3",
+   "reading": "shem"
+  },
+  "šms nb.f": {
+   "file": "d1d843e72965.mp3",
+   "reading": "shemes nebef"
+  },
+  "šmw": {
+   "file": "488a61f3a5ab.mp3",
+   "reading": "shemu"
+  },
+  "šn": {
+   "file": "5efea790d06c.mp3",
+   "reading": "shen"
+  },
+  "šnw": {
+   "file": "ac0de6bf044c.mp3",
+   "reading": "shenu"
+  },
+  "šwt": {
+   "file": "b5104cb82658.mp3",
+   "reading": "shut"
+  },
+  "ḏ": {
+   "file": "b8abb8538f1c.mp3",
+   "reading": "dje"
+  },
+  "ḏd": {
+   "file": "e9b7f81bceec.mp3",
+   "reading": "djed"
+  },
+  "ḏd jn": {
+   "file": "42d3b04cd71e.mp3",
+   "reading": "djed in"
+  },
+  "ḏd jn šmsw jqr": {
+   "file": "d8d34ea87197.mp3",
+   "reading": "djed in shemesu iker"
+  },
+  "ḏd mdw": {
+   "file": "452d634a7a62.mp3",
+   "reading": "djed medu"
+  },
+  "ḏd nswt": {
+   "file": "69c2fbddbc20.mp3",
+   "reading": "djed nesut"
+  },
+  "ḏd.f": {
+   "file": "9c052a9c2087.mp3",
+   "reading": "djedef"
+  },
+  "ḏd.n.f n.j": {
+   "file": "d50877ac57ba.mp3",
+   "reading": "djedenef ni"
+  },
+  "ḏd.s": {
+   "file": "e112cc265d2f.mp3",
+   "reading": "djedes"
+  },
+  "ḏr": {
+   "file": "e5ce4a9357e8.mp3",
+   "reading": "djer"
+  },
+  "ḏr rk nṯr": {
+   "file": "bb661edba9f3.mp3",
+   "reading": "djer rek netjer"
+  },
+  "ḥ": {
+   "file": "17a7f33889c4.mp3",
+   "reading": "he"
+  },
+  "ḥm": {
+   "file": "6da2c26c01e4.mp3",
+   "reading": "hem"
+  },
+  "ḥmt": {
+   "file": "04b199ac2e0f.mp3",
+   "reading": "hemet"
+  },
+  "ḥmt jrt st": {
+   "file": "40a95d74513e.mp3",
+   "reading": "hemet iret set"
+  },
+  "ḥmt.f": {
+   "file": "5ba36428c723.mp3",
+   "reading": "hemetef"
+  },
+  "ḥmt.k": {
+   "file": "b1eacab9f7ef.mp3",
+   "reading": "hemetek"
+  },
+  "ḥnꜥ": {
+   "file": "0c90914b7092.mp3",
+   "reading": "hena"
+  },
+  "ḥnꜥ snt.f": {
+   "file": "aff46e671033.mp3",
+   "reading": "hena senetef"
+  },
+  "ḥqꜣ": {
+   "file": "0a50ad008736.mp3",
+   "reading": "heka"
+  },
+  "ḥr": {
+   "file": "cf86236f34f7.mp3",
+   "reading": "her"
+  },
+  "ḥr mw": {
+   "file": "70ecbf002546.mp3",
+   "reading": "her mu"
+  },
+  "ḥr nṯr": {
+   "file": "4bd8eeddfd9a.mp3",
+   "reading": "her netjer"
+  },
+  "ḥr.s": {
+   "file": "66e662a5647e.mp3",
+   "reading": "heres"
+  },
+  "ḥrj": {
+   "file": "350d4b053132.mp3",
+   "reading": "heri"
+  },
+  "ḥrj-tp": {
+   "file": "25becf2a6165.mp3",
+   "reading": "heri tep"
+  },
+  "ḥrj-ḥbt": {
+   "file": "8b47e967a3d9.mp3",
+   "reading": "heri hebet"
+  },
+  "ḥrjw rnpt": {
+   "file": "c7a4eefb28d6.mp3",
+   "reading": "heriu renepet"
+  },
+  "ḥsj": {
+   "file": "61b4274149e8.mp3",
+   "reading": "hesi"
+  },
+  "ḥsj nb.f": {
+   "file": "680f48abf4b4.mp3",
+   "reading": "hesi nebef"
+  },
+  "ḥtp": {
+   "file": "ffacde79e454.mp3",
+   "reading": "hetep"
+  },
+  "ḥtp-dj-nswt": {
+   "file": "12c500ab3ad2.mp3",
+   "reading": "hetep di nesut"
+  },
+  "ḥḏt": {
+   "file": "deca928a4843.mp3",
+   "reading": "hedjet"
+  },
+  "ḥꜣt-sp": {
+   "file": "e06970e0ca6d.mp3",
+   "reading": "hat sep"
+  },
+  "ḥꜣtj-ꜥ": {
+   "file": "fc9e0640df31.mp3",
+   "reading": "hati a"
+  },
+  "ḫ": {
+   "file": "a1d5584d7e35.mp3",
+   "reading": "khe"
+  },
+  "ḫmtnw": {
+   "file": "c2a9bed61f2b.mp3",
+   "reading": "khemetenu"
+  },
+  "ḫpr": {
+   "file": "a0ea7b078c0e.mp3",
+   "reading": "kheper"
+  },
+  "ḫr": {
+   "file": "a570f411afc6.mp3",
+   "reading": "kher"
+  },
+  "ḫr nswt": {
+   "file": "d84b7702e416.mp3",
+   "reading": "kher nesut"
+  },
+  "ḫrw": {
+   "file": "06bacb5b82a4.mp3",
+   "reading": "kheru"
+  },
+  "ḫt nbt nfrt wꜥbt": {
+   "file": "f2ae602a1107.mp3",
+   "reading": "khet nebet neferet wabet"
+  },
+  "ḫꜣst": {
+   "file": "782e48d01d9a.mp3",
+   "reading": "khaset"
+  },
+  "ḳ": {
+   "file": "d650d486ac8f.mp3",
+   "reading": "ke"
+  },
+  "ṯ": {
+   "file": "4ff8a97ef7dd.mp3",
+   "reading": "tje"
+  },
+  "ṯn": {
+   "file": "160de0913568.mp3",
+   "reading": "tjen"
+  },
+  "ẖ": {
+   "file": "a1d5584d7e35.mp3",
+   "reading": "khe"
+  },
+  "ẖr": {
+   "file": "a570f411afc6.mp3",
+   "reading": "kher"
+  },
+  "ẖr jnw": {
+   "file": "9d77451735f8.mp3",
+   "reading": "kher inu"
+  },
+  "ẖrj": {
+   "file": "7fc1e623dae8.mp3",
+   "reading": "kheri"
+  },
+  "ꜣ": {
+   "file": "b22c8d39fb96.mp3",
+   "reading": "a"
+  },
+  "ꜣ ꜥ": {
+   "file": "4cc4556a8303.mp3",
+   "reading": "a a"
+  },
+  "ꜣbd": {
+   "file": "4bcd6c7104fa.mp3",
+   "reading": "abed"
+  },
+  "ꜣḫ": {
+   "file": "94536d0544c5.mp3",
+   "reading": "akh"
+  },
+  "ꜣḫt": {
+   "file": "c9387f91240f.mp3",
+   "reading": "akhet"
+  },
+  "ꜣḫt, prt, šmw": {
+   "file": "d27dfdd9250d.mp3",
+   "reading": "akhet peret shemu"
+  },
+  "ꜥ": {
+   "file": "b22c8d39fb96.mp3",
+   "reading": "a"
+  },
+  "ꜥnḫ": {
+   "file": "10dfbb9b0457.mp3",
+   "reading": "ankh"
+  },
+  "ꜥnḫ wḏꜣ snb": {
+   "file": "4abe5041c63d.mp3",
+   "reading": "ankh udja seneb"
+  },
+  "ꜥnḫ ḏd wꜣs": {
+   "file": "e4729e06ee13.mp3",
+   "reading": "ankh djed was"
+  },
+  "ꜥnḫ ḏt": {
+   "file": "1887c6d628ef.mp3",
+   "reading": "ankh djet"
+  },
+  "ꜥnḫ-mswt": {
+   "file": "9bdc887095b3.mp3",
+   "reading": "ankh mesut"
+  },
+  "ꜥnḫ.w": {
+   "file": "33d206eca4c5.mp3",
+   "reading": "anekhu"
+  },
+  "ꜥnḫnḫ": {
+   "file": "f985e396eb81.mp3",
+   "reading": "anekhenekh"
+  },
+  "ꜥnḫt nṯr jm": {
+   "file": "d351ba74fd38.mp3",
+   "reading": "anekhet netjer im"
+  },
+  "ꜥr nṯr": {
+   "file": "3a0e2917e442.mp3",
+   "reading": "ar netjer"
+  },
+  "ꜥr nṯr r ꜣḫt.f": {
+   "file": "75dd54550c87.mp3",
+   "reading": "ar netjer re akhetef"
+  },
+  "ꜥwj": {
+   "file": "654aa4c16f02.mp3",
+   "reading": "awi"
+  },
+  "ꜥḳ": {
+   "file": "56aa676d0cd9.mp3",
+   "reading": "ak"
+  },
+  "ꜥꜣ sj": {
+   "file": "a4dc2db813c4.mp3",
+   "reading": "aa si"
+  }
+ }
+}

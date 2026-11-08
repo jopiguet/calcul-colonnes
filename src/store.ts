@@ -22,7 +22,7 @@ import type {
 import type { Bank, Subject } from "../shared/quiz";
 
 import type { ExerciseBookInfo, ExerciseBookView, ExerciseUnitView } from "../shared/exercises/api";
-import type { CourseInfo, CourseView, ExerciseState, LessonView } from "../shared/lessons/api";
+import type { CourseInfo, CourseSounds, CourseView, ExerciseState, LessonView } from "../shared/lessons/api";
 import { currentLang } from "./i18n";
 export type { AuthOptions, AuthState, NewAttempt, NewQuizResult, PastTest, PlayerShare, Profile, SignInMethod, User, UserStats };
 export type { VocabAnswer, VocabAnswerResult, VocabBookInfo, VocabCard, VocabLessonInfo, VocabLessonWords, VocabProgress, VocabStats };
@@ -216,6 +216,8 @@ export const lessons = {
     call("/courses/override", { method: "PUT", body: JSON.stringify({ userId, course, lesson, exercise, blank, right, lang: currentLang() }) }),
   reset: (userId: number, course: string, lesson: string): Promise<void> =>
     call(`/courses/answers?userId=${userId}&course=${encodeURIComponent(course)}&lesson=${encodeURIComponent(lesson)}`, { method: "DELETE" }),
+  /** The course's sounds (docs/sounds.md): a word as written → its file. */
+  sounds: (course: string): Promise<CourseSounds> => call(`/courses/${encodeURIComponent(course)}/sounds`),
 };
 
 /** Workbook exercises (server/exercises.ts). */

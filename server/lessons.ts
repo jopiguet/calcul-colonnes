@@ -17,7 +17,7 @@ import type { Repository, Scope } from "./repository.ts";
 import { exercisesOf, parseLesson, publicExercise, type Lesson } from "../shared/lessons/format.ts";
 import { expectedOf, FOLDS, markExercise, type BlankResult, type Fold } from "../shared/lessons/grade.ts";
 import { parseVocabFile, TRANSLATION_LANGS, type TranslationLang, type VocabFile, type VocabFileEntry } from "../shared/vocab/format.ts";
-import type { CourseInfo, CourseLessonInfo, CourseView, LessonView, ExerciseState } from "../shared/lessons/api.ts";
+import type { CourseInfo, CourseLessonInfo, CourseSounds, CourseView, LessonView, ExerciseState } from "../shared/lessons/api.ts";
 export type { BlankResult };
 
 type Lang = TranslationLang;
@@ -51,6 +51,8 @@ export interface LoadedCourse {
   lessons: LoadedLesson[];
   /** The course's letter cards (letters.json): a book of kind "characters", as the kana. */
   letters: VocabFile | null;
+  /** The course's sounds (sounds.json, made by npm run sounds:build), empty when it has none. */
+  sounds: CourseSounds;
 }
 
 /** content/courses beside the sources, or beside the bundle (dist-server/content/courses). */
@@ -119,8 +121,20 @@ export function loadCourse(dir: string): LoadedCourse {
       lessons: raw.lessons,
     });
   }
-  return { meta, lessons, letters };
+  // The sounds: a name is a hash (no path); a word whose file is missing is left silent (npm run check:sounds says so).
+  const sounds: CourseSounds = {};
+  const soundsPath = join(dir, "sounds.json");
+  if (existsSync(soundsPath)) {
+    const items = ((JSON.parse(readFileSync(soundsPath, "utf8")) as { items?: CourseSounds }).items ?? {});
+    for (const [key, item] of Object.entries(items)) {
+      if (!SOUND_FILE.test(item.file) || !existsSync(join(dir, "sounds", item.file))) continue;
+      sounds[key] = item.reading ? { file: item.file, reading: item.reading } : { file: item.file };
+    }
+  }
+  return { meta, lessons, letters, sounds };
 }
+
+export const SOUND_FILE = /^[0-9a-f]{12}\.mp3$/;
 
 let cache: Map<string, LoadedCourse> | null = null;
 
@@ -268,7 +282,7 @@ export class LessonStore {
     }
     const around = (i: number) => (c.lessons[i] ? { slug: c.lessons[i]!.slug, n: c.lessons[i]!.n, title: c.lessons[i]!.byLang[lang].title } : null);
     return {
-      course: { id, title: c.meta.title[lang], language: c.meta.language, icon: c.meta.icon, vocabBook: vocabBookOf(c) ? vocabBookId(id) : null, keys: c.meta.keys },
+      course: { id, title: c.meta.title[lang], language: c.meta.language, icon: c.meta.icon, vocabBook: vocabBookOf(c) ? vocabBookId(id) : null, keys: c.meta.keys, sounds: Object.keys(c.sounds).length > 0 },
       lesson: {
         n: l.n,
         slug,
@@ -363,6 +377,25 @@ export function lessonRoutes(store: LessonStore, repository: Repository, scope: 
     if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
     const view = await store.course(userId, course, langOf(c.req.query("lang")));
     return view ? c.json(view) : c.json({ error: "unknown course" }, 404);
+  });
+
+  // The sounds are the same for everyone: the list, then the files, kept by the browser (a file's name is what it says).
+  routes.get("/:course/sounds", (c) => {
+    const course = courses().get(c.req.param("course"));
+    if (!course) return c.json({ error: "unknown course" }, 404);
+    c.header("Cache-Control", "private, max-age=3600");
+    return c.json(course.sounds);
+  });
+
+  routes.get("/:course/sounds/:file", (c) => {
+    const { course: id, file } = c.req.param();
+    const course = courses().get(id);
+    if (!course || !SOUND_FILE.test(file)) return c.json({ error: "unknown sound" }, 404);
+    const path = join(contentDir(), id, "sounds", file);
+    if (!existsSync(path)) return c.json({ error: "unknown sound" }, 404);
+    c.header("Content-Type", "audio/mpeg");
+    c.header("Cache-Control", "private, max-age=31536000, immutable");
+    return c.body(readFileSync(path));
   });
 
   routes.get("/:course/:lesson", async (c) => {

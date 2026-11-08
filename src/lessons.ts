@@ -9,6 +9,7 @@ import { button, el } from "./dom";
 import { inline, parseMarkdown, renderBlock } from "./markdown";
 import { lessons, type User } from "./store";
 import { lt } from "./lessons-i18n";
+import { addSoundButtons, courseSounds } from "./sound";
 import { infoLabel } from "./vocab-i18n";
 import type { CourseInfo, ExerciseState, LessonView } from "../shared/lessons/api";
 import type { PublicExercise, Segment } from "../shared/lessons/format";
@@ -63,6 +64,7 @@ async function coursePage(ctx: LessonsContext): Promise<HTMLElement> {
 
 async function lessonPage(ctx: LessonsContext, slug: string): Promise<HTMLElement> {
   const view = await lessons.lesson(ctx.user.id, ctx.course, slug);
+  const sounds = view.course.sounds ? await courseSounds(ctx.course) : {};
   const wrap = el("article", "sheet lesson-page");
   wrap.lang = document.documentElement.lang;
   // The language taught, for its fonts (Arabic in Naskh).
@@ -81,11 +83,13 @@ async function lessonPage(ctx: LessonsContext, slug: string): Promise<HTMLElemen
     if (part.kind === "text") {
       const box = el("div", "lesson-text");
       for (const block of parseMarkdown(part.markdown)) box.append(renderBlock(block));
+      addSoundButtons(box, ctx.course, sounds);
       wrap.append(box);
     } else if (part.kind === "summary") {
       const box = el("aside", "lesson-summary");
       box.append(el("h2", "lesson-summary-title", lt("summary")));
       for (const block of parseMarkdown(part.markdown)) box.append(renderBlock(block));
+      addSoundButtons(box, ctx.course, sounds);
       wrap.append(box);
     } else {
       number++;

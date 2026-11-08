@@ -15,6 +15,7 @@
 import { compareLessons, exercisesOf, parseLesson } from "../shared/lessons/format.ts";
 import { fold, markBlank, markExercise, type Fold } from "../shared/lessons/grade.ts";
 import { courses, vocabBookOf } from "./lessons.ts";
+import { akkadianSpeech, egyptianSpeech, malayalamSpeech, sumerianSpeech } from "./pronounce.ts";
 
 let failures = 0;
 let checks = 0;
@@ -66,6 +67,14 @@ expect("malayalam: script, ISO 15919, Manglish", [new Set(fm(["കേരളം",
 expect("malayalam: ñ as nj, c as ch, ī as ee, ū as oo", [new Set(fm(["ഞാൻ", "ñān", "njan"])).size, new Set(fm(["ചായ", "cāya", "chaaya"])).size, new Set(fm(["മീൻ", "mīn", "meen"])).size, new Set(fm(["പൂച്ച", "pūcca", "poocha"])).size], [1, 1, 1, 1]);
 expect("malayalam: final half-u, dental th, ṣ as sh", [new Set(fm(["അവന്", "avanŭ", "avanu", "avan"])).size, new Set(fm(["തിരുവനന്തപുരം", "thiruvananthapuram"])).size, new Set(fm(["കൃഷ്ണൻ", "kr̥ṣṇan", "krishnan"])).size], [1, 1, 1]);
 expect("malayalam: different words differ", [fold("പഴം", [...ml]) === fold("പണം", [...ml]), fold("വീട്", [...ml]) === fold("വിട", [...ml])], [false, false]);
+
+// How the ancient words are said (server/pronounce.ts, docs/sounds.md).
+const reads = (f: (k: string) => { reading?: string; input: string } | null, words: string[]) => words.map((w) => f(w)?.reading ?? f(w)?.input ?? null);
+expect("egyptian: the school reading", reads(egyptianSpeech, ["nfr", "ḥtp", "nṯr", "mꜣꜥt", "wsjr", "nswt", "sḏm.f", "ꜥnḫ", "pr-ꜥꜣ", "b"]), ["nefer", "hetep", "netjer", "maat", "usir", "nesut", "sedjemef", "ankh", "per aa", "be"]);
+expect("egyptian: what is not a transliteration is not said", [egyptianSpeech("the"), egyptianSpeech("G1"), egyptianSpeech("𓄿")], [null, null, null]);
+expect("akkadian: long vowels and the stress", [akkadianSpeech("šarrum")?.input, akkadianSpeech("awīlum")?.input, akkadianSpeech("rabûm")?.input, akkadianSpeech("ša-ar-ru-um")?.input], ["[[S'arrum]]", "[[aw'i:lum]]", "[[rab'u:m]]", "[[S'a 'ar r'u 'um]]"]);
+expect("sumerian: signs joined, numbers dropped, ĝ as ng", [sumerianSpeech("e₂-gal")?.input, sumerianSpeech("niĝ₂-lam₂")?.input], ["[['egal]]", "[[n'iNlam]]"]);
+expect("malayalam: the script, a chillu after a, no sign alone", [malayalamSpeech("കേരളം")?.input, malayalamSpeech("ൻ")?.input, malayalamSpeech("ാ"), malayalamSpeech("kēraḷam")], ["കേരളം", "അൻ", null, null]);
 expect("malayalam: free answers keep their letters", markBlank({ kind: "free", answers: ["The house."] } as Parameters<typeof markBlank>[0], "the horse", [...ml]), "check");
 const egy = ["egyptian"] as const;
 expect("egyptian: ankh however typed", ["ꜥnḫ", "ankh", "anx", "'nḫ", "Anh"].map((t) => fold(t, [...egy])), ["nh", "nh", "nh", "nh", "nh"]);

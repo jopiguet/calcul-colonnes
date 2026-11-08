@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.0.0
+
+- **Sounds of the courses** ([Sounds](docs/sounds.md)): 🌴 Malayalam, 𓋹 Egyptian, Sumerian and Akkadian can be listened to. A ▶ follows each word of the lesson text that has a sound: the italics (the transliterations), the letters in the tables of signs, the Malayalam runs and proverbs; its tooltip gives the reading (*Écouter « nefer »*). The Malayalam letter cards show a ▶ once answered. Exercises have none, so nothing gives an answer away. One sound plays at a time.
+- **How they are made:** `npm run sounds:build` renders the lessons as the browser does (`soundTargets`, `src/sound-targets.ts`, shared by both), turns each word into speech (`server/pronounce.ts`: Malayalam from its script with eSpeak's Malayalam voice; Egyptian in the Egyptological school reading, Akkadian in the usual reconstruction with its stress rule, Sumerian with the conventional sign values, as eSpeak phonemes), synthesises it with eSpeak NG (WebAssembly, a dev dependency, GPL, not shipped) and encodes a mono MP3 with ffmpeg. 1,700-odd sounds, named by a hash of what they say: a word met twice is one file, a build makes only what changed. For the ancient languages only words written the same in the French, Spanish and English lessons are spoken.
+- **Served:** `GET /api/courses/:id/sounds` (the list) and `GET /api/courses/:id/sounds/:file` (the MP3, cached for good); the lesson view says whether its course has sounds.
+- **Checks:** `npm run check:sounds` fails on a missing sound or a stale `sounds.json`; `check:lessons` checks the readings (*nfr* "nefer", *šarrum* stressed on its first syllable, *e₂-gal* "egal", a chillu alone said after a); `tests/e2e/sounds.spec.ts` (three tests) plays a word of an Egyptian lesson and a Malayalam letter, and checks that exercises have no ▶.
+- KaTeX's stylesheet is imported by `src/main.ts` instead of `src/markdown.ts`, so the lesson renderer also runs under Node for the build.
+
 ## 7.10.1
 
 - **Home page:** a card with something waiting showed blue triangles at its rounded corners in every browser. Its cell was marked `is-due`, a class the vocabulary statistics already paint blue; it is now `activity-waiting`, and only the card's border turns red. `tests/e2e/home-arrange.spec.ts` checks that nothing is painted behind a waiting card.

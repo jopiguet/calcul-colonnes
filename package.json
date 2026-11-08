@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "7.10.1",
+  "version": "8.0.0",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -35,7 +35,9 @@
     "check:courses": "tsx server/check-courses.ts",
     "check:lessons": "tsx server/check-lessons.ts",
     "exercises:import": "tsx server/exercises-import.ts",
-    "exercises:epub": "tsx server/exercises-epub.ts"
+    "exercises:epub": "tsx server/exercises-epub.ts",
+    "sounds:build": "tsx server/sounds-build.ts",
+    "check:sounds": "tsx server/sounds-build.ts --check"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
@@ -47,6 +49,7 @@
     "@types/react-dom": "^19.3.0",
     "concurrently": "^10.0.6",
     "esbuild": "^0.28.2",
+    "espeak-ng": "^1.0.2",
     "jsdom": "^29.1.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

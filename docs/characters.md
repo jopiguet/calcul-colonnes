@@ -23,6 +23,7 @@ the **Malayalam letters** (96 cards, see
 [Language courses](language-courses.md#letter-cards)). It is asked like the
 kana, with "Which letter?" and "The sound, in Latin letters" for wording;
 characters are *met* in the started words of any book in the same language.
+Once a Malayalam letter card is answered, a ▶ says the letter ([Sounds](sounds.md)).
 
 ## What is asked
 

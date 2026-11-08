@@ -53,7 +53,7 @@ export interface ExerciseState {
 export type PublicLessonPart = Exclude<LessonPart, { kind: "exercise" }> | { kind: "exercise"; exercise: PublicExercise };
 
 export interface LessonView {
-  course: { id: string; title: string; language: string; icon: string; vocabBook: string | null; keys: string[] };
+  course: { id: string; title: string; language: string; icon: string; vocabBook: string | null; keys: string[]; sounds: boolean };
   lesson: {
     n: number;
     slug: string;
@@ -66,3 +66,6 @@ export interface LessonView {
   next: { slug: string; n: number; title: string } | null;
   exercises: Record<string, ExerciseState>;
 }
+
+/** A course's sounds (docs/sounds.md), GET /api/courses/:id/sounds: a word as written → its file, and how it reads. */
+export type CourseSounds = Record<string, { file: string; reading?: string }>;
