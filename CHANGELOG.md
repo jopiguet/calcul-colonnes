@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.1.1
+
+- **A test's settings on a computer** fit the screen's height again with room to spare: the topics a little tighter in the two-column layout (row gaps and padding), the 1.5rem side padding of 8.1.0 dropped. `quiz.spec.ts` "on a large screen" failed in CI, where the fonts render a few pixels taller: the page now ends about 50 px above 900 instead of 6.
+
 ## 8.1.0
 
 - **Tablet and computer** (docs/development.md#screen-sizes): the screens that were a phone's column everywhere — a question, the columns, a vocabulary card, the labs, settings — are 40rem wide on an upright tablet and 44rem on a tablet on its side or a computer; the labs' pictures (Mandelbrot, orbits, curves) grow with them. Phones are unchanged.

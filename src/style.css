@@ -96,7 +96,6 @@ h3 {
 @media (min-width: 48rem) {
   #app {
     max-width: 40rem;
-    padding-inline: 1.5rem;
   }
 }
 @media (min-width: 64rem) {
@@ -665,6 +664,11 @@ button.segment.on {
     top: 1rem;
   }
 
+  /* A computer screen's height holds the whole: the topics a little tighter than on a phone. */
+  .quiz-setup-what {
+    gap: 1rem;
+  }
+
   /* The topics in two columns, a group never split. */
   .quiz-setup .topics {
     display: block;
@@ -674,11 +678,15 @@ button.segment.on {
 
   .quiz-setup .topic-group {
     break-inside: avoid;
-    margin: 0 0 0.9rem;
+    margin: 0 0 0.7rem;
   }
 
   .quiz-setup .topic {
-    padding: 0.45rem 0.7rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .quiz-setup .topic-group {
+    gap: 0.3rem;
   }
 }
 

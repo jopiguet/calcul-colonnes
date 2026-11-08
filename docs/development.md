@@ -309,7 +309,7 @@ The phone is the reference: every screen is first a single column of at most 32r
 | Width | Default screens (a question, the columns, a vocabulary card, a lab, settings) | Screens with a layout of their own |
 |---|---|---|
 | under 48rem (phone) | 32rem | the same single column |
-| 48rem (tablet upright) | 40rem, wider side padding | still one column |
+| 48rem (tablet upright) | 40rem | still one column |
 | 52rem | | a test's settings in two columns (60rem); a book's page in two columns: reviews and settings in a sticky column of 19rem, the lessons beside (60rem) |
 | 64rem (tablet on its side, computer) | 44rem | home and progress overview 72rem, workbook 60rem, lessons 52rem, logic grids 60rem |
 

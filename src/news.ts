@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.1.1",
+    fr: ["Sur ordinateur, les réglages d'un test tiennent à nouveau dans la hauteur de l'écran."],
+    es: ["En el ordenador, los ajustes de un test vuelven a caber en la altura de la pantalla."],
+    en: ["On a computer, a test's settings fit the screen's height again."],
+  },
+  {
     version: "8.1.0",
     fr: ["Sur tablette et ordinateur, les écrans prennent plus de place : questions, cartes, labos et leurs images.", "La page d'un livre de vocabulaire sur grand écran : les révisions et les réglages à gauche, les leçons à droite.", "Les signes des tableaux des leçons (hiéroglyphes, cunéiformes) sont plus grands. Sur téléphone, rien ne change."],
     es: ["En tableta y ordenador, las pantallas ocupan más espacio: preguntas, tarjetas, laboratorios y sus imágenes.", "La página de un libro de vocabulario en pantalla grande: los repasos y los ajustes a la izquierda, las lecciones a la derecha.", "Los signos de las tablas de las lecciones (jeroglíficos, cuneiformes) son más grandes. En el móvil, nada cambia."],
