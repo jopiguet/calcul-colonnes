@@ -24,10 +24,10 @@ test("the home page uses a wide screen: one group per row, its cards on one line
   await noSidewaysScroll(page, 360);
   const line = page.locator(".activity-group[data-group='computing'] .activity-grid");
   expect(await line.evaluate((g) => g.scrollWidth > g.clientWidth)).toBe(true);
-  // Other pages keep the narrow column.
+  // Other pages keep a reading column (44rem on a computer), far from the home page's 72rem.
   await openActivity(page, "columns");
   await page.setViewportSize({ width: 1400, height: 900 });
-  expect(await page.locator("#app").evaluate((a) => a.getBoundingClientRect().width)).toBeLessThan(600);
+  expect(await page.locator("#app").evaluate((a) => a.getBoundingClientRect().width)).toBeLessThan(760);
 });
 
 test("progress: an overview of every activity, each activity's own page inside it", async ({ page }) => {

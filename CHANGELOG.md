@@ -1,5 +1,12 @@
 # Changelog
 
+## 8.1.0
+
+- **Tablet and computer** (docs/development.md#screen-sizes): the screens that were a phone's column everywhere — a question, the columns, a vocabulary card, the labs, settings — are 40rem wide on an upright tablet and 44rem on a tablet on its side or a computer; the labs' pictures (Mandelbrot, orbits, curves) grow with them. Phones are unchanged.
+- **A book's page on a large screen:** the reviews and the session settings in a sticky column on the left, the lessons beside them, as a test's settings already were. On a phone, the same order as before.
+- **Signs in the lessons' tables** (hieroglyphs, cuneiform) larger: the sign is what the row is about.
+- `tests/e2e/screens.spec.ts`: the layout on a computer, an upright tablet and a phone.
+
 ## 8.0.1
 
 - **iPhone, a test's levels:** Safari does not lay out a `fieldset` as a grid, so the four level buttons grew several times their height and covered the topics. The buttons now sit in their own grid (`.levels-grid`) inside the fieldset.

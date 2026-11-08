@@ -89,7 +89,7 @@ test("going home, the screen being left keeps its width until the home page is r
   await newPlayer(page, "Wid2");
   await openActivity(page, "discover-pendulum");
   const width = (): Promise<number> => page.locator("#app").evaluate((a) => a.getBoundingClientRect().width);
-  expect(await width()).toBeLessThan(600);
+  expect(await width()).toBeLessThan(760);
   // The home page waits for its data: meanwhile the lab must not be stretched.
   let release: () => void = () => undefined;
   const held = new Promise<void>((resolve) => (release = resolve));
@@ -100,7 +100,7 @@ test("going home, the screen being left keeps its width until the home page is r
   await page.locator(".activity-bar button").first().click();
   await page.waitForTimeout(300);
   await expect(page.locator(".discover-lab")).toBeVisible();
-  expect(await width()).toBeLessThan(600);
+  expect(await width()).toBeLessThan(760);
   release();
   await page.locator(".home").waitFor();
   expect(await width()).toBeGreaterThan(1000);

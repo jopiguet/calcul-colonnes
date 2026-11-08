@@ -252,6 +252,7 @@ server; each signs up its own account.
 | `progress.spec.ts` | Mistakes coming back in the next test; progress page against the API; mistake recorded for each wrong answer and shown |
 | `languages.spec.ts` | Every screen in French, Spanish and English with no missing text, vocabulary included; language of the landing page on a first visit |
 | `characters.spec.ts` | The Characters book: kana by their sound, a kanji's meaning and readings; characters met in the player's words first |
+| `screens.spec.ts` | Computer, upright tablet and phone: a book's page in two columns or one, the width of a question, nothing wider than a phone's screen |
 | `overview.spec.ts` | The home page on a wide screen and a phone; the progress overview; a lesson's words, skipped and put back |
 | `family.spec.ts` | The owner's invitations and what other accounts see; a member's feedback, export and deletion; the owner's account kept; privacy page, never indexed |
 | `sharing.spec.ts` | The activities a player sees; a player shared with another account by a single-use code |
@@ -300,3 +301,16 @@ Then start the new version once on a **copy** of the production database.
 Check that the migrations and the backfills run cleanly and that the scores
 are unchanged. Bump `version` in `package.json` and add an entry to
 `CHANGELOG.md`.
+
+## Screen sizes
+
+The phone is the reference: every screen is first a single column of at most 32rem. Wider screens only add room, in `src/style.css`:
+
+| Width | Default screens (a question, the columns, a vocabulary card, a lab, settings) | Screens with a layout of their own |
+|---|---|---|
+| under 48rem (phone) | 32rem | the same single column |
+| 48rem (tablet upright) | 40rem, wider side padding | still one column |
+| 52rem | | a test's settings in two columns (60rem); a book's page in two columns: reviews and settings in a sticky column of 19rem, the lessons beside (60rem) |
+| 64rem (tablet on its side, computer) | 44rem | home and progress overview 72rem, workbook 60rem, lessons 52rem, logic grids 60rem |
+
+Media queries use `rem` of the browser's default size, so a user's larger text setting moves the breakpoints with it. A layout that differs on a phone keeps the phone's order in the DOM (`display: contents` for the wrappers, as `.vocab-home-side` and `.quiz-setup-what`), so a screen reader and the keyboard meet the same order everywhere.

@@ -354,9 +354,12 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   if (progress.today.answers > 0) due.append(el("p", "hint", vt("today", progress.today)));
   // Characters met in the player's words: they come first among the new ones.
   if (mine.met) due.append(el("p", "hint vocab-met-count", mine.met === 1 ? vt("metOne") : vt("metMany", { count: mine.met })));
-  wrap.append(due);
+  // The reviews and the settings: a column of their own beside the lessons on a large screen, above them on a phone.
+  const side = el("div", "vocab-home-side");
+  wrap.append(side);
+  side.append(due);
 
-  wrap.append(...sessionSettings(ctx));
+  side.append(...sessionSettings(ctx));
 
 
   // Which new words come first.
@@ -372,7 +375,7 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
     option.setAttribute("aria-pressed", String(on));
     order.append(option);
   }
-  wrap.append(order);
+  side.append(order);
 
   // Japanese: rōmaji with the question, or only once answered.
   // Arabic, Chinese, cuneiform, hieroglyphs: the transliteration, the same choice.
@@ -390,7 +393,7 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       option.setAttribute("aria-pressed", String(on));
       romaji.append(option);
     }
-    wrap.append(romaji, el("p", "hint left", vt(arabic ? "transcriptionHint" : "romajiHint")));
+    side.append(romaji, el("p", "hint left", vt(arabic ? "transcriptionHint" : "romajiHint")));
   }
 
   // Picture dictionary: the picture with its word, or alone (a diagram's part, a picture of its own).
@@ -407,7 +410,7 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       option.setAttribute("aria-pressed", String(on));
       pictures.append(option);
     }
-    wrap.append(pictures, el("p", "hint left", vt("picturesHint")));
+    side.append(pictures, el("p", "hint left", vt("picturesHint")));
   }
 
   // Lessons, one open at a time.

@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.1.0",
+    fr: ["Sur tablette et ordinateur, les écrans prennent plus de place : questions, cartes, labos et leurs images.", "La page d'un livre de vocabulaire sur grand écran : les révisions et les réglages à gauche, les leçons à droite.", "Les signes des tableaux des leçons (hiéroglyphes, cunéiformes) sont plus grands. Sur téléphone, rien ne change."],
+    es: ["En tableta y ordenador, las pantallas ocupan más espacio: preguntas, tarjetas, laboratorios y sus imágenes.", "La página de un libro de vocabulario en pantalla grande: los repasos y los ajustes a la izquierda, las lecciones a la derecha.", "Los signos de las tablas de las lecciones (jeroglíficos, cuneiformes) son más grandes. En el móvil, nada cambia."],
+    en: ["On a tablet or a computer, the screens use more room: questions, cards, labs and their pictures.", "A vocabulary book's page on a large screen: reviews and settings on the left, the lessons on the right.", "The signs in the lessons' tables (hieroglyphs, cuneiform) are larger. On a phone, nothing changes."],
+  },
+  {
     version: "8.0.1",
     fr: ["Sur iPhone : les niveaux d'un test gardent leur taille, et les cartes d'une section sur une ligne ne sont plus coupées en bas."],
     es: ["En iPhone: los niveles de un test conservan su tamaño, y las tarjetas de una sección en una línea ya no se cortan por abajo."],

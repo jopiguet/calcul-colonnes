@@ -91,6 +91,20 @@ h3 {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
+/* A tablet, then a computer: the screens that are one column on a phone get wider, never the phone's own layout.
+   Screens with a layout of their own (home, lessons, workbooks, a test's settings, a book's page) set theirs below. */
+@media (min-width: 48rem) {
+  #app {
+    max-width: 40rem;
+    padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 64rem) {
+  #app {
+    max-width: 44rem;
+  }
+}
+
 .bar {
   display: flex;
   align-items: center;
@@ -1717,6 +1731,38 @@ a:focus-visible {
 .vocab-home > .title,
 .vocab-done > .title {
   text-align: center;
+}
+
+/* A book's page: on a phone, the reviews and settings above the lessons; on a large screen, beside them. */
+.vocab-home-side {
+  display: contents;
+}
+@media (min-width: 52rem) {
+  #app:has(.vocab-home:not(.vocab-shelf)) {
+    max-width: 60rem;
+  }
+  .vocab-home:not(.vocab-shelf) {
+    display: grid;
+    grid-template-columns: 19rem minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem 2rem;
+  }
+  .vocab-home:not(.vocab-shelf) > :not(.vocab-home-side, .vocab-lessons) {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+  .vocab-home-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 1rem;
+    min-width: 0;
+  }
+  .vocab-home:not(.vocab-shelf) > .vocab-lessons {
+    grid-column: 2;
+    min-width: 0;
+  }
 }
 
 .vocab-due {
@@ -6976,6 +7022,10 @@ button.tiny {
   line-height: 1;
   vertical-align: -0.15em;
   letter-spacing: 0.02em;
+}
+/* In a table (the signs of a lesson), larger still: a sign is what the row is about. */
+.course-table .script-signs {
+  font-size: 2.1em;
 }
 .script-signs.hiero {
   font-family: "Noto Sans Egyptian Hieroglyphs", var(--font);
