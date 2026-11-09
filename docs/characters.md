@@ -54,7 +54,7 @@ Once a Malayalam letter card is answered, a ▶ says the letter ([Sounds](sounds
 The Characters book and the Japanese word books (such as *Japanese vocabulary for English speakers*) feed each other:
 
 - **Characters met in your words come first.** Once you have started a word in a Japanese word book, the kana and kanji it uses are *met*. They make up to half the new characters of a session (four of eight); the rest follow the book (or the draw, in random order), so the book goes on too. The Characters home screen says how many are waiting, and their cards carry the badge *seen in your words*.
-- **A character shows your words.** After a character's card: up to three words you have started that use it, with their rōmaji and meaning.
+- **A character shows your words.** After a character's card: up to three words you have started that use it, with their rōmaji and meaning; the rōmaji goes when the book's *Rōmaji* setting is *Jamais* ([Vocabulary › The reading in Latin letters](vocabulary.md#the-reading-in-latin-letters)).
 - **A word shows its kanji.** After a word's card in a Japanese word book: its kanji with their meanings. The ones you have not started yet are highlighted.
 
 So a word learnt in the vocabulary pulls its characters forward, and the school order fills in the rest.

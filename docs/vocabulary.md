@@ -752,7 +752,7 @@ from the next answer, and existing boxes stay as they are.
 
 ## The reading in Latin letters
 
-Every book whose entries have a `reading` (Japanese rōmaji, the transliteration of Arabic, Hebrew, Persian, Greek, Malayalam, Egyptian, Sumerian) offers the same setting on its page, *Rōmaji* for Japanese, *Transcription* for the others:
+Every book whose entries have a `reading`, and every book of characters, (Japanese rōmaji, the transliteration of Arabic, Hebrew, Persian, Greek, Malayalam, Egyptian, Sumerian) offers the same setting on its page, *Rōmaji* for Japanese, *Transcription* for the others:
 
 | Choice | On the card | In the book's word list |
 |---|---|---|
@@ -762,4 +762,4 @@ Every book whose entries have a `reading` (Japanese rōmaji, the transliteration
 
 **One choice for every book, or a book's own.** Under the choice, *Le même choix dans tous les livres* is ticked by default: the choice is then the one common to every book of every language, and changing it here changes it everywhere. Untick it and the book keeps its own choice, whatever the others do; tick it again and the book follows the common choice. A language's shelf shows the common choice (a shelf session mixes books, and follows it).
 
-The choice is remembered by the browser (`localStorage`, `calcul-colonnes.vocab`: `romajiAll`, and `romaji` per book id). A reading typed as an answer stays right whatever the choice. Letter and kanji cards (books of kind *characters*) are not concerned: their sound is the answer. A book's API listing gives `readings`, the number of its entries with a reading; the setting is offered when it is above 0.
+The choice is remembered by the browser (`localStorage`, `calcul-colonnes.vocab`: `romajiAll`, and `romaji` per book id). A reading typed as an answer stays right whatever the choice. In a book of kind *characters* (kana, kanji, a course's letters) the setting concerns the player's words shown under a character once answered (*in your words*: the word, its reading, its meaning); a kana's or a letter's sound stays, since it is the answer. *Toujours* and *Après la réponse* are the same there: those words only come with the answer. A book's API listing gives `readings`, the number of its entries with a reading; the setting is offered when it is above 0.

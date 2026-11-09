@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.2.1
+
+- **Books of characters** (kana and kanji, a course's letters) get the rōmaji setting too: *Jamais* takes the reading off the player's words shown under a character once answered. A kana's or a letter's sound is the answer and stays. The setting follows the common choice like the other books, or the book's own.
+- `characters.spec.ts`: the setting offered on the Characters book; with *Jamais*, 学校 under 校 without *gakkō*.
+
 ## 8.2.0
 
 - **The reading in Latin letters can be switched off** ([Vocabulary › The reading in Latin letters](docs/vocabulary.md#the-reading-in-latin-letters)): rōmaji and transliterations get a third choice, *Jamais*, beside *Toujours* and *Après la réponse*: nothing under the word, under the options, in the verdict or in the book's word list.

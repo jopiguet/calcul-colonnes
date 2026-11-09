@@ -266,7 +266,7 @@ function readingControl(ctx: VocabContext, book: VocabBookInfo | null, japanese:
     every.append(tick, document.createTextNode(` ${vt("romajiEvery")}`));
     out.push(every);
   }
-  out.push(el("p", "hint left", vt(book ? (japanese ? "romajiHint" : "transcriptionHint") : "romajiShelfHint")));
+  out.push(el("p", "hint left", vt(!book ? "romajiShelfHint" : book.kind === "characters" ? "romajiCharactersHint" : japanese ? "romajiHint" : "transcriptionHint")));
   return out;
 }
 
@@ -421,7 +421,8 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   side.append(order);
 
   // The reading in Latin letters (rōmaji, a transliteration): with the question, once answered, or never.
-  if (book.readings > 0 && book.kind !== "characters") side.append(...readingControl(ctx, book, book.term === "ja"));
+  // A book of characters: its words' readings, shown under a character once answered (a kana's sound stays: it is the answer).
+  if (book.readings > 0 || book.kind === "characters") side.append(...readingControl(ctx, book, book.term === "ja"));
 
   // Picture dictionary: the picture with its word, or alone (a diagram's part, a picture of its own).
   if (book.pictures > 0) {
@@ -610,7 +611,7 @@ async function shelfView(ctx: VocabContext): Promise<HTMLElement> {
   wrap.append(order);
 
   // The reading in Latin letters, for every book (a shelf session mixes them).
-  if (shelf.books.some((b) => b.readings > 0 && b.kind !== "characters")) wrap.append(...readingControl(ctx, null, shelf.lang === "ja"));
+  if (shelf.books.some((b) => b.readings > 0 || b.kind === "characters")) wrap.append(...readingControl(ctx, null, shelf.lang === "ja"));
 
   // The home page: one card for the shelf, or one per book.
   const home = el("fieldset", "segmented vocab-shelf-home");
@@ -840,7 +841,7 @@ function infoFacts(info: EntryInfo): HTMLElement {
 }
 
 /** Words of the player that use this character, or a word's kanji. */
-function related(title: string, items: VocabRelated[], kind: "words" | "kanji"): HTMLElement {
+function related(title: string, items: VocabRelated[], kind: "words" | "kanji", showReading = true): HTMLElement {
   const box = el("span", `vocab-related is-${kind}`);
   box.append(el("span", "vocab-related-title", title));
   const list = el("span", "vocab-related-list");
@@ -849,8 +850,8 @@ function related(title: string, items: VocabRelated[], kind: "words" | "kanji"):
     const term = el("span", "vocab-related-term", item.term);
     term.lang = "ja";
     one.append(term);
-    // A word: its rōmaji; a kanji: no readings here, they come with its own card.
-    if (kind === "words" && item.reading) one.append(el("span", "vocab-related-reading", item.reading));
+    // A word: its rōmaji (unless the player chose never); a kanji: no readings here, they come with its own card.
+    if (kind === "words" && item.reading && showReading) one.append(el("span", "vocab-related-reading", item.reading));
     one.append(el("span", "vocab-related-meaning", item.meaning));
     list.append(one);
   }
@@ -1086,7 +1087,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
         if (item) slot.append(soundButton(course, letter, item));
       });
     }
-    if (r.inWords?.length) feedback.append(related(vt("inYourWords"), r.inWords, "words"));
+    if (r.inWords?.length) feedback.append(related(vt("inYourWords"), r.inWords, "words", reads !== "never"));
     if (r.characters?.length) feedback.append(related(vt("itsKanji"), r.characters, "kanji"));
     feedback.append(el("span", "vocab-when", r.correct ? whenBack(r) : vt("again")));
   }

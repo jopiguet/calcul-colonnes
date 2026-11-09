@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.2.1",
+    fr: ["Le réglage du rōmaji vaut aussi pour les kanji et kana : « Jamais » retire la lecture de tes mots montrés sous un caractère. Le son d'un kana reste : c'est la réponse."],
+    es: ["El ajuste del rōmaji vale también para los kanji y kana: «Nunca» quita la lectura de tus palabras mostradas bajo un carácter. El sonido de un kana se queda: es la respuesta."],
+    en: ["The rōmaji setting applies to kanji and kana too: “Never” takes the reading off your words shown under a character. A kana's sound stays: it is the answer."],
+  },
+  {
     version: "8.2.0",
     fr: ["Le rōmaji et les translittérations peuvent être masqués : nouveau choix « Jamais », sur les cartes comme dans la liste des mots.", "Le choix vaut pour tous les livres de toutes les langues, ou pour un seul livre : « Le même choix dans tous les livres »."],
     es: ["El rōmaji y las transliteraciones pueden ocultarse: nueva opción «Nunca», en las tarjetas y en la lista de palabras.", "La elección vale para todos los libros de todas las lenguas, o para un solo libro: «La misma elección en todos los libros»."],

@@ -30,8 +30,9 @@ test("the Characters book: kana by their sound, a kanji's meaning in French, its
   await expect(page.locator(".vocab-home h1")).toHaveText("Kanji et kana");
   await expect(page.locator(".vocab-source")).toContainText("17 caractères");
   await expect(page.locator(".vocab-credit")).toHaveText("Written for the tests.");
-  // Rōmaji is part of the answer here: not a setting.
-  await expect(page.locator(".vocab-romaji")).toHaveCount(0);
+  // The rōmaji setting is offered (for the player's words under a kanji); a kana's sound is the answer and stays.
+  await expect(page.locator(".vocab-romaji legend")).toHaveText("Rōmaji");
+  await expect(page.locator(".vocab-romaji + .vocab-romaji-every + .hint")).toContainText("Le son d'un kana ou d'une lettre reste");
 
   // A kana: shown large, its sound chosen.
   const lesson = page.locator(".vocab-lesson").first();
@@ -129,6 +130,35 @@ test("characters met in the player's words come first, and each book shows the o
       // The player's own word with it, with its rōmaji and meaning.
       await expect(page.locator(".vocab-related.is-words")).toContainText("学校");
       await expect(page.locator(".vocab-related.is-words")).toContainText("gakkō");
+      return;
+    }
+    await page.keyboard.press("Enter");
+  }
+  throw new Error("校 was not among the new characters");
+});
+
+test("the Characters book with rōmaji set to never: the player's words under a kanji without it", async ({ page }) => {
+  const name = await newPlayer(page, "Nor");
+  const user = await userByName(page.request, name);
+  const words = await bookOf(page, "test-japanese");
+  const school = (await cardsOf(page, `userId=${user.id}&kind=lesson&id=${words.lessons[1]!.id}&purpose=learn&size=20&mode=choice`)).find(
+    (c) => c.prompt === "学校",
+  )!;
+  await answer(page, { userId: user.id, entryId: school.entryId, direction: "recognise", mode: "choice", given: "school", lang: "fr" });
+
+  await openActivity(page, "vocab-test-characters");
+  await page.click(".vocab-romaji >> text=Jamais");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
+  await page.click("text=Apprendre dans tout le livre");
+  await page.locator(".vocab-card").waitFor();
+  for (let i = 0; i < 8; i++) {
+    const met = (await page.locator(".vocab-prompt").innerText()) === "校";
+    await page.locator(".choice").first().click();
+    await expect(page.locator(".vocab-verdict")).toBeVisible();
+    if (met) {
+      await expect(page.locator(".vocab-related.is-words")).toContainText("学校");
+      await expect(page.locator(".vocab-related.is-words")).not.toContainText("gakkō");
+      await expect(page.locator(".vocab-related-reading")).toHaveCount(0);
       return;
     }
     await page.keyboard.press("Enter");
