@@ -750,7 +750,7 @@ card for them, *📚 Vocabulaire allemand*. Its page has:
 - **Nouveaux mots:** *Au hasard* or *Dans l'ordre du livre*. For the English word list, random is the default, so a child doesn't learn every word in *a* first.
 - **Apprendre au hasard dans tout le livre:** a learning session whose new words come from anywhere in the book.
 - **Questions:** *Mélangé* (multiple choice for new words, written answers once they are known), *Choix multiples* or *Écrit*. Mixed suits most children.
-- **Rōmaji** (Japanese only): *Toujours* shows the rōmaji under the Japanese during the question; *Après la réponse* shows the Japanese alone, and the rōmaji once answered. The second is the step towards reading kana. Remembered per book.
+- **Rōmaji / Transcription** (every book whose words have a reading in Latin letters: Japanese, Arabic, Hebrew, Persian, Greek, Malayalam, Egyptian, Sumerian): *Toujours* shows it under the word during the question; *Après la réponse* shows the script alone, and the reading once answered, the step towards reading the script; *Jamais* never shows it, on the cards or in the word list. With *Le même choix dans tous les livres* ticked (the default), the choice applies to every book of every language at once; untick it to give a book its own. A language's shelf page sets the common choice. See [Vocabulary › The reading in Latin letters](vocabulary.md#the-reading-in-latin-letters).
 - **Lessons:** click one to see its sections. Each section shows its number of words, how many are due, and a bar that fills as its words are learnt, then known, then mastered. 
   - *Apprendre* starts a section, *Continuer* goes on with it: words due, then up to 8 new ones.
   - *Réviser* goes back over the section's words already learnt, without new ones.

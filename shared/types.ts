@@ -252,6 +252,8 @@ export interface VocabBookInfo {
   entries: number;
   /** Entries with a picture (a picture dictionary), 0 for most books. */
   pictures: number;
+  /** Entries with a reading in Latin letters (rōmaji, a transliteration), 0 for a book in Latin letters. */
+  readings: number;
   lessons: VocabLessonInfo[];
 }
 

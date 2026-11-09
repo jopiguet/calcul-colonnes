@@ -499,7 +499,7 @@ meaning in `lang` when the book has it. `404` for an unknown lesson.
 ```
 
 `status` is `new`, `learning`, `known` or `mastered`; `reading` is the
-rōmaji or transliteration, or a kanji's readings.
+rōmaji or transliteration, or a kanji's readings. A book's listing gives `readings`: its entries with a reading in Latin letters.
 
 ### `PUT /api/vocab/skips`
 

@@ -462,7 +462,8 @@ export class VocabStore {
     const lessons = await this.db.query("SELECT id, book_id, title, subtitle FROM vocab_lessons ORDER BY position");
     const sections = await this.db.query(
       `SELECT s.id, s.lesson_id, s.title, s.subtitle, COUNT(e.id) AS entries,
-              SUM(CASE WHEN e.image <> '' THEN 1 ELSE 0 END) AS pictures
+              SUM(CASE WHEN e.image <> '' THEN 1 ELSE 0 END) AS pictures,
+              SUM(CASE WHEN e.reading <> '' THEN 1 ELSE 0 END) AS readings
          FROM vocab_sections s LEFT JOIN vocab_entries e ON e.section_id = s.id
         GROUP BY s.id, s.lesson_id, s.title, s.subtitle, s.position
         ORDER BY s.position`,
@@ -477,7 +478,7 @@ export class VocabStore {
             subtitle: String(l.subtitle ?? ""),
             sections: sections
               .filter((s) => n(s.lesson_id) === n(l.id))
-              .map((s) => ({ id: n(s.id), title: String(s.title), subtitle: String(s.subtitle ?? ""), entries: n(s.entries), pictures: n(s.pictures ?? 0) })),
+              .map((s) => ({ id: n(s.id), title: String(s.title), subtitle: String(s.subtitle ?? ""), entries: n(s.entries), pictures: n(s.pictures ?? 0), readings: n(s.readings ?? 0) })),
           }));
         return {
           id: n(b.id),
@@ -491,7 +492,8 @@ export class VocabStore {
           visibility: (b.visibility === "shared" ? "shared" : "private") as VocabBookInfo["visibility"],
           entries: own.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.entries, 0), 0),
           pictures: own.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.pictures, 0), 0),
-          lessons: own.map((l) => ({ ...l, sections: l.sections.map(({ pictures: _, ...s }) => s) })),
+          readings: own.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.readings, 0), 0),
+          lessons: own.map((l) => ({ ...l, sections: l.sections.map(({ pictures: _p, readings: _r, ...s }) => s) })),
         };
       })
       .filter((b) => b.entries > 0);

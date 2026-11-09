@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.2.0
+
+- **The reading in Latin letters can be switched off** ([Vocabulary › The reading in Latin letters](docs/vocabulary.md#the-reading-in-latin-letters)): rōmaji and transliterations get a third choice, *Jamais*, beside *Toujours* and *Après la réponse*: nothing under the word, under the options, in the verdict or in the book's word list.
+- **For every book at once, or one book:** the setting is common to every book of every language (*Le même choix dans tous les livres*, ticked by default); unticked, a book keeps its own. A language's shelf page shows and sets the common choice, which its mixed sessions follow (before, they always showed the reading).
+- **Offered wherever there is a reading:** every book with entries that have one (the words of the Arabic, Hebrew, Persian, Greek, Malayalam, Egyptian and Sumerian courses among them), not only the script languages listed before. The book listing gives `readings`, the number of such entries.
+- Letter and kanji cards are unchanged: their sound is what is asked.
+- `vocab.spec.ts`: never shown on a Japanese card, the common choice followed by another book, a book's own choice kept, the shelf setting it.
+
 ## 8.1.1
 
 - **A test's settings on a computer** fit the screen's height again with room to spare: the topics a little tighter in the two-column layout (row gaps and padding), the 1.5rem side padding of 8.1.0 dropped. `quiz.spec.ts` "on a large screen" failed in CI, where the fonts render a few pixels taller: the page now ends about 50 px above 900 instead of 6.

@@ -255,7 +255,8 @@ themes (*to pay* in shopping and in banking); each is its own entry.
 **The rōmaji** is shown in italics under the Japanese, on the card and under
 each option of a multiple-choice answer: the book is for learners who do not
 read kana yet. The *Rōmaji* setting of the book's page can hold it back until
-the answer (*Après la réponse*), to practise reading kana. When the Japanese is to be written, any of these is right:
+the answer (*Après la réponse*), to practise reading kana, or never show it
+(*Jamais*). See [The reading in Latin letters](#the-reading-in-latin-letters). When the Japanese is to be written, any of these is right:
 
 | Typed | For 学校 (*gakkō*) |
 |---|---|
@@ -748,3 +749,17 @@ directions.
 To change the intervals, the number of new words per session or when written
 answers start, edit the constants in `shared/vocab/schedule.ts`. They apply
 from the next answer, and existing boxes stay as they are.
+
+## The reading in Latin letters
+
+Every book whose entries have a `reading` (Japanese rōmaji, the transliteration of Arabic, Hebrew, Persian, Greek, Malayalam, Egyptian, Sumerian) offers the same setting on its page, *Rōmaji* for Japanese, *Transcription* for the others:
+
+| Choice | On the card | In the book's word list |
+|---|---|---|
+| *Toujours* (default) | under the word shown, under each option | shown |
+| *Après la réponse* | once answered | shown |
+| *Jamais* | not at all, the verdict included | hidden |
+
+**One choice for every book, or a book's own.** Under the choice, *Le même choix dans tous les livres* is ticked by default: the choice is then the one common to every book of every language, and changing it here changes it everywhere. Untick it and the book keeps its own choice, whatever the others do; tick it again and the book follows the common choice. A language's shelf shows the common choice (a shelf session mixes books, and follows it).
+
+The choice is remembered by the browser (`localStorage`, `calcul-colonnes.vocab`: `romajiAll`, and `romaji` per book id). A reading typed as an answer stays right whatever the choice. Letter and kanji cards (books of kind *characters*) are not concerned: their sound is the answer. A book's API listing gives `readings`, the number of its entries with a reading; the setting is offered when it is above 0.

@@ -376,6 +376,42 @@ test("the Japanese book: rōmaji can wait until the answer", async ({ page }) =>
   await expect(page.locator(".vocab-reading")).toHaveCount(1);
 });
 
+test("the reading in Latin letters: never, the same choice in every book, or a book's own", async ({ page }) => {
+  await newPlayer(page, "Nev");
+  await openActivity(page, "vocab-test-japanese");
+  await expect(page.locator(".vocab-romaji-every input")).toBeChecked();
+  await page.click(".vocab-romaji >> text=Jamais");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
+  await startFirstSection(page);
+  await expect(page.locator(".vocab-prompt")).toHaveAttribute("lang", "ja");
+  await page.locator(".choice").first().click();
+  await page.locator(".vocab-verdict").waitFor();
+  await expect(page.locator(".vocab-reading, .choice-reading, .vocab-verdict-reading")).toHaveCount(0);
+  await page.click("text=Arrêter");
+
+  // Another book follows the common choice; given its own, it leaves the Japanese book at "never".
+  await openActivity(page, "vocab-test-arabic");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
+  await page.locator(".vocab-romaji-every input").uncheck();
+  await page.click(".vocab-romaji >> text=Toujours");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Toujours");
+  await openActivity(page, "vocab-test-japanese");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
+
+  // The language's shelf (the Arabic book and the Arabic course's words) shows and sets the common choice.
+  await openActivity(page, "vocab-shelf-ar");
+  await expect(page.locator(".vocab-shelf .vocab-romaji .segment.on")).toHaveText("Jamais");
+  await expect(page.locator(".vocab-shelf .vocab-romaji-every")).toHaveCount(0);
+  await page.click(".vocab-shelf .vocab-romaji >> text=Après la réponse");
+  // The Japanese book follows; the Arabic book keeps its own choice until it follows again.
+  await openActivity(page, "vocab-test-japanese");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Après la réponse");
+  await openActivity(page, "vocab-test-arabic");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Toujours");
+  await page.locator(".vocab-romaji-every input").check();
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Après la réponse");
+});
+
 test("statistics: words seen, the last 30 days, what comes back, the hardest words", async ({ page }) => {
   const name = await newPlayer(page, "Sta");
   const user = await userByName(page.request, name);

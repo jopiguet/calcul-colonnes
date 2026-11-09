@@ -36,8 +36,10 @@ interface Preferences {
   open: number | null;
   /** Order of new words, per book id; absent: random for an alphabetical list, the book's order otherwise. */
   order: Record<number, "book" | "random">;
-  /** Japanese rōmaji, per book id: shown with the question, or only after the answer. */
-  romaji: Record<number, "always" | "after">;
+  /** The reading in Latin letters (rōmaji, a transliteration) in every book: with the question, after the answer, never. */
+  romajiAll: ReadingMode;
+  /** The same, for a book that does not follow romajiAll (per book id). */
+  romaji: Record<number, ReadingMode>;
   /** Picture dictionary, per book id: the picture with its word, or the picture alone when it says which word. */
   pictures: Record<number, "with" | "alone">;
   /** Per shelf (language studied): books left out of its sessions, its cards apart on the home page, order of new words. */
@@ -51,6 +53,10 @@ interface ShelfPreferences {
   apart: boolean;
   order?: "book" | "random";
 }
+
+type ReadingMode = "always" | "after" | "never";
+const READING_MODES: readonly ReadingMode[] = ["always", "after", "never"];
+const isReadingMode = (v: unknown): v is ReadingMode => READING_MODES.includes(v as ReadingMode);
 
 const PREFERENCES_KEY = "calcul-colonnes.vocab";
 const SIZES = [15, 30, 50];
@@ -67,10 +73,9 @@ function loadPreferences(): Preferences {
           ([, v]) => v === "book" || v === "random",
         ),
       ) as Preferences["order"],
+      romajiAll: isReadingMode(saved.romajiAll) ? saved.romajiAll : "always",
       romaji: Object.fromEntries(
-        Object.entries(typeof saved.romaji === "object" && saved.romaji ? saved.romaji : {}).filter(
-          ([, v]) => v === "always" || v === "after",
-        ),
+        Object.entries(typeof saved.romaji === "object" && saved.romaji ? saved.romaji : {}).filter(([, v]) => isReadingMode(v)),
       ) as Preferences["romaji"],
       pictures: Object.fromEntries(
         Object.entries(typeof saved.pictures === "object" && saved.pictures ? saved.pictures : {}).filter(
@@ -89,7 +94,7 @@ function loadPreferences(): Preferences {
       ),
     };
   } catch {
-    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romaji: {}, pictures: {}, shelves: {} };
+    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romajiAll: "always", romaji: {}, pictures: {}, shelves: {} };
   }
 }
 
@@ -225,7 +230,45 @@ export function vocabBusy(): boolean {
 
 /** Japanese rōmaji with the question, or only after the answer. */
 const picturesAlone = (book: VocabBookInfo | null): boolean => book !== null && prefs.pictures[book.id] === "alone";
-const romajiAlways = (book: VocabBookInfo | null): boolean => !book || (prefs.romaji[book.id] ?? "always") === "always";
+/** The reading in Latin letters: the book's own choice, else the one for every book (a shelf session follows that one). */
+const readingMode = (book: VocabBookInfo | null): ReadingMode => (book ? prefs.romaji[book.id] : undefined) ?? prefs.romajiAll;
+
+/** The choice of the reading: for a book (with "in every book" ticked, it follows and sets the common choice), or for a shelf (the common one). */
+function readingControl(ctx: VocabContext, book: VocabBookInfo | null, japanese: boolean): HTMLElement[] {
+  const own = book ? prefs.romaji[book.id] : undefined;
+  const current = readingMode(book);
+  const box = el("fieldset", "segmented vocab-romaji");
+  box.append(el("legend", "field-label", vt(japanese ? "romajiTitle" : "transcriptionTitle")));
+  for (const [value, key] of [["always", "romajiShow"], ["after", "romajiHide"], ["never", "romajiNever"]] as const) {
+    const on = current === value;
+    const option = button(on ? "segment on" : "segment", vt(key), () => {
+      if (book && own !== undefined) prefs.romaji[book.id] = value;
+      else prefs.romajiAll = value;
+      savePreferences();
+      ctx.rerender();
+    });
+    option.setAttribute("aria-pressed", String(on));
+    option.dataset.reading = value;
+    box.append(option);
+  }
+  const out: HTMLElement[] = [box];
+  if (book) {
+    const every = el("label", "vocab-romaji-every");
+    const tick = el("input");
+    tick.type = "checkbox";
+    tick.checked = own === undefined;
+    tick.addEventListener("change", () => {
+      if (tick.checked) delete prefs.romaji[book.id];
+      else prefs.romaji[book.id] = prefs.romajiAll;
+      savePreferences();
+      ctx.rerender();
+    });
+    every.append(tick, document.createTextNode(` ${vt("romajiEvery")}`));
+    out.push(every);
+  }
+  out.push(el("p", "hint left", vt(book ? (japanese ? "romajiHint" : "transcriptionHint") : "romajiShelfHint")));
+  return out;
+}
 
 async function start(ctx: VocabContext, target: Target): Promise<void> {
   // The whole book: the server takes the book's id. A shelf: the books ticked.
@@ -377,24 +420,8 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
   }
   side.append(order);
 
-  // Japanese: rōmaji with the question, or only once answered.
-  // Arabic, Chinese, cuneiform, hieroglyphs: the transliteration, the same choice.
-  if (SCRIPT_LANGS.has(book.term) && book.kind !== "characters") {
-    const arabic = book.term !== "ja";
-    const romaji = el("fieldset", "segmented vocab-romaji");
-    romaji.append(el("legend", "field-label", vt(arabic ? "transcriptionTitle" : "romajiTitle")));
-    for (const [value, key] of [["always", "romajiShow"], ["after", "romajiHide"]] as const) {
-      const on = (prefs.romaji[book.id] ?? "always") === value;
-      const option = button(on ? "segment on" : "segment", vt(key), () => {
-        prefs.romaji[book.id] = value;
-        savePreferences();
-        ctx.rerender();
-      });
-      option.setAttribute("aria-pressed", String(on));
-      romaji.append(option);
-    }
-    side.append(romaji, el("p", "hint left", vt(arabic ? "transcriptionHint" : "romajiHint")));
-  }
+  // The reading in Latin letters (rōmaji, a transliteration): with the question, once answered, or never.
+  if (book.readings > 0 && book.kind !== "characters") side.append(...readingControl(ctx, book, book.term === "ja"));
 
   // Picture dictionary: the picture with its word, or alone (a diagram's part, a picture of its own).
   if (book.pictures > 0) {
@@ -582,6 +609,9 @@ async function shelfView(ctx: VocabContext): Promise<HTMLElement> {
   }
   wrap.append(order);
 
+  // The reading in Latin letters, for every book (a shelf session mixes them).
+  if (shelf.books.some((b) => b.readings > 0 && b.kind !== "characters")) wrap.append(...readingControl(ctx, null, shelf.lang === "ja"));
+
   // The home page: one card for the shelf, or one per book.
   const home = el("fieldset", "segmented vocab-shelf-home");
   home.append(el("legend", "field-label", vt("shelfHomeTitle")));
@@ -612,7 +642,7 @@ function wordRow(ctx: VocabContext, word: VocabWord): HTMLElement {
   term.lang = ctx.book?.term ?? "";
   term.dir = "auto";
   text.append(term);
-  if (word.reading) text.append(el("span", "vocab-word-reading", word.reading));
+  if (word.reading && readingMode(ctx.book) !== "never") text.append(el("span", "vocab-word-reading", word.reading));
   const meaning = el("span", "vocab-word-meaning", word.meaning);
   meaning.dir = "auto";
   text.append(meaning);
@@ -883,8 +913,9 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   prompt.lang = card.promptLang;
   prompt.dir = "auto";
   if (!alone) question.append(prompt);
-  // Rōmaji: with the question, or once answered, as the player chose.
-  const showReading = romajiAlways(ctx.book) || s.result !== null;
+  // The reading: with the question, once answered, or never, as the player chose.
+  const reads = readingMode(ctx.book);
+  const showReading = reads === "always" || (reads === "after" && s.result !== null);
   if (card.promptReading && showReading) {
     const reading = el("p", "vocab-reading", card.promptReading);
     reading.lang = `${card.promptLang}-Latn`;
@@ -916,7 +947,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
       if (result.correct) s.right++;
       else {
         const key = `${card.entryId}:${card.direction}`;
-        s.missed.set(key, { prompt: card.prompt, expected: card.direction === "recall" && result.reading ? `${result.expected} (${result.reading})` : result.expected });
+        s.missed.set(key, { prompt: card.prompt, expected: card.direction === "recall" && result.reading && reads !== "never" ? `${result.expected} (${result.reading})` : result.expected });
         // Asked again at the end, once: the box has gone back to 1.
         if (!s.retried.has(key)) {
           s.retried.add(key);
@@ -1033,7 +1064,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     const line = el("span", "vocab-verdict", r.verdict === "right" ? vt("right") : verdictText(r.verdict, r.expected));
     feedback.append(line);
     // Japanese: the word as printed and how it reads, whatever was typed.
-    if (card.direction === "recall" && r.reading) {
+    if (card.direction === "recall" && r.reading && reads !== "never") {
       const reading = el("span", "vocab-verdict-reading", r.verdict === "right" ? `${r.expected} · ${r.reading}` : r.reading);
       reading.lang = card.answerLang;
       reading.dir = "auto";
