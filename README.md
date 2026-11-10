@@ -67,6 +67,10 @@ at four levels, *Débutant* to *Expert*, like every test of the app, each with a
 
 **Cloudflare** — multiple-choice tests at four levels, with a written course to go with them: DNS and the proxy, SSL/TLS, the cache, the WAF, the rules language, rate limiting and bots, Workers and their storage (KV, R2, D1, Durable Objects, Queues, Workflows), Zero Trust (Access, Tunnel, Gateway) and AI (Workers AI, AI Gateway, Vectorize, AI Search, agents). Questions on rules-language expressions, the order of the request phases, SSL/TLS modes, cache lifetimes, tunnel ingress, Access policies and the Workers and Workers AI bills are generated, each answer computed again by an independent evaluator.
 
+**GitHub** — multiple-choice tests at four levels, with an eight-part course: repositories and forks, issues and Projects, pull requests and review, organisations and process, branch protection and rulesets, Actions, secrets and OIDC, Dependabot, CodeQL and secret scanning.
+
+**Deployment systems** — multiple-choice tests at four levels, with an eight-part course: pipelines and artifacts, containers, release strategies, infrastructure as code, Terraform and OpenTofu, Kubernetes, GitOps and managed platforms (Cloud Run), and operations: SLOs, incidents, DORA.
+
 - 254 questions written for the app, in French, Spanish and English, from `find` and `sed` to `systemctl`, `ssh`, `rsync` and `dig`, `git rebase` and vim's text objects.
 - Tools missing from a default install (`ripgrep`, `fzf`, `jq`, `tmux`, `hyperfine`, `shellcheck`, `nmap`…) are marked with their package and the install command for Debian, Fedora and macOS.
 - `chmod`, `umask` and crontab questions are generated, with the usual slips as wrong options; an octal mode can be typed.

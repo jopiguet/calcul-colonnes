@@ -141,7 +141,7 @@ they are regenerated from the test's definition. See
 | `id` | integer | primary key |
 | `user_id` | integer | → `users.id` |
 | `at` | bigint | |
-| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced`, `calc`, `calcAdvanced`, `cfBeginner` to `cfExpert`, `marxBeginner` to `marxExpert`, `mathBeginner`, `mathExpert`, `chemBeginner`, `chemExpert`, `linuxBeginner`, `linuxAdvanced`, `linuxExpert`, `chembioBeginner`, `chembioAdvanced`, `chembioExpert`, `sqlBeginner`, `sqlAdvanced`, `sqlExpert`, `econBeginner`, `econExpert`, `calcBeginner`, `calcExpert`, `marxExpert` |
+| `level` | text | `school`, `university`, `chemistry`, `chemistryAdvanced`, `linux`, `chembio`, `sql`, `rustBeginner`, `rustIntermediate`, `rustAdvanced`, `rustExpert`, `tsBeginner`, `tsIntermediate`, `tsAdvanced`, `tsExpert`, `reactBeginner`, `reactIntermediate`, `reactAdvanced`, `reactExpert`, `gcpBeginner`, `gcpIntermediate`, `gcpAdvanced` or `gcpExpert`, `econ`, `econAdvanced`, `calc`, `calcAdvanced`, `cfBeginner` to `cfExpert`, `marxBeginner` to `marxExpert`, `mathBeginner`, `mathExpert`, `chemBeginner`, `chemExpert`, `linuxBeginner`, `linuxAdvanced`, `linuxExpert`, `chembioBeginner`, `chembioAdvanced`, `chembioExpert`, `sqlBeginner`, `sqlAdvanced`, `sqlExpert`, `econBeginner`, `econExpert`, `calcBeginner`, `calcExpert`, `marxExpert`, `githubBeginner` to `githubExpert`, `deployBeginner` to `deployExpert` |
 | `topics` | text | comma-separated, e.g. `derivatives,limits` |
 | `seed` | bigint | 32-bit unsigned |
 | `question_count` | integer | |
@@ -281,6 +281,7 @@ runs: add tables and columns, rename or drop later.
 | `034_vocab_info` | `info` on `vocab_entries`: an entry's type, readings by language and functions, from a format-3 file (docs/vocabulary.md#format-3) |
 | `035_lesson_answers` | `lesson_answers`, the answers to the language courses' exercises (docs/language-courses.md#progress) |
 | `036_home_layout` | `layout` on `users`: the order of the home page's groups and cards, the groups opened (common SQL, one file) |
+| `037_github_deploy_levels` | The GitHub and deployment levels, `githubBeginner` to `githubExpert` and `deployBeginner` to `deployExpert`, allowed in `quiz_results.level` |
 
 **File names.**
 

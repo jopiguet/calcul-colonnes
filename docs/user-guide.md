@@ -142,7 +142,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche) | Words due today, *À jour*, or the book's number of words if not started |
 | Exercices des livres | ✏️ one per workbook (*Grammar in Use*, *Vocabulary Advanced*…) | Exercises corrected and score, or the book's number of exercises |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
-| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud, 🔶 Cloudflare | Kinds of question to review, for each |
+| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud, 🔶 Cloudflare, 🐙 GitHub, 🚀 Déploiement | Kinds of question to review, for each |
 | Économie | 🏛️ Économie publique, ⚒️ Le Capital | Kinds of question to review, for each |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
@@ -575,6 +575,38 @@ of a tunnel serves a request, which Access policy decides, and the Workers
 and Workers AI bills. Each answer has been computed twice, by two
 independent programs.
 
+## GitHub
+
+Activity **🐙 GitHub**, in the *Informatique* group: multiple-choice tests
+on GitHub at four levels, *Débutant* to *Expert*, in two groups, *Travailler
+ensemble* (repositories, issues and Projects, pull requests, organisations
+and process) and *Automatisation et sécurité* (branch protection and
+rulesets, Actions, secrets and OIDC, Dependabot and code scanning). They
+follow the written course *GitHub — a complete course*, part by part.
+
+| Level | Topics |
+|---|---|
+| Débutant | commits, branches, clones and forks, issues and labels, opening and reviewing a pull request, organisations and roles, protecting `main`, workflows and triggers, secrets and `GITHUB_TOKEN`, Dependabot alerts and updates |
+| Intermédiaire | remotes, syncing a fork, releases, issue forms, Projects, Discussions, merge methods, suggestions, CODEOWNERS, GitHub flow, SemVer, required checks, matrices, artifacts and cache, `permissions`, environments, `dependabot.yml` |
+| Avancé | rebase and force-push, LFS, signed commits, sub-issues, the merge queue, stacked pull requests, nested teams, rulesets and bypass lists, reusable workflows, concurrency, runners, OIDC, pinning by SHA, script injection, CodeQL, secret scanning, dependency review |
+| Expert | Git objects, rewriting history, search and GraphQL, CODEOWNERS precedence, bisect, Enterprise, SSO and SCIM, the audit log, layered rulesets, status functions, dynamic matrices, OIDC conditions, `pull_request_target`, SBOMs, attestations, advisories |
+
+## Déploiement
+
+Activity **🚀 Déploiement**, in the *Informatique* group: multiple-choice
+tests on deployment systems at four levels, *Débutant* to *Expert*, in two
+groups, *Les fondements* (pipelines and artifacts, containers, release
+strategies, operations) and *Les outils* (infrastructure as code, Terraform
+and OpenTofu, Kubernetes, GitOps and managed platforms such as Cloud Run).
+They follow the written course *Deployment systems — a complete course*.
+
+| Level | Topics |
+|---|---|
+| Débutant | CI and continuous delivery, environments, images and registries, recreate, rolling, blue-green and canary, logs, metrics and traces, declarative IaC, providers, plan, apply and state, Pods, Deployments and Services, Git as the source of truth |
+| Intermédiaire | build once and promote, layers, multi-stage builds, tags and digests, feature flags and probes, SLOs and error budgets, drift, remote state and locking, `count` and `for_each`, modules, resources and rolling updates, pull or push, revisions |
+| Avancé | trunk-based development, preview environments, reproducible builds, minimal and multi-architecture images, expand/contract migrations, DORA, postmortems, Pulumi, CDK and Crossplane, policy as code, `lifecycle`, `import`, `moved`, HPA, Helm, Kustomize, RBAC, Argo CD, Flux, secrets in GitOps |
+| Expert | SLSA and hermetic builds, OCI, build secrets and signatures, shadow traffic, cells and bake time, burn-rate alerts, toil and chaos, OpenTofu and licences, blast radius, replacements, `removed`, tests and ephemeral values, scheduling, operators, graceful shutdown, Cloud Run in depth, disaster recovery |
+
 ## Calculus
 
 Activity **∫ Analyse** (*∫ Cálculo*, *∫ Calculus*), in the *Mathématiques*
@@ -642,7 +674,7 @@ Every answer has been computed twice, by two independent programs.
 
 Every test comes with a course to read in the app, short for most
 (*Mathématiques — l'essentiel du test*, a part per group of topics) and
-long for *🔶 Cloudflare* and *⚒️ Le Capital*. **📖 Lire le cours** in the
+long for *🔶 Cloudflare*, *🐙 GitHub*, *🚀 Déploiement* and *⚒️ Le Capital*. **📖 Lire le cours** in the
 test's settings opens it in the player's language: a contents list, the parts with their tables, code and
 formulas, exercises with answers, and the sources. **← Retour au test**
 goes back to the settings.

@@ -91,6 +91,8 @@ test("every test has the same four levels and a course, which opens in the playe
     ["econ", "Économie publique — l'essentiel du test", 11],
     ["calc", "Analyse — l'essentiel du test", 12],
     ["cf", "Cloudflare — un cours complet", 14],
+    ["github", "GitHub — un cours complet", 11],
+    ["deploy", "Systèmes de déploiement — un cours complet", 11],
     ["marx", "", 15],
   ];
   for (const [activity, title, sections] of courses) {

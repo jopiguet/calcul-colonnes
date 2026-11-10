@@ -42,7 +42,7 @@ levels in that order, and `levelStep(level)` gives 0 to 3.
 | econ | `econBeginner` | `econ` | `econAdvanced` | `econExpert` |
 | calc | `calcBeginner` | `calc` | `calcAdvanced` | `calcExpert` |
 | marx | `marxBeginner` | `marxIntermediate` | `marxAdvanced` | `marxExpert` |
-| rust, ts, react, gcp, cf | `…Beginner` | `…Intermediate` | `…Advanced` | `…Expert` |
+| rust, ts, react, gcp, cf, github, deploy | `…Beginner` | `…Intermediate` | `…Advanced` | `…Expert` |
 
 The old ids stay as *Intermédiaire* and *Avancé*, so saved results and
 progress keep their level (migration `032_four_levels`). What each level
@@ -777,6 +777,42 @@ documentation's rules, and the bills are computed from the published prices.
 The right option must equal it and no wrong one may.
 
 Thirty-nine mistake types, `cfRulePrecedence` to `cfNeuronUnit`.
+
+## GitHub
+
+The GitHub test (8.3.0), *🐙 GitHub* in the home page's *Informatique*
+group, has four levels, `githubBeginner`, `githubIntermediate`,
+`githubAdvanced` and `githubExpert`, and eight topics in two groups.
+*Travailler ensemble* (`ghWork`): `ghRepos`, `ghIssues`, `ghPulls`,
+`ghTeams`. *Automatisation et sécurité* (`ghAutomation`): `ghProtection`,
+`ghActions`, `ghSecurity`, `ghSupply`. It goes with the written course
+*GitHub — a complete course*, a part per topic in the same order.
+
+Written questions only: 128 in `shared/quiz/github/beginner.ts` to
+`expert.ts`, one list of four per topic and level (`reposBasics`,
+`reposWork`, `reposAdvanced`, `reposExpert` and so on), ids `gh-…`, checked
+like the Linux ones. Facts that change (rulesets and bypass lists, the merge
+queue, sub-issues and issue types, the default `GITHUB_TOKEN` permissions,
+OIDC claims, Dependabot's grouped updates and cooldown, artifact
+attestations) are written as of late 2026; the course's sources link the
+pages to check them against.
+
+## Deployment
+
+The deployment test (8.3.0), *🚀 Déploiement* in the *Informatique* group,
+has four levels, `deployBeginner` to `deployExpert`, and eight topics in two
+groups. *Les fondements* (`depFoundations`): `depBasics`, `depContainers`,
+`depStrategies`, `depOperations`. *Les outils* (`depTooling`): `depIac`,
+`depTerraform`, `depKubernetes`, `depGitops`. It goes with the written course
+*Deployment systems — a complete course*.
+
+Written questions only: 128 in `shared/quiz/deploy/beginner.ts` to
+`expert.ts` (`pipelineBasics`, `pipelinePractice`, `pipelineAdvanced`,
+`pipelineExpert` and so on), ids `dp-…`, checked like the Linux ones.
+Terraform facts cover the `import`, `moved` and `removed` blocks,
+`terraform test`, and ephemeral values and write-only arguments (1.10 and
+1.11); Cloud Run's cover service-level minimum instances, tags and
+`--no-traffic`, as of late 2026.
 
 ## Capital
 
@@ -1518,6 +1554,7 @@ mistakes to review. It then checks:
 - **Calculus:** every generated answer computed again by `server/check-calc.ts` (see [Calculus](#calculus)); every chart inside its window, no two option charts alike.
 - **Google Cloud:** every generated answer computed again by `server/check-gcp.ts` (see [Google Cloud](#google-cloud)), policy lines at most 36 characters; every written Google Cloud question checked like the Linux ones.
 - **Cloudflare:** every generated answer computed again by `server/check-cf.ts` (see [Cloudflare](#cloudflare)), rule lines at most 36 characters; every written Cloudflare question checked like the Linux ones.
+- **GitHub, deployment:** every written question checked like the Linux ones (see [GitHub](#github), [Deployment](#deployment)).
 - **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.
 - **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).

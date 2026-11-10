@@ -9,6 +9,8 @@ import { TS_GROUPS, TS_MISTAKES, TS_SKILLS, TS_TEXTS, TS_TOPIC_NAMES } from "./q
 import { REACT_GROUPS, REACT_MISTAKES, REACT_SKILLS, REACT_TEXTS, REACT_TOPIC_NAMES } from "./quiz-i18n-react";
 import { GCP_GROUPS, GCP_MISTAKES, GCP_SKILLS, GCP_TEXTS, GCP_TOPIC_NAMES } from "./quiz-i18n-gcp";
 import { CF_GROUPS, CF_MISTAKES, CF_SKILLS, CF_TEXTS, CF_TOPIC_NAMES } from "./quiz-i18n-cf";
+import { GITHUB_GROUPS, GITHUB_SKILLS, GITHUB_TEXTS, GITHUB_TOPIC_NAMES } from "./quiz-i18n-github";
+import { DEPLOY_GROUPS, DEPLOY_SKILLS, DEPLOY_TEXTS, DEPLOY_TOPIC_NAMES } from "./quiz-i18n-deploy";
 import { MARX_GROUPS, MARX_MISTAKES, MARX_SKILLS, MARX_TEXTS, MARX_TOPIC_NAMES } from "./quiz-i18n-marx";
 import { ECON_GROUPS, ECON_MISTAKES, ECON_SKILLS, ECON_TEXTS, ECON_TOPIC_NAMES } from "./quiz-i18n-econ";
 import { CALC_GROUPS, CALC_MISTAKES, CALC_SKILLS, CALC_TEXTS, CALC_TOPIC_NAMES } from "./quiz-i18n-calc";
@@ -107,6 +109,8 @@ const fr = {
     ...REACT_TEXTS.fr,
     ...GCP_TEXTS.fr,
     ...CF_TEXTS.fr,
+    ...GITHUB_TEXTS.fr,
+    ...DEPLOY_TEXTS.fr,
     ...MARX_TEXTS.fr,
     ...ECON_TEXTS.fr,
     ...CALC_TEXTS.fr,
@@ -200,6 +204,8 @@ const es: Record<QuizKey, string> = {
     ...REACT_TEXTS.es,
     ...GCP_TEXTS.es,
     ...CF_TEXTS.es,
+    ...GITHUB_TEXTS.es,
+    ...DEPLOY_TEXTS.es,
     ...MARX_TEXTS.es,
     ...ECON_TEXTS.es,
     ...CALC_TEXTS.es,
@@ -291,6 +297,8 @@ const en: Record<QuizKey, string> = {
     ...REACT_TEXTS.en,
     ...GCP_TEXTS.en,
     ...CF_TEXTS.en,
+    ...GITHUB_TEXTS.en,
+    ...DEPLOY_TEXTS.en,
     ...MARX_TEXTS.en,
     ...ECON_TEXTS.en,
     ...CALC_TEXTS.en,
@@ -307,9 +315,9 @@ const LEVEL_NAMES: Record<Lang, Record<Level, string>> = Object.fromEntries(
 ) as Record<Lang, Record<Level, string>>;
 
 const GROUP_NAMES: Record<Lang, Record<TopicGroup, string>> = {
-  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr, ...SQ_GROUPS.fr, ...RS_GROUPS.fr, ...TS_GROUPS.fr, ...REACT_GROUPS.fr, ...GCP_GROUPS.fr, ...CF_GROUPS.fr, ...MARX_GROUPS.fr, ...ECON_GROUPS.fr, ...CALC_GROUPS.fr },
-  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, statistics: ST_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es, ...SQ_GROUPS.es, ...RS_GROUPS.es, ...TS_GROUPS.es, ...REACT_GROUPS.es, ...GCP_GROUPS.es, ...CF_GROUPS.es, ...MARX_GROUPS.es, ...ECON_GROUPS.es, ...CALC_GROUPS.es },
-  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, statistics: ST_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en, ...SQ_GROUPS.en, ...RS_GROUPS.en, ...TS_GROUPS.en, ...REACT_GROUPS.en, ...GCP_GROUPS.en, ...CF_GROUPS.en, ...MARX_GROUPS.en, ...ECON_GROUPS.en, ...CALC_GROUPS.en },
+  fr: { analysis: "Analyse", algebra: "Algèbre", geometry: "Géométrie", probability: "Probabilités", thermodynamics: CHEM_GROUP.fr, structure: QT_GROUP.fr, rates: KN_GROUP.fr, spectra: SP_GROUP.fr, statistics: ST_GROUP.fr, ...LX_GROUPS.fr, ...CB_GROUPS.fr, ...SQ_GROUPS.fr, ...RS_GROUPS.fr, ...TS_GROUPS.fr, ...REACT_GROUPS.fr, ...GCP_GROUPS.fr, ...CF_GROUPS.fr, ...GITHUB_GROUPS.fr, ...DEPLOY_GROUPS.fr, ...MARX_GROUPS.fr, ...ECON_GROUPS.fr, ...CALC_GROUPS.fr },
+  es: { analysis: "Análisis", algebra: "Álgebra", geometry: "Geometría", probability: "Probabilidad", thermodynamics: CHEM_GROUP.es, structure: QT_GROUP.es, rates: KN_GROUP.es, spectra: SP_GROUP.es, statistics: ST_GROUP.es, ...LX_GROUPS.es, ...CB_GROUPS.es, ...SQ_GROUPS.es, ...RS_GROUPS.es, ...TS_GROUPS.es, ...REACT_GROUPS.es, ...GCP_GROUPS.es, ...CF_GROUPS.es, ...GITHUB_GROUPS.es, ...DEPLOY_GROUPS.es, ...MARX_GROUPS.es, ...ECON_GROUPS.es, ...CALC_GROUPS.es },
+  en: { analysis: "Analysis", algebra: "Algebra", geometry: "Geometry", probability: "Probability", thermodynamics: CHEM_GROUP.en, structure: QT_GROUP.en, rates: KN_GROUP.en, spectra: SP_GROUP.en, statistics: ST_GROUP.en, ...LX_GROUPS.en, ...CB_GROUPS.en, ...SQ_GROUPS.en, ...RS_GROUPS.en, ...TS_GROUPS.en, ...REACT_GROUPS.en, ...GCP_GROUPS.en, ...CF_GROUPS.en, ...GITHUB_GROUPS.en, ...DEPLOY_GROUPS.en, ...MARX_GROUPS.en, ...ECON_GROUPS.en, ...CALC_GROUPS.en },
 };
 
 const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
@@ -323,6 +331,8 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...REACT_TOPIC_NAMES.fr,
     ...GCP_TOPIC_NAMES.fr,
     ...CF_TOPIC_NAMES.fr,
+    ...GITHUB_TOPIC_NAMES.fr,
+    ...DEPLOY_TOPIC_NAMES.fr,
     ...MARX_TOPIC_NAMES.fr,
     ...ECON_TOPIC_NAMES.fr,
     ...CALC_TOPIC_NAMES.fr,
@@ -352,6 +362,8 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...REACT_TOPIC_NAMES.es,
     ...GCP_TOPIC_NAMES.es,
     ...CF_TOPIC_NAMES.es,
+    ...GITHUB_TOPIC_NAMES.es,
+    ...DEPLOY_TOPIC_NAMES.es,
     ...MARX_TOPIC_NAMES.es,
     ...ECON_TOPIC_NAMES.es,
     ...CALC_TOPIC_NAMES.es,
@@ -381,6 +393,8 @@ const TOPIC_NAMES: Record<Lang, Record<Topic, string>> = {
     ...REACT_TOPIC_NAMES.en,
     ...GCP_TOPIC_NAMES.en,
     ...CF_TOPIC_NAMES.en,
+    ...GITHUB_TOPIC_NAMES.en,
+    ...DEPLOY_TOPIC_NAMES.en,
     ...MARX_TOPIC_NAMES.en,
     ...ECON_TOPIC_NAMES.en,
     ...CALC_TOPIC_NAMES.en,
@@ -947,6 +961,8 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...REACT_SKILLS.fr,
     ...GCP_SKILLS.fr,
     ...CF_SKILLS.fr,
+    ...GITHUB_SKILLS.fr,
+    ...DEPLOY_SKILLS.fr,
     ...MARX_SKILLS.fr,
     ...ECON_SKILLS.fr,
     ...CALC_SKILLS.fr,
@@ -1076,6 +1092,8 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...REACT_SKILLS.es,
     ...GCP_SKILLS.es,
     ...CF_SKILLS.es,
+    ...GITHUB_SKILLS.es,
+    ...DEPLOY_SKILLS.es,
     ...MARX_SKILLS.es,
     ...ECON_SKILLS.es,
     ...CALC_SKILLS.es,
@@ -1205,6 +1223,8 @@ const SKILL_NAMES: Record<Lang, Record<string, string>> = {
     ...REACT_SKILLS.en,
     ...GCP_SKILLS.en,
     ...CF_SKILLS.en,
+    ...GITHUB_SKILLS.en,
+    ...DEPLOY_SKILLS.en,
     ...MARX_SKILLS.en,
     ...ECON_SKILLS.en,
     ...CALC_SKILLS.en,

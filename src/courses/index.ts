@@ -12,9 +12,9 @@ import type { Lang } from "../i18n";
 export { sectionOf } from "./sections";
 
 /** One course per test subject, named like it. */
-export type CourseId = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc" | "cf" | "marx";
+export type CourseId = "maths" | "chemistry" | "linux" | "chembio" | "sql" | "rust" | "ts" | "react" | "gcp" | "econ" | "calc" | "cf" | "marx" | "github" | "deploy";
 
-export const COURSE_IDS: CourseId[] = ["maths", "chemistry", "linux", "chembio", "sql", "rust", "ts", "react", "gcp", "econ", "calc", "cf", "marx"];
+export const COURSE_IDS: CourseId[] = ["maths", "chemistry", "linux", "chembio", "sql", "rust", "ts", "react", "gcp", "econ", "calc", "cf", "marx", "github", "deploy"];
 
 const loaders = import.meta.glob<string>("./*/*.md", { query: "?raw", import: "default" });
 const cache = new Map<string, Promise<string>>();

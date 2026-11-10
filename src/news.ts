@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.3.0",
+    fr: ["Deux nouveaux tests avec leur cours, dans Informatique : 🐙 GitHub (issues, pull requests, Actions, Dependabot, travail en équipe, processus) et 🚀 Déploiement (pipelines, conteneurs, Terraform, Kubernetes, GitOps, Cloud Run, exploitation)."],
+    es: ["Dos tests nuevos con su curso, en Informatique: 🐙 GitHub (issues, pull requests, Actions, Dependabot, trabajo en equipo, procesos) y 🚀 Despliegue (pipelines, contenedores, Terraform, Kubernetes, GitOps, Cloud Run, operación)."],
+    en: ["Two new tests with their courses, under Informatique: 🐙 GitHub (issues, pull requests, Actions, Dependabot, teamwork, process) and 🚀 Deployment (pipelines, containers, Terraform, Kubernetes, GitOps, Cloud Run, operations)."],
+  },
+  {
     version: "8.2.1",
     fr: ["Le réglage du rōmaji vaut aussi pour les kanji et kana : « Jamais » retire la lecture de tes mots montrés sous un caractère. Le son d'un kana reste : c'est la réponse."],
     es: ["El ajuste del rōmaji vale también para los kanji y kana: «Nunca» quita la lectura de tus palabras mostradas bajo un carácter. El sonido de un kana se queda: es la respuesta."],

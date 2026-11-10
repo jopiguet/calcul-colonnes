@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.3.0
+
+- **🐙 GitHub, a test and a course** ([Question generators › GitHub](docs/question-generators.md#github)): four levels, *Débutant* to *Expert*, eight topics in two groups, *Travailler ensemble* (repositories, issues and Projects, pull requests, organisations and process) and *Automatisation et sécurité* (branch protection and rulesets, Actions, secrets and OIDC, Dependabot, CodeQL and secret scanning). 128 written questions in French, Spanish and English. The course *GitHub — un cours complet* has a part per topic, exercises with answers and sources; a wrong answer links to its part.
+- **🚀 Déploiement, a test and a course** ([Question generators › Deployment](docs/question-generators.md#deployment)): the same shape for deployment systems in general, *Les fondements* (pipelines and artifacts, containers, release strategies, operations: SLOs, incidents, DORA) and *Les outils* (infrastructure as code, Terraform and OpenTofu, Kubernetes, GitOps and managed platforms, Cloud Run in depth). 128 written questions; the course *Systèmes de déploiement — un cours complet* uses Luma's own release as its worked example.
+- **Migration `037_github_deploy_levels`:** the eight new level ids allowed in `quiz_results.level`.
+- The *Informatique* group now has nine cards.
+- `tests/e2e/github-deploy.spec.ts`: both cards, levels and groups; a GitHub Actions test on a phone and a Terraform test in Spanish, graded on the server. `courses.spec.ts` covers both courses.
+
 ## 8.2.1
 
 - **Books of characters** (kana and kanji, a course's letters) get the rōmaji setting too: *Jamais* takes the reading off the player's words shown under a character once answered. A kana's or a letter's sound is the answer and stays. The setting follows the common choice like the other books, or the book's own.

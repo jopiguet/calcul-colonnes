@@ -16,7 +16,7 @@ test("home: one line per group, opened by its title, and kept so", async ({ page
   await goHome(page);
   const computing = group(page, "computing");
   await expect(computing).toHaveClass(/is-line/);
-  await expect(computing.locator(".activity-group-count")).toHaveText("7");
+  await expect(computing.locator(".activity-group-count")).toHaveText("9");
   // On one line: every card at the same height.
   const tops = await computing.locator(".activity-cell").evaluateAll((cells) => cells.map((c) => Math.round(c.getBoundingClientRect().top)));
   expect(new Set(tops).size).toBe(1);

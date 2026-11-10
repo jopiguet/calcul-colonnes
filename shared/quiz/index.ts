@@ -28,6 +28,8 @@ import { calcLimits, calcDerivatives, calcApplications, calcIntegrals, calcTrans
 import { econWelfare, econMarketFailure, econPublicChoice, econIncidence, econOptimalTax, econTaxDesign, econSocialInsurance, econRedistribution, econLabour } from "./econ";
 import { gcpHierarchy, gcpIam, gcpServiceAccounts, gcpSecurity, gcpNetworking, gcpCompute, gcpStorage, gcpOperations } from "./gcp";
 import { cfDns, cfTls, cfCache, cfSecurity, cfWorkers, cfStorage, cfZeroTrust, cfAi } from "./cf";
+import { ghRepos, ghIssues, ghPulls, ghTeams, ghProtection, ghActions, ghSecurity, ghSupply } from "./github";
+import { depBasics, depContainers, depStrategies, depOperations, depIac, depTerraform, depKubernetes, depGitops } from "./deploy";
 import { marxCommodity, marxMoney, marxSurplus, marxWorkingDay, marxRelative, marxWages, marxAccumulation, marxPrimitive, marxCirculation, marxReproduction, marxProfit, marxCredit } from "./marx";
 import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
 import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
@@ -141,6 +143,22 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   cfStorage,
   cfZeroTrust,
   cfAi,
+  ghRepos,
+  ghIssues,
+  ghPulls,
+  ghTeams,
+  ghProtection,
+  ghActions,
+  ghSecurity,
+  ghSupply,
+  depBasics,
+  depContainers,
+  depStrategies,
+  depOperations,
+  depIac,
+  depTerraform,
+  depKubernetes,
+  depGitops,
   marxCommodity,
   marxMoney,
   marxSurplus,
@@ -471,6 +489,8 @@ export { GCP_LINE_MAX } from "./gcp-output";
 export type { GcpModel } from "./gcp-model";
 export { CF_QUESTIONS } from "./cf";
 export { MARX_QUESTIONS } from "./marx";
+export { GITHUB_QUESTIONS } from "./github";
+export { DEPLOY_QUESTIONS } from "./deploy";
 export { CF_LINE_MAX } from "./cf-output";
 export type { CfModel } from "./cf-model";
 export type { MarxModel } from "./marx-model";

@@ -139,6 +139,24 @@ const TOPIC_SECTION: Record<string, number> = {
   marxReproduction: 10,
   marxProfit: 11,
   marxCredit: 12,
+  // GitHub: 0 how to use, 1–8 the parts, 9 exercises, 10 sources.
+  ghRepos: 1,
+  ghIssues: 2,
+  ghPulls: 3,
+  ghTeams: 4,
+  ghProtection: 5,
+  ghActions: 6,
+  ghSecurity: 7,
+  ghSupply: 8,
+  // Deployment systems: 0 how to use, 1–8 the parts, 9 exercises, 10 sources.
+  depBasics: 1,
+  depContainers: 2,
+  depStrategies: 3,
+  depIac: 4,
+  depTerraform: 5,
+  depKubernetes: 6,
+  depGitops: 7,
+  depOperations: 8,
 };
 
 /** Kinds taught in another section than their topic's. */

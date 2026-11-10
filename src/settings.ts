@@ -1,4 +1,4 @@
-import { CHEMBIO_LEVELS, LINUX_LEVELS, SQL_LEVELS, CALC_LEVELS, CALC_TOPICS, CF_LEVELS, CF_TOPICS, MARX_LEVELS, MARX_TOPICS, ECON_LEVELS, ECON_TOPICS, GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { CHEMBIO_LEVELS, LINUX_LEVELS, SQL_LEVELS, CALC_LEVELS, CALC_TOPICS, CF_LEVELS, CF_TOPICS, GITHUB_LEVELS, GITHUB_TOPICS, DEPLOY_LEVELS, DEPLOY_TOPICS, MARX_LEVELS, MARX_TOPICS, ECON_LEVELS, ECON_TOPICS, GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 import { isDiscoverActivity, type DiscoverActivity } from "./discover/activities";
@@ -56,6 +56,10 @@ export interface Settings {
   gcpLevel: Level;
   cfTopics: Topic[];
   cfLevel: Level;
+  githubTopics: Topic[];
+  githubLevel: Level;
+  deployTopics: Topic[];
+  deployLevel: Level;
   marxTopics: Topic[];
   marxLevel: Level;
   econTopics: Topic[];
@@ -144,7 +148,7 @@ export function loadSettings(): Settings {
     discoverActivity: isDiscoverActivity(saved.discoverActivity) ? saved.discoverActivity : "dice",
     quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
-    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" || saved.quizSubject === "react" || saved.quizSubject === "gcp" || saved.quizSubject === "cf" || saved.quizSubject === "marx" || saved.quizSubject === "econ" || saved.quizSubject === "calc" ? saved.quizSubject : "maths",
+    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" || saved.quizSubject === "react" || saved.quizSubject === "gcp" || saved.quizSubject === "cf" || saved.quizSubject === "github" || saved.quizSubject === "deploy" || saved.quizSubject === "marx" || saved.quizSubject === "econ" || saved.quizSubject === "calc" ? saved.quizSubject : "maths",
     chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
     linuxTopics: Array.isArray(saved.linuxTopics) && LINUX_TOPICS.some((t) => (saved.linuxTopics as unknown[]).includes(t))
       ? LINUX_TOPICS.filter((t) => (saved.linuxTopics as unknown[]).includes(t))
@@ -175,6 +179,14 @@ export function loadSettings(): Settings {
       ? CF_TOPICS.filter((t) => (saved.cfTopics as unknown[]).includes(t))
       : [...CF_TOPICS],
     cfLevel: CF_LEVELS.includes(saved.cfLevel as Level) ? (saved.cfLevel as Level) : "cfBeginner",
+    githubTopics: Array.isArray(saved.githubTopics) && GITHUB_TOPICS.some((t) => (saved.githubTopics as unknown[]).includes(t))
+      ? GITHUB_TOPICS.filter((t) => (saved.githubTopics as unknown[]).includes(t))
+      : [...GITHUB_TOPICS],
+    githubLevel: GITHUB_LEVELS.includes(saved.githubLevel as Level) ? (saved.githubLevel as Level) : "githubBeginner",
+    deployTopics: Array.isArray(saved.deployTopics) && DEPLOY_TOPICS.some((t) => (saved.deployTopics as unknown[]).includes(t))
+      ? DEPLOY_TOPICS.filter((t) => (saved.deployTopics as unknown[]).includes(t))
+      : [...DEPLOY_TOPICS],
+    deployLevel: DEPLOY_LEVELS.includes(saved.deployLevel as Level) ? (saved.deployLevel as Level) : "deployBeginner",
     marxTopics: Array.isArray(saved.marxTopics) && MARX_TOPICS.some((t) => (saved.marxTopics as unknown[]).includes(t))
       ? MARX_TOPICS.filter((t) => (saved.marxTopics as unknown[]).includes(t))
       : [...MARX_TOPICS],
