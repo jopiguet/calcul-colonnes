@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.4.1
+
+- **Transliteration letters on every device:** the Egyptological ꜣ and ꜥ (*wḏꜣt*, *ꜥnḫ*) showed as empty boxes, and ḥ ḫ ṯ ḏ came from whatever font the device had, because the app's font, Atkinson Hyperlegible Next, does not have them. They now come from Noto Sans's Latin Extended faces, bundled and declared by unicode range (`src/fonts-translit.css`), so nothing is fetched until a page shows one; upright, italic and bold.
+- `lessons.spec.ts`: the Egyptian lesson checks that this face is loaded.
+
 ## 8.4.0
 
 - **🦙 Quechua, a language course** ([Language courses](docs/language-courses.md)): Southern Quechua of Cusco in Peru's official alphabet, 16 lessons, 64 exercises, 146 words, in French, Spanish and English. The alphabet and stress; plain, aspirated and ejective stops and the uvular *q*; greetings and the inclusive and exclusive "we"; *kay* and *-mi* / *-chu*; plural and possession; ten case suffixes; the present and *-chka-*; the evidentials *-mi*, *-si*, *-chá* and the other enclitics; the two pasts *-rqa-* and *-sqa-*; future, commands and conditional; derivational suffixes (*-chi-*, *-ku-*, *-naku-*, *-pu-*, *-mu-*); object suffixes (*-wa-*, *-yki*, *-sunki*); nominalizers and *-spa* / *-qti-*; numbers and kinship by the speaker's sex; a tale of the fox and the condor written for the course, and *ama suwa, ama llulla, ama qilla*.

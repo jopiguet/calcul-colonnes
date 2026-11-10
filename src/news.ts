@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.4.1",
+    fr: ["Les lettres de translittération ꜣ et ꜥ de l'égyptien (wḏꜣt, ꜥnḫ) s'affichaient comme des cases vides sur certains appareils : elles sont maintenant dessinées par une police fournie avec l'application, comme ḥ, ḫ, ṯ et ḏ."],
+    es: ["Las letras de transliteración ꜣ y ꜥ del egipcio (wḏꜣt, ꜥnḫ) aparecían como cuadros vacíos en algunos dispositivos: ahora las dibuja una fuente incluida en la aplicación, igual que ḥ, ḫ, ṯ y ḏ."],
+    en: ["The Egyptian transliteration letters ꜣ and ꜥ (wḏꜣt, ꜥnḫ) showed as empty boxes on some devices: they are now drawn by a font bundled with the app, as are ḥ, ḫ, ṯ and ḏ."],
+  },
+  {
     version: "8.4.0",
     fr: ["Nouveau cours de langue : 🦙 quechua, le quechua du Sud tel qu'on le parle à Cusco, en 16 leçons, des aspirées et éjectives aux suffixes qui disent comment on sait ce qu'on dit, jusqu'à un conte du renard et du condor. Les réponses écrites avec cinq voyelles (« Qosqo ») ou à l'espagnole (« huasi ») comptent."],
     es: ["Nuevo curso de idioma: 🦙 quechua, el quechua sureño tal como se habla en el Cusco, en 16 lecciones, de las aspiradas y glotalizadas a los sufijos que dicen cómo se sabe lo que se dice, hasta un cuento del zorro y el cóndor. Las respuestas escritas con cinco vocales («Qosqo») o a la española («huasi») valen."],

@@ -25,6 +25,8 @@ import "@fontsource/atkinson-hyperlegible-next/latin-800.css";
 import "@fontsource/atkinson-hyperlegible-mono/latin-400.css";
 import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
 // Cuneiform and hieroglyphs: fetched only when a page shows one (unicode-range).
+// Transliteration letters (ꜣ ꜥ ḥ ḫ ṯ ḏ …) Atkinson lacks, from Noto Sans by unicode-range.
+import "./fonts-translit.css";
 import "@fontsource/noto-sans/greek-400.css";
 import "@fontsource/noto-sans/greek-ext-400.css";
 import "@fontsource/noto-sans/greek-600.css";

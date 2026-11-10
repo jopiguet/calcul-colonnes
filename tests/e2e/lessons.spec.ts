@@ -94,6 +94,12 @@ test("Egyptian: hieroglyphs in their font, the special letters, answers typed as
   await expect(card.locator(".lesson-exercise-score")).toHaveText("6/6");
   // The lesson's words: the signs, their reading under them.
   await expect(page.locator(".lesson-vocab-reading").first()).toHaveText("nfr");
+  // ꜣ and ꜥ, which the main font lacks, are drawn by Noto Sans: its transliteration face is fetched and loaded.
+  await page.evaluate(() => document.fonts.ready);
+  const faces = await page.evaluate(() =>
+    [...document.fonts].filter((f) => f.family.replace(/"/g, "") === "Noto Sans" && f.unicodeRange.includes("A720")).map((f) => f.status),
+  );
+  expect(faces).toContain("loaded");
 });
 
 test("Sumerian: cuneiform in its font, sign indices typed as digits", async ({ page }) => {
