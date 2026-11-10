@@ -61,6 +61,12 @@ expect("hebrew: b/v, k/kh, final letters", [new Set(fh(["בוקר טוב", "boke
 expect("hebrew: consonant vav, tsadi, yod", [new Set(fh(["ורד", "vered"])).size, new Set(fh(["ארץ", "erets", "eretz"])).size, new Set(fh(["ישראל", "yisrael", "Yisraʾel"])).size, new Set(fh(["בית", "bayit"])).size], [1, 1, 1, 1]);
 expect("hebrew: different words differ", fold("שלום", [...he]) === fold("שלוש", [...he]), false);
 expect("hebrew: free answers keep their letters", markBlank({ kind: "free", answers: ["The house."] } as Parameters<typeof markBlank>[0], "the horse", [...he]), "check");
+const qu = ["quechua"] as const;
+const fq = (xs: string[]) => xs.map((x) => fold(x, [...qu]));
+expect("quechua: five vowels, Spanish spellings, -nchis", [new Set(fq(["qillqa", "qellqa"])).size, new Set(fq(["Qusqu", "Qosqo"])).size, new Set(fq(["wasi", "huasi"])).size, new Set(fq(["hatun", "jatun"])).size, new Set(fq(["killa", "quilla"])).size, new Set(fq(["kuntur", "cóndor", "cuntur"])).size, new Set(fq(["ñuqanchik", "ñuqanchis", "ñoqanchik"])).size], [1, 1, 1, 1, 1, 2, 1]);
+expect("quechua: hyphens between suffixes, huk kept", [fold("wasi-y-kuna-pi", [...qu]), fold("huk", [...qu]), fold("huch'uy", [...qu])], ["wasiykunapi", "huk", "huch'uy"]);
+expect("quechua: aspirates and ejectives differ", [fold("pacha", [...qu]) === fold("p'acha", [...qu]), fold("chaki", [...qu]) === fold("ch'aki", [...qu]), fold("kanka", [...qu]) === fold("qanqa", [...qu])], [false, false, false]);
+expect("quechua: free answers keep their letters", markBlank({ kind: "free", answers: ["The house."] } as Parameters<typeof markBlank>[0], "the horse", [...qu]), "check");
 const ml = ["malayalam"] as const;
 const fm = (xs: string[]) => xs.map((x) => fold(x, [...ml]));
 expect("malayalam: script, ISO 15919, Manglish", [new Set(fm(["കേരളം", "kēraḷaṁ", "keralam"])).size, new Set(fm(["മലയാളം", "malayāḷaṁ", "malayalam"])).size, new Set(fm(["പഴം", "paḻaṁ", "pazham"])).size], [1, 1, 1]);

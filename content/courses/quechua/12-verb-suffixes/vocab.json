@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "yachay", "meaning": "to know, to learn", "translations": { "fr": "savoir, apprendre", "es": "saber, aprender" }, "type": "verb" },
+    { "term": "yachachiy", "meaning": "to teach", "translations": { "fr": "enseigner", "es": "enseñar" }, "type": "verb" },
+    { "term": "rantiy", "meaning": "to buy", "translations": { "fr": "acheter", "es": "comprar" }, "type": "verb" },
+    { "term": "rantikuy", "meaning": "to sell", "translations": { "fr": "vendre", "es": "vender" }, "type": "verb" },
+    { "term": "apay", "meaning": "to carry, to take", "translations": { "fr": "porter, emporter", "es": "llevar" }, "type": "verb" },
+    { "term": "apamuy", "meaning": "to bring", "translations": { "fr": "apporter", "es": "traer" }, "type": "verb" },
+    { "term": "kuyay", "meaning": "to love, to care for", "translations": { "fr": "aimer, chérir", "es": "querer, amar" }, "type": "verb" },
+    { "term": "maqay", "meaning": "to hit", "translations": { "fr": "frapper", "es": "pegar, golpear" }, "type": "verb" },
+    { "term": "armakuy", "meaning": "to bathe (oneself)", "translations": { "fr": "se baigner", "es": "bañarse" }, "type": "verb" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "entries": [
+    { "term": "punku", "meaning": "door", "translations": { "fr": "porte", "es": "puerta" }, "type": "noun" },
+    { "term": "chupa", "meaning": "tail", "translations": { "fr": "queue", "es": "cola" }, "type": "noun" },
+    { "term": "yaku", "meaning": "water", "translations": { "fr": "eau", "es": "agua" }, "type": "noun" },
+    { "term": "tayta", "meaning": "father", "translations": { "fr": "père", "es": "padre" }, "type": "noun" },
+    { "term": "mama", "meaning": "mother", "translations": { "fr": "mère", "es": "madre" }, "type": "noun" },
+    { "term": "kuntur", "meaning": "condor", "translations": { "fr": "condor", "es": "cóndor" }, "type": "noun" },
+    { "term": "puma", "meaning": "puma", "translations": { "fr": "puma", "es": "puma" }, "type": "noun" },
+    { "term": "paqarin", "meaning": "tomorrow", "translations": { "fr": "demain", "es": "mañana" }, "type": "adverb" },
+    { "term": "phaway", "meaning": "to run, to fly", "translations": { "fr": "courir, voler", "es": "correr, volar" }, "type": "verb" }
+  ]
+}

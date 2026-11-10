@@ -840,7 +840,7 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan**, **🌙 Arabe**, **📜 Hébreu** and **🌴 Malayalam**, with the exercises done (*12 exercices sur 126 réussis*). See
+**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan**, **🌙 Arabe**, **📜 Hébreu**, **🌴 Malayalam** and **🦙 Quechua**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
 **The course page** lists the lessons (31 in Latin), each with its exercises done
@@ -912,6 +912,13 @@ course page opens the Malayalam letters as cards, like the kana: the letter
 shown and its sound chosen or typed, then the sound shown and the letter
 chosen. The last lesson is a compendium of proverbs, all of them in the
 course vocabulary.
+
+The Quechua course teaches Southern Quechua of Cusco in Peru's official
+alphabet, three vowels. Answers typed with five vowels (*Qosqo*), Spanish
+spellings (*huasi*, *jatun*) or *-nchis* for *-nchik* count; an aspirate or
+an ejective does not stand for a plain stop (*p'acha* is not *pacha*), and
+the buttons under the fields write *ñ* and the ejectives. The course has no
+sounds.
 
 Every course's words (and the Malayalam letters) also have their card under
 *Langues* on the home page, with the words to review, beside your own books

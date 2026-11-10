@@ -280,3 +280,37 @@ test("Malayalam: its font, answers in the script, ISO or Manglish, and the lette
   await page.keyboard.press(String(options.indexOf(sounds[letter]!) + 1));
   await expect(page.locator(".vocab-verdict")).toHaveText("✓ Juste");
 });
+
+test("Quechua: sixteen lessons, five-vowel and Spanish spellings, ejectives from the key row", async ({ page }) => {
+  await newPlayer(page, "Killa");
+  await goHome(page);
+  await expect(page.locator("[data-activity='vocab-course-quechua']")).toContainText("Vocabulaire quechua");
+  await expect(page.locator("[data-activity='vocab-course-quechua'] .activity-text")).toHaveText("🦙 Quechua");
+  await openActivity(page, "lessons-quechua");
+  await expect(page.locator(".lessons-item")).toHaveCount(16);
+  await page.locator(".lessons-item").first().click();
+  await expect(page.locator(".lesson-title")).toContainText("1.");
+  const card = page.locator(".lesson-exercise[data-exercise='official']");
+  const inputs = card.locator(".lesson-input");
+  // Qosqo and Wiraqocha, with the five vowels of the old spelling, are right.
+  for (const [i, v] of [[0, "Qosqo"], [1, "khipu"], [2, "Wiraqocha"], [3, "Titiqaqa"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/4");
+  // The Spanish spelling of khipu misses the aspirate: wrong.
+  await inputs.nth(1).fill("quipu");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
+
+  // Lesson 2: t' from the key row, and a plain t for an ejective is wrong.
+  await openActivity(page, "lessons-quechua");
+  await page.locator(".lessons-item").nth(1).click();
+  const spell = page.locator(".lesson-exercise[data-exercise='spell']");
+  const fields = spell.locator(".lesson-input");
+  await fields.nth(0).click();
+  await spell.locator(".lesson-key", { hasText: /^t'$/ }).click();
+  await page.keyboard.type("anta");
+  await expect(fields.nth(0)).toHaveValue("t'anta");
+  for (const [i, v] of [[1, "qhatu"], [2, "tika"], [3, "phuyu"]] as const) await fields.nth(i).fill(v);
+  await spell.locator(".lesson-check").click();
+  await expect(spell.locator(".lesson-exercise-score")).toHaveText("3/4");
+});

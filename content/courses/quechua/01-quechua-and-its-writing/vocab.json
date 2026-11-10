@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "runasimi", "meaning": "the Quechua language", "translations": { "fr": "la langue quechua", "es": "la lengua quechua" }, "type": "noun" },
+    { "term": "runa", "meaning": "person, human being", "translations": { "fr": "personne, être humain", "es": "persona, ser humano" }, "type": "noun" },
+    { "term": "simi", "meaning": "mouth, language", "translations": { "fr": "bouche, langue", "es": "boca, lengua" }, "type": "noun" },
+    { "term": "wasi", "meaning": "house", "translations": { "fr": "maison", "es": "casa" }, "type": "noun" },
+    { "term": "qillqa", "meaning": "writing, letter", "translations": { "fr": "écriture, lettre", "es": "escritura, letra" }, "type": "noun" },
+    { "term": "khipu", "meaning": "knotted-cord record", "translations": { "fr": "registre à cordelettes nouées", "es": "registro de cuerdas anudadas" }, "type": "noun" }
+  ]
+}

@@ -1,0 +1,211 @@
+{
+  "entries": [
+    {
+      "term": "iskay",
+      "meaning": "two",
+      "translations": {
+        "fr": "deux",
+        "es": "dos"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "kimsa",
+      "meaning": "three",
+      "translations": {
+        "fr": "trois",
+        "es": "tres"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "tawa",
+      "meaning": "four",
+      "translations": {
+        "fr": "quatre",
+        "es": "cuatro"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "pichqa",
+      "meaning": "five",
+      "translations": {
+        "fr": "cinq",
+        "es": "cinco"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "suqta",
+      "meaning": "six",
+      "translations": {
+        "fr": "six",
+        "es": "seis"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "qanchis",
+      "meaning": "seven",
+      "translations": {
+        "fr": "sept",
+        "es": "siete"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "pusaq",
+      "meaning": "eight",
+      "translations": {
+        "fr": "huit",
+        "es": "ocho"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "isqun",
+      "meaning": "nine",
+      "translations": {
+        "fr": "neuf",
+        "es": "nueve"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "chunka",
+      "meaning": "ten",
+      "translations": {
+        "fr": "dix",
+        "es": "diez"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "pachak",
+      "meaning": "hundred",
+      "translations": {
+        "fr": "cent",
+        "es": "cien"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "waranqa",
+      "meaning": "thousand",
+      "translations": {
+        "fr": "mille",
+        "es": "mil"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "wawqi",
+      "meaning": "brother (of a man)",
+      "translations": {
+        "fr": "frère (d'un homme)",
+        "es": "hermano (de un varón)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "pana",
+      "meaning": "sister (of a man)",
+      "translations": {
+        "fr": "sœur (d'un homme)",
+        "es": "hermana (de un varón)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "turi",
+      "meaning": "brother (of a woman)",
+      "translations": {
+        "fr": "frère (d'une femme)",
+        "es": "hermano (de una mujer)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ñaña",
+      "meaning": "sister (of a woman)",
+      "translations": {
+        "fr": "sœur (d'une femme)",
+        "es": "hermana (de una mujer)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "churi",
+      "meaning": "son (of a man)",
+      "translations": {
+        "fr": "fils (d'un homme)",
+        "es": "hijo (de un varón)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ususi",
+      "meaning": "daughter (of a man)",
+      "translations": {
+        "fr": "fille (d'un homme)",
+        "es": "hija (de un varón)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "qhari",
+      "meaning": "man",
+      "translations": {
+        "fr": "homme",
+        "es": "hombre, varón"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "warmi",
+      "meaning": "woman, wife",
+      "translations": {
+        "fr": "femme, épouse",
+        "es": "mujer, esposa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "tuta",
+      "meaning": "night",
+      "translations": {
+        "fr": "nuit",
+        "es": "noche"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "tutamanta",
+      "meaning": "in the morning",
+      "translations": {
+        "fr": "le matin",
+        "es": "por la mañana"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ch'isi",
+      "meaning": "evening",
+      "translations": {
+        "fr": "soir",
+        "es": "tarde, anochecer"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "chawpi p'unchaw",
+      "meaning": "noon",
+      "translations": {
+        "fr": "midi",
+        "es": "mediodía"
+      },
+      "type": "noun"
+    }
+  ]
+}

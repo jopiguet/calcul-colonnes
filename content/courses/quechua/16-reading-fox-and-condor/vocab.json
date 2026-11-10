@@ -1,0 +1,166 @@
+{
+  "entries": [
+    {
+      "term": "sapa",
+      "meaning": "every, each",
+      "translations": {
+        "fr": "chaque",
+        "es": "cada"
+      },
+      "type": "adjective"
+    },
+    {
+      "term": "maskhay",
+      "meaning": "to look for",
+      "translations": {
+        "fr": "chercher",
+        "es": "buscar"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "niy",
+      "meaning": "to say",
+      "translations": {
+        "fr": "dire",
+        "es": "decir"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "hanaq pacha",
+      "meaning": "the world above, heaven",
+      "translations": {
+        "fr": "le monde d'en haut, le ciel",
+        "es": "el mundo de arriba, el cielo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "raymi",
+      "meaning": "feast, festival",
+      "translations": {
+        "fr": "fête",
+        "es": "fiesta"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "wasa",
+      "meaning": "back",
+      "translations": {
+        "fr": "dos",
+        "es": "espalda"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "wichay",
+      "meaning": "to climb",
+      "translations": {
+        "fr": "grimper, monter",
+        "es": "subir, trepar"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "waskha",
+      "meaning": "rope",
+      "translations": {
+        "fr": "corde",
+        "es": "soga, cuerda"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "urmay",
+      "meaning": "to fall",
+      "translations": {
+        "fr": "tomber",
+        "es": "caer"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "pampa",
+      "meaning": "ground, plain",
+      "translations": {
+        "fr": "sol, plaine",
+        "es": "suelo, llanura"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ichaqa",
+      "meaning": "but",
+      "translations": {
+        "fr": "mais",
+        "es": "pero"
+      },
+      "type": "conjunction"
+    },
+    {
+      "term": "wiksa",
+      "meaning": "belly",
+      "translations": {
+        "fr": "ventre",
+        "es": "barriga, vientre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "sara",
+      "meaning": "maize",
+      "translations": {
+        "fr": "maïs",
+        "es": "maíz"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "kinuwa",
+      "meaning": "quinoa",
+      "translations": {
+        "fr": "quinoa",
+        "es": "quinua"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "suwa",
+      "meaning": "thief",
+      "translations": {
+        "fr": "voleur",
+        "es": "ladrón"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "llulla",
+      "meaning": "liar",
+      "translations": {
+        "fr": "menteur",
+        "es": "mentiroso"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ayni",
+      "meaning": "help given and returned",
+      "translations": {
+        "fr": "entraide rendue",
+        "es": "ayuda recíproca"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "minka",
+      "meaning": "communal work",
+      "translations": {
+        "fr": "travail communautaire",
+        "es": "trabajo comunal"
+      },
+      "type": "noun"
+    }
+  ]
+}

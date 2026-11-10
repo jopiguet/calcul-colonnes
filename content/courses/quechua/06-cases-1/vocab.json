@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "mikhuy", "meaning": "to eat", "translations": { "fr": "manger", "es": "comer" }, "type": "verb" },
+    { "term": "riy", "meaning": "to go", "translations": { "fr": "aller", "es": "ir" }, "type": "verb" },
+    { "term": "hamuy", "meaning": "to come", "translations": { "fr": "venir", "es": "venir" }, "type": "verb" },
+    { "term": "tiyay", "meaning": "to sit, to live", "translations": { "fr": "s'asseoir, habiter", "es": "sentarse, vivir" }, "type": "verb" },
+    { "term": "mayu", "meaning": "river", "translations": { "fr": "rivière, fleuve", "es": "río" }, "type": "noun" },
+    { "term": "urqu", "meaning": "mountain", "translations": { "fr": "montagne", "es": "cerro, montaña" }, "type": "noun" },
+    { "term": "papa", "meaning": "potato", "translations": { "fr": "pomme de terre", "es": "papa, patata" }, "type": "noun" },
+    { "term": "rumi", "meaning": "stone", "translations": { "fr": "pierre", "es": "piedra" }, "type": "noun" }
+  ]
+}

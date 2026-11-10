@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "paray", "meaning": "to rain", "translations": { "fr": "pleuvoir", "es": "llover" }, "type": "verb" },
+    { "term": "para", "meaning": "rain", "translations": { "fr": "pluie", "es": "lluvia" }, "type": "noun" },
+    { "term": "kunan", "meaning": "now, today", "translations": { "fr": "maintenant, aujourd'hui", "es": "ahora, hoy" }, "type": "adverb" },
+    { "term": "manaraq", "meaning": "not yet", "translations": { "fr": "pas encore", "es": "todavía no" }, "type": "adverb" },
+    { "term": "inti", "meaning": "sun", "translations": { "fr": "soleil", "es": "sol" }, "type": "noun" },
+    { "term": "wayra", "meaning": "wind", "translations": { "fr": "vent", "es": "viento" }, "type": "noun" }
+  ]
+}

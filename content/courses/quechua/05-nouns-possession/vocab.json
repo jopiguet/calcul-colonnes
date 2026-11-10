@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "atuq", "meaning": "fox", "translations": { "fr": "renard", "es": "zorro" }, "type": "noun" },
+    { "term": "allqu", "meaning": "dog", "translations": { "fr": "chien", "es": "perro" }, "type": "noun" },
+    { "term": "misi", "meaning": "cat", "translations": { "fr": "chat", "es": "gato" }, "type": "noun" },
+    { "term": "llaqta", "meaning": "town, village, people", "translations": { "fr": "ville, village, peuple", "es": "pueblo, ciudad" }, "type": "noun" },
+    { "term": "huk", "meaning": "one, a", "translations": { "fr": "un, une", "es": "uno, un" }, "type": "numeral" },
+    { "term": "wawa", "meaning": "baby, child (of a woman)", "translations": { "fr": "bébé, enfant (d'une femme)", "es": "bebé, hijo o hija (de una mujer)" }, "type": "noun" }
+  ]
+}

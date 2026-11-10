@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "term": "kay", "meaning": "to be", "translations": { "fr": "être", "es": "ser, estar" }, "type": "verb" },
+    { "term": "mana", "meaning": "not", "translations": { "fr": "ne … pas", "es": "no (negación)" }, "type": "adverb" },
+    { "term": "yachachiq", "meaning": "teacher", "translations": { "fr": "enseignant, enseignante", "es": "profesor, profesora" }, "type": "noun" },
+    { "term": "hatun", "meaning": "big", "translations": { "fr": "grand", "es": "grande" }, "type": "adjective" },
+    { "term": "huch'uy", "meaning": "small", "translations": { "fr": "petit", "es": "pequeño" }, "type": "adjective" },
+    { "term": "allin", "meaning": "good", "translations": { "fr": "bon, bien", "es": "bueno, bien" }, "type": "adjective" },
+    { "term": "sumaq", "meaning": "beautiful, delicious", "translations": { "fr": "beau, délicieux", "es": "hermoso, rico" }, "type": "adjective" }
+  ]
+}

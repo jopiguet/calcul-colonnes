@@ -1,0 +1,46 @@
+{
+  "id": "quechua",
+  "language": "qu",
+  "icon": "🦙",
+  "folds": [
+    "quechua"
+  ],
+  "title": {
+    "fr": "Quechua",
+    "es": "Quechua",
+    "en": "Quechua"
+  },
+  "description": {
+    "fr": "Le quechua du Sud, tel qu'on le parle à Cusco : ses sons, aspirées et éjectives, une langue qui empile les suffixes, ses cas, ses temps, les suffixes qui disent comment on sait ce qu'on dit, puis un conte du renard et du condor.",
+    "es": "El quechua sureño tal como se habla en el Cusco: sus sonidos, aspiradas y glotalizadas, una lengua que encadena sufijos, sus casos, sus tiempos, los sufijos que dicen cómo se sabe lo que se dice, y luego un cuento del zorro y el cóndor.",
+    "en": "Southern Quechua as spoken in Cusco: its sounds, aspirates and ejectives, a language that stacks suffixes, its cases and tenses, the suffixes that say how you know what you say, then a tale of the fox and the condor."
+  },
+  "vocabLesson": "Lesson {n}",
+  "keys": [
+    "ñ",
+    "'",
+    "ch'",
+    "k'",
+    "p'",
+    "q'",
+    "t'"
+  ],
+  "lessons": [
+    "01-quechua-and-its-writing",
+    "02-consonants",
+    "03-greetings-pronouns",
+    "04-to-be",
+    "05-nouns-possession",
+    "06-cases-1",
+    "07-cases-2",
+    "08-present-progressive",
+    "09-evidentials-enclitics",
+    "10-past",
+    "11-future-imperative-conditional",
+    "12-verb-suffixes",
+    "13-object-suffixes",
+    "14-nominalizers-clauses",
+    "15-numbers-family-time",
+    "16-reading-fox-and-condor"
+  ]
+}

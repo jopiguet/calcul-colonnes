@@ -1,0 +1,9 @@
+{
+  "entries": [
+    { "term": "yanapay", "meaning": "to help", "translations": { "fr": "aider", "es": "ayudar" }, "type": "verb" },
+    { "term": "uyariy", "meaning": "to listen, to hear", "translations": { "fr": "écouter, entendre", "es": "escuchar, oír" }, "type": "verb" },
+    { "term": "suyay", "meaning": "to wait", "translations": { "fr": "attendre", "es": "esperar" }, "type": "verb" },
+    { "term": "qhaway", "meaning": "to look, to watch", "translations": { "fr": "regarder", "es": "mirar" }, "type": "verb" },
+    { "term": "kuyayki", "meaning": "I love you", "translations": { "fr": "je t'aime", "es": "te quiero" }, "type": "phrase" }
+  ]
+}

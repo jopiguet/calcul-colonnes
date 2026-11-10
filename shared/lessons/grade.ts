@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -230,6 +230,21 @@ const TRANSLIT: [RegExp, string][] = [
   [/[ꞽ]/g, "i"],
 ];
 
+/**
+ * Southern Quechua as typed: the official three vowels or five (e, o near q), Spanish spellings
+ * (hu, j, c, qu: huasi, jatun, cuntur, quilla), -nchis for -nchik; aspirates and ejectives kept apart.
+ */
+export function quechuaKey(text: string): string {
+  return text
+    .normalize("NFD").replace(/[\u0300-\u0302\u0304\u0308]/g, "").normalize("NFC")
+    .replace(/[-.]/g, "")
+    .replace(/(^|[^a-zñ'])hu(?=[aeiou])/g, "$1w").replace(/([aeiou])hu(?=[aeiou])/g, "$1w")
+    .replace(/j/g, "h")
+    .replace(/qu(?=[ei])/g, "k").replace(/c(?![h])/g, "k")
+    .replace(/e/g, "i").replace(/o/g, "u")
+    .replace(/nchis\b/g, "nchik");
+}
+
 const SUBSCRIPTS: Record<string, string> = { "₀": "0", "₁": "1", "₂": "2", "₃": "3", "₄": "4", "₅": "5", "₆": "6", "₇": "7", "₈": "8", "₉": "9" };
 
 /** The text as compared: lower case, single spaces, no punctuation but the apostrophe and the period, the course's folds. */
@@ -244,6 +259,7 @@ export function fold(text: string, folds: readonly Fold[]): string {
   if (folds.includes("arabic")) return arabicKey(t);
   if (folds.includes("hebrew")) return hebrewKey(t);
   if (folds.includes("malayalam")) return malayalamKey(t);
+  if (folds.includes("quechua")) return quechuaKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -271,7 +287,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam"].includes(x));
+    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua"].includes(x));
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

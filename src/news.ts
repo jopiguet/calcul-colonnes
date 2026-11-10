@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.4.0",
+    fr: ["Nouveau cours de langue : 🦙 quechua, le quechua du Sud tel qu'on le parle à Cusco, en 16 leçons, des aspirées et éjectives aux suffixes qui disent comment on sait ce qu'on dit, jusqu'à un conte du renard et du condor. Les réponses écrites avec cinq voyelles (« Qosqo ») ou à l'espagnole (« huasi ») comptent."],
+    es: ["Nuevo curso de idioma: 🦙 quechua, el quechua sureño tal como se habla en el Cusco, en 16 lecciones, de las aspiradas y glotalizadas a los sufijos que dicen cómo se sabe lo que se dice, hasta un cuento del zorro y el cóndor. Las respuestas escritas con cinco vocales («Qosqo») o a la española («huasi») valen."],
+    en: ["New language course: 🦙 Quechua, Southern Quechua as spoken in Cusco, in 16 lessons, from the aspirated and ejective stops to the suffixes that say how you know what you say, ending with a tale of the fox and the condor. Answers typed with five vowels (\"Qosqo\") or in Spanish spelling (\"huasi\") count."],
+  },
+  {
     version: "8.3.0",
     fr: ["Deux nouveaux tests avec leur cours, dans Informatique : 🐙 GitHub (issues, pull requests, Actions, Dependabot, travail en équipe, processus) et 🚀 Déploiement (pipelines, conteneurs, Terraform, Kubernetes, GitOps, Cloud Run, exploitation)."],
     es: ["Dos tests nuevos con su curso, en Informatique: 🐙 GitHub (issues, pull requests, Actions, Dependabot, trabajo en equipo, procesos) y 🚀 Despliegue (pipelines, contenedores, Terraform, Kubernetes, GitOps, Cloud Run, operación)."],

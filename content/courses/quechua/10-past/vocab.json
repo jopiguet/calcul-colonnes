@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "p'unchaw", "meaning": "day", "translations": { "fr": "jour", "es": "día" }, "type": "noun" },
+    { "term": "qayna p'unchaw", "meaning": "yesterday", "translations": { "fr": "hier", "es": "ayer" }, "type": "adverb" },
+    { "term": "wata", "meaning": "year", "translations": { "fr": "année", "es": "año" }, "type": "noun" },
+    { "term": "ñawpaq", "meaning": "before, formerly", "translations": { "fr": "avant, autrefois", "es": "antes, antiguamente" }, "type": "adverb" },
+    { "term": "kuti", "meaning": "time, occasion", "translations": { "fr": "fois", "es": "vez" }, "type": "noun" },
+    { "term": "aycha", "meaning": "meat", "translations": { "fr": "viande", "es": "carne" }, "type": "noun" }
+  ]
+}

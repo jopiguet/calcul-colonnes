@@ -1,0 +1,12 @@
+{
+  "entries": [
+    { "term": "rimay", "meaning": "to speak", "translations": { "fr": "parler", "es": "hablar" }, "type": "verb" },
+    { "term": "llamk'ay", "meaning": "to work", "translations": { "fr": "travailler", "es": "trabajar" }, "type": "verb" },
+    { "term": "upyay", "meaning": "to drink", "translations": { "fr": "boire", "es": "beber, tomar" }, "type": "verb" },
+    { "term": "puñuy", "meaning": "to sleep", "translations": { "fr": "dormir", "es": "dormir" }, "type": "verb" },
+    { "term": "ruway", "meaning": "to do, to make", "translations": { "fr": "faire", "es": "hacer" }, "type": "verb" },
+    { "term": "takiy", "meaning": "to sing", "translations": { "fr": "chanter", "es": "cantar" }, "type": "verb" },
+    { "term": "tusuy", "meaning": "to dance", "translations": { "fr": "danser", "es": "bailar" }, "type": "verb" },
+    { "term": "rikuy", "meaning": "to see", "translations": { "fr": "voir", "es": "ver" }, "type": "verb" }
+  ]
+}

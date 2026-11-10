@@ -1,0 +1,14 @@
+{
+  "entries": [
+    { "term": "pacha", "meaning": "earth, world, time", "translations": { "fr": "terre, monde, temps", "es": "tierra, mundo, tiempo" }, "type": "noun" },
+    { "term": "p'acha", "meaning": "clothing", "translations": { "fr": "vêtements", "es": "ropa" }, "type": "noun" },
+    { "term": "chaki", "meaning": "foot", "translations": { "fr": "pied", "es": "pie" }, "type": "noun" },
+    { "term": "ch'aki", "meaning": "dry", "translations": { "fr": "sec", "es": "seco" }, "type": "adjective" },
+    { "term": "t'anta", "meaning": "bread", "translations": { "fr": "pain", "es": "pan" }, "type": "noun" },
+    { "term": "t'ika", "meaning": "flower", "translations": { "fr": "fleur", "es": "flor" }, "type": "noun" },
+    { "term": "phuyu", "meaning": "cloud", "translations": { "fr": "nuage", "es": "nube" }, "type": "noun" },
+    { "term": "qhatu", "meaning": "market", "translations": { "fr": "marché", "es": "mercado" }, "type": "noun" },
+    { "term": "killa", "meaning": "moon, month", "translations": { "fr": "lune, mois", "es": "luna, mes" }, "type": "noun" },
+    { "term": "qilla", "meaning": "lazy", "translations": { "fr": "paresseux", "es": "perezoso, ocioso" }, "type": "adjective" }
+  ]
+}

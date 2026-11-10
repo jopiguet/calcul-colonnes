@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.4.0
+
+- **🦙 Quechua, a language course** ([Language courses](docs/language-courses.md)): Southern Quechua of Cusco in Peru's official alphabet, 16 lessons, 64 exercises, 146 words, in French, Spanish and English. The alphabet and stress; plain, aspirated and ejective stops and the uvular *q*; greetings and the inclusive and exclusive "we"; *kay* and *-mi* / *-chu*; plural and possession; ten case suffixes; the present and *-chka-*; the evidentials *-mi*, *-si*, *-chá* and the other enclitics; the two pasts *-rqa-* and *-sqa-*; future, commands and conditional; derivational suffixes (*-chi-*, *-ku-*, *-naku-*, *-pu-*, *-mu-*); object suffixes (*-wa-*, *-yki*, *-sunki*); nominalizers and *-spa* / *-qti-*; numbers and kinship by the speaker's sex; a tale of the fox and the condor written for the course, and *ama suwa, ama llulla, ama qilla*.
+- **The `quechua` fold:** strict answers typed with five vowels (*Qosqo*), in Spanish spelling (*huasi*, *jatun*) or with *-nchis* count; aspirates, ejectives and *k* / *q* stay apart. The key row writes *ñ* and the ejectives.
+- No sounds for Quechua: eSpeak NG has no Quechua voice.
+- The course's words are a vocabulary book with its card under *Langues*, like the other courses.
+- `lessons.spec.ts`: the Quechua course, its spellings and its key row.
+
 ## 8.3.0
 
 - **🐙 GitHub, a test and a course** ([Question generators › GitHub](docs/question-generators.md#github)): four levels, *Débutant* to *Expert*, eight topics in two groups, *Travailler ensemble* (repositories, issues and Projects, pull requests, organisations and process) and *Automatisation et sécurité* (branch protection and rulesets, Actions, secrets and OIDC, Dependabot, CodeQL and secret scanning). 128 written questions in French, Spanish and English. The course *GitHub — un cours complet* has a part per topic, exercises with answers and sources; a wrong answer links to its part.

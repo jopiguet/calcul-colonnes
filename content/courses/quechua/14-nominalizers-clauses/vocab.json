@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "qillqay", "meaning": "to write", "translations": { "fr": "écrire", "es": "escribir" }, "type": "verb" },
+    { "term": "yanuy", "meaning": "to cook", "translations": { "fr": "cuisiner, faire cuire", "es": "cocinar" }, "type": "verb" },
+    { "term": "mikhuna", "meaning": "food", "translations": { "fr": "nourriture", "es": "comida" }, "type": "noun" },
+    { "term": "puñuna", "meaning": "bed", "translations": { "fr": "lit", "es": "cama" }, "type": "noun" },
+    { "term": "tiyana", "meaning": "seat", "translations": { "fr": "siège", "es": "asiento" }, "type": "noun" },
+    { "term": "llamk'aq", "meaning": "worker", "translations": { "fr": "travailleur, travailleuse", "es": "trabajador, trabajadora" }, "type": "noun" }
+  ]
+}

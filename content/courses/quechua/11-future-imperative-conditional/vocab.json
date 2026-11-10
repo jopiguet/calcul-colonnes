@@ -1,0 +1,10 @@
+{
+  "entries": [
+    { "term": "munay", "meaning": "to want, to love", "translations": { "fr": "vouloir, aimer", "es": "querer, amar" }, "type": "verb" },
+    { "term": "waqay", "meaning": "to cry, to weep", "translations": { "fr": "pleurer", "es": "llorar" }, "type": "verb" },
+    { "term": "yaykuy", "meaning": "to enter", "translations": { "fr": "entrer", "es": "entrar" }, "type": "verb" },
+    { "term": "asiy", "meaning": "to laugh", "translations": { "fr": "rire", "es": "reír" }, "type": "verb" },
+    { "term": "kutiy", "meaning": "to return", "translations": { "fr": "revenir, retourner", "es": "volver, regresar" }, "type": "verb" },
+    { "term": "Haku!", "meaning": "Let's go!", "translations": { "fr": "Allons-y !", "es": "¡Vamos!" }, "type": "phrase" }
+  ]
+}

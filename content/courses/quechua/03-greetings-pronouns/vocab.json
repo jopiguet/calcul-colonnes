@@ -1,0 +1,17 @@
+{
+  "entries": [
+    { "term": "ñuqa", "meaning": "I", "translations": { "fr": "je, moi", "es": "yo" }, "type": "pronoun" },
+    { "term": "qam", "meaning": "you (one person)", "translations": { "fr": "tu, toi", "es": "tú, usted" }, "type": "pronoun" },
+    { "term": "pay", "meaning": "he, she", "translations": { "fr": "il, elle", "es": "él, ella" }, "type": "pronoun" },
+    { "term": "ñuqanchik", "meaning": "we (you included)", "translations": { "fr": "nous (avec toi)", "es": "nosotros (contigo)" }, "type": "pronoun" },
+    { "term": "ñuqayku", "meaning": "we (you excluded)", "translations": { "fr": "nous (sans toi)", "es": "nosotros (sin ti)" }, "type": "pronoun" },
+    { "term": "qamkuna", "meaning": "you (all)", "translations": { "fr": "vous", "es": "ustedes, vosotros" }, "type": "pronoun" },
+    { "term": "paykuna", "meaning": "they", "translations": { "fr": "ils, elles", "es": "ellos, ellas" }, "type": "pronoun" },
+    { "term": "suti", "meaning": "name", "translations": { "fr": "nom", "es": "nombre" }, "type": "noun" },
+    { "term": "ari", "meaning": "yes", "translations": { "fr": "oui", "es": "sí" }, "type": "interjection" },
+    { "term": "manan", "meaning": "no", "translations": { "fr": "non", "es": "no" }, "type": "interjection" },
+    { "term": "sulpayki", "meaning": "thank you", "translations": { "fr": "merci", "es": "gracias" }, "type": "interjection" },
+    { "term": "Allillanchu?", "meaning": "Are you well?", "translations": { "fr": "Tu vas bien ?", "es": "¿Estás bien?" }, "type": "phrase" },
+    { "term": "tupananchikkama", "meaning": "until we meet again", "translations": { "fr": "à la prochaine", "es": "hasta la próxima" }, "type": "phrase" }
+  ]
+}
