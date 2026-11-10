@@ -1,0 +1,284 @@
+{
+  "entries": [
+    {
+      "term": "གཅིག",
+      "reading": "gcig",
+      "meaning": "one",
+      "translations": {
+        "fr": "un",
+        "es": "uno"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "གཉིས",
+      "reading": "gnyis",
+      "meaning": "two",
+      "translations": {
+        "fr": "deux",
+        "es": "dos"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "གསུམ",
+      "reading": "gsum",
+      "meaning": "three",
+      "translations": {
+        "fr": "trois",
+        "es": "tres"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "བཞི",
+      "reading": "bzhi",
+      "meaning": "four",
+      "translations": {
+        "fr": "quatre",
+        "es": "cuatro"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ལྔ",
+      "reading": "lnga",
+      "meaning": "five",
+      "translations": {
+        "fr": "cinq",
+        "es": "cinco"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "དྲུག",
+      "reading": "drug",
+      "meaning": "six",
+      "translations": {
+        "fr": "six",
+        "es": "seis"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "བདུན",
+      "reading": "bdun",
+      "meaning": "seven",
+      "translations": {
+        "fr": "sept",
+        "es": "siete"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "བརྒྱད",
+      "reading": "brgyad",
+      "meaning": "eight",
+      "translations": {
+        "fr": "huit",
+        "es": "ocho"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "བཅུ",
+      "reading": "bcu",
+      "meaning": "ten",
+      "translations": {
+        "fr": "dix",
+        "es": "diez"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ཉི་ཤུ",
+      "reading": "nyi shu",
+      "meaning": "twenty",
+      "translations": {
+        "fr": "vingt",
+        "es": "veinte"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "བརྒྱ",
+      "reading": "brgya",
+      "meaning": "hundred",
+      "translations": {
+        "fr": "cent",
+        "es": "cien"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "སྟོང",
+      "reading": "stong",
+      "meaning": "thousand",
+      "translations": {
+        "fr": "mille",
+        "es": "mil"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "གཟའ་ཉི་མ",
+      "reading": "gza' nyi ma",
+      "meaning": "Sunday",
+      "translations": {
+        "fr": "dimanche",
+        "es": "domingo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གཟའ་ཟླ་བ",
+      "reading": "gza' zla ba",
+      "meaning": "Monday",
+      "translations": {
+        "fr": "lundi",
+        "es": "lunes"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གཟའ་མིག་དམར",
+      "reading": "gza' mig dmar",
+      "meaning": "Tuesday",
+      "translations": {
+        "fr": "mardi",
+        "es": "martes"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གཟའ་ལྷག་པ",
+      "reading": "gza' lhag pa",
+      "meaning": "Wednesday",
+      "translations": {
+        "fr": "mercredi",
+        "es": "miércoles"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གཟའ་ཕུར་བུ",
+      "reading": "gza' phur bu",
+      "meaning": "Thursday",
+      "translations": {
+        "fr": "jeudi",
+        "es": "jueves"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གཟའ་པ་སངས",
+      "reading": "gza' pa sangs",
+      "meaning": "Friday",
+      "translations": {
+        "fr": "vendredi",
+        "es": "viernes"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གཟའ་སྤེན་པ",
+      "reading": "gza' spen pa",
+      "meaning": "Saturday",
+      "translations": {
+        "fr": "samedi",
+        "es": "sábado"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཨ་མ་ལགས",
+      "reading": "a ma lags",
+      "meaning": "mother",
+      "translations": {
+        "fr": "mère",
+        "es": "madre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "པ་ལགས",
+      "reading": "pa lags",
+      "meaning": "father",
+      "translations": {
+        "fr": "père",
+        "es": "padre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "བུ་མོ",
+      "reading": "bu mo",
+      "meaning": "daughter, girl",
+      "translations": {
+        "fr": "fille",
+        "es": "hija, chica"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཇོ་ལགས",
+      "reading": "jo lags",
+      "meaning": "elder brother",
+      "translations": {
+        "fr": "frère aîné",
+        "es": "hermano mayor"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཨ་ཅག",
+      "reading": "a cag",
+      "meaning": "elder sister",
+      "translations": {
+        "fr": "sœur aînée",
+        "es": "hermana mayor"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ནུ་བོ",
+      "reading": "nu bo",
+      "meaning": "younger brother",
+      "translations": {
+        "fr": "frère cadet",
+        "es": "hermano menor"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "དེ་རིང",
+      "reading": "de ring",
+      "meaning": "today",
+      "translations": {
+        "fr": "aujourd'hui",
+        "es": "hoy"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ཁ་སང",
+      "reading": "kha sang",
+      "meaning": "yesterday",
+      "translations": {
+        "fr": "hier",
+        "es": "ayer"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "སང་ཉིན",
+      "reading": "sang nyin",
+      "meaning": "tomorrow",
+      "translations": {
+        "fr": "demain",
+        "es": "mañana"
+      },
+      "type": "adverb"
+    }
+  ]
+}

@@ -61,6 +61,14 @@ expect("hebrew: b/v, k/kh, final letters", [new Set(fh(["בוקר טוב", "boke
 expect("hebrew: consonant vav, tsadi, yod", [new Set(fh(["ורד", "vered"])).size, new Set(fh(["ארץ", "erets", "eretz"])).size, new Set(fh(["ישראל", "yisrael", "Yisraʾel"])).size, new Set(fh(["בית", "bayit"])).size], [1, 1, 1, 1]);
 expect("hebrew: different words differ", fold("שלום", [...he]) === fold("שלוש", [...he]), false);
 expect("hebrew: free answers keep their letters", markBlank({ kind: "free", answers: ["The house."] } as Parameters<typeof markBlank>[0], "the horse", [...he]), "check");
+const iu = ["inuktitut"] as const;
+const fi = (x: string) => fold(x, [...iu]);
+expect("inuktitut: syllabics and Roman are one answer", [fi("ᐃᓄᒃᑎᑐᑦ") === fi("Inuktitut"), fi("ᖃᓄᐃᙱᑦᑐᖓ") === fi("qanuinngittunga"), fi("ᐱᖅᑯᓯᖅ") === fi("piqqusiq"), fi("ᓇᑯᕐᒦᒃ") === fi("nakurmiik"), fi("ᐊᖏᔪᖅ") === fi("angiyuq")], [true, true, true, true, true]);
+expect("inuktitut: q and k, long and short vowels differ", [fi("ᖃᒧᑎᒃ") === fi("kamutik"), fi("ᐃᓄᒃ") === fi("iinuk"), fi("ᐊᖓᔪᖅ") === fi("angajuq")], [false, false, true]);
+const bo = ["tibetan"] as const;
+const fb = (x: string) => fold(x, [...bo]);
+expect("tibetan: script and Wylie are one answer", [fb("བཀྲ་ཤིས་བདེ་ལེགས།") === fb("bkra shis bde legs"), fb("འགྲོ") === fb("'gro"), fb("གཡག") === fb("g.yag"), fb("ཐུགས་རྗེ་ཆེ") === fb("thugs rje che"), fb("ཨ་མ") === fb("a ma")], [true, true, true, true, true]);
+expect("tibetan: other letters, other vowels differ", [fb("བོད") === fb("bod"), fb("བོད") === fb("pod"), fb("ཁྱི") === fb("khyo"), fb("ཆུ") === fb("chu")], [true, false, false, true]);
 const qu = ["quechua"] as const;
 const fq = (xs: string[]) => xs.map((x) => fold(x, [...qu]));
 expect("quechua: five vowels, Spanish spellings, -nchis", [new Set(fq(["qillqa", "qellqa"])).size, new Set(fq(["Qusqu", "Qosqo"])).size, new Set(fq(["wasi", "huasi"])).size, new Set(fq(["hatun", "jatun"])).size, new Set(fq(["killa", "quilla"])).size, new Set(fq(["kuntur", "cóndor", "cuntur"])).size, new Set(fq(["ñuqanchik", "ñuqanchis", "ñoqanchik"])).size], [1, 1, 1, 1, 1, 2, 1]);

@@ -1,0 +1,406 @@
+{
+ "book": {
+  "title": "Tibetan letters",
+  "credit": "Written for Luma's Tibetan course (docs/language-courses.md)"
+ },
+ "lessons": [
+  {
+   "title": "ཀ་ཁ་ག་ང",
+   "subtitle": "ka kha ga nga",
+   "sections": [
+    {
+     "title": "ཀ ཁ ག ང",
+     "subtitle": "ka kha ga nga",
+     "entries": [
+      {
+       "term": "ཀ",
+       "meaning": "ka",
+       "note": "ཀ་བ ka ba"
+      },
+      {
+       "term": "ཁ",
+       "meaning": "kha",
+       "note": "ཁ་ལག kha lag"
+      },
+      {
+       "term": "ག",
+       "meaning": "ga",
+       "note": "གངས gangs"
+      },
+      {
+       "term": "ང",
+       "meaning": "nga",
+       "note": "ང nga"
+      }
+     ]
+    },
+    {
+     "title": "ཅ ཆ ཇ ཉ",
+     "subtitle": "ca cha ja nya",
+     "entries": [
+      {
+       "term": "ཅ",
+       "meaning": "ca",
+       "note": "བཅུ bcu"
+      },
+      {
+       "term": "ཆ",
+       "meaning": "cha",
+       "note": "ཆུ chu"
+      },
+      {
+       "term": "ཇ",
+       "meaning": "ja",
+       "note": "ཇ ja"
+      },
+      {
+       "term": "ཉ",
+       "meaning": "nya",
+       "note": "ཉི་མ nyi ma"
+      }
+     ]
+    },
+    {
+     "title": "ཏ ཐ ད ན",
+     "subtitle": "ta tha da na",
+     "entries": [
+      {
+       "term": "ཏ",
+       "meaning": "ta",
+       "note": "རྟ rta"
+      },
+      {
+       "term": "ཐ",
+       "meaning": "tha",
+       "note": "ཐུགས་རྗེ་ཆེ thugs rje che"
+      },
+      {
+       "term": "ད",
+       "meaning": "da",
+       "note": "དེ་རིང de ring"
+      },
+      {
+       "term": "ན",
+       "meaning": "na",
+       "note": "ནང nang"
+      }
+     ]
+    },
+    {
+     "title": "པ ཕ བ མ",
+     "subtitle": "pa pha ba ma",
+     "entries": [
+      {
+       "term": "པ",
+       "meaning": "pa",
+       "note": "པ་ལགས pa lags"
+      },
+      {
+       "term": "ཕ",
+       "meaning": "pha",
+       "note": "ཕྱག phyag"
+      },
+      {
+       "term": "བ",
+       "meaning": "ba",
+       "note": "བོད bod"
+      },
+      {
+       "term": "མ",
+       "meaning": "ma",
+       "note": "མི mi"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ཙ་ཚ་ཛ་ཝ",
+   "subtitle": "tsa tsha dza wa",
+   "sections": [
+    {
+     "title": "ཙ ཚ ཛ ཝ",
+     "subtitle": "tsa tsha dza wa",
+     "entries": [
+      {
+       "term": "ཙ",
+       "meaning": "tsa",
+       "note": "རྩམ་པ rtsam pa"
+      },
+      {
+       "term": "ཚ",
+       "meaning": "tsha",
+       "note": "མཚོ mtsho"
+      },
+      {
+       "term": "ཛ",
+       "meaning": "dza",
+       "note": "བསྟན་འཛིན bstan 'dzin"
+      },
+      {
+       "term": "ཝ",
+       "meaning": "wa"
+      }
+     ]
+    },
+    {
+     "title": "ཞ ཟ འ ཡ",
+     "subtitle": "zha za 'a ya",
+     "entries": [
+      {
+       "term": "ཞ",
+       "meaning": "zha",
+       "note": "ཞོ zho"
+      },
+      {
+       "term": "ཟ",
+       "meaning": "za",
+       "note": "ཟ za"
+      },
+      {
+       "term": "འ",
+       "meaning": "'a",
+       "note": "འགྲོ 'gro"
+      },
+      {
+       "term": "ཡ",
+       "meaning": "ya",
+       "note": "ཡུལ yul"
+      }
+     ]
+    },
+    {
+     "title": "ར ལ ཤ ས",
+     "subtitle": "ra la sha sa",
+     "entries": [
+      {
+       "term": "ར",
+       "meaning": "ra",
+       "note": "རི ri"
+      },
+      {
+       "term": "ལ",
+       "meaning": "la",
+       "note": "ལྷ་ས lha sa"
+      },
+      {
+       "term": "ཤ",
+       "meaning": "sha",
+       "note": "ཤ sha"
+      },
+      {
+       "term": "ས",
+       "meaning": "sa",
+       "note": "ས sa"
+      }
+     ]
+    },
+    {
+     "title": "ཧ ཨ",
+     "subtitle": "ha a",
+     "entries": [
+      {
+       "term": "ཧ",
+       "meaning": "ha"
+      },
+      {
+       "term": "ཨ",
+       "meaning": "a",
+       "note": "ཨ་མ་ལགས a ma lags"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ཀི་ཀུ་ཀེ་ཀོ",
+   "subtitle": "i u e o",
+   "sections": [
+    {
+     "title": "ཀི ཀུ ཀེ ཀོ",
+     "subtitle": "ki ku ke ko",
+     "entries": [
+      {
+       "term": "ཀི",
+       "meaning": "ki"
+      },
+      {
+       "term": "ཀུ",
+       "meaning": "ku",
+       "note": "སྐུ་གཟུགས sku gzugs"
+      },
+      {
+       "term": "ཀེ",
+       "meaning": "ke"
+      },
+      {
+       "term": "ཀོ",
+       "meaning": "ko",
+       "note": "ཁོ kho"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "རྐ་ལྷ་སྐ",
+   "subtitle": "stacks",
+   "sections": [
+    {
+     "title": "རྐ རྒ རྟ རྡ",
+     "subtitle": "rka rga rta rda",
+     "entries": [
+      {
+       "term": "རྐ",
+       "meaning": "rka"
+      },
+      {
+       "term": "རྒ",
+       "meaning": "rga"
+      },
+      {
+       "term": "རྟ",
+       "meaning": "rta"
+      },
+      {
+       "term": "རྡ",
+       "meaning": "rda"
+      }
+     ]
+    },
+    {
+     "title": "ལྷ ལྔ ལྟ ལྕ",
+     "subtitle": "lha lnga lta lca",
+     "entries": [
+      {
+       "term": "ལྷ",
+       "meaning": "lha"
+      },
+      {
+       "term": "ལྔ",
+       "meaning": "lnga"
+      },
+      {
+       "term": "ལྟ",
+       "meaning": "lta"
+      },
+      {
+       "term": "ལྕ",
+       "meaning": "lca"
+      }
+     ]
+    },
+    {
+     "title": "སྐ སྒ སྟ སྨ",
+     "subtitle": "ska sga sta sma",
+     "entries": [
+      {
+       "term": "སྐ",
+       "meaning": "ska"
+      },
+      {
+       "term": "སྒ",
+       "meaning": "sga"
+      },
+      {
+       "term": "སྟ",
+       "meaning": "sta"
+      },
+      {
+       "term": "སྨ",
+       "meaning": "sma"
+      }
+     ]
+    },
+    {
+     "title": "ཀྱ ཁྱ གྱ པྱ",
+     "subtitle": "kya khya gya pya",
+     "entries": [
+      {
+       "term": "ཀྱ",
+       "meaning": "kya"
+      },
+      {
+       "term": "ཁྱ",
+       "meaning": "khya"
+      },
+      {
+       "term": "གྱ",
+       "meaning": "gya"
+      },
+      {
+       "term": "པྱ",
+       "meaning": "pya"
+      }
+     ]
+    },
+    {
+     "title": "ཕྱ བྱ མྱ ཀྲ",
+     "subtitle": "phya bya mya kra",
+     "entries": [
+      {
+       "term": "ཕྱ",
+       "meaning": "phya"
+      },
+      {
+       "term": "བྱ",
+       "meaning": "bya"
+      },
+      {
+       "term": "མྱ",
+       "meaning": "mya"
+      },
+      {
+       "term": "ཀྲ",
+       "meaning": "kra"
+      }
+     ]
+    },
+    {
+     "title": "གྲ དྲ བྲ སྲ",
+     "subtitle": "gra dra bra sra",
+     "entries": [
+      {
+       "term": "གྲ",
+       "meaning": "gra"
+      },
+      {
+       "term": "དྲ",
+       "meaning": "dra"
+      },
+      {
+       "term": "བྲ",
+       "meaning": "bra"
+      },
+      {
+       "term": "སྲ",
+       "meaning": "sra"
+      }
+     ]
+    },
+    {
+     "title": "ཀླ གླ བླ ཟླ",
+     "subtitle": "kla gla bla zla",
+     "entries": [
+      {
+       "term": "ཀླ",
+       "meaning": "kla"
+      },
+      {
+       "term": "གླ",
+       "meaning": "gla"
+      },
+      {
+       "term": "བླ",
+       "meaning": "bla"
+      },
+      {
+       "term": "ཟླ",
+       "meaning": "zla"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

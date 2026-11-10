@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "ᓇᑦᓯᖅ",
+      "reading": "natsiq",
+      "meaning": "ringed seal",
+      "translations": {
+        "fr": "phoque annelé",
+        "es": "foca anillada"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐃᓄᒃᓱᒃ",
+      "reading": "inuksuk",
+      "meaning": "inuksuk, stone figure",
+      "translations": {
+        "fr": "inuksuk, figure de pierres",
+        "es": "inuksuk, figura de piedras"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᓇᔪᒐᖃᖅ-",
+      "reading": "najugaqaq-",
+      "meaning": "to live (somewhere)",
+      "translations": {
+        "fr": "habiter",
+        "es": "vivir (en un lugar)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᖃᐅᔨᒪ-",
+      "reading": "qaujima-",
+      "meaning": "to know",
+      "translations": {
+        "fr": "savoir",
+        "es": "saber"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᓄᓇᕗᒻᒥᐅ",
+      "reading": "nunavummiu",
+      "meaning": "person from Nunavut",
+      "translations": {
+        "fr": "habitant du Nunavut",
+        "es": "habitante de Nunavut"
+      },
+      "type": "noun"
+    }
+  ]
+}

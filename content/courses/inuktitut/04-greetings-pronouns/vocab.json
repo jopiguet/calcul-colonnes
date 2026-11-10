@@ -1,0 +1,124 @@
+{
+  "entries": [
+    {
+      "term": "ᖃᓄᐃᑉᐱᑦ",
+      "reading": "qanuippit",
+      "meaning": "how are you?",
+      "translations": {
+        "fr": "comment vas-tu ?",
+        "es": "¿cómo estás?"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᖃᓄᐃᙱᑦᑐᖓ",
+      "reading": "qanuinngittunga",
+      "meaning": "I am fine",
+      "translations": {
+        "fr": "je vais bien",
+        "es": "estoy bien"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᓇᑯᕐᒦᒃ",
+      "reading": "nakurmiik",
+      "meaning": "thank you",
+      "translations": {
+        "fr": "merci",
+        "es": "gracias"
+      },
+      "type": "interjection"
+    },
+    {
+      "term": "ᐃᓛᓕ",
+      "reading": "ilaali",
+      "meaning": "you are welcome",
+      "translations": {
+        "fr": "de rien",
+        "es": "de nada"
+      },
+      "type": "interjection"
+    },
+    {
+      "term": "ᐄ",
+      "reading": "ii",
+      "meaning": "yes",
+      "translations": {
+        "fr": "oui",
+        "es": "sí"
+      },
+      "type": "interjection"
+    },
+    {
+      "term": "ᐋᒃᑲ",
+      "reading": "aakka",
+      "meaning": "no",
+      "translations": {
+        "fr": "non",
+        "es": "no"
+      },
+      "type": "interjection"
+    },
+    {
+      "term": "ᑕᕝᕙᐅᕗᑎᑦ",
+      "reading": "tavvauvutit",
+      "meaning": "goodbye (to one person)",
+      "translations": {
+        "fr": "au revoir (à une personne)",
+        "es": "adiós (a una persona)"
+      },
+      "type": "interjection"
+    },
+    {
+      "term": "ᐅᕙᖓ",
+      "reading": "uvanga",
+      "meaning": "I",
+      "translations": {
+        "fr": "je, moi",
+        "es": "yo"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᐃᕝᕕᑦ",
+      "reading": "ivvit",
+      "meaning": "you (one person)",
+      "translations": {
+        "fr": "tu, toi",
+        "es": "tú"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᐅᕙᒍᑦ",
+      "reading": "uvagut",
+      "meaning": "we (more than two)",
+      "translations": {
+        "fr": "nous (plus de deux)",
+        "es": "nosotros (más de dos)"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᐃᓕᔅᓯ",
+      "reading": "ilissi",
+      "meaning": "you (more than two)",
+      "translations": {
+        "fr": "vous (plus de deux)",
+        "es": "ustedes (más de dos)"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᐊᑎᖅ",
+      "reading": "atiq",
+      "meaning": "name",
+      "translations": {
+        "fr": "nom",
+        "es": "nombre"
+      },
+      "type": "noun"
+    }
+  ]
+}

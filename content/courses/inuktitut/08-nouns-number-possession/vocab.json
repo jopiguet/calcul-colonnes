@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "ᐃᒡᓗᒐ",
+      "reading": "igluga",
+      "meaning": "my house",
+      "translations": {
+        "fr": "ma maison",
+        "es": "mi casa"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᐊᓈᓇᒐ",
+      "reading": "anaanaga",
+      "meaning": "my mother",
+      "translations": {
+        "fr": "ma mère",
+        "es": "mi madre"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᐃᒡᓗᕗᑦ",
+      "reading": "igluvut",
+      "meaning": "our house",
+      "translations": {
+        "fr": "notre maison",
+        "es": "nuestra casa"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᕿᒻᒦᑦ",
+      "reading": "qimmiit",
+      "meaning": "dogs",
+      "translations": {
+        "fr": "chiens",
+        "es": "perros"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐃᒡᓘᒃ",
+      "reading": "igluuk",
+      "meaning": "two houses",
+      "translations": {
+        "fr": "deux maisons",
+        "es": "dos casas"
+      },
+      "type": "noun"
+    }
+  ]
+}

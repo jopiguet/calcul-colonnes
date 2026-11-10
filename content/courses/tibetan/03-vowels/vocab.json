@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "ཆུ",
+      "reading": "chu",
+      "meaning": "water",
+      "translations": {
+        "fr": "eau",
+        "es": "agua"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "རི",
+      "reading": "ri",
+      "meaning": "mountain",
+      "translations": {
+        "fr": "montagne",
+        "es": "montaña"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "མེ",
+      "reading": "me",
+      "meaning": "fire",
+      "translations": {
+        "fr": "feu",
+        "es": "fuego"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "མི",
+      "reading": "mi",
+      "meaning": "person",
+      "translations": {
+        "fr": "personne",
+        "es": "persona"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "བུ",
+      "reading": "bu",
+      "meaning": "son, boy",
+      "translations": {
+        "fr": "fils, garçon",
+        "es": "hijo, chico"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཞོ",
+      "reading": "zho",
+      "meaning": "yoghurt",
+      "translations": {
+        "fr": "yaourt",
+        "es": "yogur"
+      },
+      "type": "noun"
+    }
+  ]
+}

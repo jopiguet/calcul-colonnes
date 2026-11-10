@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "ཇོ་ཁང",
+      "reading": "jo khang",
+      "meaning": "the Jokhang, Lhasa's great temple",
+      "translations": {
+        "fr": "le Jokhang, grand temple de Lhassa",
+        "es": "el Jokhang, gran templo de Lhasa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གནམ་མཚོ",
+      "reading": "gnam mtsho",
+      "meaning": "Namtso (lake)",
+      "translations": {
+        "fr": "Namtso (lac)",
+        "es": "Namtso (lago)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཉིན་རེ",
+      "reading": "nyin re",
+      "meaning": "every day",
+      "translations": {
+        "fr": "chaque jour",
+        "es": "cada día"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "རླུང་རྟ",
+      "reading": "rlung rta",
+      "meaning": "prayer flags, wind horse",
+      "translations": {
+        "fr": "drapeaux de prière, cheval du vent",
+        "es": "banderas de oración, caballo de viento"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ལྷ་ཁང",
+      "reading": "lha khang",
+      "meaning": "temple",
+      "translations": {
+        "fr": "temple",
+        "es": "templo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "དགོན་པ",
+      "reading": "dgon pa",
+      "meaning": "monastery",
+      "translations": {
+        "fr": "monastère",
+        "es": "monasterio"
+      },
+      "type": "noun"
+    }
+  ]
+}

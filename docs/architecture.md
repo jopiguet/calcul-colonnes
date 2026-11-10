@@ -223,7 +223,7 @@ See [Development › Adding a language](development.md#adding-a-language).
 | `pg` | server | PostgreSQL / Neon |
 | `katex` | browser, check script | Formula rendering |
 | `@fontsource/atkinson-hyperlegible-next`, `-mono` | browser | Text and digits. Designed so that characters cannot be confused (0/O, 1/l/I), which suits children learning to write numbers. Bundled, so the app still makes no request to another site. |
-| `@fontsource/noto-sans` and the script fonts (Noto Sans Hebrew, Malayalam, Cuneiform, Egyptian Hieroglyphs; Vazirmatn; Amiri) | browser | The letters Atkinson lacks: Greek, and the transliteration letters (Egyptological ꜣ ꜥ, ḥ ḫ ṯ ḏ, ĝ, ŭ…) from Noto Sans's Latin Extended faces, declared in `src/fonts-translit.css` with a unicode range so they are fetched only when a page shows such a letter; then each script in its own font. All bundled. |
+| `@fontsource/noto-sans` and the script fonts (Noto Sans Hebrew, Malayalam, Canadian Aboriginal, Cuneiform, Egyptian Hieroglyphs; Noto Serif Tibetan; Vazirmatn; Amiri) | browser | The letters Atkinson lacks: Greek, and the transliteration letters (Egyptological ꜣ ꜥ, ḥ ḫ ṯ ḏ, ĝ, ŭ…) from Noto Sans's Latin Extended faces, declared in `src/fonts-translit.css` with a unicode range so they are fetched only when a page shows such a letter; then each script in its own font. All bundled. |
 | — | server | Sign-in uses Node's `crypto` (scrypt, SHA-256, random tokens) and `fetch` for providers: no auth library |
 | `tsx` | server | Runs the TypeScript server without a build step |
 | `vite`, `typescript`, `concurrently` | development | Build, type checking, dev servers |

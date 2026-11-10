@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "དགུ",
+      "reading": "dgu",
+      "meaning": "nine",
+      "translations": {
+        "fr": "neuf",
+        "es": "nueve"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "རྟ",
+      "reading": "rta",
+      "meaning": "horse",
+      "translations": {
+        "fr": "cheval",
+        "es": "caballo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཁྱི",
+      "reading": "khyi",
+      "meaning": "dog",
+      "translations": {
+        "fr": "chien",
+        "es": "perro"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ལུག",
+      "reading": "lug",
+      "meaning": "sheep",
+      "translations": {
+        "fr": "mouton",
+        "es": "oveja"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "མཚོ",
+      "reading": "mtsho",
+      "meaning": "lake",
+      "translations": {
+        "fr": "lac",
+        "es": "lago"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གངས",
+      "reading": "gangs",
+      "meaning": "snow, glacier",
+      "translations": {
+        "fr": "neige, glacier",
+        "es": "nieve, glaciar"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "སྒྲ",
+      "reading": "sgra",
+      "meaning": "sound",
+      "translations": {
+        "fr": "son",
+        "es": "sonido"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཟླ་བ",
+      "reading": "zla ba",
+      "meaning": "moon, month",
+      "translations": {
+        "fr": "lune, mois",
+        "es": "luna, mes"
+      },
+      "type": "noun"
+    }
+  ]
+}

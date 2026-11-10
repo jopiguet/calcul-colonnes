@@ -1,0 +1,35 @@
+{
+  "id": "tibetan",
+  "language": "bo",
+  "icon": "🏔️",
+  "folds": [
+    "tibetan"
+  ],
+  "title": {
+    "fr": "Tibétain",
+    "es": "Tibetano",
+    "en": "Tibetan"
+  },
+  "description": {
+    "fr": "Le tibétain de Lhassa : son écriture, lettre par lettre, empilement par empilement, et avec des cartes, la translittération Wylie et la prononciation, les verbes « être » qui disent comment on sait, le présent, le passé et l'ergatif, les mots de respect, puis Tenzin de Lhassa et les six syllabes.",
+    "es": "El tibetano de Lhasa: su escritura, letra a letra, apilamiento a apilamiento y con tarjetas, la transliteración Wylie y la pronunciación, los verbos «ser» que dicen cómo se sabe, el presente, el pasado y el ergativo, las palabras de respeto, y luego Tenzin de Lhasa y las seis sílabas.",
+    "en": "The Tibetan of Lhasa: its script, letter by letter, stack by stack and with cards, Wylie transliteration and pronunciation, the verbs \"to be\" that say how you know, present, past and the ergative, respectful words, then Tenzin of Lhasa and the six syllables."
+  },
+  "vocabLesson": "Lesson {n}",
+  "lessons": [
+    "01-tibetan-and-its-script",
+    "02-consonants",
+    "03-vowels",
+    "04-syllable-building",
+    "05-pronunciation",
+    "06-greetings-pronouns",
+    "07-to-be",
+    "08-questions-negation",
+    "09-particles",
+    "10-present-future",
+    "11-past-ergative",
+    "12-honorifics",
+    "13-numbers-days-family",
+    "14-reading-lhasa"
+  ]
+}

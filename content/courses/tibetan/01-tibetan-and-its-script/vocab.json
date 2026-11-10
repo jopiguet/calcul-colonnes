@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "བོད",
+      "reading": "bod",
+      "meaning": "Tibet",
+      "translations": {
+        "fr": "Tibet",
+        "es": "Tíbet"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "བོད་སྐད",
+      "reading": "bod skad",
+      "meaning": "the Tibetan language",
+      "translations": {
+        "fr": "la langue tibétaine",
+        "es": "la lengua tibetana"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ལྷ་ས",
+      "reading": "lha sa",
+      "meaning": "Lhasa",
+      "translations": {
+        "fr": "Lhassa",
+        "es": "Lhasa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "བཀྲ་ཤིས་བདེ་ལེགས",
+      "reading": "bkra shis bde legs",
+      "meaning": "hello, good luck",
+      "translations": {
+        "fr": "bonjour, bonne chance",
+        "es": "hola, buena suerte"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ཡི་གེ",
+      "reading": "yi ge",
+      "meaning": "letter, writing",
+      "translations": {
+        "fr": "lettre, écrit",
+        "es": "letra, escrito"
+      },
+      "type": "noun"
+    }
+  ]
+}

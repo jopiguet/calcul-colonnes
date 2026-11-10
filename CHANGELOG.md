@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.5.0
+
+- **🛷 Inuktitut, a language course** ([Language courses](docs/language-courses.md)): the Inuktitut of Nunavut, 14 lessons, 56 exercises, 100 words, in French, Spanish and English, with 81 syllabics cards. Syllabics and their chart, long and double sounds, greetings, pronouns that count one, two and many, words built from a base, postbases and an ending, the present and its dual, *-nngit-* and questions, number and possession, five cases and the sound changes at their joins (*Iqaluit*, *Iqalunni*), time postbases, *-juma-*, *-gunnaq-*, *-lu*, "a dog" and "the dog" with the ergative *-up*, numbers, family and seasons, then a reading, the inuksuk and Inuit Qaujimajatuqangit.
+- **🏔️ Tibetan, a language course**: the Tibetan of Lhasa, 14 lessons, 56 exercises, 126 words, with 62 letter and stack cards. The script, the thirty letters and their tones, vowel signs, how a syllable is built, from spelling to Lhasa speech, greetings, *yin*, *red*, *yod*, *'dug*, *yod red*, negation and questions, the genitive and particles, present and future, past stems and the ergative, respectful words, numbers, Tibetan digits and the days, then a reading and *oṃ maṇi padme hūṃ*. Each word in script, Wylie and pronunciation.
+- **Answers in either writing:** the `inuktitut` fold reads syllabics into Roman spelling, the `tibetan` fold reads the script into Wylie letters; lessons and the vocabulary books (`iu`, `bo`) accept either.
+- **Fonts:** Noto Sans Canadian Aboriginal and Noto Serif Tibetan, bundled; lesson text sets each run of syllabics or Tibetan in its font, Tibetan larger and with room for its stacks.
+- `lessons.spec.ts`: both courses, their fonts and both ways of answering; `check:lessons` and `check:vocab` cover the new keys.
+
 ## 8.4.1
 
 - **Transliteration letters on every device:** the Egyptological ꜣ and ꜥ (*wḏꜣt*, *ꜥnḫ*) showed as empty boxes, and ḥ ḫ ṯ ḏ came from whatever font the device had, because the app's font, Atkinson Hyperlegible Next, does not have them. They now come from Noto Sans's Latin Extended faces, bundled and declared by unicode range (`src/fonts-translit.css`), so nothing is fetched until a page shows one; upright, italic and bold.

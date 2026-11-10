@@ -1,0 +1,104 @@
+{
+  "entries": [
+    {
+      "term": "ᓂᕆ-",
+      "reading": "niri-",
+      "meaning": "to eat",
+      "translations": {
+        "fr": "manger",
+        "es": "comer"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᐃᒥᖅ-",
+      "reading": "imiq-",
+      "meaning": "to drink",
+      "translations": {
+        "fr": "boire",
+        "es": "beber"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᑕᑯ-",
+      "reading": "taku-",
+      "meaning": "to see",
+      "translations": {
+        "fr": "voir",
+        "es": "ver"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᐅᖃᖅ-",
+      "reading": "uqaq-",
+      "meaning": "to speak",
+      "translations": {
+        "fr": "parler",
+        "es": "hablar"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᐃᓕᓐᓂᐊᖅ-",
+      "reading": "ilinniaq-",
+      "meaning": "to study, to learn",
+      "translations": {
+        "fr": "étudier, apprendre",
+        "es": "estudiar, aprender"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᐊᓂ-",
+      "reading": "ani-",
+      "meaning": "to go out",
+      "translations": {
+        "fr": "sortir",
+        "es": "salir"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᐃᓯᖅ-",
+      "reading": "isiq-",
+      "meaning": "to come in",
+      "translations": {
+        "fr": "entrer",
+        "es": "entrar"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᓴᓇ-",
+      "reading": "sana-",
+      "meaning": "to work, to make",
+      "translations": {
+        "fr": "travailler, fabriquer",
+        "es": "trabajar, hacer"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᐱᓱᒃ-",
+      "reading": "pisuk-",
+      "meaning": "to walk",
+      "translations": {
+        "fr": "marcher",
+        "es": "caminar"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᓯᓂᒃ-",
+      "reading": "sinik-",
+      "meaning": "to sleep",
+      "translations": {
+        "fr": "dormir",
+        "es": "dormir"
+      },
+      "type": "verb"
+    }
+  ]
+}

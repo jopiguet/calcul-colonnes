@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "ᑕᑯᔭᕋ",
+      "reading": "takujara",
+      "meaning": "I see it",
+      "translations": {
+        "fr": "je le vois",
+        "es": "lo veo"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᑕᑯᔭᐃᑦ",
+      "reading": "takujait",
+      "meaning": "you see it",
+      "translations": {
+        "fr": "tu le vois",
+        "es": "lo ves"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᑕᑯᔭᖓ",
+      "reading": "takujanga",
+      "meaning": "he, she sees it",
+      "translations": {
+        "fr": "il, elle le voit",
+        "es": "él, ella lo ve"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᕿᒻᒥᒥᒃ ᑕᑯᔪᖓ",
+      "reading": "qimmimik takujunga",
+      "meaning": "I see a dog",
+      "translations": {
+        "fr": "je vois un chien",
+        "es": "veo un perro"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᐊᓈᓇᐅᑉ ᐃᒡᓗᖓ",
+      "reading": "anaanaup iglunga",
+      "meaning": "mother's house",
+      "translations": {
+        "fr": "la maison de la mère",
+        "es": "la casa de la madre"
+      },
+      "type": "phrase"
+    }
+  ]
+}

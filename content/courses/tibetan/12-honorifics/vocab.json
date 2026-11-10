@@ -1,0 +1,124 @@
+{
+  "entries": [
+    {
+      "term": "མགོ",
+      "reading": "mgo",
+      "meaning": "head",
+      "translations": {
+        "fr": "tête",
+        "es": "cabeza"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "དབུ",
+      "reading": "dbu",
+      "meaning": "head (respectful)",
+      "translations": {
+        "fr": "tête (respectueux)",
+        "es": "cabeza (respetuoso)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ལག་པ",
+      "reading": "lag pa",
+      "meaning": "hand",
+      "translations": {
+        "fr": "main",
+        "es": "mano"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཕྱག",
+      "reading": "phyag",
+      "meaning": "hand (respectful)",
+      "translations": {
+        "fr": "main (respectueux)",
+        "es": "mano (respetuoso)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཞལ",
+      "reading": "zhal",
+      "meaning": "mouth, face (respectful)",
+      "translations": {
+        "fr": "bouche, visage (respectueux)",
+        "es": "boca, cara (respetuoso)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ལུས",
+      "reading": "lus",
+      "meaning": "body",
+      "translations": {
+        "fr": "corps",
+        "es": "cuerpo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "སྐུ་གཟུགས",
+      "reading": "sku gzugs",
+      "meaning": "body, health (respectful)",
+      "translations": {
+        "fr": "corps, santé (respectueux)",
+        "es": "cuerpo, salud (respetuoso)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "བཞེས",
+      "reading": "bzhes",
+      "meaning": "to eat, to drink (respectful)",
+      "translations": {
+        "fr": "manger, boire (respectueux)",
+        "es": "comer, beber (respetuoso)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ཕེབས",
+      "reading": "phebs",
+      "meaning": "to go, to come (respectful)",
+      "translations": {
+        "fr": "aller, venir (respectueux)",
+        "es": "ir, venir (respetuoso)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "སྡོད",
+      "reading": "sdod",
+      "meaning": "to stay, to sit",
+      "translations": {
+        "fr": "rester, s'asseoir",
+        "es": "quedarse, sentarse"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "བཞུགས",
+      "reading": "bzhugs",
+      "meaning": "to stay, to sit (respectful)",
+      "translations": {
+        "fr": "rester, s'asseoir (respectueux)",
+        "es": "quedarse, sentarse (respetuoso)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "གནང",
+      "reading": "gnang",
+      "meaning": "to do, to give (respectful)",
+      "translations": {
+        "fr": "faire, donner (respectueux)",
+        "es": "hacer, dar (respetuoso)"
+      },
+      "type": "verb"
+    }
+  ]
+}

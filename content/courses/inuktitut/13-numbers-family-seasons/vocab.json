@@ -1,0 +1,174 @@
+{
+  "entries": [
+    {
+      "term": "ᐊᑕᐅᓯᖅ",
+      "reading": "atausiq",
+      "meaning": "one",
+      "translations": {
+        "fr": "un",
+        "es": "uno"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ᒪᕐᕉᒃ",
+      "reading": "marruuk",
+      "meaning": "two",
+      "translations": {
+        "fr": "deux",
+        "es": "dos"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ᐱᖓᓱᑦ",
+      "reading": "pingasut",
+      "meaning": "three",
+      "translations": {
+        "fr": "trois",
+        "es": "tres"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ᓯᓴᒪᑦ",
+      "reading": "sisamat",
+      "meaning": "four",
+      "translations": {
+        "fr": "quatre",
+        "es": "cuatro"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ᑕᓪᓕᒪᑦ",
+      "reading": "tallimat",
+      "meaning": "five",
+      "translations": {
+        "fr": "cinq",
+        "es": "cinco"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ᐊᓈᓇᑦᓯᐊᖅ",
+      "reading": "anaanatsiaq",
+      "meaning": "grandmother",
+      "translations": {
+        "fr": "grand-mère",
+        "es": "abuela"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐊᑖᑕᑦᓯᐊᖅ",
+      "reading": "ataatatsiaq",
+      "meaning": "grandfather",
+      "translations": {
+        "fr": "grand-père",
+        "es": "abuelo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐃᕐᓂᖅ",
+      "reading": "irniq",
+      "meaning": "son",
+      "translations": {
+        "fr": "fils",
+        "es": "hijo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐸᓂᒃ",
+      "reading": "panik",
+      "meaning": "daughter",
+      "translations": {
+        "fr": "fille",
+        "es": "hija"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐊᖓᔪᒃ",
+      "reading": "angajuk",
+      "meaning": "older sibling of the same sex",
+      "translations": {
+        "fr": "aîné du même sexe",
+        "es": "hermano mayor del mismo sexo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᓄᑲᖅ",
+      "reading": "nukaq",
+      "meaning": "younger sibling of the same sex",
+      "translations": {
+        "fr": "cadet du même sexe",
+        "es": "hermano menor del mismo sexo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᓄᓕᐊᖅ",
+      "reading": "nuliaq",
+      "meaning": "wife",
+      "translations": {
+        "fr": "épouse",
+        "es": "esposa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐅᐃ",
+      "reading": "ui",
+      "meaning": "husband",
+      "translations": {
+        "fr": "mari",
+        "es": "marido"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐅᑭᐅᖅ",
+      "reading": "ukiuq",
+      "meaning": "winter, year",
+      "translations": {
+        "fr": "hiver, année",
+        "es": "invierno, año"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐅᐱᕐᖔᖅ",
+      "reading": "upirngaaq",
+      "meaning": "spring",
+      "translations": {
+        "fr": "printemps",
+        "es": "primavera"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐊᐅᔭᖅ",
+      "reading": "aujaq",
+      "meaning": "summer",
+      "translations": {
+        "fr": "été",
+        "es": "verano"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐅᑭᐊᒃᓴᖅ",
+      "reading": "ukiaksaq",
+      "meaning": "autumn",
+      "translations": {
+        "fr": "automne",
+        "es": "otoño"
+      },
+      "type": "noun"
+    }
+  ]
+}

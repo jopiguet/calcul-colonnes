@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -213,6 +213,45 @@ export function malayalamKey(text: string): string {
   return t.replace(/\s+/g, " ").trim();
 }
 
+/** Inuktitut syllabics read in the Roman orthography of Nunavut (ᒋ gi, ᔨ ji, ᕕ vi, ᐄ ii; finals ᑉ p, ᖅ q, ᖕ ng). */
+const SYLLABICS: Record<string, string> = {"ᐁ": "ai", "ᐃ": "i", "ᐄ": "ii", "ᐅ": "u", "ᐆ": "uu", "ᐊ": "a", "ᐋ": "aa", "ᐜ": "ai", "ᐯ": "pai", "ᐱ": "pi", "ᐲ": "pii", "ᐳ": "pu", "ᐴ": "puu", "ᐸ": "pa", "ᐹ": "paa", "ᑉ": "p", "ᑌ": "tai", "ᑎ": "ti", "ᑏ": "tii", "ᑐ": "tu", "ᑑ": "tuu", "ᑕ": "ta", "ᑖ": "taa", "ᑦ": "t", "ᑫ": "kai", "ᑭ": "ki", "ᑮ": "kii", "ᑯ": "ku", "ᑰ": "kuu", "ᑲ": "ka", "ᑳ": "kaa", "ᒃ": "k", "ᒉ": "gai", "ᒋ": "gi", "ᒌ": "gii", "ᒍ": "gu", "ᒎ": "guu", "ᒐ": "ga", "ᒑ": "gaa", "ᒡ": "g", "ᒣ": "mai", "ᒥ": "mi", "ᒦ": "mii", "ᒧ": "mu", "ᒨ": "muu", "ᒪ": "ma", "ᒫ": "maa", "ᒻ": "m", "ᓀ": "nai", "ᓂ": "ni", "ᓃ": "nii", "ᓄ": "nu", "ᓅ": "nuu", "ᓇ": "na", "ᓈ": "naa", "ᓐ": "n", "ᓓ": "lai", "ᓕ": "li", "ᓖ": "lii", "ᓗ": "lu", "ᓘ": "luu", "ᓚ": "la", "ᓛ": "laa", "ᓪ": "l", "ᓭ": "sai", "ᓯ": "si", "ᓰ": "sii", "ᓱ": "su", "ᓲ": "suu", "ᓴ": "sa", "ᓵ": "saa", "ᔅ": "s", "ᔦ": "jai", "ᔨ": "ji", "ᔩ": "jii", "ᔪ": "ju", "ᔫ": "juu", "ᔭ": "ja", "ᔮ": "jaa", "ᔾ": "j", "ᕂ": "rai", "ᕆ": "ri", "ᕇ": "rii", "ᕈ": "ru", "ᕉ": "ruu", "ᕋ": "ra", "ᕌ": "raa", "ᕐ": "r", "ᕓ": "vai", "ᕕ": "vi", "ᕖ": "vii", "ᕗ": "vu", "ᕘ": "vuu", "ᕙ": "va", "ᕚ": "vaa", "ᕝ": "v", "ᕿ": "qi", "ᖀ": "qii", "ᖁ": "qu", "ᖂ": "quu", "ᖃ": "qa", "ᖄ": "qaa", "ᖅ": "q", "ᖏ": "ngi", "ᖐ": "ngii", "ᖑ": "ngu", "ᖒ": "nguu", "ᖓ": "nga", "ᖔ": "ngaa", "ᖕ": "ng", "ᖖ": "nng", "ᖠ": "łi", "ᖡ": "łii", "ᖢ": "łu", "ᖣ": "łuu", "ᖤ": "ła", "ᖥ": "łaa", "ᖦ": "ł", "ᙯ": "qai", "ᙰ": "ngai", "ᙱ": "nngi", "ᙲ": "nngii", "ᙳ": "nngu", "ᙴ": "nnguu", "ᙵ": "nnga", "ᙶ": "nngaa", "ᕼ": "h"};
+
+/**
+ * Inuktitut as typed: syllabics or Roman orthography are one answer. Syllabics are read letter by
+ * letter, then the doubled consonants the script writes with a final: ᖅᑲ is qqa, ᖕᖓ is nnga.
+ * In Roman, y is read j and & or lh is ł; long vowels and doubled consonants count.
+ */
+export function inuktitutKey(text: string): string {
+  let t = "";
+  for (const ch of text.normalize("NFC").toLowerCase()) t += SYLLABICS[ch] ?? ch;
+  return t
+    .replace(/qk/g, "qq").replace(/ngng/g, "nng").replace(/ngnng/g, "nng")
+    .replace(/&|lh/g, "ł").replace(/y/g, "j")
+    .replace(/[^a-zł\s]/g, "").replace(/\s+/g, " ").trim();
+}
+
+/** Tibetan letters, subjoined letters and vowel signs as Wylie letters; the inherent a is not written. */
+const TIBETAN: Record<string, string> = {"ཀ": "k", "ྐ": "k", "ཁ": "kh", "ྑ": "kh", "ག": "g", "ྒ": "g", "ང": "ng", "ྔ": "ng", "ཅ": "c", "ྕ": "c", "ཆ": "ch", "ྖ": "ch", "ཇ": "j", "ྗ": "j", "ཉ": "ny", "ྙ": "ny", "ཊ": "t", "ྚ": "t", "ཋ": "th", "ྛ": "th", "ཌ": "d", "ྜ": "d", "ཎ": "n", "ྞ": "n", "ཏ": "t", "ྟ": "t", "ཐ": "th", "ྠ": "th", "ད": "d", "ྡ": "d", "ན": "n", "ྣ": "n", "པ": "p", "ྤ": "p", "ཕ": "ph", "ྥ": "ph", "བ": "b", "ྦ": "b", "མ": "m", "ྨ": "m", "ཙ": "ts", "ྩ": "ts", "ཚ": "tsh", "ྪ": "tsh", "ཛ": "dz", "ྫ": "dz", "ཝ": "w", "ྭ": "w", "ཞ": "zh", "ྮ": "zh", "ཟ": "z", "ྯ": "z", "འ": "'", "ྰ": "'", "ཡ": "y", "ྱ": "y", "ར": "r", "ྲ": "r", "ལ": "l", "ླ": "l", "ཤ": "sh", "ྴ": "sh", "ཥ": "sh", "ྵ": "sh", "ས": "s", "ྶ": "s", "ཧ": "h", "ྷ": "h", "ཨ": "", "ྸ": "", "ཪ": "r", "ྺ": "w", "ྻ": "y", "ྼ": "r", "ི": "i", "ུ": "u", "ེ": "e", "ོ": "o", "ཱ": "", "ཻ": "ai", "ཽ": "au", "ྀ": "i", "ཾ": "m", "ྂ": "m", "ྃ": "m", "ཿ": "h", "ཱི": "i", "ཱུ": "u", "྄": "", "༠": "0", "༡": "1", "༢": "2", "༣": "3", "༤": "4", "༥": "5", "༦": "6", "༧": "7", "༨": "8", "༩": "9", "་": " ", "༌": " ", "།": " ", "༎": " ", "༔": " "};
+
+/**
+ * Tibetan as typed: the script or its Wylie transliteration are one answer. Script and Wylie list the
+ * letters of a syllable in the same order (བསྒྲུབས bsgrubs), so each side is reduced to its letters
+ * without the vowel a, which the script leaves unwritten, and without the a-chung (' in Wylie); the tsheg is
+ * a space, Wylie's . and + go.
+ */
+export function tibetanKey(text: string): string {
+  let t = "";
+  for (const ch of text.normalize("NFC")) t += TIBETAN[ch] ?? ch;
+  return t
+    .toLowerCase()
+    // The a-chung འ is Wylie's apostrophe; it is dropped on both sides, as an answer may lose a leading one.
+    .replace(/[’‘`ʼ']/g, "")
+    .replace(/[a.+\/|-]/g, "")
+    .replace(/[^a-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /** Egyptian and Akkadian transliterations as typed on a keyboard: ꜣ as 3 or a, ꜥ as ' or e, ḥ as h… */
 const TRANSLIT: [RegExp, string][] = [
   [/[ꜣꜢ]/g, "a"],
@@ -260,6 +299,8 @@ export function fold(text: string, folds: readonly Fold[]): string {
   if (folds.includes("hebrew")) return hebrewKey(t);
   if (folds.includes("malayalam")) return malayalamKey(t);
   if (folds.includes("quechua")) return quechuaKey(t);
+  if (folds.includes("inuktitut")) return inuktitutKey(t);
+  if (folds.includes("tibetan")) return tibetanKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -287,7 +328,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua"].includes(x));
+    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan"].includes(x));
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

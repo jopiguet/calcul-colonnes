@@ -1,0 +1,503 @@
+{
+ "book": {
+  "title": "Inuktitut syllabics",
+  "credit": "Written for Luma's Inuktitut course (docs/language-courses.md)"
+ },
+ "lessons": [
+  {
+   "title": "ᐃ ᐱ ᑎ ᑭ",
+   "subtitle": "i, p, t, k, g",
+   "sections": [
+    {
+     "title": "ᐃ ᐅ ᐊ",
+     "subtitle": "i u a",
+     "entries": [
+      {
+       "term": "ᐃ",
+       "meaning": "i",
+       "note": "ᐃᓄᒃ inuk"
+      },
+      {
+       "term": "ᐅ",
+       "meaning": "u"
+      },
+      {
+       "term": "ᐊ",
+       "meaning": "a"
+      }
+     ]
+    },
+    {
+     "title": "ᐱ ᐳ ᐸ ᑉ",
+     "subtitle": "pi pu pa p",
+     "entries": [
+      {
+       "term": "ᐱ",
+       "meaning": "pi",
+       "note": "ᐱᖓᓱᑦ pingasut"
+      },
+      {
+       "term": "ᐳ",
+       "meaning": "pu"
+      },
+      {
+       "term": "ᐸ",
+       "meaning": "pa"
+      },
+      {
+       "term": "ᑉ",
+       "meaning": "p"
+      }
+     ]
+    },
+    {
+     "title": "ᑎ ᑐ ᑕ ᑦ",
+     "subtitle": "ti tu ta t",
+     "entries": [
+      {
+       "term": "ᑎ",
+       "meaning": "ti",
+       "note": "ᑐᒃᑐ tuktu"
+      },
+      {
+       "term": "ᑐ",
+       "meaning": "tu"
+      },
+      {
+       "term": "ᑕ",
+       "meaning": "ta"
+      },
+      {
+       "term": "ᑦ",
+       "meaning": "t"
+      }
+     ]
+    },
+    {
+     "title": "ᑭ ᑯ ᑲ ᒃ",
+     "subtitle": "ki ku ka k",
+     "entries": [
+      {
+       "term": "ᑭ",
+       "meaning": "ki",
+       "note": "ᑲᒥᒃ kamik"
+      },
+      {
+       "term": "ᑯ",
+       "meaning": "ku"
+      },
+      {
+       "term": "ᑲ",
+       "meaning": "ka"
+      },
+      {
+       "term": "ᒃ",
+       "meaning": "k"
+      }
+     ]
+    },
+    {
+     "title": "ᒋ ᒍ ᒐ ᒡ",
+     "subtitle": "gi gu ga g",
+     "entries": [
+      {
+       "term": "ᒋ",
+       "meaning": "gi",
+       "note": "ᐃᒡᓗ iglu"
+      },
+      {
+       "term": "ᒍ",
+       "meaning": "gu"
+      },
+      {
+       "term": "ᒐ",
+       "meaning": "ga"
+      },
+      {
+       "term": "ᒡ",
+       "meaning": "g"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ᒥ ᓂ ᓯ ᓕ ᔨ",
+   "subtitle": "m, n, s, l, j",
+   "sections": [
+    {
+     "title": "ᒥ ᒧ ᒪ ᒻ",
+     "subtitle": "mi mu ma m",
+     "entries": [
+      {
+       "term": "ᒥ",
+       "meaning": "mi",
+       "note": "ᒪᕐᕉᒃ marruuk"
+      },
+      {
+       "term": "ᒧ",
+       "meaning": "mu"
+      },
+      {
+       "term": "ᒪ",
+       "meaning": "ma"
+      },
+      {
+       "term": "ᒻ",
+       "meaning": "m"
+      }
+     ]
+    },
+    {
+     "title": "ᓂ ᓄ ᓇ ᓐ",
+     "subtitle": "ni nu na n",
+     "entries": [
+      {
+       "term": "ᓂ",
+       "meaning": "ni",
+       "note": "ᓄᓇ nuna"
+      },
+      {
+       "term": "ᓄ",
+       "meaning": "nu"
+      },
+      {
+       "term": "ᓇ",
+       "meaning": "na"
+      },
+      {
+       "term": "ᓐ",
+       "meaning": "n"
+      }
+     ]
+    },
+    {
+     "title": "ᓯ ᓱ ᓴ ᔅ",
+     "subtitle": "si su sa s",
+     "entries": [
+      {
+       "term": "ᓯ",
+       "meaning": "si",
+       "note": "ᓯᑯ siku"
+      },
+      {
+       "term": "ᓱ",
+       "meaning": "su"
+      },
+      {
+       "term": "ᓴ",
+       "meaning": "sa"
+      },
+      {
+       "term": "ᔅ",
+       "meaning": "s"
+      }
+     ]
+    },
+    {
+     "title": "ᓕ ᓗ ᓚ ᓪ",
+     "subtitle": "li lu la l",
+     "entries": [
+      {
+       "term": "ᓕ",
+       "meaning": "li",
+       "note": "ᐃᓕᓐᓂᐊᖅᑐᖓ ilinniaqtunga"
+      },
+      {
+       "term": "ᓗ",
+       "meaning": "lu"
+      },
+      {
+       "term": "ᓚ",
+       "meaning": "la"
+      },
+      {
+       "term": "ᓪ",
+       "meaning": "l"
+      }
+     ]
+    },
+    {
+     "title": "ᔨ ᔪ ᔭ ᔾ",
+     "subtitle": "ji ju ja j",
+     "entries": [
+      {
+       "term": "ᔨ",
+       "meaning": "ji",
+       "note": "ᐊᐅᔭᖅ aujaq"
+      },
+      {
+       "term": "ᔪ",
+       "meaning": "ju"
+      },
+      {
+       "term": "ᔭ",
+       "meaning": "ja"
+      },
+      {
+       "term": "ᔾ",
+       "meaning": "j"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ᕕ ᕆ ᕿ ᖏ ᙱ ᖠ",
+   "subtitle": "v, r, q, ng, nng, ł",
+   "sections": [
+    {
+     "title": "ᕕ ᕗ ᕙ ᕝ",
+     "subtitle": "vi vu va v",
+     "entries": [
+      {
+       "term": "ᕕ",
+       "meaning": "vi",
+       "note": "ᓄᓇᕗᑦ nunavut"
+      },
+      {
+       "term": "ᕗ",
+       "meaning": "vu"
+      },
+      {
+       "term": "ᕙ",
+       "meaning": "va"
+      },
+      {
+       "term": "ᕝ",
+       "meaning": "v"
+      }
+     ]
+    },
+    {
+     "title": "ᕆ ᕈ ᕋ ᕐ",
+     "subtitle": "ri ru ra r",
+     "entries": [
+      {
+       "term": "ᕆ",
+       "meaning": "ri",
+       "note": "ᓇᑯᕐᒦᒃ nakurmiik"
+      },
+      {
+       "term": "ᕈ",
+       "meaning": "ru"
+      },
+      {
+       "term": "ᕋ",
+       "meaning": "ra"
+      },
+      {
+       "term": "ᕐ",
+       "meaning": "r"
+      }
+     ]
+    },
+    {
+     "title": "ᕿ ᖁ ᖃ ᖅ",
+     "subtitle": "qi qu qa q",
+     "entries": [
+      {
+       "term": "ᕿ",
+       "meaning": "qi",
+       "note": "ᖃᒧᑎᒃ qamutik"
+      },
+      {
+       "term": "ᖁ",
+       "meaning": "qu"
+      },
+      {
+       "term": "ᖃ",
+       "meaning": "qa"
+      },
+      {
+       "term": "ᖅ",
+       "meaning": "q"
+      }
+     ]
+    },
+    {
+     "title": "ᖏ ᖑ ᖓ ᖕ",
+     "subtitle": "ngi ngu nga ng",
+     "entries": [
+      {
+       "term": "ᖏ",
+       "meaning": "ngi",
+       "note": "ᐅᕙᖓ uvanga"
+      },
+      {
+       "term": "ᖑ",
+       "meaning": "ngu"
+      },
+      {
+       "term": "ᖓ",
+       "meaning": "nga"
+      },
+      {
+       "term": "ᖕ",
+       "meaning": "ng"
+      }
+     ]
+    },
+    {
+     "title": "ᙱ ᙳ ᙵ ᖖ",
+     "subtitle": "nngi nngu nnga nng",
+     "entries": [
+      {
+       "term": "ᙱ",
+       "meaning": "nngi",
+       "note": "ᖃᓄᐃᙱᑦᑐᖓ qanuinngittunga"
+      },
+      {
+       "term": "ᙳ",
+       "meaning": "nngu"
+      },
+      {
+       "term": "ᙵ",
+       "meaning": "nnga"
+      },
+      {
+       "term": "ᖖ",
+       "meaning": "nng"
+      }
+     ]
+    },
+    {
+     "title": "ᖠ ᖢ ᖤ ᖦ",
+     "subtitle": "łi łu ła ł",
+     "entries": [
+      {
+       "term": "ᖠ",
+       "meaning": "łi"
+      },
+      {
+       "term": "ᖢ",
+       "meaning": "łu"
+      },
+      {
+       "term": "ᖤ",
+       "meaning": "ła"
+      },
+      {
+       "term": "ᖦ",
+       "meaning": "ł"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ᐄ ᐲ ᑏ",
+   "subtitle": "ii uu aa",
+   "sections": [
+    {
+     "title": "ᐄ ᐆ ᐋ",
+     "subtitle": "ii uu aa",
+     "entries": [
+      {
+       "term": "ᐄ",
+       "meaning": "ii"
+      },
+      {
+       "term": "ᐆ",
+       "meaning": "uu"
+      },
+      {
+       "term": "ᐋ",
+       "meaning": "aa"
+      }
+     ]
+    },
+    {
+     "title": "ᐲ ᐴ ᐹ",
+     "subtitle": "pii puu paa",
+     "entries": [
+      {
+       "term": "ᐲ",
+       "meaning": "pii"
+      },
+      {
+       "term": "ᐴ",
+       "meaning": "puu"
+      },
+      {
+       "term": "ᐹ",
+       "meaning": "paa"
+      }
+     ]
+    },
+    {
+     "title": "ᑏ ᑑ ᑖ",
+     "subtitle": "tii tuu taa",
+     "entries": [
+      {
+       "term": "ᑏ",
+       "meaning": "tii"
+      },
+      {
+       "term": "ᑑ",
+       "meaning": "tuu"
+      },
+      {
+       "term": "ᑖ",
+       "meaning": "taa"
+      }
+     ]
+    },
+    {
+     "title": "ᑮ ᑰ ᑳ",
+     "subtitle": "kii kuu kaa",
+     "entries": [
+      {
+       "term": "ᑮ",
+       "meaning": "kii"
+      },
+      {
+       "term": "ᑰ",
+       "meaning": "kuu"
+      },
+      {
+       "term": "ᑳ",
+       "meaning": "kaa"
+      }
+     ]
+    },
+    {
+     "title": "ᒦ ᒨ ᒫ",
+     "subtitle": "mii muu maa",
+     "entries": [
+      {
+       "term": "ᒦ",
+       "meaning": "mii"
+      },
+      {
+       "term": "ᒨ",
+       "meaning": "muu"
+      },
+      {
+       "term": "ᒫ",
+       "meaning": "maa"
+      }
+     ]
+    },
+    {
+     "title": "ᓃ ᓅ ᓈ",
+     "subtitle": "nii nuu naa",
+     "entries": [
+      {
+       "term": "ᓃ",
+       "meaning": "nii"
+      },
+      {
+       "term": "ᓅ",
+       "meaning": "nuu"
+      },
+      {
+       "term": "ᓈ",
+       "meaning": "naa"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

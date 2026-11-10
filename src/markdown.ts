@@ -40,13 +40,16 @@ export function inline(text: string, target: HTMLElement = el("span")): HTMLElem
  * Hieroglyphs and cuneiform signs: drawn larger than the text around them, in their own font.
  * Persian, Arabic and Hebrew: each run of words set apart, right to left, so it reads in its order inside a left-to-right line.
  * Malayalam: each run of words in its font, a little larger, since its letters are small beside Latin ones.
+ * Inuktitut syllabics and Tibetan: each run in its font, marked with its language; Tibetan larger, for its stacks.
  */
 const RTL = "\\u0590-\\u05FF\\uFB1D-\\uFB4F\\u0600-\\u06FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF";
 // Commas and stops between right-to-left words stay in the run; a colon or semicolon ends it, since it
 // belongs to the sentence around it. A run may end on "…" (the gap of an
 // exercise), "?" or "!", so that they sit at the end of the right-to-left words.
 const ML = "\\u0D00-\\u0D7F";
-const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${ML}](?:[${ML}\\u200C\\u200D ,.?!]*[${ML}])?|[${RTL}](?:[${RTL}\\u200C\\u200D ,.?!]*(?:[${RTL}]|[…?!]))?)`, "u");
+const IU = "\\u1400-\\u167F\\u18B0-\\u18FF";
+const BO = "\\u0F00-\\u0FFF";
+const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${ML}](?:[${ML}\\u200C\\u200D ,.?!]*[${ML}])?|[${IU}](?:[${IU} ,.?!]*[${IU}])?|[${BO}](?:[${BO} ]*[${BO}])?|[${RTL}](?:[${RTL}\\u200C\\u200D ,.?!]*(?:[${RTL}]|[…?!]))?)`, "u");
 
 function signs(text: string, target: HTMLElement): void {
   text.split(SIGNS).forEach((piece, i) => {
@@ -55,6 +58,14 @@ function signs(text: string, target: HTMLElement): void {
     else if (/[\u0D00-\u0D7F]/u.test(piece)) {
       const run = el("span", "script-malayalam", piece);
       run.lang = "ml";
+      target.append(run);
+    } else if (/[\u1400-\u167F\u18B0-\u18FF]/u.test(piece)) {
+      const run = el("span", "script-inuktitut", piece);
+      run.lang = "iu";
+      target.append(run);
+    } else if (/[\u0F00-\u0FFF]/u.test(piece)) {
+      const run = el("span", "script-tibetan", piece);
+      run.lang = "bo";
       target.append(run);
     } else if (/[\u0590-\u05FF\uFB1D-\uFB4F\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF]/u.test(piece)) {
       const run = el("bdi", /[\u0590-\u05FF\uFB1D-\uFB4F]/u.test(piece) ? "script-hebrew" : "script-arabic", piece);

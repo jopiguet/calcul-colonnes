@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "ᑭᓇ",
+      "reading": "kina",
+      "meaning": "who",
+      "translations": {
+        "fr": "qui",
+        "es": "quién"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᓱᓇ",
+      "reading": "suna",
+      "meaning": "what",
+      "translations": {
+        "fr": "quoi",
+        "es": "qué"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᓇᓂ",
+      "reading": "nani",
+      "meaning": "where",
+      "translations": {
+        "fr": "où",
+        "es": "dónde"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ᖃᓄᖅ",
+      "reading": "qanuq",
+      "meaning": "how",
+      "translations": {
+        "fr": "comment",
+        "es": "cómo"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ᖃᖓ",
+      "reading": "qanga",
+      "meaning": "when (past)",
+      "translations": {
+        "fr": "quand (passé)",
+        "es": "cuándo (pasado)"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ᖃᑯᒍ",
+      "reading": "qakugu",
+      "meaning": "when (future)",
+      "translations": {
+        "fr": "quand (futur)",
+        "es": "cuándo (futuro)"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ᐅᓇ",
+      "reading": "una",
+      "meaning": "this one",
+      "translations": {
+        "fr": "celui-ci",
+        "es": "éste"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᑖᓐᓇ",
+      "reading": "taanna",
+      "meaning": "that one",
+      "translations": {
+        "fr": "celui-là",
+        "es": "ése"
+      },
+      "type": "pronoun"
+    }
+  ]
+}

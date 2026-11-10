@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "ᖃᒧᑎᒃ",
+      "reading": "qamutik",
+      "meaning": "sled",
+      "translations": {
+        "fr": "traîneau",
+        "es": "trineo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᑐᒃᑐ",
+      "reading": "tuktu",
+      "meaning": "caribou",
+      "translations": {
+        "fr": "caribou",
+        "es": "caribú"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᕿᒻᒥᖅ",
+      "reading": "qimmiq",
+      "meaning": "dog",
+      "translations": {
+        "fr": "chien",
+        "es": "perro"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᓯᑯ",
+      "reading": "siku",
+      "meaning": "sea ice",
+      "translations": {
+        "fr": "banquise, glace de mer",
+        "es": "hielo marino"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐊᐳᑦ",
+      "reading": "aput",
+      "meaning": "snow on the ground",
+      "translations": {
+        "fr": "neige au sol",
+        "es": "nieve en el suelo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᓇᓄᖅ",
+      "reading": "nanuq",
+      "meaning": "polar bear",
+      "translations": {
+        "fr": "ours polaire",
+        "es": "oso polar"
+      },
+      "type": "noun"
+    }
+  ]
+}

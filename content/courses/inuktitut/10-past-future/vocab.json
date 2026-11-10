@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "ᐃᒃᐸᒃᓴᖅ",
+      "reading": "ikpaksaq",
+      "meaning": "yesterday",
+      "translations": {
+        "fr": "hier",
+        "es": "ayer"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ᐅᓪᓗᒥ",
+      "reading": "ullumi",
+      "meaning": "today",
+      "translations": {
+        "fr": "aujourd'hui",
+        "es": "hoy"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ᖃᐅᑉᐸᑦ",
+      "reading": "qauppat",
+      "meaning": "tomorrow",
+      "translations": {
+        "fr": "demain",
+        "es": "mañana"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ᐅᓪᓗᖅ",
+      "reading": "ulluq",
+      "meaning": "day",
+      "translations": {
+        "fr": "jour",
+        "es": "día"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐅᓐᓄᐊᖅ",
+      "reading": "unnuaq",
+      "meaning": "night",
+      "translations": {
+        "fr": "nuit",
+        "es": "noche"
+      },
+      "type": "noun"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "བྱ",
+      "reading": "bya",
+      "meaning": "bird",
+      "translations": {
+        "fr": "oiseau",
+        "es": "pájaro"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "འབྲས",
+      "reading": "'bras",
+      "meaning": "rice",
+      "translations": {
+        "fr": "riz",
+        "es": "arroz"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གླང",
+      "reading": "glang",
+      "meaning": "ox",
+      "translations": {
+        "fr": "bœuf",
+        "es": "buey"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཡུལ",
+      "reading": "yul",
+      "meaning": "country, place",
+      "translations": {
+        "fr": "pays, lieu",
+        "es": "país, lugar"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "སྐད",
+      "reading": "skad",
+      "meaning": "speech, language",
+      "translations": {
+        "fr": "parole, langue",
+        "es": "habla, lengua"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "བཀྲ་ཤིས",
+      "reading": "bkra shis",
+      "meaning": "good fortune",
+      "translations": {
+        "fr": "bonne fortune",
+        "es": "buena fortuna"
+      },
+      "type": "noun"
+    }
+  ]
+}

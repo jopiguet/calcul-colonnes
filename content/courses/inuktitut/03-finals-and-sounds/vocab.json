@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "ᐊᓈᓇ",
+      "reading": "anaana",
+      "meaning": "mother",
+      "translations": {
+        "fr": "mère",
+        "es": "madre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐊᑖᑕ",
+      "reading": "ataata",
+      "meaning": "father",
+      "translations": {
+        "fr": "père",
+        "es": "padre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᑕᖅᑭᖅ",
+      "reading": "taqqiq",
+      "meaning": "moon, month",
+      "translations": {
+        "fr": "lune, mois",
+        "es": "luna, mes"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐅᓪᓛᒃᑯᑦ",
+      "reading": "ullaakkut",
+      "meaning": "good morning",
+      "translations": {
+        "fr": "bonjour (le matin)",
+        "es": "buenos días"
+      },
+      "type": "interjection"
+    },
+    {
+      "term": "ᐅᓐᓄᓴᒃᑯᑦ",
+      "reading": "unnusakkut",
+      "meaning": "good afternoon",
+      "translations": {
+        "fr": "bon après-midi",
+        "es": "buenas tardes"
+      },
+      "type": "interjection"
+    },
+    {
+      "term": "ᑐᓵ-",
+      "reading": "tusaa-",
+      "meaning": "to hear",
+      "translations": {
+        "fr": "entendre",
+        "es": "oír"
+      },
+      "type": "verb"
+    }
+  ]
+}

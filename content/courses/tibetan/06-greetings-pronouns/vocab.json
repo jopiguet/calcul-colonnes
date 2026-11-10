@@ -1,0 +1,114 @@
+{
+  "entries": [
+    {
+      "term": "ཐུགས་རྗེ་ཆེ",
+      "reading": "thugs rje che",
+      "meaning": "thank you",
+      "translations": {
+        "fr": "merci",
+        "es": "gracias"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ག་ལེ་ཕེབས",
+      "reading": "ga le phebs",
+      "meaning": "goodbye (to the one leaving)",
+      "translations": {
+        "fr": "au revoir (à celui qui part)",
+        "es": "adiós (al que se va)"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ག་ལེ་བཞུགས",
+      "reading": "ga le bzhugs",
+      "meaning": "goodbye (to the one staying)",
+      "translations": {
+        "fr": "au revoir (à celui qui reste)",
+        "es": "adiós (al que se queda)"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "མིང",
+      "reading": "ming",
+      "meaning": "name",
+      "translations": {
+        "fr": "nom",
+        "es": "nombre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "མཚན",
+      "reading": "mtshan",
+      "meaning": "name (respectful)",
+      "translations": {
+        "fr": "nom (respectueux)",
+        "es": "nombre (respetuoso)"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཁྱེད་རང",
+      "reading": "khyed rang",
+      "meaning": "you (polite)",
+      "translations": {
+        "fr": "vous, tu (poli)",
+        "es": "usted"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ཁོ",
+      "reading": "kho",
+      "meaning": "he",
+      "translations": {
+        "fr": "il",
+        "es": "él"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "མོ",
+      "reading": "mo",
+      "meaning": "she",
+      "translations": {
+        "fr": "elle",
+        "es": "ella"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ཁོང",
+      "reading": "khong",
+      "meaning": "he, she (respectful)",
+      "translations": {
+        "fr": "il, elle (respectueux)",
+        "es": "él, ella (respetuoso)"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ང་ཚོ",
+      "reading": "nga tsho",
+      "meaning": "we",
+      "translations": {
+        "fr": "nous",
+        "es": "nosotros"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ལགས",
+      "reading": "lags",
+      "meaning": "polite particle; yes",
+      "translations": {
+        "fr": "particule de politesse ; oui",
+        "es": "partícula de cortesía; sí"
+      },
+      "type": "particle"
+    }
+  ]
+}

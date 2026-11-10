@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "ᐃᓄᒃ",
+      "reading": "inuk",
+      "meaning": "person",
+      "translations": {
+        "fr": "personne",
+        "es": "persona"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐃᓄᐃᑦ",
+      "reading": "inuit",
+      "meaning": "people, the Inuit",
+      "translations": {
+        "fr": "gens, les Inuit",
+        "es": "gente, los inuit"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᓄᓇ",
+      "reading": "nuna",
+      "meaning": "land",
+      "translations": {
+        "fr": "terre, pays",
+        "es": "tierra"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐃᒡᓗ",
+      "reading": "iglu",
+      "meaning": "house",
+      "translations": {
+        "fr": "maison",
+        "es": "casa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐃᓄᒃᑐᑦ",
+      "reading": "inuktut",
+      "meaning": "the Inuit language of Nunavut",
+      "translations": {
+        "fr": "la langue inuit du Nunavut",
+        "es": "la lengua inuit de Nunavut"
+      },
+      "type": "noun"
+    }
+  ]
+}

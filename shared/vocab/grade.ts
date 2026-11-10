@@ -55,21 +55,22 @@
  * Malayalam is answered in its script or in transliteration, scholarly or
  * "Manglish" (kēraḷaṁ, keralam): as printed it is right; the same by the
  * course's Malayalam key (long and short vowels, ട and ത, ള and ല… one) it is
- * "accent", so the spelling is shown.
+ * "accent", so the spelling is shown. Inuktitut (syllabics or Roman
+ * orthography) and Tibetan (script or Wylie) are graded the same way, each by its key.
  */
 
 import { hasKana, kanaToRomaji } from "./kana";
-import { malayalamKey } from "../lessons/grade";
+import { inuktitutKey, malayalamKey, tibetanKey } from "../lessons/grade";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml";
+export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo";
 
 /** Languages written in their own script and also answered by their reading (as Arabic). */
-export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml"]);
+export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo"]);
 
 /** The grading rules for a book language: those it has, else English (plain text). */
 export function answerLangOf(code: string): AnswerLang {
-  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml"];
+  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo"];
   return (known.includes(code) ? code : "en") as AnswerLang;
 }
 
@@ -90,6 +91,8 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   sux: [],
   egy: [],
   ml: [],
+  iu: [],
+  bo: [],
 };
 
 /** Text as shown: book typography cleaned, "..." for an open end. */
@@ -449,7 +452,9 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   if (lang === "ja") return gradeJapanese(given, expected, reading);
   if (lang === "ar") return gradeArabic(given, expected, reading);
   if (lang === "zh" || lang === "sux" || lang === "egy") return gradeScript(given, expected, reading, lang);
-  if (lang === "ml") return gradeMalayalam(given, expected, reading);
+  if (lang === "ml") return gradeKeyed(given, expected, reading, malayalamKey);
+  if (lang === "iu") return gradeKeyed(given, expected, reading, inuktitutKey);
+  if (lang === "bo") return gradeKeyed(given, expected, reading, tibetanKey);
   // English: contractions written out on both sides ("I'm" and "I am").
   const english = (t: string): string => (lang === "en" ? expandEnglish(t) : t);
   const answer = english(normalise(given));
@@ -478,14 +483,17 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   return "wrong";
 }
 
-/** Malayalam: the script as printed, or its transliteration; then the same by the Malayalam key. */
-function gradeMalayalam(given: string, expected: string, reading: string): Verdict {
+/**
+ * Malayalam, Inuktitut, Tibetan: the script as printed, or the reading (transliteration, Roman
+ * orthography, Wylie); then the same by the language's key, "accent", so the spelling is shown.
+ */
+function gradeKeyed(given: string, expected: string, reading: string, key: (t: string) => string): Verdict {
   const answer = normalise(given);
   if (!answer) return "wrong";
   const forms = [...acceptedForms(expected), ...(reading ? acceptedForms(reading) : [])];
   if (forms.map(normalise).includes(answer)) return "right";
-  const key = malayalamKey(answer);
-  return key && forms.some((f) => malayalamKey(f) === key) ? "accent" : "wrong";
+  const k = key(answer);
+  return k && forms.some((f) => key(f) === k) ? "accent" : "wrong";
 }
 
 /** Written answers are asked only for short entries; long phrases stay multiple choice. */

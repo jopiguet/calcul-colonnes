@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "མིན",
+      "reading": "min",
+      "meaning": "is not (oneself)",
+      "translations": {
+        "fr": "n'est pas (de soi)",
+        "es": "no es (uno mismo)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "མེད",
+      "reading": "med",
+      "meaning": "there is not, has not",
+      "translations": {
+        "fr": "il n'y a pas, n'a pas",
+        "es": "no hay, no tiene"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ག་རེ",
+      "reading": "ga re",
+      "meaning": "what",
+      "translations": {
+        "fr": "quoi",
+        "es": "qué"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "སུ",
+      "reading": "su",
+      "meaning": "who",
+      "translations": {
+        "fr": "qui",
+        "es": "quién"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ག་པར",
+      "reading": "ga par",
+      "meaning": "where",
+      "translations": {
+        "fr": "où",
+        "es": "dónde"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ག་དུས",
+      "reading": "ga dus",
+      "meaning": "when",
+      "translations": {
+        "fr": "quand",
+        "es": "cuándo"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "ག་ཚོད",
+      "reading": "ga tshod",
+      "meaning": "how much",
+      "translations": {
+        "fr": "combien",
+        "es": "cuánto"
+      },
+      "type": "adverb"
+    },
+    {
+      "term": "འདི",
+      "reading": "'di",
+      "meaning": "this",
+      "translations": {
+        "fr": "ceci",
+        "es": "esto"
+      },
+      "type": "pronoun"
+    }
+  ]
+}

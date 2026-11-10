@@ -320,3 +320,47 @@ test("Quechua: sixteen lessons, five-vowel and Spanish spellings, ejectives from
   await spell.locator(".lesson-check").click();
   await expect(spell.locator(".lesson-exercise-score")).toHaveText("3/4");
 });
+
+test("Inuktitut: syllabics in their font, answers in syllabics or in Roman spelling, the syllabics cards", async ({ page }) => {
+  await newPlayer(page, "Saali");
+  await goHome(page);
+  await expect(page.locator("[data-activity='vocab-course-inuktitut']")).toContainText("Vocabulaire inuktitut");
+  await openActivity(page, "lessons-inuktitut");
+  await expect(page.locator(".lessons-item")).toHaveCount(14);
+  await expect(page.locator(".lessons-letters")).toBeVisible();
+  await page.locator(".lessons-item").nth(1).click();
+  const run = page.locator(".script-inuktitut").first();
+  await expect(run).toHaveAttribute("lang", "iu");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Noto Sans Canadian Aboriginal");
+  const card = page.locator(".lesson-exercise[data-exercise='transcribe']");
+  const inputs = card.locator(".lesson-input");
+  // Roman spelling for three, syllabics for one: all right.
+  for (const [i, v] of [[0, "tuktu"], [1, "qimmiq"], [2, "ᓯᑯ"], [3, "nanuq"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/4");
+  // k for q is another sound: wrong.
+  await inputs.nth(1).fill("kimmik");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
+});
+
+test("Tibetan: script in its font, answers in script or in Wylie", async ({ page }) => {
+  await newPlayer(page, "Tenzin");
+  await goHome(page);
+  await expect(page.locator("[data-activity='vocab-course-tibetan']")).toContainText("Vocabulaire tibétain");
+  await openActivity(page, "lessons-tibetan");
+  await expect(page.locator(".lessons-item")).toHaveCount(14);
+  await page.locator(".lessons-item").first().click();
+  const run = page.locator(".script-tibetan").first();
+  await expect(run).toHaveAttribute("lang", "bo");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Noto Serif Tibetan");
+  const card = page.locator(".lesson-exercise[data-exercise='wylie']");
+  const inputs = card.locator(".lesson-input");
+  for (const [i, v] of [[0, "bod"], [1, "lha sa"], [2, "བོད་སྐད"], [3, "bkra shis bde legs"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/4");
+  // The sound written as heard is not the spelling.
+  await inputs.nth(0).fill("pö");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
+});

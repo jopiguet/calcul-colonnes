@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "ᐃᒡᓗᔾᔪᐊᖅ",
+      "reading": "iglujjuaq",
+      "meaning": "big building",
+      "translations": {
+        "fr": "grand bâtiment",
+        "es": "edificio grande"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᕿᒻᒥᐊᐱᒃ",
+      "reading": "qimmiapik",
+      "meaning": "puppy, little dog",
+      "translations": {
+        "fr": "chiot, petit chien",
+        "es": "cachorro, perrito"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᓄᓇᕗᒻᒥᐅᑦ",
+      "reading": "nunavummiut",
+      "meaning": "the people of Nunavut",
+      "translations": {
+        "fr": "les gens du Nunavut",
+        "es": "la gente de Nunavut"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐃᒡᓗᓕᐅᖅᑐᖓ",
+      "reading": "igluliuqtunga",
+      "meaning": "I am building a house",
+      "translations": {
+        "fr": "je construis une maison",
+        "es": "estoy construyendo una casa"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᑐᒃᑐᓯᐅᖅᑐᖓ",
+      "reading": "tuktusiuqtunga",
+      "meaning": "I am hunting caribou",
+      "translations": {
+        "fr": "je chasse le caribou",
+        "es": "estoy cazando caribúes"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ᕿᒻᒥᖃᖅᑐᖓ",
+      "reading": "qimmiqaqtunga",
+      "meaning": "I have a dog",
+      "translations": {
+        "fr": "j'ai un chien",
+        "es": "tengo un perro"
+      },
+      "type": "phrase"
+    }
+  ]
+}

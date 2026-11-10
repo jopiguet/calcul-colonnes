@@ -1,0 +1,94 @@
+{
+  "entries": [
+    {
+      "term": "ཟ",
+      "reading": "za",
+      "meaning": "to eat",
+      "translations": {
+        "fr": "manger",
+        "es": "comer"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "འཐུང",
+      "reading": "'thung",
+      "meaning": "to drink",
+      "translations": {
+        "fr": "boire",
+        "es": "beber"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "འགྲོ",
+      "reading": "'gro",
+      "meaning": "to go",
+      "translations": {
+        "fr": "aller",
+        "es": "ir"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "སློབ",
+      "reading": "slob",
+      "meaning": "to learn",
+      "translations": {
+        "fr": "apprendre",
+        "es": "aprender"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ཀློག",
+      "reading": "klog",
+      "meaning": "to read",
+      "translations": {
+        "fr": "lire",
+        "es": "leer"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "འབྲི",
+      "reading": "'bri",
+      "meaning": "to write",
+      "translations": {
+        "fr": "écrire",
+        "es": "escribir"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ཉལ",
+      "reading": "nyal",
+      "meaning": "to sleep, to lie down",
+      "translations": {
+        "fr": "dormir, se coucher",
+        "es": "dormir, acostarse"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ཁ་ལག",
+      "reading": "kha lag",
+      "meaning": "food, meal",
+      "translations": {
+        "fr": "nourriture, repas",
+        "es": "comida"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "བོད་ཇ",
+      "reading": "bod ja",
+      "meaning": "butter tea",
+      "translations": {
+        "fr": "thé au beurre",
+        "es": "té de mantequilla"
+      },
+      "type": "noun"
+    }
+  ]
+}

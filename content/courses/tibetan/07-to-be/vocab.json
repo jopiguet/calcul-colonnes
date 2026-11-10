@@ -1,0 +1,124 @@
+{
+  "entries": [
+    {
+      "term": "ཡིན",
+      "reading": "yin",
+      "meaning": "to be (oneself)",
+      "translations": {
+        "fr": "être (de soi)",
+        "es": "ser (uno mismo)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "རེད",
+      "reading": "red",
+      "meaning": "to be (of others)",
+      "translations": {
+        "fr": "être (des autres)",
+        "es": "ser (de otros)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ཡོད",
+      "reading": "yod",
+      "meaning": "to be there, to have (own knowledge)",
+      "translations": {
+        "fr": "y avoir, avoir (savoir propre)",
+        "es": "haber, tener (saber propio)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "འདུག",
+      "reading": "'dug",
+      "meaning": "to be there (seen)",
+      "translations": {
+        "fr": "y avoir (constaté)",
+        "es": "haber (visto)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "སློབ་མ",
+      "reading": "slob ma",
+      "meaning": "student",
+      "translations": {
+        "fr": "élève",
+        "es": "estudiante"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "དགེ་རྒན",
+      "reading": "dge rgan",
+      "meaning": "teacher",
+      "translations": {
+        "fr": "enseignant",
+        "es": "profesor"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "སྨན་པ",
+      "reading": "sman pa",
+      "meaning": "doctor",
+      "translations": {
+        "fr": "médecin",
+        "es": "médico"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "དེབ",
+      "reading": "deb",
+      "meaning": "book",
+      "translations": {
+        "fr": "livre",
+        "es": "libro"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "བོད་པ",
+      "reading": "bod pa",
+      "meaning": "a Tibetan",
+      "translations": {
+        "fr": "un Tibétain",
+        "es": "un tibetano"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཁང་པ",
+      "reading": "khang pa",
+      "meaning": "house",
+      "translations": {
+        "fr": "maison",
+        "es": "casa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "གཡག",
+      "reading": "g.yag",
+      "meaning": "yak",
+      "translations": {
+        "fr": "yack",
+        "es": "yak"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "མང་པོ",
+      "reading": "mang po",
+      "meaning": "many, much",
+      "translations": {
+        "fr": "beaucoup",
+        "es": "mucho"
+      },
+      "type": "adjective"
+    }
+  ]
+}

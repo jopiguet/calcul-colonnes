@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "ལ",
+      "reading": "la",
+      "meaning": "to, in, at",
+      "translations": {
+        "fr": "à, dans",
+        "es": "a, en"
+      },
+      "type": "particle"
+    },
+    {
+      "term": "ནས",
+      "reading": "nas",
+      "meaning": "from",
+      "translations": {
+        "fr": "de, depuis",
+        "es": "de, desde"
+      },
+      "type": "particle"
+    },
+    {
+      "term": "དང",
+      "reading": "dang",
+      "meaning": "and, with",
+      "translations": {
+        "fr": "et, avec",
+        "es": "y, con"
+      },
+      "type": "particle"
+    },
+    {
+      "term": "སློབ་གྲྭ",
+      "reading": "slob grwa",
+      "meaning": "school",
+      "translations": {
+        "fr": "école",
+        "es": "escuela"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ནང",
+      "reading": "nang",
+      "meaning": "inside",
+      "translations": {
+        "fr": "intérieur",
+        "es": "interior"
+      },
+      "type": "noun"
+    }
+  ]
+}

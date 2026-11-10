@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "བཟས",
+      "reading": "bzas",
+      "meaning": "ate (past of za)",
+      "translations": {
+        "fr": "a mangé (passé de za)",
+        "es": "comió (pasado de za)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "བཏུངས",
+      "reading": "btungs",
+      "meaning": "drank (past of 'thung)",
+      "translations": {
+        "fr": "a bu (passé de 'thung)",
+        "es": "bebió (pasado de 'thung)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ཕྱིན",
+      "reading": "phyin",
+      "meaning": "went (past of 'gro)",
+      "translations": {
+        "fr": "est allé (passé de 'gro)",
+        "es": "fue (pasado de 'gro)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "བྲིས",
+      "reading": "bris",
+      "meaning": "wrote (past of 'bri)",
+      "translations": {
+        "fr": "a écrit (passé de 'bri)",
+        "es": "escribió (pasado de 'bri)"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ངས",
+      "reading": "ngas",
+      "meaning": "I (doer, ergative)",
+      "translations": {
+        "fr": "je (agent, ergatif)",
+        "es": "yo (agente, ergativo)"
+      },
+      "type": "pronoun"
+    }
+  ]
+}

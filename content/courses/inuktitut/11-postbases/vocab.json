@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "-ᔪᒪ-",
+      "reading": "-juma-",
+      "meaning": "want to",
+      "translations": {
+        "fr": "vouloir",
+        "es": "querer"
+      },
+      "type": "postbase"
+    },
+    {
+      "term": "-ᒍᓐᓇᖅ-",
+      "reading": "-gunnaq-",
+      "meaning": "be able to, can",
+      "translations": {
+        "fr": "pouvoir",
+        "es": "poder"
+      },
+      "type": "postbase"
+    },
+    {
+      "term": "-ᑦᓯᐊᖅ-",
+      "reading": "-tsiaq-",
+      "meaning": "well, nicely",
+      "translations": {
+        "fr": "bien",
+        "es": "bien"
+      },
+      "type": "postbase"
+    },
+    {
+      "term": "-ᙱᑦ-",
+      "reading": "-nngit-",
+      "meaning": "not",
+      "translations": {
+        "fr": "ne … pas",
+        "es": "no"
+      },
+      "type": "postbase"
+    },
+    {
+      "term": "-ᓗ",
+      "reading": "-lu",
+      "meaning": "and",
+      "translations": {
+        "fr": "et",
+        "es": "y"
+      },
+      "type": "suffix"
+    }
+  ]
+}

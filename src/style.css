@@ -17,7 +17,7 @@
   --warn: #93600a;
   --square: 1.25rem;
   --radius: 0.75rem;
-  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
+  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Canadian Aboriginal", "Noto Serif Tibetan", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
   --digits: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
   /* The physics playground: a ball, grass, light. */
   --ball: #d9541e;
@@ -7074,6 +7074,24 @@ button.tiny {
 }
 .lesson-vocab-sign:lang(ml) {
   font-size: 1.3em;
+}
+.script-inuktitut,
+.lesson-vocab-sign:lang(iu) {
+  font-family: "Noto Sans Canadian Aboriginal", var(--font);
+  font-size: 1.2em;
+}
+.lesson-vocab-sign:lang(iu) {
+  font-size: 1.35em;
+}
+/* Tibetan stacks letters above and below the line: larger, with room between lines. */
+.script-tibetan,
+.lesson-vocab-sign:lang(bo) {
+  font-family: "Noto Serif Tibetan", var(--font);
+  font-size: 1.25em;
+  line-height: 1.7;
+}
+.lesson-vocab-sign:lang(bo) {
+  font-size: 1.45em;
 }
 .lesson-vocab-sign:lang(fa) {
   font-family: "Vazirmatn", var(--font);

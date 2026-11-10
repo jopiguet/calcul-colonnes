@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "ᐃᒐᓛᖅ",
+      "reading": "igalaaq",
+      "meaning": "window",
+      "translations": {
+        "fr": "fenêtre",
+        "es": "ventana"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᐃᒪᖅ",
+      "reading": "imaq",
+      "meaning": "water",
+      "translations": {
+        "fr": "eau",
+        "es": "agua"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᖃᓪᓗᓈᑦ",
+      "reading": "qallunaat",
+      "meaning": "people from the south, non-Inuit",
+      "translations": {
+        "fr": "gens du Sud, non-Inuit",
+        "es": "gente del sur, no inuit"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᑎᑭᑦ-",
+      "reading": "tikit-",
+      "meaning": "to arrive",
+      "translations": {
+        "fr": "arriver",
+        "es": "llegar"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᐃᖃᓗᒃ",
+      "reading": "iqaluk",
+      "meaning": "fish, Arctic char",
+      "translations": {
+        "fr": "poisson, omble chevalier",
+        "es": "pez, trucha alpina"
+      },
+      "type": "noun"
+    }
+  ]
+}

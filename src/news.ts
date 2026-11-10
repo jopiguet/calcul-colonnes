@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.5.0",
+    fr: ["Deux nouveaux cours de langue avec leur vocabulaire et leurs cartes d'écriture : 🛷 inuktitut, la langue des Inuit du Nunavut, en syllabiques, et 🏔️ tibétain, la langue de Lhassa, en écriture tibétaine. Les réponses comptent en syllabiques ou en orthographe latine, en écriture tibétaine ou en Wylie."],
+    es: ["Dos cursos de idioma nuevos con su vocabulario y sus tarjetas de escritura: 🛷 inuktitut, la lengua de los inuit de Nunavut, en silabarios, y 🏔️ tibetano, la lengua de Lhasa, en escritura tibetana. Las respuestas valen en silabarios o en ortografía latina, en escritura tibetana o en Wylie."],
+    en: ["Two new language courses with their vocabulary and script cards: 🛷 Inuktitut, the language of the Inuit of Nunavut, in syllabics, and 🏔️ Tibetan, the language of Lhasa, in Tibetan script. Answers count in syllabics or Roman spelling, in Tibetan script or Wylie."],
+  },
+  {
     version: "8.4.1",
     fr: ["Les lettres de translittération ꜣ et ꜥ de l'égyptien (wḏꜣt, ꜥnḫ) s'affichaient comme des cases vides sur certains appareils : elles sont maintenant dessinées par une police fournie avec l'application, comme ḥ, ḫ, ṯ et ḏ."],
     es: ["Las letras de transliteración ꜣ y ꜥ del egipcio (wḏꜣt, ꜥnḫ) aparecían como cuadros vacíos en algunos dispositivos: ahora las dibuja una fuente incluida en la aplicación, igual que ḥ, ḫ, ṯ y ḏ."],

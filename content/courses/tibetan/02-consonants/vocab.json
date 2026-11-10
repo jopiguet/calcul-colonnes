@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "ང",
+      "reading": "nga",
+      "meaning": "I",
+      "translations": {
+        "fr": "je, moi",
+        "es": "yo"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ཇ",
+      "reading": "ja",
+      "meaning": "tea",
+      "translations": {
+        "fr": "thé",
+        "es": "té"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཤ",
+      "reading": "sha",
+      "meaning": "meat",
+      "translations": {
+        "fr": "viande",
+        "es": "carne"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ས",
+      "reading": "sa",
+      "meaning": "earth, ground",
+      "translations": {
+        "fr": "terre, sol",
+        "es": "tierra, suelo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ཀ་བ",
+      "reading": "ka ba",
+      "meaning": "pillar",
+      "translations": {
+        "fr": "pilier",
+        "es": "pilar"
+      },
+      "type": "noun"
+    }
+  ]
+}

@@ -226,6 +226,16 @@ const scripts: [string, string, string, AnswerLang, Verdict][] = [
   ["ra", "𓇳", "rꜥ", "egy", "right"],
   ["𓋹", "𓋹", "ꜥnḫ", "egy", "right"],
   ["sag", "𒊕", "", "sux", "wrong"],
+  // Inuktitut: syllabics, the Roman spelling, or the Roman spelling with y for j.
+  ["ᖃᒧᑎᒃ", "ᖃᒧᑎᒃ", "qamutik", "iu", "right"],
+  ["qamutik", "ᖃᒧᑎᒃ", "qamutik", "iu", "right"],
+  ["angiyuq", "ᐊᖏᔪᖅ", "angijuq", "iu", "accent"],
+  ["kamutik", "ᖃᒧᑎᒃ", "qamutik", "iu", "wrong"],
+  // Tibetan: the script, Wylie, or Wylie without its marks.
+  ["བོད", "བོད", "bod", "bo", "right"],
+  ["bod", "བོད", "bod", "bo", "right"],
+  ["gyag", "གཡག", "g.yag", "bo", "accent"],
+  ["pod", "བོད", "bod", "bo", "wrong"],
 ];
 for (const [given, expected, reading, lang, verdict] of scripts) {
   expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)}, ${lang})`, grade(given, expected, lang, reading), verdict);

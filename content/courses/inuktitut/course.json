@@ -1,0 +1,35 @@
+{
+  "id": "inuktitut",
+  "language": "iu",
+  "icon": "🛷",
+  "folds": [
+    "inuktitut"
+  ],
+  "title": {
+    "fr": "Inuktitut",
+    "es": "Inuktitut",
+    "en": "Inuktitut"
+  },
+  "description": {
+    "fr": "La langue des Inuit du Nunavut : ses syllabiques, signe par signe et avec des cartes, des mots qui sont des phrases, ses terminaisons qui comptent un, deux et plusieurs, ses cas et ses postbases, puis Saali d'Iqaluit et l'inuksuk.",
+    "es": "La lengua de los inuit de Nunavut: sus silabarios, signo a signo y con tarjetas, palabras que son frases, terminaciones que cuentan uno, dos y muchos, sus casos y sus posbases, y luego Saali de Iqaluit y el inuksuk.",
+    "en": "The language of the Inuit of Nunavut: its syllabics, sign by sign and with cards, words that are sentences, endings that count one, two and many, its cases and postbases, then Saali of Iqaluit and the inuksuk."
+  },
+  "vocabLesson": "Lesson {n}",
+  "lessons": [
+    "01-inuktitut-and-syllabics",
+    "02-syllabics-chart",
+    "03-finals-and-sounds",
+    "04-greetings-pronouns",
+    "05-word-building",
+    "06-verbs-present",
+    "07-questions-negation",
+    "08-nouns-number-possession",
+    "09-cases",
+    "10-past-future",
+    "11-postbases",
+    "12-specific-objects",
+    "13-numbers-family-seasons",
+    "14-reading-the-land"
+  ]
+}
