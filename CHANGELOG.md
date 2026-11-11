@@ -1,5 +1,11 @@
 # Changelog
 
+## 8.5.1
+
+- **Updates and redraws no longer stall:** a vocabulary session, test or experiment left open by going back to the home page, rather than stopped, kept the app from ever reloading for a new version or redrawing the home page, so it took a tap on *Mettre à jour*. Such an activity now holds the update only ten minutes after the last tap or key. Vocabulary answers are saved one by one, so nothing is lost but the place in the session.
+- **Lists of meanings separated by commas:** *son, boy* accepts *son*, *boy*, or both in any order, as a semicolon already did. Not for a sentence (*Yes, I am fine.*), a phrase opened by *yes*, *no*, *well* and the like (*yes, of course*), a side of more than four words, or German answers, where a comma joins a word's forms or the objects of one verb ([Vocabulary › What the books' notation accepts](docs/vocabulary.md)). No book needs changing.
+- `update.spec.ts`: a session left open behind the home page lets the update through after ten minutes; `check:vocab`: 18 cases for lists.
+
 ## 8.5.0
 
 - **🛷 Inuktitut, a language course** ([Language courses](docs/language-courses.md)): the Inuktitut of Nunavut, 14 lessons, 56 exercises, 100 words, in French, Spanish and English, with 81 syllabics cards. Syllabics and their chart, long and double sounds, greetings, pronouns that count one, two and many, words built from a base, postbases and an ending, the present and its dual, *-nngit-* and questions, number and possession, five cases and the sound changes at their joins (*Iqaluit*, *Iqalunni*), time postbases, *-juma-*, *-gunnaq-*, *-lu*, "a dog" and "the dog" with the ergative *-up*, numbers, family and seasons, then a reading, the inuksuk and Inuit Qaujimajatuqangit.

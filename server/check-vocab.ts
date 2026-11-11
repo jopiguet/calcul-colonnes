@@ -151,6 +151,26 @@ const cases: [string, string, AnswerLang, Verdict][] = [
   // Swahili: plain text.
   ["kitabu", "kitabu", "sw", "right"],
   ["kitbu", "kitabu", "sw", "typo"],
+  // A list of meanings: each side alone, the whole, or several sides in any order.
+  ["boy", "son, boy", "en", "right"],
+  ["son", "son, boy", "en", "right"],
+  ["son, boy", "son, boy", "en", "right"],
+  ["boy, son", "son, boy", "en", "right"],
+  ["girl", "son, boy", "en", "wrong"],
+  ["boy, girl", "son, boy", "en", "wrong"],
+  ["to sit", "to stay, to sit (respectful)", "en", "right"],
+  ["sit", "to stay, to sit (respectful)", "en", "right"],
+  ["garçon", "fils, garçon", "fr", "right"],
+  ["s'asseoir", "rester, s'asseoir", "fr", "right"],
+  ["chico", "hijo, chico", "es", "right"],
+  ["lugar", "país, lugar", "es", "right"],
+  // Not a list: a phrase opened by yes or no, a sentence, a side too long, German forms.
+  ["yes", "yes, of course", "en", "wrong"],
+  ["no", "no, thank you", "en", "wrong"],
+  ["oui", "oui, bien sûr", "fr", "wrong"],
+  ["I am fine", "Yes, I am fine.", "en", "wrong"],
+  ["fand", "finden, findet, fand, hat gefunden", "de", "wrong"],
+  ["finden", "finden, findet, fand, hat gefunden", "de", "right"],
 ];
 for (const [given, expected, lang, verdict] of cases) {
   expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)})`, grade(given, expected, lang), verdict);

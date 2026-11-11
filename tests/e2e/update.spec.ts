@@ -105,3 +105,25 @@ test("going home, the screen being left keeps its width until the home page is r
   await page.locator(".home").waitFor();
   expect(await width()).toBeGreaterThan(1000);
 });
+
+test("a vocabulary session left open behind the home page no longer holds an update after ten minutes", async ({ page }) => {
+  await page.clock.install();
+  await newPlayer(page, "Upl");
+  await openActivity(page, "vocab-test-english");
+  const lesson = page.locator(".vocab-lesson").first();
+  if (!(await lesson.evaluate((d) => (d as HTMLDetailsElement).open))) await lesson.locator("summary").click();
+  await lesson.locator(".vocab-section button").first().click();
+  await page.locator(".vocab-card").waitFor();
+  // Back to the home page without stopping the session.
+  await goHome(page);
+  await newBuildOut(page);
+  // Just left: the session still holds the update, the banner offers it.
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect(page.locator(".update-banner")).toBeVisible();
+  // Ten minutes without a tap: the update goes through by itself.
+  await page.evaluate(() => ((window as unknown as { marker: boolean }).marker = true));
+  await page.clock.fastForward("11:00");
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await page.waitForFunction(() => !(window as unknown as { marker?: boolean }).marker, null, { timeout: 10_000 });
+  await page.locator(".home").waitFor();
+});

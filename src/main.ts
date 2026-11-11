@@ -516,17 +516,29 @@ function goHome(): void {
   void render();
 }
 
+/** After this long without a tap or a key, an activity left open behind the home page no longer holds an update. */
+const LEFT_ALONE = 10 * 60_000;
+let lastTouch = Date.now();
+for (const type of ["pointerdown", "keydown"] as const) {
+  document.addEventListener(type, () => (lastTouch = Date.now()), { capture: true, passive: true });
+}
+
 /**
  * A quiet moment for a reload or a redraw: between activities (home page,
  * players, sign-in), with no vocabulary session, test or experiment under
  * way and nothing typed in a field. Inside an activity, an update waits for
- * the way back to the home page.
+ * the way back to the home page. An activity left open (not stopped) holds it
+ * only for LEFT_ALONE after the last tap or key.
  */
 function idle(): boolean {
   // Only between activities: the home page, the list of players, the sign-in screens.
   const between = !state.auth?.authenticated || !state.user || state.view === "players" || (state.view === "play" && state.settings.mode === "home");
   if (!between) return false;
-  if (vocabBusy() || quizBusy() || discoverBusy()) return false;
+  // A session, test or experiment left open behind the home page (by navigating away rather than
+  // stopping it) holds the reload only while it was touched recently: otherwise the window would
+  // never update or redraw again. Vocabulary answers are saved card by card; only the place in the
+  // queue is lost.
+  if ((vocabBusy() || quizBusy() || discoverBusy()) && Date.now() - lastTouch < LEFT_ALONE) return false;
   return ![...document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("#app input, #app textarea")].some(
     (field) =>
       !["checkbox", "radio", "hidden", "range"].includes(field.type) && field.value.trim() !== "" && !field.disabled,

@@ -8,6 +8,8 @@
  *   once only between activities (home page, players, sign-in, nothing under
  *   way). Inside an activity nothing is interrupted: a discreet banner offers
  *   the update, and the app reloads by itself on the way back to the home page.
+ *   An activity left open behind the home page holds it only ten minutes
+ *   after the last tap or key (idle() in main.ts).
  * - New data: coming back after a few minutes, the home page is drawn again
  *   from the server (words due, a newly imported book); an activity is left
  *   as it is.

@@ -307,10 +307,31 @@ export function germanHeads(expected: string): string[] {
   return [...heads];
 }
 
-/** Every form accepted in this language: as printed, and for German the word alone. */
+/** Words that open a phrase rather than a list: "yes, of course", "no, thank you", "well, …". */
+const OPENERS = new Set(["yes", "no", "oui", "non", "si", "sí", "well", "oh", "ah", "ok", "okay", "so", "alors", "bon", "bueno", "pues", "ja", "nein", "doch", "also", "hey", "please", "s'il", "por"]);
+
+/**
+ * The sides of a list of meanings, "son, boy", "to stay, to sit (respectful)": each is an answer of
+ * its own. Not a sentence ("Yes, I'm fine.", punctuation inside), not a phrase opened by "yes" or
+ * "well", not a side of more than four words. Not in German answers either: there a comma joins a
+ * word's forms ("finden, findet, fand, hat gefunden", their own rule) or the objects of one verb
+ * ("einen Beruf, das Wort, ein Buch ergreifen"). [] when it is no list.
+ */
+export function commaSides(expected: string, lang: AnswerLang): string[] {
+  if (!expected.includes(",") || /[.?!¿¡…]/.test(expected)) return [];
+  if (lang === "de") return [];
+  const sides = expected.split(/,(?![^(]*\))/).map((side) => side.trim()).filter(Boolean);
+  if (sides.length < 2) return [];
+  const words = (side: string): string[] => side.replace(/\([^)]*\)/g, " ").trim().split(/\s+/).filter(Boolean);
+  if (sides.some((side) => words(side).length === 0 || words(side).length > 4)) return [];
+  if (OPENERS.has(normalise(words(sides[0]!)[0] ?? ""))) return [];
+  return sides;
+}
+
+/** Every form accepted in this language: as printed, each side of a list, and for German the word alone. */
 function formsFor(expected: string, lang: AnswerLang): string[] {
-  const forms = acceptedForms(expected);
-  if (lang !== "de") return forms;
+  const forms = [...acceptedForms(expected), ...commaSides(expected, lang).flatMap(acceptedForms)];
+  if (lang !== "de") return [...new Set(forms)];
   return [...new Set([...forms, ...germanHeads(expected).flatMap(acceptedForms)])];
 }
 
@@ -467,6 +488,12 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   const tried = optional ? [answer, withoutArticle(answer, lang)] : [answer];
 
   if (candidates.some((f) => tried.includes(f))) return "right";
+  // Several sides of a list typed together, in any order: "boy, son" for "son, boy".
+  if (given.includes(",") && commaSides(expected, lang).length > 0) {
+    const typed = given.split(",").map((part) => english(normalise(part))).filter(Boolean);
+    const known = (part: string): boolean => candidates.includes(part) || (optional && candidates.includes(withoutArticle(part, lang)));
+    if (typed.length > 1 && typed.every(known)) return "right";
+  }
   if (lang === "de" && candidates.some((f) => tried.some((t) => germanFold(t) === germanFold(f)))) return "right";
   if (candidates.some((f) => tried.some((t) => plain(t) === plain(f)))) return "accent";
 

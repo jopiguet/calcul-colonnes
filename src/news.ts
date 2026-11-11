@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.5.1",
+    fr: ["Les réponses séparées par des virgules : « fils, garçon » accepte « fils », « garçon », ou les deux. Et l'application se met de nouveau à jour d'elle-même, même quand une série de mots a été laissée en cours."],
+    es: ["Las respuestas separadas por comas: «hijo, chico» acepta «hijo», «chico» o las dos. Y la aplicación vuelve a actualizarse sola, aunque se haya dejado una serie de palabras a medias."],
+    en: ["Answers separated by commas: \"son, boy\" accepts \"son\", \"boy\", or both. And the app updates itself again, even when a vocabulary session was left unfinished."],
+  },
+  {
     version: "8.5.0",
     fr: ["Deux nouveaux cours de langue avec leur vocabulaire et leurs cartes d'écriture : 🛷 inuktitut, la langue des Inuit du Nunavut, en syllabiques, et 🏔️ tibétain, la langue de Lhassa, en écriture tibétaine. Les réponses comptent en syllabiques ou en orthographe latine, en écriture tibétaine ou en Wylie."],
     es: ["Dos cursos de idioma nuevos con su vocabulario y sus tarjetas de escritura: 🛷 inuktitut, la lengua de los inuit de Nunavut, en silabarios, y 🏔️ tibetano, la lengua de Lhasa, en escritura tibetana. Las respuestas valen en silabarios o en ortografía latina, en escritura tibetana o en Wylie."],

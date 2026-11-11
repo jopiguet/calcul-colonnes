@@ -1137,6 +1137,7 @@ connection to the server; it does not work offline.
 - When the window comes back to the front, and every 15 minutes while it is in front, the app asks the server whether a new version is out.
 - If so, on the home page or the list of players, it reloads at once.
 - Inside an activity it never interrupts: a bar at the bottom offers *Mettre à jour*, and otherwise the update happens on the next return to the home page.
+- A session, test or experiment left open rather than stopped (by going back to the home page) holds the update only for ten minutes after the last tap or key; after that the update and the redraw go through. Vocabulary answers are saved one by one, so only the place in the session is lost.
 - Coming back to the home page after a few minutes, it is redrawn from the server: the words due are current, and a newly imported book appears.
 
 ## What is stored where

@@ -625,6 +625,7 @@ of two Spanish words with the same English meaning.
 | `der / die Büroangestellte` | *der Büroangestellte*, *die Büroangestellte* |
 | `becoming / process of coming-to-be` | *becoming*, *process of coming-to-be* (a short first side that is another word: an answer of its own) |
 | `lord; ruler` | *lord*, *ruler*, or both |
+| `son, boy` | *son*, *boy*, or both in any order (a list: each side of four words at most; not a sentence with a stop or a question mark, not a phrase opened by *yes*, *no*, *well* and the like, *yes, of course*; not in German answers, where a comma joins a word's forms or the objects of one verb) |
 | `to take his/her pulse` | *to take his pulse*, *to take her pulse* |
 | `step-/half-brother` | *step-brother*, *half-brother* |
 | `ad / ac / af` | any of them |
