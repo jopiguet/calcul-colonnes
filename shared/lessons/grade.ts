@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan" | "runes";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -252,6 +252,25 @@ export function tibetanKey(text: string): string {
     .trim();
 }
 
+/** Runes read in their usual transliteration, by Unicode name; a rune with two readings takes its first. */
+const RUNES: Record<string, string> = {"ᚠ": "f", "ᚢ": "u", "ᚦ": "th", "ᚨ": "a", "ᚱ": "r", "ᚲ": "k", "ᚷ": "g", "ᚹ": "w", "ᚺ": "h", "ᚾ": "n", "ᛁ": "i", "ᛃ": "j", "ᛇ": "i", "ᛈ": "p", "ᛉ": "z", "ᛊ": "s", "ᛏ": "t", "ᛒ": "b", "ᛖ": "e", "ᛗ": "m", "ᛚ": "l", "ᛜ": "ng", "ᛞ": "d", "ᛟ": "o", "ᚬ": "o", "ᚭ": "o", "ᚴ": "k", "ᚼ": "h", "ᚽ": "h", "ᚿ": "n", "ᛅ": "a", "ᛆ": "a", "ᛋ": "s", "ᛌ": "s", "ᛐ": "t", "ᛓ": "b", "ᛘ": "m", "ᛙ": "m", "ᛦ": "r", "ᛧ": "r", "ᚩ": "o", "ᚳ": "c", "ᚻ": "h", "ᛄ": "j", "ᛝ": "ng", "ᚪ": "a", "ᚫ": "ae", "ᚣ": "y", "ᛡ": "io", "ᛠ": "ea", "ᛢ": "cw", "ᛣ": "k", "ᛥ": "st", "ᚸ": "g", "᛫": " ", "᛬": " ", "᛭": " "};
+
+/**
+ * Runic as typed: runes or their transliteration are one answer. Runes are read letter by letter;
+ * then þ is th, ŋ is ng, æ is ae, ï is i, ą and œ are o (ᚬ, ᛟ), R is r, and the word dividers are spaces.
+ */
+export function runicKey(text: string): string {
+  let t = "";
+  for (const ch of text.normalize("NFC")) t += RUNES[ch] ?? ch;
+  return t
+    .toLowerCase()
+    .replace(/þ/g, "th").replace(/ŋ/g, "ng").replace(/æ/g, "ae").replace(/ï/g, "i").replace(/ą/g, "o").replace(/œ/g, "o").replace(/ʀ/g, "r")
+    .replace(/[-·:|]/g, " ")
+    .replace(/[^a-z\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /** Egyptian and Akkadian transliterations as typed on a keyboard: ꜣ as 3 or a, ꜥ as ' or e, ḥ as h… */
 const TRANSLIT: [RegExp, string][] = [
   [/[ꜣꜢ]/g, "a"],
@@ -301,6 +320,7 @@ export function fold(text: string, folds: readonly Fold[]): string {
   if (folds.includes("quechua")) return quechuaKey(t);
   if (folds.includes("inuktitut")) return inuktitutKey(t);
   if (folds.includes("tibetan")) return tibetanKey(t);
+  if (folds.includes("runes")) return runicKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -328,7 +348,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan"].includes(x));
+    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes"].includes(x));
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

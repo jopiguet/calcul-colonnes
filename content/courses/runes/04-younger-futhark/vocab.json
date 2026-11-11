@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "ᛋᛏᛅᛁᚾ",
+      "reading": "stain",
+      "meaning": "stone",
+      "translations": {
+        "fr": "pierre",
+        "es": "piedra"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚱᛅᛁᛋᚦᛁ",
+      "reading": "raisþi",
+      "meaning": "raised",
+      "translations": {
+        "fr": "a dressé",
+        "es": "levantó"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᚦᛅᚾᛋᛁ",
+      "reading": "þansi",
+      "meaning": "this",
+      "translations": {
+        "fr": "ce, cette",
+        "es": "este, esta"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᛅᚠᛏ",
+      "reading": "aft",
+      "meaning": "in memory of",
+      "translations": {
+        "fr": "à la mémoire de",
+        "es": "en memoria de"
+      },
+      "type": "preposition"
+    },
+    {
+      "term": "ᚠᛅᚦᚢᚱ",
+      "reading": "faþur",
+      "meaning": "father",
+      "translations": {
+        "fr": "père",
+        "es": "padre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛋᚢᚾ",
+      "reading": "sun",
+      "meaning": "son",
+      "translations": {
+        "fr": "fils",
+        "es": "hijo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚦᚢᚱ",
+      "reading": "þur",
+      "meaning": "Thor",
+      "translations": {
+        "fr": "Thor",
+        "es": "Thor"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚢᚦᛁᚾ",
+      "reading": "uþin",
+      "meaning": "Odin",
+      "translations": {
+        "fr": "Odin",
+        "es": "Odín"
+      },
+      "type": "noun"
+    }
+  ]
+}

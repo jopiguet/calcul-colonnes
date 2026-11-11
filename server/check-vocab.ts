@@ -256,6 +256,13 @@ const scripts: [string, string, string, AnswerLang, Verdict][] = [
   ["bod", "བོད", "bod", "bo", "right"],
   ["gyag", "གཡག", "g.yag", "bo", "accent"],
   ["pod", "བོད", "bod", "bo", "wrong"],
+  // Runes: the runes, or their transliteration, with þ typed as th.
+  ["ᛋᛏᛅᛁᚾ", "ᛋᛏᛅᛁᚾ", "stain", "gem", "right"],
+  ["stain", "ᛋᛏᛅᛁᚾ", "stain", "gem", "right"],
+  ["faþur", "ᚠᛅᚦᚢᚱ", "faþur", "gem", "right"],
+  ["fathur", "ᚠᛅᚦᚢᚱ", "faþur", "gem", "accent"],
+  ["daeg", "ᛞᚫᚷ", "dæg", "gem", "accent"],
+  ["stein", "ᛋᛏᛅᛁᚾ", "stain", "gem", "wrong"],
 ];
 for (const [given, expected, reading, lang, verdict] of scripts) {
   expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)}, ${lang})`, grade(given, expected, lang, reading), verdict);

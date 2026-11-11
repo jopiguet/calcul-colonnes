@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "ᛞᚫᚷ",
+      "reading": "dæg",
+      "meaning": "day",
+      "translations": {
+        "fr": "jour",
+        "es": "día"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛋᛏᚪᚾ",
+      "reading": "stan",
+      "meaning": "stone",
+      "translations": {
+        "fr": "pierre",
+        "es": "piedra"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚳᚣᚾᛁᛝ",
+      "reading": "cyning",
+      "meaning": "king",
+      "translations": {
+        "fr": "roi",
+        "es": "rey"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚻᚢᛋ",
+      "reading": "hus",
+      "meaning": "house",
+      "translations": {
+        "fr": "maison",
+        "es": "casa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚹᛁᚠ",
+      "reading": "wif",
+      "meaning": "woman, wife",
+      "translations": {
+        "fr": "femme",
+        "es": "mujer, esposa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚷᚩᛞ",
+      "reading": "god",
+      "meaning": "God; good",
+      "translations": {
+        "fr": "Dieu ; bon",
+        "es": "Dios; bueno"
+      },
+      "type": "noun"
+    }
+  ]
+}

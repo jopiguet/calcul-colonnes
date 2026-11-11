@@ -1,0 +1,104 @@
+{
+  "entries": [
+    {
+      "term": "ᚺᚨᚷᚨᛚᚨᛉ",
+      "reading": "hagalaz",
+      "meaning": "hail",
+      "translations": {
+        "fr": "grêle",
+        "es": "granizo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚾᚨᚢᛞᛁᛉ",
+      "reading": "naudiz",
+      "meaning": "need",
+      "translations": {
+        "fr": "besoin",
+        "es": "necesidad"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛁᛊᚨᛉ",
+      "reading": "isaz",
+      "meaning": "ice",
+      "translations": {
+        "fr": "glace",
+        "es": "hielo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛃᛖᚱᚨ",
+      "reading": "jera",
+      "meaning": "year, harvest",
+      "translations": {
+        "fr": "année, récolte",
+        "es": "año, cosecha"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛊᛟᚹᛁᛚᛟ",
+      "reading": "sowilo",
+      "meaning": "sun",
+      "translations": {
+        "fr": "soleil",
+        "es": "sol"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛒᛖᚱᚲᚨᚾᚨᚾ",
+      "reading": "berkanan",
+      "meaning": "birch",
+      "translations": {
+        "fr": "bouleau",
+        "es": "abedul"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛖᚺᚹᚨᛉ",
+      "reading": "ehwaz",
+      "meaning": "horse",
+      "translations": {
+        "fr": "cheval",
+        "es": "caballo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛗᚨᚾᚾᚨᛉ",
+      "reading": "mannaz",
+      "meaning": "man, person",
+      "translations": {
+        "fr": "homme, personne",
+        "es": "hombre, persona"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛚᚨᚷᚢᛉ",
+      "reading": "laguz",
+      "meaning": "water, lake",
+      "translations": {
+        "fr": "eau, lac",
+        "es": "agua, lago"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛞᚨᚷᚨᛉ",
+      "reading": "dagaz",
+      "meaning": "day",
+      "translations": {
+        "fr": "jour",
+        "es": "día"
+      },
+      "type": "noun"
+    }
+  ]
+}

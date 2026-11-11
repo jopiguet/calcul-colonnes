@@ -20,13 +20,14 @@ structure and the same exercises.
 | 🦙 Quechua (`quechua`) | 8.4.0 | 16 | 64 | 146 |
 | 🛷 Inuktitut (`inuktitut`) | 8.5.0 | 14 | 56 | 100, and 81 syllabics cards |
 | 🏔️ Tibetan (`tibetan`) | 8.5.0 | 14 | 56 | 126, and 62 letter cards |
+| ᚱ Runes (`runes`) | 8.6.0 | 5 | 20 | 38, and 69 rune cards |
 
 The content is original, written for the app, and ships with it; quoted texts
 (Caesar, Catullus, Virgil; Sinuhe, the Shipwrecked Sailor, the offering
 formula; Gudea, Ur-Namma, the Laws of Hammurabi, Gilgamesh; Homer, Sophocles,
 Heraclitus, Plato, the Gospel of John; Ferdowsi, Saadi, Rumi, Hafez, Khayyam;
 the Quran; Genesis, Deuteronomy, Numbers, the Psalms, Ecclesiastes; Ezhuthachan,
-Kumaran Asan, the Malayalam proverbs) are in the public domain. The Quechua tale of the fox and the condor is a version written for the course of a story told across the Andes; the Inuktitut and Tibetan readings were written for the course, and *oṃ maṇi padme hūṃ* is a traditional mantra. Quranic passages are quoted in their Arabic text, in the common
+Kumaran Asan, the Malayalam proverbs) are in the public domain. The Quechua tale of the fox and the condor is a version written for the course of a story told across the Andes; the Inuktitut and Tibetan readings and the runestone of the Runes course were written for the course; the Gallehus inscription (about 400) and the first line of the Old English Rune Poem are in the public domain; *oṃ maṇi padme hūṃ* is a traditional mantra. Quranic passages are quoted in their Arabic text, in the common
 Ḥafṣ reading, with translations of the meaning; biblical passages in the
 vocalised Masoretic text, without cantillation marks, with the divine name
 read *Adonai* as in Jewish practice.
@@ -35,7 +36,7 @@ read *Adonai* as in Jewish practice.
 
 ```text
 content/courses/
-  index.json                      ["latin", …, "quechua", "inuktitut", "tibetan"]: the courses, in order
+  index.json                      ["latin", …, "quechua", "inuktitut", "tibetan", "runes"]: the courses, in order
   latin/
     course.json                   id, language, icon, folds, titles, the lesson list
     01-letters-and-sounds/
@@ -49,7 +50,7 @@ content/courses/
     sounds/<hash>.mp3             their sounds (docs/sounds.md)
 ```
 
-Malayalam, Egyptian, Sumerian and Akkadian can be listened to: a ▶ after the words of the lesson text and on the letter cards, made at build time by eSpeak NG. See [Sounds](sounds.md). Quechua, Inuktitut and Tibetan have no sounds: eSpeak NG has no voice for them, and a borrowed voice would lose what the courses teach (Quechua's ejectives and uvular *q*, Inuktitut's *q* and long sounds, the tones of Lhasa).
+Malayalam, Egyptian, Sumerian and Akkadian can be listened to: a ▶ after the words of the lesson text and on the letter cards, made at build time by eSpeak NG. See [Sounds](sounds.md). Quechua, Inuktitut and Tibetan have no sounds: eSpeak NG has no voice for them, and a borrowed voice would lose what the courses teach (Quechua's ejectives and uvular *q*, Inuktitut's *q* and long sounds, the tones of Lhasa). The Runes course has none either: it teaches a script for several dead languages, whose sounds are reconstructed.
 
 `course.json`:
 
@@ -146,12 +147,13 @@ course's folds.
 | `malayalam` | strict blanks compared in a plain Latin key: the script transliterated (inherent *a*, vowel signs, virama, chillus, ം as *m*; റ്റ and ന്റ read *tt*, *nt*; a final ് as *ŭ*), ISO 15919 and Manglish brought to it: marks dropped, long and short vowels one (*ee* and *oo* read *i* and *u*), retroflex and dental one, *t* and *d* one, ശ ഷ സ one, ര റ one, aspirates plain, *ch* *c*, *nj* *ny* *ng* *n*, *zh* and ഴ kept apart; doubled letters counted once, a final half-u optional; free answers unchanged | Malayalam typed on any keyboard: *keralam*, *veedu*, *njan*, കേരളം |
 | `inuktitut` | syllabics read into the Roman spelling of Nunavut (ᒋ *gi*, ᔨ *ji*, ᕕ *vi*, the finals, ᖅᑲ *qqa*, ᙱ *nngi*), then both sides compared: *y* read *j*, *&* or *lh* read *ł*; *q* and *k*, long and short vowels kept apart | an answer in syllabics or in Roman spelling: ᖃᒧᑎᒃ and *qamutik* are one |
 | `tibetan` | the script read into Wylie letters, the tsheg a space; both sides then without the vowel *a* (the script leaves it unwritten), the a-chung *'*, and Wylie's *.* and *+* | an answer in Tibetan script or in Wylie: བཀྲ་ཤིས and *bkra shis*, གཡག and *g.yag* are one |
+| `runes` | runes read into their transliteration (Elder, Younger and Anglo-Saxon: ᚦ *th*, ᛜ ᛝ *ng*, ᚫ *ae*, ᛇ *i*, ᚬ and ᛟ *o*, ᛦ *r*, the dividers ᛫ ᛬ a space), then both sides lowercased: *þ* read *th*, *ŋ* *ng*, *æ* *ae*, *ï* *i*, *ą* and *œ* *o*, *R* *r*; other marks dropped; free answers unchanged | an answer in runes or in transliteration: ᚦᚢᚱ, *þur* and *thur* are one |
 | `quechua` | strict blanks compared after: accents dropped, hyphens between suffixes dropped, *e* read *i* and *o* read *u*, Spanish spellings brought to the official ones (*hu* before a vowel as *w*, *j* as *h*, *c* and *qu* before *e i* as *k*), a final *-nchis* as *-nchik*; aspirates (*ph*) and ejectives (*p'*) kept apart from plain stops, *k* from *q*; free answers unchanged | Quechua typed as it is often written: *Qosqo*, *huasi*, *jatun*, *ñoqanchis* |
 | `egyptian` | strict blanks compared by their consonants: *ꜣ ꜥ* (*3*, *'*) and the vowels *a e o* dropped, *j i y* one letter, *w u* one, *ḥ ḫ ẖ kh x* = *h*, *š sh* = *s*, *ṯ tj* = *t*, *ḏ dj* = *d*, *ḳ q* = *k*, dots and hyphens dropped; free answers keep their vowels | Egyptian typed as it is read: *ankh*, *nefer*, *sedjem.n.ef* |
 
 Course folds: Latin `macrons ij uv`, Egyptian `egyptian`, Sumerian
 `translit subscripts` (*diĝir* typed *digir*, *e₂* typed *e2*), Akkadian
-`translit macrons` (*šalmāku* typed *shalmaku*), Greek `greek` (*logos*, λογος and λόγος are one answer), Persian `persian` (کتاب, *ketâb* and *ketab* are one answer), Arabic `arabic` (كتاب, كِتَاب, *kitāb* and *kitab* are one answer), Hebrew `hebrew` (שלום, שָׁלוֹם and *shalom* are one answer), Malayalam `malayalam` (കേരളം, *kēraḷaṁ* and *keralam* are one answer), Quechua `quechua` (*Qusqu* and *Qosqo*, *wasi* and *huasi* are one answer), Inuktitut `inuktitut` (syllabics or Roman spelling), Tibetan `tibetan` (script or Wylie).
+`translit macrons` (*šalmāku* typed *shalmaku*), Greek `greek` (*logos*, λογος and λόγος are one answer), Persian `persian` (کتاب, *ketâb* and *ketab* are one answer), Arabic `arabic` (كتاب, كِتَاب, *kitāb* and *kitab* are one answer), Hebrew `hebrew` (שלום, שָׁלוֹם and *shalom* are one answer), Malayalam `malayalam` (കേരളം, *kēraḷaṁ* and *keralam* are one answer), Quechua `quechua` (*Qusqu* and *Qosqo*, *wasi* and *huasi* are one answer), Inuktitut `inuktitut` (syllabics or Roman spelling), Tibetan `tibetan` (script or Wylie), Runes `runes` (runes or transliteration).
 
 The `egyptian` fold makes *h* and *ḥ* one answer, the `greek` fold ε and η,
 the `persian` fold the letters of one sound (س ص ث) and the plural ـها, the

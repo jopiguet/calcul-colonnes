@@ -43,6 +43,7 @@ import "@fontsource/noto-sans-canadian-aboriginal/canadian-aboriginal-400.css";
 import "@fontsource/noto-sans-canadian-aboriginal/canadian-aboriginal-600.css";
 import "@fontsource/noto-serif-tibetan/tibetan-400.css";
 import "@fontsource/noto-serif-tibetan/tibetan-600.css";
+import "@fontsource/noto-sans-runic/runic-400.css";
 import "@fontsource/noto-sans-cuneiform/400.css";
 import "@fontsource/noto-sans-egyptian-hieroglyphs/400.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";

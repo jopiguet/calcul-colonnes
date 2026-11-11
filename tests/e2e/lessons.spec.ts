@@ -364,3 +364,24 @@ test("Tibetan: script in its font, answers in script or in Wylie", async ({ page
   await card.locator(".lesson-check").click();
   await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
 });
+
+test("Runes: runes in their font, answers in runes or in transliteration", async ({ page }) => {
+  await newPlayer(page, "Gunnar");
+  await goHome(page);
+  await expect(page.locator("[data-activity='vocab-course-runes']")).toContainText("Vocabulaire runique");
+  await openActivity(page, "lessons-runes");
+  await expect(page.locator(".lessons-item")).toHaveCount(5);
+  await page.locator(".lessons-item").first().click();
+  const run = page.locator(".script-runic").first();
+  await expect(run).toHaveAttribute("lang", "gem");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Noto Sans Runic");
+  const card = page.locator(".lesson-exercise[data-exercise='sounds']");
+  const inputs = card.locator(".lesson-input");
+  for (const [i, v] of [[0, "f"], [1, "ᚱ"], [2, "G"], [3, "th"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/4");
+  // ᚷ is a cross, but not an x.
+  await inputs.nth(2).fill("x");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
+});

@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.6.0",
+    fr: ["Un nouveau cours, ᚱ Runes : le futhark ancien, la corne d'or de Gallehus, le futhark récent des pierres runiques vikings et le futhorc anglo-saxon, avec leur vocabulaire et 69 cartes de runes. Les réponses comptent en runes ou en lettres latines."],
+    es: ["Un curso nuevo, ᚱ Runas: el futhark antiguo, el cuerno de oro de Gallehus, el futhark nuevo de las piedras rúnicas vikingas y el futhorc anglosajón, con su vocabulario y 69 tarjetas de runas. Las respuestas valen en runas o en letras latinas."],
+    en: ["A new course, ᚱ Runes: the Elder Futhark, the golden horn of Gallehus, the Younger Futhark of the Viking runestones and the Anglo-Saxon futhorc, with their vocabulary and 69 rune cards. Answers count in runes or in Latin letters."],
+  },
+  {
     version: "8.5.1",
     fr: ["Les réponses séparées par des virgules : « fils, garçon » accepte « fils », « garçon », ou les deux. Et l'application se met de nouveau à jour d'elle-même, même quand une série de mots a été laissée en cours."],
     es: ["Las respuestas separadas por comas: «hijo, chico» acepta «hijo», «chico» o las dos. Y la aplicación vuelve a actualizarse sola, aunque se haya dejado una serie de palabras a medias."],

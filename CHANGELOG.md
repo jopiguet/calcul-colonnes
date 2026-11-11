@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.6.0
+
+- **ᚱ Runes, a script course** ([Language courses](docs/language-courses.md)): 5 lessons, 20 exercises, 38 words, in French, Spanish and English, with 69 rune cards (Elder Futhark, Younger Futhark, Anglo-Saxon futhorc). The Elder Futhark and its three *ættir*, with the rune names and how they are reconstructed; reading Proto-Norse, the golden horn of Gallehus (*ek hlewagastiz holtijaz horna tawido*), *alu*, *erilaz*; the sixteen runes of the Younger Futhark, one rune for several sounds, and a runestone written for the course on the Swedish model; the Anglo-Saxon futhorc, its new vowels, the Rune Poem, and Old English in runes.
+- **The `runes` fold:** strict answers count in runes or in transliteration, and *þ*, *ŋ*, *æ* typed *th*, *ng*, *ae*. The vocabulary books accept the same (`gem`). The key row writes *þ*, *æ*, *ŋ*, *ï*.
+- **Font:** Noto Sans Runic, bundled; lesson text sets each run of runes in it, a little larger.
+- **Linear Elamite** is not added: it is not yet in Unicode, and no font for it is released under a licence the app can ship.
+- `lessons.spec.ts`: the course, its font and both ways of answering; `check:lessons` and `check:vocab` cover the new key.
+
 ## 8.5.1
 
 - **Updates and redraws no longer stall:** a vocabulary session, test or experiment left open by going back to the home page, rather than stopped, kept the app from ever reloading for a new version or redrawing the home page, so it took a tap on *Mettre à jour*. Such an activity now holds the update only ten minutes after the last tap or key. Vocabulary answers are saved one by one, so nothing is lost but the place in the session.

@@ -840,7 +840,7 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan**, **🌙 Arabe**, **📜 Hébreu**, **🌴 Malayalam**, **🦙 Quechua**, **🛷 Inuktitut** and **🏔️ Tibétain**, with the exercises done (*12 exercices sur 126 réussis*). See
+**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan**, **🌙 Arabe**, **📜 Hébreu**, **🌴 Malayalam**, **🦙 Quechua**, **🛷 Inuktitut**, **🏔️ Tibétain** and **ᚱ Runes**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
 **The course page** lists the lessons (31 in Latin), each with its exercises done
@@ -926,6 +926,11 @@ too, but *k* does not stand for *q*. The Tibetan course teaches the Tibetan of
 Lhasa in its script, with Wylie transliteration and a guide to pronunciation;
 answers count in script or in Wylie (བོད or *bod*), not as pronounced (*pö*).
 Both have letter cards (syllabics, Tibetan letters and stacks) and no sounds.
+
+The Runes course teaches the three rune rows: the Elder Futhark, the Younger
+Futhark of the Viking runestones and the Anglo-Saxon futhorc. Answers count in
+runes or in transliteration (ᚦᚢᚱ, *þur* or *thur*); the buttons under the
+fields write *þ*, *æ*, *ŋ* and *ï*. It has 69 rune cards and no sounds.
 
 Every course's words (and the Malayalam letters) also have their card under
 *Langues* on the home page, with the words to review, beside your own books

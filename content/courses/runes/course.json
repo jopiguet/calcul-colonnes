@@ -1,0 +1,32 @@
+{
+  "id": "runes",
+  "language": "gem",
+  "icon": "ᚱ",
+  "folds": [
+    "runes"
+  ],
+  "title": {
+    "fr": "Runes",
+    "es": "Runas",
+    "en": "Runes"
+  },
+  "description": {
+    "fr": "Les runes des peuples germaniques : le futhark ancien et ses trois ættir, la corne d'or de Gallehus, le futhark récent des pierres runiques vikings, puis le futhorc anglo-saxon et son poème runique.",
+    "es": "Las runas de los pueblos germánicos: el futhark antiguo y sus tres ættir, el cuerno de oro de Gallehus, el futhark nuevo de las piedras rúnicas vikingas y luego el futhorc anglosajón y su poema rúnico.",
+    "en": "The runes of the Germanic peoples: the Elder Futhark and its three ættir, the golden horn of Gallehus, the Younger Futhark of the Viking runestones, then the Anglo-Saxon futhorc and its rune poem."
+  },
+  "vocabLesson": "Lesson {n}",
+  "keys": [
+    "þ",
+    "æ",
+    "ŋ",
+    "ï"
+  ],
+  "lessons": [
+    "01-elder-futhark",
+    "02-elder-second-third-aett",
+    "03-reading-elder",
+    "04-younger-futhark",
+    "05-anglo-saxon-futhorc"
+  ]
+}

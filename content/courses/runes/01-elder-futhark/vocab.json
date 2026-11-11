@@ -1,0 +1,74 @@
+{
+  "entries": [
+    {
+      "term": "ᚠᛖᚺᚢ",
+      "reading": "fehu",
+      "meaning": "cattle, wealth",
+      "translations": {
+        "fr": "bétail, richesse",
+        "es": "ganado, riqueza"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚢᚱᚢᛉ",
+      "reading": "uruz",
+      "meaning": "aurochs",
+      "translations": {
+        "fr": "aurochs",
+        "es": "uro"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚦᚢᚱᛁᛊᚨᛉ",
+      "reading": "þurisaz",
+      "meaning": "giant",
+      "translations": {
+        "fr": "géant",
+        "es": "gigante"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚨᚾᛊᚢᛉ",
+      "reading": "ansuz",
+      "meaning": "god",
+      "translations": {
+        "fr": "dieu",
+        "es": "dios"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚱᚨᛁᛞᛟ",
+      "reading": "raido",
+      "meaning": "ride, journey",
+      "translations": {
+        "fr": "chevauchée, voyage",
+        "es": "cabalgada, viaje"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚷᛖᛒᛟ",
+      "reading": "gebo",
+      "meaning": "gift",
+      "translations": {
+        "fr": "don, cadeau",
+        "es": "regalo, don"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚹᚢᚾᛃᛟ",
+      "reading": "wunjo",
+      "meaning": "joy",
+      "translations": {
+        "fr": "joie",
+        "es": "alegría"
+      },
+      "type": "noun"
+    }
+  ]
+}

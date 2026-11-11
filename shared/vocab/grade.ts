@@ -60,17 +60,17 @@
  */
 
 import { hasKana, kanaToRomaji } from "./kana";
-import { inuktitutKey, malayalamKey, tibetanKey } from "../lessons/grade";
+import { inuktitutKey, malayalamKey, runicKey, tibetanKey } from "../lessons/grade";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo";
+export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo" | "gem";
 
 /** Languages written in their own script and also answered by their reading (as Arabic). */
-export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo"]);
+export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo", "gem"]);
 
 /** The grading rules for a book language: those it has, else English (plain text). */
 export function answerLangOf(code: string): AnswerLang {
-  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo"];
+  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo", "gem"];
   return (known.includes(code) ? code : "en") as AnswerLang;
 }
 
@@ -93,6 +93,7 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   ml: [],
   iu: [],
   bo: [],
+  gem: [],
 };
 
 /** Text as shown: book typography cleaned, "..." for an open end. */
@@ -476,6 +477,7 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   if (lang === "ml") return gradeKeyed(given, expected, reading, malayalamKey);
   if (lang === "iu") return gradeKeyed(given, expected, reading, inuktitutKey);
   if (lang === "bo") return gradeKeyed(given, expected, reading, tibetanKey);
+  if (lang === "gem") return gradeKeyed(given, expected, reading, runicKey);
   // English: contractions written out on both sides ("I'm" and "I am").
   const english = (t: string): string => (lang === "en" ? expandEnglish(t) : t);
   const answer = english(normalise(given));

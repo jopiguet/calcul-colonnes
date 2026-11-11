@@ -1,0 +1,431 @@
+{
+ "book": {
+  "title": "Runes",
+  "credit": "Written for Luma's runes course (docs/language-courses.md); rune names from the rune poems and their reconstructions"
+ },
+ "lessons": [
+  {
+   "title": "ᚠᚢᚦᚨᚱᚲ",
+   "subtitle": "Elder Futhark",
+   "sections": [
+    {
+     "title": "ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ",
+     "subtitle": "f u þ a r k g w",
+     "entries": [
+      {
+       "term": "ᚠ",
+       "meaning": "f",
+       "note": "fehu"
+      },
+      {
+       "term": "ᚢ",
+       "meaning": "u",
+       "note": "ūruz"
+      },
+      {
+       "term": "ᚦ",
+       "meaning": "þ",
+       "note": "þurisaz"
+      },
+      {
+       "term": "ᚨ",
+       "meaning": "a",
+       "note": "ansuz"
+      },
+      {
+       "term": "ᚱ",
+       "meaning": "r",
+       "note": "raidō"
+      },
+      {
+       "term": "ᚲ",
+       "meaning": "k",
+       "note": "kaunan"
+      },
+      {
+       "term": "ᚷ",
+       "meaning": "g",
+       "note": "gebō"
+      },
+      {
+       "term": "ᚹ",
+       "meaning": "w",
+       "note": "wunjō"
+      }
+     ]
+    },
+    {
+     "title": "ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛊ",
+     "subtitle": "h n i j ï p z s",
+     "entries": [
+      {
+       "term": "ᚺ",
+       "meaning": "h",
+       "note": "hagalaz"
+      },
+      {
+       "term": "ᚾ",
+       "meaning": "n",
+       "note": "naudiz"
+      },
+      {
+       "term": "ᛁ",
+       "meaning": "i",
+       "note": "īsaz"
+      },
+      {
+       "term": "ᛃ",
+       "meaning": "j",
+       "note": "jēra"
+      },
+      {
+       "term": "ᛇ",
+       "meaning": "ï",
+       "note": "eihwaz"
+      },
+      {
+       "term": "ᛈ",
+       "meaning": "p",
+       "note": "perþō"
+      },
+      {
+       "term": "ᛉ",
+       "meaning": "z",
+       "note": "algiz"
+      },
+      {
+       "term": "ᛊ",
+       "meaning": "s",
+       "note": "sōwilō"
+      }
+     ]
+    },
+    {
+     "title": "ᛏ ᛒ ᛖ ᛗ ᛚ ᛜ ᛞ ᛟ",
+     "subtitle": "t b e m l ŋ d o",
+     "entries": [
+      {
+       "term": "ᛏ",
+       "meaning": "t",
+       "note": "tīwaz"
+      },
+      {
+       "term": "ᛒ",
+       "meaning": "b",
+       "note": "berkanan"
+      },
+      {
+       "term": "ᛖ",
+       "meaning": "e",
+       "note": "ehwaz"
+      },
+      {
+       "term": "ᛗ",
+       "meaning": "m",
+       "note": "mannaz"
+      },
+      {
+       "term": "ᛚ",
+       "meaning": "l",
+       "note": "laguz"
+      },
+      {
+       "term": "ᛜ",
+       "meaning": "ŋ",
+       "note": "ingwaz"
+      },
+      {
+       "term": "ᛞ",
+       "meaning": "d",
+       "note": "dagaz"
+      },
+      {
+       "term": "ᛟ",
+       "meaning": "o",
+       "note": "ōþila"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ᚠᚢᚦᚬᚱᚴ",
+   "subtitle": "Younger Futhark",
+   "sections": [
+    {
+     "title": "ᚠ ᚢ ᚦ ᚬ ᚱ ᚴ",
+     "subtitle": "f u þ ą r k",
+     "entries": [
+      {
+       "term": "ᚠ",
+       "meaning": "f",
+       "note": "fé"
+      },
+      {
+       "term": "ᚢ",
+       "meaning": "u",
+       "note": "úr"
+      },
+      {
+       "term": "ᚦ",
+       "meaning": "þ",
+       "note": "þurs"
+      },
+      {
+       "term": "ᚬ",
+       "meaning": "ą",
+       "note": "óss"
+      },
+      {
+       "term": "ᚱ",
+       "meaning": "r",
+       "note": "reið"
+      },
+      {
+       "term": "ᚴ",
+       "meaning": "k",
+       "note": "kaun"
+      }
+     ]
+    },
+    {
+     "title": "ᚼ ᚾ ᛁ ᛅ ᛋ",
+     "subtitle": "h n i a s",
+     "entries": [
+      {
+       "term": "ᚼ",
+       "meaning": "h",
+       "note": "hagall"
+      },
+      {
+       "term": "ᚾ",
+       "meaning": "n",
+       "note": "nauðr"
+      },
+      {
+       "term": "ᛁ",
+       "meaning": "i",
+       "note": "íss"
+      },
+      {
+       "term": "ᛅ",
+       "meaning": "a",
+       "note": "ár"
+      },
+      {
+       "term": "ᛋ",
+       "meaning": "s",
+       "note": "sól"
+      }
+     ]
+    },
+    {
+     "title": "ᛏ ᛒ ᛘ ᛚ ᛦ",
+     "subtitle": "t b m l R",
+     "entries": [
+      {
+       "term": "ᛏ",
+       "meaning": "t",
+       "note": "týr"
+      },
+      {
+       "term": "ᛒ",
+       "meaning": "b",
+       "note": "bjarkan"
+      },
+      {
+       "term": "ᛘ",
+       "meaning": "m",
+       "note": "maðr"
+      },
+      {
+       "term": "ᛚ",
+       "meaning": "l",
+       "note": "lǫgr"
+      },
+      {
+       "term": "ᛦ",
+       "meaning": "R",
+       "note": "ýr"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ᚠᚢᚦᚩᚱᚳ",
+   "subtitle": "Anglo-Saxon Futhorc",
+   "sections": [
+    {
+     "title": "ᚠ ᚢ ᚦ ᚩ ᚱ ᚳ ᚷ ᚹ",
+     "subtitle": "f u þ o r c g w",
+     "entries": [
+      {
+       "term": "ᚠ",
+       "meaning": "f",
+       "note": "feoh"
+      },
+      {
+       "term": "ᚢ",
+       "meaning": "u",
+       "note": "ūr"
+      },
+      {
+       "term": "ᚦ",
+       "meaning": "þ",
+       "note": "þorn"
+      },
+      {
+       "term": "ᚩ",
+       "meaning": "o",
+       "note": "ōs"
+      },
+      {
+       "term": "ᚱ",
+       "meaning": "r",
+       "note": "rād"
+      },
+      {
+       "term": "ᚳ",
+       "meaning": "c",
+       "note": "cēn"
+      },
+      {
+       "term": "ᚷ",
+       "meaning": "g",
+       "note": "gyfu"
+      },
+      {
+       "term": "ᚹ",
+       "meaning": "w",
+       "note": "wynn"
+      }
+     ]
+    },
+    {
+     "title": "ᚻ ᚾ ᛁ ᛄ ᛇ ᛈ ᛉ ᛋ",
+     "subtitle": "h n i j eo p x s",
+     "entries": [
+      {
+       "term": "ᚻ",
+       "meaning": "h",
+       "note": "hægl"
+      },
+      {
+       "term": "ᚾ",
+       "meaning": "n",
+       "note": "nȳd"
+      },
+      {
+       "term": "ᛁ",
+       "meaning": "i",
+       "note": "īs"
+      },
+      {
+       "term": "ᛄ",
+       "meaning": "j",
+       "note": "gēr"
+      },
+      {
+       "term": "ᛇ",
+       "meaning": "eo",
+       "note": "ēoh"
+      },
+      {
+       "term": "ᛈ",
+       "meaning": "p",
+       "note": "peorð"
+      },
+      {
+       "term": "ᛉ",
+       "meaning": "x",
+       "note": "eolhx"
+      },
+      {
+       "term": "ᛋ",
+       "meaning": "s",
+       "note": "sigel"
+      }
+     ]
+    },
+    {
+     "title": "ᛏ ᛒ ᛖ ᛗ ᛚ ᛝ ᛟ ᛞ",
+     "subtitle": "t b e m l ŋ œ d",
+     "entries": [
+      {
+       "term": "ᛏ",
+       "meaning": "t",
+       "note": "tīr"
+      },
+      {
+       "term": "ᛒ",
+       "meaning": "b",
+       "note": "beorc"
+      },
+      {
+       "term": "ᛖ",
+       "meaning": "e",
+       "note": "eh"
+      },
+      {
+       "term": "ᛗ",
+       "meaning": "m",
+       "note": "mann"
+      },
+      {
+       "term": "ᛚ",
+       "meaning": "l",
+       "note": "lagu"
+      },
+      {
+       "term": "ᛝ",
+       "meaning": "ŋ",
+       "note": "ing"
+      },
+      {
+       "term": "ᛟ",
+       "meaning": "œ",
+       "note": "ēþel"
+      },
+      {
+       "term": "ᛞ",
+       "meaning": "d",
+       "note": "dæg"
+      }
+     ]
+    },
+    {
+     "title": "ᚪ ᚫ ᚣ ᛡ ᛠ",
+     "subtitle": "a æ y io ea",
+     "entries": [
+      {
+       "term": "ᚪ",
+       "meaning": "a",
+       "note": "āc"
+      },
+      {
+       "term": "ᚫ",
+       "meaning": "æ",
+       "note": "æsc"
+      },
+      {
+       "term": "ᚣ",
+       "meaning": "y",
+       "note": "ȳr"
+      },
+      {
+       "term": "ᛡ",
+       "meaning": "io",
+       "note": "īor"
+      },
+      {
+       "term": "ᛠ",
+       "meaning": "ea",
+       "note": "ēar"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

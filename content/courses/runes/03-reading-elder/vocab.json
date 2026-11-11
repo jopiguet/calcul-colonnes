@@ -1,0 +1,74 @@
+{
+  "entries": [
+    {
+      "term": "ᛖᚲ",
+      "reading": "ek",
+      "meaning": "I",
+      "translations": {
+        "fr": "je",
+        "es": "yo"
+      },
+      "type": "pronoun"
+    },
+    {
+      "term": "ᚺᛟᚱᚾᚨ",
+      "reading": "horna",
+      "meaning": "the horn",
+      "translations": {
+        "fr": "la corne",
+        "es": "el cuerno"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛏᚨᚹᛁᛞᛟ",
+      "reading": "tawido",
+      "meaning": "made",
+      "translations": {
+        "fr": "a fait, fit",
+        "es": "hizo"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "ᚱᚢᚾᛟ",
+      "reading": "runo",
+      "meaning": "rune, secret",
+      "translations": {
+        "fr": "rune, secret",
+        "es": "runa, secreto"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᚨᛚᚢ",
+      "reading": "alu",
+      "meaning": "a word of power",
+      "translations": {
+        "fr": "un mot de pouvoir",
+        "es": "una palabra de poder"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛚᚨᚦᚢ",
+      "reading": "laþu",
+      "meaning": "invitation",
+      "translations": {
+        "fr": "invitation",
+        "es": "invitación"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ᛖᚱᛁᛚᚨᛉ",
+      "reading": "erilaz",
+      "meaning": "rune master",
+      "translations": {
+        "fr": "maître des runes",
+        "es": "maestro de runas"
+      },
+      "type": "noun"
+    }
+  ]
+}

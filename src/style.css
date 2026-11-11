@@ -17,7 +17,7 @@
   --warn: #93600a;
   --square: 1.25rem;
   --radius: 0.75rem;
-  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Canadian Aboriginal", "Noto Serif Tibetan", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
+  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Canadian Aboriginal", "Noto Serif Tibetan", "Noto Sans Runic", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
   --digits: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
   /* The physics playground: a ball, grass, light. */
   --ball: #d9541e;
@@ -7092,6 +7092,15 @@ button.tiny {
 }
 .lesson-vocab-sign:lang(bo) {
   font-size: 1.45em;
+}
+.script-runic,
+.lesson-vocab-sign:lang(gem) {
+  font-family: "Noto Sans Runic", var(--font);
+  font-size: 1.15em;
+  letter-spacing: 0.04em;
+}
+.lesson-vocab-sign:lang(gem) {
+  font-size: 1.35em;
 }
 .lesson-vocab-sign:lang(fa) {
   font-family: "Vazirmatn", var(--font);
