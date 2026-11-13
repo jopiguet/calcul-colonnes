@@ -40,21 +40,21 @@
     "check:sounds": "tsx server/sounds-build.ts --check"
   },
   "devDependencies": {
-    "@playwright/test": "^1.64.1",
+    "@playwright/test": "^1.65.0",
     "@types/better-sqlite3": "^9.6.0",
     "@types/jsdom": "^30.0.0",
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "@types/pg": "^8.23.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "concurrently": "^10.0.6",
+    "concurrently": "^10.0.7",
     "esbuild": "^0.28.2",
     "espeak-ng": "^1.0.2",
     "jsdom": "^29.1.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "typescript": "^7.0.2",
-    "vite": "^8.3.5"
+    "vite": "^8.3.6"
   },
   "dependencies": {
     "@fontsource/amiri": "^5.3.0",
@@ -69,9 +69,9 @@
     "@fontsource/noto-sans-runic": "^5.3.0",
     "@fontsource/noto-serif-tibetan": "^5.3.0",
     "@fontsource/vazirmatn": "^5.3.0",
-    "@hono/node-server": "^2.1.5",
-    "hono": "^4.13.13",
-    "katex": "^0.19.0",
+    "@hono/node-server": "^2.1.6",
+    "hono": "^4.13.17",
+    "katex": "^0.19.1",
     "pg": "^8.23.1",
     "tsx": "^4.23.15"
   },
