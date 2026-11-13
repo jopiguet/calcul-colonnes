@@ -142,7 +142,7 @@ home page: **Que fait-on, Léa ?**
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche) | Words due today, *À jour*, or the book's number of words if not started |
 | Exercices des livres | ✏️ one per workbook (*Grammar in Use*, *Vocabulary Advanced*…) | Exercises corrected and score, or the book's number of exercises |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
-| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud, 🔶 Cloudflare, 🐙 GitHub, 🚀 Déploiement | Kinds of question to review, for each |
+| Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud, 🔶 Cloudflare, 🐙 GitHub, 🚀 Déploiement, 📦 Node.js et npm | Kinds of question to review, for each |
 | Économie | 🏛️ Économie publique, ⚒️ Le Capital | Kinds of question to review, for each |
 | Découvrir | 🎲 Le labo des probabilités, 🪙 Pile ou face, 🧩 Grilles logiques | |
 | Physique | 🏀 Lancer une balle, ⏱️ Le pendule, 🔍 Les lentilles, 💡 Les circuits | |
@@ -607,6 +607,23 @@ They follow the written course *Deployment systems — a complete course*.
 | Avancé | trunk-based development, preview environments, reproducible builds, minimal and multi-architecture images, expand/contract migrations, DORA, postmortems, Pulumi, CDK and Crossplane, policy as code, `lifecycle`, `import`, `moved`, HPA, Helm, Kustomize, RBAC, Argo CD, Flux, secrets in GitOps |
 | Expert | SLSA and hermetic builds, OCI, build secrets and signatures, shadow traffic, cells and bake time, burn-rate alerts, toil and chaos, OpenTofu and licences, blast radius, replacements, `removed`, tests and ephemeral values, scheduling, operators, graceful shutdown, Cloud Run in depth, disaster recovery |
 
+## Node.js et npm
+
+Activity **📦 Node.js et npm**, in the *Informatique* group: multiple-choice
+tests on Node.js and the npm ecosystem at four levels, *Débutant* to
+*Expert*, in two groups, *La plateforme Node.js* (the runtime and its
+versions, modules, the event loop, built-in APIs) and *npm et l'écosystème*
+(`package.json` and semver, installing and lockfiles, publishing, security
+and the supply chain). They follow the written course *Node.js and npm — a
+complete course*.
+
+| Level | Topics |
+|---|---|
+| Débutant | what Node is, LTS lines, the REPL and version managers, `import` and `require`, `"type"`, `node:`, the event loop in one picture, `fs/promises`, `process.env`, `http`, `--watch`, `package.json`, `devDependencies`, carets, scripts, the lockfile, `npx`, the registry, scopes, `npm audit`, install scripts, typosquatting, secrets |
+| Intermédiaire | the release schedule, `engines`, `node --run`, exit codes, `import.meta.dirname`, `require(esm)`, JSON imports, microtasks, `Promise.all`, unhandled rejections, `pipeline`, `--env-file`, `node --test`, `fetch`, tildes and 0.x, hooks, peers, `npm ci`, overrides, workspaces, `npm version`, `exports`, types, dist-tags, npm tokens after 2025, `audit fix --force`, integrity |
+| Avancé | worker threads, graceful shutdown, the inspector, event-loop delay, the dual package hazard, conditions, resolution, `#imports`, `AbortSignal`, the loop's phases, backpressure, `AsyncLocalStorage`, type stripping, `parseArgs`, `execFile`, `timingSafeEqual`, `bin`, platform packages, `npm explain`, prereleases, phantom dependencies, pnpm, Corepack, trusted publishing, provenance, deprecation, Shai-Hulud, `min-release-age`, the permission model |
+| Expert | the libuv pool, heap snapshots, PID 1, Node-API, top-level `await` and `require`, the ESM cache, live bindings, customization hooks, `error` events, starvation, transfers, late handlers, keep-alive behind balancers, unread bodies, `vm`, preloading, `types` first, `sideEffects`, `ERESOLVE`, type changes, dedupe, reproducibility, registry proxies, Plug'n'Play, ESM-only packages, `prepare`, bundling, publint, dependency confusion, lockfile injection, `.npmrc` tokens, `pull_request_target` |
+
 ## Calculus
 
 Activity **∫ Analyse** (*∫ Cálculo*, *∫ Calculus*), in the *Mathématiques*
@@ -674,7 +691,7 @@ Every answer has been computed twice, by two independent programs.
 
 Every test comes with a course to read in the app, short for most
 (*Mathématiques — l'essentiel du test*, a part per group of topics) and
-long for *🔶 Cloudflare*, *🐙 GitHub*, *🚀 Déploiement* and *⚒️ Le Capital*. **📖 Lire le cours** in the
+long for *🔶 Cloudflare*, *🐙 GitHub*, *🚀 Déploiement*, *📦 Node.js et npm* and *⚒️ Le Capital*. **📖 Lire le cours** in the
 test's settings opens it in the player's language: a contents list, the parts with their tables, code and
 formulas, exercises with answers, and the sources. **← Retour au test**
 goes back to the settings.

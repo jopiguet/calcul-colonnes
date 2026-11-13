@@ -42,7 +42,7 @@ levels in that order, and `levelStep(level)` gives 0 to 3.
 | econ | `econBeginner` | `econ` | `econAdvanced` | `econExpert` |
 | calc | `calcBeginner` | `calc` | `calcAdvanced` | `calcExpert` |
 | marx | `marxBeginner` | `marxIntermediate` | `marxAdvanced` | `marxExpert` |
-| rust, ts, react, gcp, cf, github, deploy | `…Beginner` | `…Intermediate` | `…Advanced` | `…Expert` |
+| rust, ts, react, gcp, cf, github, deploy, node | `…Beginner` | `…Intermediate` | `…Advanced` | `…Expert` |
 
 The old ids stay as *Intermédiaire* and *Avancé*, so saved results and
 progress keep their level (migration `032_four_levels`). What each level
@@ -814,6 +814,25 @@ Terraform facts cover the `import`, `moved` and `removed` blocks,
 1.11); Cloud Run's cover service-level minimum instances, tags and
 `--no-traffic`, as of late 2026.
 
+## Node.js and npm
+
+The Node.js and npm test (8.7.0), *📦 Node.js et npm* in the *Informatique*
+group, has four levels, `nodeBeginner` to `nodeExpert`, and eight topics in
+two groups. *La plateforme Node.js* (`ndPlatform`): `ndRuntime`,
+`ndModules`, `ndAsync`, `ndApis`. *npm et l'écosystème* (`ndEcosystem`):
+`ndPackages`, `ndDeps`, `ndPublish`, `ndSecurity`. It goes with the written
+course *Node.js and npm — a complete course*.
+
+Written questions only: 128 in `shared/quiz/node/beginner.ts` to
+`expert.ts` (`runtimeBasics`, `runtimePractice`, `runtimeAdvanced`,
+`runtimeExpert` and so on), ids `nd-…`, checked like the Linux ones. Facts
+are as of November 2026: Node 22 and 24 in maintenance, 26 in active LTS,
+one major a year from 27; `require(esm)` from 20.19 and 22.12; type
+stripping stable in 24; Corepack no longer shipped from 25; npm's classic
+tokens revoked in December 2025, two-hour login sessions, trusted
+publishing, `min-release-age` (npm 11.10); pnpm 10's script approval and
+pnpm 11's one-day `minimumReleaseAge`; the Shai-Hulud worm.
+
 ## Capital
 
 The test on Marx's *Capital* (6.32.0), *⚒️ Le Capital* in the home page's
@@ -1554,7 +1573,7 @@ mistakes to review. It then checks:
 - **Calculus:** every generated answer computed again by `server/check-calc.ts` (see [Calculus](#calculus)); every chart inside its window, no two option charts alike.
 - **Google Cloud:** every generated answer computed again by `server/check-gcp.ts` (see [Google Cloud](#google-cloud)), policy lines at most 36 characters; every written Google Cloud question checked like the Linux ones.
 - **Cloudflare:** every generated answer computed again by `server/check-cf.ts` (see [Cloudflare](#cloudflare)), rule lines at most 36 characters; every written Cloudflare question checked like the Linux ones.
-- **GitHub, deployment:** every written question checked like the Linux ones (see [GitHub](#github), [Deployment](#deployment)).
+- **GitHub, deployment, Node.js:** every written question checked like the Linux ones (see [GitHub](#github), [Deployment](#deployment), [Node.js and npm](#nodejs-and-npm)).
 - **Rust:** every program shown compiled with `rustc` and run, its output compared with the options; lines at most 36 characters (see [Rust](#rust)); every written Rust question checked like the Linux ones.
 - **SQL:** every generated query run on a real SQLite database, and with `CHECK_SQL_POSTGRES` on PostgreSQL too (see [SQL](#sql)); every written SQL question checked like the Linux ones.
 - **Chemical equations:** every option read back from its TeX, its atoms counted element by element, its coefficients in lowest terms, and the balance unique (see [Balancing equations](#balancing-equations)).

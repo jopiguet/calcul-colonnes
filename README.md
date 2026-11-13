@@ -71,6 +71,8 @@ at four levels, *Débutant* to *Expert*, like every test of the app, each with a
 
 **Deployment systems** — multiple-choice tests at four levels, with an eight-part course: pipelines and artifacts, containers, release strategies, infrastructure as code, Terraform and OpenTofu, Kubernetes, GitOps and managed platforms (Cloud Run), and operations: SLOs, incidents, DORA.
 
+**Node.js and npm** — multiple-choice tests at four levels, with an eight-part course: the runtime and its versions, ESM and CommonJS, the event loop and streams, the built-in APIs (tests, `fetch`, `.env`, TypeScript stripping), `package.json` and semver, installing and lockfiles (npm, pnpm, Yarn), publishing with trusted publishing and provenance, and the security of the supply chain after the 2025 npm worms.
+
 - 254 questions written for the app, in French, Spanish and English, from `find` and `sed` to `systemctl`, `ssh`, `rsync` and `dig`, `git rebase` and vim's text objects.
 - Tools missing from a default install (`ripgrep`, `fzf`, `jq`, `tmux`, `hyperfine`, `shellcheck`, `nmap`…) are marked with their package and the install command for Debian, Fedora and macOS.
 - `chmod`, `umask` and crontab questions are generated, with the usual slips as wrong options; an octal mode can be typed.

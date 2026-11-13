@@ -30,6 +30,7 @@ import { gcpHierarchy, gcpIam, gcpServiceAccounts, gcpSecurity, gcpNetworking, g
 import { cfDns, cfTls, cfCache, cfSecurity, cfWorkers, cfStorage, cfZeroTrust, cfAi } from "./cf";
 import { ghRepos, ghIssues, ghPulls, ghTeams, ghProtection, ghActions, ghSecurity, ghSupply } from "./github";
 import { depBasics, depContainers, depStrategies, depOperations, depIac, depTerraform, depKubernetes, depGitops } from "./deploy";
+import { ndRuntime, ndModules, ndAsync, ndApis, ndPackages, ndDeps, ndPublish, ndSecurity } from "./node";
 import { marxCommodity, marxMoney, marxSurplus, marxWorkingDay, marxRelative, marxWages, marxAccumulation, marxPrimitive, marxCirculation, marxReproduction, marxProfit, marxCredit } from "./marx";
 import { rustBasics, rustOwnership, rustTypes, rustErrors, rustCollections, rustConcurrency, rustCargo, rustUnsafe } from "./rust";
 import { sqlSelect, sqlAggregate, sqlJoins, sqlModify, sqlPostgres, sqlSqlite, sqlMysql, sqlPractice } from "./sql";
@@ -159,6 +160,14 @@ const GENERATORS: Record<Topic, Partial<Record<Level, Record<string, Generator>>
   depTerraform,
   depKubernetes,
   depGitops,
+  ndRuntime,
+  ndModules,
+  ndAsync,
+  ndApis,
+  ndPackages,
+  ndDeps,
+  ndPublish,
+  ndSecurity,
   marxCommodity,
   marxMoney,
   marxSurplus,
@@ -491,6 +500,7 @@ export { CF_QUESTIONS } from "./cf";
 export { MARX_QUESTIONS } from "./marx";
 export { GITHUB_QUESTIONS } from "./github";
 export { DEPLOY_QUESTIONS } from "./deploy";
+export { NODE_QUESTIONS } from "./node";
 export { CF_LINE_MAX } from "./cf-output";
 export type { CfModel } from "./cf-model";
 export type { MarxModel } from "./marx-model";

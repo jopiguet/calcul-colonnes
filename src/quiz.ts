@@ -18,6 +18,7 @@ import {
   CF_TOPICS,
   GITHUB_TOPICS,
   DEPLOY_TOPICS,
+  NODE_TOPICS,
   MARX_TOPICS,
   ECON_TOPICS,
   CALC_TOPICS,
@@ -166,7 +167,7 @@ const promptView = (q: Question): HTMLElement =>
 
 /** The level of this subject's tests. */
 /** The setting that keeps each test's level. */
-const LEVEL_SETTING: Record<Subject, "quizLevel" | "chemLevel" | "linuxLevel" | "chembioLevel" | "sqlLevel" | "rustLevel" | "tsLevel" | "reactLevel" | "gcpLevel" | "cfLevel" | "githubLevel" | "deployLevel" | "marxLevel" | "econLevel" | "calcLevel"> = {
+const LEVEL_SETTING: Record<Subject, "quizLevel" | "chemLevel" | "linuxLevel" | "chembioLevel" | "sqlLevel" | "rustLevel" | "tsLevel" | "reactLevel" | "gcpLevel" | "cfLevel" | "githubLevel" | "deployLevel" | "nodeLevel" | "marxLevel" | "econLevel" | "calcLevel"> = {
   maths: "quizLevel",
   chemistry: "chemLevel",
   linux: "linuxLevel",
@@ -179,6 +180,7 @@ const LEVEL_SETTING: Record<Subject, "quizLevel" | "chemLevel" | "linuxLevel" | 
   cf: "cfLevel",
   github: "githubLevel",
   deploy: "deployLevel",
+  node: "nodeLevel",
   marx: "marxLevel",
   econ: "econLevel",
   calc: "calcLevel",
@@ -285,6 +287,8 @@ function chosenTopics(ctx: QuizContext): Topic[] {
                       ? ctx.settings.githubTopics
                     : ctx.subject === "deploy"
                       ? ctx.settings.deployTopics
+                    : ctx.subject === "node"
+                      ? ctx.settings.nodeTopics
                     : ctx.subject === "marx"
                       ? ctx.settings.marxTopics
                     : ctx.subject === "econ"
@@ -321,10 +325,11 @@ function setupView(ctx: QuizContext): HTMLElement {
   const cf = ctx.subject === "cf";
   const github = ctx.subject === "github";
   const deploy = ctx.subject === "deploy";
+  const node = ctx.subject === "node";
   const marx = ctx.subject === "marx";
   const econ = ctx.subject === "econ";
   const calc = ctx.subject === "calc";
-  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : sql ? "sqlSetupTitle" : rust ? "rustSetupTitle" : ts ? "tsSetupTitle" : react ? "reactSetupTitle" : gcp ? "gcpSetupTitle" : cf ? "cfSetupTitle" : github ? "githubSetupTitle" : deploy ? "deploySetupTitle" : marx ? "marxSetupTitle" : econ ? "econSetupTitle" : calc ? "calcSetupTitle" : "setupTitle")));
+  wrap.append(el("h1", "title", qt(chemistry ? "chemSetupTitle" : linux ? "linuxSetupTitle" : chembio ? "chembioSetupTitle" : sql ? "sqlSetupTitle" : rust ? "rustSetupTitle" : ts ? "tsSetupTitle" : react ? "reactSetupTitle" : gcp ? "gcpSetupTitle" : cf ? "cfSetupTitle" : github ? "githubSetupTitle" : deploy ? "deploySetupTitle" : node ? "nodeSetupTitle" : marx ? "marxSetupTitle" : econ ? "econSetupTitle" : calc ? "calcSetupTitle" : "setupTitle")));
   // No concept questions for this subject in the bank loaded: say so (docs/question-bank.md).
   const banked = (topics: readonly string[]): boolean => bankRevision() > 0 && currentBank().units.some((u) => topics.includes(u.topic));
   if (chemistry && !banked(CHEMISTRY_TOPICS)) wrap.append(el("p", "hint", qt("noBank")));
@@ -371,12 +376,12 @@ function setupView(ctx: QuizContext): HTMLElement {
       box.dataset.focus = `topic-${topic}`;
       box.checked = effective.includes(topic);
       box.addEventListener("change", () => {
-        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : sql ? SQL_TOPICS : rust ? RUST_TOPICS : ts ? TS_TOPICS : react ? REACT_TOPICS : gcp ? GCP_TOPICS : cf ? CF_TOPICS : github ? GITHUB_TOPICS : deploy ? DEPLOY_TOPICS : marx ? MARX_TOPICS : econ ? ECON_TOPICS : calc ? CALC_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
+        const chosen = (chemistry ? CHEMISTRY_TOPICS : linux ? LINUX_TOPICS : chembio ? CHEMBIO_TOPICS : sql ? SQL_TOPICS : rust ? RUST_TOPICS : ts ? TS_TOPICS : react ? REACT_TOPICS : gcp ? GCP_TOPICS : cf ? CF_TOPICS : github ? GITHUB_TOPICS : deploy ? DEPLOY_TOPICS : node ? NODE_TOPICS : marx ? MARX_TOPICS : econ ? ECON_TOPICS : calc ? CALC_TOPICS : TOPICS).filter((t) => (t === topic ? box.checked : effective.includes(t)));
         if (chosen.length === 0) {
           box.checked = true; // at least one topic stays selected
           return;
         }
-        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : sql ? { sqlTopics: chosen } : rust ? { rustTopics: chosen } : ts ? { tsTopics: chosen } : react ? { reactTopics: chosen } : gcp ? { gcpTopics: chosen } : cf ? { cfTopics: chosen } : github ? { githubTopics: chosen } : deploy ? { deployTopics: chosen } : marx ? { marxTopics: chosen } : econ ? { econTopics: chosen } : calc ? { calcTopics: chosen } : { quizTopics: chosen });
+        save(chemistry ? { chemTopics: chosen } : linux ? { linuxTopics: chosen } : chembio ? { chembioTopics: chosen } : sql ? { sqlTopics: chosen } : rust ? { rustTopics: chosen } : ts ? { tsTopics: chosen } : react ? { reactTopics: chosen } : gcp ? { gcpTopics: chosen } : cf ? { cfTopics: chosen } : github ? { githubTopics: chosen } : deploy ? { deployTopics: chosen } : node ? { nodeTopics: chosen } : marx ? { marxTopics: chosen } : econ ? { econTopics: chosen } : calc ? { calcTopics: chosen } : { quizTopics: chosen });
       });
       label.append(box, el("span", undefined, topicName(topic)));
       block.append(label);

@@ -24,7 +24,7 @@ import { bt } from "./discover/bio-i18n";
 import { mt } from "./discover/math-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
-import { CALC_TOPICS, CF_TOPICS, GITHUB_TOPICS, DEPLOY_TOPICS, MARX_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
+import { CALC_TOPICS, CF_TOPICS, GITHUB_TOPICS, DEPLOY_TOPICS, NODE_TOPICS, MARX_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
 
 const texts = {
   fr: {
@@ -56,6 +56,7 @@ const texts = {
     cfText: "DNS, cache, WAF, Workers, Zero Trust et IA, en quatre niveaux",
     githubText: "Issues, pull requests, Actions, Dependabot et travail d'équipe, en quatre niveaux",
     deployText: "Pipelines, conteneurs, Terraform, Kubernetes et GitOps, en quatre niveaux",
+    nodeText: "Le runtime, les modules, la boucle d'événements, npm et la chaîne d'approvisionnement, en quatre niveaux",
     economics: "Économie",
     econText: "Fiscalité, bien-être, assurance sociale, travail : notions et graphiques",
     marxText: "Les trois livres du Capital : valeur, plus-value, accumulation, profit, rente, avec un cours",
@@ -93,6 +94,7 @@ const texts = {
     cfText: "DNS, caché, WAF, Workers, Zero Trust e IA, en cuatro niveles",
     githubText: "Issues, pull requests, Actions, Dependabot y trabajo en equipo, en cuatro niveles",
     deployText: "Pipelines, contenedores, Terraform, Kubernetes y GitOps, en cuatro niveles",
+    nodeText: "El runtime, los módulos, el bucle de eventos, npm y la cadena de suministro, en cuatro niveles",
     economics: "Economía",
     econText: "Impuestos, bienestar, seguro social, trabajo: conceptos y gráficos",
     marxText: "Los tres libros de El capital: valor, plusvalor, acumulación, ganancia, renta, con un curso",
@@ -130,6 +132,7 @@ const texts = {
     cfText: "DNS, cache, WAF, Workers, Zero Trust and AI, in four levels",
     githubText: "Issues, pull requests, Actions, Dependabot and teamwork, in four levels",
     deployText: "Pipelines, containers, Terraform, Kubernetes and GitOps, in four levels",
+    nodeText: "The runtime, modules, the event loop, npm and the supply chain, in four levels",
     economics: "Economics",
     econText: "Taxation, welfare, social insurance, labour: concepts and charts",
     marxText: "The three volumes of Capital: value, surplus value, accumulation, profit, rent, with a course",
@@ -190,7 +193,7 @@ export function activityId(activity: Activity, books: VocabBookInfo[]): string |
     case "columns":
       return "columns";
     case "quiz":
-      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : activity.subject === "ts" ? "ts" : activity.subject === "react" ? "react" : activity.subject === "gcp" ? "gcp" : activity.subject === "cf" ? "cf" : activity.subject === "github" ? "github" : activity.subject === "deploy" ? "deploy" : activity.subject === "marx" ? "marx" : activity.subject === "econ" ? "econ" : activity.subject === "calc" ? "calc" : "quiz";
+      return activity.subject === "chemistry" ? "chemistry" : activity.subject === "linux" ? "linux" : activity.subject === "chembio" ? "chembio" : activity.subject === "sql" ? "sql" : activity.subject === "rust" ? "rust" : activity.subject === "ts" ? "ts" : activity.subject === "react" ? "react" : activity.subject === "gcp" ? "gcp" : activity.subject === "cf" ? "cf" : activity.subject === "github" ? "github" : activity.subject === "deploy" ? "deploy" : activity.subject === "node" ? "node" : activity.subject === "marx" ? "marx" : activity.subject === "econ" ? "econ" : activity.subject === "calc" ? "calc" : "quiz";
     case "discover":
       return `discover-${activity.activity}`;
     case "vocab": {
@@ -219,7 +222,7 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
   return [
     { group: ht("maths"), activities: [{ id: "columns", title: qt("modeColumns") }, { id: "quiz", title: qt("modeQuiz") }, { id: "calc", title: qt("modeCalc") }] },
     { group: ht("sciences"), activities: [{ id: "chemistry", title: qt("modeChemistry") }] },
-    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }, { id: "rust", title: qt("modeRust") }, { id: "ts", title: qt("modeTs") }, { id: "react", title: qt("modeReact") }, { id: "gcp", title: qt("modeGcp") }, { id: "cf", title: qt("modeCf") }, { id: "github", title: qt("modeGithub") }, { id: "deploy", title: qt("modeDeploy") }] },
+    { group: ht("computing"), activities: [{ id: "linux", title: qt("modeLinux") }, { id: "sql", title: qt("modeSql") }, { id: "rust", title: qt("modeRust") }, { id: "ts", title: qt("modeTs") }, { id: "react", title: qt("modeReact") }, { id: "gcp", title: qt("modeGcp") }, { id: "cf", title: qt("modeCf") }, { id: "github", title: qt("modeGithub") }, { id: "deploy", title: qt("modeDeploy") }, { id: "node", title: qt("modeNode") }] },
     { group: ht("economics"), activities: [{ id: "econ", title: qt("modeEcon") }, { id: "marx", title: qt("modeMarx") }] },
     {
       group: ht("languages"),
@@ -339,6 +342,8 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
                       ? "github"
                     : (DEPLOY_TOPICS as string[]).includes(topic)
                       ? "deploy"
+                    : (NODE_TOPICS as string[]).includes(topic)
+                      ? "node"
                     : (MARX_TOPICS as string[]).includes(topic)
                       ? "marx"
                     : (ECON_TOPICS as string[]).includes(topic)
@@ -419,6 +424,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
     card("cf", qt("modeCf"), ht("cfText"), reviewStatus(toReview("cf")), () => ctx.open({ mode: "quiz", subject: "cf" })),
     card("github", qt("modeGithub"), ht("githubText"), reviewStatus(toReview("github")), () => ctx.open({ mode: "quiz", subject: "github" })),
     card("deploy", qt("modeDeploy"), ht("deployText"), reviewStatus(toReview("deploy")), () => ctx.open({ mode: "quiz", subject: "deploy" })),
+    card("node", qt("modeNode"), ht("nodeText"), reviewStatus(toReview("node")), () => ctx.open({ mode: "quiz", subject: "node" })),
   );
   computing.append(shell);
 

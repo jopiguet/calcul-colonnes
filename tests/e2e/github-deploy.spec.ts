@@ -5,6 +5,7 @@ import { chooseTopics, goHome, newPlayer, openActivity, rebuild, takeQuiz } from
 const subjects = [
   { id: "github", card: "🐙 GitHub", h1: "QCM : GitHub", groups: ["Travailler ensemble", "Automatisation et sécurité"], beginner: "githubBeginner", expert: "githubExpert" },
   { id: "deploy", card: "🚀 Déploiement", h1: "QCM : systèmes de déploiement", groups: ["Les fondements", "Les outils"], beginner: "deployBeginner", expert: "deployExpert" },
+  { id: "node", card: "📦 Node.js et npm", h1: "QCM : Node.js et npm", groups: ["La plateforme Node.js", "npm et l'écosystème"], beginner: "nodeBeginner", expert: "nodeExpert" },
 ] as const;
 
 for (const s of subjects) {
@@ -50,5 +51,20 @@ test("a Terraform test in Spanish, graded on the server", async ({ page }) => {
   await page.click("text=Empezar el test");
   const { body, server } = await takeQuiz(page, () => 1);
   expect(body.level).toBe("deployExpert");
+  expect(server.correct).toBe(rebuild(body).correct);
+});
+
+test("a Node.js supply-chain test in English, graded on the server", async ({ page }) => {
+  await newPlayer(page, "Ryan");
+  await page.selectOption(".language", "en");
+  await openActivity(page, "node");
+  await expect(page.locator("h1")).toHaveText("Test: Node.js and npm");
+  await page.click("text=Advanced");
+  await chooseTopics(page, ["Security and the supply chain"]);
+  await page.locator(".count button").first().click();
+  await page.click("text=Start the quiz");
+  const { body, server } = await takeQuiz(page, () => 2);
+  expect(body.level).toBe("nodeAdvanced");
+  expect(body.topics).toEqual(["ndSecurity"]);
   expect(server.correct).toBe(rebuild(body).correct);
 });

@@ -1,4 +1,4 @@
-import { CALC_TOPICS, CF_TOPICS, GITHUB_TOPICS, DEPLOY_TOPICS, MARX_TOPICS, ECON_TOPICS, GCP_TOPICS, REACT_TOPICS, TS_TOPICS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type AnswerMode, type Level, type QuizSpec, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
+import { CALC_TOPICS, CF_TOPICS, GITHUB_TOPICS, DEPLOY_TOPICS, NODE_TOPICS, MARX_TOPICS, ECON_TOPICS, GCP_TOPICS, REACT_TOPICS, TS_TOPICS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type AnswerMode, type Level, type QuizSpec, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
 import type { Profile, SkillProgress } from "../shared/types";
 import { button, el } from "./dom";
 import { bookTitle, statusBar } from "./vocab";
@@ -49,6 +49,8 @@ export const subjectOfTopic = (topic: Topic | string): Subject =>
                     ? "github"
                   : (DEPLOY_TOPICS as string[]).includes(topic)
                     ? "deploy"
+                  : (NODE_TOPICS as string[]).includes(topic)
+                    ? "node"
                   : (MARX_TOPICS as string[]).includes(topic)
                     ? "marx"
                   : (ECON_TOPICS as string[]).includes(topic)
@@ -70,11 +72,12 @@ const SUBJECT_TITLES: Record<Subject, () => string> = {
   cf: () => qt("modeCf"),
   github: () => qt("modeGithub"),
   deploy: () => qt("modeDeploy"),
+  node: () => qt("modeNode"),
   marx: () => qt("modeMarx"),
   econ: () => qt("modeEcon"),
   calc: () => qt("modeCalc"),
 };
-const SUBJECT_ACTIVITY: Record<Subject, string> = { maths: "quiz", chemistry: "chemistry", linux: "linux", chembio: "chembio", sql: "sql", rust: "rust", ts: "ts", react: "react", gcp: "gcp", cf: "cf", github: "github", deploy: "deploy", marx: "marx", econ: "econ", calc: "calc" };
+const SUBJECT_ACTIVITY: Record<Subject, string> = { maths: "quiz", chemistry: "chemistry", linux: "linux", chembio: "chembio", sql: "sql", rust: "rust", ts: "ts", react: "react", gcp: "gcp", cf: "cf", github: "github", deploy: "deploy", node: "node", marx: "marx", econ: "econ", calc: "calc" };
 
 function dots(recent: boolean[]): HTMLElement {
   const line = el("span", "dots");
@@ -291,7 +294,7 @@ async function overview(ctx: ProgressContext, profile: Profile): Promise<HTMLEle
       }),
     );
   }
-  for (const subject of ["maths", "chemistry", "linux", "chembio", "sql", "rust", "ts", "react", "gcp", "cf", "github", "deploy", "marx", "econ", "calc"] as const) {
+  for (const subject of ["maths", "chemistry", "linux", "chembio", "sql", "rust", "ts", "react", "gcp", "cf", "github", "deploy", "node", "marx", "econ", "calc"] as const) {
     if (hidden.has(SUBJECT_ACTIVITY[subject])) continue;
     const skills = profile.skills.filter((s) => subjectOfTopic(s.topic) === subject);
     grid.append(

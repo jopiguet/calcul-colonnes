@@ -1,5 +1,12 @@
 # Changelog
 
+## 8.7.0
+
+- **📦 Node.js et npm, a test and a course** ([Question generators › Node.js and npm](docs/question-generators.md#nodejs-and-npm)): four levels, *Débutant* to *Expert*, eight topics in two groups, *La plateforme Node.js* (the runtime and its versions, ESM and CommonJS, the event loop, promises and streams, the built-in APIs) and *npm et l'écosystème* (`package.json` and semver, installing, lockfiles and workspaces, publishing, security and the supply chain). 128 written questions in French, Spanish and English, current as of November 2026: the yearly release model from Node 27, `require(esm)`, type stripping, Corepack leaving Node 25, npm's token changes after the 2025 worms, trusted publishing, `min-release-age` and pnpm's script approval. The course *Node.js et npm — un cours complet* has a part per topic, exercises with answers and sources; a wrong answer links to its part.
+- **Migration `038_node_levels`:** the four new level ids allowed in `quiz_results.level`.
+- The *Informatique* group now has ten cards.
+- `github-deploy.spec.ts`: the Node.js card, levels and groups, and a supply-chain test in English graded on the server; `courses.spec.ts` covers the course.
+
 ## 8.6.0
 
 - **ᚱ Runes, a script course** ([Language courses](docs/language-courses.md)): 5 lessons, 20 exercises, 38 words, in French, Spanish and English, with 69 rune cards (Elder Futhark, Younger Futhark, Anglo-Saxon futhorc). The Elder Futhark and its three *ættir*, with the rune names and how they are reconstructed; reading Proto-Norse, the golden horn of Gallehus (*ek hlewagastiz holtijaz horna tawido*), *alu*, *erilaz*; the sixteen runes of the Younger Futhark, one rune for several sounds, and a runestone written for the course on the Swedish model; the Anglo-Saxon futhorc, its new vowels, the Rune Poem, and Old English in runes.

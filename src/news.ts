@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.7.0",
+    fr: ["Nouveau test avec son cours, dans Informatique : 📦 Node.js et npm, du runtime et de la boucle d'événements aux modules, à package.json, aux lockfiles, à la publication et à la sécurité de la chaîne d'approvisionnement, à jour des changements de npm après les vers de 2025."],
+    es: ["Nuevo test con su curso, en Informatique: 📦 Node.js y npm, del runtime y el bucle de eventos a los módulos, package.json, los lockfiles, la publicación y la seguridad de la cadena de suministro, al día de los cambios de npm tras los gusanos de 2025."],
+    en: ["A new test with its course, under Informatique: 📦 Node.js and npm, from the runtime and the event loop to modules, package.json, lockfiles, publishing and supply-chain security, up to date with npm's changes after the 2025 worms."],
+  },
+  {
     version: "8.6.0",
     fr: ["Un nouveau cours, ᚱ Runes : le futhark ancien, la corne d'or de Gallehus, le futhark récent des pierres runiques vikings et le futhorc anglo-saxon, avec leur vocabulaire et 69 cartes de runes. Les réponses comptent en runes ou en lettres latines."],
     es: ["Un curso nuevo, ᚱ Runas: el futhark antiguo, el cuerno de oro de Gallehus, el futhark nuevo de las piedras rúnicas vikingas y el futhorc anglosajón, con su vocabulario y 69 tarjetas de runas. Las respuestas valen en runas o en letras latinas."],

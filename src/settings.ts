@@ -1,4 +1,4 @@
-import { CHEMBIO_LEVELS, LINUX_LEVELS, SQL_LEVELS, CALC_LEVELS, CALC_TOPICS, CF_LEVELS, CF_TOPICS, GITHUB_LEVELS, GITHUB_TOPICS, DEPLOY_LEVELS, DEPLOY_TOPICS, MARX_LEVELS, MARX_TOPICS, ECON_LEVELS, ECON_TOPICS, GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
+import { CHEMBIO_LEVELS, LINUX_LEVELS, SQL_LEVELS, CALC_LEVELS, CALC_TOPICS, CF_LEVELS, CF_TOPICS, GITHUB_LEVELS, GITHUB_TOPICS, DEPLOY_LEVELS, DEPLOY_TOPICS, NODE_LEVELS, NODE_TOPICS, MARX_LEVELS, MARX_TOPICS, ECON_LEVELS, ECON_TOPICS, GCP_LEVELS, GCP_TOPICS, REACT_LEVELS, REACT_TOPICS, TS_LEVELS, TS_TOPICS, RUST_LEVELS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_LEVELS, CHEMISTRY_TOPICS, LINUX_TOPICS, MATH_LEVELS, type Subject, QUIZ_COUNTS, TOPICS, type AnswerMode, type Level, type Topic } from "../shared/quiz";
 import type { Operator } from "../shared/types";
 import { isLang, type Lang } from "./i18n";
 import { isDiscoverActivity, type DiscoverActivity } from "./discover/activities";
@@ -60,6 +60,8 @@ export interface Settings {
   githubLevel: Level;
   deployTopics: Topic[];
   deployLevel: Level;
+  nodeTopics: Topic[];
+  nodeLevel: Level;
   marxTopics: Topic[];
   marxLevel: Level;
   econTopics: Topic[];
@@ -148,7 +150,7 @@ export function loadSettings(): Settings {
     discoverActivity: isDiscoverActivity(saved.discoverActivity) ? saved.discoverActivity : "dice",
     quizLevel: MATH_LEVELS.includes(saved.quizLevel as Level) ? (saved.quizLevel as Level) : "school",
     quizTopics: quizTopics.length > 0 ? quizTopics : [...TOPICS],
-    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" || saved.quizSubject === "react" || saved.quizSubject === "gcp" || saved.quizSubject === "cf" || saved.quizSubject === "github" || saved.quizSubject === "deploy" || saved.quizSubject === "marx" || saved.quizSubject === "econ" || saved.quizSubject === "calc" ? saved.quizSubject : "maths",
+    quizSubject: saved.quizSubject === "chemistry" || saved.quizSubject === "linux" || saved.quizSubject === "chembio" || saved.quizSubject === "sql" || saved.quizSubject === "rust" || saved.quizSubject === "ts" || saved.quizSubject === "react" || saved.quizSubject === "gcp" || saved.quizSubject === "cf" || saved.quizSubject === "github" || saved.quizSubject === "deploy" || saved.quizSubject === "node" || saved.quizSubject === "marx" || saved.quizSubject === "econ" || saved.quizSubject === "calc" ? saved.quizSubject : "maths",
     chemTopics: chemTopics.length > 0 ? chemTopics : [...CHEMISTRY_TOPICS],
     linuxTopics: Array.isArray(saved.linuxTopics) && LINUX_TOPICS.some((t) => (saved.linuxTopics as unknown[]).includes(t))
       ? LINUX_TOPICS.filter((t) => (saved.linuxTopics as unknown[]).includes(t))
@@ -187,6 +189,10 @@ export function loadSettings(): Settings {
       ? DEPLOY_TOPICS.filter((t) => (saved.deployTopics as unknown[]).includes(t))
       : [...DEPLOY_TOPICS],
     deployLevel: DEPLOY_LEVELS.includes(saved.deployLevel as Level) ? (saved.deployLevel as Level) : "deployBeginner",
+    nodeTopics: Array.isArray(saved.nodeTopics) && NODE_TOPICS.some((t) => (saved.nodeTopics as unknown[]).includes(t))
+      ? NODE_TOPICS.filter((t) => (saved.nodeTopics as unknown[]).includes(t))
+      : [...NODE_TOPICS],
+    nodeLevel: NODE_LEVELS.includes(saved.nodeLevel as Level) ? (saved.nodeLevel as Level) : "nodeBeginner",
     marxTopics: Array.isArray(saved.marxTopics) && MARX_TOPICS.some((t) => (saved.marxTopics as unknown[]).includes(t))
       ? MARX_TOPICS.filter((t) => (saved.marxTopics as unknown[]).includes(t))
       : [...MARX_TOPICS],

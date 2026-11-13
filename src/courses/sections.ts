@@ -157,6 +157,15 @@ const TOPIC_SECTION: Record<string, number> = {
   depKubernetes: 6,
   depGitops: 7,
   depOperations: 8,
+  // Node.js and npm: 0 how to use, 1–8 the parts, 9 exercises, 10 sources.
+  ndRuntime: 1,
+  ndModules: 2,
+  ndAsync: 3,
+  ndApis: 4,
+  ndPackages: 5,
+  ndDeps: 6,
+  ndPublish: 7,
+  ndSecurity: 8,
 };
 
 /** Kinds taught in another section than their topic's. */

@@ -13,7 +13,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import katex from "katex";
 import {
-  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, REACT_QUESTIONS, REACT_LINE_MAX, REACT_IMPORTS, GCP_QUESTIONS, GCP_LINE_MAX, CF_QUESTIONS, CF_LINE_MAX, MARX_QUESTIONS, GITHUB_QUESTIONS, DEPLOY_QUESTIONS, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
+  generateQuiz, LEVELS, LINUX_QUESTIONS, SQL_QUESTIONS, RUST_QUESTIONS, RUST_LINE_MAX, TS_QUESTIONS, TS_LINE_MAX, REACT_QUESTIONS, REACT_LINE_MAX, REACT_IMPORTS, GCP_QUESTIONS, GCP_LINE_MAX, CF_QUESTIONS, CF_LINE_MAX, MARX_QUESTIONS, GITHUB_QUESTIONS, DEPLOY_QUESTIONS, NODE_QUESTIONS, formatRows, MISTAKES, QUIZ_VERSION, reviewCount, skillsFor, topicsFor, registerBank, localized, richParts, codeRuns,
   type Localized,
   type Chart,
   type Graph, type Option, type Question, matchTyped, typeable,
@@ -877,6 +877,7 @@ console.log(`${checkWritten("cf", "cf-", CF_QUESTIONS)} written Cloudflare quest
 console.log(`${checkWritten("marx", "mx-", MARX_QUESTIONS)} written questions on Capital checked`);
 console.log(`${checkWritten("github", "gh-", GITHUB_QUESTIONS)} written GitHub questions checked`);
 console.log(`${checkWritten("deploy", "dp-", DEPLOY_QUESTIONS)} written deployment questions checked`);
+console.log(`${checkWritten("node", "nd-", NODE_QUESTIONS)} written Node.js and npm questions checked`);
 // The written questions of the four levels (shared/quiz/levels), by the subject of their topic.
 {
   const prefixOf = (topic: string): string =>
