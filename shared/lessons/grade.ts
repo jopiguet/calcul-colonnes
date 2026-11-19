@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan" | "runes";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan" | "runes" | "elamite";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "elamite"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -271,6 +271,27 @@ export function runicKey(text: string): string {
     .trim();
 }
 
+/**
+ * Linear Elamite signs with a reading (fonts/linear-elamite): LEnnn at U+E000 + nnn in the
+ * Private Use Area, read with the values of Desset's latest table (a e i o u, the long ů).
+ * Signs with no reading stay as they are and fail any answer.
+ */
+const ELAMITE: Record<string, string> = {"\uE001": "a", "\uE002": "ki", "\uE003": "ki", "\uE006": "ta", "\uE007": "n", "\uE008": "so", "\uE009": "hů", "\uE00C": "ra", "\uE00D": "ra", "\uE010": "tu", "\uE011": "m", "\uE012": "tu", "\uE014": "ti", "\uE016": "šů", "\uE018": "tu", "\uE01A": "l", "\uE01B": "n", "\uE01D": "n", "\uE01F": "n", "\uE022": "m", "\uE025": "m", "\uE028": "ha", "\uE02D": "we", "\uE02E": "we", "\uE030": "ma", "\uE031": "za", "\uE032": "za", "\uE033": "za", "\uE039": "ha", "\uE03E": "me", "\uE040": "zo", "\uE041": "zo", "\uE046": "k", "\uE047": "ri", "\uE048": "r", "\uE04C": "ri", "\uE04D": "š", "\uE04E": "lů", "\uE050": "li", "\uE053": "ši", "\uE054": "ku", "\uE056": "ku", "\uE057": "še", "\uE05C": "p", "\uE05E": "k", "\uE060": "k", "\uE061": "hů", "\uE063": "e", "\uE066": "li", "\uE067": "hi", "\uE068": "ka", "\uE069": "ne", "\uE06C": "mi", "\uE070": "n", "\uE073": "re", "\uE07B": "pi", "\uE07C": "s", "\uE07E": "he", "\uE07F": "s", "\uE081": "ke", "\uE082": "ke", "\uE085": "pa", "\uE087": "pu", "\uE088": "wa", "\uE089": "ni", "\uE08B": "h", "\uE08D": "po", "\uE095": "rů", "\uE097": "z", "\uE099": "ze", "\uE09E": "i", "\uE0A0": "i", "\uE0A1": "ze", "\uE0A5": "le", "\uE0A6": "le", "\uE0A9": "na", "\uE0AA": "la", "\uE0AB": "u", "\uE0AC": "t", "\uE0AE": "nů", "\uE0AF": "p", "\uE0B1": "nů", "\uE0B2": "nů", "\uE0B3": "nů", "\uE0B4": "rů", "\uE0B5": "rů", "\uE0B6": "zu", "\uE0B7": "ša", "\uE0B9": "š", "\uE0BD": "pe", "\uE0BE": "pi", "\uE0C4": "pi", "\uE0C5": "sa", "\uE0C8": "si", "\uE0CB": "su", "\uE0CE": "mo", "\uE0D3": "o", "\uE0DE": "k", "\uE0E1": "tu", "\uE0E3": "ti", "\uE0E4": "pi", "\uE0E5": "h", "\uE0E6": "re", "\uE0E9": "ze", "\uE0EA": "m", "\uE0EC": "ha", "\uE0ED": "ko", "\uE0F1": "si", "\uE0F2": "po", "\uE0F9": "he", "\uE0FA": "h", "\uE0FB": "mi", "\uE0FD": "mo", "\uE103": "pi", "\uE104": "o", "\uE10A": "te", "\uE10C": "wa", "\uE10E": "pe", "\uE111": "tu", "\uE118": "l", "\uE11B": "n", "\uE120": "šů", "\uE122": "po", "\uE123": "mi", "\uE125": "zo", "\uE12C": "i", "\uE12D": "ni", "\uE12E": "ke", "\uE12F": "te", "\uE131": "le", "\uE132": "me", "\uE135": "o", "\uE136": "wa", "\uE13B": "za", "\uE13E": "pi", "\uE140": "ke", "\uE141": "ne", "\uE148": "rů", "\uE149": "wa", "\uE150": "mo", "\uE152": "ne", "\uE154": "pi", "\uE15A": "mu", "\uE15C": "n"};
+
+/**
+ * Linear Elamite as typed: signs or their transliteration are one answer. Each sign is read;
+ * then ů is u, sh is š, w is u (the sign of u is also w), and hyphens, spaces and subscripts go.
+ */
+export function elamiteKey(text: string): string {
+  let t = "";
+  for (const ch of text.normalize("NFC")) t += ELAMITE[ch] ?? ch;
+  return t
+    .normalize("NFC")
+    .toLowerCase()
+    .replace(/ů/g, "u").replace(/sh/g, "š").replace(/w/g, "u")
+    .replace(/[^a-zš]/g, "");
+}
+
 /** Egyptian and Akkadian transliterations as typed on a keyboard: ꜣ as 3 or a, ꜥ as ' or e, ḥ as h… */
 const TRANSLIT: [RegExp, string][] = [
   [/[ꜣꜢ]/g, "a"],
@@ -321,6 +342,7 @@ export function fold(text: string, folds: readonly Fold[]): string {
   if (folds.includes("inuktitut")) return inuktitutKey(t);
   if (folds.includes("tibetan")) return tibetanKey(t);
   if (folds.includes("runes")) return runicKey(t);
+  if (folds.includes("elamite")) return elamiteKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -348,7 +370,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes"].includes(x));
+    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "elamite"].includes(x));
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

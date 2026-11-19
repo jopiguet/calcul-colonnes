@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "",
+      "reading": "ka",
+      "meaning": "the sign ka",
+      "translations": {
+        "fr": "le signe ka",
+        "es": "el signo ka"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ta",
+      "meaning": "the sign ta",
+      "translations": {
+        "fr": "le signe ta",
+        "es": "el signo ta"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "na",
+      "meaning": "the sign na",
+      "translations": {
+        "fr": "le signe na",
+        "es": "el signo na"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ma",
+      "meaning": "the sign ma",
+      "translations": {
+        "fr": "le signe ma",
+        "es": "el signo ma"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "pa",
+      "meaning": "the sign pa",
+      "translations": {
+        "fr": "le signe pa",
+        "es": "el signo pa"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ša",
+      "meaning": "the sign ša",
+      "translations": {
+        "fr": "le signe ša",
+        "es": "el signo ša"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "la",
+      "meaning": "the sign la",
+      "translations": {
+        "fr": "le signe la",
+        "es": "el signo la"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ra",
+      "meaning": "the sign ra",
+      "translations": {
+        "fr": "le signe ra",
+        "es": "el signo ra"
+      },
+      "type": "sign"
+    }
+  ]
+}

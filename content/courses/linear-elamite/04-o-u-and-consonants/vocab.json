@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "",
+      "reading": "ku",
+      "meaning": "the sign ku",
+      "translations": {
+        "fr": "le signe ku",
+        "es": "el signo ku"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "pu",
+      "meaning": "the sign pu",
+      "translations": {
+        "fr": "le signe pu",
+        "es": "el signo pu"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "zu",
+      "meaning": "the sign zu",
+      "translations": {
+        "fr": "le signe zu",
+        "es": "el signo zu"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ko",
+      "meaning": "the sign ko",
+      "translations": {
+        "fr": "le signe ko",
+        "es": "el signo ko"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "rů",
+      "meaning": "the sign rů",
+      "translations": {
+        "fr": "le signe rů",
+        "es": "el signo rů"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "r",
+      "meaning": "the sign r",
+      "translations": {
+        "fr": "le signe r",
+        "es": "el signo r"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "t",
+      "meaning": "the sign t",
+      "translations": {
+        "fr": "le signe t",
+        "es": "el signo t"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "k",
+      "meaning": "the sign k",
+      "translations": {
+        "fr": "le signe k",
+        "es": "el signo k"
+      },
+      "type": "sign"
+    }
+  ]
+}

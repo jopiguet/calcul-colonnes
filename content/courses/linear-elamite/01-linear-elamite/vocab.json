@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "term": "",
+      "reading": "a",
+      "meaning": "the sign a",
+      "translations": {
+        "fr": "le signe a",
+        "es": "el signo a"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "e",
+      "meaning": "the sign e",
+      "translations": {
+        "fr": "le signe e",
+        "es": "el signo e"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "i",
+      "meaning": "the sign i",
+      "translations": {
+        "fr": "le signe i",
+        "es": "el signo i"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "o",
+      "meaning": "the sign o",
+      "translations": {
+        "fr": "le signe o",
+        "es": "el signo o"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "u",
+      "meaning": "the sign u",
+      "translations": {
+        "fr": "le signe u",
+        "es": "el signo u"
+      },
+      "type": "sign"
+    }
+  ]
+}

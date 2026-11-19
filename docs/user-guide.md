@@ -857,7 +857,7 @@ session once a week is less effective. The method is described in
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**
-**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan**, **🌙 Arabe**, **📜 Hébreu**, **🌴 Malayalam**, **🦙 Quechua**, **🛷 Inuktitut**, **🏔️ Tibétain** and **ᚱ Runes**, with the exercises done (*12 exercices sur 126 réussis*). See
+**𓋹 Égyptien hiéroglyphique**, **𒀭 Sumérien**, **𒀝 Akkadien**, **🏺 Grec ancien**, **🌹 Persan**, **🌙 Arabe**, **📜 Hébreu**, **🌴 Malayalam**, **🦙 Quechua**, **🛷 Inuktitut**, **🏔️ Tibétain**, **ᚱ Runes** and **🦁 Élamite linéaire**, with the exercises done (*12 exercices sur 126 réussis*). See
 [Language courses](language-courses.md) for how they are written.
 
 **The course page** lists the lessons (31 in Latin), each with its exercises done
@@ -948,6 +948,12 @@ The Runes course teaches the three rune rows: the Elder Futhark, the Younger
 Futhark of the Viking runestones and the Anglo-Saxon futhorc. Answers count in
 runes or in transliteration (ᚦᚢᚱ, *þur* or *thur*); the buttons under the
 fields write *þ*, *æ*, *ŋ* and *ï*. It has 69 rune cards and no sounds.
+
+The Linear Elamite course teaches the script of Elam, deciphered in 2022, in
+Luma's own font of its 348 signs. Answers are typed by value (*ka*, *ze-m-t*);
+*ů* may be typed *u* and *š* *sh*, and the numbered readings of the 2025 plate
+(*hi* for *he*) count where an exercise gives them. Its 144 sign cards show each
+sign's number (LE001–LE348) and region. No sounds.
 
 Every course's words (and the Malayalam letters) also have their card under
 *Langues* on the home page, with the words to review, beside your own books

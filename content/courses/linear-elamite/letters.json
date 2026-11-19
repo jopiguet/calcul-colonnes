@@ -1,0 +1,806 @@
+{
+ "book": {
+  "title": "Linear Elamite signs",
+  "credit": "Signs drawn for Luma (fonts/linear-elamite), numbered after Desset et al. 2022; readings after Desset's latest table, with those of the 2025 plate of Linear Elamite Inscriptions (OLSM 10)"
+ },
+ "lessons": [
+  {
+   "title": " ",
+   "subtitle": "Vowels and the a series",
+   "sections": [
+    {
+     "title": "    ",
+     "subtitle": "a e i o u",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "a",
+       "note": "LE001 · general"
+      },
+      {
+       "term": "",
+       "meaning": "e",
+       "note": "LE099 · general"
+      },
+      {
+       "term": "",
+       "meaning": "i",
+       "note": "LE158 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "i",
+       "note": "LE160 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "i",
+       "note": "LE300 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "o",
+       "note": "LE211 · south-west · 2025: u"
+      },
+      {
+       "term": "",
+       "meaning": "o",
+       "note": "LE260 · south-west · 2025: u"
+      },
+      {
+       "term": "",
+       "meaning": "o",
+       "note": "LE309 · general · 2025: u"
+      },
+      {
+       "term": "",
+       "meaning": "u / w",
+       "note": "LE171 · general"
+      }
+     ]
+    },
+    {
+     "title": "     ",
+     "subtitle": "ha ka la ma na pa",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "ha",
+       "note": "LE040 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ha",
+       "note": "LE057 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ha",
+       "note": "LE236 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ka",
+       "note": "LE104 · general"
+      },
+      {
+       "term": "",
+       "meaning": "la",
+       "note": "LE170 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ma",
+       "note": "LE048 · general"
+      },
+      {
+       "term": "",
+       "meaning": "na",
+       "note": "LE169 · general"
+      },
+      {
+       "term": "",
+       "meaning": "pa",
+       "note": "LE133 · general"
+      }
+     ]
+    },
+    {
+     "title": "     ",
+     "subtitle": "ra sa ša ta wa za",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "ra",
+       "note": "LE012 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ra",
+       "note": "LE013 · general"
+      },
+      {
+       "term": "",
+       "meaning": "sa",
+       "note": "LE197 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ša",
+       "note": "LE183 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ta",
+       "note": "LE006 · general"
+      },
+      {
+       "term": "",
+       "meaning": "wa",
+       "note": "LE136 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "wa",
+       "note": "LE268 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "wa",
+       "note": "LE310 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "wa",
+       "note": "LE329 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "za",
+       "note": "LE049 · general"
+      },
+      {
+       "term": "",
+       "meaning": "za",
+       "note": "LE050 · general"
+      },
+      {
+       "term": "",
+       "meaning": "za",
+       "note": "LE051 · general"
+      },
+      {
+       "term": "",
+       "meaning": "za",
+       "note": "LE315 · south-east"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "e · i",
+   "subtitle": "The e and i series",
+   "sections": [
+    {
+     "title": "          ",
+     "subtitle": "he ke le me ne pe re še te we ze",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "he",
+       "note": "LE126 · south-east · 2025: hi"
+      },
+      {
+       "term": "",
+       "meaning": "he",
+       "note": "LE249 · south-west · 2025: hi"
+      },
+      {
+       "term": "",
+       "meaning": "ke",
+       "note": "LE129 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ke",
+       "note": "LE130 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ke",
+       "note": "LE302 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "ke",
+       "note": "LE320 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "le",
+       "note": "LE165 · south-west · 2025: li₂"
+      },
+      {
+       "term": "",
+       "meaning": "le",
+       "note": "LE166 · south-east · 2025: li₂"
+      },
+      {
+       "term": "",
+       "meaning": "le",
+       "note": "LE305 · south-east · 2025: li₂"
+      },
+      {
+       "term": "",
+       "meaning": "me",
+       "note": "LE062 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "me",
+       "note": "LE306 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "ne",
+       "note": "LE105 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ne",
+       "note": "LE321 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "ne",
+       "note": "LE338 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "pe",
+       "note": "LE189 · general"
+      },
+      {
+       "term": "",
+       "meaning": "pe",
+       "note": "LE270 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "re",
+       "note": "LE115 · general · 2025: ri"
+      },
+      {
+       "term": "",
+       "meaning": "re",
+       "note": "LE230 · south-west · 2025: ri"
+      },
+      {
+       "term": "",
+       "meaning": "še",
+       "note": "LE087 · general"
+      },
+      {
+       "term": "",
+       "meaning": "te",
+       "note": "LE266 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "te",
+       "note": "LE303 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "we",
+       "note": "LE045 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "we",
+       "note": "LE046 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ze",
+       "note": "LE153 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ze",
+       "note": "LE161 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ze",
+       "note": "LE233 · south-west"
+      }
+     ]
+    },
+    {
+     "title": "         ",
+     "subtitle": "hi ki li mi ni pi ri si ši ti",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "hi",
+       "note": "LE103 · general · 2025: hi₂"
+      },
+      {
+       "term": "",
+       "meaning": "ki",
+       "note": "LE002 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ki",
+       "note": "LE003 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "li",
+       "note": "LE080 · south-west · 2025: li₃"
+      },
+      {
+       "term": "",
+       "meaning": "li",
+       "note": "LE102 · general"
+      },
+      {
+       "term": "",
+       "meaning": "mi",
+       "note": "LE108 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "mi",
+       "note": "LE251 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "mi",
+       "note": "LE291 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ni",
+       "note": "LE137 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ni",
+       "note": "LE301 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "pi",
+       "note": "LE123 · south-east · 2025: pi₂"
+      },
+      {
+       "term": "",
+       "meaning": "pi",
+       "note": "LE190 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "pi",
+       "note": "LE196 · south-west · 2025: pi₂"
+      },
+      {
+       "term": "",
+       "meaning": "pi",
+       "note": "LE228 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "pi",
+       "note": "LE259 · south-west · 2025: pi₂"
+      },
+      {
+       "term": "",
+       "meaning": "pi",
+       "note": "LE318 · south-east · 2025: pi₂"
+      },
+      {
+       "term": "",
+       "meaning": "pi",
+       "note": "LE340 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "ri",
+       "note": "LE071 · general · 2025: ri₂"
+      },
+      {
+       "term": "",
+       "meaning": "ri",
+       "note": "LE076 · general · 2025: ri₂"
+      },
+      {
+       "term": "",
+       "meaning": "si",
+       "note": "LE200 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "si",
+       "note": "LE241 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "ši",
+       "note": "LE083 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ti",
+       "note": "LE020 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ti",
+       "note": "LE227 · south-east"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "o · u · ů",
+   "subtitle": "The o, u and ů series",
+   "sections": [
+    {
+     "title": "    ",
+     "subtitle": "ko mo po so zo",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "ko",
+       "note": "LE237 · south-west · 2025: ku₂"
+      },
+      {
+       "term": "",
+       "meaning": "mo",
+       "note": "LE206 · south-west · 2025: mu"
+      },
+      {
+       "term": "",
+       "meaning": "mo",
+       "note": "LE253 · south-west · 2025: mu"
+      },
+      {
+       "term": "",
+       "meaning": "mo",
+       "note": "LE336 · south-east · 2025: mu"
+      },
+      {
+       "term": "",
+       "meaning": "po",
+       "note": "LE141 · general · 2025: pu₂"
+      },
+      {
+       "term": "",
+       "meaning": "po",
+       "note": "LE242 · south-west · 2025: pu₂"
+      },
+      {
+       "term": "",
+       "meaning": "po",
+       "note": "LE290 · south-west · 2025: pu₂"
+      },
+      {
+       "term": "",
+       "meaning": "so",
+       "note": "LE008 · south-west · 2025: su₂"
+      },
+      {
+       "term": "",
+       "meaning": "zo",
+       "note": "LE064 · south-west · 2025: zu₂"
+      },
+      {
+       "term": "",
+       "meaning": "zo",
+       "note": "LE065 · general · 2025: zu₂"
+      },
+      {
+       "term": "",
+       "meaning": "zo",
+       "note": "LE293 · south-west · 2025: zu₂"
+      }
+     ]
+    },
+    {
+     "title": "     ",
+     "subtitle": "ku mu pu su tu zu",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "ku",
+       "note": "LE084 · general"
+      },
+      {
+       "term": "",
+       "meaning": "ku",
+       "note": "LE086 · general"
+      },
+      {
+       "term": "",
+       "meaning": "mu",
+       "note": "LE346 · south-west · 2025: mu₂"
+      },
+      {
+       "term": "",
+       "meaning": "pu",
+       "note": "LE135 · general"
+      },
+      {
+       "term": "",
+       "meaning": "su",
+       "note": "LE203 · general"
+      },
+      {
+       "term": "",
+       "meaning": "tu",
+       "note": "LE016 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "tu",
+       "note": "LE018 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "tu",
+       "note": "LE024 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "tu",
+       "note": "LE225 · general"
+      },
+      {
+       "term": "",
+       "meaning": "tu",
+       "note": "LE273 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "zu",
+       "note": "LE182 · general"
+      }
+     ]
+    },
+    {
+     "title": "    ",
+     "subtitle": "hů lů nů rů šů",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "hů",
+       "note": "LE009 · general · 2025: hu"
+      },
+      {
+       "term": "",
+       "meaning": "hů",
+       "note": "LE097 · general · 2025: hu₂"
+      },
+      {
+       "term": "",
+       "meaning": "lů",
+       "note": "LE078 · general · lu? in 2022"
+      },
+      {
+       "term": "",
+       "meaning": "nů",
+       "note": "LE174 · south-west · 2025: nu"
+      },
+      {
+       "term": "",
+       "meaning": "nů",
+       "note": "LE177 · south-west · 2025: nu"
+      },
+      {
+       "term": "",
+       "meaning": "nů",
+       "note": "LE178 · south-east · 2025: nu"
+      },
+      {
+       "term": "",
+       "meaning": "nů",
+       "note": "LE179 · south-west · 2025: nu"
+      },
+      {
+       "term": "",
+       "meaning": "rů",
+       "note": "LE149 · south-west · 2025: ru₂"
+      },
+      {
+       "term": "",
+       "meaning": "rů",
+       "note": "LE180 · south-west · 2025: ru"
+      },
+      {
+       "term": "",
+       "meaning": "rů",
+       "note": "LE181 · general · 2025: ru"
+      },
+      {
+       "term": "",
+       "meaning": "rů",
+       "note": "LE328 · south-east · 2025: ru₂"
+      },
+      {
+       "term": "",
+       "meaning": "šů",
+       "note": "LE022 · south-west · 2025: šu"
+      },
+      {
+       "term": "",
+       "meaning": "šů",
+       "note": "LE288 · south-west · 2025: šu"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "   ",
+   "subtitle": "Consonant signs",
+   "sections": [
+    {
+     "title": "          ",
+     "subtitle": "h k l m n p r s š t z",
+     "entries": [
+      {
+       "term": "",
+       "meaning": "h",
+       "note": "LE139 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "h",
+       "note": "LE229 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "h",
+       "note": "LE250 · south-west · 2025: h₂"
+      },
+      {
+       "term": "",
+       "meaning": "k",
+       "note": "LE070 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "k",
+       "note": "LE094 · south-west · 2025: k₂"
+      },
+      {
+       "term": "",
+       "meaning": "k",
+       "note": "LE096 · south-west · 2025: k₂"
+      },
+      {
+       "term": "",
+       "meaning": "k",
+       "note": "LE222 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "l",
+       "note": "LE026 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "l",
+       "note": "LE280 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "m",
+       "note": "LE017 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "m",
+       "note": "LE034 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "m",
+       "note": "LE037 · general"
+      },
+      {
+       "term": "",
+       "meaning": "m",
+       "note": "LE234 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "n",
+       "note": "LE007 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "n",
+       "note": "LE027 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "n",
+       "note": "LE029 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "n",
+       "note": "LE031 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "n",
+       "note": "LE112 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "n",
+       "note": "LE283 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "n",
+       "note": "LE348 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "p",
+       "note": "LE092 · general · 2025: p₂"
+      },
+      {
+       "term": "",
+       "meaning": "p",
+       "note": "LE175 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "r",
+       "note": "LE072 · general"
+      },
+      {
+       "term": "",
+       "meaning": "s",
+       "note": "LE124 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "s",
+       "note": "LE127 · south-east"
+      },
+      {
+       "term": "",
+       "meaning": "š",
+       "note": "LE077 · general"
+      },
+      {
+       "term": "",
+       "meaning": "š",
+       "note": "LE185 · south-west"
+      },
+      {
+       "term": "",
+       "meaning": "t",
+       "note": "LE172 · general"
+      },
+      {
+       "term": "",
+       "meaning": "z",
+       "note": "LE151 · general"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

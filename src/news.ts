@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.8.0",
+    fr: ["Un nouveau cours, 🦁 Élamite linéaire : l'écriture de l'Élam, déchiffrée en 2022, dans une police dessinée pour Luma avec ses 348 signes. Voyelles, séries syllabiques, signes de consonne, puis des noms de rois et de dieux, avec 144 cartes de signes."],
+    es: ["Un curso nuevo, 🦁 Elamita lineal: la escritura de Elam, descifrada en 2022, en una fuente dibujada para Luma con sus 348 signos. Vocales, series silábicas, signos de consonante y luego nombres de reyes y dioses, con 144 tarjetas de signos."],
+    en: ["A new course, 🦁 Linear Elamite: the script of Elam, deciphered in 2022, in a font drawn for Luma with its 348 signs. Vowels, syllabic series, consonant signs, then names of kings and gods, with 144 sign cards."],
+  },
+  {
     version: "8.7.0",
     fr: ["Nouveau test avec son cours, dans Informatique : 📦 Node.js et npm, du runtime et de la boucle d'événements aux modules, à package.json, aux lockfiles, à la publication et à la sécurité de la chaîne d'approvisionnement, à jour des changements de npm après les vers de 2025."],
     es: ["Nuevo test con su curso, en Informatique: 📦 Node.js y npm, del runtime y el bucle de eventos a los módulos, package.json, los lockfiles, la publicación y la seguridad de la cadena de suministro, al día de los cambios de npm tras los gusanos de 2025."],

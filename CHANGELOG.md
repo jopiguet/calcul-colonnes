@@ -1,5 +1,12 @@
 # Changelog
 
+## 8.8.0
+
+- **🦁 Linear Elamite, a script course** ([Language courses](docs/language-courses.md)): 5 lessons, 20 exercises, 36 words, in French, Spanish and English, with 144 sign cards. The script of Elam, southern Iran, about 2300–1880 BCE, deciphered in 2022: its story and the debate around it, how its vowel, syllable and consonant signs work, the five vowels, the a, e and i, o, u and ů series, the consonant signs, then names: Hatamti, *zemt* "king", Eparti, Puzur-Sušinak, Sušinak, Napireša. Values follow Desset's latest table; the numbered readings of the 2025 plate (*hi* for *he*, *ku₂* for *ko*) are given and accepted. Each card shows the sign's number and its region (general, south-west, south-east).
+- **Luma Linear Elamite, a font of the 348 signs** (`fonts/linear-elamite`, SIL Open Font License): drawn by Joachim Piguet after the sign list of Desset et al. 2022, numbered LE001–LE348 and encoded at U+E001–U+E15C in the Private Use Area until Unicode encodes the script. Sources, readings table and build scripts are in the folder; `src/fonts/LumaLinearElamite.woff2` (80 KB) is fetched only when a page shows a sign.
+- **The `elamite` fold:** strict answers count in signs or in transliteration, with *ů* typed *u* and *š* typed *sh*; the vocabulary books accept the same (`elx`). The key row writes *š* and *ů*.
+- `lessons.spec.ts`: the course, its font and its answers; `check:lessons` and `check:vocab` cover the new key.
+
 ## 8.7.0
 
 - **📦 Node.js et npm, a test and a course** ([Question generators › Node.js and npm](docs/question-generators.md#nodejs-and-npm)): four levels, *Débutant* to *Expert*, eight topics in two groups, *La plateforme Node.js* (the runtime and its versions, ESM and CommonJS, the event loop, promises and streams, the built-in APIs) and *npm et l'écosystème* (`package.json` and semver, installing, lockfiles and workspaces, publishing, security and the supply chain). 128 written questions in French, Spanish and English, current as of November 2026: the yearly release model from Node 27, `require(esm)`, type stripping, Corepack leaving Node 25, npm's token changes after the 2025 worms, trusted publishing, `min-release-age` and pnpm's script approval. The course *Node.js et npm — un cours complet* has a part per topic, exercises with answers and sources; a wrong answer links to its part.

@@ -60,17 +60,17 @@
  */
 
 import { hasKana, kanaToRomaji } from "./kana";
-import { inuktitutKey, malayalamKey, runicKey, tibetanKey } from "../lessons/grade";
+import { elamiteKey, inuktitutKey, malayalamKey, runicKey, tibetanKey } from "../lessons/grade";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo" | "gem";
+export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo" | "gem" | "elx";
 
 /** Languages written in their own script and also answered by their reading (as Arabic). */
-export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo", "gem"]);
+export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx"]);
 
 /** The grading rules for a book language: those it has, else English (plain text). */
 export function answerLangOf(code: string): AnswerLang {
-  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo", "gem"];
+  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx"];
   return (known.includes(code) ? code : "en") as AnswerLang;
 }
 
@@ -94,6 +94,7 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   iu: [],
   bo: [],
   gem: [],
+  elx: [],
 };
 
 /** Text as shown: book typography cleaned, "..." for an open end. */
@@ -478,6 +479,7 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   if (lang === "iu") return gradeKeyed(given, expected, reading, inuktitutKey);
   if (lang === "bo") return gradeKeyed(given, expected, reading, tibetanKey);
   if (lang === "gem") return gradeKeyed(given, expected, reading, runicKey);
+  if (lang === "elx") return gradeKeyed(given, expected, reading, elamiteKey);
   // English: contractions written out on both sides ("I'm" and "I am").
   const english = (t: string): string => (lang === "en" ? expandEnglish(t) : t);
   const answer = english(normalise(given));

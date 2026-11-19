@@ -1,0 +1,30 @@
+{
+  "id": "linear-elamite",
+  "language": "elx",
+  "icon": "🦁",
+  "folds": [
+    "elamite"
+  ],
+  "title": {
+    "fr": "Élamite linéaire",
+    "es": "Elamita lineal",
+    "en": "Linear Elamite"
+  },
+  "description": {
+    "fr": "L'écriture de l'Élam, dans le sud de l'Iran vers 2300–1880 av. J.-C., déchiffrée en 2022 : les voyelles, les séries de signes syllabiques, les signes de consonne, puis des noms de rois et de dieux. Avec la police de Luma pour ses 348 signes.",
+    "es": "La escritura de Elam, en el sur de Irán hacia 2300–1880 a. C., descifrada en 2022: las vocales, las series de signos silábicos, los signos de consonante y luego nombres de reyes y dioses. Con la fuente de Luma para sus 348 signos.",
+    "en": "The script of Elam, in southern Iran about 2300–1880 BCE, deciphered in 2022: the vowels, the series of syllabic signs, the consonant signs, then the names of kings and gods. With Luma's own font for its 348 signs."
+  },
+  "vocabLesson": "Lesson {n}",
+  "keys": [
+    "š",
+    "ů"
+  ],
+  "lessons": [
+    "01-linear-elamite",
+    "02-a-series",
+    "03-e-and-i",
+    "04-o-u-and-consonants",
+    "05-reading-names"
+  ]
+}

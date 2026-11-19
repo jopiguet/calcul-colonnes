@@ -17,7 +17,7 @@
   --warn: #93600a;
   --square: 1.25rem;
   --radius: 0.75rem;
-  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Canadian Aboriginal", "Noto Serif Tibetan", "Noto Sans Runic", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
+  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Canadian Aboriginal", "Noto Serif Tibetan", "Noto Sans Runic", "Luma Linear Elamite", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
   --digits: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
   /* The physics playground: a ball, grass, light. */
   --ball: #d9541e;
@@ -7092,6 +7092,28 @@ button.tiny {
 }
 .lesson-vocab-sign:lang(bo) {
   font-size: 1.45em;
+}
+/* Linear Elamite: Luma's own font (fonts/linear-elamite), only fetched when a sign is shown. */
+@font-face {
+  font-family: "Luma Linear Elamite";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/LumaLinearElamite.woff2") format("woff2");
+  unicode-range: U+E001-E15C;
+}
+/* The signs fill about half of their 1000-unit drawings: shown at twice the text size, a
+   median sign stands about as tall as a capital, and the tallest fill the line. */
+.script-elamite,
+.lesson-vocab-sign:lang(elx) {
+  font-family: "Luma Linear Elamite", var(--font);
+  font-size: 2em;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  vertical-align: -0.12em;
+}
+.lesson-vocab-sign:lang(elx) {
+  font-size: 2.6em;
 }
 .script-runic,
 .lesson-vocab-sign:lang(gem) {

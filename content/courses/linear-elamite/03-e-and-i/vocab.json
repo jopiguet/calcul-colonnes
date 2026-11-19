@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "",
+      "reading": "he",
+      "meaning": "the sign he",
+      "translations": {
+        "fr": "le signe he",
+        "es": "el signo he"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "hi",
+      "meaning": "the sign hi",
+      "translations": {
+        "fr": "le signe hi",
+        "es": "el signo hi"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ki",
+      "meaning": "the sign ki",
+      "translations": {
+        "fr": "le signe ki",
+        "es": "el signo ki"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ti",
+      "meaning": "the sign ti",
+      "translations": {
+        "fr": "le signe ti",
+        "es": "el signo ti"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "še",
+      "meaning": "the sign še",
+      "translations": {
+        "fr": "le signe še",
+        "es": "el signo še"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ši",
+      "meaning": "the sign ši",
+      "translations": {
+        "fr": "le signe ši",
+        "es": "el signo ši"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "ni",
+      "meaning": "the sign ni",
+      "translations": {
+        "fr": "le signe ni",
+        "es": "el signo ni"
+      },
+      "type": "sign"
+    },
+    {
+      "term": "",
+      "reading": "re",
+      "meaning": "the sign re",
+      "translations": {
+        "fr": "le signe re",
+        "es": "el signo re"
+      },
+      "type": "sign"
+    }
+  ]
+}

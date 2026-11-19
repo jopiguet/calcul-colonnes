@@ -385,3 +385,26 @@ test("Runes: runes in their font, answers in runes or in transliteration", async
   await card.locator(".lesson-check").click();
   await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
 });
+
+test("Linear Elamite: signs in Luma's font, answers by value, both readings accepted", async ({ page }) => {
+  await newPlayer(page, "Hatamti");
+  await goHome(page);
+  await expect(page.locator("[data-activity='vocab-course-linear-elamite']")).toContainText("Vocabulaire élamite linéaire");
+  await openActivity(page, "lessons-linear-elamite");
+  await expect(page.locator(".lessons-item")).toHaveCount(5);
+  await page.locator(".lessons-item").first().click();
+  const run = page.locator(".script-elamite").first();
+  await expect(run).toHaveAttribute("lang", "elx");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Luma Linear Elamite");
+  // The font is served and loads.
+  expect(await page.evaluate(async () => { await document.fonts.load('20px "Luma Linear Elamite"', "\uE001"); return document.fonts.check('20px "Luma Linear Elamite"', "\uE001"); })).toBe(true);
+  const card = page.locator(".lesson-exercise[data-exercise='vowels']");
+  const inputs = card.locator(".lesson-input");
+  // o is also read u on the 2025 plate.
+  for (const [i, v] of [[0, "a"], [1, "E"], [2, "i"], [3, "u"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/4");
+  await inputs.nth(1).fill("i");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
+});

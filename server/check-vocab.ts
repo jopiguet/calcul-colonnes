@@ -263,6 +263,12 @@ const scripts: [string, string, string, AnswerLang, Verdict][] = [
   ["fathur", "ᚠᛅᚦᚢᚱ", "faþur", "gem", "accent"],
   ["daeg", "ᛞᚫᚷ", "dæg", "gem", "accent"],
   ["stein", "ᛋᛏᛅᛁᚾ", "stain", "gem", "wrong"],
+  // Linear Elamite: the signs, or their transliteration; ů typed u counts.
+  ["\uE0B7", "\uE0B7", "ša", "elx", "right"],
+  ["ze-m-t", "\uE0E9\uE0EA\uE0AC", "ze-m-t", "elx", "right"],
+  ["zemt", "\uE0E9\uE0EA\uE0AC", "ze-m-t", "elx", "accent"],
+  ["hu", "\uE009", "hů", "elx", "accent"],
+  ["ka", "\uE009", "hů", "elx", "wrong"],
 ];
 for (const [given, expected, reading, lang, verdict] of scripts) {
   expect(`grade(${JSON.stringify(given)}, ${JSON.stringify(expected)}, ${lang})`, grade(given, expected, lang, reading), verdict);

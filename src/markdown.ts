@@ -50,7 +50,9 @@ const ML = "\\u0D00-\\u0D7F";
 const IU = "\\u1400-\\u167F\\u18B0-\\u18FF";
 const BO = "\\u0F00-\\u0FFF";
 const RUN = "\\u16A0-\\u16F8";
-const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${ML}](?:[${ML}\\u200C\\u200D ,.?!]*[${ML}])?|[${IU}](?:[${IU} ,.?!]*[${IU}])?|[${BO}](?:[${BO} ]*[${BO}])?|[${RUN}](?:[${RUN} ]*[${RUN}])?|[${RTL}](?:[${RTL}\\u200C\\u200D ,.?!]*(?:[${RTL}]|[…?!]))?)`, "u");
+// Linear Elamite, LE001–LE348 in the Private Use Area (fonts/linear-elamite).
+const ELX = "\\uE001-\\uE15C";
+const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${ML}](?:[${ML}\\u200C\\u200D ,.?!]*[${ML}])?|[${IU}](?:[${IU} ,.?!]*[${IU}])?|[${BO}](?:[${BO} ]*[${BO}])?|[${RUN}](?:[${RUN} ]*[${RUN}])?|[${ELX}](?:[${ELX} ]*[${ELX}])?|[${RTL}](?:[${RTL}\\u200C\\u200D ,.?!]*(?:[${RTL}]|[…?!]))?)`, "u");
 
 function signs(text: string, target: HTMLElement): void {
   text.split(SIGNS).forEach((piece, i) => {
@@ -63,6 +65,10 @@ function signs(text: string, target: HTMLElement): void {
     } else if (/[\u1400-\u167F\u18B0-\u18FF]/u.test(piece)) {
       const run = el("span", "script-inuktitut", piece);
       run.lang = "iu";
+      target.append(run);
+    } else if (/[\uE001-\uE15C]/u.test(piece)) {
+      const run = el("span", "script-elamite", piece);
+      run.lang = "elx";
       target.append(run);
     } else if (/[\u16A0-\u16F8]/u.test(piece)) {
       const run = el("span", "script-runic", piece);

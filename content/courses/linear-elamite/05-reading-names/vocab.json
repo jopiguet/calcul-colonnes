@@ -1,0 +1,74 @@
+{
+  "entries": [
+    {
+      "term": "",
+      "reading": "ha-ta-m-ti",
+      "meaning": "Hatamti, Elam",
+      "translations": {
+        "fr": "Hatamti, l'Élam",
+        "es": "Hatamti, Elam"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "",
+      "reading": "ze-m-t",
+      "meaning": "king, lord",
+      "translations": {
+        "fr": "roi, seigneur",
+        "es": "rey, señor"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "",
+      "reading": "me-ni-r",
+      "meaning": "ruler",
+      "translations": {
+        "fr": "souverain",
+        "es": "soberano"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "",
+      "reading": "e-pa-r-ti",
+      "meaning": "Eparti, a king",
+      "translations": {
+        "fr": "Eparti, un roi",
+        "es": "Eparti, un rey"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "",
+      "reading": "su-ši-na-k",
+      "meaning": "Sušinak, god of Susa",
+      "translations": {
+        "fr": "Sušinak, dieu de Suse",
+        "es": "Sušinak, dios de Susa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "",
+      "reading": "na-pi-re-ša",
+      "meaning": "Napireša, a great god",
+      "translations": {
+        "fr": "Napireša, un grand dieu",
+        "es": "Napireša, un gran dios"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "",
+      "reading": "pu-zu-r-su-ši-na-k",
+      "meaning": "Puzur-Sušinak, king at Susa",
+      "translations": {
+        "fr": "Puzur-Sušinak, roi à Suse",
+        "es": "Puzur-Sušinak, rey en Susa"
+      },
+      "type": "noun"
+    }
+  ]
+}
