@@ -22,10 +22,10 @@ export type ReadingMode = "always" | "after" | "never";
 
 /** A player's display choices (docs/vocabulary.md#the-reading-in-latin-letters). */
 export interface UserPrefs {
-  /** Readings in every book; a book's own choice comes first. */
+  /** Per course (readingCourse(): a language course's books share one key, any other book is its own). */
+  readings?: Record<string, ReadingMode>;
+  /** 8.9.0: one choice for every book, still the default of a course without its own until one is set. */
   reading?: ReadingMode;
-  /** Per vocabulary book slug. */
-  readingBooks?: Record<string, ReadingMode>;
 }
 
 /** The home page as a player arranged it: what is not listed keeps its place after what is. */
@@ -224,6 +224,8 @@ export interface VocabCard {
   met?: boolean;
   /** A session across a shelf's books: the title of the word's book. */
   source?: string;
+  /** A session across a shelf's books: the word's book (its reading follows that book's course). */
+  sourceBook?: number;
   /** Picture dictionary: the picture's hash (GET /api/vocab/images/:hash). */
   image?: string;
   /** The word's number on the picture (a labelled diagram). */

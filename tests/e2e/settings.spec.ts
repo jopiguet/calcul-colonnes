@@ -1,5 +1,4 @@
 import { expect, test } from "@playwright/test";
-import type { User } from "../../shared/types.ts";
 import { goHome, newPlayer, openActivity, userByName } from "./helpers";
 
 test("settings: sections in the address, the browser's Back button leaves them, a reload stays", async ({ page }) => {
@@ -67,35 +66,40 @@ test("settings: one player at a time, chosen in a list; a whole group shown or h
   expect((await userByName(page.request, first)).hidden).toEqual([]);
 });
 
-test("the reading in Latin letters: each player's own choice, kept on the server for every device", async ({ page, browser }) => {
+test("the reading in Latin letters: each player's own choice per course, kept on the server for every device", async ({ page, browser }) => {
   const name = await newPlayer(page, "Read");
   const user = await userByName(page.request, name);
   await page.click(".icon-chip");
   const display = page.locator(".settings-display");
-  await expect(display.locator(".segment.on")).toHaveText("Avec la question");
-  await display.getByRole("button", { name: "Jamais" }).click();
-  await expect.poll(async () => (await userByName(page.request, name)).prefs).toEqual({ reading: "never" });
+  // One line per course: a course's words and letters together, any other book with readings on its own.
+  const elamite = display.locator(".settings-reading-row[data-course='course-linear-elamite']");
+  await expect(elamite).toHaveCount(1);
+  await expect(display.locator(".settings-reading-row[data-course='test-characters']")).toHaveCount(1);
+  await expect(display.locator(".settings-reading-row[data-course='collins-spanish']")).toHaveCount(0);
+  await expect(elamite.locator("select")).toHaveValue("always");
+  await elamite.locator("select").selectOption("never");
+  await expect.poll(async () => (await userByName(page.request, name)).prefs).toEqual({ readings: { "course-linear-elamite": "never" } });
 
-  // Another device of the account: the same choice, on the book's page too.
+  // Another device of the account: the same choice, on both of the course's books.
   const context = await browser.newContext({ storageState: await page.context().storageState() });
   const other = await context.newPage();
   await other.goto("/");
   await other.locator(".home, .players").first().waitFor();
   if (await other.locator(".players").isVisible()) await other.locator("button.player", { hasText: name }).click();
-  await openActivity(other, "vocab-test-characters");
+  await openActivity(other, "vocab-course-linear-elamite-letters");
   await expect(other.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
-  // A book's own choice, kept by its slug.
-  await other.locator(".vocab-romaji-every input").uncheck();
+  await openActivity(other, "vocab-test-characters");
+  await expect(other.locator(".vocab-romaji .segment.on")).toHaveText("Toujours");
   await other.click(".vocab-romaji >> text=Après la réponse");
-  await expect.poll(async () => (await userByName(page.request, name)).prefs).toEqual({ reading: "never", readingBooks: { "test-characters": "after" } });
+  await expect.poll(async () => (await userByName(page.request, name)).prefs).toEqual({ readings: { "course-linear-elamite": "never", "test-characters": "after" } });
   await context.close();
 
-  // Only what the choice may hold; another account's player is refused.
+  // Only what the choice may hold; 8.9.0's per-book choices fold into their course.
   expect((await page.request.put(`/api/users/${user.id}/prefs`, { data: { prefs: [] } })).status()).toBe(400);
-  expect((await page.request.put(`/api/users/${user.id}/prefs`, { data: { prefs: { reading: "loud", readingBooks: { "Bad Id": "never", ok: "after" }, x: 1 } } })).status()).toBe(204);
-  expect((await userByName(page.request, name)).prefs).toEqual({ readingBooks: { ok: "after" } });
-  const users = (await (await page.request.get("/api/users")).json()) as User[];
-  expect(users.find((u) => u.id === user.id)?.prefs).toEqual({ readingBooks: { ok: "after" } });
+  expect(
+    (await page.request.put(`/api/users/${user.id}/prefs`, { data: { prefs: { reading: "loud", readings: { "Bad Id": "never", ok: "after" }, readingBooks: { "course-greek-letters": "never" }, x: 1 } } })).status(),
+  ).toBe(204);
+  expect((await userByName(page.request, name)).prefs).toEqual({ readings: { ok: "after", "course-greek": "never" } });
 });
 
 test("home: the characters books in a group of their own", async ({ page }) => {

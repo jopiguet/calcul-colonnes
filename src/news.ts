@@ -23,6 +23,21 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.9.1",
+    fr: [
+      "Le rōmaji et les translittérations se choisissent par cours : les mots et les lettres d'un cours ensemble, sur la page du livre ou dans ⚙️ Paramètres › Affichage.",
+      "Les groupes de l'accueil gardent leur place : ce qui est à réviser passe en tête de son groupe seulement.",
+    ],
+    es: [
+      "El rōmaji y las transliteraciones se eligen por curso: las palabras y las letras de un curso juntas, en la página del libro o en ⚙️ Ajustes › Visualización.",
+      "Los grupos del inicio conservan su lugar: lo que hay que repasar pasa al principio de su grupo solamente.",
+    ],
+    en: [
+      "Rōmaji and transliterations are chosen per course: a course's words and letters together, on the book's page or in ⚙️ Settings › Display.",
+      "The home page's groups keep their place: what is due moves to the front of its own group only.",
+    ],
+  },
+  {
     version: "8.9.0",
     fr: [
       "⚙️ Paramètres réorganisés : des rubriques (Joueurs, Compte, Données, et pour le propriétaire Contenus et Famille), un joueur à la fois choisi dans une liste, des groupes d'activités qui s'ouvrent avec Tout et Rien. Le bouton Retour du navigateur ramène où vous étiez.",

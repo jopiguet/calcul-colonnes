@@ -22,6 +22,7 @@ import {
   type VocabCard,
   type VocabProgress,
 } from "./store";
+import { readingCourse } from "../shared/reading";
 import type { ReadingMode, UserPrefs, VocabRelated, VocabWord } from "../shared/types";
 import { infoLabel, langName, readingLanguage, vt, type VocabKey } from "./vocab-i18n";
 import type { EntryInfo } from "../shared/vocab/format";
@@ -233,45 +234,42 @@ export function vocabBusy(): boolean {
 
 /** Japanese rōmaji with the question, or only after the answer. */
 const picturesAlone = (book: VocabBookInfo | null): boolean => book !== null && prefs.pictures[book.id] === "alone";
-/** The reading in Latin letters: the player's choice for the book, else its choice for every book (a shelf session follows that one). */
-const readingMode = (user: User, book: VocabBookInfo | null): ReadingMode =>
-  (book ? user.prefs?.readingBooks?.[book.slug] : undefined) ?? user.prefs?.reading ?? "always";
+/** The reading in Latin letters: the player's choice for the book's course (a shelf session: the card's own book). */
+export const readingMode = (user: User, book: VocabBookInfo | null | undefined): ReadingMode =>
+  (book ? user.prefs?.readings?.[readingCourse(book.slug)] : undefined) ?? user.prefs?.reading ?? "always";
+
+/** The book a card's word is from: the open one, or in a shelf session the one the server names. */
+const cardBook = (ctx: VocabContext, card: VocabCard): VocabBookInfo | null =>
+  ctx.book ?? ctx.shelf?.books.find((b) => b.id === card.sourceBook) ?? null;
 
 /** Keeps the player's display choices on the server, so they follow it on every device (docs/vocabulary.md#the-reading-in-latin-letters). */
 function savePrefs(user: User, change: (p: UserPrefs) => void): void {
   const next: UserPrefs = structuredClone(user.prefs ?? {});
   change(next);
-  if (next.readingBooks && Object.keys(next.readingBooks).length === 0) delete next.readingBooks;
+  if (next.readings && Object.keys(next.readings).length === 0) delete next.readings;
   user.prefs = next;
   void store.setPrefs(user.id, next).catch(() => undefined);
 }
 
-/** A choice made on this device before 8.9 moves to the player, unless the player already has one. */
+/** A choice made on this device before 8.9 moves to the player's course, unless the course already has one. */
 function adoptDeviceReading(ctx: VocabContext): void {
   const user = ctx.user;
   const books = [ctx.book, ...(ctx.shelf?.books ?? [])].filter((b): b is VocabBookInfo => b !== null);
-  const moves: [string, ReadingMode][] = [];
+  const moves = new Map<string, ReadingMode>();
   for (const b of books) {
-    const old = prefs.romaji[b.id];
-    if (old === undefined) continue;
-    if (user.prefs?.readingBooks?.[b.slug] === undefined) moves.push([b.slug, old]);
+    const old = prefs.romaji[b.id] ?? prefs.romajiAll;
+    if (old !== undefined && user.prefs?.readings?.[readingCourse(b.slug)] === undefined && old !== "always") moves.set(readingCourse(b.slug), old);
     delete prefs.romaji[b.id];
   }
-  const all = prefs.romajiAll;
-  if (!moves.length && all === undefined) return;
-  delete prefs.romajiAll;
+  if (!books.length) return;
   savePreferences();
-  const adoptAll = all !== undefined && all !== "always" && user.prefs?.reading === undefined;
-  if (!moves.length && !adoptAll) return;
-  savePrefs(user, (p) => {
-    if (adoptAll) p.reading = all;
-    for (const [slug, mode] of moves) (p.readingBooks ??= {})[slug] = mode;
+  if (moves.size) savePrefs(user, (p) => {
+    for (const [course, mode] of moves) (p.readings ??= {})[course] = mode;
   });
 }
 
-/** The choice of the reading: for a book (with "in every book" ticked, it follows and sets the common choice), or for a shelf (the common one). */
-function readingControl(ctx: VocabContext, book: VocabBookInfo | null, japanese: boolean): HTMLElement[] {
-  const own = book ? ctx.user.prefs?.readingBooks?.[book.slug] : undefined;
+/** The choice of the reading on a book's page: it is the course's, for its words and its letters alike. */
+function readingControl(ctx: VocabContext, book: VocabBookInfo, japanese: boolean): HTMLElement[] {
   const current = readingMode(ctx.user, book);
   const box = el("fieldset", "segmented vocab-romaji");
   box.append(el("legend", "field-label", vt(japanese ? "romajiTitle" : "transcriptionTitle")));
@@ -279,8 +277,7 @@ function readingControl(ctx: VocabContext, book: VocabBookInfo | null, japanese:
     const on = current === value;
     const option = button(on ? "segment on" : "segment", vt(key), () => {
       savePrefs(ctx.user, (p) => {
-        if (book && own !== undefined) (p.readingBooks ??= {})[book.slug] = value;
-        else p.reading = value;
+        (p.readings ??= {})[readingCourse(book.slug)] = value;
       });
       ctx.rerender();
     });
@@ -288,25 +285,11 @@ function readingControl(ctx: VocabContext, book: VocabBookInfo | null, japanese:
     option.dataset.reading = value;
     box.append(option);
   }
-  const out: HTMLElement[] = [box];
-  if (book) {
-    const every = el("label", "vocab-romaji-every");
-    const tick = el("input");
-    tick.type = "checkbox";
-    tick.checked = own === undefined;
-    tick.addEventListener("change", () => {
-      savePrefs(ctx.user, (p) => {
-        if (tick.checked) delete p.readingBooks?.[book.slug];
-        else (p.readingBooks ??= {})[book.slug] = p.reading ?? "always";
-      });
-      ctx.rerender();
-    });
-    every.append(tick, document.createTextNode(` ${vt("romajiEvery")}`));
-    out.push(every);
-  }
-  out.push(el("p", "hint left", vt(!book ? "romajiShelfHint" : book.kind === "characters" ? "romajiCharactersHint" : japanese ? "romajiHint" : "transcriptionHint")));
-  out.push(el("p", "hint left", vt("romajiSynced")));
-  return out;
+  return [
+    box,
+    el("p", "hint left", vt(book.kind === "characters" ? "romajiCharactersHint" : japanese ? "romajiHint" : "transcriptionHint")),
+    el("p", "hint left", vt(book.slug.startsWith("course-") ? "romajiCourse" : "romajiSynced")),
+  ];
 }
 
 async function start(ctx: VocabContext, target: Target): Promise<void> {
@@ -650,7 +633,7 @@ async function shelfView(ctx: VocabContext): Promise<HTMLElement> {
   wrap.append(order);
 
   // The reading in Latin letters, for every book (a shelf session mixes them).
-  if (shelf.books.some((b) => b.readings > 0 || b.kind === "characters")) wrap.append(...readingControl(ctx, null, shelf.lang === "ja"));
+  if (shelf.books.some((b) => b.readings > 0 || b.kind === "characters")) wrap.append(el("p", "hint left vocab-romaji-shelf", vt("romajiShelfHint")));
 
   // The home page: one card for the shelf, or one per book.
   const home = el("fieldset", "segmented vocab-shelf-home");
@@ -954,7 +937,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   prompt.dir = "auto";
   if (!alone) question.append(prompt);
   // The reading: with the question, once answered, or never, as the player chose.
-  const reads = readingMode(ctx.user, ctx.book);
+  const reads = readingMode(ctx.user, cardBook(ctx, card));
   const showReading = reads === "always" || (reads === "after" && s.result !== null);
   if (card.promptReading && showReading) {
     const reading = el("p", "vocab-reading", card.promptReading);

@@ -1,3 +1,4 @@
+import { readingCourse } from "../shared/reading.ts";
 import {
   QUIZ_VERSION,
   RECENT,
@@ -83,13 +84,17 @@ export function prefsOf(raw: unknown): UserPrefs {
   const v = value as Record<string, unknown>;
   const out: UserPrefs = {};
   if (typeof v.reading === "string" && READING_MODES.has(v.reading)) out.reading = v.reading as ReadingMode;
-  if (v.readingBooks && typeof v.readingBooks === "object" && !Array.isArray(v.readingBooks)) {
-    const books: Record<string, ReadingMode> = {};
-    for (const [book, mode] of Object.entries(v.readingBooks as Record<string, unknown>).slice(0, HIDDEN_MAX)) {
-      if (ACTIVITY_ID.test(book) && typeof mode === "string" && READING_MODES.has(mode)) books[book] = mode as ReadingMode;
+  // Per course; 8.9.0's per-book choices (readingBooks) fold into their course, the course's own choice first.
+  const readings: Record<string, ReadingMode> = {};
+  const add = (map: unknown, key: (id: string) => string): void => {
+    if (!map || typeof map !== "object" || Array.isArray(map)) return;
+    for (const [id, mode] of Object.entries(map as Record<string, unknown>).slice(0, HIDDEN_MAX)) {
+      if (ACTIVITY_ID.test(id) && typeof mode === "string" && READING_MODES.has(mode) && !(key(id) in readings)) readings[key(id)] = mode as ReadingMode;
     }
-    if (Object.keys(books).length) out.readingBooks = books;
-  }
+  };
+  add(v.readings, (id) => id);
+  add(v.readingBooks, readingCourse);
+  if (Object.keys(readings).length) out.readings = readings;
   return out;
 }
 

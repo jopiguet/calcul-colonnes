@@ -7361,10 +7361,6 @@ summary.settings-group-title .topic-group-name {
   font-size: 0.95rem;
 }
 
-.settings-reading .segment {
-  flex: 1 1 auto;
-}
-
 .settings-back {
   align-self: center;
 }
@@ -7375,4 +7371,37 @@ summary.settings-group-title .topic-group-name {
 
 .family-content-section h3.field-label {
   margin-top: 0.8rem;
+}
+
+/* Readings per course: a name and its choice on one line. */
+.settings-readings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.settings-reading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) - 0.2rem);
+}
+
+.settings-reading-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.settings-reading {
+  flex: 0 0 auto;
+  max-width: 55%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) - 0.2rem);
+  color: var(--ink);
+  background: var(--paper);
+  font: inherit;
 }

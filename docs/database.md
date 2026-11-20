@@ -42,7 +42,7 @@ this because the server enables `PRAGMA foreign_keys`.
 | `account_id` | integer, nullable | owning account; `NULL` only for players created before version 4, until the first account claims them |
 | `hidden` | text | JSON list of activities taken off the player's home page; `[]` shows everything, and new activities show |
 | `layout` | text | JSON: how the player arranged its home page, `{ groups, cards, open }` ([Home page](home.md#what-is-stored)); `{}` for the app's order |
-| `prefs` | text | JSON: the player's display choices, `{ reading, readingBooks }` ([Vocabulary](vocabulary.md#the-reading-in-latin-letters)); `{}` for the defaults |
+| `prefs` | text | JSON: the player's display choices, `{ readings }` per course ([Vocabulary](vocabulary.md#the-reading-in-latin-letters)); `{}` for the defaults |
 | `onboarded_at` | bigint, nullable | when the player first finished or skipped the [guided tour](user-guide.md#guided-tour) on their own login; `NULL` until then |
 
 ### `player_shares`, `player_invites`

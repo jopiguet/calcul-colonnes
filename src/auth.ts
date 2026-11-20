@@ -1,5 +1,7 @@
 import type { AuthOptions, AuthState, ReadingMode, SignInMethod, User, UserPrefs, VocabBookInfo } from "../shared/types";
 import { activityCatalog, vocabBooks } from "./home";
+import { readingCourse } from "../shared/reading";
+import type { CourseInfo } from "../shared/lessons/api";
 import { at, errorText, type AuthKey } from "./auth-i18n";
 import { button, el } from "./dom";
 import { currentLang, t } from "./i18n";
@@ -427,7 +429,16 @@ async function playersSection(ctx: AccountContext, fail: (e: unknown) => void): 
         }),
       );
     } else {
-      block.append(displayPart(player, fail), await activitiesPart(ctx, player, fail), await sharingPart(ctx, player, fail));
+      const books = await vocabBooks().catch(() => [] as VocabBookInfo[]);
+      // The workbooks and courses this account sees (the first player's view of them is enough for their names).
+      const first = players.find((p) => p.sharedBy === undefined) ?? player;
+      const exerciseBooks = await workbook.books(first.id).catch(() => []);
+      const courses = await lessons.courses(first.id).catch(() => [] as CourseInfo[]);
+      block.append(
+        displayPart(player, books, courses, fail),
+        activitiesPart(player, activityCatalog(books, exerciseBooks, courses), fail),
+        await sharingPart(ctx, player, fail),
+      );
       const methods = await auth.methods().catch(() => [] as SignInMethod[]);
       block.append(loginPart(ctx, player, methods, options, fail));
     }
@@ -455,47 +466,52 @@ async function playersSection(ctx: AccountContext, fail: (e: unknown) => void): 
   return out;
 }
 
-/** Readings in Latin letters: the player's own choice for every book, kept on the server (User.prefs). */
-function displayPart(player: User, fail: (e: unknown) => void): HTMLElement {
-  const current = player.prefs?.reading ?? "always";
-  const choice = el("div", "segmented compact settings-reading");
-  choice.setAttribute("role", "group");
-  choice.setAttribute("aria-label", at("readingsAll"));
-  const draw = (mode: ReadingMode): void => {
-    for (const b of choice.querySelectorAll<HTMLButtonElement>("button")) {
-      const on = b.dataset.reading === mode;
-      b.classList.toggle("on", on);
-      b.setAttribute("aria-pressed", String(on));
+/**
+ * Readings in Latin letters (rōmaji, transliterations): the player's own choice per course, kept on the server
+ * (User.prefs.readings). A language course's words and letters share a line; any other book with readings is its own.
+ */
+function displayPart(player: User, books: VocabBookInfo[], courses: CourseInfo[], fail: (e: unknown) => void): HTMLElement {
+  const lines = new Map<string, string>();
+  for (const book of books) {
+    if (book.readings === 0 && book.kind !== "characters") continue;
+    const key = readingCourse(book.slug);
+    if (lines.has(key)) continue;
+    const course = courses.find((c) => key === `course-${c.id}`);
+    lines.set(key, course ? `${course.icon} ${course.title}` : `${book.kind === "characters" ? "✍️" : "💬"} ${book.title}`);
+  }
+  const list = el("div", "settings-readings");
+  for (const [key, label] of [...lines].sort((a, b) => a[1].replace(/^\S+\s/, "").localeCompare(b[1].replace(/^\S+\s/, ""), currentLang()))) {
+    const row = el("label", "settings-reading-row");
+    row.dataset.course = key;
+    const select = el("select", "settings-reading");
+    for (const [mode, text] of [["always", "readingAlways"], ["after", "readingAfter"], ["never", "readingNever"]] as const) {
+      const option = el("option", undefined, at(text));
+      option.value = mode;
+      select.append(option);
     }
-  };
-  for (const [mode, key] of [["always", "readingAlways"], ["after", "readingAfter"], ["never", "readingNever"]] as const) {
-    const b = button("segment", at(key), async () => {
+    const current = (): ReadingMode => player.prefs?.readings?.[key] ?? player.prefs?.reading ?? "always";
+    select.value = current();
+    select.addEventListener("change", async () => {
       const before = player.prefs ?? {};
-      const next: UserPrefs = { ...before, reading: mode };
-      draw(mode);
+      const next: UserPrefs = { ...before, readings: { ...before.readings, [key]: select.value as ReadingMode } };
       try {
         await store.setPrefs(player.id, next);
         player.prefs = next;
       } catch (e) {
-        draw(before.reading ?? "always");
+        select.value = current();
         fail(e);
       }
     });
-    b.dataset.reading = mode;
-    choice.append(b);
+    row.append(el("span", "settings-reading-name", label), select);
+    list.append(row);
   }
-  draw(current);
-  return part(`👁️ ${at("display")}`, "settings-display", true, el("p", "field-label", at("readingsAll")), choice, el("p", "hint left", at("readingsHint")));
+  const children: HTMLElement[] = [el("p", "field-label", at("readingsAll"))];
+  children.push(lines.size ? list : el("p", "empty small", at("readingsNone")), el("p", "hint left", at("readingsHint")));
+  return part(`👁️ ${at("display")}`, "settings-display", true, ...children);
 }
 
 /** The activities on the player's home page: a group per subject, each with its count and All / None. */
-async function activitiesPart(ctx: AccountContext, player: User, fail: (e: unknown) => void): Promise<HTMLElement> {
-  const books = await vocabBooks().catch(() => [] as VocabBookInfo[]);
-  // The workbooks and courses this account sees (the first player's view of them is enough for their names).
-  const first = ctx.players[0];
-  const exerciseBooks = first ? await workbook.books(first.id).catch(() => []) : [];
-  const courses = first ? await lessons.courses(first.id).catch(() => []) : [];
-  const catalog = activityCatalog(books, exerciseBooks, courses);
+function activitiesPart(player: User, catalog: ReturnType<typeof activityCatalog>, fail: (e: unknown) => void): HTMLElement {
   const hidden = new Set(player.hidden ?? []);
   const shown = el("div", "player-activities");
   const saved = el("span", "hint player-activities-saved");

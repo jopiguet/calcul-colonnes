@@ -101,7 +101,7 @@ Players sorted by name: the account's own, and those other accounts share with i
 |---|---|
 | `hidden` | Activities taken off the player's home page: `columns`, `quiz`, `chemistry`, `vocab-<book slug>`, `discover-dice`, `discover-coins`, `discover-puzzles` |
 | `layout` | How the player arranged its home page: `{ groups, cards, open }` ([Home page](home.md#what-is-stored)); `{}` for the app's order |
-| `prefs` | The player's display choices: `{ reading, readingBooks }`, each `always`, `after` or `never` ([Vocabulary › The reading in Latin letters](vocabulary.md#the-reading-in-latin-letters)); `{}` for the defaults |
+| `prefs` | The player's display choices: `{ readings }`, by course key (`course-<id>`, or a book's slug), each `always`, `after` or `never` ([Vocabulary › The reading in Latin letters](vocabulary.md#the-reading-in-latin-letters)); `{}` for the defaults |
 | `sharedBy` | Only for a player another account owns and shares with this one: that account's name |
 
 ## `POST /api/users`
@@ -158,11 +158,14 @@ player.
 ### `PUT /api/users/:id/prefs`
 
 ```json
-{ "prefs": { "reading": "never", "readingBooks": { "test-characters": "after" } } }
+{ "prefs": { "readings": { "course-greek": "never", "test-japanese": "after" } } }
 ```
 
-The player's display choices: the reading in Latin letters for every book,
-and per book slug. Allowed to the player's account and to the player in its
+The player's display choices: the reading in Latin letters per course (a
+language course's books share `course-<id>`; any other book is keyed by its
+slug). 8.9.0's `readingBooks` (per book slug) is still accepted and folded into
+its course; `reading` (every book) is kept as the default of a course with no
+choice of its own. Allowed to the player's account and to the player in its
 own session (not to an account it is shared with: `404`). Replaces them, kept
 to what they may hold (unknown keys, modes and badly formed slugs dropped).
 `204`; `400` when `prefs` is not an object or the body passes 20 kB. Returned

@@ -376,10 +376,9 @@ test("the Japanese book: rōmaji can wait until the answer", async ({ page }) =>
   await expect(page.locator(".vocab-reading")).toHaveCount(1);
 });
 
-test("the reading in Latin letters: never, the same choice in every book, or a book's own", async ({ page }) => {
-  await newPlayer(page, "Nev");
+test("the reading in Latin letters: never, chosen per course, a course's words and letters together", async ({ page }) => {
+  const name = await newPlayer(page, "Nev");
   await openActivity(page, "vocab-test-japanese");
-  await expect(page.locator(".vocab-romaji-every input")).toBeChecked();
   await page.click(".vocab-romaji >> text=Jamais");
   await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
   await startFirstSection(page);
@@ -389,27 +388,26 @@ test("the reading in Latin letters: never, the same choice in every book, or a b
   await expect(page.locator(".vocab-reading, .choice-reading, .vocab-verdict-reading")).toHaveCount(0);
   await page.click("text=Arrêter");
 
-  // Another book follows the common choice; given its own, it leaves the Japanese book at "never".
+  // Another book keeps its own choice.
   await openActivity(page, "vocab-test-arabic");
-  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
-  await page.locator(".vocab-romaji-every input").uncheck();
-  await page.click(".vocab-romaji >> text=Toujours");
   await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Toujours");
-  await openActivity(page, "vocab-test-japanese");
-  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
 
-  // The language's shelf (the Arabic book and the Arabic course's words) shows and sets the common choice.
+  // A course: its letters and its words share one choice.
+  await openActivity(page, "vocab-course-linear-elamite-letters");
+  await page.click(".vocab-romaji >> text=Après la réponse");
+  await openActivity(page, "vocab-course-linear-elamite");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Après la réponse");
+  await expect(page.locator(".vocab-romaji ~ .hint").last()).toContainText("tout le cours");
+  await expect
+    .poll(async () => (await userByName(page.request, name)).prefs)
+    .toEqual({ readings: { "test-japanese": "never", "course-linear-elamite": "after" } });
+
+  // The language's shelf has no choice of its own: each word follows its course.
   await openActivity(page, "vocab-shelf-ar");
-  await expect(page.locator(".vocab-shelf .vocab-romaji .segment.on")).toHaveText("Jamais");
-  await expect(page.locator(".vocab-shelf .vocab-romaji-every")).toHaveCount(0);
-  await page.click(".vocab-shelf .vocab-romaji >> text=Après la réponse");
-  // The Japanese book follows; the Arabic book keeps its own choice until it follows again.
+  await expect(page.locator(".vocab-shelf .vocab-romaji")).toHaveCount(0);
+  await expect(page.locator(".vocab-romaji-shelf")).toBeVisible();
   await openActivity(page, "vocab-test-japanese");
-  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Après la réponse");
-  await openActivity(page, "vocab-test-arabic");
-  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Toujours");
-  await page.locator(".vocab-romaji-every input").check();
-  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Après la réponse");
+  await expect(page.locator(".vocab-romaji .segment.on")).toHaveText("Jamais");
 });
 
 test("statistics: words seen, the last 30 days, what comes back, the hardest words", async ({ page }) => {

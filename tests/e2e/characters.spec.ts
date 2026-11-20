@@ -32,7 +32,7 @@ test("the Characters book: kana by their sound, a kanji's meaning in French, its
   await expect(page.locator(".vocab-credit")).toHaveText("Written for the tests.");
   // The rōmaji setting is offered (for the player's words under a kanji); a kana's sound is the answer and stays.
   await expect(page.locator(".vocab-romaji legend")).toHaveText("Rōmaji");
-  await expect(page.locator(".vocab-romaji + .vocab-romaji-every + .hint")).toContainText("Le son d'un kana ou d'une lettre reste");
+  await expect(page.locator(".vocab-romaji + .hint")).toContainText("Le son d'un kana ou d'une lettre reste");
 
   // A kana: shown large, its sound chosen.
   const lesson = page.locator(".vocab-lesson").first();

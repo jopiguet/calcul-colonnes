@@ -907,8 +907,10 @@ export class VocabStore {
       );
       const bookOf = new Map(entries.map((e) => [e.id, e.book.id ?? 0]));
       for (const card of cards) {
-        const title = titles.get(bookOf.get(card.entryId) ?? 0);
+        const id = bookOf.get(card.entryId) ?? 0;
+        const title = titles.get(id);
         if (title) card.source = title;
+        if (id) card.sourceBook = id;
       }
     }
     return cards;

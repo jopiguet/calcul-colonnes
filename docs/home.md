@@ -19,9 +19,10 @@ card shows is in the [user guide](user-guide.md#home-page).
 - **What waits first.** A card whose status waits (`card()` in `home.ts`,
   red: words due, notions to review) carries `data-due`, the number in its
   status. Outside the arranging mode, those cards come first in their group,
-  the largest first (a stable sort: the rest keeps its order), and groups with
-  something waiting come first on the page, by their total. Nothing is stored:
-  when it is done, the card is back in its place.
+  the largest first (a stable sort: the rest keeps its order). The groups
+  themselves never move for it: they keep the player's order (or the app's),
+  and *N en attente* beside a group's title says what waits in it. Nothing is
+  stored: when it is done, the card is back in its place.
 - **The ⋯ of a card** opens a menu placed on the page (it would be cut by the
   group's sideways scroll): *✥ Réorganiser l'accueil*, *＋ Ajouter une
   activité*, *✕ Retirer de l'accueil*. A click elsewhere, Escape, or the card

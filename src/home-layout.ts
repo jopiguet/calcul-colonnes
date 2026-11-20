@@ -4,8 +4,9 @@
  * - each group on one line of cards, scrolled sideways; its title opens it whole;
  * - cards and groups in the player's order, with a mode to move, remove and add
  *   them, entered from the "⋯" of any card;
- * - what is waiting (words due, notions to review) first, the most first, then
- *   the player's order again once it is done.
+ * - inside a group, what is waiting (words due, notions to review) first, the most
+ *   first, then the player's order again once it is done; the groups themselves keep
+ *   their order whatever waits in them.
  */
 import { button, el } from "./dom";
 import type { HomeLayout, User } from "../shared/types";
@@ -378,8 +379,8 @@ export function arrangeHome(groups: HomeGroup[], o: ArrangeOptions): HTMLElement
     closeMenu();
     holder.classList.toggle("is-arranging", arranging);
     const dueOf = (groupId: string): number => cells.filter((c) => c.group === groupId && visible(c)).reduce((sum, c) => sum + c.due, 0);
-    let order = groupIds();
-    if (!arranging) order = waitingFirst(order, dueOf);
+    // The groups keep the player's order (or the app's): what waits only moves cards inside its group.
+    const order = groupIds();
     list.replaceChildren();
     for (const groupId of order) {
       const group = groups.find((g) => g.id === groupId)!.el;

@@ -72,7 +72,7 @@ test("home: a card's ⋯ arranges the page, removes a card and puts it back", as
   await expect(page.locator("[data-cell='columns']")).toHaveCount(0);
 });
 
-test("home: what waits comes first, the most first, then the set order again", async ({ page }) => {
+test("home: what waits comes first in its group, the groups keep their order", async ({ page }) => {
   const name = await newPlayer(page, "Due");
   await goHome(page);
   expect((await groupIds(page))[0]).toBe("maths");
@@ -89,9 +89,9 @@ test("home: what waits comes first, the most first, then the set order again", a
   await expect(page.locator("[data-cell='marx'] .activity-status")).toHaveText(/à revoir/);
   // The waiting card is marked on its border only: nothing painted behind its rounded corners.
   expect(await page.locator("[data-cell='marx']").evaluate((c) => getComputedStyle(c).backgroundColor)).toBe("rgba(0, 0, 0, 0)");
-  // The Capital first in Economics, and Economics first on the page.
+  // The Capital first in Economics; the groups stay where they were.
   expect(await cardIds(page, "economics")).toEqual(["marx", "econ"]);
-  expect((await groupIds(page))[0]).toBe("economics");
+  expect((await groupIds(page))[0]).toBe("maths");
   await expect(group(page, "economics").locator(".activity-group-due")).toHaveText(/en attente/);
   // While arranging, the set order.
   await page.locator("[data-cell='econ'] .activity-more").click();

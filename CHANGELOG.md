@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.9.1
+
+- **The reading in Latin letters, chosen per course** ([Vocabulary › The reading in Latin letters](docs/vocabulary.md#the-reading-in-latin-letters)): a language course's words and letters share one choice, set on either book's page or in *⚙️ Paramètres › 👁️ Affichage*, which now lists every course and book with readings, one line and one list each. The common choice for every book and the *same choice in every book* box are gone; a shelf session follows each word's own course (`sourceBook` on the card). Stored as `users.prefs.readings` by course key; 8.9.0's per-book choices fold into their course, its common choice stays the default of a course without one.
+- **The home page's groups keep their order** ([Home page](docs/home.md#arranging)): what waits no longer moves a group to the top; it still comes first inside its group, and *N en attente* beside the group's title says what waits in it.
+
 ## 8.9.0
 
 - **⚙️ Settings, reorganised** ([User guide › Settings](docs/user-guide.md#settings)): the account page becomes *⚙️ Paramètres*, in sections: *👤 Joueurs*, *🔑 Compte*, *📦 Données*, and for the owner *📚 Contenus* and *👪 Famille*. Tabs on a wide screen, a drop-down list on a phone. *Joueurs* shows one player at a time, chosen in a list (the player in play first), in parts that open and close: display, activities, sharing, own sign-in; adding a shared player sits under it. Activities come in one group per subject, closed until opened, with their count (*3 sur 3*) and *Tout* / *Rien*. *Contenus* lists the books by language, then workbooks and questions, with a search box.
