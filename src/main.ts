@@ -15,7 +15,7 @@ import {
   saveUserId,
   type Settings,
 } from "./settings";
-import { accountView, signInView, takeInviteFromAddress, takeRedirectMessage } from "./auth";
+import { SETTINGS_SECTIONS, accountView, signInView, type SettingsSection, takeInviteFromAddress, takeRedirectMessage } from "./auth";
 import { at, errorText } from "./auth-i18n";
 import { landingView } from "./landing";
 import "katex/dist/katex.min.css";
@@ -237,7 +237,15 @@ async function render(): Promise<void> {
           state: state.auth,
           options: state.options ?? { providers: [], registration: false, publicUrl: location.origin },
           players: await store.listUsers(),
-          onBack: () => show(state.user ? "play" : "players"),
+          onBack: () => leaveSettings(),
+          section: settingsSection,
+          onSection: (section) => {
+            settingsSection = section;
+            // The address follows the section, without a new history entry: Back leaves the settings at once.
+            history.replaceState(history.state, "", `#settings/${section}`);
+            void render();
+          },
+          currentPlayer: state.user?.id ?? null,
           onSignedOut: () => signedOut(),
           rerender: () => void render(),
           onPlayersChanged: (text?: string) => {
@@ -456,7 +464,59 @@ function openProgress(user: User, back: View, scope: ProgressScope = "all"): voi
   show("progress");
 }
 
+// ------------------------------------------------------------- settings and the browser's Back button
+// The settings page has an entry of its own in the browser's history (#settings/<section>): the browser's Back
+// button, or the page's own, goes back to where it was opened from (docs/user-guide.md#settings).
+
+let settingsSection: SettingsSection = "players";
+/** The screen the settings were opened from. */
+let beforeSettings: View = "play";
+/** True when opening the settings pushed a history entry: leaving them goes back over it. */
+let settingsEntry = false;
+
+const settingsHash = (hash: string): SettingsSection | null | undefined => {
+  const m = /^#settings(?:\/([a-z]+))?$/.exec(hash);
+  if (!m) return undefined;
+  return SETTINGS_SECTIONS.find((s) => s === m[1]) ?? null;
+};
+
+function openSettings(section?: SettingsSection): void {
+  if (state.view !== "account") beforeSettings = state.view;
+  if (section) settingsSection = section;
+  history.pushState({ settings: true }, "", `#settings/${settingsSection}`);
+  settingsEntry = true;
+  show("account");
+}
+
+function leaveSettings(): void {
+  if (settingsEntry && settingsHash(location.hash) !== undefined) {
+    history.back(); // the popstate listener below shows the screen before
+    return;
+  }
+  show(beforeSettings === "account" ? "play" : beforeSettings);
+}
+
+window.addEventListener("popstate", () => {
+  if (!state.auth?.authenticated || playerSession()) return;
+  const section = settingsHash(location.hash);
+  if (section !== undefined) {
+    // Forward again, or back from a page opened from the settings (privacy).
+    if (state.view !== "account") beforeSettings = state.view;
+    settingsSection = section ?? settingsSection;
+    state.view = "account";
+    void render();
+  } else if (state.view === "account") {
+    settingsEntry = false;
+    show(beforeSettings === "account" || (!state.user && beforeSettings === "play") ? (state.user ? "play" : "players") : beforeSettings);
+  }
+});
+
 function show(view: View): void {
+  if (view !== "account" && settingsHash(location.hash) !== undefined) {
+    // Left by another button of the top bar: the address loses #settings.
+    history.replaceState(null, "", location.pathname + location.search);
+    settingsEntry = false;
+  }
   leaveTour();
   if (view !== "play") stopArranging();
   state.view = view;
@@ -571,7 +631,7 @@ function topBar(): HTMLElement {
     }
   }
   if (state.auth?.authenticated && !playerSession() && state.view !== "account") {
-    const account = button("ghost chip icon-chip", "⚙️", () => show("account"));
+    const account = button("ghost chip icon-chip", "⚙️", () => openSettings());
     account.setAttribute("aria-label", at("account"));
     account.title = at("account");
     left.append(account);
@@ -968,6 +1028,8 @@ async function enter(justSignedIn = false): Promise<void> {
     markReturning();
     // The tour: after the first sign-in, or kept on a reload while it is open.
     const tour = location.hash === "#tour" || state.auth.onboarded === false;
+    // A reload on the settings page stays there, on the same section.
+    const reopen = tour ? undefined : settingsHash(location.hash);
     clearEntryHash();
     if (tour) {
       resetTour();
@@ -987,6 +1049,12 @@ async function enter(justSignedIn = false): Promise<void> {
     state.questions = 0;
     // Every visit starts on the home page.
     updateSettings({ mode: "home" });
+    if (reopen !== undefined && !state.auth.player) {
+      beforeSettings = state.view;
+      if (reopen) settingsSection = reopen;
+      history.replaceState(null, "", `#settings/${settingsSection}`);
+      state.view = "account";
+    }
     await render();
   } catch (error) {
     if (error instanceof SignedOutError) return signedOut();

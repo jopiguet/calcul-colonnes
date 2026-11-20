@@ -1,8 +1,9 @@
 # The home page
 
 The player's home page (`src/home.ts`) lists every activity as a card, in
-twelve groups: Mathématiques, Sciences, Informatique, Économie, Cours de
-langues, Langues, Exercices des livres, Découvrir, Physique, Astronomie,
+thirteen groups: Mathématiques, Sciences, Informatique, Économie, Cours de
+langues, Langues, Caractères (the books of characters: kana and kanji, each
+script course's letters or signs), Exercices des livres, Découvrir, Physique, Astronomie,
 Curiosités mathématiques, Chimie et biologie. What a group holds and what each
 card shows is in the [user guide](user-guide.md#home-page).
 

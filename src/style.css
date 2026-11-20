@@ -7174,3 +7174,205 @@ button.tiny {
   font-size: 0.85rem;
   margin-inline-start: 0.5em;
 }
+
+/* ---- the settings page: sections, one player at a time, parts that open and close ---- */
+
+.account.settings {
+  max-width: 40rem;
+  align-items: stretch;
+  gap: 0.9rem;
+}
+
+.settings .account-who {
+  margin: -0.4rem 0 0;
+  text-align: center;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 0.15rem);
+  background: color-mix(in srgb, var(--line) 25%, var(--paper));
+}
+
+button.settings-tab {
+  flex: 1 1 auto;
+  padding: 0.5rem 0.7rem;
+  border: 0;
+  color: var(--ink);
+  background: transparent;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+button.settings-tab.on {
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+.settings-select,
+.settings-player,
+.family-content-filter {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: var(--paper);
+  font: inherit;
+}
+
+.settings-select {
+  display: none;
+  font-weight: 600;
+}
+
+/* A phone: the sections in a drop-down list. */
+@media (max-width: 34rem) {
+  .settings-tabs {
+    display: none;
+  }
+
+  .settings-select {
+    display: block;
+  }
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.settings-body > .subtitle {
+  margin-top: 0.4rem;
+}
+
+.settings-player-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings .player-login {
+  gap: 0.6rem;
+}
+
+.settings-part {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 0.8rem;
+  min-width: 0;
+}
+
+.settings-part[open] {
+  padding-bottom: 0.8rem;
+}
+
+.settings-part > :not(summary) + :not(summary) {
+  margin-top: 0.6rem;
+}
+
+summary.settings-part-title {
+  padding: 0.7rem 0;
+  font-weight: 700;
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.settings-part[open] > summary.settings-part-title {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0.6rem;
+}
+
+.settings-part .auth-form.inline {
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+/* Activities: one group per subject, closed until opened, with its count and All / None. */
+.settings-group {
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) - 0.2rem);
+  padding: 0 0.6rem;
+}
+
+.settings-group + .settings-group {
+  margin-top: 0.4rem;
+}
+
+.settings-group[open] {
+  padding-bottom: 0.6rem;
+}
+
+summary.settings-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.55rem 0;
+  cursor: pointer;
+}
+
+summary.settings-group-title::before {
+  content: "▸";
+  color: var(--muted);
+}
+
+.settings-group[open] > summary.settings-group-title::before {
+  content: "▾";
+}
+
+summary.settings-group-title::-webkit-details-marker {
+  display: none;
+}
+
+summary.settings-group-title .topic-group-name {
+  flex: 1;
+}
+
+.settings-group-count {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.settings-group-tools {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.settings-group-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: 0.35rem;
+}
+
+.settings-group-list .topic {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.95rem;
+}
+
+.settings-reading .segment {
+  flex: 1 1 auto;
+}
+
+.settings-back {
+  align-self: center;
+}
+
+.family-content[hidden] {
+  display: none;
+}
+
+.family-content-section h3.field-label {
+  margin-top: 0.8rem;
+}

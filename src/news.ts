@@ -23,6 +23,24 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.9.0",
+    fr: [
+      "⚙️ Paramètres réorganisés : des rubriques (Joueurs, Compte, Données, et pour le propriétaire Contenus et Famille), un joueur à la fois choisi dans une liste, des groupes d'activités qui s'ouvrent avec Tout et Rien. Le bouton Retour du navigateur ramène où vous étiez.",
+      "Afficher ou non le rōmaji et les translittérations est désormais un choix de chaque joueur, qui le suit sur tous ses appareils.",
+      "Les livres de caractères (kana, kanji, lettres et signes des cours) ont leur propre groupe sur l'accueil : Caractères.",
+    ],
+    es: [
+      "⚙️ Ajustes reorganizados: secciones (Jugadores, Cuenta, Datos y, para el propietario, Contenidos y Familia), un jugador a la vez elegido en una lista, grupos de actividades que se abren con Todo y Nada. El botón Atrás del navegador vuelve adonde estaba.",
+      "Mostrar o no el rōmaji y las transliteraciones es ahora una elección de cada jugador, que lo sigue en todos sus dispositivos.",
+      "Los libros de caracteres (kana, kanji, letras y signos de los cursos) tienen su propio grupo en el inicio: Caracteres.",
+    ],
+    en: [
+      "⚙️ Settings reorganised: sections (Players, Account, Data, and for the owner Content and Family), one player at a time chosen from a list, activity groups that open with All and None. The browser's Back button takes you back where you were.",
+      "Showing rōmaji and transliterations or not is now each player's own choice, and it follows them on every device.",
+      "Books of characters (kana, kanji, the courses' letters and signs) have their own group on the home page: Characters.",
+    ],
+  },
+  {
     version: "8.8.0",
     fr: ["Un nouveau cours, 🦁 Élamite linéaire : l'écriture de l'Élam, déchiffrée en 2022, dans une police dessinée pour Luma avec ses 348 signes. Voyelles, séries syllabiques, signes de consonne, puis des noms de rois et de dieux, avec 144 cartes de signes."],
     es: ["Un curso nuevo, 🦁 Elamita lineal: la escritura de Elam, descifrada en 2022, en una fuente dibujada para Luma con sus 348 signos. Vocales, series silábicas, signos de consonante y luego nombres de reyes y dioses, con 144 tarjetas de signos."],

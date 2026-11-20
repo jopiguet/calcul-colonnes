@@ -36,6 +36,7 @@ test("a browser that has signed in before opens on the sign-in form", async ({ p
   const email = await signUp(page);
   await expect(page).toHaveURL(/\/$/); // #sign-up removed once signed in
   await page.click(".icon-chip");
+  await page.locator(".settings-select").selectOption("account");
   await page.click(".account .actions button:last-child");
   await page.goto("/");
   await expect(page.locator(".auth input[name=identifier]")).toBeVisible();

@@ -68,17 +68,23 @@ export function dataSection(opts: { state: AuthState; onDeleted(): void }): HTML
   return [el("h2", "subtitle", at("yourData")), el("p", "hint left", at("yourDataHint")), actions, el("p", "hint left", at("deleteAccountHint")), privacy, note];
 }
 
-/** The owner's section: invitations, content, feedback. Empty for any other account. */
-export async function familySection(state: AuthState): Promise<HTMLElement[]> {
-  if (!state.account?.owner) return [];
+/**
+ * The owner's two sections of the settings page: the family (invitations, feedback) and the content the other
+ * accounts see (each book's visibility, the vocabulary export). Null for any other account.
+ */
+export async function familySection(state: AuthState): Promise<{ family: HTMLElement[]; content: HTMLElement[] } | null> {
+  if (!state.account?.owner) return null;
   let data: AdminState;
   try {
     data = await admin.state();
   } catch {
-    return [];
+    return null;
   }
   const box = el("section", "family-admin");
+  const contentBox = el("section", "family-admin family-content-section");
   const note = status();
+  const contentNote = status();
+  let filter = "";
   const draw = (): void => {
     box.replaceChildren(
       el("h2", "subtitle", `👪 ${at("family")}`),
@@ -87,10 +93,9 @@ export async function familySection(state: AuthState): Promise<HTMLElement[]> {
       ...(data.registration === "invite" ? [] : [el("p", "hint left", at("inviteModeWarning"))]),
       note,
       invitations(),
-      content(),
-      vocabExport(),
       feedback(),
     );
+    contentBox.replaceChildren(contentNote, content(), vocabExport());
   };
 
   const invitations = (): HTMLElement => {
@@ -159,12 +164,13 @@ export async function familySection(state: AuthState): Promise<HTMLElement[]> {
     return part;
   };
 
-  /** Each book, and the bank: only me, or every account. */
+  /** Each book, and the bank: only me, or every account; a search box narrows the list of books. */
   const content = (): HTMLElement => {
     const part = el("div", "family-part");
-    part.append(el("h3", "field-label", at("content")), el("p", "hint left", at("contentHint")));
+    part.append(el("h2", "subtitle", at("content")), el("p", "hint left", at("contentHint")));
     const row = (title: string, value: "private" | "shared", set: (v: "private" | "shared") => Promise<void>): HTMLElement => {
       const line = el("div", "family-content");
+      line.dataset.search = title.toLowerCase();
       const choice = el("div", "segmented compact");
       for (const v of ["private", "shared"] as const) {
         const b = button(v === value ? "segment on" : "segment", at(v === "private" ? "visibilityPrivate" : "visibilityShared"), async () => {
@@ -172,7 +178,7 @@ export async function familySection(state: AuthState): Promise<HTMLElement[]> {
             await set(v);
             draw();
           } catch (e) {
-            say(note, false, errorText(errorOf(e)));
+            say(contentNote, false, errorText(errorOf(e)));
           }
         });
         b.setAttribute("aria-pressed", String(v === value));
@@ -181,29 +187,50 @@ export async function familySection(state: AuthState): Promise<HTMLElement[]> {
       line.append(el("span", "family-content-name", title), choice);
       return line;
     };
-    for (const book of data.books) {
-      part.append(
-        // Several books share a title ("3000 words and phrases"): the language studied tells them apart.
-        row(`${book.title} · ${book.term.toUpperCase()}`, book.visibility, async (v) => {
-          await admin.bookVisibility(book.id, v);
-          book.visibility = v;
-        }),
-      );
+    const search = el("input", "family-content-filter");
+    search.type = "search";
+    search.placeholder = at("contentFilter");
+    search.setAttribute("aria-label", at("contentFilter"));
+    search.value = filter;
+    const lines: HTMLElement[] = [];
+    const apply = (): void => {
+      filter = search.value;
+      const q = filter.trim().toLowerCase();
+      for (const line of lines) line.hidden = q !== "" && !(line.dataset.search ?? "").includes(q);
+    };
+    search.addEventListener("input", apply);
+    if (data.books.length + (data.exerciseBooks ?? []).length > 6) part.append(search);
+
+    // Vocabulary books by the language studied: several share a title ("3000 words and phrases").
+    part.append(el("h3", "field-label", at("contentBooks")));
+    const byLang = [...data.books].sort((a, b) => a.term.localeCompare(b.term) || a.title.localeCompare(b.title));
+    for (const book of byLang) {
+      const line = row(`${book.title} · ${book.term.toUpperCase()}`, book.visibility, async (v) => {
+        await admin.bookVisibility(book.id, v);
+        book.visibility = v;
+      });
+      lines.push(line);
+      part.append(line);
     }
-    for (const book of data.exerciseBooks ?? []) {
-      part.append(
-        row(`✏️ ${book.title}`, book.visibility, async (v) => {
+    if ((data.exerciseBooks ?? []).length > 0) {
+      part.append(el("h3", "field-label", at("contentWorkbooks")));
+      for (const book of data.exerciseBooks ?? []) {
+        const line = row(`✏️ ${book.title}`, book.visibility, async (v) => {
           await admin.exerciseBookVisibility(book.id, v);
           book.visibility = v;
-        }),
-      );
+        });
+        lines.push(line);
+        part.append(line);
+      }
     }
     part.append(
+      el("h3", "field-label", at("contentOther")),
       row(at("bankLabel"), data.bank, async (v) => {
         await admin.bankVisibility(v);
         data.bank = v;
       }),
     );
+    apply();
     return part;
   };
 
@@ -247,5 +274,5 @@ export async function familySection(state: AuthState): Promise<HTMLElement[]> {
   };
 
   draw();
-  return [box];
+  return { family: [box], content: [contentBox] };
 }

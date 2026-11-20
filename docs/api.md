@@ -101,6 +101,7 @@ Players sorted by name: the account's own, and those other accounts share with i
 |---|---|
 | `hidden` | Activities taken off the player's home page: `columns`, `quiz`, `chemistry`, `vocab-<book slug>`, `discover-dice`, `discover-coins`, `discover-puzzles` |
 | `layout` | How the player arranged its home page: `{ groups, cards, open }` ([Home page](home.md#what-is-stored)); `{}` for the app's order |
+| `prefs` | The player's display choices: `{ reading, readingBooks }`, each `always`, `after` or `never` ([Vocabulary › The reading in Latin letters](vocabulary.md#the-reading-in-latin-letters)); `{}` for the defaults |
 | `sharedBy` | Only for a player another account owns and shares with this one: that account's name |
 
 ## `POST /api/users`
@@ -153,6 +154,19 @@ an account it is shared with: `404`). Replaces the layout, kept to what it may
 hold (unknown keys and badly formed ids dropped). `204`; `400` when `layout`
 is not an object or the body passes 20 kB. Returned as `layout` with the
 player.
+
+### `PUT /api/users/:id/prefs`
+
+```json
+{ "prefs": { "reading": "never", "readingBooks": { "test-characters": "after" } } }
+```
+
+The player's display choices: the reading in Latin letters for every book,
+and per book slug. Allowed to the player's account and to the player in its
+own session (not to an account it is shared with: `404`). Replaces them, kept
+to what they may hold (unknown keys, modes and badly formed slugs dropped).
+`204`; `400` when `prefs` is not an object or the body passes 20 kB. Returned
+as `prefs` with the player.
 
 ### `POST /api/users/:id/invites`
 

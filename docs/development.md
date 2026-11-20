@@ -44,7 +44,7 @@ never committed and never in a release zip.
 
 | File | Role |
 |---|---|
-| `main.ts` | Entry point: state, rendering of every screen (players, scores, column arithmetic, mode tabs), validation of arithmetic answers |
+| `main.ts` | Entry point: state, rendering of every screen (players, scores, column arithmetic, mode tabs), validation of arithmetic answers; the browser history of the settings page (`#settings/<section>`, Back and Forward) |
 | `boards.ts` | The two exercise boards: `columnBoard` (+ − ×, carries, partial products) and `divisionBoard` (bracket layout, working lines). Each exposes `read`, `lock` and `focus`. |
 | `exercise.ts` | Drawing arithmetic exercises; column counts; reading a row of digit boxes |
 | `worksheet.ts` | The A4 PDF worksheet, written by hand (no library) |
@@ -57,8 +57,8 @@ never committed and never in a release zip.
 | `tour.ts`, `tour-texts.ts` | The guided tour (`#tour`), shown once to a new account, and its texts (without the DOM, so that `check:tour` reads them) |
 | `workbook.ts`, `workbook-i18n.ts` | Workbook exercises: a book's units, a unit's exercises filled in on the page, the correction; their texts |
 | `store.ts` | API calls; `auth` calls; `SignedOutError` when the session has ended |
-| `auth.ts` | Sign-in screen (and invitation links) and Account page |
-| `family.ts` | The Account page's last sections: the account's data (download, deletion), and the owner's family and friends (invitations, content visibility, feedback) |
+| `auth.ts` | Sign-in screen (and invitation links) and the settings page: its sections (`#settings/<section>`, tabs or a drop-down list), one player at a time |
+| `family.ts` | The settings page's *Données* section (download, deletion), and the owner's *Contenus* (content visibility, vocabulary export) and *Famille* (invitations, feedback) |
 | `privacy.ts` | The privacy page (`#privacy`), in the three languages |
 | `news.ts` | Version, release news (shown once after an update) and *Envoyer un avis*, at the bottom of the home page |
 | `landing.ts` | Landing page for first visits, with its texts in the three languages |

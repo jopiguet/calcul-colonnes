@@ -2,6 +2,7 @@ import type {
   AuthOptions,
   AuthState,
   HomeLayout,
+  UserPrefs,
   NewAttempt,
   NewQuizResult,
   PastTest,
@@ -133,6 +134,8 @@ export const store = {
   setHidden: (id: number, hidden: string[]): Promise<void> =>
     call(`/users/${id}/hidden`, { method: "PUT", body: JSON.stringify({ hidden }) }),
   /** How the player arranged its home page: order of groups and cards, groups opened. */
+  setPrefs: (id: number, prefs: UserPrefs): Promise<void> =>
+    call(`/users/${id}/prefs`, { method: "PUT", body: JSON.stringify({ prefs }) }),
   setLayout: (id: number, layout: HomeLayout): Promise<void> =>
     call(`/users/${id}/layout`, { method: "PUT", body: JSON.stringify({ layout }) }),
   /** A single-use code another account types to see this player too. */

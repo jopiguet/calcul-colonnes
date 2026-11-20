@@ -40,6 +40,7 @@ test("an account is created, signed out and signed in again; the cookie is HttpO
   // Sign out from the account page.
   await page.click(".icon-chip");
   await page.locator(".account").waitFor();
+  await page.locator(".settings-select").selectOption("account");
   await page.click(".account .actions button:last-child");
   await page.locator(".auth").waitFor();
   expect((await page.context().cookies()).some((c) => c.name === COOKIE)).toBe(false);
@@ -154,7 +155,8 @@ test("a provider is linked to an account; the last way to sign in cannot be remo
   const before = (await (await page.request.get("/api/auth/methods")).json()) as SignInMethod[];
   expect(before).toHaveLength(1);
   // A single way to sign in: its Remove button is off, and the API refuses too.
-  await expect(page.locator(".account > .methods .method button")).toBeDisabled();
+  await page.locator(".settings-select").selectOption("account");
+  await expect(page.locator(".account-methods .method button")).toBeDisabled();
   const refused = await page.request.delete(`/api/auth/methods/${before[0]!.id}`);
   expect(refused.status()).toBe(409);
 
@@ -182,6 +184,9 @@ test("a player gets their own sign-in and sees only themselves", async ({ page, 
   await page.click(".icon-chip");
   await page.locator(".account").waitFor();
   const username = `kid.${Date.now()}`;
+  // The player in play is the one shown first; its own sign-in opens from its title.
+  await expect(page.locator(".settings-player")).toHaveValue(String((await (await page.request.get("/api/users")).json() as User[]).find((u) => u.name === name)!.id));
+  await page.locator(".player-login", { hasText: name }).locator(".settings-login > summary").click();
   const form = page.locator(".player-login", { hasText: name }).locator("form");
   await form.locator("input[name=username]").fill(username);
   await form.locator("input[name=password]").fill(PASSWORD);
@@ -216,6 +221,7 @@ test("a provider can be linked to a player", async ({ page, browser }) => {
   await page.click(".icon-chip");
   await page.locator(".account").waitFor();
   const sub = uniqueSub();
+  await page.locator(".player-login", { hasText: name }).locator(".settings-login > summary").click();
   await page.locator(".player-login", { hasText: name }).locator("a.provider").click();
   await page.waitForURL(/localhost:8798\/authorize/);
   await page.fill("input[name=sub]", sub);
@@ -241,6 +247,7 @@ test("signing out other devices ends their sessions", async ({ page, browser }) 
 
   await page.click(".icon-chip");
   await page.locator(".account").waitFor();
+  await page.locator(".settings-select").selectOption("account");
   await page.click(".account .actions button:first-child");
   await expect(page.locator(".account .auth-message.ok")).toBeVisible();
 

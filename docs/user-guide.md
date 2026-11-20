@@ -4,7 +4,7 @@ This guide is for the adults setting the app up for children or students. It
 describes every screen, every setting and the keyboard shortcuts.
 
 - [Signing in](#signing-in)
-- [Account page](#account-page)
+- [Settings](#settings)
 - [Players](#players)
 - [Home page](#home-page)
 - [Column arithmetic](#column-arithmetic)
@@ -48,39 +48,56 @@ receives all existing players and their results.
 
 **An email already used.** Signing in with a provider whose email already has
 an account here is refused. Sign in to that account first, then link the
-provider from the Account page. This prevents someone from entering an account
+provider from the settings page. This prevents someone from entering an account
 just by using the same email elsewhere.
 
-## Account page
+## Settings
 
-The ⚙️ button at the top opens the Account page (not shown in a player's own
-session).
+The ⚙️ button at the top opens *⚙️ Paramètres* (not shown in a player's own
+session). The page has an address of its own, `#settings/<section>`: the
+browser's Back button leaves it for the screen it was opened from, as does
+*Retour* at the bottom; a reload stays on the same section. Its sections are
+tabs on a wide screen, a drop-down list on a phone. *Contenus* and *Famille*
+are only for the owner's account.
+
+**👤 Joueurs.** One player at a time, chosen in the *Joueur* list (the player
+in play first). Each part opens and closes from its title:
+
+- **👁️ Affichage:** the reading in Latin letters (rōmaji, transliteration) in every book, *Avec la question*, *Après la réponse* or *Jamais*. Each player has their own, kept on the server: it follows them on every device. A book's page can still keep its own choice ([Vocabulary › The reading in Latin letters](vocabulary.md#the-reading-in-latin-letters)).
+- **🧩 Activités affichées:** one group per subject, closed until opened, with how many of its activities show (*3 sur 3*). Untick what the player should not see on their home page, or use *Tout* / *Rien* for the whole group. It is saved at once, for every device. New books show until unticked.
+- **🤝 Partage:** *Créer un code de partage* gives a code such as `K7QF2-9XMRA`, valid a week and once, for another account (the other parent, a teacher). The accounts that see the player are listed, each with *Retirer*.
+- **🔑 Connexion propre:**
+  - **Username and password:** the child signs in with the username, for example `lea.m`. Saving again replaces them and signs the child out.
+  - **Link a provider:** for an older child with their own Google or Microsoft account.
+  - **Remove:** their sign-in stops working at once.
+- A player another account shares with this one shows only *Partagé par …* and **Ne plus voir …**: its activities, sharing and sign-in are its owner's.
+- **➕ Ajouter un joueur partagé**, under the player: type the code received from the player's account.
+
+**🔑 Compte.**
 
 - **Ways to sign in:** the password and linked providers, with the date of last use.
   - **Link Google / GitHub…** adds a provider: then either the password or the provider signs in.
   - **Remove** takes one away. The last one cannot be removed.
 - **Change password** (or **Add a password** for an account created through a provider). Changing it signs out every other device.
-- **Players**, one block each:
-  - **Activités affichées:** untick what the player should not see on their home page, for example the column arithmetic for an older child. It is saved at once, for every device. New books show until unticked.
-  - **Partage:** *Créer un code de partage* gives a code such as `K7QF2-9XMRA`, valid a week and once, for another account (the other parent, a teacher). The accounts that see the player are listed, each with *Retirer*.
-  - **Own sign-in:**
-    - **Username and password:** the child signs in with the username, for example `lea.m`. Saving again replaces them and signs the child out.
-    - **Link a provider:** for an older child with their own Google or Microsoft account.
-    - **Remove:** their sign-in stops working at once.
-  - A player another account shares with this one shows only *Partagé par …* and **Ne plus voir …**: its activities, sharing and sign-in are its owner's.
-- **Ajouter un joueur partagé:** type the code received from the player's account.
 - **Devices:**
   - **Sign out other devices:** for a lost phone or a shared computer.
   - **Sign out:** this device only.
-- **Vos données:**
-  - **Télécharger mes données:** everything stored about the account and its players, as a JSON file.
-  - **Supprimer mon compte:** after typing the account's name, deletes the account, its players with all their results, its sign-ins and shares, at once and for good.
-  - **🔒 Confidentialité:** what is stored, who sees it, for how long.
-- **👪 Famille et amis** (the owner's account only, the first one on the server):
-  - **Invitations:** *Créer une invitation*, with a note saying for whom, gives a link valid once for two weeks; send it, and it opens the sign-up form. The list says which were used, and by whom.
-  - **Ce que voient les autres comptes:** each vocabulary book, and the written physical chemistry questions: *Moi seulement* or *Tous les comptes*. A book you own stays *Moi seulement*; the kanji (open licences) can be shared.
-  - **Exporter le vocabulaire:** each vocabulary book (the language courses' included) as a JSON file, *⬇️ JSON* on its line, or every book in one file. The files are in the format the import reads back, without pictures or progress. Only the owner has this.
-  - **Avis reçus:** what the others sent with *💬 Envoyer un avis*.
+
+**📚 Contenus** (the owner's account only, the first one on the server):
+
+- **Ce que voient les autres comptes:** each vocabulary book (by language), each workbook, and the written questions: *Moi seulement* or *Tous les comptes*. A book you own stays *Moi seulement*; the kanji (open licences) can be shared. *Chercher un livre* narrows a long list.
+- **Exporter le vocabulaire:** each vocabulary book (the language courses' included) as a JSON file, *⬇️ JSON* on its line, or every book in one file. The files are in the format the import reads back, without pictures or progress.
+
+**👪 Famille** (the owner's account only):
+
+- **Invitations:** *Créer une invitation*, with a note saying for whom, gives a link valid once for two weeks; send it, and it opens the sign-up form. The list says which were used, and by whom.
+- **Avis reçus:** what the others sent with *💬 Envoyer un avis*.
+
+**📦 Données:**
+
+- **Télécharger mes données:** everything stored about the account and its players, as a JSON file.
+- **Supprimer mon compte:** after typing the account's name, deletes the account, its players with all their results, its sign-ins and shares, at once and for good.
+- **🔒 Confidentialité:** what is stored, who sees it, for how long.
 
 In a player's own session, the 🚪 button at the top signs out.
 
@@ -140,6 +157,7 @@ home page: **Que fait-on, Léa ?**
 |---|---|---|
 | Mathématiques | 🧮 Calcul en colonnes, 📐 QCM, ∫ Analyse | For the QCM and calculus, how many kinds of question are to review |
 | Langues | 💬 one per vocabulary book: *Vocabulaire espagnol*, *Vocabulaire anglais*…; 📚 one per language with several books (*Vocabulaire allemand*: Collins, Lernwortschatz, Nietzsche) | Words due today, *À jour*, or the book's number of words if not started |
+| Caractères | ✍️ one per book of characters: *Kanji et kana*, and each script course's letters or signs (Grec, Runes, Élamite linéaire…) | Cards due today, *À jour*, or the book's number of characters if not started |
 | Exercices des livres | ✏️ one per workbook (*Grammar in Use*, *Vocabulary Advanced*…) | Exercises corrected and score, or the book's number of exercises |
 | Sciences | ⚗️ Chimie physique | Kinds of question to review, counted apart from the QCM |
 | Informatique | 🐧 Linux, 🗄️ SQL, 🦀 Rust, 🔷 TypeScript, ⚛️ React, ☁️ Google Cloud, 🔶 Cloudflare, 🐙 GitHub, 🚀 Déploiement, 📦 Node.js et npm | Kinds of question to review, for each |
@@ -175,7 +193,7 @@ Once it is done, it goes back to its place.
   (*📚 Vocabulaire allemand*) removes its books.
 
 Removing and adding are the account's choices, the same as *Activités
-affichées* on the Account page: a player signed in on their own, or a player
+affichées* on the settings page: a player signed in on their own, or a player
 shared by another account, can arrange the order but not remove or add.
 
 **📈 Mes progrès**, next to the greeting, opens the overview of the player's

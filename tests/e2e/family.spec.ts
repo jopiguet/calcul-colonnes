@@ -3,11 +3,12 @@ import { expect, test, type Page } from "@playwright/test";
 import { newPlayer, signIn, signUp, PASSWORD } from "./helpers";
 import { OWNER_EMAIL, OWNER_PASSWORD } from "./owner";
 
-/** The owner's account (created by the test server) on its account page. */
-async function ownerAccountPage(page: Page): Promise<void> {
+/** The owner's account (created by the test server) on a section of its settings page. */
+async function ownerAccountPage(page: Page, section: "family" | "content" | "data" = "family"): Promise<void> {
   await signIn(page, OWNER_EMAIL, OWNER_PASSWORD);
   await page.locator(".icon-chip").first().click();
-  await page.locator(".family-admin").waitFor();
+  await page.locator(".settings-select").selectOption(section);
+  await page.locator(`.settings[data-section=${section}]`).waitFor();
 }
 
 test("the owner invites, and chooses what the other accounts see: a private book and the bank are theirs only", async ({ page, browser }) => {
@@ -23,6 +24,7 @@ test("the owner invites, and chooses what the other accounts see: a private book
   await expect(page.locator(".family-invites .method").first()).toContainText("Valable jusqu'au");
 
   // A member sees the Spanish book and the bank while they are shared…
+  await page.locator(".settings-select").selectOption("content");
   const other = await browser.newContext();
   const member = await other.newPage();
   await newPlayer(member, "Member");
@@ -71,6 +73,7 @@ test("a member: no owner's section; feedback reaches the owner; the data downloa
   expect((await page.request.get("/api/admin")).status()).toBe(403);
 
   // The data, as a file.
+  await page.locator(".settings-select").selectOption("data");
   const download = page.waitForEvent("download");
   await page.click("text=Télécharger mes données");
   const file = await download;
@@ -102,6 +105,8 @@ test("a member: no owner's section; feedback reaches the owner; the data downloa
 
   // Deleted: signed out, and the account no longer signs in.
   await page.locator(".icon-chip").first().click();
+  await expect(page.locator(".settings-select option")).toHaveCount(3); // no owner's sections
+  await page.locator(".settings-select").selectOption("data");
   page.once("dialog", (dialog) => void dialog.accept("Parent"));
   await page.click("text=Supprimer mon compte");
   await page.locator(".auth, .landing").first().waitFor();
@@ -113,7 +118,7 @@ test("a member: no owner's section; feedback reaches the owner; the data downloa
 });
 
 test("the owner's account cannot be deleted while others exist; the privacy page; never indexed", async ({ page }) => {
-  await ownerAccountPage(page);
+  await ownerAccountPage(page, "data");
   page.once("dialog", (dialog) => void dialog.accept("Owner"));
   await page.click("text=Supprimer mon compte");
   await expect(page.locator(".account-data ~ .auth-message.error, .account .auth-message.error").last()).toContainText("propriétaire");
@@ -122,7 +127,7 @@ test("the owner's account cannot be deleted while others exist; the privacy page
   await expect(page.locator(".privacy h1")).toHaveText("🔒 Confidentialité");
   await expect(page.locator(".privacy")).toContainText("Supprimer mon compte");
   await page.click("text=← Retour");
-  await page.locator(".account").waitFor();
+  await page.locator(".settings[data-section=data]").waitFor();
 
   const robots = await page.request.get("/robots.txt");
   expect(await robots.text()).toContain("Disallow: /");
@@ -142,7 +147,7 @@ test("an invitation link opens the sign-up form; the sign-in screen links the pr
 });
 
 test("the vocabulary export is on the owner's page only, as format-3 files", async ({ page, browser }) => {
-  await ownerAccountPage(page);
+  await ownerAccountPage(page, "content");
   const part = page.locator(".family-part", { hasText: "Exporter le vocabulaire" });
   await expect(part.locator(".family-export").first()).toContainText("Tous les livres, en un fichier");
   const line = part.locator(".family-export[data-book='test-latin']");

@@ -31,7 +31,7 @@ flowchart LR
 - **Player:** as before, a child with their results. A player belongs to one account. Two accounts can each have a player called *Léa*. A player can also be [shared](#sharing-a-player) with other accounts.
 - **Sign-in method** (table `credentials`): a password, or an identity at a provider. It is attached either to the account, or to one player.
   - **Account method:** signs in as the account.
-  - **Player method:** signs in as that player only. That session sees one player, cannot switch, create or delete players, and has no Account page.
+  - **Player method:** signs in as that player only. That session sees one player, cannot switch, create or delete players, and has no settings page.
 
 An account may have several methods: for example a password plus Google. The
 last method of an account cannot be removed. Player methods can always be
@@ -42,13 +42,13 @@ removed, since the account keeps control.
 The app opened to friends and family, by invitation, without giving away
 content that comes from books you own.
 
-- **The owner** is the first account (the one that set up the server, `accounts.role = 'owner'`). Its Account page has a *👪 Famille et amis* section. To make another account the owner: `UPDATE accounts SET role = 'owner' WHERE email = '…'` (and `'member'` for the old one).
+- **The owner** is the first account (the one that set up the server, `accounts.role = 'owner'`). Its settings page has the *📚 Contenus* and *👪 Famille* sections. To make another account the owner: `UPDATE accounts SET role = 'owner' WHERE email = '…'` (and `'member'` for the old one).
 - **Invitations** (`REGISTRATION=invite`): the owner creates a link (`…/#join=<code>`, single use, two weeks, an optional note saying for whom) and sends it. The link opens the sign-up form; the account is created with email and password or with a provider, and the invitation is used then. The list shows which invitations were used, and by whom. Only the code's SHA-256 is stored. Without an invitation, the sign-up form says that accounts are created by invitation.
 - **What other accounts see:** each vocabulary book is *Moi seulement* (`private`) or *Tous les comptes* (`shared`), and so are the written questions of the question bank. A new book is private, except the characters (JMdict and KANJIDIC are under open licences). A private book is not listed, and its sessions, lessons, statistics and answers are refused (404) for other accounts; for them, the bank is empty, so their physical chemistry tests are calculations only and the advanced level has no test. A player's own login counts as its account (the owner's children see everything).
-- **Their data:** the Account page has *Télécharger mes données* (everything stored about the account and its players, as JSON, no password hash) and *Supprimer mon compte* (the account's name typed again; the account, its players and all their results, its sign-in methods, sessions, shares and invitations are deleted at once). The owner cannot delete its account while other accounts exist.
-- **The privacy page** (`#privacy`, linked from the sign-in screen, the landing page, the account page and the home page): what is stored, who sees it, for how long, the user's rights. `PRIVACY_HOSTING` and `PRIVACY_CONTACT` add where it runs and whom to ask.
+- **Their data:** the settings page's *📦 Données* section has *Télécharger mes données* (everything stored about the account and its players, as JSON, no password hash) and *Supprimer mon compte* (the account's name typed again; the account, its players and all their results, its sign-in methods, sessions, shares and invitations are deleted at once). The owner cannot delete its account while other accounts exist.
+- **The privacy page** (`#privacy`, linked from the sign-in screen, the landing page, the settings page and the home page): what is stored, who sees it, for how long, the user's rights. `PRIVACY_HOSTING` and `PRIVACY_CONTACT` add where it runs and whom to ask.
 - **Vocabulary export:** the owner's page lists every vocabulary book with a *⬇️ JSON* link (`GET /api/admin/books/<id>/export`) and one for all (`GET /api/admin/vocab-export`), as format-3 files ([Vocabulary](vocabulary.md#listing-and-exporting)). Owner only: other accounts get 403; the app has no export anywhere else.
-- **Feedback:** *💬 Envoyer un avis* at the bottom of the home page; the owner reads it on its Account page, with the account, the player, the page and the version.
+- **Feedback:** *💬 Envoyer un avis* at the bottom of the home page; the owner reads it on its settings page (*👪 Famille*), with the account, the player, the page and the version.
 - **Never indexed:** `robots.txt` disallows everything, every response has `X-Robots-Tag: noindex, nofollow`, and the page has the same meta tag.
 
 ## Sharing a player
@@ -56,8 +56,8 @@ content that comes from books you own.
 A player belongs to the account that created it, and that account can share
 it with others: the other parent, a teacher.
 
-1. On its Account page, the owner creates a **share code** for the player: 10 characters (about 50 bits), single use, valid 7 days. Only its SHA-256 is stored.
-2. The other account types it on its own Account page. The player appears in its list, marked *partagé*.
+1. On its settings page (*👤 Joueurs › 🤝 Partage*), the owner creates a **share code** for the player: 10 characters (about 50 bits), single use, valid 7 days. Only its SHA-256 is stored.
+2. The other account types it on its own settings page (*➕ Ajouter un joueur partagé*). The player appears in its list, marked *partagé*.
 
 | | Owner | Account it is shared with | Player's own sign-in |
 |---|:-:|:-:|:-:|
@@ -118,7 +118,7 @@ The flow is OAuth 2.0 authorization code with PKCE (S256) and a `state`:
 **No takeover by email.** If a provider identity is unknown but its email
 already belongs to an account, the app does **not** link them: it answers
 *email_in_use*. Linking needs the owner to be signed in to the account and use
-*Link* on the Account page. Otherwise anyone controlling an email at some
+*Link* on the settings page. Otherwise anyone controlling an email at some
 provider could enter an existing account.
 
 **Emails** from a provider are recorded only when the provider says they are
@@ -266,7 +266,7 @@ and `email_link`. No migration is needed.
 Plan:
 
 1. Add [`@simplewebauthn/server`](https://simplewebauthn.dev/) (server) and `@simplewebauthn/browser`.
-2. **Registration**, signed in, from the Account page:
+2. **Registration**, signed in, from the settings page:
    - `POST /api/auth/passkeys/options` stores the challenge in `auth_flows` (`state` = challenge id) and returns the creation options.
    - `POST /api/auth/passkeys` verifies the response and inserts the credential.
 3. **Sign-in:**
@@ -308,7 +308,7 @@ no dependants.
 | `server/auth/rate-limit.ts` | Sliding-window counter |
 | `server/auth/middleware.ts` | Origin check, session loading, `requireSession`, `requireAccount` |
 | `server/auth/routes.ts` | `/api/auth/*` |
-| `src/auth.ts` | Sign-in screen and Account page |
+| `src/auth.ts` | Sign-in screen and settings page (`#settings/<section>`) |
 | `src/auth-i18n.ts` | Their texts, and error messages |
 | `tests/e2e/auth.spec.ts` | 9 browser tests, with `tests/e2e/mock-oidc.ts` |
 

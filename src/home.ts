@@ -31,6 +31,7 @@ const texts = {
     greeting: "Que fait-on, {name} ?",
     maths: "Mathématiques",
     languages: "Langues",
+    characters: "Caractères",
     columnsText: "Les quatre opérations posées, des unités vers la gauche.",
     quizText: "Dérivées, intégrales, trigonométrie, limites, exponentielles.",
     toReview: "{count} notions à revoir",
@@ -69,6 +70,7 @@ const texts = {
     greeting: "¿Qué hacemos, {name}?",
     maths: "Matemáticas",
     languages: "Idiomas",
+    characters: "Caracteres",
     columnsText: "Las cuatro operaciones en columnas, de las unidades hacia la izquierda.",
     quizText: "Derivadas, integrales, trigonometría, límites, exponenciales.",
     toReview: "{count} nociones por repasar",
@@ -107,6 +109,7 @@ const texts = {
     greeting: "What shall we do, {name}?",
     maths: "Mathematics",
     languages: "Languages",
+    characters: "Characters",
     columnsText: "The four operations in columns, from the units leftwards.",
     quizText: "Derivatives, integrals, trigonometry, limits, exponentials.",
     toReview: "{count} concepts to review",
@@ -226,9 +229,11 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
     { group: ht("economics"), activities: [{ id: "econ", title: qt("modeEcon") }, { id: "marx", title: qt("modeMarx") }] },
     {
       group: ht("languages"),
-      activities: [
-        ...books.map((b) => ({ id: `vocab-${b.slug}`, title: `${b.kind === "characters" ? "✍️" : "💬"} ${bookTitle(b)}${courseLabel(b, courses, " · ")}` })),
-      ],
+      activities: books.filter((b) => b.kind !== "characters").map((b) => ({ id: `vocab-${b.slug}`, title: `💬 ${bookTitle(b)}${courseLabel(b, courses, " · ")}` })),
+    },
+    {
+      group: ht("characters"),
+      activities: books.filter((b) => b.kind === "characters").map((b) => ({ id: `vocab-${b.slug}`, title: `✍️ ${bookTitle(b)}${courseLabel(b, courses, " · ")}` })),
     },
     { group: lt("group"), activities: courses.map((c) => ({ id: `lessons-${c.id}`, title: `${c.icon} ${c.title}` })) },
     { group: wt("home"), activities: exerciseBooks.map((b) => ({ id: `workbook-${b.id}`, title: `✏️ ${b.source}` })) },
@@ -441,6 +446,10 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const languages = el("div", "activity-group");
   languages.append(el("h2", "activity-group-title", ht("languages")));
   const shelf = el("div", "activity-grid");
+  // Alphabets, kana, kanji, ancient scripts: the characters books, a group of their own (docs/home.md).
+  const characters = el("div", "activity-group");
+  characters.append(el("h2", "activity-group-title", ht("characters")));
+  const signGrid = el("div", "activity-grid");
   // A language with several books: one card for them all (its page opens each), unless the player keeps them apart.
   const hiddenBooks = new Set(ctx.user.hidden ?? []);
   // Every book, the language courses' words and letters included (course-<id>, course-<id>-letters): a language
@@ -479,14 +488,15 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
         : mine && mine.started > 0
           ? { text: ht("upToDate"), waiting: false }
           : { text: ht(signs ? "charsNotStarted" : "notStarted", { count: book.entries }), waiting: false };
-    shelf.append(
+    (signs ? signGrid : shelf).append(
       card(`vocab-${book.slug}`, `${signs ? "✍️" : "💬"} ${bookTitle(book)}`, labelOf(book), status, () =>
         ctx.open({ mode: "vocab", book: book.id }),
       ),
     );
   }
-  if (ownBooks.length === 0) shelf.append(el("p", "empty small", ht("noBooks")));
+  if (!ownBooks.some((b) => b.kind !== "characters")) shelf.append(el("p", "empty small", ht("noBooks")));
   languages.append(shelf);
+  characters.append(signGrid);
 
   // Language courses: lessons with their exercises and words (docs/language-courses.md); a group of their own, before the vocabulary.
   const courseGroup = el("div", "activity-group");
@@ -547,7 +557,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const titled = (group: HTMLElement): string => group.querySelector(".activity-group-title")?.textContent ?? "";
   const named: [string, HTMLElement][] = [
     ["maths", maths], ["sciences", sciences], ["computing", computing], ["economics", economics], ["courses", courseGroup],
-    ["languages", languages], ["workbooks", workbooks], ["discover", discover], ["physics", physics], ["astronomy", astronomy],
+    ["languages", languages], ["characters", characters], ["workbooks", workbooks], ["discover", discover], ["physics", physics], ["astronomy", astronomy],
     ["curiosities", curiosities], ["chembio", chembio],
   ];
   const arranged = arrangeHome(

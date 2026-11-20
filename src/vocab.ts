@@ -14,6 +14,7 @@ import { button, el } from "./dom";
 import { currentLang } from "./i18n";
 import {
   SignedOutError,
+  store,
   vocab,
   type User,
   type VocabAnswerResult,
@@ -21,7 +22,7 @@ import {
   type VocabCard,
   type VocabProgress,
 } from "./store";
-import type { VocabRelated, VocabWord } from "../shared/types";
+import type { ReadingMode, UserPrefs, VocabRelated, VocabWord } from "../shared/types";
 import { infoLabel, langName, readingLanguage, vt, type VocabKey } from "./vocab-i18n";
 import type { EntryInfo } from "../shared/vocab/format";
 import { statsView } from "./vocab-stats";
@@ -36,9 +37,11 @@ interface Preferences {
   open: number | null;
   /** Order of new words, per book id; absent: random for an alphabetical list, the book's order otherwise. */
   order: Record<number, "book" | "random">;
-  /** The reading in Latin letters (rōmaji, a transliteration) in every book: with the question, after the answer, never. */
-  romajiAll: ReadingMode;
-  /** The same, for a book that does not follow romajiAll (per book id). */
+  /**
+   * Before 8.9: the reading choice kept on this device (every book, per book id). Now kept with the player on the
+   * server (User.prefs); what is still here moves there once, the first time the player opens the book or shelf.
+   */
+  romajiAll?: ReadingMode;
   romaji: Record<number, ReadingMode>;
   /** Picture dictionary, per book id: the picture with its word, or the picture alone when it says which word. */
   pictures: Record<number, "with" | "alone">;
@@ -54,7 +57,6 @@ interface ShelfPreferences {
   order?: "book" | "random";
 }
 
-type ReadingMode = "always" | "after" | "never";
 const READING_MODES: readonly ReadingMode[] = ["always", "after", "never"];
 const isReadingMode = (v: unknown): v is ReadingMode => READING_MODES.includes(v as ReadingMode);
 
@@ -73,7 +75,7 @@ function loadPreferences(): Preferences {
           ([, v]) => v === "book" || v === "random",
         ),
       ) as Preferences["order"],
-      romajiAll: isReadingMode(saved.romajiAll) ? saved.romajiAll : "always",
+      ...(isReadingMode(saved.romajiAll) ? { romajiAll: saved.romajiAll } : {}),
       romaji: Object.fromEntries(
         Object.entries(typeof saved.romaji === "object" && saved.romaji ? saved.romaji : {}).filter(([, v]) => isReadingMode(v)),
       ) as Preferences["romaji"],
@@ -94,7 +96,7 @@ function loadPreferences(): Preferences {
       ),
     };
   } catch {
-    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romajiAll: "always", romaji: {}, pictures: {}, shelves: {} };
+    return { mode: "mixed", size: SIZES[0]!, open: null, order: {}, romaji: {}, pictures: {}, shelves: {} };
   }
 }
 
@@ -198,6 +200,7 @@ export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
   const other = (s: Session | null) => s && (s.userId !== ctx.user.id || s.scope !== scopeOf(ctx));
   if (other(session)) session = null;
   if (other(finished)) finished = null;
+  adoptDeviceReading(ctx);
   if (session) return cardView(ctx, session);
   if (finished) return doneView(ctx, finished);
   if (!ctx.book) return shelfView(ctx);
@@ -230,21 +233,55 @@ export function vocabBusy(): boolean {
 
 /** Japanese rōmaji with the question, or only after the answer. */
 const picturesAlone = (book: VocabBookInfo | null): boolean => book !== null && prefs.pictures[book.id] === "alone";
-/** The reading in Latin letters: the book's own choice, else the one for every book (a shelf session follows that one). */
-const readingMode = (book: VocabBookInfo | null): ReadingMode => (book ? prefs.romaji[book.id] : undefined) ?? prefs.romajiAll;
+/** The reading in Latin letters: the player's choice for the book, else its choice for every book (a shelf session follows that one). */
+const readingMode = (user: User, book: VocabBookInfo | null): ReadingMode =>
+  (book ? user.prefs?.readingBooks?.[book.slug] : undefined) ?? user.prefs?.reading ?? "always";
+
+/** Keeps the player's display choices on the server, so they follow it on every device (docs/vocabulary.md#the-reading-in-latin-letters). */
+function savePrefs(user: User, change: (p: UserPrefs) => void): void {
+  const next: UserPrefs = structuredClone(user.prefs ?? {});
+  change(next);
+  if (next.readingBooks && Object.keys(next.readingBooks).length === 0) delete next.readingBooks;
+  user.prefs = next;
+  void store.setPrefs(user.id, next).catch(() => undefined);
+}
+
+/** A choice made on this device before 8.9 moves to the player, unless the player already has one. */
+function adoptDeviceReading(ctx: VocabContext): void {
+  const user = ctx.user;
+  const books = [ctx.book, ...(ctx.shelf?.books ?? [])].filter((b): b is VocabBookInfo => b !== null);
+  const moves: [string, ReadingMode][] = [];
+  for (const b of books) {
+    const old = prefs.romaji[b.id];
+    if (old === undefined) continue;
+    if (user.prefs?.readingBooks?.[b.slug] === undefined) moves.push([b.slug, old]);
+    delete prefs.romaji[b.id];
+  }
+  const all = prefs.romajiAll;
+  if (!moves.length && all === undefined) return;
+  delete prefs.romajiAll;
+  savePreferences();
+  const adoptAll = all !== undefined && all !== "always" && user.prefs?.reading === undefined;
+  if (!moves.length && !adoptAll) return;
+  savePrefs(user, (p) => {
+    if (adoptAll) p.reading = all;
+    for (const [slug, mode] of moves) (p.readingBooks ??= {})[slug] = mode;
+  });
+}
 
 /** The choice of the reading: for a book (with "in every book" ticked, it follows and sets the common choice), or for a shelf (the common one). */
 function readingControl(ctx: VocabContext, book: VocabBookInfo | null, japanese: boolean): HTMLElement[] {
-  const own = book ? prefs.romaji[book.id] : undefined;
-  const current = readingMode(book);
+  const own = book ? ctx.user.prefs?.readingBooks?.[book.slug] : undefined;
+  const current = readingMode(ctx.user, book);
   const box = el("fieldset", "segmented vocab-romaji");
   box.append(el("legend", "field-label", vt(japanese ? "romajiTitle" : "transcriptionTitle")));
   for (const [value, key] of [["always", "romajiShow"], ["after", "romajiHide"], ["never", "romajiNever"]] as const) {
     const on = current === value;
     const option = button(on ? "segment on" : "segment", vt(key), () => {
-      if (book && own !== undefined) prefs.romaji[book.id] = value;
-      else prefs.romajiAll = value;
-      savePreferences();
+      savePrefs(ctx.user, (p) => {
+        if (book && own !== undefined) (p.readingBooks ??= {})[book.slug] = value;
+        else p.reading = value;
+      });
       ctx.rerender();
     });
     option.setAttribute("aria-pressed", String(on));
@@ -258,15 +295,17 @@ function readingControl(ctx: VocabContext, book: VocabBookInfo | null, japanese:
     tick.type = "checkbox";
     tick.checked = own === undefined;
     tick.addEventListener("change", () => {
-      if (tick.checked) delete prefs.romaji[book.id];
-      else prefs.romaji[book.id] = prefs.romajiAll;
-      savePreferences();
+      savePrefs(ctx.user, (p) => {
+        if (tick.checked) delete p.readingBooks?.[book.slug];
+        else (p.readingBooks ??= {})[book.slug] = p.reading ?? "always";
+      });
       ctx.rerender();
     });
     every.append(tick, document.createTextNode(` ${vt("romajiEvery")}`));
     out.push(every);
   }
   out.push(el("p", "hint left", vt(!book ? "romajiShelfHint" : book.kind === "characters" ? "romajiCharactersHint" : japanese ? "romajiHint" : "transcriptionHint")));
+  out.push(el("p", "hint left", vt("romajiSynced")));
   return out;
 }
 
@@ -643,7 +682,7 @@ function wordRow(ctx: VocabContext, word: VocabWord): HTMLElement {
   term.lang = ctx.book?.term ?? "";
   term.dir = "auto";
   text.append(term);
-  if (word.reading && readingMode(ctx.book) !== "never") text.append(el("span", "vocab-word-reading", word.reading));
+  if (word.reading && readingMode(ctx.user, ctx.book) !== "never") text.append(el("span", "vocab-word-reading", word.reading));
   const meaning = el("span", "vocab-word-meaning", word.meaning);
   meaning.dir = "auto";
   text.append(meaning);
@@ -915,7 +954,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   prompt.dir = "auto";
   if (!alone) question.append(prompt);
   // The reading: with the question, once answered, or never, as the player chose.
-  const reads = readingMode(ctx.book);
+  const reads = readingMode(ctx.user, ctx.book);
   const showReading = reads === "always" || (reads === "after" && s.result !== null);
   if (card.promptReading && showReading) {
     const reading = el("p", "vocab-reading", card.promptReading);

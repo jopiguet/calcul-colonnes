@@ -11,8 +11,21 @@ export interface User {
   hidden?: string[];
   /** How the player arranged its home page (docs/home.md#arranging). */
   layout?: HomeLayout;
+  /** The player's display choices, kept on the server so they follow it on every device. */
+  prefs?: UserPrefs;
   /** Set when another account owns the player and shares it with this one: that account's name. */
   sharedBy?: string;
+}
+
+/** Whether a reading (romaji, transliteration) shows: always, after the answer, or never. */
+export type ReadingMode = "always" | "after" | "never";
+
+/** A player's display choices (docs/vocabulary.md#the-reading-in-latin-letters). */
+export interface UserPrefs {
+  /** Readings in every book; a book's own choice comes first. */
+  reading?: ReadingMode;
+  /** Per vocabulary book slug. */
+  readingBooks?: Record<string, ReadingMode>;
 }
 
 /** The home page as a player arranged it: what is not listed keeps its place after what is. */

@@ -28,7 +28,7 @@ import type { Provider } from "./auth/providers.ts";
 import { authRoutes } from "./auth/routes.ts";
 import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
-import { ACTIVITY_ID, HIDDEN_MAX, Repository, layoutOf, normalizeCode, type Scope } from "./repository.ts";
+import { ACTIVITY_ID, HIDDEN_MAX, Repository, layoutOf, normalizeCode, prefsOf, type Scope } from "./repository.ts";
 import { RateLimit } from "./auth/rate-limit.ts";
 import { VocabStore, vocabRoutes } from "./vocab.ts";
 import { BankStore, bankRoutes, bankVisible } from "./quiz-bank.ts";
@@ -177,6 +177,26 @@ export function createApp(db: Database, authConfig: AuthConfig, providers: Map<s
     })();
     if (!body || typeof body.layout !== "object" || body.layout === null || Array.isArray(body.layout)) return c.json({ error: "invalid layout" }, 400);
     await repository.setLayout(user.id, layoutOf(body.layout));
+    return c.body(null, 204);
+  });
+
+  // A player's display choices (readings shown or not): its account, or the player in its own session; they follow
+  // the player on every device (docs/vocabulary.md#the-reading-in-latin-letters).
+  data.put("/users/:id/prefs", async (c) => {
+    const id = Number(c.req.param("id"));
+    const user = isInt(id, 1, Number.MAX_SAFE_INTEGER) ? await repository.getUser(id, scope(c)) : null;
+    if (!user || user.sharedBy !== undefined) return c.json({ error: "unknown user" }, 404);
+    const raw = await c.req.text();
+    if (raw.length > 20_000) return c.json({ error: "invalid prefs" }, 400);
+    const body = (() => {
+      try {
+        return JSON.parse(raw) as { prefs?: unknown };
+      } catch {
+        return null;
+      }
+    })();
+    if (!body || typeof body.prefs !== "object" || body.prefs === null || Array.isArray(body.prefs)) return c.json({ error: "invalid prefs" }, 400);
+    await repository.setPrefs(user.id, prefsOf(body.prefs));
     return c.body(null, 204);
   });
 

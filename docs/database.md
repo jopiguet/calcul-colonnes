@@ -42,6 +42,7 @@ this because the server enables `PRAGMA foreign_keys`.
 | `account_id` | integer, nullable | owning account; `NULL` only for players created before version 4, until the first account claims them |
 | `hidden` | text | JSON list of activities taken off the player's home page; `[]` shows everything, and new activities show |
 | `layout` | text | JSON: how the player arranged its home page, `{ groups, cards, open }` ([Home page](home.md#what-is-stored)); `{}` for the app's order |
+| `prefs` | text | JSON: the player's display choices, `{ reading, readingBooks }` ([Vocabulary](vocabulary.md#the-reading-in-latin-letters)); `{}` for the defaults |
 | `onboarded_at` | bigint, nullable | when the player first finished or skipped the [guided tour](user-guide.md#guided-tour) on their own login; `NULL` until then |
 
 ### `player_shares`, `player_invites`
@@ -283,6 +284,7 @@ runs: add tables and columns, rename or drop later.
 | `036_home_layout` | `layout` on `users`: the order of the home page's groups and cards, the groups opened (common SQL, one file) |
 | `037_github_deploy_levels` | The GitHub and deployment levels, `githubBeginner` to `githubExpert` and `deployBeginner` to `deployExpert`, allowed in `quiz_results.level` |
 | `038_node_levels` | The Node.js and npm levels, `nodeBeginner` to `nodeExpert`, allowed in `quiz_results.level` |
+| `039_user_prefs` | `prefs` on `users`: the player's display choices, kept on the server for every device (common SQL, one file) |
 
 **File names.**
 

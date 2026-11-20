@@ -20,6 +20,8 @@ import type {
   PastTest,
   PlayerShare,
   HomeLayout,
+  ReadingMode,
+  UserPrefs,
   Profile,
   SkillProgress,
   User,
@@ -66,6 +68,31 @@ export function layoutOf(raw: unknown): HomeLayout {
   return out;
 }
 
+const READING_MODES = new Set(["always", "after", "never"]);
+/** Stored or sent display choices, kept to what they may hold; anything else is dropped. */
+export function prefsOf(raw: unknown): UserPrefs {
+  let value: unknown = raw;
+  if (typeof raw === "string") {
+    try {
+      value = JSON.parse(raw);
+    } catch {
+      return {};
+    }
+  }
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  const v = value as Record<string, unknown>;
+  const out: UserPrefs = {};
+  if (typeof v.reading === "string" && READING_MODES.has(v.reading)) out.reading = v.reading as ReadingMode;
+  if (v.readingBooks && typeof v.readingBooks === "object" && !Array.isArray(v.readingBooks)) {
+    const books: Record<string, ReadingMode> = {};
+    for (const [book, mode] of Object.entries(v.readingBooks as Record<string, unknown>).slice(0, HIDDEN_MAX)) {
+      if (ACTIVITY_ID.test(book) && typeof mode === "string" && READING_MODES.has(mode)) books[book] = mode as ReadingMode;
+    }
+    if (Object.keys(books).length) out.readingBooks = books;
+  }
+  return out;
+}
+
 function hiddenOf(raw: unknown): string[] {
   try {
     const list: unknown = JSON.parse(String(raw ?? "[]"));
@@ -83,6 +110,7 @@ const toUser = (row: Row, accountId?: number): User => ({
   createdAt: Number(row.created_at),
   hidden: hiddenOf(row.hidden),
   layout: layoutOf(row.layout),
+  prefs: prefsOf(row.prefs),
   ...(accountId !== undefined && row.account_id !== null && row.account_id !== undefined && Number(row.account_id) !== accountId
     ? { sharedBy: String(row.owner_name ?? "") }
     : {}),
@@ -90,7 +118,7 @@ const toUser = (row: Row, accountId?: number): User => ({
 
 /** Players a session's account sees: its own, and those shared with it. Uses $1 for the account id. */
 const VISIBLE = "(u.account_id = $1 OR EXISTS (SELECT 1 FROM player_shares s WHERE s.user_id = u.id AND s.account_id = $1))";
-const USER_COLUMNS = "u.id, u.name, u.created_at, u.hidden, u.layout, u.account_id, o.name AS owner_name";
+const USER_COLUMNS = "u.id, u.name, u.created_at, u.hidden, u.layout, u.prefs, u.account_id, o.name AS owner_name";
 
 /** Share codes: 10 characters without look-alikes (0/O, 1/I), about 50 bits, shown as XXXXX-XXXXX. */
 const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -170,6 +198,10 @@ export class Repository {
       [id, scope.accountId],
     );
     return rows[0] ? toUser(rows[0], scope.accountId) : null;
+  }
+
+  async setPrefs(id: number, prefs: UserPrefs): Promise<void> {
+    await this.db.query("UPDATE users SET prefs = $1 WHERE id = $2", [JSON.stringify(prefsOf(prefs)), id]);
   }
 
   async setLayout(id: number, layout: HomeLayout): Promise<void> {
@@ -448,7 +480,7 @@ export class Repository {
       [accountId],
     );
     const players = [];
-    for (const p of await all("SELECT id, name, created_at, hidden, layout, onboarded_at FROM users WHERE account_id = $1 ORDER BY id", [accountId])) {
+    for (const p of await all("SELECT id, name, created_at, hidden, layout, prefs, onboarded_at FROM users WHERE account_id = $1 ORDER BY id", [accountId])) {
       const id = Number(p.id);
       players.push({
         ...p,
@@ -627,7 +659,7 @@ export class Repository {
   /** `since`: start of "today" in the player's time zone, in epoch milliseconds. */
   async stats(since: number, scope: Scope): Promise<UserStats[]> {
     const rows = await this.db.query(
-      `SELECT u.id, u.name, u.created_at, u.hidden, u.layout, u.account_id, o.name AS owner_name,
+      `SELECT u.id, u.name, u.created_at, u.hidden, u.layout, u.prefs, u.account_id, o.name AS owner_name,
               COUNT(a.id)                                                  AS total,
               COALESCE(SUM(a.correct), 0)                                  AS correct,
               COALESCE(SUM(CASE WHEN a.at >= $2 THEN 1 ELSE 0 END), 0)         AS today_total,
@@ -636,7 +668,7 @@ export class Repository {
          LEFT JOIN accounts o ON o.id = u.account_id
          LEFT JOIN attempts a ON a.user_id = u.id
         WHERE ${VISIBLE} AND (CAST($3 AS BIGINT) = 0 OR u.id = CAST($3 AS BIGINT))
-        GROUP BY u.id, u.name, u.created_at, u.hidden, u.layout, u.account_id, o.name`,
+        GROUP BY u.id, u.name, u.created_at, u.hidden, u.layout, u.prefs, u.account_id, o.name`,
       [scope.accountId, since, scope.playerId ?? 0],
     );
     // Separate query: joining both tables at once would multiply the rows.

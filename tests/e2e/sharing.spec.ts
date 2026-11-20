@@ -12,9 +12,15 @@ test("the account chooses the activities a player sees; the server keeps the cho
   await openAccount(page);
   const block = page.locator(".player-login", { hasText: name });
   const box = (id: string) => block.locator(`.player-activities input[value='${id}']`);
+  // Each subject's group opens from its title, with its count.
+  const group = (id: string) => block.locator(".settings-group", { has: page.locator(`input[value='${id}']`) });
+  await group("columns").locator("summary").click();
   await expect(box("columns")).toBeChecked();
+  await expect(group("columns").locator(".settings-group-count")).toHaveText("3 sur 3");
   await box("columns").uncheck();
   await expect(block.locator(".player-activities-saved")).toHaveText("✓ Enregistré");
+  await expect(group("columns").locator(".settings-group-count")).toHaveText("2 sur 3");
+  await group("discover-dice").locator("summary").click();
   await box("discover-dice").uncheck();
   await expect.poll(async () => (await userByName(page.request, name)).hidden).toEqual(["columns", "discover-dice"]);
 
@@ -54,6 +60,7 @@ test("a player is shared with another account by a single-use code, and the shar
   await other.keyboard.press("Enter");
   await other.locator(".home").waitFor();
   await openAccount(other);
+  await other.locator(".settings-join > summary").click();
   await other.locator(".join-share input[name=code]").fill(invite.code.toLowerCase().replace("-", " "));
   await other.locator(".join-share button[type=submit]").click();
   await other.locator(".auth-message.ok, .banner").first().waitFor();

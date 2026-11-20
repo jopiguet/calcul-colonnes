@@ -1,5 +1,14 @@
 # Changelog
 
+## 8.9.0
+
+- **⚙️ Settings, reorganised** ([User guide › Settings](docs/user-guide.md#settings)): the account page becomes *⚙️ Paramètres*, in sections: *👤 Joueurs*, *🔑 Compte*, *📦 Données*, and for the owner *📚 Contenus* and *👪 Famille*. Tabs on a wide screen, a drop-down list on a phone. *Joueurs* shows one player at a time, chosen in a list (the player in play first), in parts that open and close: display, activities, sharing, own sign-in; adding a shared player sits under it. Activities come in one group per subject, closed until opened, with their count (*3 sur 3*) and *Tout* / *Rien*. *Contenus* lists the books by language, then workbooks and questions, with a search box.
+- **The browser's Back button leaves the settings:** the page has its own history entry, `#settings/<section>`; Back (the browser's or the page's) returns to the screen it was opened from, changing section does not add entries, and a reload stays on the section.
+- **The reading in Latin letters is each player's own, on every device** ([Vocabulary › The reading in Latin letters](docs/vocabulary.md#the-reading-in-latin-letters)): *Toujours* / *Après la réponse* / *Jamais*, for every book and per book, is kept with the player on the server rather than in the browser, and set from the book's page or from *👁️ Affichage* in the settings. A choice a device held before moves to the player the first time the book opens there.
+- **Migration `039_user_prefs`:** `prefs` on `users`; `PUT /api/users/:id/prefs` ([API](docs/api.md#put-apiusersidprefs)), for the player's account or the player's own session; `prefs` returned with the player and in the data export.
+- **A *Caractères* group on the home page:** the books of characters (kana and kanji, each script course's letters or signs) leave *Langues* for a group of their own, after it.
+- `settings.spec.ts`: sections and the address, Back and Forward, a reload, the phone's list, one player at a time and *Tout* / *Rien*, the reading synced between two devices and its validation, the new home group. `auth`, `family`, `sharing` and `workbook` specs follow the new page.
+
 ## 8.8.0
 
 - **🦁 Linear Elamite, a script course** ([Language courses](docs/language-courses.md)): 5 lessons, 20 exercises, 36 words, in French, Spanish and English, with 144 sign cards. The script of Elam, southern Iran, about 2300–1880 BCE, deciphered in 2022: its story and the debate around it, how its vowel, syllable and consonant signs work, the five vowels, the a, e and i, o, u and ů series, the consonant signs, then names: Hatamti, *zemt* "king", Eparti, Puzur-Sušinak, Sušinak, Napireša. Values follow Desset's latest table; the numbered readings of the 2025 plate (*hi* for *he*, *ku₂* for *ko*) are given and accepted. Each card shows the sign's number and its region (general, south-west, south-east).

@@ -1,4 +1,4 @@
-import type { AuthOptions, AuthState, SignInMethod, User, VocabBookInfo } from "../shared/types";
+import type { AuthOptions, AuthState, ReadingMode, SignInMethod, User, UserPrefs, VocabBookInfo } from "../shared/types";
 import { activityCatalog, vocabBooks } from "./home";
 import { at, errorText, type AuthKey } from "./auth-i18n";
 import { button, el } from "./dom";
@@ -206,6 +206,11 @@ interface AccountContext {
   rerender(): void;
   /** A player was added or left: the app's player list changes too. */
   onPlayersChanged(notice?: string): void;
+  /** The section open, and moving to another one (the address follows: #settings/<section>). */
+  section: SettingsSection;
+  onSection(section: SettingsSection): void;
+  /** The player in play, chosen first on the players' section. */
+  currentPlayer: number | null;
 }
 
 function providerName(options: AuthOptions, id: string): string {
@@ -226,45 +231,118 @@ function methodLine(m: SignInMethod, options: AuthOptions, removable: boolean, o
   return item;
 }
 
+/** The parts of the settings page (#settings/<section>); the owner's two only for the owner. */
+export const SETTINGS_SECTIONS = ["players", "account", "content", "family", "data"] as const;
+export type SettingsSection = (typeof SETTINGS_SECTIONS)[number];
+const SECTION_TITLE: Record<SettingsSection, AuthKey> = {
+  players: "sectionPlayers",
+  account: "sectionAccount",
+  content: "sectionContent",
+  family: "sectionFamily",
+  data: "sectionData",
+};
+
+/** The player whose settings are open: kept while the page is redrawn. */
+let chosenPlayer: number | null = null;
+/** Activity groups opened on the players' section, by group name. */
+const openGroups = new Set<string>();
+
+/** A part of a section that opens and closes: a <details> with its title. */
+function part(title: string, className: string, open: boolean, ...children: (Node | string)[]): HTMLDetailsElement {
+  const box = el("details", `settings-part ${className}`);
+  box.open = open;
+  const summary = el("summary", "settings-part-title", title);
+  box.append(summary, ...children);
+  return box;
+}
+
 export async function accountView(ctx: AccountContext): Promise<HTMLElement> {
+  const { state } = ctx;
+  const owner = state.account?.owner === true;
+  const sections = SETTINGS_SECTIONS.filter((s) => owner || (s !== "content" && s !== "family"));
+  const section: SettingsSection = sections.includes(ctx.section) ? ctx.section : "players";
+  const wrap = el("section", "sheet account settings");
+  wrap.dataset.section = section;
+  const status = message();
+
+  // Sections: tabs on a wide screen, a drop-down list on a phone (docs/user-guide.md#settings).
+  const nav = el("nav", "settings-nav");
+  nav.setAttribute("aria-label", at("settingsSection"));
+  const tabs = el("div", "settings-tabs");
+  tabs.setAttribute("role", "tablist");
+  const pick = el("select", "settings-select");
+  pick.setAttribute("aria-label", at("settingsSection"));
+  for (const s of sections) {
+    const tab = button(s === section ? "settings-tab on" : "settings-tab", at(SECTION_TITLE[s]), () => ctx.onSection(s));
+    tab.dataset.section = s;
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", String(s === section));
+    tabs.append(tab);
+    const option = el("option", undefined, at(SECTION_TITLE[s]));
+    option.value = s;
+    option.selected = s === section;
+    pick.append(option);
+  }
+  pick.addEventListener("change", () => ctx.onSection(pick.value as SettingsSection));
+  nav.append(tabs, pick);
+
+  wrap.append(
+    el("h1", "title", at("accountTitle")),
+    el("p", "account-who", [state.account?.name, state.account?.email].filter(Boolean).join(" · ")),
+    nav,
+    status,
+  );
+  const body = el("div", "settings-body");
+  body.setAttribute("role", "tabpanel");
+  wrap.append(body);
+
+  const fail = (e: unknown): void => {
+    showError(status, errorText(errorOf(e)));
+    status.scrollIntoView({ block: "nearest" });
+  };
+
+  if (section === "players") body.append(...(await playersSection(ctx, fail)));
+  else if (section === "account") body.append(...(await accountSection(ctx, status, fail)));
+  else if (section === "data") body.append(...dataSection({ state, onDeleted: ctx.onSignedOut }));
+  else {
+    const parts = await familySection(state);
+    body.append(...(parts ? (section === "content" ? parts.content : parts.family) : []));
+  }
+
+  const back = button("primary settings-back", t("back"), ctx.onBack);
+  wrap.append(back);
+  return wrap;
+}
+
+/** Ways to sign in, password, devices. */
+async function accountSection(ctx: AccountContext, status: HTMLElement, fail: (e: unknown) => void): Promise<HTMLElement[]> {
   const { state, options } = ctx;
   const methods = await auth.methods();
   const own = methods.filter((m) => m.playerId === null);
-  const wrap = el("section", "sheet account");
-  const status = message();
-
+  const out: HTMLElement[] = [];
   const remove = (m: SignInMethod) => async () => {
     if (!confirm(at("confirmRemove"))) return;
     try {
       await auth.removeMethod(m.id);
       ctx.rerender();
     } catch (e) {
-      showError(status, errorText(errorOf(e)));
+      fail(e);
     }
   };
 
-  wrap.append(
-    el("h1", "title", at("accountTitle")),
-    el("p", "account-who", [state.account?.name, state.account?.email].filter(Boolean).join(" · ")),
-    status,
-  );
-
-  // ---- ways to sign in
-  wrap.append(el("h2", "subtitle", at("methods")));
-  const list = el("ul", "methods");
+  out.push(el("h2", "subtitle", at("methods")));
+  const list = el("ul", "methods account-methods");
   for (const m of own) list.append(methodLine(m, options, own.length > 1, remove(m)));
-  wrap.append(list);
-
+  out.push(list);
   const linkable = options.providers.filter((p) => !own.some((m) => m.type === "oauth" && m.provider === p.id));
   if (linkable.length > 0) {
     const links = el("div", "providers");
     for (const p of linkable) links.append(providerLink(p.id, p.name, auth.providerUrl(p.id, "link"), "link"));
-    wrap.append(links);
+    out.push(links);
   }
 
   const hasPassword = own.some((m) => m.type === "password");
   const pw = el("form", "auth-form compact");
-  pw.append(el("h3", "field-label", at(hasPassword ? "changePassword" : "setPassword")));
   if (hasPassword) pw.append(field(at("currentPassword"), "password", "current", "current-password"));
   if (!hasPassword && !state.account?.email) pw.append(field(at("email"), "email", "email", "email"));
   pw.append(field(at("newPassword"), "password", "password", "new-password"), el("p", "hint", at("passwordHint")));
@@ -279,179 +357,12 @@ export async function accountView(ctx: AccountContext): Promise<HTMLElement> {
       if (!hasPassword) ctx.rerender();
       pw.reset();
     } catch (e) {
-      showError(status, errorText(errorOf(e)));
+      fail(e);
     }
   });
-  wrap.append(pw);
+  out.push(part(at(hasPassword ? "changePassword" : "setPassword"), "settings-password", !hasPassword, pw));
 
-  // ---- players: what each one sees, sharing, their own sign-in
-  const books = await vocabBooks().catch(() => [] as VocabBookInfo[]);
-  // The workbooks this account sees (the first player's view of them is enough for their names).
-  const exerciseBooks = ctx.players[0] ? await workbook.books(ctx.players[0].id).catch(() => []) : [];
-  const courses = ctx.players[0] ? await lessons.courses(ctx.players[0].id).catch(() => []) : [];
-  const catalog = activityCatalog(books, exerciseBooks, courses);
-  wrap.append(el("h2", "subtitle", at("players")), el("p", "hint left", at("playersHint")));
-  for (const player of ctx.players) {
-    const block = el("div", "player-login");
-    block.dataset.player = String(player.id);
-    block.append(el("h3", "player-login-name", player.name));
-
-    if (player.sharedBy !== undefined) {
-      // Another account's player: it can only be left.
-      block.append(
-        el("p", "method-label", at("sharedBy", { name: player.sharedBy })),
-        el("p", "hint left", at("sharedPlayerHint")),
-        button("ghost small", at("leave", { player: player.name }), async () => {
-          if (!confirm(at("confirmLeave", { player: player.name, name: player.sharedBy ?? "" }))) return;
-          try {
-            await store.deleteUser(player.id);
-            ctx.onPlayersChanged();
-          } catch (e) {
-            showError(status, errorText(errorOf(e)));
-          }
-        }),
-      );
-      wrap.append(block);
-      continue;
-    }
-
-    // Activities shown on the player's home page.
-    const hidden = new Set(player.hidden ?? []);
-    const shown = el("fieldset", "player-activities");
-    shown.append(el("legend", "field-label", at("activities")));
-    const saved = el("span", "hint player-activities-saved");
-    for (const { group, activities } of catalog) {
-      if (activities.length === 0) continue;
-      const row = el("div", "topic-group");
-      row.append(el("span", "topic-group-name", group));
-      for (const activity of activities) {
-        const label = el("label", "topic");
-        const box = el("input");
-        box.type = "checkbox";
-        box.value = activity.id;
-        box.checked = !hidden.has(activity.id);
-        box.addEventListener("change", async () => {
-          if (box.checked) hidden.delete(activity.id);
-          else hidden.add(activity.id);
-          try {
-            await store.setHidden(player.id, [...hidden]);
-            player.hidden = [...hidden];
-            saved.textContent = at("saved");
-          } catch (e) {
-            box.checked = !box.checked;
-            showError(status, errorText(errorOf(e)));
-          }
-        });
-        label.append(box, el("span", undefined, activity.title));
-        row.append(label);
-      }
-      shown.append(row);
-    }
-    shown.append(saved);
-    block.append(shown);
-
-    // Sharing with other accounts.
-    block.append(el("h4", "field-label", at("sharing")), el("p", "hint left", at("sharingHint")));
-    const shares = await store.shares(player.id).catch(() => []);
-    if (shares.length === 0) block.append(el("p", "empty small", at("notShared")));
-    else {
-      const ul = el("ul", "methods shares");
-      for (const share of shares) {
-        const item = el("li", "method");
-        const text = el("div", "method-text");
-        text.append(el("span", "method-name", share.name), el("span", "method-label", share.email ?? ""));
-        item.append(
-          text,
-          button("ghost small", at("remove"), async () => {
-            if (!confirm(at("confirmStopSharing", { name: share.name, player: player.name }))) return;
-            try {
-              await store.removeShare(player.id, share.accountId);
-              ctx.rerender();
-            } catch (e) {
-              showError(status, errorText(errorOf(e)));
-            }
-          }),
-        );
-        ul.append(item);
-      }
-      block.append(ul);
-    }
-    const code = el("p", "share-code");
-    code.setAttribute("role", "status");
-    block.append(
-      button("ghost small", at("createCode"), async () => {
-        try {
-          const invite = await store.createInvite(player.id);
-          code.textContent = at("codeShown", {
-            code: invite.code,
-            date: new Date(invite.expiresAt).toLocaleDateString(currentLang()),
-          });
-        } catch (e) {
-          showError(status, errorText(errorOf(e)));
-        }
-      }),
-      code,
-    );
-
-    // The player's own sign-in.
-    block.append(el("h4", "field-label", at("playerLogin")), el("p", "hint left", at("playerLoginsHint")));
-    const theirs = methods.filter((m) => m.playerId === player.id);
-    if (theirs.length === 0) block.append(el("p", "empty small", at("noPlayerLogin")));
-    else {
-      const ul = el("ul", "methods");
-      for (const m of theirs) ul.append(methodLine(m, options, true, remove(m)));
-      block.append(ul);
-    }
-    const form = el("form", "auth-form inline");
-    form.dataset.player = String(player.id);
-    form.append(
-      field(at("username"), "text", "username", "off"),
-      field(at("password"), "password", "password", "new-password"),
-    );
-    const save = el("button", "primary", at("save"));
-    save.type = "submit";
-    form.append(save);
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      try {
-        await auth.setPlayerPassword(player.id, value(form, "username"), value(form, "password"));
-        ctx.rerender();
-      } catch (e) {
-        showError(status, errorText(errorOf(e)));
-        status.scrollIntoView({ block: "nearest" });
-      }
-    });
-    block.append(form, el("p", "hint left", at("usernameHint")));
-    if (options.providers.length > 0) {
-      const links = el("div", "providers");
-      for (const p of options.providers) {
-        links.append(providerLink(p.id, p.name, auth.providerUrl(p.id, "link-player", player.id), "link"));
-      }
-      block.append(links);
-    }
-    wrap.append(block);
-  }
-
-  // A player another account shares with this one.
-  const join = el("form", "auth-form compact join-share");
-  join.append(el("h3", "field-label", at("joinTitle")), el("p", "hint", at("joinHint")), field(at("shareCode"), "text", "code", "off"));
-  const joinButton = el("button", "primary", at("join"));
-  joinButton.type = "submit";
-  join.append(joinButton);
-  join.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    try {
-      const player = await store.joinShare(value(join, "code"));
-      ctx.onPlayersChanged(at("joined", { player: player.name }));
-    } catch (e) {
-      showError(status, errorText(errorOf(e)));
-      status.scrollIntoView({ block: "nearest" });
-    }
-  });
-  wrap.append(join);
-
-  // ---- devices
-  wrap.append(el("h2", "subtitle", at("devices")));
+  out.push(el("h2", "subtitle", at("devices")));
   const devices = el("div", "actions wrap");
   devices.append(
     button("ghost", at("signOutOthers"), async () => {
@@ -463,10 +374,287 @@ export async function accountView(ctx: AccountContext): Promise<HTMLElement> {
       ctx.onSignedOut();
     }),
   );
-  wrap.append(devices);
+  out.push(devices);
+  return out;
+}
 
-  // ---- the account's data; the owner's family and friends
-  wrap.append(...dataSection({ state, onDeleted: ctx.onSignedOut }), ...(await familySection(state)));
-  wrap.append(button("primary", t("back"), ctx.onBack));
-  return wrap;
+/** One player at a time, chosen in a list: display, activities, sharing, own sign-in; then adding a shared player. */
+async function playersSection(ctx: AccountContext, fail: (e: unknown) => void): Promise<HTMLElement[]> {
+  const { options } = ctx;
+  const out: HTMLElement[] = [el("p", "hint left", at("playersHint"))];
+  const players = ctx.players;
+  if (!players.some((p) => p.id === chosenPlayer)) {
+    chosenPlayer = players.find((p) => p.id === ctx.currentPlayer)?.id ?? players[0]?.id ?? null;
+  }
+  const player = players.find((p) => p.id === chosenPlayer);
+
+  if (player) {
+    const choose = el("label", "field settings-player-field");
+    const select = el("select", "settings-player");
+    select.name = "player";
+    for (const p of players) {
+      const option = el("option", undefined, p.sharedBy !== undefined ? at("playerShared", { player: p.name, name: p.sharedBy }) : p.name);
+      option.value = String(p.id);
+      option.selected = p.id === player.id;
+      select.append(option);
+    }
+    select.addEventListener("change", () => {
+      chosenPlayer = Number(select.value);
+      ctx.rerender();
+    });
+    choose.append(el("span", "field-label", at("playerChoice")), select);
+    out.push(choose);
+
+    const block = el("div", "player-login");
+    block.dataset.player = String(player.id);
+    block.append(el("h3", "player-login-name", player.name));
+    out.push(block);
+
+    if (player.sharedBy !== undefined) {
+      // Another account's player: it can only be left.
+      block.append(
+        el("p", "method-label", at("sharedBy", { name: player.sharedBy })),
+        el("p", "hint left", at("sharedPlayerHint")),
+        button("ghost small", at("leave", { player: player.name }), async () => {
+          if (!confirm(at("confirmLeave", { player: player.name, name: player.sharedBy ?? "" }))) return;
+          try {
+            await store.deleteUser(player.id);
+            chosenPlayer = null;
+            ctx.onPlayersChanged();
+          } catch (e) {
+            fail(e);
+          }
+        }),
+      );
+    } else {
+      block.append(displayPart(player, fail), await activitiesPart(ctx, player, fail), await sharingPart(ctx, player, fail));
+      const methods = await auth.methods().catch(() => [] as SignInMethod[]);
+      block.append(loginPart(ctx, player, methods, options, fail));
+    }
+  } else {
+    out.push(el("p", "empty small", at("noPlayers")));
+  }
+
+  // A player another account shares with this one.
+  const join = el("form", "auth-form compact join-share");
+  join.append(el("p", "hint", at("joinHint")), field(at("shareCode"), "text", "code", "off"));
+  const joinButton = el("button", "primary", at("join"));
+  joinButton.type = "submit";
+  join.append(joinButton);
+  join.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    try {
+      const joined = await store.joinShare(value(join, "code"));
+      chosenPlayer = joined.id;
+      ctx.onPlayersChanged(at("joined", { player: joined.name }));
+    } catch (e) {
+      fail(e);
+    }
+  });
+  out.push(part(`➕ ${at("joinTitle")}`, "settings-join", players.length === 0, join));
+  return out;
+}
+
+/** Readings in Latin letters: the player's own choice for every book, kept on the server (User.prefs). */
+function displayPart(player: User, fail: (e: unknown) => void): HTMLElement {
+  const current = player.prefs?.reading ?? "always";
+  const choice = el("div", "segmented compact settings-reading");
+  choice.setAttribute("role", "group");
+  choice.setAttribute("aria-label", at("readingsAll"));
+  const draw = (mode: ReadingMode): void => {
+    for (const b of choice.querySelectorAll<HTMLButtonElement>("button")) {
+      const on = b.dataset.reading === mode;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", String(on));
+    }
+  };
+  for (const [mode, key] of [["always", "readingAlways"], ["after", "readingAfter"], ["never", "readingNever"]] as const) {
+    const b = button("segment", at(key), async () => {
+      const before = player.prefs ?? {};
+      const next: UserPrefs = { ...before, reading: mode };
+      draw(mode);
+      try {
+        await store.setPrefs(player.id, next);
+        player.prefs = next;
+      } catch (e) {
+        draw(before.reading ?? "always");
+        fail(e);
+      }
+    });
+    b.dataset.reading = mode;
+    choice.append(b);
+  }
+  draw(current);
+  return part(`👁️ ${at("display")}`, "settings-display", true, el("p", "field-label", at("readingsAll")), choice, el("p", "hint left", at("readingsHint")));
+}
+
+/** The activities on the player's home page: a group per subject, each with its count and All / None. */
+async function activitiesPart(ctx: AccountContext, player: User, fail: (e: unknown) => void): Promise<HTMLElement> {
+  const books = await vocabBooks().catch(() => [] as VocabBookInfo[]);
+  // The workbooks and courses this account sees (the first player's view of them is enough for their names).
+  const first = ctx.players[0];
+  const exerciseBooks = first ? await workbook.books(first.id).catch(() => []) : [];
+  const courses = first ? await lessons.courses(first.id).catch(() => []) : [];
+  const catalog = activityCatalog(books, exerciseBooks, courses);
+  const hidden = new Set(player.hidden ?? []);
+  const shown = el("div", "player-activities");
+  const saved = el("span", "hint player-activities-saved");
+  saved.setAttribute("role", "status");
+  const save = async (undo: () => void): Promise<void> => {
+    try {
+      await store.setHidden(player.id, [...hidden]);
+      player.hidden = [...hidden];
+      saved.textContent = at("saved");
+    } catch (e) {
+      undo();
+      fail(e);
+    }
+  };
+  for (const { group, activities } of catalog) {
+    if (activities.length === 0) continue;
+    const box = el("details", "topic-group settings-group");
+    box.open = openGroups.has(group);
+    box.addEventListener("toggle", () => (box.open ? openGroups.add(group) : openGroups.delete(group)));
+    const summary = el("summary", "settings-group-title");
+    const count = el("span", "settings-group-count");
+    summary.append(el("span", "topic-group-name", group), count);
+    box.append(summary);
+    const boxes: HTMLInputElement[] = [];
+    const recount = (): void => {
+      count.textContent = at("shownOf", { shown: boxes.filter((b) => b.checked).length, total: boxes.length });
+    };
+    const tools = el("div", "settings-group-tools");
+    const setAll = (on: boolean) => async () => {
+      const before = new Set(hidden);
+      for (const b of boxes) {
+        b.checked = on;
+        if (on) hidden.delete(b.value);
+        else hidden.add(b.value);
+      }
+      recount();
+      await save(() => {
+        hidden.clear();
+        for (const id of before) hidden.add(id);
+        for (const b of boxes) b.checked = !hidden.has(b.value);
+        recount();
+      });
+    };
+    tools.append(button("ghost small", at("allOn"), setAll(true)), button("ghost small", at("allOff"), setAll(false)));
+    box.append(tools);
+    const list = el("div", "settings-group-list");
+    for (const activity of activities) {
+      const label = el("label", "topic");
+      const input = el("input");
+      input.type = "checkbox";
+      input.value = activity.id;
+      input.checked = !hidden.has(activity.id);
+      input.addEventListener("change", async () => {
+        if (input.checked) hidden.delete(activity.id);
+        else hidden.add(activity.id);
+        recount();
+        await save(() => {
+          input.checked = !input.checked;
+          if (input.checked) hidden.delete(activity.id);
+          else hidden.add(activity.id);
+          recount();
+        });
+      });
+      boxes.push(input);
+      label.append(input, el("span", undefined, activity.title));
+      list.append(label);
+    }
+    box.append(list);
+    recount();
+    shown.append(box);
+  }
+  return part(`🧩 ${at("activities")}`, "settings-activities", true, el("p", "hint left", at("activitiesHint")), shown, saved);
+}
+
+/** The other accounts that see the player, and a single-use code for one more. */
+async function sharingPart(ctx: AccountContext, player: User, fail: (e: unknown) => void): Promise<HTMLElement> {
+  const children: HTMLElement[] = [el("p", "hint left", at("sharingHint"))];
+  const shares = await store.shares(player.id).catch(() => []);
+  if (shares.length === 0) children.push(el("p", "empty small", at("notShared")));
+  else {
+    const ul = el("ul", "methods shares");
+    for (const share of shares) {
+      const item = el("li", "method");
+      const text = el("div", "method-text");
+      text.append(el("span", "method-name", share.name), el("span", "method-label", share.email ?? ""));
+      item.append(
+        text,
+        button("ghost small", at("remove"), async () => {
+          if (!confirm(at("confirmStopSharing", { name: share.name, player: player.name }))) return;
+          try {
+            await store.removeShare(player.id, share.accountId);
+            ctx.rerender();
+          } catch (e) {
+            fail(e);
+          }
+        }),
+      );
+      ul.append(item);
+    }
+    children.push(ul);
+  }
+  const code = el("p", "share-code");
+  code.setAttribute("role", "status");
+  children.push(
+    button("ghost small", at("createCode"), async () => {
+      try {
+        const invite = await store.createInvite(player.id);
+        code.textContent = at("codeShown", { code: invite.code, date: new Date(invite.expiresAt).toLocaleDateString(currentLang()) });
+      } catch (e) {
+        fail(e);
+      }
+    }),
+    code,
+  );
+  return part(`🤝 ${at("sharing")}`, "settings-sharing", shares.length > 0, ...children);
+}
+
+/** The player's own sign-in: a username and password, or a provider. */
+function loginPart(ctx: AccountContext, player: User, methods: SignInMethod[], options: AuthOptions, fail: (e: unknown) => void): HTMLElement {
+  const children: HTMLElement[] = [el("p", "hint left", at("playerLoginsHint"))];
+  const theirs = methods.filter((m) => m.playerId === player.id);
+  if (theirs.length === 0) children.push(el("p", "empty small", at("noPlayerLogin")));
+  else {
+    const ul = el("ul", "methods");
+    for (const m of theirs) {
+      ul.append(
+        methodLine(m, options, true, async () => {
+          if (!confirm(at("confirmRemove"))) return;
+          try {
+            await auth.removeMethod(m.id);
+            ctx.rerender();
+          } catch (e) {
+            fail(e);
+          }
+        }),
+      );
+    }
+    children.push(ul);
+  }
+  const form = el("form", "auth-form inline");
+  form.dataset.player = String(player.id);
+  form.append(field(at("username"), "text", "username", "off"), field(at("password"), "password", "password", "new-password"));
+  const save = el("button", "primary", at("save"));
+  save.type = "submit";
+  form.append(save);
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    try {
+      await auth.setPlayerPassword(player.id, value(form, "username"), value(form, "password"));
+      ctx.rerender();
+    } catch (e) {
+      fail(e);
+    }
+  });
+  children.push(form, el("p", "hint left", at("usernameHint")));
+  if (options.providers.length > 0) {
+    const links = el("div", "providers");
+    for (const p of options.providers) links.append(providerLink(p.id, p.name, auth.providerUrl(p.id, "link-player", player.id), "link"));
+    children.push(links);
+  }
+  return part(`🔑 ${at("playerLogin")}`, "settings-login", theirs.length > 0, ...children);
 }
