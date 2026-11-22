@@ -1,0 +1,184 @@
+{
+ "book": {
+  "title": "Imperial Aramaic",
+  "credit": "Written for Luma's Imperial Aramaic course (docs/language-courses.md); letter names as usually given in English"
+ },
+ "lessons": [
+  {
+   "title": "𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊",
+   "subtitle": "ʾ b g d h w z ḥ ṭ y k",
+   "sections": [
+    {
+     "title": "𐡀 𐡁 𐡂 𐡃 𐡄 𐡅 𐡆 𐡇 𐡈 𐡉 𐡊",
+     "subtitle": "aleph – kaph",
+     "entries": [
+      {
+       "term": "𐡀",
+       "meaning": "ʾ / aleph",
+       "note": "aleph"
+      },
+      {
+       "term": "𐡁",
+       "meaning": "b / beth",
+       "note": "beth"
+      },
+      {
+       "term": "𐡂",
+       "meaning": "g / gimel",
+       "note": "gimel"
+      },
+      {
+       "term": "𐡃",
+       "meaning": "d / daleth",
+       "note": "daleth"
+      },
+      {
+       "term": "𐡄",
+       "meaning": "h / he",
+       "note": "he"
+      },
+      {
+       "term": "𐡅",
+       "meaning": "w / waw",
+       "note": "waw"
+      },
+      {
+       "term": "𐡆",
+       "meaning": "z / zayin",
+       "note": "zayin"
+      },
+      {
+       "term": "𐡇",
+       "meaning": "ḥ / heth",
+       "note": "heth"
+      },
+      {
+       "term": "𐡈",
+       "meaning": "ṭ / teth",
+       "note": "teth"
+      },
+      {
+       "term": "𐡉",
+       "meaning": "y / yodh",
+       "note": "yodh"
+      },
+      {
+       "term": "𐡊",
+       "meaning": "k / kaph",
+       "note": "kaph"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕",
+   "subtitle": "l m n s ʿ p ṣ q r š t",
+   "sections": [
+    {
+     "title": "𐡋 𐡌 𐡍 𐡎 𐡏 𐡐 𐡑 𐡒 𐡓 𐡔 𐡕",
+     "subtitle": "lamedh – taw",
+     "entries": [
+      {
+       "term": "𐡋",
+       "meaning": "l / lamedh",
+       "note": "lamedh"
+      },
+      {
+       "term": "𐡌",
+       "meaning": "m / mem",
+       "note": "mem"
+      },
+      {
+       "term": "𐡍",
+       "meaning": "n / nun",
+       "note": "nun"
+      },
+      {
+       "term": "𐡎",
+       "meaning": "s / samekh",
+       "note": "samekh"
+      },
+      {
+       "term": "𐡏",
+       "meaning": "ʿ / ayin",
+       "note": "ayin"
+      },
+      {
+       "term": "𐡐",
+       "meaning": "p / pe",
+       "note": "pe"
+      },
+      {
+       "term": "𐡑",
+       "meaning": "ṣ / sadhe",
+       "note": "sadhe"
+      },
+      {
+       "term": "𐡒",
+       "meaning": "q / qoph",
+       "note": "qoph"
+      },
+      {
+       "term": "𐡓",
+       "meaning": "r / resh",
+       "note": "resh"
+      },
+      {
+       "term": "𐡔",
+       "meaning": "š / sh / shin",
+       "note": "shin"
+      },
+      {
+       "term": "𐡕",
+       "meaning": "t / taw",
+       "note": "taw"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "𐡘𐡙𐡚𐡛𐡜𐡝",
+   "subtitle": "1 2 3 10 20 100",
+   "sections": [
+    {
+     "title": "𐡘 𐡙 𐡚 𐡛 𐡜 𐡝",
+     "subtitle": "numbers",
+     "entries": [
+      {
+       "term": "𐡘",
+       "meaning": "1 / one",
+       "note": "one"
+      },
+      {
+       "term": "𐡙",
+       "meaning": "2 / two",
+       "note": "two"
+      },
+      {
+       "term": "𐡚",
+       "meaning": "3 / three",
+       "note": "three"
+      },
+      {
+       "term": "𐡛",
+       "meaning": "10 / ten",
+       "note": "ten"
+      },
+      {
+       "term": "𐡜",
+       "meaning": "20 / twenty",
+       "note": "twenty"
+      },
+      {
+       "term": "𐡝",
+       "meaning": "100 / hundred / one hundred",
+       "note": "hundred"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

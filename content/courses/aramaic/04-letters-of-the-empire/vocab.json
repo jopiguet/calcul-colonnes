@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "𐡊𐡅𐡓𐡔",
+      "reading": "kwrš",
+      "meaning": "Cyrus",
+      "translations": {
+        "fr": "Cyrus",
+        "es": "Ciro"
+      },
+      "type": "name"
+    },
+    {
+      "term": "𐡃𐡓𐡉𐡄𐡅𐡔",
+      "reading": "dryhwš",
+      "meaning": "Darius",
+      "translations": {
+        "fr": "Darius",
+        "es": "Darío"
+      },
+      "type": "name"
+    },
+    {
+      "term": "𐡇𐡔𐡉𐡀𐡓𐡔",
+      "reading": "ḥšyʾrš",
+      "meaning": "Xerxes",
+      "translations": {
+        "fr": "Xerxès",
+        "es": "Jerjes"
+      },
+      "type": "name"
+    },
+    {
+      "term": "𐡀𐡓𐡕𐡇𐡔𐡎𐡔",
+      "reading": "ʾrtḥšsš",
+      "meaning": "Artaxerxes",
+      "translations": {
+        "fr": "Artaxerxès",
+        "es": "Artajerjes"
+      },
+      "type": "name"
+    },
+    {
+      "term": "𐡌𐡑𐡓𐡉𐡍",
+      "reading": "mṣryn",
+      "meaning": "Egypt",
+      "translations": {
+        "fr": "Égypte",
+        "es": "Egipto"
+      },
+      "type": "name"
+    },
+    {
+      "term": "𐡉𐡁",
+      "reading": "yb",
+      "meaning": "Yeb / Elephantine",
+      "translations": {
+        "fr": "Yeb / Éléphantine",
+        "es": "Yeb / Elefantina"
+      },
+      "type": "name"
+    },
+    {
+      "term": "𐡁𐡉𐡓𐡕𐡀",
+      "reading": "byrtʾ",
+      "meaning": "the fortress",
+      "translations": {
+        "fr": "la forteresse",
+        "es": "la fortaleza"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡌𐡓𐡀",
+      "reading": "mrʾ",
+      "meaning": "lord",
+      "translations": {
+        "fr": "seigneur",
+        "es": "señor"
+      },
+      "type": "noun"
+    }
+  ]
+}

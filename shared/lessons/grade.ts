@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan" | "runes" | "elamite";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "elamite"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan" | "runes" | "aramaic" | "elamite";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "aramaic", "elamite"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -271,6 +271,29 @@ export function runicKey(text: string): string {
     .trim();
 }
 
+/** Imperial Aramaic letters in their usual transliteration (U+10840–10855); the section sign is a space. */
+const ARAMAIC: Record<string, string> = {"\u{10840}": "ʾ", "\u{10841}": "b", "\u{10842}": "g", "\u{10843}": "d", "\u{10844}": "h", "\u{10845}": "w", "\u{10846}": "z", "\u{10847}": "ḥ", "\u{10848}": "ṭ", "\u{10849}": "y", "\u{1084A}": "k", "\u{1084B}": "l", "\u{1084C}": "m", "\u{1084D}": "n", "\u{1084E}": "s", "\u{1084F}": "ʿ", "\u{10850}": "p", "\u{10851}": "ṣ", "\u{10852}": "q", "\u{10853}": "r", "\u{10854}": "š", "\u{10855}": "t", "\u{10857}": " "};
+
+/**
+ * Imperial Aramaic as typed: letters or their consonant transliteration are one answer. Each letter is read;
+ * then aleph is ʾ, ' or ’ and ayin ʿ, ‘ or ` (two letters, kept apart); š is š or sh; ḥ, ṭ, ṣ fold into h, t, s
+ * (letters of a near sound: told apart by choices); vowels a learner adds ("malka") and hyphens or spaces go.
+ */
+export function aramaicKey(text: string): string {
+  let t = "";
+  for (const ch of text.normalize("NFC")) t += ARAMAIC[ch] ?? ch;
+  return t
+    .normalize("NFC")
+    .toLowerCase()
+    .replace(/[ʾʼ'’ʔ]/g, "A")
+    .replace(/[ʿ‘`ʕ]/g, "E")
+    .replace(/š|sh/g, "S")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[aeiouəǝ]/g, "")
+    .replace(/[^a-zAES0-9]/g, "");
+}
+
 /**
  * Linear Elamite signs with a reading (fonts/linear-elamite): LEnnn at U+E000 + nnn in the
  * Private Use Area, read with the values of Desset's latest table (a e i o u, the long ů).
@@ -328,6 +351,8 @@ const SUBSCRIPTS: Record<string, string> = { "₀": "0", "₁": "1", "₂": "2",
 
 /** The text as compared: lower case, single spaces, no punctuation but the apostrophe and the period, the course's folds. */
 export function fold(text: string, folds: readonly Fold[]): string {
+  // Aramaic first: an apostrophe is aleph and ‘ or ` ayin, letters a leading quote would lose.
+  if (folds.includes("aramaic")) return aramaicKey(text.trim());
   let t = text.normalize("NFC").toLowerCase().replace(/[’‘ʼ]/g, "'").replace(/\s+/g, " ").trim();
   t = t.replace(/^[«"“'¿¡(]+|[.!?;:,»"”)]+$/g, "").trim();
   // Commas and the like inside an answer are the learner's choice: "amīce, venī" or "amice veni".
@@ -370,7 +395,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "elamite"].includes(x));
+    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "aramaic", "elamite"].includes(x));
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

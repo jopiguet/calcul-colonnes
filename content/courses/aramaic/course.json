@@ -1,0 +1,34 @@
+{
+  "id": "aramaic",
+  "language": "arc",
+  "icon": "𐡀",
+  "folds": [
+    "aramaic"
+  ],
+  "title": {
+    "fr": "Araméen d'empire",
+    "es": "Arameo imperial",
+    "en": "Imperial Aramaic"
+  },
+  "description": {
+    "fr": "L'araméen écrit des empires assyrien et perse, vers 600–330 av. J.-C. : les vingt-deux lettres, de droite à gauche, l'état emphatique du nom, les noms des rois perses et les papyrus d'Éléphantine, puis les signes des nombres et la date d'un contrat.",
+    "es": "El arameo escrito de los imperios asirio y persa, hacia 600–330 a. C.: las veintidós letras, de derecha a izquierda, el estado enfático del nombre, los nombres de los reyes persas y los papiros de Elefantina, y luego los signos de los números y la fecha de un contrato.",
+    "en": "The written Aramaic of the Assyrian and Persian empires, about 600–330 BCE: the twenty-two letters, right to left, the emphatic state of the noun, the Persian kings' names and the Elephantine papyri, then the number signs and the date of a contract."
+  },
+  "vocabLesson": "Lesson {n}",
+  "keys": [
+    "ʾ",
+    "ʿ",
+    "ḥ",
+    "ṭ",
+    "ṣ",
+    "š"
+  ],
+  "lessons": [
+    "01-imperial-aramaic",
+    "02-second-half",
+    "03-states-of-the-noun",
+    "04-letters-of-the-empire",
+    "05-numbers-and-dates"
+  ]
+}

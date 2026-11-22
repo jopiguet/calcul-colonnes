@@ -117,6 +117,12 @@ const cases: [string, string, AnswerLang, Verdict][] = [
   ["der Büroangestellte", "der / die Büroangestellte", "de", "right"],
   ["die Büroangestellte", "der / die Büroangestellte", "de", "right"],
   ["buenas noches", "buenas tardes / noches", "es", "right"],
+  // An English meaning's short side, a word of its own: an answer by itself too.
+  ["recklessness", "lack of scruple / recklessness", "en", "right"],
+  ["lack of scruple", "lack of scruple / recklessness", "en", "right"],
+  ["noches", "buenas tardes / noches", "es", "wrong"],
+  ["down", "to go up / down", "en", "wrong"],
+  ["to go down", "to go up / down", "en", "right"],
   ["este es mi", "este / esta es mi", "es", "right"],
   // English contractions, either way round.
   ["I am tired", "I'm tired", "en", "right"],
@@ -264,6 +270,14 @@ const scripts: [string, string, string, AnswerLang, Verdict][] = [
   ["daeg", "ᛞᚫᚷ", "dæg", "gem", "accent"],
   ["stein", "ᛋᛏᛅᛁᚾ", "stain", "gem", "wrong"],
   // Linear Elamite: the signs, or their transliteration; ů typed u counts.
+  // Imperial Aramaic: the letters, or the consonant transliteration; ʾ as ', š as sh (shown spelled).
+  ["\u{1084C}\u{1084B}\u{1084A}\u{10840}", "\u{1084C}\u{1084B}\u{1084A}\u{10840}", "mlkʾ", "arc", "right"],
+  ["mlkʾ", "\u{1084C}\u{1084B}\u{1084A}\u{10840}", "mlkʾ", "arc", "right"],
+  ["mlk'", "\u{1084C}\u{1084B}\u{1084A}\u{10840}", "mlkʾ", "arc", "accent"],
+  ["shlm", "\u{10854}\u{1084B}\u{1084C}", "šlm", "arc", "accent"],
+  ["mlk", "\u{1084C}\u{1084B}\u{1084A}\u{10840}", "mlkʾ", "arc", "wrong"],
+  ["`bd", "\u{1084F}\u{10841}\u{10843}", "ʿbd", "arc", "right"],
+  ["'bd", "\u{1084F}\u{10841}\u{10843}", "ʿbd", "arc", "wrong"],
   ["\uE0B7", "\uE0B7", "ša", "elx", "right"],
   ["ze-m-t", "\uE0E9\uE0EA\uE0AC", "ze-m-t", "elx", "right"],
   ["zemt", "\uE0E9\uE0EA\uE0AC", "ze-m-t", "elx", "accent"],

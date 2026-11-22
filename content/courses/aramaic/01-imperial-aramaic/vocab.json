@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "𐡀𐡁",
+      "reading": "ʾb",
+      "meaning": "father",
+      "translations": {
+        "fr": "père",
+        "es": "padre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡀𐡇",
+      "reading": "ʾḥ",
+      "meaning": "brother",
+      "translations": {
+        "fr": "frère",
+        "es": "hermano"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡀𐡇𐡕",
+      "reading": "ʾḥt",
+      "meaning": "sister",
+      "translations": {
+        "fr": "sœur",
+        "es": "hermana"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡁𐡉𐡕",
+      "reading": "byt",
+      "meaning": "house",
+      "translations": {
+        "fr": "maison",
+        "es": "casa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡉𐡃",
+      "reading": "yd",
+      "meaning": "hand",
+      "translations": {
+        "fr": "main",
+        "es": "mano"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡀𐡋𐡄",
+      "reading": "ʾlh",
+      "meaning": "god",
+      "translations": {
+        "fr": "dieu",
+        "es": "dios"
+      },
+      "type": "noun"
+    }
+  ]
+}

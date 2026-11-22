@@ -60,17 +60,17 @@
  */
 
 import { hasKana, kanaToRomaji } from "./kana";
-import { elamiteKey, inuktitutKey, malayalamKey, runicKey, tibetanKey } from "../lessons/grade";
+import { aramaicKey, elamiteKey, inuktitutKey, malayalamKey, runicKey, tibetanKey } from "../lessons/grade";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo" | "gem" | "elx";
+export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo" | "gem" | "elx" | "arc";
 
 /** Languages written in their own script and also answered by their reading (as Arabic). */
-export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx"]);
+export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx", "arc"]);
 
 /** The grading rules for a book language: those it has, else English (plain text). */
 export function answerLangOf(code: string): AnswerLang {
-  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx"];
+  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx", "arc"];
   return (known.includes(code) ? code : "en") as AnswerLang;
 }
 
@@ -95,6 +95,7 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   bo: [],
   gem: [],
   elx: [],
+  arc: [],
 };
 
 /** Text as shown: book typography cleaned, "..." for an open end. */
@@ -333,8 +334,22 @@ export function commaSides(expected: string, lang: AnswerLang): string[] {
 /** Every form accepted in this language: as printed, each side of a list, and for German the word alone. */
 function formsFor(expected: string, lang: AnswerLang): string[] {
   const forms = [...acceptedForms(expected), ...commaSides(expected, lang).flatMap(acceptedForms)];
+  // An English meaning: a short side after " / " that is a word of its own is an answer of its own too
+  // ("lack of scruple / recklessness" → "recklessness"), besides the end it may replace ("to go up / down").
+  if (lang === "en") forms.push(...ownShortSides(expected).flatMap(acceptedForms));
   if (lang !== "de") return [...new Set(forms)];
   return [...new Set([...forms, ...germanHeads(expected).flatMap(acceptedForms)])];
+}
+
+/** The sides of " / " shorter than the first, of 5 letters or more, not words of the first side. */
+function ownShortSides(expected: string): string[] {
+  const sides = expected.split(/\s+\/\s+/).map((side) => side.trim());
+  if (sides.length < 2) return [];
+  const first = normalise(sides[0]!).split(" ");
+  return sides.slice(1).filter((side) => {
+    const words = normalise(side).split(" ").filter(Boolean);
+    return words.length > 0 && words.length < first.length && normalise(side).replace(/[^a-z]/g, "").length >= 5 && !words.some((w) => first.includes(w));
+  });
 }
 
 /** Japanese text: full-width forms folded (ＣＤ → CD, （ → (), Japanese punctuation and spaces dropped. */
@@ -480,6 +495,8 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   if (lang === "bo") return gradeKeyed(given, expected, reading, tibetanKey);
   if (lang === "gem") return gradeKeyed(given, expected, reading, runicKey);
   if (lang === "elx") return gradeKeyed(given, expected, reading, elamiteKey);
+  // A backtick is ayin here, not an apostrophe (which is aleph).
+  if (lang === "arc") return gradeKeyed(given.replace(/`/g, "ʿ"), expected, reading, aramaicKey);
   // English: contractions written out on both sides ("I'm" and "I am").
   const english = (t: string): string => (lang === "en" ? expandEnglish(t) : t);
   const answer = english(normalise(given));

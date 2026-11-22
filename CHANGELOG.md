@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.10.0
+
+- **A new course, 𐡀 Imperial Aramaic** (`aramaic`, language `arc`; [Language courses](docs/language-courses.md)): the written Aramaic of the Assyrian and Persian empires, about 600–330 BCE, in five lessons: the script and its first eleven letters, the second half of the alphabet, the states of the noun (*mlk*, *mlkʾ*, *mlkyn*, *mlkyʾ*; *zy*), the Persian kings' names and the Elephantine papyri with the greeting of a letter, then the number signs and the dating of a contract. 34 words; 28 cards for the letters (sound or name) and six number signs, in the *Caractères* group.
+- **The script:** right to left in Noto Sans Imperial Aramaic (`@fontsource/noto-sans-imperial-aramaic`, SIL OFL), loaded for U+10840–1085F only; each run is set apart (`<bdi dir="rtl" lang="arc">`).
+- **Answers** in letters or consonant transliteration, the `aramaic` fold and the vocabulary's `arc` rules: ʾ may be typed ', ʿ `, *š* *sh*; ḥ ṭ ṣ without their dot; added vowels ignored; *mlk* stays apart from *mlkʾ*, *ʿbd* from *ʾbd*.
+- **An English meaning's short side after " / ":** a word of its own is accepted alone (*recklessness* for "lack of scruple / recklessness"), besides the end it may replace (*to go down* for "to go up / down"). A short function word alone (*down*) still is not.
+- `check-lessons` and `check-vocab` cases for Aramaic and the slash rule; an e2e test of the course (font, direction, transliteration, the letters among the characters).
+
 ## 8.9.1
 
 - **The reading in Latin letters, chosen per course** ([Vocabulary › The reading in Latin letters](docs/vocabulary.md#the-reading-in-latin-letters)): a language course's words and letters share one choice, set on either book's page or in *⚙️ Paramètres › 👁️ Affichage*, which now lists every course and book with readings, one line and one list each. The common choice for every book and the *same choice in every book* box are gone; a shelf session follows each word's own course (`sourceBook` on the card). Stored as `users.prefs.readings` by course key; 8.9.0's per-book choices fold into their course, its common choice stays the default of a course without one.

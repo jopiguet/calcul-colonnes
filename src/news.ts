@@ -23,6 +23,21 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.10.0",
+    fr: [
+      "Un nouveau cours, 𐡀 Araméen d'empire : l'araméen des rois perses, de droite à gauche dans son écriture, avec l'état emphatique, les papyrus d'Éléphantine et les signes des nombres ; 34 mots et 28 cartes de lettres et de nombres.",
+      "Une traduction anglaise du type « lack of scruple / recklessness » accepte maintenant « recklessness » seul.",
+    ],
+    es: [
+      "Un nuevo curso, 𐡀 Arameo imperial: el arameo de los reyes persas, de derecha a izquierda en su escritura, con el estado enfático, los papiros de Elefantina y los signos de los números; 34 palabras y 28 tarjetas de letras y números.",
+      "Una traducción inglesa del tipo «lack of scruple / recklessness» acepta ahora «recklessness» solo.",
+    ],
+    en: [
+      "A new course, 𐡀 Imperial Aramaic: the Aramaic of the Persian kings, right to left in its own script, with the emphatic state, the Elephantine papyri and the number signs; 34 words and 28 letter and number cards.",
+      "An English meaning such as \"lack of scruple / recklessness\" now accepts \"recklessness\" on its own.",
+    ],
+  },
+  {
     version: "8.9.1",
     fr: [
       "Le rōmaji et les translittérations se choisissent par cours : les mots et les lettres d'un cours ensemble, sur la page du livre ou dans ⚙️ Paramètres › Affichage.",

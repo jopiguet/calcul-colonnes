@@ -973,6 +973,12 @@ Luma's own font of its 348 signs. Answers are typed by value (*ka*, *ze-m-t*);
 (*hi* for *he*) count where an exercise gives them. Its 144 sign cards show each
 sign's number (LE001–LE348) and region. No sounds.
 
+The Imperial Aramaic course teaches the Aramaic the Persian kings governed in,
+right to left in its own script. Answers are typed in consonant transliteration
+(*mlkʾ*, *šlm*): ʾ may be typed ' and ʿ `, *š* *sh*, ḥ ṭ ṣ without their dot,
+and vowels you add are ignored; the buttons under the fields write ʾ ʿ ḥ ṭ ṣ š.
+Its 28 cards are the 22 letters (sound or name) and six number signs. No sounds.
+
 Every course's words (and the Malayalam letters) also have their card under
 *Langues* on the home page, with the words to review, beside your own books
 of the same language.

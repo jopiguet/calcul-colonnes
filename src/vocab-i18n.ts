@@ -579,9 +579,9 @@ export function vt(key: Key, values: Record<string, string | number> = {}): stri
 
 /** A language's name in the interface's language, as used in "Vocabulaire {lang}". */
 const LANGUAGE_NAMES: Record<Lang, Record<string, string>> = {
-  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe", pt: "portugais", sw: "swahili", zh: "chinois", sux: "sumérien", egy: "égyptien ancien", akk: "akkadien", la: "latin", grc: "grec ancien", fa: "persan", he: "hébreu", ml: "malayalam", qu: "quechua", iu: "inuktitut", bo: "tibétain", gem: "runique", elx: "élamite linéaire" },
-  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe", pt: "portugués", sw: "suajili", zh: "chino", sux: "sumerio", egy: "egipcio antiguo", akk: "acadio", la: "latín", grc: "griego antiguo", fa: "persa", he: "hebreo", ml: "malayalam", qu: "quechua", iu: "inuktitut", bo: "tibetano", gem: "rúnico", elx: "elamita lineal" },
-  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic", pt: "Portuguese", sw: "Swahili", zh: "Chinese", sux: "Sumerian", egy: "Ancient Egyptian", akk: "Akkadian", la: "Latin", grc: "Ancient Greek", fa: "Persian", he: "Hebrew", ml: "Malayalam", qu: "Quechua", iu: "Inuktitut", bo: "Tibetan", gem: "Runic", elx: "Linear Elamite" },
+  fr: { es: "espagnol", en: "anglais", fr: "français", de: "allemand", it: "italien", ja: "japonais", ar: "arabe", pt: "portugais", sw: "swahili", zh: "chinois", sux: "sumérien", egy: "égyptien ancien", akk: "akkadien", la: "latin", grc: "grec ancien", fa: "persan", he: "hébreu", ml: "malayalam", qu: "quechua", iu: "inuktitut", bo: "tibétain", gem: "runique", elx: "élamite linéaire", arc: "araméen d'empire" },
+  es: { es: "español", en: "inglés", fr: "francés", de: "alemán", it: "italiano", ja: "japonés", ar: "árabe", pt: "portugués", sw: "suajili", zh: "chino", sux: "sumerio", egy: "egipcio antiguo", akk: "acadio", la: "latín", grc: "griego antiguo", fa: "persa", he: "hebreo", ml: "malayalam", qu: "quechua", iu: "inuktitut", bo: "tibetano", gem: "rúnico", elx: "elamita lineal", arc: "arameo imperial" },
+  en: { es: "Spanish", en: "English", fr: "French", de: "German", it: "Italian", ja: "Japanese", ar: "Arabic", pt: "Portuguese", sw: "Swahili", zh: "Chinese", sux: "Sumerian", egy: "Ancient Egyptian", akk: "Akkadian", la: "Latin", grc: "Ancient Greek", fa: "Persian", he: "Hebrew", ml: "Malayalam", qu: "Quechua", iu: "Inuktitut", bo: "Tibetan", gem: "Runic", elx: "Linear Elamite", arc: "Imperial Aramaic" },
 };
 
 export function langName(code: string): string {
@@ -590,7 +590,7 @@ export function langName(code: string): string {
 
 /** A reading's language as files write it: a code ("sux") or an English name ("sumerian"). */
 const LANGUAGE_ALIASES: Record<string, string> = {
-  sumerian: "sux", akkadian: "akk", egyptian: "egy", chinese: "zh", japanese: "ja", arabic: "ar", malayalam: "ml", quechua: "qu", inuktitut: "iu", tibetan: "bo", runes: "gem", "linear-elamite": "elx",
+  sumerian: "sux", akkadian: "akk", egyptian: "egy", chinese: "zh", japanese: "ja", arabic: "ar", malayalam: "ml", quechua: "qu", inuktitut: "iu", tibetan: "bo", runes: "gem", "linear-elamite": "elx", aramaic: "arc", "imperial-aramaic": "arc",
 };
 
 /** The name of a reading's language, in the interface's language; a name the app does not know, as written. */

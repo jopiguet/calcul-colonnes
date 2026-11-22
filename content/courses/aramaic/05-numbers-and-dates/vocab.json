@@ -1,0 +1,74 @@
+{
+  "entries": [
+    {
+      "term": "𐡉𐡅𐡌",
+      "reading": "ywm",
+      "meaning": "day",
+      "translations": {
+        "fr": "jour",
+        "es": "día"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡉𐡓𐡇",
+      "reading": "yrḥ",
+      "meaning": "month",
+      "translations": {
+        "fr": "mois",
+        "es": "mes"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡔𐡍𐡄",
+      "reading": "šnh",
+      "meaning": "year",
+      "translations": {
+        "fr": "année",
+        "es": "año"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡔𐡍𐡕",
+      "reading": "šnt",
+      "meaning": "year of",
+      "translations": {
+        "fr": "année de",
+        "es": "año de"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡍𐡉𐡎𐡍",
+      "reading": "nysn",
+      "meaning": "Nisan",
+      "translations": {
+        "fr": "Nisan",
+        "es": "Nisán"
+      },
+      "type": "name"
+    },
+    {
+      "term": "𐡕𐡔𐡓𐡉",
+      "reading": "tšry",
+      "meaning": "Tishri",
+      "translations": {
+        "fr": "Tichri",
+        "es": "Tishri"
+      },
+      "type": "name"
+    },
+    {
+      "term": "𐡔𐡒𐡋",
+      "reading": "šql",
+      "meaning": "shekel",
+      "translations": {
+        "fr": "sicle",
+        "es": "siclo"
+      },
+      "type": "noun"
+    }
+  ]
+}

@@ -22,6 +22,7 @@ structure and the same exercises.
 | 🏔️ Tibetan (`tibetan`) | 8.5.0 | 14 | 56 | 126, and 62 letter cards |
 | ᚱ Runes (`runes`) | 8.6.0 | 5 | 20 | 38, and 69 rune cards |
 | 🦁 Linear Elamite (`linear-elamite`) | 8.8.0 | 5 | 20 | 36, and 144 sign cards |
+| 𐡀 Imperial Aramaic (`aramaic`) | 8.10.0 | 5 | 22 | 34, and 28 letter and number cards |
 
 The content is original, written for the app, and ships with it; quoted texts
 (Caesar, Catullus, Virgil; Sinuhe, the Shipwrecked Sailor, the offering
@@ -37,7 +38,7 @@ read *Adonai* as in Jewish practice.
 
 ```text
 content/courses/
-  index.json                      ["latin", …, "quechua", "inuktitut", "tibetan", "runes", "linear-elamite"]: the courses, in order
+  index.json                      ["latin", …, "quechua", "inuktitut", "tibetan", "runes", "linear-elamite", "aramaic"]: the courses, in order
   latin/
     course.json                   id, language, icon, folds, titles, the lesson list
     01-letters-and-sounds/
@@ -150,6 +151,7 @@ course's folds.
 | `tibetan` | the script read into Wylie letters, the tsheg a space; both sides then without the vowel *a* (the script leaves it unwritten), the a-chung *'*, and Wylie's *.* and *+* | an answer in Tibetan script or in Wylie: བཀྲ་ཤིས and *bkra shis*, གཡག and *g.yag* are one |
 | `runes` | runes read into their transliteration (Elder, Younger and Anglo-Saxon: ᚦ *th*, ᛜ ᛝ *ng*, ᚫ *ae*, ᛇ *i*, ᚬ and ᛟ *o*, ᛦ *r*, the dividers ᛫ ᛬ a space), then both sides lowercased: *þ* read *th*, *ŋ* *ng*, *æ* *ae*, *ï* *i*, *ą* and *œ* *o*, *R* *r*; other marks dropped; free answers unchanged | an answer in runes or in transliteration: ᚦᚢᚱ, *þur* and *thur* are one |
 | `elamite` | each Linear Elamite sign (U+E001–E15C) read as its value in Desset's latest table, then *ů* is *u*, *sh* is *š*, *w* is *u* (one sign writes both), and hyphens, spaces and digits go; free answers unchanged | signs or transliteration: the signs of *zemt* and *ze-m-t* are one answer; the 2025 numbered readings (*hi* for *he*, *ku₂* for *ko*) are accepted where an exercise lists them |
+| `aramaic` | each Imperial Aramaic letter (U+10840–10855) read as its consonant transliteration, the section sign a space; then ʾ ʼ ' ’ are aleph and ʿ ‘ ` ayin (kept apart), *š* and *sh* one, ḥ ṭ ṣ lose their dot, vowels a learner adds (a e i o u ə, with or without marks) go, and other marks go; digits stay; free answers unchanged | letters or transliteration: the letters of *mlkʾ*, *mlkʾ*, *mlk'* and *malkaʾ* are one answer, *mlk* (a king) is not *mlkʾ* (the king), *ʿbd* is not *ʾbd* |
 | `quechua` | strict blanks compared after: accents dropped, hyphens between suffixes dropped, *e* read *i* and *o* read *u*, Spanish spellings brought to the official ones (*hu* before a vowel as *w*, *j* as *h*, *c* and *qu* before *e i* as *k*), a final *-nchis* as *-nchik*; aspirates (*ph*) and ejectives (*p'*) kept apart from plain stops, *k* from *q*; free answers unchanged | Quechua typed as it is often written: *Qosqo*, *huasi*, *jatun*, *ñoqanchis* |
 | `egyptian` | strict blanks compared by their consonants: *ꜣ ꜥ* (*3*, *'*) and the vowels *a e o* dropped, *j i y* one letter, *w u* one, *ḥ ḫ ẖ kh x* = *h*, *š sh* = *s*, *ṯ tj* = *t*, *ḏ dj* = *d*, *ḳ q* = *k*, dots and hyphens dropped; free answers keep their vowels | Egyptian typed as it is read: *ankh*, *nefer*, *sedjem.n.ef* |
 

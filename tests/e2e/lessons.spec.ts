@@ -408,3 +408,27 @@ test("Linear Elamite: signs in Luma's font, answers by value, both readings acce
   await card.locator(".lesson-check").click();
   await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
 });
+
+test("Imperial Aramaic: right to left in its font, answers in transliteration, letters among the characters", async ({ page }) => {
+  await newPlayer(page, "Yedanyah");
+  await goHome(page);
+  await expect(page.locator("[data-activity='vocab-course-aramaic']")).toContainText("araméen d'empire");
+  await expect(page.locator(".activity-group[data-group='characters'] [data-activity='vocab-course-aramaic-letters']")).toBeVisible();
+  await openActivity(page, "lessons-aramaic");
+  await expect(page.locator(".lessons-item")).toHaveCount(5);
+  await page.locator(".lessons-item").first().click();
+  const run = page.locator(".script-aramaic").first();
+  await expect(run).toHaveAttribute("lang", "arc");
+  await expect(run).toHaveAttribute("dir", "rtl");
+  expect(await run.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Noto Sans Imperial Aramaic");
+  expect(await page.evaluate(async () => { await document.fonts.load('20px "Noto Sans Imperial Aramaic"', "\u{10840}"); return document.fonts.check('20px "Noto Sans Imperial Aramaic"', "\u{10840}"); })).toBe(true);
+  const card = page.locator(".lesson-exercise[data-exercise='read']");
+  const inputs = card.locator(".lesson-input");
+  // ʾ typed as an apostrophe; a vowel added is ignored.
+  for (const [i, v] of [[0, "'b"], [1, "bayt"], [2, "yd"], [3, "ʾlh"]] as const) await inputs.nth(i).fill(v);
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("4/4");
+  await inputs.nth(0).fill("`b");
+  await card.locator(".lesson-check").click();
+  await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
+});

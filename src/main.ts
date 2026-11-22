@@ -42,6 +42,7 @@ import "@fontsource/noto-sans-malayalam/malayalam-600.css";
 import "@fontsource/noto-sans-canadian-aboriginal/canadian-aboriginal-400.css";
 import "@fontsource/noto-sans-canadian-aboriginal/canadian-aboriginal-600.css";
 import "@fontsource/noto-serif-tibetan/tibetan-400.css";
+import "@fontsource/noto-sans-imperial-aramaic/imperial-aramaic-400.css";
 import "@fontsource/noto-serif-tibetan/tibetan-600.css";
 import "@fontsource/noto-sans-runic/runic-400.css";
 import "@fontsource/noto-sans-cuneiform/400.css";

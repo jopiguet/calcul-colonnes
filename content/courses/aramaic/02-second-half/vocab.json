@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "𐡌𐡋𐡊",
+      "reading": "mlk",
+      "meaning": "king",
+      "translations": {
+        "fr": "roi",
+        "es": "rey"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡊𐡎𐡐",
+      "reading": "ksp",
+      "meaning": "silver / money",
+      "translations": {
+        "fr": "argent",
+        "es": "plata / dinero"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡎𐡐𐡓",
+      "reading": "spr",
+      "meaning": "document / letter / book",
+      "translations": {
+        "fr": "document / lettre / livre",
+        "es": "documento / carta / libro"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡔𐡋𐡌",
+      "reading": "šlm",
+      "meaning": "peace / welfare",
+      "translations": {
+        "fr": "paix / bien-être",
+        "es": "paz / bienestar"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡏𐡁𐡃",
+      "reading": "ʿbd",
+      "meaning": "servant",
+      "translations": {
+        "fr": "serviteur",
+        "es": "siervo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡀𐡍𐡔",
+      "reading": "ʾnš",
+      "meaning": "man / person",
+      "translations": {
+        "fr": "homme / personne",
+        "es": "hombre / persona"
+      },
+      "type": "noun"
+    }
+  ]
+}

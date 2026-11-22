@@ -1,0 +1,74 @@
+{
+  "entries": [
+    {
+      "term": "𐡌𐡋𐡊𐡀",
+      "reading": "mlkʾ",
+      "meaning": "the king",
+      "translations": {
+        "fr": "le roi",
+        "es": "el rey"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡌𐡋𐡊𐡉𐡍",
+      "reading": "mlkyn",
+      "meaning": "kings",
+      "translations": {
+        "fr": "rois",
+        "es": "reyes"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡌𐡋𐡊𐡉𐡀",
+      "reading": "mlkyʾ",
+      "meaning": "the kings",
+      "translations": {
+        "fr": "les rois",
+        "es": "los reyes"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡔𐡌𐡉𐡀",
+      "reading": "šmyʾ",
+      "meaning": "heaven",
+      "translations": {
+        "fr": "ciel",
+        "es": "cielo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡀𐡂𐡓𐡄",
+      "reading": "ʾgrh",
+      "meaning": "letter",
+      "translations": {
+        "fr": "lettre",
+        "es": "carta"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡀𐡂𐡓𐡕𐡀",
+      "reading": "ʾgrtʾ",
+      "meaning": "the letter",
+      "translations": {
+        "fr": "la lettre",
+        "es": "la carta"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "𐡆𐡉",
+      "reading": "zy",
+      "meaning": "of / which / who",
+      "translations": {
+        "fr": "de / qui / que",
+        "es": "de / que / quien"
+      },
+      "type": "particle"
+    }
+  ]
+}
