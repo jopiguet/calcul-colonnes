@@ -1,0 +1,74 @@
+{
+  "entries": [
+    {
+      "term": "добър ден",
+      "reading": "dobar den",
+      "meaning": "good day / hello",
+      "translations": {
+        "fr": "bonjour",
+        "es": "buenos días"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "благодаря",
+      "reading": "blagodarya",
+      "meaning": "thank you",
+      "translations": {
+        "fr": "merci",
+        "es": "gracias"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "довиждане",
+      "reading": "dovizhdane",
+      "meaning": "goodbye",
+      "translations": {
+        "fr": "au revoir",
+        "es": "adiós"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "чай",
+      "reading": "chay",
+      "meaning": "tea",
+      "translations": {
+        "fr": "thé",
+        "es": "té"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "хляб",
+      "reading": "hlyab",
+      "meaning": "bread",
+      "translations": {
+        "fr": "pain",
+        "es": "pan"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "жена",
+      "reading": "zhena",
+      "meaning": "woman / wife",
+      "translations": {
+        "fr": "femme",
+        "es": "mujer"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "къща",
+      "reading": "kashta",
+      "meaning": "house",
+      "translations": {
+        "fr": "maison",
+        "es": "casa"
+      },
+      "type": "noun"
+    }
+  ]
+}

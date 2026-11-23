@@ -18,8 +18,8 @@ export type BlankResult = "right" | "wrong" | "blank" | "check";
  * egyptian: a strict Egyptian answer by its consonants, as a keyboard or the Egyptological pronunciation
  * writes them ("ankh", "anx", "ꜥnḫ"; "nefer", "nfr"); free answers keep their vowels.
  */
-export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan" | "runes" | "aramaic" | "elamite";
-export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "aramaic", "elamite"];
+export type Fold = "macrons" | "ij" | "uv" | "translit" | "aleph3" | "accents" | "subscripts" | "egyptian" | "greek" | "persian" | "arabic" | "hebrew" | "malayalam" | "quechua" | "inuktitut" | "tibetan" | "runes" | "aramaic" | "bulgarian" | "georgian" | "elamite";
+export const FOLDS: readonly Fold[] = ["macrons", "ij", "uv", "translit", "aleph3", "accents", "subscripts", "egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "aramaic", "bulgarian", "georgian", "elamite"];
 
 /**
  * An Egyptian transliteration as its consonant skeleton: ꜣ, ꜥ (3, ', a), the vowels a, e, o and the
@@ -271,6 +271,59 @@ export function runicKey(text: string): string {
     .trim();
 }
 
+/** Bulgarian Cyrillic in the official Latin transliteration (the Streamlined System of 2009). */
+const BULGARIAN: Record<string, string> = {
+  а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ж: "zh", з: "z", и: "i", й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p",
+  р: "r", с: "s", т: "t", у: "u", ф: "f", х: "h", ц: "ts", ч: "ch", ш: "sh", щ: "sht", ъ: "a", ь: "y", ю: "yu", я: "ya", ѝ: "i",
+};
+
+/**
+ * Bulgarian as typed: Cyrillic or Latin letters are one answer. Cyrillic is read in the official
+ * transliteration (ж zh, ц ts, щ sht, ъ a, ю yu, я ya); then the other usual spellings fold into it:
+ * ž č š as zh ch sh, ǎ ă as a, c as ts, x and kh as h, j as y, w as v. Stress marks, hyphens and spaces go.
+ */
+export function bulgarianKey(text: string): string {
+  let t = "";
+  for (const ch of text.normalize("NFC").toLowerCase()) t += BULGARIAN[ch] ?? ch;
+  return t
+    .replace(/ž/g, "zh").replace(/č/g, "ch").replace(/š/g, "sh").replace(/[ǎă]/g, "a")
+    .replace(/c(?!h)/g, "ts").replace(/kh/g, "h").replace(/x/g, "h").replace(/j/g, "y").replace(/w/g, "v")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+/** Georgian Mkhedruli (and Mtavruli capitals) in the national transliteration of 2002; ejectives with an apostrophe. */
+const GEORGIAN = "a b g d e v z t i k' l m n o p' zh r s t' u p k gh q' sh ch ts dz ts' ch' kh j h".split(" ");
+const GEORGIAN_LETTERS = "აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ";
+
+/**
+ * Georgian as typed: Georgian or Latin letters are one answer. Each letter is read in the national
+ * transliteration (კ k', ქ k, ღ gh, ყ q', ჭ ch'); the apostrophe of an ejective may be ' ’ ʼ or `, or the dot of
+ * the scholarly spelling (ṭ, ḳ, ṗ, q̇, č̣); ž š č ǰ ɣ x ʒ fold into zh sh ch j gh kh dz, c into ts. Hyphens and spaces go.
+ */
+export function georgianKey(text: string): string {
+  let t = "";
+  for (const ch of text.normalize("NFC").toLowerCase()) {
+    // Mtavruli capitals (U+1C90) are the same letters as Mkhedruli (U+10D0).
+    const code = ch.codePointAt(0)!;
+    const mkhedruli = code >= 0x1c90 && code <= 0x1cba ? String.fromCodePoint(code - 0x1c90 + 0x10d0) : ch;
+    const i = GEORGIAN_LETTERS.indexOf(mkhedruli);
+    t += i >= 0 ? GEORGIAN[i] : ch;
+  }
+  return t
+    .replace(/[’ʼ`´‘]/g, "'")
+    .replace(/ž/g, "zh").replace(/š/g, "sh").replace(/ǰ/g, "j").replace(/[ɣğ]/g, "gh").replace(/x/g, "kh").replace(/ʒ/g, "dz")
+    .replace(/ṭ/g, "t'").replace(/ḳ/g, "k'").replace(/ṗ/g, "p'").replace(/ċ/g, "ts'")
+    .replace(/č/g, "ch")
+    .normalize("NFD")
+    .replace(/[\u0323\u0307]/g, "'")
+    .replace(/[\u0300-\u036f]/g, "")
+    .normalize("NFC")
+    .replace(/c(?!h)/g, "ts")
+    .replace(/[^a-z'0-9]/g, "");
+}
+
 /** Imperial Aramaic letters in their usual transliteration (U+10840–10855); the section sign is a space. */
 const ARAMAIC: Record<string, string> = {"\u{10840}": "ʾ", "\u{10841}": "b", "\u{10842}": "g", "\u{10843}": "d", "\u{10844}": "h", "\u{10845}": "w", "\u{10846}": "z", "\u{10847}": "ḥ", "\u{10848}": "ṭ", "\u{10849}": "y", "\u{1084A}": "k", "\u{1084B}": "l", "\u{1084C}": "m", "\u{1084D}": "n", "\u{1084E}": "s", "\u{1084F}": "ʿ", "\u{10850}": "p", "\u{10851}": "ṣ", "\u{10852}": "q", "\u{10853}": "r", "\u{10854}": "š", "\u{10855}": "t", "\u{10857}": " "};
 
@@ -353,6 +406,8 @@ const SUBSCRIPTS: Record<string, string> = { "₀": "0", "₁": "1", "₂": "2",
 export function fold(text: string, folds: readonly Fold[]): string {
   // Aramaic first: an apostrophe is aleph and ‘ or ` ayin, letters a leading quote would lose.
   if (folds.includes("aramaic")) return aramaicKey(text.trim());
+  // Georgian: an apostrophe marks an ejective (k'), which a leading quote would lose.
+  if (folds.includes("georgian")) return georgianKey(text.trim());
   let t = text.normalize("NFC").toLowerCase().replace(/[’‘ʼ]/g, "'").replace(/\s+/g, " ").trim();
   t = t.replace(/^[«"“'¿¡(]+|[.!?;:,»"”)]+$/g, "").trim();
   // Commas and the like inside an answer are the learner's choice: "amīce, venī" or "amice veni".
@@ -368,6 +423,7 @@ export function fold(text: string, folds: readonly Fold[]): string {
   if (folds.includes("tibetan")) return tibetanKey(t);
   if (folds.includes("runes")) return runicKey(t);
   if (folds.includes("elamite")) return elamiteKey(t);
+  if (folds.includes("bulgarian")) return bulgarianKey(t);
   if (folds.includes("subscripts")) t = t.replace(/[₀-₉]/g, (d) => SUBSCRIPTS[d] ?? d);
   if (folds.includes("aleph3")) t = t.replace(/3/g, "ꜣ");
   if (folds.includes("translit")) {
@@ -395,7 +451,7 @@ export function markBlank(blank: Blank, given: string, folds: readonly Fold[]): 
   if (!given.trim()) return "blank";
   if (blank.kind === "free") {
     // A free answer is a sentence in the interface's language: the Egyptian consonant skeleton is for strict blanks only.
-    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "aramaic", "elamite"].includes(x));
+    const f = folds.filter((x) => !["egyptian", "greek", "persian", "arabic", "hebrew", "malayalam", "quechua", "inuktitut", "tibetan", "runes", "aramaic", "bulgarian", "georgian", "elamite"].includes(x));
     const exact = fold(given, f);
     if (blank.answers.some((a) => fold(a, f) === exact)) return "right";
     const l = loose(given, f);

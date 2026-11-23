@@ -196,9 +196,17 @@ export const akkadianSpeech = (key: string): Speech | null => cuneiformSpeech(ke
 export const sumerianSpeech = (key: string): Speech | null => cuneiformSpeech(key, "sux");
 
 /** The speech for a course language, or null when the language has none. */
+/** Bulgarian and Georgian: the script itself, in eSpeak NG's voice for the language; a transliteration is not spoken. */
+const scriptSpeech = (voice: string, script: RegExp) => (key: string): Speech | null =>
+  script.test(key) && !/[A-Za-z]/.test(key) ? { voice, input: key } : null;
+export const bulgarianSpeech = scriptSpeech("bg", /[\u0400-\u04FF]/u);
+export const georgianSpeech = scriptSpeech("ka", /[\u10D0-\u10FF]/u);
+
 export function speakerFor(language: string): ((key: string) => Speech | null) | null {
   switch (language) {
     case "ml": return malayalamSpeech;
+    case "bg": return bulgarianSpeech;
+    case "ka": return georgianSpeech;
     case "egy": return egyptianSpeech;
     case "akk": return akkadianSpeech;
     case "sux": return sumerianSpeech;

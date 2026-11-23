@@ -1,0 +1,29 @@
+{
+  "id": "georgian",
+  "language": "ka",
+  "icon": "🍇",
+  "folds": [
+    "georgian"
+  ],
+  "title": {
+    "fr": "Géorgien",
+    "es": "Georgiano",
+    "en": "Georgian"
+  },
+  "description": {
+    "fr": "Le géorgien dans son propre alphabet : les 33 lettres du mkhedruli et ses deux écritures aînées, les consonnes éjectives et leurs apostrophes, les groupes de consonnes, les salutations « victoire » et les nombres comptés par vingt. Les mots et les lettres s'écoutent.",
+    "es": "El georgiano en su propio alfabeto: las 33 letras del mkhedruli y sus dos escrituras mayores, las consonantes eyectivas y sus apóstrofos, los grupos de consonantes, los saludos de «victoria» y los números contados de veinte en veinte. Las palabras y las letras se escuchan.",
+    "en": "Georgian in its own alphabet: the 33 letters of mkhedruli and its two older scripts, the ejective consonants and their apostrophes, consonant clusters, the \"victory\" greetings and numbers counted by twenties. The words and letters can be listened to."
+  },
+  "vocabLesson": "Lesson {n}",
+  "keys": [
+    "'"
+  ],
+  "lessons": [
+    "01-mkhedruli",
+    "02-aspirates-and-ejectives",
+    "03-last-letters",
+    "04-greetings",
+    "05-numbers"
+  ]
+}

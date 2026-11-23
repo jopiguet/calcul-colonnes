@@ -1,0 +1,124 @@
+{
+  "entries": [
+    {
+      "term": "ერთი",
+      "reading": "erti",
+      "meaning": "one",
+      "translations": {
+        "fr": "un",
+        "es": "uno"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ორი",
+      "reading": "ori",
+      "meaning": "two",
+      "translations": {
+        "fr": "deux",
+        "es": "dos"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "სამი",
+      "reading": "sami",
+      "meaning": "three",
+      "translations": {
+        "fr": "trois",
+        "es": "tres"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ოთხი",
+      "reading": "otkhi",
+      "meaning": "four",
+      "translations": {
+        "fr": "quatre",
+        "es": "cuatro"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ხუთი",
+      "reading": "khuti",
+      "meaning": "five",
+      "translations": {
+        "fr": "cinq",
+        "es": "cinco"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ექვსი",
+      "reading": "ekvsi",
+      "meaning": "six",
+      "translations": {
+        "fr": "six",
+        "es": "seis"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "შვიდი",
+      "reading": "shvidi",
+      "meaning": "seven",
+      "translations": {
+        "fr": "sept",
+        "es": "siete"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "რვა",
+      "reading": "rva",
+      "meaning": "eight",
+      "translations": {
+        "fr": "huit",
+        "es": "ocho"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ცხრა",
+      "reading": "tskhra",
+      "meaning": "nine",
+      "translations": {
+        "fr": "neuf",
+        "es": "nueve"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ათი",
+      "reading": "ati",
+      "meaning": "ten",
+      "translations": {
+        "fr": "dix",
+        "es": "diez"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ოცი",
+      "reading": "otsi",
+      "meaning": "twenty",
+      "translations": {
+        "fr": "vingt",
+        "es": "veinte"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "ასი",
+      "reading": "asi",
+      "meaning": "a hundred",
+      "translations": {
+        "fr": "cent",
+        "es": "cien"
+      },
+      "type": "numeral"
+    }
+  ]
+}

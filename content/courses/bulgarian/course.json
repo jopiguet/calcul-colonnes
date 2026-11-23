@@ -1,0 +1,32 @@
+{
+  "id": "bulgarian",
+  "language": "bg",
+  "icon": "🌹",
+  "folds": [
+    "bulgarian"
+  ],
+  "title": {
+    "fr": "Bulgare",
+    "es": "Búlgaro",
+    "en": "Bulgarian"
+  },
+  "description": {
+    "fr": "Le bulgare dans l'alphabet né en Bulgarie : les 30 lettres du cyrillique, des faux amis aux lettres slaves, l'article placé à la fin du mot, le verbe « être », la question avec ли et les nombres. Les mots et les lettres s'écoutent.",
+    "es": "El búlgaro en el alfabeto nacido en Bulgaria: las 30 letras del cirílico, de los falsos amigos a las letras eslavas, el artículo al final de la palabra, el verbo «ser», la pregunta con ли y los números. Las palabras y las letras se escuchan.",
+    "en": "Bulgarian in the alphabet born in Bulgaria: the 30 Cyrillic letters, from the false friends to the Slavic letters, the article at the end of the word, the verb \"to be\", questions with ли, and numbers. The words and letters can be listened to."
+  },
+  "vocabLesson": "Lesson {n}",
+  "keys": [
+    "ž",
+    "č",
+    "š",
+    "ă"
+  ],
+  "lessons": [
+    "01-first-letters",
+    "02-more-letters",
+    "03-slavic-letters",
+    "04-the-article",
+    "05-numbers"
+  ]
+}

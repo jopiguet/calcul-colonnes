@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "8.10.0",
+  "version": "8.11.0",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -64,6 +64,7 @@
     "@fontsource/noto-sans-canadian-aboriginal": "^5.3.0",
     "@fontsource/noto-sans-cuneiform": "^5.3.0",
     "@fontsource/noto-sans-egyptian-hieroglyphs": "^5.3.0",
+    "@fontsource/noto-sans-georgian": "^5.2.5",
     "@fontsource/noto-sans-hebrew": "^5.3.0",
     "@fontsource/noto-sans-imperial-aramaic": "^5.2.5",
     "@fontsource/noto-sans-malayalam": "^5.3.0",

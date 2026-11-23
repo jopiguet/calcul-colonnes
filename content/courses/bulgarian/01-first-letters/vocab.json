@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "мама",
+      "reading": "mama",
+      "meaning": "mum",
+      "translations": {
+        "fr": "maman",
+        "es": "mamá"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "татко",
+      "reading": "tatko",
+      "meaning": "dad",
+      "translations": {
+        "fr": "papa",
+        "es": "papá"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "сок",
+      "reading": "sok",
+      "meaning": "juice",
+      "translations": {
+        "fr": "jus",
+        "es": "zumo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "нос",
+      "reading": "nos",
+      "meaning": "nose",
+      "translations": {
+        "fr": "nez",
+        "es": "nariz"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "метро",
+      "reading": "metro",
+      "meaning": "underground / metro",
+      "translations": {
+        "fr": "métro",
+        "es": "metro"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ресторант",
+      "reading": "restorant",
+      "meaning": "restaurant",
+      "translations": {
+        "fr": "restaurant",
+        "es": "restaurante"
+      },
+      "type": "noun"
+    }
+  ]
+}

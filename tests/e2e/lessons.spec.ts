@@ -432,3 +432,38 @@ test("Imperial Aramaic: right to left in its font, answers in transliteration, l
   await card.locator(".lesson-check").click();
   await expect(card.locator(".lesson-exercise-score")).toHaveText("3/4");
 });
+
+test("Bulgarian and Georgian: their scripts marked and in their fonts, answers in script or Latin letters, sounds", async ({ page }) => {
+  await newPlayer(page, "Nino");
+  await goHome(page);
+  await expect(page.locator(".activity-group[data-group='characters'] [data-activity='vocab-course-georgian-letters']")).toBeVisible();
+  await expect(page.locator(".activity-group[data-group='characters'] [data-activity='vocab-course-bulgarian-letters']")).toBeVisible();
+
+  await openActivity(page, "lessons-bulgarian");
+  await expect(page.locator(".lessons-item")).toHaveCount(5);
+  await page.locator(".lessons-item").first().click();
+  const cyr = page.locator(".script-cyrillic").first();
+  await expect(cyr).toHaveAttribute("lang", "bg");
+  expect(await cyr.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Noto Sans");
+  // A Bulgarian word has its ▶.
+  await expect(page.locator(".sound-play").first()).toBeVisible();
+  const read = page.locator(".lesson-exercise[data-exercise='read']");
+  for (const [i, v] of [[0, "sok"], [1, "нос"], [2, "tatko"], [3, "metro"]] as const) await read.locator(".lesson-input").nth(i).fill(v);
+  await read.locator(".lesson-check").click();
+  await expect(read.locator(".lesson-exercise-score")).toHaveText("4/4");
+
+  await openActivity(page, "lessons-georgian");
+  await page.locator(".lessons-item").nth(1).click();
+  const ka = page.locator(".script-georgian").first();
+  await expect(ka).toHaveAttribute("lang", "ka");
+  expect(await ka.evaluate((n) => getComputedStyle(n).fontFamily)).toContain("Noto Sans Georgian");
+  expect(await page.evaluate(async () => { await document.fonts.load('20px "Noto Sans Georgian"', "ა"); return document.fonts.check('20px "Noto Sans Georgian"', "ა"); })).toBe(true);
+  // The apostrophe of an ejective counts.
+  const sounds = page.locator(".lesson-exercise[data-exercise='sounds']");
+  for (const [i, v] of [[0, "p'"], [1, "t"], [2, "k’"], [3, "h"]] as const) await sounds.locator(".lesson-input").nth(i).fill(v);
+  await sounds.locator(".lesson-check").click();
+  await expect(sounds.locator(".lesson-exercise-score")).toHaveText("4/4");
+  await sounds.locator(".lesson-input").nth(0).fill("p");
+  await sounds.locator(".lesson-check").click();
+  await expect(sounds.locator(".lesson-exercise-score")).toHaveText("3/4");
+});

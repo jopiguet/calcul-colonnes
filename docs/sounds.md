@@ -1,12 +1,14 @@
 # Sounds of the courses
 
-Four courses can be listened to: 🌴 Malayalam, 𓋹 Hieroglyphic Egyptian, Sumerian and Akkadian. A ▶ stands after a word of the lesson text, in a table of signs or letters, after a proverb, and on the Malayalam letter cards once a card is answered. The voice is synthetic: clear enough to hear how a word goes, robotic, and for the three ancient languages a convention, not a recording of the language.
+Six courses can be listened to: 🌴 Malayalam, 🌹 Bulgarian, 🍇 Georgian, 𓋹 Hieroglyphic Egyptian, Sumerian and Akkadian. A ▶ stands after a word of the lesson text, in a table of signs or letters, after a proverb, and on the Malayalam, Bulgarian and Georgian letter cards once a card is answered. The voice is synthetic: clear enough to hear how a word goes, robotic, and for the three ancient languages a convention, not a recording of the language.
 
 ## What is said
 
 | Course | Spoken from | Voice | What you hear |
 |---|---|---|---|
 | Malayalam | the script itself | eSpeak NG's Malayalam voice | today's pronunciation, as the synthesiser knows it; ഴ comes out close to an r |
+| Bulgarian | the Cyrillic itself | eSpeak NG's Bulgarian voice | today's pronunciation; the stress where the synthesiser puts it (it is not written) |
+| Georgian | the Mkhedruli itself | eSpeak NG's Georgian voice | today's pronunciation, ejectives included; the older scripts (Asomtavruli, Nuskhuri) and the Mtavruli capitals are not spoken |
 | Egyptian | the transliteration | phonemes, Italian voice | the Egyptological school reading: an *e* between two consonants, ꜣ and ꜥ as *a*, j as *i*, w as *u* between consonants, ḫ ẖ as *kh*, š as *sh*, ṯ as *tj*, ḏ as *dj*: *nfr* "nefer", *sḏm.f* "sedjemef"; a few words as usage has them (*ꜥnḫ* "ankh", *ptḥ* "ptah") |
 | Akkadian | the transliteration | phonemes, Italian voice | the usual reconstruction: š *sh*, ḫ *kh*, ʾ a glottal stop, the emphatics as their plain consonant, long vowels long, the stress on the last long or closed syllable before the final one (a contracted final vowel takes it); a hyphenated spelling sign by sign (*ša-ar-ru-um*) |
 | Sumerian | the transliteration | phonemes, Italian voice | the conventional values: ĝ *ng*, ḫ *kh*, š *sh*, the sign numbers dropped (*e₂-gal* "egal") |
@@ -19,7 +21,7 @@ The same function, `soundTargets` in `src/sound-targets.ts`, picks the words in 
 
 - an italic (`*nfr*`), the way the courses write transliterations;
 - a table cell holding only text (the letter column of the table of signs);
-- a run of Malayalam script.
+- a run of Malayalam, Bulgarian (Cyrillic) or Georgian script.
 
 For the ancient languages a word must be written the same way in the French, Spanish and English versions of the lesson, so an italic of one language (emphasis) is never spoken, and it must use only the letters of its transliteration (`server/pronounce.ts`). Words in the exercises have no ▶: it would give the answer away. The course vocabulary lists and cards have none either; the letter cards have one, after the answer.
 

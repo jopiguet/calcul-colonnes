@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "term": "გამარჯობა",
+      "reading": "gamarjoba",
+      "meaning": "hello",
+      "translations": {
+        "fr": "bonjour",
+        "es": "hola"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "გაგიმარჯოს",
+      "reading": "gagimarjos",
+      "meaning": "hello (reply)",
+      "translations": {
+        "fr": "bonjour (réponse)",
+        "es": "hola (respuesta)"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "მადლობა",
+      "reading": "madloba",
+      "meaning": "thank you",
+      "translations": {
+        "fr": "merci",
+        "es": "gracias"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ბოდიში",
+      "reading": "bodishi",
+      "meaning": "sorry",
+      "translations": {
+        "fr": "pardon",
+        "es": "perdón"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "ნახვამდის",
+      "reading": "nakhvamdis",
+      "meaning": "goodbye",
+      "translations": {
+        "fr": "au revoir",
+        "es": "adiós"
+      },
+      "type": "phrase"
+    },
+    {
+      "term": "კი",
+      "reading": "k'i",
+      "meaning": "yes",
+      "translations": {
+        "fr": "oui",
+        "es": "sí"
+      },
+      "type": "particle"
+    },
+    {
+      "term": "დიახ",
+      "reading": "diakh",
+      "meaning": "yes (polite)",
+      "translations": {
+        "fr": "oui (poli)",
+        "es": "sí (cortés)"
+      },
+      "type": "particle"
+    },
+    {
+      "term": "არა",
+      "reading": "ara",
+      "meaning": "no",
+      "translations": {
+        "fr": "non",
+        "es": "no"
+      },
+      "type": "particle"
+    }
+  ]
+}

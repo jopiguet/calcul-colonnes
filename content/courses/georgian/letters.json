@@ -1,0 +1,209 @@
+{
+ "book": {
+  "title": "Georgian",
+  "credit": "Written for Luma's Georgian course (docs/language-courses.md); the national transliteration of 2002"
+ },
+ "lessons": [
+  {
+   "title": "ა ე ი ო უ · ბ გ დ ვ ზ ლ მ ნ რ ს",
+   "subtitle": "a e i o u · b g d v z l m n r s",
+   "sections": [
+    {
+     "title": "ა ე ი ო უ · ბ გ დ ვ ზ ლ მ ნ რ ს",
+     "subtitle": "a e i o u · b g d v z l m n r s",
+     "entries": [
+      {
+       "term": "ა",
+       "meaning": "a / ani",
+       "note": "ani"
+      },
+      {
+       "term": "ე",
+       "meaning": "e / eni",
+       "note": "eni"
+      },
+      {
+       "term": "ი",
+       "meaning": "i / ini",
+       "note": "ini"
+      },
+      {
+       "term": "ო",
+       "meaning": "o / oni",
+       "note": "oni"
+      },
+      {
+       "term": "უ",
+       "meaning": "u / uni",
+       "note": "uni"
+      },
+      {
+       "term": "ბ",
+       "meaning": "b / bani",
+       "note": "bani"
+      },
+      {
+       "term": "გ",
+       "meaning": "g / gani",
+       "note": "gani"
+      },
+      {
+       "term": "დ",
+       "meaning": "d / doni",
+       "note": "doni"
+      },
+      {
+       "term": "ვ",
+       "meaning": "v / vini",
+       "note": "vini"
+      },
+      {
+       "term": "ზ",
+       "meaning": "z / zeni",
+       "note": "zeni"
+      },
+      {
+       "term": "ლ",
+       "meaning": "l / lasi",
+       "note": "lasi"
+      },
+      {
+       "term": "მ",
+       "meaning": "m / mani",
+       "note": "mani"
+      },
+      {
+       "term": "ნ",
+       "meaning": "n / nari",
+       "note": "nari"
+      },
+      {
+       "term": "რ",
+       "meaning": "r / rae",
+       "note": "rae"
+      },
+      {
+       "term": "ს",
+       "meaning": "s / sani",
+       "note": "sani"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ფ პ თ ტ ქ კ ყ ჰ",
+   "subtitle": "p p' t t' k k' q' h",
+   "sections": [
+    {
+     "title": "ფ პ თ ტ ქ კ ყ ჰ",
+     "subtitle": "p p' t t' k k' q' h",
+     "entries": [
+      {
+       "term": "ფ",
+       "meaning": "p / pari",
+       "note": "pari"
+      },
+      {
+       "term": "პ",
+       "meaning": "p' / p'ari",
+       "note": "p'ari"
+      },
+      {
+       "term": "თ",
+       "meaning": "t / tani",
+       "note": "tani"
+      },
+      {
+       "term": "ტ",
+       "meaning": "t' / t'ari",
+       "note": "t'ari"
+      },
+      {
+       "term": "ქ",
+       "meaning": "k / kani",
+       "note": "kani"
+      },
+      {
+       "term": "კ",
+       "meaning": "k' / k'ani",
+       "note": "k'ani"
+      },
+      {
+       "term": "ყ",
+       "meaning": "q' / q'ari",
+       "note": "q'ari"
+      },
+      {
+       "term": "ჰ",
+       "meaning": "h / hae",
+       "note": "hae"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "შ ჟ ჩ ჭ ც წ ძ ჯ ღ ხ",
+   "subtitle": "sh zh ch ch' ts ts' dz j gh kh",
+   "sections": [
+    {
+     "title": "შ ჟ ჩ ჭ ც წ ძ ჯ ღ ხ",
+     "subtitle": "sh zh ch ch' ts ts' dz j gh kh",
+     "entries": [
+      {
+       "term": "შ",
+       "meaning": "sh / š / shini",
+       "note": "shini"
+      },
+      {
+       "term": "ჟ",
+       "meaning": "zh / ž / zhani",
+       "note": "zhani"
+      },
+      {
+       "term": "ჩ",
+       "meaning": "ch / č / chini",
+       "note": "chini"
+      },
+      {
+       "term": "ჭ",
+       "meaning": "ch' / ch'ari",
+       "note": "ch'ari"
+      },
+      {
+       "term": "ც",
+       "meaning": "ts / c / tsani",
+       "note": "tsani"
+      },
+      {
+       "term": "წ",
+       "meaning": "ts' / ts'ili",
+       "note": "ts'ili"
+      },
+      {
+       "term": "ძ",
+       "meaning": "dz / dzili",
+       "note": "dzili"
+      },
+      {
+       "term": "ჯ",
+       "meaning": "j / ǰ / jani",
+       "note": "jani"
+      },
+      {
+       "term": "ღ",
+       "meaning": "gh / ɣ / ghani",
+       "note": "ghani"
+      },
+      {
+       "term": "ხ",
+       "meaning": "kh / x / khani",
+       "note": "khani"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

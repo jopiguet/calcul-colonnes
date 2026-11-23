@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "ღვინო",
+      "reading": "ghvino",
+      "meaning": "wine",
+      "translations": {
+        "fr": "vin",
+        "es": "vino"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "წყალი",
+      "reading": "ts'q'ali",
+      "meaning": "water",
+      "translations": {
+        "fr": "eau",
+        "es": "agua"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ხაჭაპური",
+      "reading": "khach'ap'uri",
+      "meaning": "khachapuri / cheese bread",
+      "translations": {
+        "fr": "khatchapouri / pain au fromage",
+        "es": "jachapuri / pan con queso"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ჩაი",
+      "reading": "chai",
+      "meaning": "tea",
+      "translations": {
+        "fr": "thé",
+        "es": "té"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ძაღლი",
+      "reading": "dzaghli",
+      "meaning": "dog",
+      "translations": {
+        "fr": "chien",
+        "es": "perro"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ცა",
+      "reading": "tsa",
+      "meaning": "sky",
+      "translations": {
+        "fr": "ciel",
+        "es": "cielo"
+      },
+      "type": "noun"
+    }
+  ]
+}

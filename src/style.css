@@ -17,7 +17,7 @@
   --warn: #93600a;
   --square: 1.25rem;
   --radius: 0.75rem;
-  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Canadian Aboriginal", "Noto Serif Tibetan", "Noto Sans Runic", "Noto Sans Imperial Aramaic", "Luma Linear Elamite", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
+  --font: "Atkinson Hyperlegible Next", "Noto Sans", "Vazirmatn", "Noto Sans Hebrew", "Noto Sans Malayalam", "Noto Sans Canadian Aboriginal", "Noto Serif Tibetan", "Noto Sans Runic", "Noto Sans Georgian", "Noto Sans Imperial Aramaic", "Luma Linear Elamite", "Noto Sans Cuneiform", "Noto Sans Egyptian Hieroglyphs", system-ui, sans-serif;
   --digits: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
   /* The physics playground: a ball, grass, light. */
   --ball: #d9541e;
@@ -7122,6 +7122,24 @@ button.tiny {
   letter-spacing: 0.04em;
 }
 .lesson-vocab-sign:lang(gem) {
+  font-size: 1.35em;
+}
+/* Bulgarian Cyrillic: Noto Sans (the interface font has no Cyrillic), the size of the text. */
+.script-cyrillic,
+.lesson-vocab-sign:lang(bg) {
+  font-family: "Noto Sans", var(--font);
+}
+.lesson-vocab-sign:lang(bg) {
+  font-size: 1.3em;
+}
+/* Georgian: its letters have tall ascenders and descenders, so a little room between lines. */
+.script-georgian,
+.lesson-vocab-sign:lang(ka) {
+  font-family: "Noto Sans Georgian", var(--font);
+  font-size: 1.08em;
+  line-height: 1.6;
+}
+.lesson-vocab-sign:lang(ka) {
   font-size: 1.35em;
 }
 /* Imperial Aramaic: right to left, its letters small beside Latin ones. */

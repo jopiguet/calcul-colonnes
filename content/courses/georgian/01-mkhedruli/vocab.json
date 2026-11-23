@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "მამა",
+      "reading": "mama",
+      "meaning": "father",
+      "translations": {
+        "fr": "père",
+        "es": "padre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "დედა",
+      "reading": "deda",
+      "meaning": "mother",
+      "translations": {
+        "fr": "mère",
+        "es": "madre"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "მზე",
+      "reading": "mze",
+      "meaning": "sun",
+      "translations": {
+        "fr": "soleil",
+        "es": "sol"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ვარდი",
+      "reading": "vardi",
+      "meaning": "rose",
+      "translations": {
+        "fr": "rose",
+        "es": "rosa"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "გული",
+      "reading": "guli",
+      "meaning": "heart",
+      "translations": {
+        "fr": "cœur",
+        "es": "corazón"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ლომი",
+      "reading": "lomi",
+      "meaning": "lion",
+      "translations": {
+        "fr": "lion",
+        "es": "león"
+      },
+      "type": "noun"
+    }
+  ]
+}

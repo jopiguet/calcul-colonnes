@@ -60,17 +60,17 @@
  */
 
 import { hasKana, kanaToRomaji } from "./kana";
-import { aramaicKey, elamiteKey, inuktitutKey, malayalamKey, runicKey, tibetanKey } from "../lessons/grade";
+import { aramaicKey, bulgarianKey, elamiteKey, georgianKey, inuktitutKey, malayalamKey, runicKey, tibetanKey } from "../lessons/grade";
 
 export type Verdict = "right" | "accent" | "typo" | "article" | "wrong";
-export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo" | "gem" | "elx" | "arc";
+export type AnswerLang = "en" | "fr" | "es" | "de" | "ja" | "ar" | "pt" | "sw" | "zh" | "sux" | "egy" | "ml" | "iu" | "bo" | "gem" | "elx" | "arc" | "bg" | "ka";
 
 /** Languages written in their own script and also answered by their reading (as Arabic). */
-export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx", "arc"]);
+export const SCRIPT_LANGS: ReadonlySet<string> = new Set(["ja", "ar", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx", "arc", "bg", "ka"]);
 
 /** The grading rules for a book language: those it has, else English (plain text). */
 export function answerLangOf(code: string): AnswerLang {
-  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx", "arc"];
+  const known: readonly string[] = ["en", "fr", "es", "de", "ja", "ar", "pt", "sw", "zh", "sux", "egy", "ml", "iu", "bo", "gem", "elx", "arc", "bg", "ka"];
   return (known.includes(code) ? code : "en") as AnswerLang;
 }
 
@@ -96,6 +96,8 @@ const ARTICLES: Record<AnswerLang, string[]> = {
   gem: [],
   elx: [],
   arc: [],
+  bg: [],
+  ka: [],
 };
 
 /** Text as shown: book typography cleaned, "..." for an open end. */
@@ -495,6 +497,9 @@ export function grade(given: string, expected: string, lang: AnswerLang, reading
   if (lang === "bo") return gradeKeyed(given, expected, reading, tibetanKey);
   if (lang === "gem") return gradeKeyed(given, expected, reading, runicKey);
   if (lang === "elx") return gradeKeyed(given, expected, reading, elamiteKey);
+  if (lang === "bg") return gradeKeyed(given, expected, reading, bulgarianKey);
+  // An apostrophe marks an ejective: kept apart from a plain letter (k' is not k).
+  if (lang === "ka") return gradeKeyed(given, expected, reading, georgianKey);
   // A backtick is ayin here, not an apostrophe (which is aleph).
   if (lang === "arc") return gradeKeyed(given.replace(/`/g, "ʿ"), expected, reading, aramaicKey);
   // English: contractions written out on both sides ("I'm" and "I am").

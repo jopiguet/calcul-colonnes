@@ -71,9 +71,9 @@ for (const c of courses().values()) {
       for (const p of l.byLang[lang].parts) if (p.kind !== "exercise") for (const k of keysOf(p.markdown)) keys.add(k);
       return keys;
     });
-    // Malayalam is spotted by its script; a transliteration must be the same in the three languages
+    // Malayalam, Bulgarian and Georgian are spotted by their script; a transliteration must be the same in the three languages
     // of the lesson (an italic word of French alone is emphasis, not Egyptian).
-    const keys = c.meta.language === "ml" ? new Set(perLang.flatMap((s) => [...s])) : [...perLang[0]!].filter((k) => perLang.every((s) => s.has(k)));
+    const keys = ["ml", "bg", "ka"].includes(c.meta.language) ? new Set(perLang.flatMap((s) => [...s])) : [...perLang[0]!].filter((k) => perLang.every((s) => s.has(k)));
     for (const k of keys) {
       const s = speak(k);
       if (s) items.set(k, s);

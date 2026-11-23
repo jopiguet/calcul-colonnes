@@ -1,0 +1,94 @@
+{
+  "entries": [
+    {
+      "term": "село",
+      "reading": "selo",
+      "meaning": "village",
+      "translations": {
+        "fr": "village",
+        "es": "pueblo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "селото",
+      "reading": "seloto",
+      "meaning": "the village",
+      "translations": {
+        "fr": "le village",
+        "es": "el pueblo"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "жената",
+      "reading": "zhenata",
+      "meaning": "the woman",
+      "translations": {
+        "fr": "la femme",
+        "es": "la mujer"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "градът",
+      "reading": "gradat",
+      "meaning": "the town / the city",
+      "translations": {
+        "fr": "la ville",
+        "es": "la ciudad"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "съм",
+      "reading": "sam",
+      "meaning": "I am / to be",
+      "translations": {
+        "fr": "je suis / être",
+        "es": "soy / ser"
+      },
+      "type": "verb"
+    },
+    {
+      "term": "студент",
+      "reading": "student",
+      "meaning": "student",
+      "translations": {
+        "fr": "étudiant",
+        "es": "estudiante"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "да",
+      "reading": "da",
+      "meaning": "yes",
+      "translations": {
+        "fr": "oui",
+        "es": "sí"
+      },
+      "type": "particle"
+    },
+    {
+      "term": "не",
+      "reading": "ne",
+      "meaning": "no / not",
+      "translations": {
+        "fr": "non / ne pas",
+        "es": "no"
+      },
+      "type": "particle"
+    },
+    {
+      "term": "голям",
+      "reading": "golyam",
+      "meaning": "big",
+      "translations": {
+        "fr": "grand",
+        "es": "grande"
+      },
+      "type": "adjective"
+    }
+  ]
+}

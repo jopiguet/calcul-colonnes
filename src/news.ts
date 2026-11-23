@@ -23,6 +23,21 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "8.11.0",
+    fr: [
+      "Deux nouveaux cours, deux alphabets vivants : 🌹 Bulgare, le cyrillique là où il est né, l'article à la fin du mot et les nombres ; 🍇 Géorgien, ses trois écritures, les consonnes éjectives, les salutations « victoire » et les nombres comptés par vingt.",
+      "Les réponses se tapent dans l'écriture ou en lettres latines (dobar den, k'ari), et les mots et les lettres des deux cours s'écoutent.",
+    ],
+    es: [
+      "Dos cursos nuevos, dos alfabetos vivos: 🌹 Búlgaro, el cirílico donde nació, el artículo al final de la palabra y los números; 🍇 Georgiano, sus tres escrituras, las consonantes eyectivas, los saludos de «victoria» y los números contados de veinte en veinte.",
+      "Las respuestas se escriben en la escritura o en letras latinas (dobar den, k'ari), y las palabras y las letras de los dos cursos se escuchan.",
+    ],
+    en: [
+      "Two new courses, two living alphabets: 🌹 Bulgarian, Cyrillic where it was born, the article at the end of the word and numbers; 🍇 Georgian, its three scripts, the ejective consonants, the \"victory\" greetings and counting by twenties.",
+      "Answers are typed in the script or in Latin letters (dobar den, k'ari), and the words and letters of both courses can be listened to.",
+    ],
+  },
+  {
     version: "8.10.0",
     fr: [
       "Un nouveau cours, 𐡀 Araméen d'empire : l'araméen des rois perses, de droite à gauche dans son écriture, avec l'état emphatique, les papyrus d'Éléphantine et les signes des nombres ; 34 mots et 28 cartes de lettres et de nombres.",

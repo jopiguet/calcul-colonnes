@@ -1,0 +1,194 @@
+{
+ "book": {
+  "title": "Bulgarian",
+  "credit": "Written for Luma's Bulgarian course (docs/language-courses.md); the official transliteration (Streamlined System, 2009)"
+ },
+ "lessons": [
+  {
+   "title": "Аа Ее Кк Мм Оо Тт · Вв Нн Рр Сс Уу Хх",
+   "subtitle": "а е к м о т · в н р с у х",
+   "sections": [
+    {
+     "title": "Аа Ее Кк Мм Оо Тт · Вв Нн Рр Сс Уу Хх",
+     "subtitle": "а е к м о т · в н р с у х",
+     "entries": [
+      {
+       "term": "а",
+       "meaning": "a",
+       "note": "А · мама"
+      },
+      {
+       "term": "е",
+       "meaning": "e",
+       "note": "Е · метро"
+      },
+      {
+       "term": "к",
+       "meaning": "k",
+       "note": "К · сок"
+      },
+      {
+       "term": "м",
+       "meaning": "m",
+       "note": "М · мама"
+      },
+      {
+       "term": "о",
+       "meaning": "o",
+       "note": "О · нос"
+      },
+      {
+       "term": "т",
+       "meaning": "t",
+       "note": "Т · татко"
+      },
+      {
+       "term": "в",
+       "meaning": "v",
+       "note": "В · вода"
+      },
+      {
+       "term": "н",
+       "meaning": "n",
+       "note": "Н · нос"
+      },
+      {
+       "term": "р",
+       "meaning": "r",
+       "note": "Р · ресторант"
+      },
+      {
+       "term": "с",
+       "meaning": "s",
+       "note": "С · сок"
+      },
+      {
+       "term": "у",
+       "meaning": "u",
+       "note": "У · утро"
+      },
+      {
+       "term": "х",
+       "meaning": "h / kh",
+       "note": "Х · хляб"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Бб Гг Дд Зз Ии Йй Лл Пп Фф",
+   "subtitle": "б г д з и й л п ф",
+   "sections": [
+    {
+     "title": "Бб Гг Дд Зз Ии Йй Лл Пп Фф",
+     "subtitle": "б г д з и й л п ф",
+     "entries": [
+      {
+       "term": "б",
+       "meaning": "b",
+       "note": "Б · бира"
+      },
+      {
+       "term": "г",
+       "meaning": "g",
+       "note": "Г · град"
+      },
+      {
+       "term": "д",
+       "meaning": "d",
+       "note": "Д · ден"
+      },
+      {
+       "term": "з",
+       "meaning": "z",
+       "note": "З · здравей"
+      },
+      {
+       "term": "и",
+       "meaning": "i",
+       "note": "И · бира"
+      },
+      {
+       "term": "й",
+       "meaning": "y / j",
+       "note": "Й · чай"
+      },
+      {
+       "term": "л",
+       "meaning": "l",
+       "note": "Л · лимон"
+      },
+      {
+       "term": "п",
+       "meaning": "p",
+       "note": "П · пет"
+      },
+      {
+       "term": "ф",
+       "meaning": "f",
+       "note": "Ф · филм"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Жж Цц Чч Шш Щщ Ъъ Ьь Юю Яя",
+   "subtitle": "ж ц ч ш щ ъ ь ю я",
+   "sections": [
+    {
+     "title": "Жж Цц Чч Шш Щщ Ъъ Ьь Юю Яя",
+     "subtitle": "ж ц ч ш щ ъ ь ю я",
+     "entries": [
+      {
+       "term": "ж",
+       "meaning": "zh / ž",
+       "note": "Ж · жена"
+      },
+      {
+       "term": "ц",
+       "meaning": "ts / c",
+       "note": "Ц · цар"
+      },
+      {
+       "term": "ч",
+       "meaning": "ch / č",
+       "note": "Ч · чай"
+      },
+      {
+       "term": "ш",
+       "meaning": "sh / š",
+       "note": "Ш · шест"
+      },
+      {
+       "term": "щ",
+       "meaning": "sht / št",
+       "note": "Щ · щастие"
+      },
+      {
+       "term": "ъ",
+       "meaning": "a / ă / ǎ",
+       "note": "Ъ · къща"
+      },
+      {
+       "term": "ь",
+       "meaning": "y",
+       "note": "Ь · шофьор"
+      },
+      {
+       "term": "ю",
+       "meaning": "yu / ju",
+       "note": "Ю · юли"
+      },
+      {
+       "term": "я",
+       "meaning": "ya / ja",
+       "note": "Я · хляб"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

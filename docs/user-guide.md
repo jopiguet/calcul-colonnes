@@ -979,6 +979,14 @@ right to left in its own script. Answers are typed in consonant transliteration
 and vowels you add are ignored; the buttons under the fields write ʾ ʿ ḥ ṭ ṣ š.
 Its 28 cards are the 22 letters (sound or name) and six number signs. No sounds.
 
+The Bulgarian and Georgian courses teach two living alphabets and the first
+steps of each language. Answers count in the script or in Latin letters:
+Bulgarian in the official transliteration (*dobar den*; *ž*, *č*, *š*, *ă*
+also work), Georgian in the national one, where the apostrophe marks an
+ejective and counts (*k'ari* "door", *kari* "wind"). Both can be listened to:
+a ▶ after the Cyrillic and Georgian words of the lessons and on the 30 and 33
+letter cards.
+
 Every course's words (and the Malayalam letters) also have their card under
 *Langues* on the home page, with the words to review, beside your own books
 of the same language.

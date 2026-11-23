@@ -42,6 +42,7 @@ export function inline(text: string, target: HTMLElement = el("span")): HTMLElem
  * Malayalam: each run of words in its font, a little larger, since its letters are small beside Latin ones.
  * Inuktitut syllabics, Tibetan, runes: each run in its font, marked with its language; Tibetan larger, for its stacks.
  * Imperial Aramaic: each run of words set apart, right to left, in its font.
+ * Bulgarian (Cyrillic) and Georgian (Mkhedruli, Mtavruli, and the older Asomtavruli and Nuskhuri): each run marked with its language, in its font.
  */
 const RTL = "\\u0590-\\u05FF\\uFB1D-\\uFB4F\\u0600-\\u06FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF";
 // Commas and stops between right-to-left words stay in the run; a colon or semicolon ends it, since it
@@ -55,7 +56,9 @@ const RUN = "\\u16A0-\\u16F8";
 const ELX = "\\uE001-\\uE15C";
 // Imperial Aramaic letters, number signs and section sign (outside the Basic Plane).
 const ARC = "\\u{10840}-\\u{1085F}";
-const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${ML}](?:[${ML}\\u200C\\u200D ,.?!]*[${ML}])?|[${IU}](?:[${IU} ,.?!]*[${IU}])?|[${BO}](?:[${BO} ]*[${BO}])?|[${RUN}](?:[${RUN} ]*[${RUN}])?|[${ELX}](?:[${ELX} ]*[${ELX}])?|[${ARC}](?:[${ARC} ]*[${ARC}])?|[${RTL}](?:[${RTL}\\u200C\\u200D ,.?!]*(?:[${RTL}]|[…?!]))?)`, "u");
+const CYR = "\\u0400-\\u04FF";
+const KA = "\\u10A0-\\u10FF\\u1C90-\\u1CBF\\u2D00-\\u2D2F";
+const SIGNS = new RegExp(`([\\u{13000}-\\u{1345F}\\u{12000}-\\u{1254F}]+|[${ML}](?:[${ML}\\u200C\\u200D ,.?!]*[${ML}])?|[${IU}](?:[${IU} ,.?!]*[${IU}])?|[${BO}](?:[${BO} ]*[${BO}])?|[${RUN}](?:[${RUN} ]*[${RUN}])?|[${ELX}](?:[${ELX} ]*[${ELX}])?|[${ARC}](?:[${ARC} ]*[${ARC}])?|[${CYR}](?:[${CYR} \\-,.?!]*[${CYR}])?|[${KA}](?:[${KA} \\-,.?!]*[${KA}])?|[${RTL}](?:[${RTL}\\u200C\\u200D ,.?!]*(?:[${RTL}]|[…?!]))?)`, "u");
 
 function signs(text: string, target: HTMLElement): void {
   text.split(SIGNS).forEach((piece, i) => {
@@ -68,6 +71,14 @@ function signs(text: string, target: HTMLElement): void {
     } else if (/[\u1400-\u167F\u18B0-\u18FF]/u.test(piece)) {
       const run = el("span", "script-inuktitut", piece);
       run.lang = "iu";
+      target.append(run);
+    } else if (/[\u0400-\u04FF]/u.test(piece)) {
+      const run = el("span", "script-cyrillic", piece);
+      run.lang = "bg";
+      target.append(run);
+    } else if (/[\u10A0-\u10FF\u1C90-\u1CBF\u2D00-\u2D2F]/u.test(piece)) {
+      const run = el("span", "script-georgian", piece);
+      run.lang = "ka";
       target.append(run);
     } else if (/[\u{10840}-\u{1085F}]/u.test(piece)) {
       const run = el("bdi", "script-aramaic", piece);

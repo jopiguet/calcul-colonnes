@@ -1,0 +1,124 @@
+{
+  "entries": [
+    {
+      "term": "едно",
+      "reading": "edno",
+      "meaning": "one",
+      "translations": {
+        "fr": "un",
+        "es": "uno"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "две",
+      "reading": "dve",
+      "meaning": "two",
+      "translations": {
+        "fr": "deux",
+        "es": "dos"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "три",
+      "reading": "tri",
+      "meaning": "three",
+      "translations": {
+        "fr": "trois",
+        "es": "tres"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "четири",
+      "reading": "chetiri",
+      "meaning": "four",
+      "translations": {
+        "fr": "quatre",
+        "es": "cuatro"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "пет",
+      "reading": "pet",
+      "meaning": "five",
+      "translations": {
+        "fr": "cinq",
+        "es": "cinco"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "шест",
+      "reading": "shest",
+      "meaning": "six",
+      "translations": {
+        "fr": "six",
+        "es": "seis"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "седем",
+      "reading": "sedem",
+      "meaning": "seven",
+      "translations": {
+        "fr": "sept",
+        "es": "siete"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "осем",
+      "reading": "osem",
+      "meaning": "eight",
+      "translations": {
+        "fr": "huit",
+        "es": "ocho"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "девет",
+      "reading": "devet",
+      "meaning": "nine",
+      "translations": {
+        "fr": "neuf",
+        "es": "nueve"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "десет",
+      "reading": "deset",
+      "meaning": "ten",
+      "translations": {
+        "fr": "dix",
+        "es": "diez"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "сто",
+      "reading": "sto",
+      "meaning": "a hundred",
+      "translations": {
+        "fr": "cent",
+        "es": "cien"
+      },
+      "type": "numeral"
+    },
+    {
+      "term": "колко",
+      "reading": "kolko",
+      "meaning": "how much / how many",
+      "translations": {
+        "fr": "combien",
+        "es": "cuánto"
+      },
+      "type": "adverb"
+    }
+  ]
+}

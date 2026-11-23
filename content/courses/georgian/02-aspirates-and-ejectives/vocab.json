@@ -1,0 +1,74 @@
+{
+  "entries": [
+    {
+      "term": "საქართველო",
+      "reading": "sakartvelo",
+      "meaning": "Georgia",
+      "translations": {
+        "fr": "Géorgie",
+        "es": "Georgia"
+      },
+      "type": "name"
+    },
+    {
+      "term": "ქალაქი",
+      "reading": "kalaki",
+      "meaning": "city / town",
+      "translations": {
+        "fr": "ville",
+        "es": "ciudad"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "პური",
+      "reading": "p'uri",
+      "meaning": "bread",
+      "translations": {
+        "fr": "pain",
+        "es": "pan"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ყველი",
+      "reading": "q'veli",
+      "meaning": "cheese",
+      "translations": {
+        "fr": "fromage",
+        "es": "queso"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ფული",
+      "reading": "puli",
+      "meaning": "money",
+      "translations": {
+        "fr": "argent",
+        "es": "dinero"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "თავი",
+      "reading": "tavi",
+      "meaning": "head",
+      "translations": {
+        "fr": "tête",
+        "es": "cabeza"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "კარი",
+      "reading": "k'ari",
+      "meaning": "door",
+      "translations": {
+        "fr": "porte",
+        "es": "puerta"
+      },
+      "type": "noun"
+    }
+  ]
+}

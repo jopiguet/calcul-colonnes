@@ -5,7 +5,7 @@
  * always agree on the words and on their keys.
  *
  * A word is: an italic (*nfr*, a transliteration), a table cell holding only
- * text (the letter "ꜣ" of the table of signs), or a run of Malayalam script.
+ * text (the letter "ꜣ" of the table of signs), or a run of Malayalam, Bulgarian or Georgian script.
  * Exercises are left out: a sound there would give the answer away.
  */
 
@@ -15,7 +15,7 @@ export const soundKey = (text: string): string => text.normalize("NFC").replace(
 /** The elements of a rendered lesson text that may be listened to. */
 export function soundTargets(root: Element): Element[] {
   const out: Element[] = [];
-  for (const node of root.querySelectorAll("em, td, span.script-malayalam")) {
+  for (const node of root.querySelectorAll("em, td, span.script-malayalam, span.script-cyrillic, span.script-georgian")) {
     if (node.tagName === "TD" && node.children.length > 0) continue;
     if (node.closest(".course-exercise")) continue;
     if (soundKey(node.textContent ?? "") === "") continue;

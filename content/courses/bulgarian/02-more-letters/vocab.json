@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "вода",
+      "reading": "voda",
+      "meaning": "water",
+      "translations": {
+        "fr": "eau",
+        "es": "agua"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "бира",
+      "reading": "bira",
+      "meaning": "beer",
+      "translations": {
+        "fr": "bière",
+        "es": "cerveza"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "лимон",
+      "reading": "limon",
+      "meaning": "lemon",
+      "translations": {
+        "fr": "citron",
+        "es": "limón"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "град",
+      "reading": "grad",
+      "meaning": "town / city",
+      "translations": {
+        "fr": "ville",
+        "es": "ciudad"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "ден",
+      "reading": "den",
+      "meaning": "day",
+      "translations": {
+        "fr": "jour",
+        "es": "día"
+      },
+      "type": "noun"
+    },
+    {
+      "term": "здравей",
+      "reading": "zdravey",
+      "meaning": "hello",
+      "translations": {
+        "fr": "bonjour / salut",
+        "es": "hola"
+      },
+      "type": "phrase"
+    }
+  ]
+}

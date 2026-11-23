@@ -1,5 +1,15 @@
 # Changelog
 
+## 8.11.0
+
+- **Two new courses, two living alphabets** ([Language courses](docs/language-courses.md)):
+  - **🌹 Bulgarian** (`bulgarian`, `bg`): Cyrillic and where it was born (Preslav, after Cyril and Methodius's Glagolitic); the 30 letters in three steps (as in English and false friends, the letters from Greek, the Slavic letters with ъ and щ); the article at the end of the word (градът, жената, селото), "to be" and questions with ли; numbers to a hundred. 40 words, 30 letter cards.
+  - **🍇 Georgian** (`georgian`, `ka`): the three scripts (asomtavruli, nuskhuri, mkhedruli) and the mtavruli capitals; vowels and first consonants; aspirates and ejectives (ქარი wind, კარი door); the last ten letters and the consonant clusters; greetings ("victory"), no gender; counting by twenties. 39 words, 33 letter cards.
+- **Answers** in the script or in Latin letters: the `bulgarian` fold and `bg` rules (the official transliteration, *ž č š ă c x* also accepted); the `georgian` fold and `ka` rules (the national transliteration, the ejective's apostrophe counted, the scholarly dots and the Mtavruli capitals accepted).
+- **Sounds:** both courses can be listened to, from the script, in eSpeak NG's Bulgarian and Georgian voices ([Sounds](docs/sounds.md)): 175 and 101 sounds, words of the lessons and letter cards.
+- **Fonts:** Noto Sans's Cyrillic subsets and Noto Sans Georgian (`@fontsource/noto-sans-georgian`, SIL OFL), for Mkhedruli, Mtavruli, Asomtavruli and Nuskhuri; Cyrillic and Georgian runs in a lesson are marked `lang="bg"` and `lang="ka"`.
+- `check-lessons` and `check-vocab` cases for both keys; an e2e test of both courses (fonts, language, answers in both alphabets, the apostrophe, a ▶). The app now has 1,000 lesson exercises.
+
 ## 8.10.0
 
 - **A new course, 𐡀 Imperial Aramaic** (`aramaic`, language `arc`; [Language courses](docs/language-courses.md)): the written Aramaic of the Assyrian and Persian empires, about 600–330 BCE, in five lessons: the script and its first eleven letters, the second half of the alphabet, the states of the noun (*mlk*, *mlkʾ*, *mlkyn*, *mlkyʾ*; *zy*), the Persian kings' names and the Elephantine papyri with the greeting of a letter, then the number signs and the dating of a contract. 34 words; 28 cards for the letters (sound or name) and six number signs, in the *Caractères* group.
