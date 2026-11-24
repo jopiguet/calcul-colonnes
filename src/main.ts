@@ -57,7 +57,7 @@ import { loadBank, quizView, replayTest } from "./quiz";
 import { privacyView } from "./privacy";
 import { subjectOf } from "../shared/quiz";
 import { activityBar, activityId, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
-import { shelvesOf, showVocabStats, vocabBusy, vocabView } from "./vocab";
+import { shelvesOf, showVocabStats, stopSound, vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
 import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
@@ -212,6 +212,8 @@ async function render(): Promise<void> {
     return;
   }
   app.classList.remove("is-landing");
+  // A bird's recording stops when its page is left.
+  if (!(state.view === "play" && state.settings.mode === "vocab")) stopSound();
   // The home page and the progress overview use the width of a large screen.
   // The width changes with the content, once it is ready: the screen being
   // left keeps its own width while the next one loads.

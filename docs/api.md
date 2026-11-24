@@ -465,6 +465,15 @@ imported. `kind` is `translation` or `definition`; `term` and `meaning` are the
 language studied and the language of the meanings. `pictures` counts the
 entries with a picture (a picture dictionary).
 
+### `GET /api/vocab/sounds/:hash`
+
+A recording of a sound book, by its SHA-256, as stored by the import: its bytes
+with their type (`audio/mpeg`, `audio/ogg`, `audio/mp4` or `audio/wav`), cached
+for a year (`immutable`). `404` unless an entry the account may see uses it. A
+session's cards in a sound book carry the hash in `audio`: the recording is
+the question, the `prompt` (the scientific name) is shown with the answer. See
+[Birds](birds.md).
+
 ### `GET /api/vocab/images/:hash`
 
 A picture, by its SHA-256 (64 hexadecimal digits), as stored by the import:

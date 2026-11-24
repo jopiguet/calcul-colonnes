@@ -1,0 +1,269 @@
+{
+ "set": "mediterranean",
+ "book": "birds-mediterranean",
+ "title": "Birds of the Mediterranean and the Balearics",
+ "countries": [
+  "Spain",
+  "France",
+  "Italy",
+  "Portugal",
+  "Greece",
+  "Croatia",
+  "Cyprus"
+ ],
+ "names": "English names after the IOC World Bird List; French after the CINFO; Spanish after SEO/BirdLife. A part in parentheses is optional in an answer.",
+ "species": [
+  {
+   "scientific": "Curruca melanocephala",
+   "en": "Sardinian Warbler",
+   "fr": "Fauvette mélanocéphale",
+   "es": "Curruca cabecinegra"
+  },
+  {
+   "scientific": "Curruca balearica",
+   "en": "Balearic Warbler",
+   "fr": "Fauvette des Baléares",
+   "es": "Curruca balear"
+  },
+  {
+   "scientific": "Curruca undata",
+   "en": "Dartford Warbler",
+   "fr": "Fauvette pitchou",
+   "es": "Curruca rabilarga"
+  },
+  {
+   "scientific": "Curruca conspicillata",
+   "en": "Spectacled Warbler",
+   "fr": "Fauvette à lunettes",
+   "es": "Curruca tomillera"
+  },
+  {
+   "scientific": "Cettia cetti",
+   "en": "Cetti's Warbler",
+   "fr": "Bouscarle de Cetti",
+   "es": "Cetia ruiseñor"
+  },
+  {
+   "scientific": "Cisticola juncidis",
+   "en": "Zitting Cisticola",
+   "fr": "Cisticole des joncs",
+   "es": "Buitrón"
+  },
+  {
+   "scientific": "Luscinia megarhynchos",
+   "en": "(Common) Nightingale",
+   "fr": "Rossignol (philomèle)",
+   "es": "Ruiseñor (común)"
+  },
+  {
+   "scientific": "Monticola solitarius",
+   "en": "Blue Rock Thrush",
+   "fr": "Monticole merle-bleu",
+   "es": "Roquero solitario"
+  },
+  {
+   "scientific": "Upupa epops",
+   "en": "(Eurasian) Hoopoe",
+   "fr": "Huppe fasciée",
+   "es": "Abubilla"
+  },
+  {
+   "scientific": "Merops apiaster",
+   "en": "(European) Bee-eater",
+   "fr": "Guêpier d'Europe",
+   "es": "Abejaruco (europeo)"
+  },
+  {
+   "scientific": "Coracias garrulus",
+   "en": "(European) Roller",
+   "fr": "Rollier d'Europe",
+   "es": "Carraca (europea)"
+  },
+  {
+   "scientific": "Oriolus oriolus",
+   "en": "(Eurasian) Golden Oriole",
+   "fr": "Loriot (d'Europe)",
+   "es": "Oropéndola (europea)"
+  },
+  {
+   "scientific": "Lanius senator",
+   "en": "Woodchat Shrike",
+   "fr": "Pie-grièche à tête rousse",
+   "es": "Alcaudón común"
+  },
+  {
+   "scientific": "Lanius meridionalis",
+   "en": "Iberian Grey Shrike",
+   "fr": "Pie-grièche méridionale",
+   "es": "Alcaudón real"
+  },
+  {
+   "scientific": "Otus scops",
+   "en": "(Eurasian) Scops Owl",
+   "fr": "Petit-duc scops",
+   "es": "Autillo (europeo)"
+  },
+  {
+   "scientific": "Athene noctua",
+   "en": "Little Owl",
+   "fr": "Chevêche d'Athéna",
+   "es": "Mochuelo (europeo)"
+  },
+  {
+   "scientific": "Caprimulgus europaeus",
+   "en": "(European) Nightjar",
+   "fr": "Engoulevent d'Europe",
+   "es": "Chotacabras europeo"
+  },
+  {
+   "scientific": "Burhinus oedicnemus",
+   "en": "(Eurasian) Stone-curlew",
+   "fr": "Œdicnème criard",
+   "es": "Alcaraván (común)"
+  },
+  {
+   "scientific": "Alectoris rufa",
+   "en": "Red-legged Partridge",
+   "fr": "Perdrix rouge",
+   "es": "Perdiz roja"
+  },
+  {
+   "scientific": "Coturnix coturnix",
+   "en": "(Common) Quail",
+   "fr": "Caille des blés",
+   "es": "Codorniz (común)"
+  },
+  {
+   "scientific": "Streptopelia turtur",
+   "en": "(European) Turtle Dove",
+   "fr": "Tourterelle des bois",
+   "es": "Tórtola europea"
+  },
+  {
+   "scientific": "Apus pallidus",
+   "en": "Pallid Swift",
+   "fr": "Martinet pâle",
+   "es": "Vencejo pálido"
+  },
+  {
+   "scientific": "Cecropis daurica",
+   "en": "Red-rumped Swallow",
+   "fr": "Hirondelle rousseline",
+   "es": "Golondrina dáurica"
+  },
+  {
+   "scientific": "Galerida theklae",
+   "en": "Thekla's Lark",
+   "fr": "Cochevis de Thékla",
+   "es": "Cogujada montesina"
+  },
+  {
+   "scientific": "Calandrella brachydactyla",
+   "en": "Greater Short-toed Lark",
+   "fr": "Alouette calandrelle",
+   "es": "Terrera común"
+  },
+  {
+   "scientific": "Melanocorypha calandra",
+   "en": "Calandra Lark",
+   "fr": "Alouette calandre",
+   "es": "Calandria (común)"
+  },
+  {
+   "scientific": "Anthus campestris",
+   "en": "Tawny Pipit",
+   "fr": "Pipit rousseline",
+   "es": "Bisbita campestre"
+  },
+  {
+   "scientific": "Emberiza cirlus",
+   "en": "Cirl Bunting",
+   "fr": "Bruant zizi",
+   "es": "Escribano soteño"
+  },
+  {
+   "scientific": "Emberiza calandra",
+   "en": "Corn Bunting",
+   "fr": "Bruant proyer",
+   "es": "Escribano triguero"
+  },
+  {
+   "scientific": "Linaria cannabina",
+   "en": "(Common) Linnet",
+   "fr": "Linotte mélodieuse",
+   "es": "Pardillo común"
+  },
+  {
+   "scientific": "Passer hispaniolensis",
+   "en": "Spanish Sparrow",
+   "fr": "Moineau espagnol",
+   "es": "Gorrión moruno"
+  },
+  {
+   "scientific": "Sturnus unicolor",
+   "en": "Spotless Starling",
+   "fr": "Étourneau unicolore",
+   "es": "Estornino negro"
+  },
+  {
+   "scientific": "Corvus corax",
+   "en": "(Northern) Raven",
+   "fr": "Grand Corbeau",
+   "es": "Cuervo grande"
+  },
+  {
+   "scientific": "Falco tinnunculus",
+   "en": "(Common) Kestrel",
+   "fr": "Faucon crécerelle",
+   "es": "Cernícalo vulgar"
+  },
+  {
+   "scientific": "Falco eleonorae",
+   "en": "Eleonora's Falcon",
+   "fr": "Faucon d'Éléonore",
+   "es": "Halcón de Eleonora"
+  },
+  {
+   "scientific": "Milvus milvus",
+   "en": "Red Kite",
+   "fr": "Milan royal",
+   "es": "Milano real"
+  },
+  {
+   "scientific": "Calonectris diomedea",
+   "en": "Scopoli's Shearwater",
+   "fr": "Puffin de Scopoli",
+   "es": "Pardela cenicienta"
+  },
+  {
+   "scientific": "Puffinus mauretanicus",
+   "en": "Balearic Shearwater",
+   "fr": "Puffin des Baléares",
+   "es": "Pardela balear"
+  },
+  {
+   "scientific": "Ichthyaetus audouinii",
+   "en": "Audouin's Gull",
+   "fr": "Goéland d'Audouin",
+   "es": "Gaviota de Audouin"
+  },
+  {
+   "scientific": "Larus michahellis",
+   "en": "Yellow-legged Gull",
+   "fr": "Goéland leucophée",
+   "es": "Gaviota patiamarilla"
+  },
+  {
+   "scientific": "Himantopus himantopus",
+   "en": "Black-winged Stilt",
+   "fr": "Échasse blanche",
+   "es": "Cigüeñuela (común)"
+  },
+  {
+   "scientific": "Porphyrio porphyrio",
+   "en": "Western Swamphen",
+   "fr": "Talève sultane",
+   "es": "Calamón común"
+  }
+ ]
+}

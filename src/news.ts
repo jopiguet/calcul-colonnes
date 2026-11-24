@@ -23,6 +23,21 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "9.0.0",
+    fr: [
+      "🎧 Une nouvelle section, Sons : reconnaître les oiseaux à leur chant. Trois livres, l'Europe, la Méditerranée et les Baléares, la Suisse et les Alpes : on écoute, on nomme l'oiseau, d'abord parmi quatre noms, puis en l'écrivant.",
+      "Le chant d'abord, le cri ensuite : le cri d'un oiseau arrive une fois son chant connu. Chaque enregistrement nomme son auteur et sa licence.",
+    ],
+    es: [
+      "🎧 Una nueva sección, Sonidos: reconocer las aves por su canto. Tres libros, Europa, el Mediterráneo y Baleares, Suiza y los Alpes: se escucha, se nombra el ave, primero entre cuatro nombres, luego escribiéndolo.",
+      "Primero el canto, luego el reclamo: el reclamo de un ave llega cuando su canto ya se conoce. Cada grabación nombra a su autor y su licencia.",
+    ],
+    en: [
+      "🎧 A new section, Sounds: recognising birds by their song. Three books, Europe, the Mediterranean and the Balearics, Switzerland and the Alps: listen, then name the bird, first among four names, then by typing it.",
+      "Song first, call later: a bird's call comes once its song is known. Each recording names its recordist and licence.",
+    ],
+  },
+  {
     version: "8.11.0",
     fr: [
       "Deux nouveaux cours, deux alphabets vivants : 🌹 Bulgare, le cyrillique là où il est né, l'article à la fin du mot et les nombres ; 🍇 Géorgien, ses trois écritures, les consonnes éjectives, les salutations « victoire » et les nombres comptés par vingt.",

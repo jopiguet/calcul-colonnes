@@ -269,6 +269,14 @@ and uses the system's Japanese fonts (Hiragino on Apple devices, Yu Gothic on
 Windows, Noto Sans CJK on Android and Linux), so kanji take their Japanese
 forms.
 
+## Sound books
+
+A book of kind `sounds` asks for a recording instead of a word: the bird
+books (`npm run birds:fetch`), or any recordings with their names. Each entry
+has an `"audio"` file beside the vocabulary file; the recording is the
+question, the name the answer, and a call (`"group": "call"`) waits for the
+song of the same bird. Everything about them is in [Birds](birds.md).
+
 ## Pictures
 
 A picture dictionary gives each word a picture: a scene with its words under

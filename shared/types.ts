@@ -232,6 +232,11 @@ export interface VocabCard {
   part?: number;
   /** Recall: the picture alone says which word (the entry's own picture, or a numbered part). */
   pictureAlone?: boolean;
+  /**
+   * Sound book: the recording's hash (GET /api/vocab/sounds/:hash). The recording is the question: the prompt
+   * (the scientific name) is shown only with the answer.
+   */
+  audio?: string;
 }
 
 export interface VocabSectionInfo {
@@ -254,7 +259,7 @@ export interface VocabBookInfo {
   id: number;
   slug: string;
   title: string;
-  kind: "translation" | "definition" | "characters";
+  kind: "translation" | "definition" | "characters" | "sounds";
   /** Language studied, and language of the meanings ("es", "en"). */
   term: string;
   meaning: string;

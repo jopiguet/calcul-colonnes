@@ -45,6 +45,8 @@ export interface SessionEntry {
   imageUses?: number;
   /** Format 3: what the entry is, its readings by language, what it does in writing. */
   info?: EntryInfo;
+  /** Sound book: the recording's hash. */
+  audio?: string;
   book: BookInfo;
 }
 
@@ -66,9 +68,12 @@ export interface BookInfo {
 export type ProgressMap = Map<string, CardState>;
 export const progressKey = (entryId: number, direction: Direction): string => `${entryId}:${direction}`;
 
-/** The directions an entry is learnt in: a kanji is also read. */
-export const directionsOf = (entry: Pick<SessionEntry, "readings">): Direction[] =>
-  entry.readings ? ["recognise", "recall", "read"] : ["recognise", "recall"];
+/** The directions an entry is learnt in: a kanji is also read; a recording is only recognised (heard, then named). */
+export const directionsOf = (entry: Pick<SessionEntry, "readings"> & { book?: Pick<BookInfo, "kind"> }): Direction[] =>
+  entry.book?.kind === "sounds" ? ["recognise"] : entry.readings ? ["recognise", "recall", "read"] : ["recognise", "recall"];
+
+/** Sound book: a call joins once the song of the same bird has reached this box (typed right once). */
+export const SONG_BEFORE_CALL = 3;
 
 /**
  * The entry with its meaning in the interface's language, when the book gives
@@ -198,10 +203,22 @@ export function buildSession(req: SessionRequest): VocabCard[] {
   const ahead: { entry: SessionEntry; direction: Direction; state: CardState }[] = [];
   const ready: { entry: SessionEntry; direction: Direction }[] = [];
   const fresh: SessionEntry[] = [];
+  // Sound books: the songs' boxes by bird (the meaning), so a call waits for its song.
+  const songBox = new Map<string, number>();
+  for (const entry of entries) {
+    if (entry.book.kind !== "sounds" || entry.group !== "song") continue;
+    const key = `${entry.book.id ?? 0}\u0000${entry.meaning}`;
+    songBox.set(key, Math.max(songBox.get(key) ?? 0, progress.get(progressKey(entry.id, "recognise"))?.box ?? 0));
+  }
+  const waiting = (entry: SessionEntry): boolean => {
+    if (entry.book.kind !== "sounds" || entry.group !== "call") return false;
+    const key = `${entry.book.id ?? 0}\u0000${entry.meaning}`;
+    return songBox.has(key) && songBox.get(key)! < SONG_BEFORE_CALL;
+  };
   for (const entry of entries) {
     const directions = directionsOf(entry);
     const states = directions.map((d) => [d, progress.get(progressKey(entry.id, d))] as const);
-    if (states.every(([, state]) => !state)) fresh.push(entry);
+    if (states.every(([, state]) => !state) && !waiting(entry)) fresh.push(entry);
     for (const [direction, state] of states) {
       if (!state) continue;
       (state.dueAt <= now ? due : ahead).push({ entry, direction, state });
@@ -265,6 +282,7 @@ export function buildSession(req: SessionRequest): VocabCard[] {
       ...(entry.image && entry.part ? { part: entry.part } : {}),
       // The picture says which word without its caption: its own, or a numbered part of a diagram.
       ...(entry.image && direction === "recall" && (entry.part || entry.imageUses === 1) ? { pictureAlone: true } : {}),
+      ...(entry.audio ? { audio: entry.audio } : {}),
     };
     if (mode === "choice") {
       card.options = shuffle([display(answer), ...distractors(entry, direction, req.pool, req.random)], req.random);

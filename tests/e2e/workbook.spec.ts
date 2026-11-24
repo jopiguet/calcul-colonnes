@@ -21,10 +21,11 @@ const field = (page: Page, id: string, item: string) => exercise(page, id).locat
 test("a workbook: its card, its units, the gaps on the page and the fields under it", async ({ page }) => {
   await newPlayer(page, "Book");
   await goHome(page);
-  // A group of their own, after the vocabulary and the characters; chemistry and biology come last.
+  // A group of their own, after the vocabulary, the characters and the sounds; chemistry and biology come last.
   const titles = await page.locator(".activity-group-title").allTextContents();
   expect(titles.indexOf("Caractères")).toBe(titles.indexOf("Langues") + 1);
-  expect(titles.indexOf("Exercices des livres")).toBe(titles.indexOf("Caractères") + 1);
+  expect(titles.indexOf("Sons")).toBe(titles.indexOf("Caractères") + 1);
+  expect(titles.indexOf("Exercices des livres")).toBe(titles.indexOf("Sons") + 1);
   expect(titles.at(-1)).toBe("Chimie et biologie");
   const languages = page.locator(".activity-group", { has: page.locator(".activity-group-title", { hasText: "Langues" }) });
   await expect(languages.locator(`[data-activity='${BOOK}']`)).toHaveCount(0);

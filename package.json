@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "8.11.0",
+  "version": "9.0.0",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -37,6 +37,8 @@
     "exercises:import": "tsx server/exercises-import.ts",
     "exercises:epub": "tsx server/exercises-epub.ts",
     "sounds:build": "tsx server/sounds-build.ts",
+    "birds:fetch": "tsx server/birds-fetch.ts",
+    "check:birds": "tsx server/check-birds.ts",
     "check:sounds": "tsx server/sounds-build.ts --check"
   },
   "devDependencies": {

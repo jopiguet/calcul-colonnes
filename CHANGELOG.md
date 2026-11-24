@@ -1,5 +1,14 @@
 # Changelog
 
+## 9.0.0
+
+- **A new section, 🎧 Sons: recognising sounds, starting with birds** ([Birds](docs/birds.md)). Three bird books: *Oiseaux d'Europe* (42), *Oiseaux de Méditerranée et des Baléares* (42, the Balearic warbler and shearwater, Eleonora's falcon…), *Oiseaux de Suisse et des Alpes* (41, the wallcreeper, the capercaillie…). A card plays a recording; the answer is the bird's name, chosen among four at first, typed from box 3 (in French, Spanish or English, an optional part left out, or the scientific name). After the answer: the scientific name, song or call, and the recording's credit.
+- **Songs first, calls later:** a bird's call joins the new cards once its song has reached box 3; a bird with no usable song starts with its call.
+- **`npm run birds:fetch -- europe | mediterranean | alps | all`:** fetches from xeno-canto's API (version 3; the free key typed in at a hidden prompt, never stored or printed) a song and a call per bird: quality A or B, no other species in the background if possible, a licence that allows trimming (no ND), the book's countries first; trims each to 20 s of mono MP3 with ffmpeg; writes `data/birds/<book>/birds.json`, the recordings and `CREDITS.md`. Recordings stay in `data/`, never in the project. `--dry` shows the choice without downloading; a stopped run resumes.
+- **Sound books in the vocabulary engine:** a fourth kind of book, `sounds`; an entry's `audio` file, read by `vocab:import` (MP3, Ogg, Opus, M4A, WAV, at most 4 MB) and stored once by its SHA-256 (migration `040_vocab_sounds`: the kind allowed, `vocab_sounds`, `audio` on `vocab_entries`); `GET /api/vocab/sounds/:hash`; `vocab:export` writes the recordings back; only the "recognise" direction; kept off the language shelves. The species lists (names only, IOC/CINFO/SEO) are in `content/birds/`.
+- **Home page:** the *Sons* group, after *Caractères*; it can be hidden or moved like the others.
+- `check:birds` (in CI): the lists, the choice of a recording, the whole fetch against a fake xeno-canto, the format, a call waiting for its song; `birds.spec.ts` on an invented sound book (tones, invented birds).
+
 ## 8.11.0
 
 - **Two new courses, two living alphabets** ([Language courses](docs/language-courses.md)):

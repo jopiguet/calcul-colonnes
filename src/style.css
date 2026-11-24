@@ -7434,3 +7434,23 @@ summary.settings-group-title .topic-group-name {
   background: var(--paper);
   font: inherit;
 }
+
+/* A sound card (docs/birds.md): the recording is the question. */
+.vocab-sound-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.4rem 0 0.8rem;
+}
+
+button.vocab-sound-play {
+  min-width: 10rem;
+  padding: 0.8rem 1.4rem;
+  font-size: 1.15rem;
+}
+
+.vocab-sound-audio {
+  width: min(100%, 22rem);
+  height: 2.5rem;
+}

@@ -15,6 +15,7 @@ describes every screen, every setting and the keyboard shortcuts.
 - [Chemical equations](#chemical-equations)
 - [Progress and review of mistakes](#progress-and-review-of-mistakes)
 - [Vocabulary](#vocabulary)
+- [Sounds: birds](#sounds-birds)
 - [Discover](#discover)
 - [Physics](#physics)
 - [Astronomy](#astronomy)
@@ -871,6 +872,18 @@ spaces its next review: 10 minutes, then 1, 3, 7, 16 and 35 days. A wrong
 answer sends it back to the first box. A few minutes a day is enough; a long
 session once a week is less effective. The method is described in
 [Vocabulary › The learning method](vocabulary.md#the-learning-method).
+
+## Sounds: birds
+
+The **🎧 Sons** group holds books of recordings to recognise: *Oiseaux d'Europe*,
+*Oiseaux de Méditerranée et des Baléares*, *Oiseaux de Suisse et des Alpes*,
+once the server has them ([Birds](birds.md): the recordings are fetched from
+xeno-canto and imported by the owner).
+
+- A card plays a bird's song; **▶ Écouter** (or **R**) plays it again. *Quel oiseau ?*: four names to choose from at first, then, once the bird is better known, its name typed: in French, Spanish or English, with or without its optional part (*rougegorge* for *Rougegorge (familier)*), or its scientific name.
+- After the answer: the scientific name, *chant* or *cri*, and who made the recording, under which licence.
+- Each bird starts with its song; its call comes once the song has been named right in writing.
+- Sessions, boxes, statistics and *Passer ce mot* work as in the vocabulary.
 
 ## Language courses
 

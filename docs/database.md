@@ -187,8 +187,9 @@ shared), and each player's progress. See [Vocabulary](vocabulary.md).
 | `vocab_books` | one per book | `slug` (the file's book id), `position`, `title`, `kind` (`translation`, `definition` or `characters`), `term_lang`, `meaning_lang`, `ordering` (`book` or `alphabetical`), `credit` (attribution shown with the book), `visibility` (`private`: the owner's account only; `shared`: every account) |
 | `vocab_lessons` | one per lesson (chapter) | `book_id`, `position` (unique per book), `title`, `subtitle` |
 | `vocab_sections` | one per section | `lesson_id`, `position`, `title`, `subtitle` |
-| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji), `readings` (a kanji's on and kun readings), `translations` (JSON: the meaning in French, Spanish), `image` (the picture's SHA-256, or empty), `part` (its number on the picture, 0 for none), `info` (format 3: JSON `{"type", "readings", "functions"}`, or empty) |
+| `vocab_entries` | one per entry | `section_id`, `position`, `term`, `meaning`, `grp` (heading inside the section), `feminine`, `note` (example), `reading` (Japanese rōmaji), `readings` (a kanji's on and kun readings), `translations` (JSON: the meaning in French, Spanish), `image` (the picture's SHA-256, or empty), `part` (its number on the picture, 0 for none), `audio` (a sound book's recording: its SHA-256, or empty), `info` (format 3: JSON `{"type", "readings", "functions"}`, or empty) |
 | `vocab_images` | one per picture of a picture dictionary | `hash` (SHA-256, primary key), `mime`, `data` (base64) |
+| `vocab_sounds` | one per recording of a sound book (docs/birds.md) | `hash` (SHA-256, primary key), `mime`, `data` (base64) |
 | `vocab_progress` | one per player, entry and direction | primary key `(user_id, entry_id, direction)`, direction `recognise`, `recall` or `read` (a kanji's reading); `box` 1–6, `due_at`, `last_at`, `right_count`, `wrong_count` |
 | `vocab_answers` | one per answer | `user_id`, `entry_id`, `direction`, `mode`, `at`, `given`, `verdict`, `correct` |
 | `vocab_skips` | one per word a player skipped | primary key `(user_id, entry_id)`, `at` |
@@ -284,6 +285,7 @@ runs: add tables and columns, rename or drop later.
 | `036_home_layout` | `layout` on `users`: the order of the home page's groups and cards, the groups opened (common SQL, one file) |
 | `037_github_deploy_levels` | The GitHub and deployment levels, `githubBeginner` to `githubExpert` and `deployBeginner` to `deployExpert`, allowed in `quiz_results.level` |
 | `038_node_levels` | The Node.js and npm levels, `nodeBeginner` to `nodeExpert`, allowed in `quiz_results.level` |
+| `040_vocab_sounds` | sound books: `sounds` allowed as `vocab_books.kind` (SQLite rebuilds the table), `vocab_sounds`, `audio` on `vocab_entries` (docs/birds.md) |
 | `039_user_prefs` | `prefs` on `users`: the player's display choices, kept on the server for every device (common SQL, one file) |
 
 **File names.**

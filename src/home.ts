@@ -15,7 +15,7 @@ import { lt } from "./lessons-i18n";
 import type { CourseInfo } from "../shared/lessons/api";
 import { wt } from "./workbook-i18n";
 import type { ExerciseBookInfo } from "../shared/exercises/api";
-import { bookTitle, shelfApart, shelvesOf } from "./vocab";
+import { bookTitle, shelfApart, shelvesOf, soundsCredit } from "./vocab";
 import { langName, vt } from "./vocab-i18n";
 import { dt } from "./discover/i18n";
 import { pt } from "./discover/physics-i18n";
@@ -32,6 +32,10 @@ const texts = {
     maths: "Mathématiques",
     languages: "Langues",
     characters: "Caractères",
+    sounds: "Sons",
+    soundsNotStarted: "{count} enregistrements à découvrir",
+    oneSoundDue: "1 son à revoir",
+    soundsDue: "{count} sons à revoir",
     columnsText: "Les quatre opérations posées, des unités vers la gauche.",
     quizText: "Dérivées, intégrales, trigonométrie, limites, exponentielles.",
     toReview: "{count} notions à revoir",
@@ -71,6 +75,10 @@ const texts = {
     maths: "Matemáticas",
     languages: "Idiomas",
     characters: "Caracteres",
+    sounds: "Sonidos",
+    soundsNotStarted: "{count} grabaciones por descubrir",
+    oneSoundDue: "1 sonido por repasar",
+    soundsDue: "{count} sonidos por repasar",
     columnsText: "Las cuatro operaciones en columnas, de las unidades hacia la izquierda.",
     quizText: "Derivadas, integrales, trigonometría, límites, exponenciales.",
     toReview: "{count} nociones por repasar",
@@ -110,6 +118,10 @@ const texts = {
     maths: "Mathematics",
     languages: "Languages",
     characters: "Characters",
+    sounds: "Sounds",
+    soundsNotStarted: "{count} recordings to discover",
+    oneSoundDue: "1 sound to review",
+    soundsDue: "{count} sounds to review",
     columnsText: "The four operations in columns, from the units leftwards.",
     quizText: "Derivatives, integrals, trigonometry, limits, exponentials.",
     toReview: "{count} concepts to review",
@@ -229,11 +241,15 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
     { group: ht("economics"), activities: [{ id: "econ", title: qt("modeEcon") }, { id: "marx", title: qt("modeMarx") }] },
     {
       group: ht("languages"),
-      activities: books.filter((b) => b.kind !== "characters").map((b) => ({ id: `vocab-${b.slug}`, title: `💬 ${bookTitle(b)}${courseLabel(b, courses, " · ")}` })),
+      activities: books.filter((b) => b.kind !== "characters" && b.kind !== "sounds").map((b) => ({ id: `vocab-${b.slug}`, title: `💬 ${bookTitle(b)}${courseLabel(b, courses, " · ")}` })),
     },
     {
       group: ht("characters"),
       activities: books.filter((b) => b.kind === "characters").map((b) => ({ id: `vocab-${b.slug}`, title: `✍️ ${bookTitle(b)}${courseLabel(b, courses, " · ")}` })),
+    },
+    {
+      group: ht("sounds"),
+      activities: books.filter((b) => b.kind === "sounds").map((b) => ({ id: `vocab-${b.slug}`, title: `🎧 ${bookTitle(b)}` })),
     },
     { group: lt("group"), activities: courses.map((c) => ({ id: `lessons-${c.id}`, title: `${c.icon} ${c.title}` })) },
     { group: wt("home"), activities: exerciseBooks.map((b) => ({ id: `workbook-${b.id}`, title: `✏️ ${b.source}` })) },
@@ -450,6 +466,10 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const characters = el("div", "activity-group");
   characters.append(el("h2", "activity-group-title", ht("characters")));
   const signGrid = el("div", "activity-grid");
+  // Sounds to recognise (birds first, docs/birds.md): a group of their own.
+  const soundGroup = el("div", "activity-group");
+  soundGroup.append(el("h2", "activity-group-title", ht("sounds")));
+  const soundGrid = el("div", "activity-grid");
   // A language with several books: one card for them all (its page opens each), unless the player keeps them apart.
   const hiddenBooks = new Set(ctx.user.hidden ?? []);
   // Every book, the language courses' words and letters included (course-<id>, course-<id>-letters): a language
@@ -460,7 +480,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const grouped = new Map(shelvesOf(shown).filter((s) => !shelfApart(s.lang)).map((s) => [s.lang, s]));
   const placed = new Set<string>();
   for (const book of ownBooks) {
-    const together = book.kind !== "characters" && !hiddenBooks.has(`vocab-${book.slug}`) ? grouped.get(book.term) : undefined;
+    const together = book.kind !== "characters" && book.kind !== "sounds" && !hiddenBooks.has(`vocab-${book.slug}`) ? grouped.get(book.term) : undefined;
     if (together) {
       if (placed.has(together.lang)) continue;
       placed.add(together.lang);
@@ -480,6 +500,16 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
     }
     const mine = progress?.books[book.id];
     const signs = book.kind === "characters";
+    if (book.kind === "sounds") {
+      const heard =
+        mine && mine.due > 0
+          ? { text: mine.due === 1 ? ht("oneSoundDue") : ht("soundsDue", { count: mine.due }), waiting: true }
+          : mine && mine.started > 0
+            ? { text: ht("upToDate"), waiting: false }
+            : { text: ht("soundsNotStarted", { count: book.entries }), waiting: false };
+      soundGrid.append(card(`vocab-${book.slug}`, `🎧 ${bookTitle(book)}`, book.credit ? soundsCredit(book) : "", heard, () => ctx.open({ mode: "vocab", book: book.id })));
+      continue;
+    }
     const status =
       mine && mine.due > 0
         ? signs
@@ -494,9 +524,10 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
       ),
     );
   }
-  if (!ownBooks.some((b) => b.kind !== "characters")) shelf.append(el("p", "empty small", ht("noBooks")));
+  if (!ownBooks.some((b) => b.kind !== "characters" && b.kind !== "sounds")) shelf.append(el("p", "empty small", ht("noBooks")));
   languages.append(shelf);
   characters.append(signGrid);
+  soundGroup.append(soundGrid);
 
   // Language courses: lessons with their exercises and words (docs/language-courses.md); a group of their own, before the vocabulary.
   const courseGroup = el("div", "activity-group");
@@ -557,7 +588,7 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const titled = (group: HTMLElement): string => group.querySelector(".activity-group-title")?.textContent ?? "";
   const named: [string, HTMLElement][] = [
     ["maths", maths], ["sciences", sciences], ["computing", computing], ["economics", economics], ["courses", courseGroup],
-    ["languages", languages], ["characters", characters], ["workbooks", workbooks], ["discover", discover], ["physics", physics], ["astronomy", astronomy],
+    ["languages", languages], ["characters", characters], ["sounds", soundGroup], ["workbooks", workbooks], ["discover", discover], ["physics", physics], ["astronomy", astronomy],
     ["curiosities", curiosities], ["chembio", chembio],
   ];
   const arranged = arrangeHome(

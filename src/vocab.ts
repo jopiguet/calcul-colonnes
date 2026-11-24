@@ -166,7 +166,7 @@ export interface VocabContext {
 export function shelvesOf(books: VocabBookInfo[]): Shelf[] {
   const byLang = new Map<string, VocabBookInfo[]>();
   for (const book of books) {
-    if (book.kind === "characters") continue;
+    if (book.kind === "characters" || book.kind === "sounds") continue;
     byLang.set(book.term, [...(byLang.get(book.term) ?? []), book]);
   }
   return [...byLang].filter(([, list]) => list.length > 1).map(([lang, list]) => ({ lang, books: list }));
@@ -188,13 +188,33 @@ const newOrder = (book: VocabBookInfo): "book" | "random" =>
   prefs.order[book.id] ?? (book.order === "alphabetical" ? "random" : "book");
 
 /** "Vocabulaire espagnol", "Vocabulaire anglais": the book's language studied; "Kanji et kana", "Lettres malayalam". */
+/** The bird books the fetch script makes (docs/birds.md), titled in the interface's language. */
+const SOUND_BOOKS: Record<string, "birdsEurope" | "birdsMediterranean" | "birdsAlps"> = {
+  "birds-europe": "birdsEurope",
+  "birds-mediterranean": "birdsMediterranean",
+  "birds-alps": "birdsAlps",
+};
+
+/** A sound book's card line: where its recordings come from. */
+export const soundsCredit = (book: VocabBookInfo): string => (/xeno-canto/i.test(book.credit ?? "") ? vt("soundsCreditShort") : (book.credit ?? ""));
+
 export const bookTitle = (book: VocabBookInfo): string =>
-  book.kind === "characters"
+  book.kind === "sounds"
+    ? SOUND_BOOKS[book.slug] ? vt(SOUND_BOOKS[book.slug]!) : vt("soundsTitle", { name: book.title })
+    : book.kind === "characters"
     ? book.term === "ja" ? vt("charactersTitle") : vt("lettersTitle", { lang: langName(book.term) })
     : vt("title", { lang: langName(book.term) });
 
 /** "12 mots", or "12 caractères" in the Characters book. */
-const countOf = (book: VocabBookInfo, count: number): string => vt(book.kind === "characters" ? "characters" : "words", { count });
+const countOf = (book: VocabBookInfo, count: number): string =>
+  vt(book.kind === "characters" ? "characters" : book.kind === "sounds" ? "recordings" : "words", { count });
+
+/** The recording of the card on screen: kept across the card's redraws, stopped when another card or page comes. */
+let birdAudio: { key: string; audio: HTMLAudioElement } | null = null;
+export function stopSound(): void {
+  birdAudio?.audio.pause();
+  birdAudio = null;
+}
 
 export async function vocabView(ctx: VocabContext): Promise<HTMLElement> {
   // Another player, another book or shelf: not the previous session.
@@ -930,12 +950,15 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   // chosen and it says which word: the caption comes with the answer.
   const alone = !s.result && card.pictureAlone === true && picturesAlone(ctx.book);
   const question = el("div", "vocab-question");
-  question.append(el("p", "vocab-ask", alone ? vt("askPicture", { lang: langName(card.answerLang) }) : ask));
+  const heard = card.audio !== undefined;
+  question.append(el("p", "vocab-ask", heard ? vt("askBird") : alone ? vt("askPicture", { lang: langName(card.answerLang) }) : ask));
+  if (heard) question.append(birdPlayer(`${s.index}:${card.entryId}`, card.audio!));
   if (card.image && (!recognise || s.result)) question.append(picture(card));
   const prompt = el("p", glyphShown ? "vocab-prompt vocab-glyph" : "vocab-prompt", card.prompt);
   prompt.lang = card.promptLang;
   prompt.dir = "auto";
-  if (!alone) question.append(prompt);
+  // A recording: its scientific name comes with the answer (before, it would give the bird away).
+  if (!alone && (!heard || s.result)) question.append(prompt);
   // The reading: with the question, once answered, or never, as the player chose.
   const reads = readingMode(ctx.user, cardBook(ctx, card));
   const showReading = reads === "always" || (reads === "after" && s.result !== null);
@@ -947,7 +970,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   const notes = el("p", "vocab-notes");
   if (card.feminine) notes.append(el("span", "vocab-fem", `f · ${vt("feminine")}`));
   if (card.met && !s.result) notes.append(el("span", "vocab-met", vt("metBadge")));
-  if (card.group) notes.append(el("span", "vocab-group", card.group));
+  if (card.group) notes.append(el("span", "vocab-group", heard && (card.group === "song" || card.group === "call") ? vt(card.group) : card.group));
   // A shelf session: the book the word comes from.
   if (card.source) notes.append(el("span", "vocab-source-tag", card.source));
   notes.append(boxDots(s.result ? s.result.box : card.box));
@@ -1097,7 +1120,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     // A kanji: its meaning and readings, whichever way it was asked.
     if (r.readings) feedback.append(kanjiFacts(r.meaning ?? "", r.readings, card.direction));
     if (r.info) feedback.append(infoFacts(r.info));
-    if (r.note) feedback.append(el("span", "vocab-note", vt(card.script ? "exampleWords" : "example", { note: r.note })));
+    if (r.note) feedback.append(el("span", "vocab-note", vt(heard ? "recordingCredit" : card.script ? "exampleWords" : "example", { note: r.note })));
     // A course's letter card: the letter said, once answered (before, it would give the sound away).
     const course = /^course-(.+)-letters$/.exec(ctx.book?.slug ?? "")?.[1];
     if (course && card.script) {
@@ -1149,6 +1172,13 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   // pressed before that goes to the page, not to the card.
   currentCard = { wrap, keys: (event: KeyboardEvent) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
+    // R: the recording again (not while typing an answer).
+    if (heard && event.key.toLowerCase() === "r" && !(event.target instanceof HTMLInputElement) && birdAudio) {
+      event.preventDefault();
+      birdAudio.audio.currentTime = 0;
+      void birdAudio.audio.play().catch(() => {});
+      return;
+    }
     if (event.key === "Enter" && s.result && !(event.target instanceof HTMLButtonElement) && !(event.target instanceof HTMLInputElement)) {
       event.preventDefault();
       advance();
@@ -1169,9 +1199,37 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   return wrap;
 }
 
+/**
+ * A sound card's recording: a large ▶ (again from the start) and the player's own controls. It starts by itself
+ * when the card comes (the click on Next or Start allows it), and keeps playing while the card is redrawn.
+ */
+function birdPlayer(key: string, hash: string): HTMLElement {
+  const box = el("div", "vocab-sound-player");
+  let audio: HTMLAudioElement;
+  if (birdAudio?.key === key) audio = birdAudio.audio;
+  else {
+    stopSound();
+    audio = document.createElement("audio");
+    audio.preload = "auto";
+    audio.src = `/api/vocab/sounds/${hash}`;
+    birdAudio = { key, audio };
+    afterRender(() => void audio.play().catch(() => {}));
+  }
+  audio.controls = true;
+  audio.className = "vocab-sound-audio";
+  const again = button("primary vocab-sound-play", `▶\uFE0E ${vt("play")}`, () => {
+    audio.currentTime = 0;
+    void audio.play().catch(() => {});
+  });
+  again.title = vt("replay");
+  box.append(again, audio);
+  return box;
+}
+
 // ---------------------------------------------------------------- summary
 
 function doneView(ctx: VocabContext, s: Session): HTMLElement {
+  stopSound();
   const wrap = el("section", "sheet vocab-done");
   wrap.append(el("h1", "title", vt("doneTitle")));
   if (s.answered === 0) {

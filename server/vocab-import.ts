@@ -64,6 +64,46 @@ export function readImages(file: VocabFile, path: string): VocabImage[] {
   return [...new Map([...byPath.values()].map((i) => [i.hash, i])).values()];
 }
 
+/** A recording's type, from its first bytes: MP3 (with or without an ID3 tag), Ogg (Vorbis, Opus), MP4 audio, WAV. */
+export function audioType(bytes: Uint8Array): string | null {
+  const at = (offset: number, ...values: number[]): boolean => values.every((v, i) => bytes[offset + i] === v);
+  if (at(0, 0x49, 0x44, 0x33) || (bytes[0] === 0xff && ((bytes[1] ?? 0) & 0xe0) === 0xe0)) return "audio/mpeg";
+  if (at(0, 0x4f, 0x67, 0x67, 0x53)) return "audio/ogg";
+  if (at(4, 0x66, 0x74, 0x79, 0x70)) return "audio/mp4";
+  if (at(0, 0x52, 0x49, 0x46, 0x46) && at(8, 0x57, 0x41, 0x56, 0x45)) return "audio/wav";
+  return null;
+}
+
+/** A recording's size limit: a few seconds of song, not a whole dawn chorus. */
+export const MAX_AUDIO_BYTES = 4 * 1024 * 1024;
+
+/**
+ * Reads the recordings a sound book names, relative to the file's folder, and puts each one's SHA-256 in its
+ * entries' "audio". A missing, oversized or unknown recording stops the import, naming it.
+ */
+export function readSounds(file: VocabFile, path: string): VocabImage[] {
+  const folder = resolve(dirname(path));
+  const byPath = new Map<string, VocabImage>();
+  for (const entry of file.lessons.flatMap((l) => l.sections.flatMap((s) => s.entries))) {
+    if (!entry.audio) continue;
+    let sound = byPath.get(entry.audio);
+    if (!sound) {
+      const target = resolve(folder, entry.audio);
+      const inside = relative(folder, target);
+      if (!inside || inside.startsWith("..") || inside.startsWith(sep)) throw new Error(`recording ${entry.audio}: outside the file's folder`);
+      if (!existsSync(target)) throw new Error(`recording ${entry.audio}: not found beside ${path}`);
+      if (statSync(target).size > MAX_AUDIO_BYTES) throw new Error(`recording ${entry.audio}: over ${MAX_AUDIO_BYTES / 1024 / 1024} MB (npm run birds:fetch trims to 20 seconds)`);
+      const bytes = readFileSync(target);
+      const mime = audioType(bytes);
+      if (!mime) throw new Error(`recording ${entry.audio}: not an MP3, Ogg, M4A or WAV file`);
+      sound = { hash: createHash("sha256").update(bytes).digest("hex"), mime, data: bytes.toString("base64") };
+      byPath.set(entry.audio, sound);
+    }
+    entry.audio = sound.hash;
+  }
+  return [...new Map([...byPath.values()].map((i) => [i.hash, i])).values()];
+}
+
 /** The id of the book a file holds, without importing it. */
 export function bookIdOf(path: string): string {
   return parseVocabFile(JSON.parse(readFileSync(path, "utf8"))).book.id;
@@ -72,7 +112,8 @@ export function bookIdOf(path: string): string {
 export async function importVocabFile(db: Database, path: string, replace = false): Promise<ImportReport> {
   const file = parseVocabFile(JSON.parse(readFileSync(path, "utf8")));
   const images = readImages(file, path);
-  return new VocabStore(db).import(file, { replace, images });
+  const sounds = readSounds(file, path);
+  return new VocabStore(db).import(file, { replace, images, sounds });
 }
 
 // Run as a command only when this file itself is the program: bundled into
@@ -101,7 +142,8 @@ if (/vocab-import\.[jt]s$/.test(main) && main === fileURLToPath(import.meta.url)
     console.log(
       `${db.label}, book "${r.book}": ${r.lessons} lessons, ${r.sections} sections, ${r.entries} entries ` +
         `(${r.added} new, ${r.changed} corrected, ${r.removed} removed)` +
-        (r.images ? `, ${r.images} pictures stored` : ""),
+        (r.images ? `, ${r.images} pictures stored` : "") +
+        (r.sounds ? `, ${r.sounds} recordings stored` : ""),
     );
   } finally {
     await db.close();

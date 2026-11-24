@@ -1,0 +1,88 @@
+{
+ "format": 2,
+ "book": {
+  "id": "test-birds",
+  "title": "Test birds",
+  "kind": "sounds",
+  "term": "la",
+  "meaning": "en",
+  "credit": "Invented tones for the tests"
+ },
+ "lessons": [
+  {
+   "title": "Songs",
+   "sections": [
+    {
+     "title": "Birds 1–4",
+     "entries": [
+      {
+       "term": "Testus primus",
+       "meaning": "First test bird",
+       "translations": {
+        "fr": "Premier oiseau de test",
+        "es": "Primer ave de prueba"
+       },
+       "group": "song",
+       "note": "Invented tone, 440 Hz",
+       "audio": "sounds/primus.wav"
+      },
+      {
+       "term": "Testus secundus",
+       "meaning": "Second test bird",
+       "translations": {
+        "fr": "Deuxième oiseau de test",
+        "es": "Segundo ave de prueba"
+       },
+       "group": "song",
+       "note": "Invented tone, 660 Hz",
+       "audio": "sounds/secundus.wav"
+      },
+      {
+       "term": "Testus tertius",
+       "meaning": "Third test bird",
+       "translations": {
+        "fr": "Troisième oiseau de test",
+        "es": "Tercer ave de prueba"
+       },
+       "group": "song",
+       "note": "Invented tone, 880 Hz",
+       "audio": "sounds/tertius.wav"
+      },
+      {
+       "term": "Testus quartus",
+       "meaning": "Fourth test bird",
+       "translations": {
+        "fr": "Quatrième oiseau de test",
+        "es": "Cuarto ave de prueba"
+       },
+       "group": "song",
+       "note": "Invented tone, 1100 Hz",
+       "audio": "sounds/quartus.wav"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Calls",
+   "sections": [
+    {
+     "title": "Calls 1–1",
+     "entries": [
+      {
+       "term": "Testus primus (call)",
+       "meaning": "First test bird",
+       "translations": {
+        "fr": "Premier oiseau de test",
+        "es": "Primer ave de prueba"
+       },
+       "group": "call",
+       "note": "Invented tone, 300 Hz",
+       "audio": "sounds/primus-call.wav"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

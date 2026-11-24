@@ -57,10 +57,17 @@ if (/vocab-export\.[jt]s$/.test(main) && main === fileURLToPath(import.meta.url)
           mkdirSync(join(out, "images"), { recursive: true });
           writeFileSync(join(out, image.path), Buffer.from(stored.data, "base64"));
         }
+        // A sound book's recordings: always written, the book does not import without them.
+        for (const sound of exported.sounds) {
+          const stored = await store.sound(sound.hash, true);
+          if (!stored) continue;
+          mkdirSync(join(out, "sounds"), { recursive: true });
+          writeFileSync(join(out, sound.path), Buffer.from(stored.data, "base64"));
+        }
         const path = join(out, `${slug}.json`);
         writeFileSync(path, `${JSON.stringify(exported.file, null, 1)}\n`);
         const entries = exported.file.lessons.reduce((sum, l) => sum + l.sections.reduce((t, s) => t + s.entries.length, 0), 0);
-        console.log(`${path}: ${exported.file.lessons.length} lessons, ${entries} entries${exported.images.length ? `, ${exported.images.length} pictures` : ""}`);
+        console.log(`${path}: ${exported.file.lessons.length} lessons, ${entries} entries${exported.images.length ? `, ${exported.images.length} pictures` : ""}${exported.sounds.length ? `, ${exported.sounds.length} recordings` : ""}`);
       }
     }
   } finally {

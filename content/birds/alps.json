@@ -1,0 +1,262 @@
+{
+ "set": "alps",
+ "book": "birds-alps",
+ "title": "Birds of Switzerland and the Alps",
+ "countries": [
+  "Switzerland",
+  "France",
+  "Italy",
+  "Austria",
+  "Germany",
+  "Slovenia"
+ ],
+ "names": "English names after the IOC World Bird List; French after the CINFO; Spanish after SEO/BirdLife. A part in parentheses is optional in an answer.",
+ "species": [
+  {
+   "scientific": "Tichodroma muraria",
+   "en": "Wallcreeper",
+   "fr": "Tichodrome échelette",
+   "es": "Treparriscos"
+  },
+  {
+   "scientific": "Pyrrhocorax graculus",
+   "en": "Alpine Chough",
+   "fr": "Chocard à bec jaune",
+   "es": "Chova piquigualda"
+  },
+  {
+   "scientific": "Montifringilla nivalis",
+   "en": "White-winged Snowfinch",
+   "fr": "Niverolle alpine",
+   "es": "Gorrión alpino"
+  },
+  {
+   "scientific": "Prunella collaris",
+   "en": "Alpine Accentor",
+   "fr": "Accenteur alpin",
+   "es": "Acentor alpino"
+  },
+  {
+   "scientific": "Lagopus muta",
+   "en": "Rock Ptarmigan",
+   "fr": "Lagopède alpin",
+   "es": "Lagópodo alpino"
+  },
+  {
+   "scientific": "Tetrao urogallus",
+   "en": "Western Capercaillie",
+   "fr": "Grand Tétras",
+   "es": "Urogallo común"
+  },
+  {
+   "scientific": "Lyrurus tetrix",
+   "en": "Black Grouse",
+   "fr": "Tétras lyre",
+   "es": "Gallo lira"
+  },
+  {
+   "scientific": "Tetrastes bonasia",
+   "en": "Hazel Grouse",
+   "fr": "Gélinotte des bois",
+   "es": "Grévol común"
+  },
+  {
+   "scientific": "Aquila chrysaetos",
+   "en": "Golden Eagle",
+   "fr": "Aigle royal",
+   "es": "Águila real"
+  },
+  {
+   "scientific": "Nucifraga caryocatactes",
+   "en": "(Spotted) Nutcracker",
+   "fr": "Cassenoix moucheté",
+   "es": "Cascanueces (común)"
+  },
+  {
+   "scientific": "Loxia curvirostra",
+   "en": "Red Crossbill",
+   "fr": "Bec-croisé des sapins",
+   "es": "Piquituerto común"
+  },
+  {
+   "scientific": "Carduelis citrinella",
+   "en": "Citril Finch",
+   "fr": "Venturon montagnard",
+   "es": "Verderón serrano"
+  },
+  {
+   "scientific": "Turdus torquatus",
+   "en": "Ring Ouzel",
+   "fr": "Merle à plastron",
+   "es": "Mirlo capiblanco"
+  },
+  {
+   "scientific": "Monticola saxatilis",
+   "en": "(Common) Rock Thrush",
+   "fr": "Monticole de roche",
+   "es": "Roquero rojo"
+  },
+  {
+   "scientific": "Phylloscopus bonelli",
+   "en": "(Western) Bonelli's Warbler",
+   "fr": "Pouillot de Bonelli",
+   "es": "Mosquitero papialbo"
+  },
+  {
+   "scientific": "Phylloscopus sibilatrix",
+   "en": "Wood Warbler",
+   "fr": "Pouillot siffleur",
+   "es": "Mosquitero silbador"
+  },
+  {
+   "scientific": "Regulus regulus",
+   "en": "Goldcrest",
+   "fr": "Roitelet huppé",
+   "es": "Reyezuelo sencillo"
+  },
+  {
+   "scientific": "Regulus ignicapilla",
+   "en": "(Common) Firecrest",
+   "fr": "Roitelet à triple bandeau",
+   "es": "Reyezuelo listado"
+  },
+  {
+   "scientific": "Lophophanes cristatus",
+   "en": "(European) Crested Tit",
+   "fr": "Mésange huppée",
+   "es": "Herrerillo capuchino"
+  },
+  {
+   "scientific": "Poecile montanus",
+   "en": "Willow Tit",
+   "fr": "Mésange boréale",
+   "es": "Carbonero montano"
+  },
+  {
+   "scientific": "Poecile palustris",
+   "en": "Marsh Tit",
+   "fr": "Mésange nonnette",
+   "es": "Carbonero palustre"
+  },
+  {
+   "scientific": "Certhia familiaris",
+   "en": "(Eurasian) Treecreeper",
+   "fr": "Grimpereau des bois",
+   "es": "Agateador norteño"
+  },
+  {
+   "scientific": "Dryocopus martius",
+   "en": "Black Woodpecker",
+   "fr": "Pic noir",
+   "es": "Picamaderos negro"
+  },
+  {
+   "scientific": "Picus canus",
+   "en": "Grey-headed Woodpecker",
+   "fr": "Pic cendré",
+   "es": "Pito cano"
+  },
+  {
+   "scientific": "Picoides tridactylus",
+   "en": "(Eurasian) Three-toed Woodpecker",
+   "fr": "Pic tridactyle",
+   "es": "Pico tridáctilo"
+  },
+  {
+   "scientific": "Glaucidium passerinum",
+   "en": "(Eurasian) Pygmy Owl",
+   "fr": "Chevêchette d'Europe",
+   "es": "Mochuelo chico"
+  },
+  {
+   "scientific": "Aegolius funereus",
+   "en": "Boreal Owl",
+   "fr": "Chouette de Tengmalm",
+   "es": "Mochuelo boreal"
+  },
+  {
+   "scientific": "Bubo bubo",
+   "en": "(Eurasian) Eagle-Owl",
+   "fr": "Grand-duc d'Europe",
+   "es": "Búho real"
+  },
+  {
+   "scientific": "Cinclus cinclus",
+   "en": "(White-throated) Dipper",
+   "fr": "Cincle plongeur",
+   "es": "Mirlo acuático"
+  },
+  {
+   "scientific": "Motacilla cinerea",
+   "en": "Grey Wagtail",
+   "fr": "Bergeronnette des ruisseaux",
+   "es": "Lavandera cascadeña"
+  },
+  {
+   "scientific": "Anthus spinoletta",
+   "en": "Water Pipit",
+   "fr": "Pipit spioncelle",
+   "es": "Bisbita alpino"
+  },
+  {
+   "scientific": "Anthus trivialis",
+   "en": "Tree Pipit",
+   "fr": "Pipit des arbres",
+   "es": "Bisbita arbóreo"
+  },
+  {
+   "scientific": "Ptyonoprogne rupestris",
+   "en": "(Eurasian) Crag Martin",
+   "fr": "Hirondelle de rochers",
+   "es": "Avión roquero"
+  },
+  {
+   "scientific": "Tachymarptis melba",
+   "en": "Alpine Swift",
+   "fr": "Martinet à ventre blanc",
+   "es": "Vencejo real"
+  },
+  {
+   "scientific": "Corvus corax",
+   "en": "(Northern) Raven",
+   "fr": "Grand Corbeau",
+   "es": "Cuervo grande"
+  },
+  {
+   "scientific": "Lanius collurio",
+   "en": "Red-backed Shrike",
+   "fr": "Pie-grièche écorcheur",
+   "es": "Alcaudón dorsirrojo"
+  },
+  {
+   "scientific": "Emberiza cia",
+   "en": "Rock Bunting",
+   "fr": "Bruant fou",
+   "es": "Escribano montesino"
+  },
+  {
+   "scientific": "Saxicola rubetra",
+   "en": "Whinchat",
+   "fr": "Tarier des prés",
+   "es": "Tarabilla norteña"
+  },
+  {
+   "scientific": "Oenanthe oenanthe",
+   "en": "(Northern) Wheatear",
+   "fr": "Traquet motteux",
+   "es": "Collalba gris"
+  },
+  {
+   "scientific": "Crex crex",
+   "en": "Corn Crake",
+   "fr": "Râle des genêts",
+   "es": "Guion de codornices"
+  },
+  {
+   "scientific": "Cuculus canorus",
+   "en": "(Common) Cuckoo",
+   "fr": "Coucou (gris)",
+   "es": "Cuco (común)"
+  }
+ ]
+}

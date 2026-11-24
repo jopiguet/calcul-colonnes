@@ -1,0 +1,274 @@
+{
+ "set": "europe",
+ "book": "birds-europe",
+ "title": "Birds of Europe",
+ "countries": [
+  "France",
+  "Germany",
+  "United Kingdom",
+  "Switzerland",
+  "Netherlands",
+  "Belgium",
+  "Spain",
+  "Italy",
+  "Austria",
+  "Denmark",
+  "Sweden",
+  "Poland"
+ ],
+ "names": "English names after the IOC World Bird List; French after the CINFO; Spanish after SEO/BirdLife. A part in parentheses is optional in an answer.",
+ "species": [
+  {
+   "scientific": "Erithacus rubecula",
+   "en": "(European) Robin",
+   "fr": "Rougegorge (familier)",
+   "es": "Petirrojo (europeo)"
+  },
+  {
+   "scientific": "Turdus merula",
+   "en": "(Common) Blackbird",
+   "fr": "Merle noir",
+   "es": "Mirlo (común)"
+  },
+  {
+   "scientific": "Turdus philomelos",
+   "en": "Song Thrush",
+   "fr": "Grive musicienne",
+   "es": "Zorzal común"
+  },
+  {
+   "scientific": "Luscinia megarhynchos",
+   "en": "(Common) Nightingale",
+   "fr": "Rossignol (philomèle)",
+   "es": "Ruiseñor (común)"
+  },
+  {
+   "scientific": "Parus major",
+   "en": "Great Tit",
+   "fr": "Mésange charbonnière",
+   "es": "Carbonero común"
+  },
+  {
+   "scientific": "Cyanistes caeruleus",
+   "en": "(Eurasian) Blue Tit",
+   "fr": "Mésange bleue",
+   "es": "Herrerillo común"
+  },
+  {
+   "scientific": "Periparus ater",
+   "en": "Coal Tit",
+   "fr": "Mésange noire",
+   "es": "Carbonero garrapinos"
+  },
+  {
+   "scientific": "Aegithalos caudatus",
+   "en": "Long-tailed Tit",
+   "fr": "Mésange à longue queue",
+   "es": "Mito (común)"
+  },
+  {
+   "scientific": "Fringilla coelebs",
+   "en": "(Common) Chaffinch",
+   "fr": "Pinson des arbres",
+   "es": "Pinzón vulgar"
+  },
+  {
+   "scientific": "Chloris chloris",
+   "en": "(European) Greenfinch",
+   "fr": "Verdier d'Europe",
+   "es": "Verderón común"
+  },
+  {
+   "scientific": "Carduelis carduelis",
+   "en": "(European) Goldfinch",
+   "fr": "Chardonneret élégant",
+   "es": "Jilguero (europeo)"
+  },
+  {
+   "scientific": "Serinus serinus",
+   "en": "(European) Serin",
+   "fr": "Serin cini",
+   "es": "Verdecillo"
+  },
+  {
+   "scientific": "Pyrrhula pyrrhula",
+   "en": "(Eurasian) Bullfinch",
+   "fr": "Bouvreuil pivoine",
+   "es": "Camachuelo común"
+  },
+  {
+   "scientific": "Passer domesticus",
+   "en": "House Sparrow",
+   "fr": "Moineau domestique",
+   "es": "Gorrión común"
+  },
+  {
+   "scientific": "Passer montanus",
+   "en": "(Eurasian) Tree Sparrow",
+   "fr": "Moineau friquet",
+   "es": "Gorrión molinero"
+  },
+  {
+   "scientific": "Troglodytes troglodytes",
+   "en": "(Eurasian) Wren",
+   "fr": "Troglodyte (mignon)",
+   "es": "Chochín (común)"
+  },
+  {
+   "scientific": "Prunella modularis",
+   "en": "Dunnock",
+   "fr": "Accenteur mouchet",
+   "es": "Acentor común"
+  },
+  {
+   "scientific": "Phylloscopus collybita",
+   "en": "(Common) Chiffchaff",
+   "fr": "Pouillot véloce",
+   "es": "Mosquitero común"
+  },
+  {
+   "scientific": "Phylloscopus trochilus",
+   "en": "Willow Warbler",
+   "fr": "Pouillot fitis",
+   "es": "Mosquitero musical"
+  },
+  {
+   "scientific": "Sylvia atricapilla",
+   "en": "(Eurasian) Blackcap",
+   "fr": "Fauvette à tête noire",
+   "es": "Curruca capirotada"
+  },
+  {
+   "scientific": "Sylvia borin",
+   "en": "Garden Warbler",
+   "fr": "Fauvette des jardins",
+   "es": "Curruca mosquitera"
+  },
+  {
+   "scientific": "Phoenicurus ochruros",
+   "en": "Black Redstart",
+   "fr": "Rougequeue noir",
+   "es": "Colirrojo tizón"
+  },
+  {
+   "scientific": "Phoenicurus phoenicurus",
+   "en": "(Common) Redstart",
+   "fr": "Rougequeue à front blanc",
+   "es": "Colirrojo real"
+  },
+  {
+   "scientific": "Sitta europaea",
+   "en": "(Eurasian) Nuthatch",
+   "fr": "Sittelle torchepot",
+   "es": "Trepador azul"
+  },
+  {
+   "scientific": "Certhia brachydactyla",
+   "en": "Short-toed Treecreeper",
+   "fr": "Grimpereau des jardins",
+   "es": "Agateador europeo"
+  },
+  {
+   "scientific": "Dendrocopos major",
+   "en": "Great Spotted Woodpecker",
+   "fr": "Pic épeiche",
+   "es": "Pico picapinos"
+  },
+  {
+   "scientific": "Picus viridis",
+   "en": "(European) Green Woodpecker",
+   "fr": "Pic vert",
+   "es": "Pito real"
+  },
+  {
+   "scientific": "Columba palumbus",
+   "en": "(Common) Wood Pigeon",
+   "fr": "Pigeon ramier",
+   "es": "Paloma torcaz"
+  },
+  {
+   "scientific": "Streptopelia decaocto",
+   "en": "(Eurasian) Collared Dove",
+   "fr": "Tourterelle turque",
+   "es": "Tórtola turca"
+  },
+  {
+   "scientific": "Cuculus canorus",
+   "en": "(Common) Cuckoo",
+   "fr": "Coucou (gris)",
+   "es": "Cuco (común)"
+  },
+  {
+   "scientific": "Pica pica",
+   "en": "(Eurasian) Magpie",
+   "fr": "Pie bavarde",
+   "es": "Urraca (común)"
+  },
+  {
+   "scientific": "Garrulus glandarius",
+   "en": "(Eurasian) Jay",
+   "fr": "Geai des chênes",
+   "es": "Arrendajo (euroasiático)"
+  },
+  {
+   "scientific": "Corvus corone",
+   "en": "Carrion Crow",
+   "fr": "Corneille noire",
+   "es": "Corneja negra"
+  },
+  {
+   "scientific": "Sturnus vulgaris",
+   "en": "(Common) Starling",
+   "fr": "Étourneau sansonnet",
+   "es": "Estornino pinto"
+  },
+  {
+   "scientific": "Hirundo rustica",
+   "en": "Barn Swallow",
+   "fr": "Hirondelle rustique",
+   "es": "Golondrina común"
+  },
+  {
+   "scientific": "Apus apus",
+   "en": "(Common) Swift",
+   "fr": "Martinet noir",
+   "es": "Vencejo común"
+  },
+  {
+   "scientific": "Alauda arvensis",
+   "en": "(Eurasian) Skylark",
+   "fr": "Alouette des champs",
+   "es": "Alondra común"
+  },
+  {
+   "scientific": "Motacilla alba",
+   "en": "White Wagtail",
+   "fr": "Bergeronnette grise",
+   "es": "Lavandera blanca"
+  },
+  {
+   "scientific": "Oriolus oriolus",
+   "en": "(Eurasian) Golden Oriole",
+   "fr": "Loriot (d'Europe)",
+   "es": "Oropéndola (europea)"
+  },
+  {
+   "scientific": "Emberiza citrinella",
+   "en": "Yellowhammer",
+   "fr": "Bruant jaune",
+   "es": "Escribano cerillo"
+  },
+  {
+   "scientific": "Strix aluco",
+   "en": "Tawny Owl",
+   "fr": "Chouette hulotte",
+   "es": "Cárabo común"
+  },
+  {
+   "scientific": "Buteo buteo",
+   "en": "(Common) Buzzard",
+   "fr": "Buse variable",
+   "es": "Busardo ratonero"
+  }
+ ]
+}

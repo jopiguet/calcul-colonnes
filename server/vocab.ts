@@ -40,7 +40,7 @@ const n = (value: unknown): number => Number(value);
 
 /** Entries with their book's kind and languages, for grading and sessions. */
 const ENTRY_COLUMNS = `e.id, e.section_id, e.position, e.term, e.meaning, e.grp, e.feminine, e.note, e.reading,
-  e.readings, e.translations, e.image, e.part, e.info,
+  e.readings, e.translations, e.image, e.part, e.info, e.audio,
   CASE WHEN e.image = '' THEN 0 ELSE (SELECT COUNT(*) FROM vocab_entries x WHERE x.image = e.image) END AS image_uses,
   b.id AS entry_book, b.kind, b.term_lang, b.meaning_lang, b.ordering`;
 const ENTRY_JOINS = `FROM vocab_entries e
@@ -50,15 +50,19 @@ const ENTRY_JOINS = `FROM vocab_entries e
 
 /** A stored picture's file extension, by its type. */
 const IMAGE_EXT: Record<string, string> = { "image/png": "png", "image/jpeg": "jpg", "image/gif": "gif", "image/webp": "webp" };
+/** A stored recording's file extension, by its type. */
+const AUDIO_EXT: Record<string, string> = { "audio/mpeg": "mp3", "audio/ogg": "ogg", "audio/mp4": "m4a", "audio/wav": "wav" };
 
 /** A book exported: the format-3 file, and the pictures it names (docs/vocabulary.md#export). */
 export interface VocabExport {
   file: { format: 3; book: Record<string, unknown>; lessons: { title: string; subtitle: string; sections: { title: string; subtitle: string; entries: Record<string, unknown>[] }[] }[] };
   images: { hash: string; mime: string; path: string }[];
+  /** A sound book's recordings, named sounds/<hash>.<ext>. */
+  sounds: { hash: string; mime: string; path: string }[];
 }
 
 const bookKind = (value: unknown): BookKind =>
-  value === "definition" || value === "characters" ? value : "translation";
+  value === "definition" || value === "characters" || value === "sounds" ? value : "translation";
 
 /** The translations column: JSON {"fr": "…"}; anything else reads as none. */
 function translationsOf(value: unknown): SessionEntry["translations"] {
@@ -101,6 +105,7 @@ function toEntry(row: Row): SessionEntry {
     image: String(row.image ?? ""),
     part: n(row.part ?? 0),
     imageUses: n(row.image_uses ?? 0),
+    ...(row.audio ? { audio: String(row.audio) } : {}),
     ...(infoOf(row.info) ? { info: infoOf(row.info) } : {}),
     book: {
       id: n(row.entry_book),
@@ -132,6 +137,8 @@ export interface ImportReport {
   changed: number;
   /** Pictures stored by this import (those already on the server are not counted). */
   images: number;
+  /** Recordings stored by this import (those already on the server are not counted). */
+  sounds?: number;
 }
 
 /** An entry already in the database, with its place in the book. */
@@ -152,6 +159,7 @@ export interface StoredEntry {
   image: string;
   part: number;
   info: string;
+  audio: string;
 }
 
 /** A picture read by the import: its SHA-256 (the entries' "image"), type and bytes in base64. */
@@ -239,7 +247,7 @@ export class VocabStore {
    * book labelled as the Spanish one), or more than a fifth of the book's
    * entries removed while players have progress on some of them.
    */
-  async import(file: VocabFile, options: { replace?: boolean; images?: VocabImage[] } = {}): Promise<ImportReport> {
+  async import(file: VocabFile, options: { replace?: boolean; images?: VocabImage[]; sounds?: VocabImage[] } = {}): Promise<ImportReport> {
     if (!options.replace) await this.checkImport(file);
     return this.db.transaction(async (tx) => {
       const { book } = file;
@@ -263,6 +271,25 @@ export class VocabStore {
         known.add(image.hash);
         await tx.query("INSERT INTO vocab_images (hash, mime, data) VALUES ($1, $2, $3) ON CONFLICT (hash) DO NOTHING", [image.hash, image.mime, image.data]);
         report.images++;
+      }
+
+      // 0b. Recordings of a sound book, the same way.
+      const sounds = options.sounds ?? [];
+      const namedSounds = [...new Set([
+        ...sounds.map((i) => i.hash),
+        ...file.lessons.flatMap((l) => l.sections.flatMap((s) => s.entries.map((e) => e.audio ?? ""))).filter((h) => /^[0-9a-f]{64}$/.test(h)),
+      ])];
+      const knownSounds = new Set<string>();
+      for (let start = 0; start < namedSounds.length; start += 200) {
+        const chunk = namedSounds.slice(start, start + 200);
+        const rows = await tx.query(`SELECT hash FROM vocab_sounds WHERE hash IN (${chunk.map((_, i) => `$${i + 1}`).join(", ")})`, chunk);
+        for (const row of rows) knownSounds.add(String(row.hash));
+      }
+      for (const sound of sounds) {
+        if (knownSounds.has(sound.hash)) continue;
+        knownSounds.add(sound.hash);
+        await tx.query("INSERT INTO vocab_sounds (hash, mime, data) VALUES ($1, $2, $3) ON CONFLICT (hash) DO NOTHING", [sound.hash, sound.mime, sound.data]);
+        report.sounds = (report.sounds ?? 0) + 1;
       }
 
       const found = await tx.query("SELECT id FROM vocab_books WHERE slug = $1", [book.id]);
@@ -334,6 +361,7 @@ export class VocabStore {
           entry.reading ?? "", entry.readings ?? "", storedTranslations(entry.translations),
           // A path the import did not turn into a stored picture's hash counts as none.
           entry.image && known.has(entry.image) ? entry.image : "", entry.part ?? 0, storedInfo(entry.info),
+          entry.audio && knownSounds.has(entry.audio) ? entry.audio : "",
         ] as const;
         const row = matches[i];
         if (!row) {
@@ -354,24 +382,25 @@ export class VocabStore {
           row.translations === values[9] &&
           row.image === values[10] &&
           row.part === values[11] &&
-          row.info === values[12];
+          row.info === values[12] &&
+          row.audio === values[13];
         if (!same) {
           await tx.query(
             `UPDATE vocab_entries SET section_id = $1, position = $2, term = $3, meaning = $4, grp = $5, feminine = $6, note = $7,
-                    reading = $8, readings = $9, translations = $10, image = $11, part = $12, info = $13
-              WHERE id = $14`,
+                    reading = $8, readings = $9, translations = $10, image = $11, part = $12, info = $13, audio = $14
+              WHERE id = $15`,
             [...values, row.id],
           );
         }
       }
       report.entries = placed.length;
       // New entries: one statement per hundred, a few round trips for a whole book (matters on Neon).
-      const width = 13;
+      const width = 14;
       for (let start = 0; start < fresh.length; start += 100) {
         const rows = fresh.slice(start, start + 100);
         const placeholders = rows.map((_, i) => `(${Array.from({ length: width }, (_, k) => `$${i * width + k + 1}`).join(", ")})`);
         await tx.query(
-          `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations, image, part, info)
+          `INSERT INTO vocab_entries (section_id, position, term, meaning, grp, feminine, note, reading, readings, translations, image, part, info, audio)
            VALUES ${placeholders.join(", ")}`,
           rows.flat(),
         );
@@ -390,6 +419,7 @@ export class VocabStore {
       await tx.query("DELETE FROM vocab_lessons WHERE book_id = $1 AND position >= $2", [bookId, file.lessons.length]);
       // 4. Pictures no entry shows any more (a corrected extraction, a book replaced).
       await tx.query("DELETE FROM vocab_images WHERE NOT EXISTS (SELECT 1 FROM vocab_entries e WHERE e.image = vocab_images.hash)");
+      await tx.query("DELETE FROM vocab_sounds WHERE NOT EXISTS (SELECT 1 FROM vocab_entries e WHERE e.audio = vocab_sounds.hash)");
       return report;
     });
   }
@@ -397,7 +427,7 @@ export class VocabStore {
   /** A book's entries as stored, with their place in the book. */
   private async bookEntries(db: Pick<Database, "query">, bookId: number): Promise<StoredEntry[]> {
     const rows = await db.query(
-      `SELECT e.id, e.term, e.meaning, e.section_id, e.position, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations, e.image, e.part, e.info,
+      `SELECT e.id, e.term, e.meaning, e.section_id, e.position, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations, e.image, e.part, e.info, e.audio,
               l.position AS lesson_position, s.position AS section_position
          ${ENTRY_JOINS} WHERE b.id = $1 ORDER BY l.position, s.position, e.position`,
       [bookId],
@@ -419,6 +449,7 @@ export class VocabStore {
       image: String(row.image ?? ""),
       part: n(row.part ?? 0),
       info: String(row.info ?? ""),
+      audio: String(row.audio ?? ""),
     }));
   }
 
@@ -541,12 +572,13 @@ export class VocabStore {
     );
     const entries = await this.db.query(
       `SELECT e.section_id, e.term, e.meaning, e.grp, e.feminine, e.note, e.reading, e.readings, e.translations, e.image, e.part, e.info,
-              COALESCE(i.mime, '') AS mime
-         ${ENTRY_JOINS} LEFT JOIN vocab_images i ON i.hash = e.image
+              e.audio, COALESCE(i.mime, '') AS mime, COALESCE(a.mime, '') AS audio_mime
+         ${ENTRY_JOINS} LEFT JOIN vocab_images i ON i.hash = e.image LEFT JOIN vocab_sounds a ON a.hash = e.audio
         WHERE b.id = $1 ORDER BY l.position, s.position, e.position`,
       [bookId],
     );
     const images = new Map<string, string>();
+    const sounds = new Map<string, string>();
     const bySection = new Map<number, Record<string, unknown>[]>();
     for (const e of entries) {
       const out: Record<string, unknown> = { term: String(e.term), meaning: String(e.meaning) };
@@ -571,6 +603,12 @@ export class VocabStore {
         out.image = `images/${String(e.image)}.${ext}`;
         if (n(e.part)) out.part = n(e.part);
         images.set(String(e.image), String(e.mime));
+      }
+      // A sound book's recording: always named, its file written with --images (the book needs it to import again).
+      const audioExt = AUDIO_EXT[String(e.audio_mime)];
+      if (e.audio && audioExt) {
+        out.audio = `sounds/${String(e.audio)}.${audioExt}`;
+        sounds.set(String(e.audio), String(e.audio_mime));
       }
       const list = bySection.get(n(e.section_id)) ?? [];
       list.push(out);
@@ -598,13 +636,27 @@ export class VocabStore {
         }))
         .filter((l) => l.sections.length > 0),
     };
-    return { file, images: [...images].map(([hash, mime]) => ({ hash, mime, path: `images/${hash}.${IMAGE_EXT[mime]}` })) };
+    return {
+      file,
+      images: [...images].map(([hash, mime]) => ({ hash, mime, path: `images/${hash}.${IMAGE_EXT[mime]}` })),
+      sounds: [...sounds].map(([hash, mime]) => ({ hash, mime, path: `sounds/${hash}.${AUDIO_EXT[mime]}` })),
+    };
   }
 
   async image(hash: string, owner: boolean): Promise<{ mime: string; data: string } | null> {
     const rows = await this.db.query(
       `SELECT i.mime, i.data FROM vocab_images i WHERE i.hash = $1 AND EXISTS (
          SELECT 1 ${ENTRY_JOINS} WHERE e.image = i.hash AND ($2 = 1 OR b.visibility = 'shared'))`,
+      [hash, owner ? 1 : 0],
+    );
+    return rows[0] ? { mime: String(rows[0].mime), data: String(rows[0].data) } : null;
+  }
+
+  /** A sound book's recording, for an account that sees the book. */
+  async sound(hash: string, owner: boolean): Promise<{ mime: string; data: string } | null> {
+    const rows = await this.db.query(
+      `SELECT a.mime, a.data FROM vocab_sounds a WHERE a.hash = $1 AND EXISTS (
+         SELECT 1 ${ENTRY_JOINS} WHERE e.audio = a.hash AND ($2 = 1 OR b.visibility = 'shared'))`,
       [hash, owner ? 1 : 0],
     );
     return rows[0] ? { mime: String(rows[0].mime), data: String(rows[0].data) } : null;
@@ -946,6 +998,16 @@ export class VocabStore {
         }
       }
     }
+    if (verdict === "wrong" && answer.mode === "written" && found.book.kind === "sounds") {
+      // A bird heard: its scientific name, or its name in another of the app's languages, is right too.
+      for (const other of [found.term, found.meaning, ...Object.values(found.translations)]) {
+        const v = grade(answer.given, other, answerLang(found.book.meaningLang));
+        if (COUNTS_AS_RIGHT.has(v)) {
+          verdict = v;
+          break;
+        }
+      }
+    }
     const correct = COUNTS_AS_RIGHT.has(verdict);
 
     const rows = await this.db.query(
@@ -1065,6 +1127,19 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     if (!image) return c.json({ error: "unknown image" }, 404);
     return c.body(new Uint8Array(Buffer.from(image.data, "base64")), 200, {
       "Content-Type": image.mime,
+      "Cache-Control": "private, max-age=31536000, immutable",
+      "X-Content-Type-Options": "nosniff",
+    });
+  });
+
+  // A recording of a sound book, by its SHA-256.
+  routes.get("/sounds/:hash", async (c) => {
+    const hash = c.req.param("hash");
+    if (!/^[0-9a-f]{64}$/.test(hash)) return c.json({ error: "unknown sound" }, 404);
+    const sound = await store.sound(hash, owner(c));
+    if (!sound) return c.json({ error: "unknown sound" }, 404);
+    return c.body(new Uint8Array(Buffer.from(sound.data, "base64")), 200, {
+      "Content-Type": sound.mime,
       "Cache-Control": "private, max-age=31536000, immutable",
       "X-Content-Type-Options": "nosniff",
     });

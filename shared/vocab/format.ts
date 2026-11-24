@@ -29,6 +29,12 @@
  * the interface's language when there is one. The book may carry a "credit",
  * shown with it (the dictionaries' licence).
  *
+ * kind "sounds": recordings to recognise (docs/birds.md). Each entry has
+ * "audio", a recording beside the file ("sounds/xc123456.mp3"); the term is the
+ * scientific name, the meaning the name in "meaning"'s language, with
+ * "translations"; "group" is "song" or "call" (a call comes once the song of
+ * the same bird is known); "note" credits the recording (recordist, licence).
+ *
  * Format 3 adds, on an entry, "type" ("sign", "noun"), "gender", "genitive",
  * "principal_parts", "forms", "readings" as a list ([{"value": "an",
  * "language": "sux"}], every one an answer) and "functions" (["logogram",
@@ -54,6 +60,8 @@ export interface VocabFileEntry {
   image?: string;
   /** The entry's number on a shared picture (a labelled diagram: "1. rotor" is part 1). */
   part?: number;
+  /** A recording: a path relative to the file ("sounds/xc123456.mp3"), read by the import (a "sounds" book). */
+  audio?: string;
   /** Format 3: what the entry is, its readings by language, what it does in writing. */
   info?: EntryInfo;
 }
@@ -92,17 +100,20 @@ export const INFO_LIMITS = { label: 40, readings: 20, value: 60, note: 200, func
 
 /** The fields an entry may have in format 3: any other is a mistake, refused rather than dropped. */
 const ENTRY_FIELDS = new Set([
-  "term", "meaning", "group", "note", "feminine", "reading", "readings", "translations", "image", "part",
+  "term", "meaning", "group", "note", "feminine", "reading", "readings", "translations", "image", "part", "audio",
   "type", "gender", "genitive", "principal_parts", "principalParts", "forms", "functions",
 ]);
 
 /** A picture path in a vocabulary file: relative, inside the file's folder, an image. */
 export const IMAGE_PATH = /^(?![/\\])(?!.*(?:^|[/\\])\.\.(?:[/\\]|$))[^\0:]{1,300}\.(?:png|jpe?g|webp|gif)$/i;
 
+/** A recording path in a vocabulary file: relative, inside the file's folder, an audio file. */
+export const AUDIO_PATH = /^(?![/\\])(?!.*(?:^|[/\\])\.\.(?:[/\\]|$))[^\0:]{1,300}\.(?:mp3|ogg|oga|opus|m4a|wav)$/i;
+
 export const TRANSLATION_LANGS = ["fr", "es", "en"] as const;
 export type TranslationLang = (typeof TRANSLATION_LANGS)[number];
 
-export type BookKind = "translation" | "definition" | "characters";
+export type BookKind = "translation" | "definition" | "characters" | "sounds";
 
 export interface VocabFileBook {
   /** Stable identifier: importing a file with the same id updates that book. */
@@ -146,8 +157,8 @@ function book(raw: unknown): VocabFileBook {
   const title = text(b.title, 200);
   if (!id || !/^[a-z0-9][a-z0-9-]*$/.test(id)) throw new Error('book: "id" must be lower-case letters, digits and "-"');
   if (!title) throw new Error('book: "title" is required');
-  if (b.kind !== "translation" && b.kind !== "definition" && b.kind !== "characters") {
-    throw new Error('book: "kind" must be "translation", "definition" or "characters"');
+  if (b.kind !== "translation" && b.kind !== "definition" && b.kind !== "characters" && b.kind !== "sounds") {
+    throw new Error('book: "kind" must be "translation", "definition", "characters" or "sounds"');
   }
   if (typeof b.term !== "string" || !LANG.test(b.term) || typeof b.meaning !== "string" || !LANG.test(b.meaning)) {
     throw new Error('book: "term" and "meaning" must be language codes ("es", "en")');
@@ -183,8 +194,10 @@ export function parseVocabFile(data: unknown): VocabFile {
   };
   const subtitle = (raw: Record<string, unknown>): string => (v1 ? "" : (text(raw.subtitle, 200) ?? ""));
 
+  const theBook = v1 ? SPANISH_3000 : book(root.book);
+  const sounds = theBook.kind === "sounds";
   return {
-    book: v1 ? SPANISH_3000 : book(root.book),
+    book: theBook,
     lessons: root.lessons.map((rawLesson, l) => {
       const lesson = (rawLesson ?? {}) as Record<string, unknown>;
       const where = `lesson ${l + 1}`;
@@ -239,6 +252,7 @@ export function parseVocabFile(data: unknown): VocabFile {
                 ...(readings ? { readings } : {}),
                 ...(Object.keys(translations).length ? { translations } : {}),
                 ...picture(entry, `${at}, entry ${e + 1}`),
+                ...recording(entry, `${at}, entry ${e + 1}`, sounds),
                 ...(info ? { info } : {}),
               };
             }),
@@ -264,6 +278,19 @@ function picture(entry: Record<string, unknown>, at: string): Pick<VocabFileEntr
     out.part = entry.part;
   }
   return out;
+}
+
+/** A "sounds" book's recording: required there, refused elsewhere. */
+function recording(entry: Record<string, unknown>, at: string, sounds: boolean): Pick<VocabFileEntry, "audio"> {
+  if (entry.audio === undefined || entry.audio === "") {
+    if (sounds) throw new Error(`${at}: a "sounds" book's entry needs "audio", a recording beside the file`);
+    return {};
+  }
+  if (!sounds) throw new Error(`${at}: "audio" belongs to a book of kind "sounds"`);
+  if (typeof entry.audio !== "string" || !AUDIO_PATH.test(entry.audio)) {
+    throw new Error(`${at}: "audio" is a path inside the file's folder, ending .mp3, .ogg, .opus, .m4a or .wav`);
+  }
+  return { audio: entry.audio };
 }
 
 const LABEL = /^[\p{L}\p{N}][\p{L}\p{N} ._-]*$/u;
