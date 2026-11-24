@@ -84,6 +84,7 @@ const wav = (() => {
   return b;
 })();
 const queries: string[] = [];
+let busyRobin = 0;
 const keys: string[] = [];
 const server = createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://localhost");
@@ -91,6 +92,16 @@ const server = createServer((req, res) => {
     const query = url.searchParams.get("query") ?? "";
     queries.push(query);
     keys.push(url.searchParams.get("key") ?? "");
+    // The robin's first two searches meet a busy server (502), then it answers; the third bird's always does.
+    if (query.includes("Erithacus") && busyRobin < 2) {
+      busyRobin++;
+      res.writeHead(502).end("Bad Gateway");
+      return;
+    }
+    if (query.includes("Nullus")) {
+      res.writeHead(503).end();
+      return;
+    }
     // The first query form is refused for the warbler: the second is tried.
     if (query.startsWith("gen:Curruca")) {
       res.writeHead(400).end("{}");
@@ -124,10 +135,13 @@ const realFetch = globalThis.fetch;
 globalThis.fetch = ((input: string | URL | Request, init?: RequestInit) => realFetch(String(input).replace(/^https:\/\/example\.invalid/, `http://127.0.0.1:${port}`), init)) as typeof fetch;
 try {
   // Recordings point at https://example.invalid/f/<id>, served by the fake.
-  const picks = await fetchSet(set, { out, key: KEY, base: `http://127.0.0.1:${port}/api`, trimClips: false, dry: false, log: (s) => logs.push(s) });
+  const picks = await fetchSet(set, { out, key: KEY, base: `http://127.0.0.1:${port}/api`, trimClips: false, dry: false, log: (s) => logs.push(s), retryDelays: [0, 0, 0], pause: 0 });
   expect("fetch: robin song and call, warbler call only, nothing for the third", picks.map((p) => `${p.species.scientific}:${p.kind}:${p.recording.id}`), [
     "Erithacus rubecula:song:21", "Erithacus rubecula:call:22", "Curruca balearica:call:31",
   ]);
+  expect("fetch: a busy server tried again, a bird still busy left out and named, the run finished", [
+    busyRobin, logs.filter((l) => l.includes("trying again")).length, logs.some((l) => l.includes("left out for now: xeno-canto kept answering 503 for Nullus avis")), logs.some((l) => /1 left out because xeno-canto was busy: No Bird\./.test(l)),
+  ], [2, 5, true, true]);
   expect("fetch: the second query form after a refusal", queries.filter((q) => q.includes("Curruca")), ["gen:Curruca sp:balearica", 'sp:"Curruca balearica"']);
   expect("fetch: the key sent, never logged", [keys.every((k) => k === KEY), logs.some((l) => l.includes(KEY))], [true, false]);
   const file = parseVocabFile(JSON.parse(readFileSync(join(out, "test", "birds.json"), "utf8")));

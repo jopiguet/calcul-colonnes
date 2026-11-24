@@ -18,7 +18,6 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
-import { createInterface } from "node:readline";
 import { fileURLToPath } from "node:url";
 
 export interface BirdSpecies {
@@ -170,32 +169,101 @@ export function creditsMarkdown(set: BirdSet, picks: Pick[]): string {
 
 // ------------------------------------------------------------------------------------------- the command
 
-/** Asks for the key without echoing it. */
+/**
+ * Asks for the key, showing a * for each character typed (never the key itself). Raw keyboard input rather than
+ * readline: readline redraws its line when it starts waiting, which wiped the prompt and left a blank line.
+ */
 async function askKey(): Promise<string> {
-  if (!process.stdin.isTTY) throw new Error("the xeno-canto API key is typed in: run this in a terminal");
-  const rl = createInterface({ input: process.stdin, output: process.stdout, terminal: true });
-  const write = (rl as unknown as { _writeToOutput: (s: string) => void })._writeToOutput;
-  let asking = true;
-  (rl as unknown as { _writeToOutput: (s: string) => void })._writeToOutput = (s: string) => {
-    if (!asking) write.call(rl, s);
-  };
-  process.stdout.write("xeno-canto API key (from your account page; not shown, not saved): ");
-  const key = await new Promise<string>((done) => rl.question("", done));
-  asking = false;
-  rl.close();
-  process.stdout.write("\n");
-  return key.trim();
+  const stdin = process.stdin;
+  if (!stdin.isTTY) throw new Error("the xeno-canto API key is typed in: run this in a terminal");
+  process.stdout.write("xeno-canto API key (from your account page at xeno-canto.org; not shown, not saved): ");
+  return new Promise<string>((done, fail) => {
+    let key = "";
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding("utf8");
+    const finish = (error?: Error): void => {
+      stdin.setRawMode(false);
+      stdin.pause();
+      stdin.removeListener("data", onData);
+      process.stdout.write("\n");
+      if (error) fail(error);
+      else done(key.trim());
+    };
+    const onData = (chunk: string): void => {
+      for (const ch of chunk) {
+        if (ch === "\r" || ch === "\n") return finish();
+        if (ch === "\u0003") return finish(new Error("stopped"));
+        if (ch === "\u007f" || ch === "\b") {
+          if (key.length) {
+            key = key.slice(0, -1);
+            process.stdout.write("\b \b");
+          }
+          continue;
+        }
+        // A pasted key arrives at once; control characters other than those above are ignored.
+        if (ch >= " ") {
+          key += ch;
+          process.stdout.write("*");
+        }
+      }
+    };
+    stdin.on("data", onData);
+  });
 }
 
 const wait = (ms: number) => new Promise((done) => setTimeout(done, ms));
 
+/** fetch, with a network failure said plainly (the host and the cause, never the key). */
+async function get(url: string, init?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, init);
+  } catch (error) {
+    const cause = (error as { cause?: { code?: string; message?: string } }).cause;
+    const host = (() => {
+      try {
+        return new URL(url).host;
+      } catch {
+        return "the server";
+      }
+    })();
+    throw new Error(`could not reach ${host}: ${cause?.code ?? cause?.message ?? (error as Error).message} (check the connection, a proxy or a firewall)`);
+  }
+}
+
+/** Waits before each new try when xeno-canto is busy or down (502, 503, 429, a dropped connection). */
+export const RETRY_DELAYS = [2000, 5000, 15000, 30000];
+
+/** xeno-canto busy for longer than the retries: this bird or recording is left for a later run. */
+export class Busy extends Error {}
+
+/** A request tried again while the server is busy; a "Retry-After" is followed (at most a minute). */
+async function getRetry(url: string, init: RequestInit | undefined, delays: number[], log: (s: string) => void, what: string): Promise<Response> {
+  for (let attempt = 0; ; attempt++) {
+    let response: Response | null = null;
+    let reason = "";
+    try {
+      response = await get(url, init);
+      if (response.status !== 429 && response.status < 500) return response;
+      reason = String(response.status);
+    } catch (error) {
+      reason = (error as Error).message.replace(/ \(check.*$/, "");
+    }
+    if (attempt >= delays.length) throw new Busy(`xeno-canto kept answering ${reason} for ${what}`);
+    const after = Number(response?.headers.get("retry-after"));
+    const ms = Number.isFinite(after) && after > 0 ? Math.min(after * 1000, 60000) : delays[attempt]!;
+    log(`  xeno-canto busy (${reason}), trying again in ${Math.round(ms / 1000)} s…`);
+    await wait(ms);
+  }
+}
+
 /** The recordings xeno-canto has for a bird (all pages); the key never appears in an error. */
-async function search(base: string, key: string, scientific: string): Promise<XcRecording[]> {
+async function search(base: string, key: string, scientific: string, delays: number[] = RETRY_DELAYS, log: (s: string) => void = () => {}): Promise<XcRecording[]> {
   for (const query of queriesFor(scientific)) {
     const all: XcRecording[] = [];
     for (let page = 1; page <= 5; page++) {
       const url = `${base}?query=${encodeURIComponent(query)}&page=${page}&key=${encodeURIComponent(key)}`;
-      const response = await fetch(url, { headers: { Accept: "application/json" } });
+      const response = await getRetry(url, { headers: { Accept: "application/json" } }, delays, log, scientific);
       if (response.status === 401 || response.status === 403) throw new Error("xeno-canto refused the key (check it on your account page)");
       if (!response.ok) {
         // A query form this API version does not take: try the next one.
@@ -226,14 +294,30 @@ function trim(input: string, output: string): void {
   if (r.status !== 0) throw new Error(`ffmpeg could not trim ${basename(input)}: ${String(r.stderr).trim().slice(0, 300)}`);
 }
 
-export async function fetchSet(set: BirdSet, options: { out: string; key: string; base?: string; trimClips: boolean; dry: boolean; log?: (s: string) => void }): Promise<Pick[]> {
+export async function fetchSet(
+  set: BirdSet,
+  options: { out: string; key: string; base?: string; trimClips: boolean; dry: boolean; log?: (s: string) => void; retryDelays?: number[]; pause?: number },
+): Promise<Pick[]> {
   const log = options.log ?? ((s: string) => console.log(s));
   const dir = join(options.out, set.set);
   const sounds = join(dir, "sounds");
   if (!options.dry) mkdirSync(sounds, { recursive: true });
   const picks: Pick[] = [];
-  for (const species of set.species) {
-    const recordings = await search(options.base ?? API, options.key, species.scientific);
+  const delays = options.retryDelays ?? RETRY_DELAYS;
+  const pause = options.pause ?? 1000;
+  const skipped: string[] = [];
+  for (const [i, species] of set.species.entries()) {
+    log(`[${i + 1}/${set.species.length}] ${species.scientific}`);
+    if (i > 0) await wait(pause);
+    let recordings: XcRecording[];
+    try {
+      recordings = await search(options.base ?? API, options.key, species.scientific, delays, log);
+    } catch (error) {
+      if (!(error instanceof Busy)) throw error;
+      log(`  left out for now: ${error.message}`);
+      skipped.push(species.en);
+      continue;
+    }
     for (const kind of ["song", "call"] as const) {
       const recording = chooseRecording(recordings, species, kind, set.countries);
       if (!recording) {
@@ -245,8 +329,22 @@ export async function fetchSet(set: BirdSet, options: { out: string; key: string
       if (options.dry) continue;
       const target = join(sounds, `xc${recording.id}.mp3`);
       if (existsSync(target)) continue;
-      const response = await fetch(recording.file);
-      if (!response.ok) throw new Error(`download of XC${recording.id} failed: ${response.status}`);
+      let response: Response;
+      try {
+        response = await getRetry(recording.file, undefined, delays, log, `XC${recording.id}`);
+      } catch (error) {
+        if (!(error instanceof Busy)) throw error;
+        picks.pop();
+        log(`  left out for now: ${error.message}`);
+        skipped.push(`${species.en} (${kind})`);
+        continue;
+      }
+      if (!response.ok) {
+        // Gone or refused (404, 403): another run may find another recording.
+        picks.pop();
+        log(`  XC${recording.id}: download refused (${response.status}), left out`);
+        continue;
+      }
       const bytes = Buffer.from(await response.arrayBuffer());
       if (options.trimClips) {
         const raw = join(sounds, `xc${recording.id}.download`);
@@ -264,6 +362,10 @@ export async function fetchSet(set: BirdSet, options: { out: string; key: string
       }
       await wait(250);
     }
+  }
+  if (skipped.length) {
+    log(`${skipped.length} left out because xeno-canto was busy: ${skipped.join(", ")}.`);
+    log("Run the same command again later: what is already downloaded is kept, only the missing ones are fetched.");
   }
   if (!options.dry) {
     const file = (p: Pick) => `sounds/xc${p.recording.id}.mp3`;
@@ -297,6 +399,7 @@ async function main(): Promise<void> {
   }
   const key = await askKey();
   if (!key) throw new Error("no key typed");
+  console.log(flag("--dry") ? "Searching xeno-canto (nothing will be downloaded)…" : "Searching and downloading from xeno-canto…");
   for (const name of sets) {
     const set = loadSet(name);
     console.log(`${set.title}: ${set.species.length} birds`);

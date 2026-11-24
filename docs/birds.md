@@ -43,7 +43,9 @@ npm run birds:fetch -- mediterranean --dry       # what would be taken, nothing 
 npm run vocab:import -- data/birds/europe/birds.json
 ```
 
-- **The key.** xeno-canto's API (version 3) needs a free key, on the account page of xeno-canto.org. The script asks for it and hides it as it is typed; it is never an argument, never written to a file, never printed.
+- **The key.** xeno-canto's API (version 3) needs a free key, on the account page of xeno-canto.org. The script asks for it, showing a * per character typed (pasting works), then Enter; it is never an argument, never written to a file, never printed. `--dry` needs it too: it searches, it only does not download.
+- **A busy xeno-canto.** A 502, 503, 429 or dropped connection is tried again after 2, 5, 15 and 30 seconds (or what the server's *Retry-After* says). A bird still unreachable after that is left out, named at the end, and the run goes on; running the same command again later fetches only what is missing. One second between birds keeps the load light.
+- **Progress.** One line per bird (`[12/42] Sylvia atricapilla`), then the recording taken; a network failure names its cause (`could not reach xeno-canto.org: ENOTFOUND`).
 - **The choice of a recording,** for each bird and each sound (song, then call), among what xeno-canto has for its scientific name:
   1. the right species and type, quality A or B, 5 seconds to 3 minutes;
   2. a Creative Commons licence that allows a trimmed copy (no *ND*);

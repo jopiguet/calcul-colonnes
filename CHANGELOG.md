@@ -1,5 +1,15 @@
 # Changelog
 
+## 9.0.2
+
+- **`npm run birds:fetch` no longer stops at a busy xeno-canto:** a 502, 503, 429 or dropped connection is tried again after 2, 5, 15 and 30 s (or the server's *Retry-After*); a bird or recording still unreachable is left out, named at the end of the run, and fetched by the next run (what is downloaded is kept). A download refused (404, 403) is left out too. One second between birds.
+- `check:birds`: a fake xeno-canto answering 502 then 200, and 503 for good.
+
+## 9.0.1
+
+- **`npm run birds:fetch` seemed to do nothing:** its hidden key prompt was wiped by readline as it started waiting, leaving a blank line. The key is now read from raw keyboard input: the prompt stays, a * shows for each character (pasting works), Backspace and Ctrl+C work.
+- **Progress and errors:** a line per bird (`[12/42] Sylvia atricapilla`) and "Searching xeno-canto…" after the key; a network failure names the host and its cause (`ENOTFOUND`, a refused connection) instead of "fetch failed".
+
 ## 9.0.0
 
 - **A new section, 🎧 Sons: recognising sounds, starting with birds** ([Birds](docs/birds.md)). Three bird books: *Oiseaux d'Europe* (42), *Oiseaux de Méditerranée et des Baléares* (42, the Balearic warbler and shearwater, Eleonora's falcon…), *Oiseaux de Suisse et des Alpes* (41, the wallcreeper, the capercaillie…). A card plays a recording; the answer is the bird's name, chosen among four at first, typed from box 3 (in French, Spanish or English, an optional part left out, or the scientific name). After the answer: the scientific name, song or call, and the recording's credit.

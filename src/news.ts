@@ -23,6 +23,18 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "9.0.2",
+    fr: ["npm run birds:fetch réessaie quand xeno-canto est surchargé, et reprend plus tard ce qui manque, au lieu de s'arrêter."],
+    es: ["npm run birds:fetch vuelve a intentarlo cuando xeno-canto está saturado y retoma después lo que falta, en lugar de detenerse."],
+    en: ["npm run birds:fetch tries again when xeno-canto is busy, and picks up what is missing later, instead of stopping."],
+  },
+  {
+    version: "9.0.1",
+    fr: ["La récupération des chants d'oiseaux (npm run birds:fetch) affiche sa demande de clé, puis sa progression oiseau par oiseau."],
+    es: ["La descarga de los cantos de aves (npm run birds:fetch) muestra su petición de clave y luego su avance ave por ave."],
+    en: ["Fetching the bird songs (npm run birds:fetch) now shows its key prompt, then its progress bird by bird."],
+  },
+  {
     version: "9.0.0",
     fr: [
       "🎧 Une nouvelle section, Sons : reconnaître les oiseaux à leur chant. Trois livres, l'Europe, la Méditerranée et les Baléares, la Suisse et les Alpes : on écoute, on nomme l'oiseau, d'abord parmi quatre noms, puis en l'écrivant.",
