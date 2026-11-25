@@ -50,6 +50,18 @@ const ENTRY_JOINS = `FROM vocab_entries e
 
 /** A stored picture's file extension, by its type. */
 const IMAGE_EXT: Record<string, string> = { "image/png": "png", "image/jpeg": "jpg", "image/gif": "gif", "image/webp": "webp" };
+/**
+ * A note's name as typed, with its sharp or flat written as a sign: "C#", "C♯", "Db", "D♭", "do#", "ré♭"; also
+ * spelled out in the three languages, so that "C#" meets "C sharp / D flat". The answer as typed comes first.
+ */
+export function musicSpellings(given: string): string[] {
+  const t = given.trim();
+  const m = /^([a-gA-G]|do|ré|re|mi|fa|sol|la|si)\s*(#|♯|♭|b)$/i.exec(t);
+  if (!m || (m[2] === "b" && m[1]!.length > 1)) return [t];
+  const sharp = m[2] === "#" || m[2] === "♯";
+  return [t, `${m[1]} ${sharp ? "sharp" : "flat"}`, `${m[1]} ${sharp ? "dièse" : "bémol"}`, `${m[1]} ${sharp ? "sostenido" : "bemol"}`];
+}
+
 /** A stored recording's file extension, by its type. */
 const AUDIO_EXT: Record<string, string> = { "audio/mpeg": "mp3", "audio/ogg": "ogg", "audio/mp4": "m4a", "audio/wav": "wav" };
 
@@ -1000,11 +1012,14 @@ export class VocabStore {
     }
     if (verdict === "wrong" && answer.mode === "written" && found.book.kind === "sounds") {
       // A bird heard: its scientific name, or its name in another of the app's languages, is right too.
-      for (const other of [found.term, found.meaning, ...Object.values(found.translations)]) {
-        const v = grade(answer.given, other, answerLang(found.book.meaningLang));
-        if (COUNTS_AS_RIGHT.has(v)) {
-          verdict = v;
-          break;
+      // A note: its name in any of the three, and C#, D♭, Db, do#, ré♭ for the words (docs/notes.md).
+      search: for (const given of musicSpellings(answer.given)) {
+        for (const other of [found.term, found.meaning, ...Object.values(found.translations)]) {
+          const v = grade(given, other, answerLang(found.book.meaningLang));
+          if (COUNTS_AS_RIGHT.has(v)) {
+            verdict = v;
+            break search;
+          }
         }
       }
     }

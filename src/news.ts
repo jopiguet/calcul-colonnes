@@ -23,6 +23,21 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "9.1.0",
+    fr: [
+      "🎵 Les notes de musique arrivent dans Sons : « Notes à l'oreille » (écouter une note et la nommer, d'abord après un do, puis seule) et « Notes sur la portée » (lire une note en clé de sol ou de fa, puis l'entendre).",
+      "Les noms en français, en espagnol ou en anglais : ré, re ou D ; un dièse aussi bien écrit do dièse, ré bémol, C# ou Db.",
+    ],
+    es: [
+      "🎵 Las notas musicales llegan a Sonidos: «Notas de oído» (escuchar una nota y nombrarla, primero tras un do, luego sola) y «Notas en el pentagrama» (leer una nota en clave de sol o de fa, y luego oírla).",
+      "Los nombres en español, francés o inglés: re, ré o D; un sostenido escrito do sostenido, re bemol, C# o Db.",
+    ],
+    en: [
+      "🎵 Musical notes arrive in Sounds: \"Notes by ear\" (hear a note and name it, first after a C, then alone) and \"Notes on the staff\" (read a note in treble or bass clef, then hear it).",
+      "Names in English, French or Spanish: D, ré or re; a sharp written C sharp, D flat, C# or Db.",
+    ],
+  },
+  {
     version: "9.0.2",
     fr: ["npm run birds:fetch réessaie quand xeno-canto est surchargé, et reprend plus tard ce qui manque, au lieu de s'arrêter."],
     es: ["npm run birds:fetch vuelve a intentarlo cuando xeno-canto está saturado y retoma después lo que falta, en lugar de detenerse."],

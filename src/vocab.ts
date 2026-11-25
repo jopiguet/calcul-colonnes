@@ -188,15 +188,28 @@ const newOrder = (book: VocabBookInfo): "book" | "random" =>
   prefs.order[book.id] ?? (book.order === "alphabetical" ? "random" : "book");
 
 /** "Vocabulaire espagnol", "Vocabulaire anglais": the book's language studied; "Kanji et kana", "Lettres malayalam". */
+/** A sound book's groups, said in the interface's language: a bird's song or call, a note's clef or reference. */
+const SOUND_GROUPS: Record<string, "song" | "call" | "clefTreble" | "clefBass" | "afterC" | "noReference"> = {
+  song: "song",
+  call: "call",
+  treble: "clefTreble",
+  bass: "clefBass",
+  reference: "afterC",
+  alone: "noReference",
+};
+
 /** The bird books the fetch script makes (docs/birds.md), titled in the interface's language. */
-const SOUND_BOOKS: Record<string, "birdsEurope" | "birdsMediterranean" | "birdsAlps"> = {
+const SOUND_BOOKS: Record<string, "birdsEurope" | "birdsMediterranean" | "birdsAlps" | "notesEar" | "notesStaff"> = {
+  "notes-ear": "notesEar",
+  "notes-staff": "notesStaff",
   "birds-europe": "birdsEurope",
   "birds-mediterranean": "birdsMediterranean",
   "birds-alps": "birdsAlps",
 };
 
 /** A sound book's card line: where its recordings come from. */
-export const soundsCredit = (book: VocabBookInfo): string => (/xeno-canto/i.test(book.credit ?? "") ? vt("soundsCreditShort") : (book.credit ?? ""));
+export const soundsCredit = (book: VocabBookInfo): string =>
+  /xeno-canto/i.test(book.credit ?? "") ? vt("soundsCreditShort") : book.slug.startsWith("notes-") ? vt(book.slug === "notes-ear" ? "notesEarLine" : "notesStaffLine") : (book.credit ?? "");
 
 export const bookTitle = (book: VocabBookInfo): string =>
   book.kind === "sounds"
@@ -951,9 +964,13 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   const alone = !s.result && card.pictureAlone === true && picturesAlone(ctx.book);
   const question = el("div", "vocab-question");
   const heard = card.audio !== undefined;
-  question.append(el("p", "vocab-ask", heard ? vt("askBird") : alone ? vt("askPicture", { lang: langName(card.answerLang) }) : ask));
-  if (heard) question.append(birdPlayer(`${s.index}:${card.entryId}`, card.audio!));
-  if (card.image && (!recognise || s.result)) question.append(picture(card));
+  // A sound book: a bird, or a note; heard first, or (a note on the staff) heard with the answer.
+  const noteBook = ctx.book?.slug.startsWith("notes-") === true;
+  const seen = heard && card.image !== undefined;
+  question.append(el("p", "vocab-ask", heard ? vt(noteBook ? "askNote" : "askBird") : alone ? vt("askPicture", { lang: langName(card.answerLang) }) : ask));
+  if (heard && (!seen || s.result)) question.append(birdPlayer(`${s.index}:${card.entryId}`, card.audio!));
+  // A note on the staff: the picture is the question (its sound comes with the answer).
+  if (card.image && (!recognise || s.result || card.audio)) question.append(picture(card));
   const prompt = el("p", glyphShown ? "vocab-prompt vocab-glyph" : "vocab-prompt", card.prompt);
   prompt.lang = card.promptLang;
   prompt.dir = "auto";
@@ -970,7 +987,7 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
   const notes = el("p", "vocab-notes");
   if (card.feminine) notes.append(el("span", "vocab-fem", `f · ${vt("feminine")}`));
   if (card.met && !s.result) notes.append(el("span", "vocab-met", vt("metBadge")));
-  if (card.group) notes.append(el("span", "vocab-group", heard && (card.group === "song" || card.group === "call") ? vt(card.group) : card.group));
+  if (card.group) notes.append(el("span", "vocab-group", heard && card.group in SOUND_GROUPS ? vt(SOUND_GROUPS[card.group]!) : card.group));
   // A shelf session: the book the word comes from.
   if (card.source) notes.append(el("span", "vocab-source-tag", card.source));
   notes.append(boxDots(s.result ? s.result.box : card.box));

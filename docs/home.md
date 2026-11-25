@@ -3,7 +3,7 @@
 The player's home page (`src/home.ts`) lists every activity as a card, in
 fourteen groups: Mathématiques, Sciences, Informatique, Économie, Cours de
 langues, Langues, Caractères (the books of characters: kana and kanji, each
-script course's letters or signs), Sons (sound books: the birds, docs/birds.md), Exercices des livres, Découvrir, Physique, Astronomie,
+script course's letters or signs), Sons (sound books: the birds, docs/birds.md, and the notes, docs/notes.md), Exercices des livres, Découvrir, Physique, Astronomie,
 Curiosités mathématiques, Chimie et biologie. What a group holds and what each
 card shows is in the [user guide](user-guide.md#home-page).
 

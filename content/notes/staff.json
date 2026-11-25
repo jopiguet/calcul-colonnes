@@ -1,0 +1,321 @@
+{
+ "format": 2,
+ "book": {
+  "id": "notes-staff",
+  "title": "Notes on the staff",
+  "kind": "sounds",
+  "term": "en",
+  "meaning": "en",
+  "credit": "Staves drawn and sounds synthesized for Luma; clefs from Noto Music (SIL OFL)"
+ },
+ "lessons": [
+  {
+   "title": "Treble clef",
+   "subtitle": "Clé de sol · Clave de sol",
+   "sections": [
+    {
+     "title": "C4–A5",
+     "entries": [
+      {
+       "term": "C4",
+       "meaning": "C",
+       "translations": {
+        "fr": "do",
+        "es": "do"
+       },
+       "group": "treble",
+       "image": "staff/treble-c4.png",
+       "audio": "sounds/treble-c4.mp3"
+      },
+      {
+       "term": "D4",
+       "meaning": "D",
+       "translations": {
+        "fr": "ré",
+        "es": "re"
+       },
+       "group": "treble",
+       "image": "staff/treble-d4.png",
+       "audio": "sounds/treble-d4.mp3"
+      },
+      {
+       "term": "E4",
+       "meaning": "E",
+       "translations": {
+        "fr": "mi",
+        "es": "mi"
+       },
+       "group": "treble",
+       "image": "staff/treble-e4.png",
+       "audio": "sounds/treble-e4.mp3"
+      },
+      {
+       "term": "F4",
+       "meaning": "F",
+       "translations": {
+        "fr": "fa",
+        "es": "fa"
+       },
+       "group": "treble",
+       "image": "staff/treble-f4.png",
+       "audio": "sounds/treble-f4.mp3"
+      },
+      {
+       "term": "G4",
+       "meaning": "G",
+       "translations": {
+        "fr": "sol",
+        "es": "sol"
+       },
+       "group": "treble",
+       "image": "staff/treble-g4.png",
+       "audio": "sounds/treble-g4.mp3"
+      },
+      {
+       "term": "A4",
+       "meaning": "A",
+       "translations": {
+        "fr": "la",
+        "es": "la"
+       },
+       "group": "treble",
+       "image": "staff/treble-a4.png",
+       "audio": "sounds/treble-a4.mp3"
+      },
+      {
+       "term": "B4",
+       "meaning": "B",
+       "translations": {
+        "fr": "si",
+        "es": "si"
+       },
+       "group": "treble",
+       "image": "staff/treble-b4.png",
+       "audio": "sounds/treble-b4.mp3"
+      },
+      {
+       "term": "C5",
+       "meaning": "C",
+       "translations": {
+        "fr": "do",
+        "es": "do"
+       },
+       "group": "treble",
+       "image": "staff/treble-c5.png",
+       "audio": "sounds/treble-c5.mp3"
+      },
+      {
+       "term": "D5",
+       "meaning": "D",
+       "translations": {
+        "fr": "ré",
+        "es": "re"
+       },
+       "group": "treble",
+       "image": "staff/treble-d5.png",
+       "audio": "sounds/treble-d5.mp3"
+      },
+      {
+       "term": "E5",
+       "meaning": "E",
+       "translations": {
+        "fr": "mi",
+        "es": "mi"
+       },
+       "group": "treble",
+       "image": "staff/treble-e5.png",
+       "audio": "sounds/treble-e5.mp3"
+      },
+      {
+       "term": "F5",
+       "meaning": "F",
+       "translations": {
+        "fr": "fa",
+        "es": "fa"
+       },
+       "group": "treble",
+       "image": "staff/treble-f5.png",
+       "audio": "sounds/treble-f5.mp3"
+      },
+      {
+       "term": "G5",
+       "meaning": "G",
+       "translations": {
+        "fr": "sol",
+        "es": "sol"
+       },
+       "group": "treble",
+       "image": "staff/treble-g5.png",
+       "audio": "sounds/treble-g5.mp3"
+      },
+      {
+       "term": "A5",
+       "meaning": "A",
+       "translations": {
+        "fr": "la",
+        "es": "la"
+       },
+       "group": "treble",
+       "image": "staff/treble-a5.png",
+       "audio": "sounds/treble-a5.mp3"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Bass clef",
+   "subtitle": "Clé de fa · Clave de fa",
+   "sections": [
+    {
+     "title": "E2–C4",
+     "entries": [
+      {
+       "term": "E2",
+       "meaning": "E",
+       "translations": {
+        "fr": "mi",
+        "es": "mi"
+       },
+       "group": "bass",
+       "image": "staff/bass-e2.png",
+       "audio": "sounds/bass-e2.mp3"
+      },
+      {
+       "term": "F2",
+       "meaning": "F",
+       "translations": {
+        "fr": "fa",
+        "es": "fa"
+       },
+       "group": "bass",
+       "image": "staff/bass-f2.png",
+       "audio": "sounds/bass-f2.mp3"
+      },
+      {
+       "term": "G2",
+       "meaning": "G",
+       "translations": {
+        "fr": "sol",
+        "es": "sol"
+       },
+       "group": "bass",
+       "image": "staff/bass-g2.png",
+       "audio": "sounds/bass-g2.mp3"
+      },
+      {
+       "term": "A2",
+       "meaning": "A",
+       "translations": {
+        "fr": "la",
+        "es": "la"
+       },
+       "group": "bass",
+       "image": "staff/bass-a2.png",
+       "audio": "sounds/bass-a2.mp3"
+      },
+      {
+       "term": "B2",
+       "meaning": "B",
+       "translations": {
+        "fr": "si",
+        "es": "si"
+       },
+       "group": "bass",
+       "image": "staff/bass-b2.png",
+       "audio": "sounds/bass-b2.mp3"
+      },
+      {
+       "term": "C3",
+       "meaning": "C",
+       "translations": {
+        "fr": "do",
+        "es": "do"
+       },
+       "group": "bass",
+       "image": "staff/bass-c3.png",
+       "audio": "sounds/bass-c3.mp3"
+      },
+      {
+       "term": "D3",
+       "meaning": "D",
+       "translations": {
+        "fr": "ré",
+        "es": "re"
+       },
+       "group": "bass",
+       "image": "staff/bass-d3.png",
+       "audio": "sounds/bass-d3.mp3"
+      },
+      {
+       "term": "E3",
+       "meaning": "E",
+       "translations": {
+        "fr": "mi",
+        "es": "mi"
+       },
+       "group": "bass",
+       "image": "staff/bass-e3.png",
+       "audio": "sounds/bass-e3.mp3"
+      },
+      {
+       "term": "F3",
+       "meaning": "F",
+       "translations": {
+        "fr": "fa",
+        "es": "fa"
+       },
+       "group": "bass",
+       "image": "staff/bass-f3.png",
+       "audio": "sounds/bass-f3.mp3"
+      },
+      {
+       "term": "G3",
+       "meaning": "G",
+       "translations": {
+        "fr": "sol",
+        "es": "sol"
+       },
+       "group": "bass",
+       "image": "staff/bass-g3.png",
+       "audio": "sounds/bass-g3.mp3"
+      },
+      {
+       "term": "A3",
+       "meaning": "A",
+       "translations": {
+        "fr": "la",
+        "es": "la"
+       },
+       "group": "bass",
+       "image": "staff/bass-a3.png",
+       "audio": "sounds/bass-a3.mp3"
+      },
+      {
+       "term": "B3",
+       "meaning": "B",
+       "translations": {
+        "fr": "si",
+        "es": "si"
+       },
+       "group": "bass",
+       "image": "staff/bass-b3.png",
+       "audio": "sounds/bass-b3.mp3"
+      },
+      {
+       "term": "C4",
+       "meaning": "C",
+       "translations": {
+        "fr": "do",
+        "es": "do"
+       },
+       "group": "bass",
+       "image": "staff/bass-c4.png",
+       "audio": "sounds/bass-c4.mp3"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

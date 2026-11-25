@@ -1,5 +1,15 @@
 # Changelog
 
+## 9.1.0
+
+- **Musical notes in 🎧 Sons** ([Notes](docs/notes.md)), two books built into the app and shared with every account:
+  - **Notes à l'oreille** (20 cards): a note heard after middle C (C4 to C5), then the five black keys, then the note alone.
+  - **Notes sur la portée** (26 cards): a whole note on the treble staff (C4 to A5) or the bass staff (E2 to C4), with its ledger lines; heard once answered.
+- **Names in three languages:** choices in the interface's language (*do ré mi*, *do re mi*, *C D E*); typed, any of the three, and a black key by either name or with a sign (*C#*, *Db*, *do#*, *ré♭*). After the answer, the pitch (*B4*) and *clé de sol*, *clé de fa*, *après do* or *sans repère* in the interface's language.
+- **Nothing recorded:** `npm run notes:build` synthesizes every sound (eight decaying partials, equal temperament, A4 = 440 Hz) and draws every staff (SVG to PNG; the clefs' outlines from Noto Music, SIL OFL, with its licence in `content/notes/`). The books (1.5 MB) are committed and imported at start whenever they change (`server/notes.ts`).
+- **Sound books:** an entry may have a picture too; then the picture is the question and the recording plays with the answer. A sound book's groups are said in the interface's language.
+- `check:notes` (in CI) and `notes.spec.ts`.
+
 ## 9.0.2
 
 - **`npm run birds:fetch` no longer stops at a busy xeno-canto:** a 502, 503, 429 or dropped connection is tried again after 2, 5, 15 and 30 s (or the server's *Retry-After*); a bird or recording still unreachable is left out, named at the end of the run, and fetched by the next run (what is downloaded is kept). A download refused (404, 403) is left out too. One second between birds.

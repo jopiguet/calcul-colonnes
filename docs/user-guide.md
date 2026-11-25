@@ -885,6 +885,14 @@ xeno-canto and imported by the owner).
 - Each bird starts with its song; its call comes once the song has been named right in writing.
 - Sessions, boxes, statistics and *Passer ce mot* work as in the vocabulary.
 
+## Sounds: notes
+
+Two books in **🎧 Sons**, there for every account:
+
+- **Notes à l'oreille:** a note is heard; *Quelle note ?* First after middle C, to find it by its distance, then the black keys, then the note alone.
+- **Notes sur la portée:** a note on the treble staff, then the bass staff; once answered, it is heard.
+- The choices are in your language; typed, the name may be in French, Spanish or English (*ré*, *re*, *D*), and a black key as *do dièse*, *ré bémol*, *C#* or *Db*. See [Notes](notes.md).
+
 ## Language courses
 
 Group *Cours de langues*, before *Langues*: one card per course, **🏛️ Latin**

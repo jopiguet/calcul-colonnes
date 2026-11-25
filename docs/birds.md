@@ -1,6 +1,6 @@
 # Birds: recognising sounds
 
-Since 9.0.0 the home page has a **🎧 Sons** group: books of recordings to recognise, starting with birds. A
+Since 9.0.0 the home page has a **🎧 Sons** group: books of recordings to recognise, starting with birds (and, since 9.1.0, musical notes: [Notes](notes.md)). A
 card plays a recording; the player says which bird it is. It runs on the vocabulary engine
 ([Vocabulary](vocabulary.md)): Leitner boxes, sessions, statistics and skipped cards work as for words.
 

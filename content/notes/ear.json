@@ -1,0 +1,253 @@
+{
+ "format": 2,
+ "book": {
+  "id": "notes-ear",
+  "title": "Notes by ear",
+  "kind": "sounds",
+  "term": "en",
+  "meaning": "en",
+  "credit": "Sounds synthesized for Luma (equal temperament, A4 = 440 Hz)"
+ },
+ "lessons": [
+  {
+   "title": "With C as a reference",
+   "subtitle": "Avec do pour repère · Con do como referencia",
+   "sections": [
+    {
+     "title": "C D E F G A B C",
+     "entries": [
+      {
+       "term": "C4",
+       "meaning": "C",
+       "translations": {
+        "fr": "do",
+        "es": "do"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-c4.mp3"
+      },
+      {
+       "term": "D4",
+       "meaning": "D",
+       "translations": {
+        "fr": "ré",
+        "es": "re"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-d4.mp3"
+      },
+      {
+       "term": "E4",
+       "meaning": "E",
+       "translations": {
+        "fr": "mi",
+        "es": "mi"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-e4.mp3"
+      },
+      {
+       "term": "F4",
+       "meaning": "F",
+       "translations": {
+        "fr": "fa",
+        "es": "fa"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-f4.mp3"
+      },
+      {
+       "term": "G4",
+       "meaning": "G",
+       "translations": {
+        "fr": "sol",
+        "es": "sol"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-g4.mp3"
+      },
+      {
+       "term": "A4",
+       "meaning": "A",
+       "translations": {
+        "fr": "la",
+        "es": "la"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-a4.mp3"
+      },
+      {
+       "term": "B4",
+       "meaning": "B",
+       "translations": {
+        "fr": "si",
+        "es": "si"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-b4.mp3"
+      },
+      {
+       "term": "C5",
+       "meaning": "C",
+       "translations": {
+        "fr": "do",
+        "es": "do"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-c5.mp3"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Sharps and flats",
+   "subtitle": "Dièses et bémols · Sostenidos y bemoles",
+   "sections": [
+    {
+     "title": "♯ ♭",
+     "entries": [
+      {
+       "term": "C♯/D♭4",
+       "meaning": "C sharp / D flat",
+       "translations": {
+        "fr": "do dièse / ré bémol",
+        "es": "do sostenido / re bemol"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-cs4.mp3"
+      },
+      {
+       "term": "D♯/E♭4",
+       "meaning": "D sharp / E flat",
+       "translations": {
+        "fr": "ré dièse / mi bémol",
+        "es": "re sostenido / mi bemol"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-ds4.mp3"
+      },
+      {
+       "term": "F♯/G♭4",
+       "meaning": "F sharp / G flat",
+       "translations": {
+        "fr": "fa dièse / sol bémol",
+        "es": "fa sostenido / sol bemol"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-fs4.mp3"
+      },
+      {
+       "term": "G♯/A♭4",
+       "meaning": "G sharp / A flat",
+       "translations": {
+        "fr": "sol dièse / la bémol",
+        "es": "sol sostenido / la bemol"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-gs4.mp3"
+      },
+      {
+       "term": "A♯/B♭4",
+       "meaning": "A sharp / B flat",
+       "translations": {
+        "fr": "la dièse / si bémol",
+        "es": "la sostenido / si bemol"
+       },
+       "group": "reference",
+       "audio": "sounds/ref-as4.mp3"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Without a reference",
+   "subtitle": "Sans repère · Sin referencia",
+   "sections": [
+    {
+     "title": "C D E F G A B",
+     "entries": [
+      {
+       "term": "C4",
+       "meaning": "C",
+       "translations": {
+        "fr": "do",
+        "es": "do"
+       },
+       "group": "alone",
+       "note": "261.6 Hz",
+       "audio": "sounds/c4.mp3"
+      },
+      {
+       "term": "D4",
+       "meaning": "D",
+       "translations": {
+        "fr": "ré",
+        "es": "re"
+       },
+       "group": "alone",
+       "note": "293.7 Hz",
+       "audio": "sounds/d4.mp3"
+      },
+      {
+       "term": "E4",
+       "meaning": "E",
+       "translations": {
+        "fr": "mi",
+        "es": "mi"
+       },
+       "group": "alone",
+       "note": "329.6 Hz",
+       "audio": "sounds/e4.mp3"
+      },
+      {
+       "term": "F4",
+       "meaning": "F",
+       "translations": {
+        "fr": "fa",
+        "es": "fa"
+       },
+       "group": "alone",
+       "note": "349.2 Hz",
+       "audio": "sounds/f4.mp3"
+      },
+      {
+       "term": "G4",
+       "meaning": "G",
+       "translations": {
+        "fr": "sol",
+        "es": "sol"
+       },
+       "group": "alone",
+       "note": "392.0 Hz",
+       "audio": "sounds/g4.mp3"
+      },
+      {
+       "term": "A4",
+       "meaning": "A",
+       "translations": {
+        "fr": "la",
+        "es": "la"
+       },
+       "group": "alone",
+       "note": "440.0 Hz",
+       "audio": "sounds/a4.mp3"
+      },
+      {
+       "term": "B4",
+       "meaning": "B",
+       "translations": {
+        "fr": "si",
+        "es": "si"
+       },
+       "group": "alone",
+       "note": "493.9 Hz",
+       "audio": "sounds/b4.mp3"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

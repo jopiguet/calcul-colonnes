@@ -1,3 +1,4 @@
+import { importNoteBooks } from "./notes.ts";
 import { existsSync, readFileSync } from "node:fs";
 import { AuthStore } from "./auth/store.ts";
 import type { Database } from "./db/index.ts";
@@ -92,6 +93,10 @@ export async function maintain(db: Database): Promise<void> {
     },
   );
   if (courseBooks.length > 0) log.info(`course vocabulary imported: ${courseBooks.join(", ")}`);
+
+  // The note books (content/notes, docs/notes.md): the same, with their staves and sounds.
+  const noteBooks = await importNoteBooks(db);
+  if (noteBooks.length > 0) log.info(`note books imported: ${noteBooks.join(", ")}`);
 
   await new AuthStore(db).deleteExpired();
 }

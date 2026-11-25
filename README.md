@@ -2,7 +2,7 @@
 
 A web app for practising arithmetic the way it is written on paper, for
 multiple-choice tests in secondary-school and first-year university
-mathematics, for vocabulary (Spanish, English, Japanese) with spaced repetition, for complete language courses (Latin, Egyptian, Sumerian, Akkadian, Ancient Greek, Persian, Arabic, Hebrew, Malayalam, Quechua, Inuktitut, Tibetan, Bulgarian, Georgian, Runes, Linear Elamite, Imperial Aramaic), for recognising birds by their songs and calls, and
+mathematics, for vocabulary (Spanish, English, Japanese) with spaced repetition, for complete language courses (Latin, Egyptian, Sumerian, Akkadian, Ancient Greek, Persian, Arabic, Hebrew, Malayalam, Quechua, Inuktitut, Tibetan, Bulgarian, Georgian, Runes, Linear Elamite, Imperial Aramaic), for recognising birds by their songs and calls and musical notes by ear and on the staff, and
 for experiments to discover probability. French, Spanish
 and English interface; one server, one small database; sign-in by password or
 Google, Microsoft, GitHub and other OpenID providers; installable on a phone's
@@ -179,6 +179,7 @@ npm start          # http://localhost:8787
 | `npm run check:courses` | Checks that the in-app courses say the same in French, Spanish and English: headings, tables, code, links and formulas, and that every topic points to a part |
 | `npm run check:lessons` | Checks the language courses: the same exercises and answers in the three languages, the lesson template, every answer marked right when typed back (see [Language courses › Checks](docs/language-courses.md#checks)) |
 | `npm run birds:fetch -- all` | Fetches the bird books' recordings from xeno-canto (API key typed in), trims them and writes the sound books to import (see [Birds](docs/birds.md)) |
+| `npm run notes:build` | Synthesizes the note sounds and draws the staves of the two note books in `content/notes` (see [Notes](docs/notes.md)) |
 | `npm run sounds:build` | Makes the sounds of the Malayalam, Egyptian, Sumerian and Akkadian courses with eSpeak NG and ffmpeg (see [Sounds](docs/sounds.md)) |
 | `npm run check:sounds` | Checks that every word that can be listened to has its sound and that `sounds.json` is up to date |
 | `npm run check:tour` | Checks the guided tour: the session flag, migration 023, the pages in every language, the chips against the app's labels (see [User guide › Guided tour](docs/user-guide.md#guided-tour)) |
@@ -220,6 +221,7 @@ Settings are read from `.env` (see `.env.example`):
 | [Vocabulary](docs/vocabulary.md) | Importing a book, the file format, the learning method, how answers are graded |
 | [Language courses](docs/language-courses.md) | The Latin, Egyptian, Sumerian, Akkadian, Greek, Persian, Arabic, Hebrew, Malayalam, Quechua, Inuktitut, Tibetan, Bulgarian, Georgian, Runes, Linear Elamite and Imperial Aramaic courses: lesson format, blanks and marking, checks, adding a lesson or a course |
 | [Birds](docs/birds.md) | Recognising birds by ear: the three books, a card, fetching the recordings, licences, the sound book format |
+| [Notes](docs/notes.md) | Naming notes heard and read in three languages: the two books, the synthesized sounds, the staves |
 | [Sounds](docs/sounds.md) | Listening to the courses: what is said and how, which words, making the sounds, licences |
 | [Workbook exercises](docs/exercises.md) | Extracting a workbook's exercises from its PDF or EPUB, importing it, how answers are marked against the key |
 | [Kanji and kana](docs/characters.md) | The Characters book: school order, readings, how it works with the word books, building it |
