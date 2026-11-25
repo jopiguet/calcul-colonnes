@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "9.1.1",
+    fr: ["Correction de la mise en ligne : les livres de notes sont inclus dans l'application déployée."],
+    es: ["Corrección del despliegue: los libros de notas se incluyen en la aplicación desplegada."],
+    en: ["Deployment fix: the note books are included in the deployed app."],
+  },
+  {
     version: "9.1.0",
     fr: [
       "🎵 Les notes de musique arrivent dans Sons : « Notes à l'oreille » (écouter une note et la nommer, d'abord après un do, puis seule) et « Notes sur la portée » (lire une note en clé de sol ou de fa, puis l'entendre).",

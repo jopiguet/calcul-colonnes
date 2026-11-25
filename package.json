@@ -1,7 +1,7 @@
 {
   "name": "calcul-colonnes",
   "private": true,
-  "version": "9.1.0",
+  "version": "9.1.1",
   "type": "module",
   "engines": {
     "node": ">=20.12"
@@ -11,7 +11,7 @@
     "dev:api": "tsx watch server/index.ts",
     "dev:web": "vite",
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.server.json && tsc -p tsconfig.tests.json && vite build",
-    "build:server": "rm -rf dist-server && esbuild server/index.ts --bundle --splitting --platform=node --format=esm --target=node22 --packages=external --outdir=dist-server && cp -r server/migrations dist-server/migrations && mkdir -p dist-server/content && cp -r content/courses dist-server/content/courses",
+    "build:server": "rm -rf dist-server && esbuild server/index.ts --bundle --splitting --platform=node --format=esm --target=node22 --packages=external --outdir=dist-server && cp -r server/migrations dist-server/migrations && mkdir -p dist-server/content && cp -r content/courses dist-server/content/courses && cp -r content/notes dist-server/content/notes",
     "start": "tsx server/index.ts",
     "maintenance": "tsx server/index.ts maintenance",
     "db:copy-to-postgres": "tsx server/copy-to-postgres.ts",

@@ -238,7 +238,9 @@ export function build(dir = NOTES_DIR): { ear: number; staff: number } {
   }
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+// Run as a command only when this file itself is the program (by name: bundled, import.meta.url is the bundle's).
+const main = process.argv[1] ?? "";
+if (/notes-build\.[jt]s$/.test(main) && resolve(main) === fileURLToPath(import.meta.url)) {
   const made = build();
   console.log(`notes: ${made.ear} sounds by ear, ${made.staff} notes on the staff → ${NOTES_DIR}`);
 }

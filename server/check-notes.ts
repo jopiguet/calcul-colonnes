@@ -9,8 +9,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseVocabFile } from "../shared/vocab/format.ts";
 import { readImages, readSounds } from "./vocab-import.ts";
-import { BOTTOM, NATURALS, NOTES_DIR, SHARPS, frequency, staffSvg, step } from "./notes-build.ts";
-import { NOTE_BOOKS } from "./notes.ts";
+import { BOTTOM, NATURALS, NOTES_DIR as BUILD_DIR, SHARPS, frequency, staffSvg, step } from "./notes-build.ts";
+import { NOTE_BOOKS, NOTES_DIR } from "./notes.ts";
 import { musicSpellings } from "./vocab.ts";
 import { grade } from "../shared/vocab/grade.ts";
 
@@ -45,6 +45,11 @@ for (const name of NOTE_BOOKS) {
   if (name === "staff.json") expect("staff.json: one picture per note", images.length, entries.length);
 }
 expect("books: 20 sounds by ear, 26 notes on the staff", counts, { "notes-ear": 20, "notes-staff": 26 });
+
+// ---- the server reads the books the build writes, and does not carry the build (it ran at start once bundled)
+expect("server: the books where the build writes them", NOTES_DIR, BUILD_DIR);
+expect("server: notes.ts does not import the build", /from "\.\/notes-build/.test(readFileSync(new URL("./notes.ts", import.meta.url), "utf8")), false);
+expect("build:server copies content/notes beside the bundle", /cp -r content\/notes dist-server\/content\/notes/.test(readFileSync(new URL("../package.json", import.meta.url), "utf8")), true);
 
 // ---- names and pitches
 expect("names", NATURALS.map((n) => `${n.letter}=${n.fr}=${n.es}`), ["C=do=do", "D=ré=re", "E=mi=mi", "F=fa=fa", "G=sol=sol", "A=la=la", "B=si=si"]);

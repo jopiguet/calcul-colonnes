@@ -1,5 +1,11 @@
 # Changelog
 
+## 9.1.1
+
+- **The release image failed at start** (`EACCES: mkdir '/app/content/notes/sounds'`): bundled into `dist-server/index.js`, `notes-build.ts` took itself for the program and built the note books inside the server. Its command check now goes by name too, as the other scripts' (and `birds-fetch.ts`'s), and the server no longer imports the build at all: `server/notes.ts` finds the books itself.
+- **The note books were missing from the image:** `build:server` now copies `content/notes` beside the bundle, as `content/courses`; the server reads them from the sources or from `dist-server/content/notes`.
+- `check:notes`: the server reads the books where the build writes them, does not import the build, and `build:server` copies them. Rehearsed as the release does it: maintenance then the server, on PostgreSQL, from the image's files only, read-only, as an unprivileged user.
+
 ## 9.1.0
 
 - **Musical notes in 🎧 Sons** ([Notes](docs/notes.md)), two books built into the app and shared with every account:

@@ -45,7 +45,7 @@ After the answer: the note in scientific pitch notation (*C4* is middle C, *A4* 
 
 - **Sounds:** synthesized by the build, not recorded: eight partials of a slightly stretched harmonic series, each dying away faster than the one below, a 5 ms attack, as a piano string would; equal temperament, A4 = 440 Hz. MP3, mono, 96 kb/s, 1.6 to 2.9 s. No recording, no licence.
 - **Staves:** drawn by the build as SVG (five lines, the clef, a whole note, its ledger lines) and rendered to PNG at twice their size by `rsvg-convert`. The clefs' outlines are Noto Music's (Copyright The Noto Project Authors, SIL Open Font License 1.1), kept in `content/notes/clefs.json` with the licence in `content/notes/OFL.txt`; Noto Music places them on the bottom staff line, 250 font units to a staff space.
-- **Import:** the server imports `content/notes/ear.json` and `staff.json` at start, with their pictures and sounds, whenever they change (their hash in `app_settings`), and shares them with every account (`server/notes.ts`). They take about 1.5 MB in the database.
+- **Import:** the server imports `content/notes/ear.json` and `staff.json` at start, with their pictures and sounds, whenever they change (their hash in `app_settings`), and shares them with every account (`server/notes.ts`). `build:server` copies `content/notes` beside the bundle (`dist-server/content/notes`), as it does the courses, for the image; the server never imports the build script. They take about 1.5 MB in the database.
 
 ## Building them: npm run notes:build
 

@@ -410,7 +410,9 @@ async function main(): Promise<void> {
   if (!flag("--dry")) console.log(`Then: npm run vocab:import -- ${join(out, "<set>", "birds.json")}`);
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+// Run as a command only when this file itself is the program (by name: bundled, import.meta.url is the bundle's).
+const program = process.argv[1] ?? "";
+if (/birds-fetch\.[jt]s$/.test(program) && resolve(program) === fileURLToPath(import.meta.url)) {
   main().catch((error: unknown) => {
     console.error(error instanceof Error ? error.message : String(error));
     process.exit(1);

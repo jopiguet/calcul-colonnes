@@ -5,11 +5,19 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { Database } from "./db/index.ts";
 import { parseVocabFile } from "../shared/vocab/format.ts";
 import { readImages, readSounds } from "./vocab-import.ts";
 import { VocabStore } from "./vocab.ts";
-import { NOTES_DIR } from "./notes-build.ts";
+/**
+ * content/notes beside the sources, or beside the bundle (dist-server/content/notes, copied by build:server).
+ * Not imported from notes-build.ts: the build (ffmpeg, rsvg-convert, writing files) stays out of the server.
+ */
+export const NOTES_DIR = (() => {
+  const candidates = [new URL("../content/notes", import.meta.url), new URL("./content/notes", import.meta.url)].map((u) => fileURLToPath(u));
+  return candidates.find((dir) => existsSync(join(dir, "ear.json"))) ?? candidates[0]!;
+})();
 
 export const NOTE_BOOKS = ["ear.json", "staff.json"];
 
