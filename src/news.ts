@@ -23,6 +23,27 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "9.2.0",
+    fr: [
+      "⚡ L'application s'ouvre bien plus vite : la page d'accueil charge environ dix fois moins, les QCM et les expériences arrivent quand on les ouvre.",
+      "🎯 Mots difficiles : une séance avec les mots les plus souvent manqués, depuis la page d'un livre.",
+      "Dans les statistiques d'un livre, touche « acquis », « connus », « en cours » ou une boîte pour voir les mots qui s'y trouvent.",
+      "Des cartes et des réglages qui ne débordent plus de leur cadre, sur téléphone comme sur ordinateur.",
+    ],
+    es: [
+      "⚡ La aplicación se abre mucho más rápido: la página de inicio carga unas diez veces menos; los tests y los experimentos llegan al abrirlos.",
+      "🎯 Palabras difíciles: una sesión con las palabras falladas más a menudo, desde la página de un libro.",
+      "En las estadísticas de un libro, toca «dominadas», «conocidas», «en curso» o una caja para ver sus palabras.",
+      "Tarjetas y ajustes que ya no se salen de su marco, en el móvil y en el ordenador.",
+    ],
+    en: [
+      "⚡ The app opens much faster: the home page loads about ten times less, and tests and experiments arrive when opened.",
+      "🎯 Difficult words: a session of the words missed most often, from a book's page.",
+      "In a book's statistics, tap \"mastered\", \"known\", \"learning\" or a box to see the words in it.",
+      "Cards and settings no longer crowd the edges of their frames, on phones and computers alike.",
+    ],
+  },
+  {
     version: "9.1.1",
     fr: ["Correction de la mise en ligne : les livres de notes sont inclus dans l'application déployée."],
     es: ["Corrección del despliegue: los libros de notas se incluyen en la aplicación desplegada."],

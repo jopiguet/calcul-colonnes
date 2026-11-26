@@ -32,7 +32,6 @@ import {
   TYPED_MAX,
   bankRevision,
   localized,
-  registerBank,
   TOPIC_GROUPS,
   generateQuiz,
   gradeQuiz,
@@ -53,9 +52,11 @@ import {
 import { button, el } from "./dom";
 import { drawGraph } from "./graph";
 import { currentLang } from "./i18n";
-import { explanationText, groupName, levelHint, levelName, mistakeName, promptText, qt, topicName } from "./quiz-i18n";
+import { groupName, levelHint, levelName, mistakeName, qt, testDate, topicName } from "./quiz-i18n";
+import { explanationText, promptText } from "./quiz-i18n-questions";
 import { saveSettings, type Settings } from "./settings";
 import { quizBank, store, type PastTest, type User } from "./store";
+import { loadBank } from "./bank-load";
 
 /**
  * Multiple-choice tests. Three screens: settings, one question at a time,
@@ -124,23 +125,7 @@ async function reviewFocus(user: User, level: Level, topics: Topic[]): Promise<s
 
 const LETTERS = ["A", "B", "C", "D"];
 
-let bankLoadedAt = 0;
-/** The bank changes only on an import: asked again after a few minutes. */
-const BANK_FOR = 5 * 60_000;
-
-/**
- * Loads the question bank for the physical chemistry tests. A failure keeps
- * the bank already loaded (or none): the tests then have only calculations.
- */
-export async function loadBank(): Promise<void> {
-  if (Date.now() - bankLoadedAt < BANK_FOR) return;
-  try {
-    registerBank(await quizBank.load());
-    bankLoadedAt = Date.now();
-  } catch {
-    // offline: generated questions only
-  }
-}
+export { loadBank };
 
 /** A sentence with inline $…$ formulas and `code`. */
 function richString(shown: string, cls: string, tag: "p" | "span" | "div" = "span"): HTMLElement {
@@ -810,8 +795,7 @@ export function rebuildPast(t: PastTest): { spec: QuizSpec; questions: Question[
 }
 
 /** When a test was taken, in the player's language. */
-export const testDate = (at: number): string =>
-  new Intl.DateTimeFormat(currentLang(), { dateStyle: "medium", timeStyle: "short" }).format(new Date(at));
+export { testDate };
 
 /**
  * The corrections of a past test, as at the end of it, for the player or an

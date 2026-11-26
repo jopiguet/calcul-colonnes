@@ -3,9 +3,10 @@
  * filled in with {name}; decimals are formatted by `num` in each language.
  */
 import { currentLang, type Lang } from "../i18n";
+import { LAB_NAMES } from "./names";
 
 const fr = {
-  group: "Physique",
+  ...LAB_NAMES.fr.physics,
   stepPredict: "1. Prévoir",
   stepCompare: "3. Comparer",
   stepExplain: "4. Comprendre",
@@ -20,8 +21,6 @@ const fr = {
   formula: "Formule",
 
   // ------------------------------------------------------------ throw
-  throwTitle: "🏀 Lancer une balle",
-  throwText: "Prévoir où elle tombe, puis la lancer.",
   tIntro: "On lance une balle à 15 m/s (54 km/h), depuis le sol. Avant de lancer : qu'est-ce qui va se passer ?",
   tPredictBest: "Avec quel angle va-t-elle le plus loin ?",
   tPredictFlag: "Lancée à 30°, où retombe-t-elle ? Plante le drapeau.",
@@ -76,8 +75,6 @@ const fr = {
   tStrobeNote: "À chaque flash, les deux billes sont à la même hauteur.",
 
   // ------------------------------------------------------------ pendulum
-  pendulumTitle: "⏱️ Le pendule",
-  pendulumText: "Ce qui change le rythme d'un balancier, et ce qui ne le change pas.",
   pIntro: "Une boule au bout d'un fil, qu'on lâche d'un côté : elle se balance. Une oscillation, c'est un aller et retour. Avant d'essayer :",
   pPredictMass: "Même fil, une boule lourde et une boule légère : laquelle fait ses oscillations le plus vite ?",
   pHeavy: "La lourde",
@@ -133,8 +130,6 @@ const fr = {
   pCheckWrong: "✗ Pas tout à fait. Les chaînes ont la même longueur, et la masse ne compte pas : à peu près le même rythme.",
 
   // ------------------------------------------------------------ lenses
-  lensesTitle: "🔍 Les lentilles",
-  lensesText: "Former une image nette sur un écran.",
   lIntro: "Une loupe, une flèche lumineuse et un écran blanc. La loupe peut former sur l'écran une image de la flèche. Avant d'essayer :",
   lPredictCard: "On cache la moitié haute de la loupe avec un carton. Sur l'écran, l'image…",
   lCardTop: "perd sa moitié haute",
@@ -194,8 +189,6 @@ const fr = {
   lCheckWrong: "✗ Pas tout à fait. Le timbre est plus près que la distance focale : les rayons ne se croisent nulle part, l'image est virtuelle.",
 
   // ------------------------------------------------------------ circuits
-  circuitsTitle: "💡 Les circuits",
-  circuitsText: "Des ampoules en série et en parallèle.",
   cIntro: "Une pile de {volts} V et des ampoules toutes pareilles. Avant d'allumer :",
   cPredictSeries: "Deux ampoules l'une après l'autre (en série) : chacune, comparée à une ampoule seule, brille…",
   cPredictParallel: "Deux ampoules côte à côte (en parallèle) : chacune, comparée à une ampoule seule, brille…",
@@ -250,7 +243,7 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
-  group: "Física",
+  ...LAB_NAMES.es.physics,
   stepPredict: "1. Prever",
   stepCompare: "3. Comparar",
   stepExplain: "4. Comprender",
@@ -264,8 +257,6 @@ const es: Record<Key, string> = {
   simulated: "Simulación",
   formula: "Fórmula",
 
-  throwTitle: "🏀 Lanzar una pelota",
-  throwText: "Prever dónde cae y luego lanzarla.",
   tIntro: "Se lanza una pelota a 15 m/s (54 km/h), desde el suelo. Antes de lanzar: ¿qué va a pasar?",
   tPredictBest: "¿Con qué ángulo llega más lejos?",
   tPredictFlag: "Lanzada a 30°, ¿dónde cae? Clava la bandera.",
@@ -319,8 +310,6 @@ const es: Record<Key, string> = {
   tStrobeAria: "Las dos canicas en cada flash: siempre a la misma altura",
   tStrobeNote: "En cada flash, las dos canicas están a la misma altura.",
 
-  pendulumTitle: "⏱️ El péndulo",
-  pendulumText: "Lo que cambia el ritmo de un péndulo, y lo que no.",
   pIntro: "Una bola en el extremo de un hilo, que se suelta desde un lado: se balancea. Una oscilación es una ida y vuelta. Antes de probar:",
   pPredictMass: "Mismo hilo, una bola pesada y una ligera: ¿cuál hace sus oscilaciones más rápido?",
   pHeavy: "La pesada",
@@ -375,8 +364,6 @@ const es: Record<Key, string> = {
   pCheckRight: "✓ Correcto. Las cadenas tienen la misma longitud: la masa no cuenta.",
   pCheckWrong: "✗ No exactamente. Las cadenas tienen la misma longitud y la masa no cuenta: más o menos el mismo ritmo.",
 
-  lensesTitle: "🔍 Las lentes",
-  lensesText: "Formar una imagen nítida en una pantalla.",
   lIntro: "Una lupa, una flecha luminosa y una pantalla blanca. La lupa puede formar en la pantalla una imagen de la flecha. Antes de probar:",
   lPredictCard: "Se tapa la mitad de arriba de la lupa con un cartón. En la pantalla, la imagen…",
   lCardTop: "pierde su mitad de arriba",
@@ -435,8 +422,6 @@ const es: Record<Key, string> = {
   lCheckRight: "✓ Correcto. Los rayos no se cruzan de verdad: es el ojo el que los prolonga. Ninguna pantalla puede recogerla.",
   lCheckWrong: "✗ No exactamente. El sello está más cerca que la distancia focal: los rayos no se cruzan en ninguna parte, la imagen es virtual.",
 
-  circuitsTitle: "💡 Los circuitos",
-  circuitsText: "Bombillas en serie y en paralelo.",
   cIntro: "Una pila de {volts} V y bombillas todas iguales. Antes de encender:",
   cPredictSeries: "Dos bombillas una tras otra (en serie): cada una, comparada con una bombilla sola, brilla…",
   cPredictParallel: "Dos bombillas una al lado de otra (en paralelo): cada una, comparada con una bombilla sola, brilla…",
@@ -489,7 +474,7 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
-  group: "Physics",
+  ...LAB_NAMES.en.physics,
   stepPredict: "1. Predict",
   stepCompare: "3. Compare",
   stepExplain: "4. Understand",
@@ -503,8 +488,6 @@ const en: Record<Key, string> = {
   simulated: "Simulation",
   formula: "Formula",
 
-  throwTitle: "🏀 Throw a ball",
-  throwText: "Predict where it lands, then throw it.",
   tIntro: "A ball is thrown at 15 m/s (54 km/h), from the ground. Before throwing: what will happen?",
   tPredictBest: "At which angle does it go farthest?",
   tPredictFlag: "Thrown at 30°, where does it land? Plant the flag.",
@@ -558,8 +541,6 @@ const en: Record<Key, string> = {
   tStrobeAria: "Both marbles at each flash: always at the same height",
   tStrobeNote: "At each flash, the two marbles are at the same height.",
 
-  pendulumTitle: "⏱️ The pendulum",
-  pendulumText: "What changes a swing's rhythm, and what does not.",
   pIntro: "A ball on the end of a string, let go from one side: it swings. One swing is there and back. Before trying:",
   pPredictMass: "Same string, a heavy ball and a light ball: which one swings faster?",
   pHeavy: "The heavy one",
@@ -614,8 +595,6 @@ const en: Record<Key, string> = {
   pCheckRight: "✓ Right. The chains are the same length: mass does not count.",
   pCheckWrong: "✗ Not quite. The chains are the same length, and mass does not count: about the same rhythm.",
 
-  lensesTitle: "🔍 Lenses",
-  lensesText: "Make a sharp image on a screen.",
   lIntro: "A magnifying glass, a lit arrow and a white screen. The lens can form an image of the arrow on the screen. Before trying:",
   lPredictCard: "The top half of the lens is covered with a card. On the screen, the image…",
   lCardTop: "loses its top half",
@@ -674,8 +653,6 @@ const en: Record<Key, string> = {
   lCheckRight: "✓ Right. The rays do not really cross: the eye extends them back. No screen can catch it.",
   lCheckWrong: "✗ Not quite. The stamp is closer than the focal length: the rays cross nowhere, the image is virtual.",
 
-  circuitsTitle: "💡 Circuits",
-  circuitsText: "Bulbs in series and in parallel.",
   cIntro: "A {volts} V battery and identical bulbs. Before switching on:",
   cPredictSeries: "Two bulbs one after the other (in series): each, compared with a bulb alone, shines…",
   cPredictParallel: "Two bulbs side by side (in parallel): each, compared with a bulb alone, shines…",

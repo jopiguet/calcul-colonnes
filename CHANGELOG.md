@@ -1,5 +1,16 @@
 # Changelog
 
+## 9.2.0
+
+- **The home page loads about ten times less.** The code it fetches drops from 4.7 MB (1.6 MB gzip) to 560 KB, sent as 146 KB:
+  - The tests (every generator and written question, 3.5 MB), the experiments and KaTeX come only when first opened (`import()`); the home page, the progress page and the settings import the light parts of `shared/quiz` only; the prompts and explanations of the generated questions moved to `src/quiz-i18n-questions.ts`, the experiments' names to `src/discover/names.ts`, the question bank's loading to `src/bank-load.ts`.
+  - **Compressed once, at build:** every text file of `dist/` is also written as `.br` and `.gz`, and the server sends the one the browser accepts. Before, nothing was compressed unless a proxy did it.
+  - **Fonts:** Fontsource's CSS for twelve script fonts (Tibetan, Malayalam, Inuktitut, Hebrew, Arabic, Georgian, Cyrillic, Greek, Runic, Imperial Aramaic…) has no unicode range, so any emoji or "＋" made the browser fetch them all. They are now declared with their scripts' ranges (`src/fonts-scripts.css`), and the course icons 𒀭 𒀝 𓋹 come from three-glyph cuts (3 KB each) instead of the whole cuneiform and hieroglyph fonts (870 KB). Fonts on the home page: 2.1 MB → 80 KB.
+- **🎯 Difficult words:** on a book's page and a shelf, once a word has been missed, a session of the cards answered wrong most often, as many as the cards per session, the most missed first (`purpose=hard`).
+- **Which words are where:** on a book's statistics, *acquis*, *connus*, *en cours* and each column of *Cartes par boîte* list their words, the most missed first (`GET /api/vocab/books/:id/words`).
+- **Layout:** a group on one line no longer clips its cards' borders and focus ring at the strip's edges; in *Paramètres*, the player's parts lose one frame, and the reading choice per course goes under the course's name on a phone instead of being cut short (*With the ques…*).
+- `check:vocab`: the difficult-words session; e2e: its button and session, the level and box lists.
+
 ## 9.1.1
 
 - **The release image failed at start** (`EACCES: mkdir '/app/content/notes/sounds'`): bundled into `dist-server/index.js`, `notes-build.ts` took itself for the program and built the note books inside the server. Its command check now goes by name too, as the other scripts' (and `birds-fetch.ts`'s), and the server no longer imports the build at all: `server/notes.ts` finds the books itself.

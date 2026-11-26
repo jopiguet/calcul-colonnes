@@ -5,7 +5,7 @@
  * first, so `$HOME` in backticks stays code. Nothing goes through innerHTML
  * but KaTeX's own output.
  */
-import katex from "katex";
+import { renderTex } from "./tex";
 import { el } from "./dom";
 
 export { parseMarkdown, type Block } from "./markdown-parse";
@@ -13,7 +13,7 @@ import type { Block } from "./markdown-parse";
 
 function tex(source: string, display: boolean): HTMLElement {
   const node = el(display ? "div" : "span", display ? "math display" : "math");
-  node.innerHTML = katex.renderToString(source, { throwOnError: false, displayMode: display });
+  renderTex(node, source, display);
   return node;
 }
 

@@ -6,7 +6,7 @@
  * the carry above the next column, then leftwards. That is the page's only
  * animation, and it is skipped with prefers-reduced-motion.
  */
-import katex from "katex";
+import { renderTex } from "./tex";
 import type { AuthOptions } from "../shared/types";
 import { el } from "./dom";
 import { currentLang, type Lang } from "./i18n";
@@ -149,7 +149,7 @@ function divisionSample(): HTMLElement {
 function formulaSample(): HTMLElement {
   const box = el("div", "sample-formula");
   box.setAttribute("aria-hidden", "true");
-  katex.render("\\frac{d}{dx}\\,\\sin(3x^2) = 6x\\cos(3x^2)", box, { throwOnError: false, displayMode: true });
+  renderTex(box, "\\frac{d}{dx}\\,\\sin(3x^2) = 6x\\cos(3x^2)", true);
   return box;
 }
 

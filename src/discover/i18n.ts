@@ -1,10 +1,9 @@
 import { currentLang, type Lang } from "../i18n";
+import { LAB_NAMES } from "./names";
 
 /** Texts of the Discover activities. Numbers are filled in with {name}. */
 const fr = {
-  group: "Découvrir",
-  diceTitle: "🎲 Le labo des probabilités",
-  diceText: "Deux dés : prévoir, lancer, comprendre.",
+  ...LAB_NAMES.fr.discover,
   experiment: "Expérience n° {seed}",
 
   // 1. Predict
@@ -83,8 +82,6 @@ const fr = {
   replayHint: "Même numéro, mêmes lancers : pour comparer avec quelqu'un.",
   keepRolling: "Continue à lancer : la courbe s'approche de la ligne 1 sur 6.",
   // ------------------------------------------------------------ coins
-  coinsTitle: "🪙 Pile ou face",
-  coinsText: "Des séries, et une pièce sans mémoire.",
   heads: "Face",
   tails: "Pile",
   headsShort: "F",
@@ -153,8 +150,6 @@ const fr = {
   cCheckWrong: "✗ Pas tout à fait. Sur 20 vrais lancers, 4 fois de suite le même côté arrive {pct} des fois. Quand on invente, on évite les séries : c'est même ainsi qu'on repère une liste inventée.",
   keepFlipping: "Continue à lancer : la courbe s'approche de la ligne 1 sur 2.",
   // ------------------------------------------------------------ puzzles
-  puzzlesTitle: "🧩 Grilles logiques",
-  puzzlesText: "Des nombres à placer, et des indices qui expliquent.",
   gridNumber: "Grille n° {seed}",
   level: "Niveau {level}",
   levelTitle: "Niveau",
@@ -208,9 +203,7 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
-  group: "Descubrir",
-  diceTitle: "🎲 El laboratorio de probabilidades",
-  diceText: "Dos dados: prever, lanzar, entender.",
+  ...LAB_NAMES.es.discover,
   experiment: "Experimento n.º {seed}",
 
   stepPredict: "1. Prever",
@@ -283,8 +276,6 @@ const es: Record<Key, string> = {
   replayGo: "Repetir",
   replayHint: "Mismo número, mismos lanzamientos: para comparar con alguien.",
   keepRolling: "Sigue lanzando: la curva se acerca a la línea 1 de cada 6.",
-  coinsTitle: "🪙 Cara o cruz",
-  coinsText: "Rachas, y una moneda sin memoria.",
   heads: "Cara",
   tails: "Cruz",
   headsShort: "Ca",
@@ -352,8 +343,6 @@ const es: Record<Key, string> = {
   cCheckRight: "✓ Correcto. En 20 lanzamientos de verdad, 4 veces seguidas el mismo lado ocurre el {pct} de las veces. Al inventar, evitamos las rachas: parecen poco «azar». Así se detecta una lista inventada.",
   cCheckWrong: "✗ No del todo. En 20 lanzamientos de verdad, 4 veces seguidas el mismo lado ocurre el {pct} de las veces. Al inventar, evitamos las rachas: así se detecta una lista inventada.",
   keepFlipping: "Sigue lanzando: la curva se acerca a la línea 1 de cada 2.",
-  puzzlesTitle: "🧩 Cuadrículas lógicas",
-  puzzlesText: "Números que colocar, y pistas que explican.",
   gridNumber: "Cuadrícula n.º {seed}",
   level: "Nivel {level}",
   levelTitle: "Nivel",
@@ -405,9 +394,7 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
-  group: "Discover",
-  diceTitle: "🎲 The probability lab",
-  diceText: "Two dice: predict, roll, understand.",
+  ...LAB_NAMES.en.discover,
   experiment: "Experiment no. {seed}",
 
   stepPredict: "1. Predict",
@@ -480,8 +467,6 @@ const en: Record<Key, string> = {
   replayGo: "Replay",
   replayHint: "Same number, same rolls: to compare with someone.",
   keepRolling: "Keep rolling: the curve gets closer to the 1 in 6 line.",
-  coinsTitle: "🪙 Heads or tails",
-  coinsText: "Streaks, and a coin with no memory.",
   heads: "Heads",
   tails: "Tails",
   headsShort: "H",
@@ -549,8 +534,6 @@ const en: Record<Key, string> = {
   cCheckRight: "✓ Right. In 20 real flips, the same side 4 times in a row happens {pct} of the time. When people make lists up, they avoid streaks: they look too little like chance. That is how a made-up list is spotted.",
   cCheckWrong: "✗ Not quite. In 20 real flips, the same side 4 times in a row happens {pct} of the time. When people make lists up, they avoid streaks: that is how a made-up list is spotted.",
   keepFlipping: "Keep flipping: the curve gets closer to the 1 in 2 line.",
-  puzzlesTitle: "🧩 Logic grids",
-  puzzlesText: "Numbers to place, and hints that explain.",
   gridNumber: "Grid no. {seed}",
   level: "Level {level}",
   levelTitle: "Level",

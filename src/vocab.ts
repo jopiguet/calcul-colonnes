@@ -115,8 +115,8 @@ const prefs = loadPreferences();
 
 /** What a session covers (a section, a lesson, a book, books of a shelf) and what for. */
 type Target =
-  | { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due"; label: string }
-  | { kind: "books"; ids: number[]; purpose: "learn" | "review" | "due"; label: string };
+  | { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due" | "hard"; label: string }
+  | { kind: "books"; ids: number[]; purpose: "learn" | "review" | "due" | "hard"; label: string };
 
 interface Session {
   userId: number;
@@ -367,6 +367,13 @@ export function statusBar(p: { new: number; learning: number; known: number; mas
   return bar;
 }
 
+/** "Difficult words (12)": a session of the cards missed most often, as many as a session holds. */
+function hardButton(count: number, onClick: () => void): HTMLButtonElement {
+  const b = button("ghost vocab-hard", vt("hardWords", { count }), onClick);
+  b.title = vt("hardHint", { size: Math.min(count, prefs.size) });
+  return b;
+}
+
 /** Cards per session and how questions are asked: the same for every book. */
 function sessionSettings(ctx: VocabContext): HTMLElement[] {
   // Cards per session.
@@ -449,6 +456,8 @@ async function homeView(ctx: VocabContext): Promise<HTMLElement> {
       ),
     );
   }
+  // The difficult words: the cards per session chosen, the most missed first.
+  if (mine.hard) due.append(hardButton(mine.hard, () => void start(ctx, { kind: "all", id: 0, purpose: "hard", label: vt("hardLabel") })));
   if (progress.today.answers > 0) due.append(el("p", "hint", vt("today", progress.today)));
   // Characters met in the player's words: they come first among the new ones.
   if (mine.met) due.append(el("p", "hint vocab-met-count", mine.met === 1 ? vt("metOne") : vt("metMany", { count: mine.met })));
@@ -607,6 +616,8 @@ async function shelfView(ctx: VocabContext): Promise<HTMLElement> {
     if (started > 0) {
       actions.append(button(due > 0 ? "ghost" : "primary", vt("reviewAll"), () => void start(ctx, { kind: "books", ids, purpose: "review", label })));
     }
+    const hard = chosen.reduce((sum, b) => sum + (progress.books[b.id]?.hard ?? 0), 0);
+    if (hard) actions.append(hardButton(hard, () => void start(ctx, { kind: "books", ids, purpose: "hard", label: vt("hardLabel") })));
     if (progress.today.answers > 0) actions.append(el("p", "hint", vt("today", progress.today)));
   }
   wrap.append(actions);

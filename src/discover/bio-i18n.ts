@@ -4,14 +4,13 @@
  * ./physics-i18n.ts: the labs follow the same pattern.
  */
 import { currentLang, type Lang } from "../i18n";
+import { LAB_NAMES } from "./names";
 
 const fr = {
-  group: "Chimie et biologie",
+  ...LAB_NAMES.fr.bio,
   note: "Noter",
 
   // ------------------------------------------------------------ molecules
-  moleculesTitle: "🧬 Construire des molécules",
-  moleculesText: "Des liaisons selon les valences, des formes selon les paires d'électrons.",
   mIntro: "Chaque atome forme un nombre fixe de liaisons : H une, O deux, N trois, C quatre. Avant de construire :",
   mPredictWater: "Quelle forme a une molécule d'eau, H₂O ?",
   mWaterStraight: "En ligne droite : H–O–H",
@@ -79,8 +78,6 @@ const fr = {
   mol_acetylene: "acétylène",
 
   // ------------------------------------------------------------ genetics
-  geneticsTitle: "🫛 Les pois de Mendel",
-  geneticsText: "Le tableau de croisement, puis de vrais descendants tirés au hasard.",
   gIntro: "Chez le pois, jaune (A) l'emporte sur vert (a), et lisse (B) sur ridé (b). Chaque parent transmet un de ses deux allèles, au hasard. Avant de croiser :",
   gPredictShare: "Deux parents Aa, tous deux jaunes. Quelle part de leurs descendants est verte ?",
   gShare0: "Aucune",
@@ -136,8 +133,6 @@ const fr = {
   pheno_ab: "vert, ridé",
 
   // ------------------------------------------------------------ cells
-  cellsTitle: "🦠 Pourquoi les cellules sont petites",
-  cellsText: "Surface, volume, et le temps que met l'oxygène à entrer.",
   cIntro: "Une cellule se nourrit et respire par sa surface ; tout son volume en a besoin. Imaginons des cellules en forme de cube. Avant de mesurer :",
   cPredictRatio: "Une cellule deux fois plus large : sa surface par unité de volume…",
   cRatioDouble: "double",
@@ -187,8 +182,6 @@ const fr = {
   unit_y: "{v} ans",
 
   // ------------------------------------------------------------ ecology
-  ecologyTitle: "🐇 Lièvres et lynx",
-  ecologyText: "Proies et prédateurs : des cycles qui ne s'arrêtent pas.",
   eIntro: "Les lièvres se multiplient ; les lynx les mangent, et sans lièvres ils meurent de faim. Avant de lancer les années :",
   ePredictFirst: "Qui atteint son maximum le premier ?",
   eFirstPrey: "Les lièvres",
@@ -242,11 +235,9 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
-  group: "Química y biología",
+  ...LAB_NAMES.es.bio,
   note: "Anotar",
 
-  moleculesTitle: "🧬 Construir moléculas",
-  moleculesText: "Enlaces según las valencias, formas según los pares de electrones.",
   mIntro: "Cada átomo forma un número fijo de enlaces: H uno, O dos, N tres, C cuatro. Antes de construir:",
   mPredictWater: "¿Qué forma tiene una molécula de agua, H₂O?",
   mWaterStraight: "En línea recta: H–O–H",
@@ -313,8 +304,6 @@ const es: Record<Key, string> = {
   mol_ethylene: "etileno",
   mol_acetylene: "acetileno",
 
-  geneticsTitle: "🫛 Los guisantes de Mendel",
-  geneticsText: "El cuadro de cruce, y luego descendientes reales sacados al azar.",
   gIntro: "En el guisante, amarillo (A) domina sobre verde (a), y liso (B) sobre rugoso (b). Cada progenitor transmite uno de sus dos alelos, al azar. Antes de cruzar:",
   gPredictShare: "Dos progenitores Aa, ambos amarillos. ¿Qué parte de sus descendientes es verde?",
   gShare0: "Ninguna",
@@ -369,8 +358,6 @@ const es: Record<Key, string> = {
   pheno_aB: "verde, liso",
   pheno_ab: "verde, rugoso",
 
-  cellsTitle: "🦠 Por qué las células son pequeñas",
-  cellsText: "Superficie, volumen y el tiempo que tarda el oxígeno en entrar.",
   cIntro: "Una célula se alimenta y respira a través de su superficie; todo su volumen lo necesita. Imaginemos células en forma de cubo. Antes de medir:",
   cPredictRatio: "Una célula el doble de ancha: su superficie por unidad de volumen…",
   cRatioDouble: "se duplica",
@@ -419,8 +406,6 @@ const es: Record<Key, string> = {
   unit_d: "{v} días",
   unit_y: "{v} años",
 
-  ecologyTitle: "🐇 Liebres y linces",
-  ecologyText: "Presas y depredadores: ciclos que no se detienen.",
   eIntro: "Las liebres se multiplican; los linces se las comen y, sin liebres, mueren de hambre. Antes de lanzar los años:",
   ePredictFirst: "¿Quién alcanza antes su máximo?",
   eFirstPrey: "Las liebres",
@@ -472,11 +457,9 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
-  group: "Chemistry and biology",
+  ...LAB_NAMES.en.bio,
   note: "Note",
 
-  moleculesTitle: "🧬 Build molecules",
-  moleculesText: "Bonds from valences, shapes from electron pairs.",
   mIntro: "Each atom makes a fixed number of bonds: H one, O two, N three, C four. Before you build:",
   mPredictWater: "What shape is a water molecule, H₂O?",
   mWaterStraight: "A straight line: H–O–H",
@@ -543,8 +526,6 @@ const en: Record<Key, string> = {
   mol_ethylene: "ethylene",
   mol_acetylene: "acetylene",
 
-  geneticsTitle: "🫛 Mendel's peas",
-  geneticsText: "The Punnett square, then real offspring drawn by chance.",
   gIntro: "In peas, yellow (A) wins over green (a), and round (B) over wrinkled (b). Each parent passes on one of its two alleles, at random. Before you cross:",
   gPredictShare: "Two Aa parents, both yellow. What share of their offspring is green?",
   gShare0: "None",
@@ -599,8 +580,6 @@ const en: Record<Key, string> = {
   pheno_aB: "green, round",
   pheno_ab: "green, wrinkled",
 
-  cellsTitle: "🦠 Why cells are small",
-  cellsText: "Surface, volume, and how long oxygen takes to get in.",
   cIntro: "A cell feeds and breathes through its surface; all of its volume needs it. Picture cube-shaped cells. Before you measure:",
   cPredictRatio: "A cell twice as wide: its surface per unit of volume…",
   cRatioDouble: "doubles",
@@ -649,8 +628,6 @@ const en: Record<Key, string> = {
   unit_d: "{v} days",
   unit_y: "{v} years",
 
-  ecologyTitle: "🐇 Hares and lynxes",
-  ecologyText: "Prey and predators: cycles that never stop.",
   eIntro: "Hares multiply; lynxes eat them, and without hares they starve. Before you run the years:",
   ePredictFirst: "Which reaches its peak first?",
   eFirstPrey: "The hares",

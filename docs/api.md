@@ -22,6 +22,7 @@ from the app's own origin.
 | `GET` | [`/api/vocab/images/:hash`](#get-apivocabimageshash) | A picture of a picture dictionary |
 | `GET` | [`/api/vocab/progress`](#get-apivocabprogress) | One player's vocabulary progress |
 | `GET` | [`/api/vocab/lessons/:id/words`](#get-apivocablessonsidwords) | A lesson's words, for a player |
+| `GET` | [`/api/vocab/books/:id/words`](#get-apivocabbooksidwords) | The words a player has started in a book, with their boxes |
 | `PUT` | [`/api/vocab/skips`](#put-apivocabskips) | Skip a word, or put it back |
 | `GET` | [`/api/vocab/session`](#get-apivocabsession) | Cards for a practice session |
 | `POST` | [`/api/vocab/answers`](#post-apivocabanswers) | Record an answer; the server grades it |
@@ -501,7 +502,7 @@ recall card, `pictureAlone` when the picture alone says which word. See
 ```
 
 `due` counts cards (an entry has two: recognise and recall), in every book;
-`books` gives it per book, with the number of entries started. Every section
+`books` gives it per book, with the number of entries started and, as `hard`, the entries missed at least once (absent when none). Every section
 is listed; an entry counts as `new` until one of its cards has been answered.
 A skipped entry counts only as `skipped`, and its cards are never due.
 
@@ -526,6 +527,19 @@ meaning in `lang` when the book has it. `404` for an unknown lesson.
 
 `status` is `new`, `learning`, `known` or `mastered`; `reading` is the
 rōmaji or transliteration, or a kanji's readings. A book's listing gives `readings`: its entries with a reading in Latin letters.
+
+### `GET /api/vocab/books/:id/words`
+
+`?userId=1&lang=fr`: every word the player has started in the book (status `learning`, `known`
+or `mastered`; skipped words left out), with the box of each card started and the wrong answers
+of all its cards. The statistics page lists them under a level or a box. `404` for an unknown or
+hidden book.
+
+```json
+[
+  { "id": 17, "term": "el lápiz", "reading": "", "meaning": "pencil", "status": "learning", "boxes": { "recognise": 3, "recall": 1 }, "wrong": 2 }
+]
+```
 
 ### `PUT /api/vocab/skips`
 
@@ -580,7 +594,7 @@ Errors: `invalid query` (400), `unknown user`, `unknown book` (404).
 | `kind` | `section`, `lesson`, `all` (a whole book) or `books` (several books of a shelf) |
 | `id` | Section, lesson or book id |
 | `books` | For `kind=books`: the books' ids, comma-separated (1 … 12), each visible to the account |
-| `purpose` | `learn` (default): cards due, recall cards just available, new entries. `review`: cards already started, due or not, weakest first. `due`: cards due only. |
+| `purpose` | `learn` (default): cards due, recall cards just available, new entries. `review`: cards already started, due or not, weakest first. `due`: cards due only. `hard`: the cards answered wrong most often (`wrong_count`), the most missed first, then the lowest box; due or not, no new entry. |
 | `size` | 1 … 60 cards |
 | `mode` | `mixed` (default), `choice` or `written` |
 | `order` | New entries: `book` (default, the book's order) or `random` |

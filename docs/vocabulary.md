@@ -540,6 +540,7 @@ section, a whole lesson or the whole book:
 |---|---|---|
 | Learn | *Apprendre*, *Continuer* (section); *Apprendre la leçon*; *Apprendre dans tout le livre* (*… au hasard …* in random order) | New entries, at most 8, at random or in the book's order (*Nouveaux mots*): their room is kept first. The rest: 1. cards due, oldest first; 2. recall cards that just became available. However many reviews are due, a learning session brings new entries while there are any. |
 | Review | *Réviser* (section); *Réviser la leçon*; *Réviser tout le vocabulaire* | Only cards already started, due or not: those due first, then the weakest (lowest box), then those unseen for the longest time. No new entries. |
+| Difficult words | *🎯 Mots difficiles (n)* on a book's page or a shelf, once a word has been missed | The cards answered wrong most often, as many as *Cartes par séance*: the most missed first, then the lowest box; due or not, never a new word. A card's wrong answers are counted since its first answer (`wrong_count`), so a word once hard stays in the list until others pass it. Answers move the boxes as in any session. |
 | Due | *Réviser maintenant* | Only the cards due, across the whole book |
 
 **New words at random or in order.** The *Nouveaux mots* setting, per book:
@@ -561,6 +562,11 @@ cards per box, the share right by kind of question, written answers by
 verdict, and the hardest words. Computed by `shared/vocab/stats.ts` from the
 player's boxes and answers; days end at the browser's midnight (`tz` in the
 request). See the [user guide](user-guide.md#vocabulary).
+
+**Which words are where.** Under *Où en sont les mots*, *acquis*, *connus* and *en cours* are
+buttons: one lists the words at that level, the most missed first (*2 × manqué*). Each column of
+*Cartes par boîte* does the same for the cards in that box and direction. Touching it again hides
+the list. The words come once per page from `GET /api/vocab/books/:id/words` ([API](api.md)).
 
 **Multiple choice or written.** The *Questions* setting:
 

@@ -85,6 +85,16 @@ export interface Bank {
 
 export const EMPTY_BANK: Bank = { revision: 0, books: [], units: [], questions: [] };
 
+/** The question bank registered here (the browser fetches it, the server loads it). */
+let registered: Bank = EMPTY_BANK;
+/** Makes a bank's questions part of the tests: call before generating one that uses it. */
+export function registerBank(next: Bank): void {
+  registered = next;
+}
+export const bankRevision = (): number => registered.revision;
+/** The registered bank (its units name the bank's kinds of question). */
+export const currentBank = (): Bank => registered;
+
 const availableAt = (q: BankQuestion, revision: number): boolean => q.from <= revision && (q.until === undefined || revision < q.until);
 
 /** The kind of question of a unit at a level: "gases.concepts1A", "gases.advanced1A". */

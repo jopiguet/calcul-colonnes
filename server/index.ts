@@ -93,7 +93,7 @@ if (existsSync("dist/index.html")) {
         : "public, max-age=86400";
     c.res.headers.set("Cache-Control", policy);
   });
-  app.use("/*", serveStatic({ root: "./dist" }));
+  app.use("/*", serveStatic({ root: "./dist", precompressed: true })); // the .br or .gz of the build (vite.config.ts)
 } else {
   log.warn("dist/ not found: API only (use `npm run dev`, or `npm run build` first)");
 }

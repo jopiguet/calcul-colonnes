@@ -46,7 +46,7 @@ import { atoms } from "./atoms";
 import { kinetics, dynamics } from "./kinetics";
 import { spectroscopy, resonance } from "./spectroscopy";
 import { statistical } from "./statistical";
-import { EMPTY_BANK, bankLevelOf, bankSkills, bankTopicsOf, type Bank, type BankLevel } from "./bank";
+import { bankLevelOf, bankSkills, bankTopicsOf, currentBank, type BankLevel } from "./bank";
 import { LEVELS_VERSION, TOPICS, type Draft, type Generator, type Level, type Option, type Question, type Topic, type Verify } from "./types";
 import { STANDARD } from "./standard";
 
@@ -258,25 +258,13 @@ function available(id: string, version: number): boolean {
 
 export const SKILL_IDS: string[] = [...SKILLS.keys()];
 
-/** The question bank registered here (the browser fetches it, the server loads it). */
-let bank: Bank = EMPTY_BANK;
-
-/** Makes a bank's questions part of the tests: call before generating one that uses it. */
-export function registerBank(next: Bank): void {
-  bank = next;
-}
-
-export const bankRevision = (): number => bank.revision;
-/** The registered bank (its units name the bank's kinds of question). */
-export const currentBank = (): Bank => bank;
-
 /** The bank's kinds of question at a revision (and level), by id. */
 function bankKinds(revision: number, level?: BankLevel): Map<string, { topic: Topic; generator: Generator }> {
-  return new Map(bankSkills(bank, revision, level).map((k) => [k.id, { topic: k.topic, generator: k.draw }]));
+  return new Map(bankSkills(currentBank(), revision, level).map((k) => [k.id, { topic: k.topic, generator: k.draw }]));
 }
 
-export const isSkill = (id: string): boolean => SKILLS.has(id) || bankKinds(bank.revision).has(id);
-export const skillTopic = (id: string): Topic | undefined => SKILLS.get(id)?.topic ?? bankKinds(bank.revision).get(id)?.topic;
+export const isSkill = (id: string): boolean => SKILLS.has(id) || bankKinds(currentBank().revision).has(id);
+export const skillTopic = (id: string): Topic | undefined => SKILLS.get(id)?.topic ?? bankKinds(currentBank().revision).get(id)?.topic;
 
 /** Topics with at least one kind of question at this level (some exist at one level only). */
 export function topicsFor(level: Level, version = QUIZ_VERSION): Topic[] {
@@ -284,7 +272,7 @@ export function topicsFor(level: Level, version = QUIZ_VERSION): Topic[] {
 }
 
 /** Kinds of question a test with this level and these topics can contain (the bank's at its current revision). */
-export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION, revision = bank.revision): string[] {
+export function skillsFor(level: Level, topics: Topic[], version = QUIZ_VERSION, revision = currentBank().revision): string[] {
   const generated = SKILL_IDS.filter((id) => {
     const skill = SKILLS.get(id)!;
     return topics.includes(skill.topic) && skill.levels.includes(level) && available(id, version) && atLevel(level, id, version);
@@ -300,7 +288,6 @@ export const REVIEW_SHARE = 0.4;
 const REVIEW_PER_SKILL = 2;
 
 export const OPTION_COUNT = 4;
-export const QUIZ_COUNTS = [5, 10, 15, 20];
 export const MAX_QUESTIONS = 30;
 
 const SAMPLES = [0.37, 0.81, 1.3, 1.9, 2.6];
@@ -429,9 +416,9 @@ export function reviewCount(count: number, focus: string[]): number {
 /** What makes two questions the same: the formula, and for a graph its id (a formula alone is unchanged). */
 const promptKey = (prompt: Draft["prompt"]): string => (prompt.id === undefined ? prompt.tex : `${prompt.tex}#${prompt.id}`);
 
-export function generateQuiz({ seed, level, topics: asked, count, focus = [], version = QUIZ_VERSION, bank: revision = bank.revision }: QuizSpec): Question[] {
+export function generateQuiz({ seed, level, topics: asked, count, focus = [], version = QUIZ_VERSION, bank: revision = currentBank().revision }: QuizSpec): Question[] {
   const rng = createRng(seed);
-  if (revision > bank.revision) throw new Error(`question bank revision ${revision} is not loaded (${bank.revision} is)`);
+  if (revision > currentBank().revision) throw new Error(`question bank revision ${revision} is not loaded (${currentBank().revision} is)`);
   const tier = bankLevelOf(level);
   const own = bankTopicsOf(level) as readonly Topic[];
   const fromBank = tier !== null ? new Map([...bankKinds(revision, tier)].filter(([, k]) => own.includes(k.topic))) : new Map<string, { topic: Topic; generator: Generator }>();

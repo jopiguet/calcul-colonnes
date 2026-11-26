@@ -4,14 +4,13 @@
  * ./physics-i18n.ts: the labs follow the same pattern.
  */
 import { currentLang, type Lang } from "../i18n";
+import { LAB_NAMES } from "./names";
 
 const fr = {
-  group: "Astronomie",
+  ...LAB_NAMES.fr.astro,
   notToScale: "Pas à l'échelle : la Lune est en vrai à 30 diamètres de Terre, le Soleil 400 fois plus loin.",
 
   // ------------------------------------------------------------ moon
-  moonTitle: "🌓 Les phases de la Lune",
-  moonText: "Pourquoi la Lune change de forme au fil du mois.",
   mIntro: "Au cours d'un mois, la Lune passe de rien du tout à un disque plein, puis revient. Avant d'observer : d'où viennent ces formes ?",
   mPredictCause: "Pourquoi voit-on parfois un croissant ou une demi-lune ?",
   mCauseShadow: "L'ombre de la Terre en cache une partie",
@@ -72,8 +71,6 @@ const fr = {
   phase_waningCrescent: "dernier croissant",
 
   // ------------------------------------------------------------ seasons
-  seasonsTitle: "🌍 Les saisons",
-  seasonsText: "Pourquoi il fait chaud en été : la distance ou l'inclinaison ?",
   sIntro: "En été, les journées sont chaudes ; en hiver, froides. Avant d'explorer : qu'est-ce qui fait les saisons ?",
   sPredictCause: "Pourquoi fait-il plus chaud en été ?",
   sCauseCloser: "La Terre est plus près du Soleil",
@@ -145,8 +142,6 @@ const fr = {
   sCheckWrong: "✗ Pas tout à fait. En juin, l'hémisphère Sud penche à l'opposé du Soleil : c'est l'hiver en Argentine. Si la distance faisait les saisons, ce serait partout la même.",
 
   // ------------------------------------------------------------ eclipses
-  eclipsesTitle: "🌑 Les éclipses",
-  eclipsesText: "Pourquoi il n'y a pas une éclipse chaque mois.",
   eIntro: "À chaque nouvelle lune, la Lune passe du côté du Soleil ; à chaque pleine lune, du côté de l'ombre de la Terre. Pourtant, les éclipses sont rares. Avant d'observer :",
   ePredictWhy: "Pourquoi n'y a-t-il pas une éclipse de Soleil à chaque nouvelle lune ?",
   eWhyTilted: "L'orbite de la Lune est penchée : elle passe en général au-dessus ou au-dessous du Soleil",
@@ -218,8 +213,6 @@ const fr = {
   eCheckWrong: "✗ Pas tout à fait. L'ombre de la Lune sur la Terre ne fait que quelques centaines de km ; l'ombre de la Terre couvre toute la Lune, que tout le côté nuit voit.",
 
   // ------------------------------------------------------------ planets
-  planetsTitle: "🪐 Les orbites des planètes",
-  planetsText: "Les lois de Kepler, et pourquoi Mars recule parfois.",
   kIntro: "Les planètes tournent autour du Soleil sur des ellipses. Avant d'explorer :",
   kPredictFast: "Où une planète va-t-elle le plus vite sur son orbite ?",
   kFastNear: "Au plus près du Soleil",
@@ -294,11 +287,9 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
-  group: "Astronomía",
+  ...LAB_NAMES.es.astro,
   notToScale: "No a escala: en realidad la Luna está a 30 diámetros terrestres, y el Sol 400 veces más lejos.",
 
-  moonTitle: "🌓 Las fases de la Luna",
-  moonText: "Por qué la Luna cambia de forma a lo largo del mes.",
   mIntro: "A lo largo de un mes, la Luna pasa de no verse a un disco lleno, y vuelve. Antes de observar: ¿de dónde vienen esas formas?",
   mPredictCause: "¿Por qué vemos a veces un creciente o media luna?",
   mCauseShadow: "La sombra de la Tierra tapa una parte",
@@ -358,8 +349,6 @@ const es: Record<Key, string> = {
   phase_lastQuarter: "cuarto menguante",
   phase_waningCrescent: "luna menguante",
 
-  seasonsTitle: "🌍 Las estaciones",
-  seasonsText: "Por qué hace calor en verano: ¿la distancia o la inclinación?",
   sIntro: "En verano los días son calurosos; en invierno, fríos. Antes de explorar: ¿qué hace las estaciones?",
   sPredictCause: "¿Por qué hace más calor en verano?",
   sCauseCloser: "La Tierra está más cerca del Sol",
@@ -430,8 +419,6 @@ const es: Record<Key, string> = {
   sCheckRight: "✓ Correcto. En junio es el hemisferio norte el que se inclina hacia el Sol; Argentina, en el sur, está en invierno.",
   sCheckWrong: "✗ No del todo. En junio el hemisferio sur se inclina en sentido opuesto al Sol: es invierno en Argentina. Si la distancia hiciera las estaciones, serían las mismas en todas partes.",
 
-  eclipsesTitle: "🌑 Los eclipses",
-  eclipsesText: "Por qué no hay un eclipse cada mes.",
   eIntro: "En cada luna nueva, la Luna pasa del lado del Sol; en cada luna llena, del lado de la sombra de la Tierra. Sin embargo, los eclipses son raros. Antes de observar:",
   ePredictWhy: "¿Por qué no hay un eclipse de Sol en cada luna nueva?",
   eWhyTilted: "La órbita de la Luna está inclinada: suele pasar por encima o por debajo del Sol",
@@ -502,8 +489,6 @@ const es: Record<Key, string> = {
   eCheckRight: "✓ Correcto. La Luna es pequeña: su sombra solo mide unos cientos de km sobre la Tierra. La de la Tierra es más ancha que la Luna.",
   eCheckWrong: "✗ No del todo. La sombra de la Luna en la Tierra solo mide unos cientos de km; la de la Tierra cubre toda la Luna, que ve todo el lado de noche.",
 
-  planetsTitle: "🪐 Las órbitas de los planetas",
-  planetsText: "Las leyes de Kepler, y por qué Marte a veces retrocede.",
   kIntro: "Los planetas giran alrededor del Sol en elipses. Antes de explorar:",
   kPredictFast: "¿Dónde va más rápido un planeta en su órbita?",
   kFastNear: "Lo más cerca del Sol",
@@ -576,11 +561,9 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
-  group: "Astronomy",
+  ...LAB_NAMES.en.astro,
   notToScale: "Not to scale: the Moon is really 30 Earth widths away, and the Sun 400 times farther.",
 
-  moonTitle: "🌓 The Moon's phases",
-  moonText: "Why the Moon changes shape over the month.",
   mIntro: "Over a month, the Moon goes from nothing at all to a full disc, and back. Before you look: where do these shapes come from?",
   mPredictCause: "Why do we sometimes see a crescent or a half moon?",
   mCauseShadow: "The Earth's shadow hides part of it",
@@ -640,8 +623,6 @@ const en: Record<Key, string> = {
   phase_lastQuarter: "last quarter",
   phase_waningCrescent: "waning crescent",
 
-  seasonsTitle: "🌍 The seasons",
-  seasonsText: "Why summer is warm: the distance or the tilt?",
   sIntro: "Summer days are warm, winter days cold. Before you explore: what makes the seasons?",
   sPredictCause: "Why is it warmer in summer?",
   sCauseCloser: "The Earth is closer to the Sun",
@@ -712,8 +693,6 @@ const en: Record<Key, string> = {
   sCheckRight: "✓ Right. In June it is the northern hemisphere that leans towards the Sun; Argentina, in the south, has winter.",
   sCheckWrong: "✗ Not quite. In June the southern hemisphere leans away from the Sun: it is winter in Argentina. If the distance made the seasons, they would be the same everywhere.",
 
-  eclipsesTitle: "🌑 Eclipses",
-  eclipsesText: "Why there isn't an eclipse every month.",
   eIntro: "At every new moon the Moon passes the Sun's side; at every full moon, the side of the Earth's shadow. Yet eclipses are rare. Before you look:",
   ePredictWhy: "Why isn't there a solar eclipse at every new moon?",
   eWhyTilted: "The Moon's orbit is tilted: it usually passes above or below the Sun",
@@ -784,8 +763,6 @@ const en: Record<Key, string> = {
   eCheckRight: "✓ Right. The Moon is small: its shadow is only a few hundred km across on the Earth. The Earth's is wider than the Moon.",
   eCheckWrong: "✗ Not quite. The Moon's shadow on the Earth is only a few hundred km across; the Earth's shadow covers the whole Moon, which the whole night side sees.",
 
-  planetsTitle: "🪐 The planets' orbits",
-  planetsText: "Kepler's laws, and why Mars sometimes goes backwards.",
   kIntro: "The planets go round the Sun on ellipses. Before you explore:",
   kPredictFast: "Where on its orbit does a planet go fastest?",
   kFastNear: "Closest to the Sun",

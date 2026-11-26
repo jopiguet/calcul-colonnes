@@ -339,6 +339,20 @@ expect("status mastered", entryStatus(TOP_BOX, TOP_BOX), "mastered");
   const order = buildSession({ entries, pool: entries, progress, now: at, size: 2, preference: "choice", purpose: "review", newOrder: "book", random: () => 0.5 })
     .map((c) => c.entryId).sort();
   expect("review, 2 cards: the due one, then the weakest", order, [1, 2]);
+  // Difficult words: only cards answered wrong, the most missed first, due or not, however many are due.
+  const missed: ProgressMap = new Map([
+    [progressKey(1, "recognise"), { box: 2, dueAt: at - 1, lastAt: at - DAY, wrong: 0 }], // due, never missed
+    [progressKey(2, "recognise"), { box: 1, dueAt: at + 1, lastAt: at - 3 * DAY, wrong: 2 }],
+    [progressKey(3, "recognise"), { box: 5, dueAt: at + DAY, lastAt: at - DAY, wrong: 5 }],
+    [progressKey(4, "recognise"), { box: 3, dueAt: at - 1, lastAt: at - DAY, wrong: 2 }],
+    [progressKey(4, "recall"), { box: 1, dueAt: at + 1, lastAt: at - DAY, wrong: 1 }],
+  ]);
+  const hard = (size: number) =>
+    buildSession({ entries, pool: entries, progress: missed, now: at, size, preference: "choice", purpose: "hard", newOrder: "book", random: () => 0.5 })
+      .map((c) => `${c.entryId}${c.direction === "recall" ? "r" : ""}`);
+  expect("hard: missed cards only, no new word", [...hard(10)].sort(), ["2", "3", "4", "4r"]);
+  expect("hard, 3 cards: the most missed, then the lower box", [...hard(3)].sort(), ["2", "3", "4"]);
+  expect("hard, 1 card: the most missed", hard(1), ["3"]);
 }
 
 // Learning from a whole book: new entries always come, in the book's order, whatever the section ids.

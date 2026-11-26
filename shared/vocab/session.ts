@@ -192,7 +192,11 @@ export interface SessionRequest {
   random: () => number;
 }
 
-export type SessionPurpose = "learn" | "review" | "due";
+/**
+ * learn: new words, and what is due; review: every card started, weakest first;
+ * due: what is due only; hard: the cards answered wrong most often (the difficult words).
+ */
+export type SessionPurpose = "learn" | "review" | "due" | "hard";
 export type NewOrder = "book" | "random";
 
 export function buildSession(req: SessionRequest): VocabCard[] {
@@ -243,6 +247,14 @@ export function buildSession(req: SessionRequest): VocabCard[] {
       (a, b) => a.state.box - b.state.box || (a.state.lastAt ?? 0) - (b.state.lastAt ?? 0),
     );
     for (const d of order) if (picked.length < size) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
+  }
+  if (req.purpose === "hard") {
+    // The difficult words alone: most wrong answers first, then the lowest box; due or not.
+    picked.length = 0;
+    const order = shuffle([...due, ...ahead].filter((d) => (d.state.wrong ?? 0) > 0), req.random).sort(
+      (a, b) => (b.state.wrong ?? 0) - (a.state.wrong ?? 0) || a.state.box - b.state.box,
+    );
+    for (const d of order.slice(0, size)) picked.push({ entry: d.entry, direction: d.direction, box: d.state.box });
   }
   if (req.purpose === "learn") {
     for (const r of ready) if (picked.length < reviewRoom) picked.push({ ...r, box: 0 });

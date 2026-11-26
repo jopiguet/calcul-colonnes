@@ -1,0 +1,204 @@
+/*
+ * The fonts of the scripts the courses and books use, each with the range of its
+ * script. Fontsource's own CSS for these has no unicode-range, so the browser fetched
+ * every one of them (2 MB) as soon as a page showed a character the main font lacks,
+ * an emoji or a "＋": with the range, a font comes only with a page in its script.
+ */
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans/files/noto-sans-cyrillic-400-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-052F, U+1C80-1C8F, U+2116, U+2DE0-2DFF, U+A640-A69F;
+}
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/noto-sans/files/noto-sans-cyrillic-600-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-052F, U+1C80-1C8F, U+2116, U+2DE0-2DFF, U+A640-A69F;
+}
+@font-face {
+  font-family: "Noto Sans Georgian";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans-georgian/files/noto-sans-georgian-georgian-400-normal.woff2") format("woff2");
+  unicode-range: U+10A0-10FF, U+1C90-1CBF, U+2D00-2D2F;
+}
+@font-face {
+  font-family: "Noto Sans Georgian";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/noto-sans-georgian/files/noto-sans-georgian-georgian-600-normal.woff2") format("woff2");
+  unicode-range: U+10A0-10FF, U+1C90-1CBF, U+2D00-2D2F;
+}
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans/files/noto-sans-greek-400-normal.woff2") format("woff2");
+  unicode-range: U+0370-03FF;
+}
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans/files/noto-sans-greek-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+1F00-1FFF;
+}
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/noto-sans/files/noto-sans-greek-600-normal.woff2") format("woff2");
+  unicode-range: U+0370-03FF;
+}
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/noto-sans/files/noto-sans-greek-ext-600-normal.woff2") format("woff2");
+  unicode-range: U+1F00-1FFF;
+}
+@font-face {
+  font-family: "Vazirmatn";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/vazirmatn/files/vazirmatn-arabic-400-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+@font-face {
+  font-family: "Vazirmatn";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/vazirmatn/files/vazirmatn-arabic-600-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+@font-face {
+  font-family: "Amiri";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/amiri/files/amiri-arabic-400-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+@font-face {
+  font-family: "Amiri";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("../node_modules/@fontsource/amiri/files/amiri-arabic-700-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+@font-face {
+  font-family: "Noto Sans Hebrew";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans-hebrew/files/noto-sans-hebrew-hebrew-400-normal.woff2") format("woff2");
+  unicode-range: U+0590-05FF, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: "Noto Sans Hebrew";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/noto-sans-hebrew/files/noto-sans-hebrew-hebrew-600-normal.woff2") format("woff2");
+  unicode-range: U+0590-05FF, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: "Noto Sans Malayalam";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans-malayalam/files/noto-sans-malayalam-malayalam-400-normal.woff2") format("woff2");
+  unicode-range: U+0D00-0D7F;
+}
+@font-face {
+  font-family: "Noto Sans Malayalam";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/noto-sans-malayalam/files/noto-sans-malayalam-malayalam-600-normal.woff2") format("woff2");
+  unicode-range: U+0D00-0D7F;
+}
+@font-face {
+  font-family: "Noto Sans Canadian Aboriginal";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans-canadian-aboriginal/files/noto-sans-canadian-aboriginal-canadian-aboriginal-400-normal.woff2") format("woff2");
+  unicode-range: U+1400-167F, U+18B0-18FF, U+11AB0-11ABF;
+}
+@font-face {
+  font-family: "Noto Sans Canadian Aboriginal";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/noto-sans-canadian-aboriginal/files/noto-sans-canadian-aboriginal-canadian-aboriginal-600-normal.woff2") format("woff2");
+  unicode-range: U+1400-167F, U+18B0-18FF, U+11AB0-11ABF;
+}
+@font-face {
+  font-family: "Noto Serif Tibetan";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-serif-tibetan/files/noto-serif-tibetan-tibetan-400-normal.woff2") format("woff2");
+  unicode-range: U+0F00-0FFF;
+}
+@font-face {
+  font-family: "Noto Sans Imperial Aramaic";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans-imperial-aramaic/files/noto-sans-imperial-aramaic-imperial-aramaic-400-normal.woff2") format("woff2");
+  unicode-range: U+10840-1085F;
+}
+@font-face {
+  font-family: "Noto Serif Tibetan";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../node_modules/@fontsource/noto-serif-tibetan/files/noto-serif-tibetan-tibetan-600-normal.woff2") format("woff2");
+  unicode-range: U+0F00-0FFF;
+}
+@font-face {
+  font-family: "Noto Sans Runic";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/noto-sans-runic/files/noto-sans-runic-runic-400-normal.woff2") format("woff2");
+  unicode-range: U+16A0-16FF;
+}
+
+/* The courses' icons in these scripts (𒀭 𒀝 𓋹), on the home page and the shelves: the
+   three glyphs alone, cut from Noto Sans Cuneiform and Noto Sans Egyptian Hieroglyphs
+   (SIL Open Font License 1.1, fonts/OFL.txt). Declared after the whole fonts, so they are
+   tried first for these three characters: the home page fetches 6 KB instead of 870 KB,
+   and a lesson's text still brings the whole font. */
+@font-face {
+  font-family: "Noto Sans Cuneiform";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("./fonts/LumaIconsCuneiform.woff2") format("woff2");
+  unicode-range: U+1201D, U+1202D;
+}
+@font-face {
+  font-family: "Noto Sans Egyptian Hieroglyphs";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("./fonts/LumaIconsHieroglyphs.woff2") format("woff2");
+  unicode-range: U+132F9;
+}

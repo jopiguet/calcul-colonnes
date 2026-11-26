@@ -4,14 +4,13 @@
  * formats come from ./physics-i18n.ts: the labs follow the same pattern.
  */
 import { currentLang, type Lang } from "../i18n";
+import { LAB_NAMES } from "./names";
 
 const fr = {
-  group: "Curiosités mathématiques",
+  ...LAB_NAMES.fr.math,
   predictNeeded: "Réponds d'abord aux deux questions.",
 
   // ------------------------------------------------------------ Koch
-  kochTitle: "❄️ Le flocon de Koch",
-  kochText: "Un périmètre infini autour d'une aire finie.",
   kIntro: "On part d'un triangle de côté 1. À chaque étape, on coupe chaque côté en trois et on pose un petit triangle sur le tiers du milieu. Avant de commencer :",
   kIntroAria: "Le flocon après une étape : une étoile à six branches.",
   kPredictPerimeter: "Après un très grand nombre d'étapes, le périmètre :",
@@ -63,8 +62,6 @@ const fr = {
   kCheckWrong: "✗ Pas tout à fait. Une règle plus courte suit des détails que la grande enjambait : la longueur mesurée grandit, comme pour le flocon.",
 
   // ------------------------------------------------------------ Mandelbrot
-  mandelbrotTitle: "🌀 L'ensemble de Mandelbrot",
-  mandelbrotText: "Une seule règle, z² + c, et un bord sans fin.",
   mbIntro: "On choisit un nombre complexe c, on part de z = 0 et on répète z → z² + c. Si z reste près de 0 pour toujours, c est dans l'ensemble (en noir). Avant d'explorer :",
   mbPredictOrbit: "Avec c = −1, les valeurs de z :",
   mbOrbitEscape: "Partent vers l'infini",
@@ -119,8 +116,6 @@ const fr = {
   mbCheckWrong: "✗ Pas tout à fait. 0² + 1 = 1, 1² + 1 = 2, 2² + 1 = 5 : z dépasse 2, il part vers l'infini. c = 1 n'est pas dans l'ensemble.",
 
   // ------------------------------------------------------------ chaos game
-  chaosTitle: "🎲 Le jeu du chaos",
-  chaosText: "Des sauts au hasard qui dessinent un triangle de Sierpinski.",
   cgIntro: "On marque les trois coins d'un triangle. Un point part n'importe où. À chaque tour, on tire un coin au hasard et le point saute à mi-chemin vers lui ; on marque l'endroit. Avant de jouer :",
   cgPredictTriangle: "Après des milliers de sauts, les points :",
   cgTriangleEven: "Remplissent le triangle uniformément",
@@ -170,8 +165,6 @@ const fr = {
   cgCheckWrong: "✗ Pas tout à fait. Chaque saut divise par deux la distance au motif : après 20 sauts, elle est un million de fois plus petite. Le départ est oublié.",
 
   // ------------------------------------------------------------ Lorenz
-  lorenzTitle: "🦋 L'attracteur de Lorenz",
-  lorenzText: "L'effet papillon : un écart minuscule, une autre météo.",
   lzIntro: "En 1963, le météorologue Edward Lorenz réduit la convection de l'air à trois équations. Aucun hasard : le même départ donne toujours la même suite. On lance deux calculs dont les départs diffèrent d'un écart δ minuscule. Avant de calculer :",
   lzPredictSame: "Avec δ = 0,001, au bout d'un long moment, les deux calculs :",
   lzSameSame: "Restent pratiquement identiques",
@@ -220,8 +213,6 @@ const fr = {
   lzCheckWrong: "✗ Pas tout à fait. Chaque facteur 10 ajoute le même temps : pour doubler ce temps, il faut doubler le nombre de chiffres exacts, de 10⁻³ à 10⁻⁶.",
 
   // ------------------------------------------------------------ logistic map
-  logisticTitle: "🐇 De l'ordre au chaos",
-  logisticText: "Une population, une ligne de calcul : cycles, doublements, chaos.",
   lgIntro: "Une population x, entre 0 et 1 (la capacité du milieu), change d'une année à l'autre selon la règle ci-dessous ; r mesure la fécondité. Avant d'essayer :",
   lgPredictLow: "Avec r = 3,2, à long terme, la population :",
   lgLowSettle: "Se stabilise sur une valeur",
@@ -273,11 +264,9 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
-  group: "Curiosidades matemáticas",
+  ...LAB_NAMES.es.math,
   predictNeeded: "Responde primero a las dos preguntas.",
 
-  kochTitle: "❄️ El copo de Koch",
-  kochText: "Un perímetro infinito alrededor de un área finita.",
   kIntro: "Partimos de un triángulo de lado 1. En cada paso, cortamos cada lado en tres y ponemos un pequeño triángulo sobre el tercio central. Antes de empezar:",
   kIntroAria: "El copo tras un paso: una estrella de seis puntas.",
   kPredictPerimeter: "Tras un número muy grande de pasos, el perímetro:",
@@ -328,8 +317,6 @@ const es: Record<Key, string> = {
   kCheckRight: "✓ Correcto. Una regla más corta sigue bahías y rocas que la grande saltaba: como con el copo, la longitud medida crece.",
   kCheckWrong: "✗ No del todo. Una regla más corta sigue detalles que la grande saltaba: la longitud medida crece, como con el copo.",
 
-  mandelbrotTitle: "🌀 El conjunto de Mandelbrot",
-  mandelbrotText: "Una sola regla, z² + c, y un borde sin fin.",
   mbIntro: "Elegimos un número complejo c, partimos de z = 0 y repetimos z → z² + c. Si z se queda cerca de 0 para siempre, c está en el conjunto (en negro). Antes de explorar:",
   mbPredictOrbit: "Con c = −1, los valores de z:",
   mbOrbitEscape: "Se van al infinito",
@@ -383,8 +370,6 @@ const es: Record<Key, string> = {
   mbCheckRight: "✓ Correcto. 0, 1, 2, 5, 26…: z supera 2 en el tercer paso y ya no vuelve.",
   mbCheckWrong: "✗ No del todo. 0² + 1 = 1, 1² + 1 = 2, 2² + 1 = 5: z supera 2 y se va al infinito. c = 1 no está en el conjunto.",
 
-  chaosTitle: "🎲 El juego del caos",
-  chaosText: "Saltos al azar que dibujan un triángulo de Sierpinski.",
   cgIntro: "Marcamos las tres esquinas de un triángulo. Un punto sale de cualquier sitio. En cada turno, se sortea una esquina y el punto salta a mitad de camino hacia ella; se marca el lugar. Antes de jugar:",
   cgPredictTriangle: "Tras miles de saltos, los puntos:",
   cgTriangleEven: "Llenan el triángulo de manera uniforme",
@@ -433,8 +418,6 @@ const es: Record<Key, string> = {
   cgCheckRight: "✓ Correcto. Cada salto divide por dos la distancia al motivo: en pocos saltos, la salida queda olvidada.",
   cgCheckWrong: "✗ No del todo. Cada salto divide por dos la distancia al motivo: tras 20 saltos es un millón de veces menor. La salida queda olvidada.",
 
-  lorenzTitle: "🦋 El atractor de Lorenz",
-  lorenzText: "El efecto mariposa: una diferencia minúscula, otro tiempo.",
   lzIntro: "En 1963, el meteorólogo Edward Lorenz reduce la convección del aire a tres ecuaciones. Nada de azar: la misma salida da siempre la misma sucesión. Lanzamos dos cálculos cuyas salidas difieren en una diferencia δ minúscula. Antes de calcular:",
   lzPredictSame: "Con δ = 0,001, al cabo de mucho tiempo, los dos cálculos:",
   lzSameSame: "Siguen prácticamente idénticos",
@@ -482,8 +465,6 @@ const es: Record<Key, string> = {
   lzCheckRight: "✓ Correcto. El tiempo de previsión crece como el número de cifras exactas: duplicarlo exige pasar de 10⁻³ a 10⁻⁶.",
   lzCheckWrong: "✗ No del todo. Cada factor 10 añade el mismo tiempo: para duplicar ese tiempo hay que duplicar el número de cifras exactas, de 10⁻³ a 10⁻⁶.",
 
-  logisticTitle: "🐇 Del orden al caos",
-  logisticText: "Una población, una línea de cálculo: ciclos, duplicaciones, caos.",
   lgIntro: "Una población x, entre 0 y 1 (la capacidad del medio), cambia de un año a otro según la regla de abajo; r mide la fecundidad. Antes de probar:",
   lgPredictLow: "Con r = 3,2, a largo plazo, la población:",
   lgLowSettle: "Se estabiliza en un valor",
@@ -533,11 +514,9 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
-  group: "Mathematical curiosities",
+  ...LAB_NAMES.en.math,
   predictNeeded: "Answer both questions first.",
 
-  kochTitle: "❄️ The Koch snowflake",
-  kochText: "An infinite perimeter around a finite area.",
   kIntro: "Start from a triangle with side 1. At each step, cut every side in three and put a small triangle on the middle third. Before you start:",
   kIntroAria: "The snowflake after one step: a six-pointed star.",
   kPredictPerimeter: "After a very large number of steps, the perimeter:",
@@ -588,8 +567,6 @@ const en: Record<Key, string> = {
   kCheckRight: "✓ Right. A shorter ruler follows bays and rocks the long one stepped over: as with the snowflake, the measured length grows.",
   kCheckWrong: "✗ Not quite. A shorter ruler follows details the long one stepped over: the measured length grows, as with the snowflake.",
 
-  mandelbrotTitle: "🌀 The Mandelbrot set",
-  mandelbrotText: "A single rule, z² + c, and an endless edge.",
   mbIntro: "Pick a complex number c, start from z = 0 and repeat z → z² + c. If z stays near 0 for ever, c is in the set (in black). Before you explore:",
   mbPredictOrbit: "With c = −1, the values of z:",
   mbOrbitEscape: "Run off to infinity",
@@ -643,8 +620,6 @@ const en: Record<Key, string> = {
   mbCheckRight: "✓ Right. 0, 1, 2, 5, 26…: z passes 2 at the third step and never comes back.",
   mbCheckWrong: "✗ Not quite. 0² + 1 = 1, 1² + 1 = 2, 2² + 1 = 5: z passes 2 and runs off to infinity. c = 1 is not in the set.",
 
-  chaosTitle: "🎲 The chaos game",
-  chaosText: "Random jumps that draw a Sierpinski triangle.",
   cgIntro: "Mark the three corners of a triangle. A dot starts anywhere. Each turn, a corner is drawn at random and the dot jumps halfway towards it; the spot is marked. Before you play:",
   cgPredictTriangle: "After thousands of jumps, the dots:",
   cgTriangleEven: "Fill the triangle evenly",
@@ -693,8 +668,6 @@ const en: Record<Key, string> = {
   cgCheckRight: "✓ Right. Each jump halves the distance to the pattern: within a few jumps the start is forgotten.",
   cgCheckWrong: "✗ Not quite. Each jump halves the distance to the pattern: after 20 jumps it is a million times smaller. The start is forgotten.",
 
-  lorenzTitle: "🦋 The Lorenz attractor",
-  lorenzText: "The butterfly effect: a tiny difference, different weather.",
   lzIntro: "In 1963 the meteorologist Edward Lorenz boiled air convection down to three equations. No chance at all: the same start always gives the same sequence. Two runs are started a tiny gap δ apart. Before you compute:",
   lzPredictSame: "With δ = 0.001, after a long while, the two runs:",
   lzSameSame: "Stay practically identical",
@@ -742,8 +715,6 @@ const en: Record<Key, string> = {
   lzCheckRight: "✓ Right. The forecast time grows like the number of correct digits: doubling it means going from 10⁻³ to 10⁻⁶.",
   lzCheckWrong: "✗ Not quite. Each factor of 10 adds the same time: to double that time, the number of correct digits must double, from 10⁻³ to 10⁻⁶.",
 
-  logisticTitle: "🐇 From order to chaos",
-  logisticText: "One population, one line of arithmetic: cycles, doublings, chaos.",
   lgIntro: "A population x, between 0 and 1 (what the habitat can hold), changes from one year to the next by the rule below; r measures fertility. Before you try:",
   lgPredictLow: "With r = 3.2, in the long run, the population:",
   lgLowSettle: "Settles on one value",

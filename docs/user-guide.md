@@ -825,6 +825,10 @@ card for them, *📚 Vocabulaire allemand*. Its page has:
   - *Apprendre la leçon* and *Réviser la leçon* do the same for every section of the chapter.
   - *📖 Voir les mots* lists the lesson's words, section by section: the word, its reading, its meaning in the app's language, and how far it is learnt.
 
+**🎯 Mots difficiles (n)**, beside the review buttons once a word has been missed: a session of
+the words answered wrong most often, as many as *Cartes par séance* (15, 30 or 50), the most
+missed first, due or not. On a shelf, across the books ticked.
+
 **Skipping a word.** In a lesson's word list, *Passer* skips a word the
 player already knows, or does not want: it no longer comes up in lessons or
 reviews, from any of the book's buttons. It is crossed out in the list and
@@ -842,9 +846,9 @@ for this book:
 
 - **Four figures:** words seen (out of the book's), words mastered (and known), the share of right answers over 30 days, and the days in a row with at least one answer (with the record).
 - **The last 30 days:** right and wrong answers per day. Hover a bar (or tap it) for the day's figures and the number of new words.
-- **Where the words stand:** mastered, known, learning, new.
+- **Where the words stand:** mastered, known, learning, new. Tap *acquis*, *connus* or *en cours* to list the words at that level, the most missed first; tap it again to hide them.
 - **To review, next 14 days:** how many cards come due each day; today includes the overdue ones. A tall first bar means reviews are piling up.
-- **Cards per box:** for each direction, how many cards are in boxes 1 to 6.
+- **Cards per box:** for each direction, how many cards are in boxes 1 to 6. Tap a column to list its words.
 - **By kind of question:** the share right in multiple choice and in writing, recognising a word and recalling it; written answers by verdict (exact, accents, nearly, article, wrong).
 - **By lesson:** words seen out of the lesson's, with the progress bar.
 - **The hardest words:** the 12 words with the most mistakes, with their rōmaji in Japanese.

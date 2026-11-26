@@ -29,6 +29,7 @@ import type {
   VocabAnswerResult,
   VocabBookInfo,
   VocabLessonWords,
+  VocabLevelWord,
   VocabProgress,
   VocabRelated,
   VocabSectionProgress,
@@ -690,13 +691,14 @@ export class VocabStore {
   }
 
   private async progress(userId: number): Promise<ProgressMap> {
-    const rows = await this.db.query("SELECT entry_id, direction, box, due_at, last_at FROM vocab_progress WHERE user_id = $1", [userId]);
+    const rows = await this.db.query("SELECT entry_id, direction, box, due_at, last_at, wrong_count FROM vocab_progress WHERE user_id = $1", [userId]);
     const map: ProgressMap = new Map();
     for (const row of rows) {
       map.set(progressKey(n(row.entry_id), row.direction as Direction), {
         box: n(row.box),
         dueAt: n(row.due_at),
         lastAt: n(row.last_at),
+        wrong: n(row.wrong_count),
       });
     }
     return map;
@@ -766,6 +768,35 @@ export class VocabStore {
     return rows.map((r) => n(r.book_id));
   }
 
+  /**
+   * The words a player has started in a book, with each card's box and their wrong answers:
+   * what the statistics page lists under a level or a box. Skipped words are left out.
+   */
+  async bookWords(userId: number, bookId: number, lang?: TranslationLang): Promise<VocabLevelWord[]> {
+    const progress = await this.progress(userId);
+    const skipped = await this.skipped(userId);
+    const words: VocabLevelWord[] = [];
+    for (const e of (await this.entries("l.book_id = $1", [bookId])).map((x) => localise(x, lang))) {
+      if (skipped.has(e.id)) continue;
+      const directions = directionsOf(e);
+      const cards = directions.map((d) => [d, progress.get(progressKey(e.id, d))] as const);
+      if (cards.every(([, card]) => !card)) continue;
+      const box = (d: Direction): number => progress.get(progressKey(e.id, d))?.box ?? 0;
+      const status = entryStatus(box("recognise"), box("recall"), directions.length > 2 ? box("read") : null);
+      if (status === "new") continue;
+      words.push({
+        id: e.id,
+        term: display(e.term),
+        reading: e.reading || e.readings,
+        meaning: display(e.meaning),
+        status,
+        boxes: Object.fromEntries(cards.filter(([, card]) => card).map(([d, card]) => [d, card!.box])),
+        wrong: cards.reduce((sum, [, card]) => sum + (card?.wrong ?? 0), 0),
+      });
+    }
+    return words;
+  }
+
   /** A lesson's words for a player: what each is, how far it is learnt, whether it is skipped. */
   async lessonWords(userId: number, lessonId: number, lang?: TranslationLang): Promise<VocabLessonWords | null> {
     const lessons = await this.db.query("SELECT id, title, subtitle FROM vocab_lessons WHERE id = $1", [lessonId]);
@@ -827,6 +858,7 @@ export class VocabStore {
       const status = entryStatus(recognise?.box ?? 0, recall?.box ?? 0, directions.length > 2 ? (read?.box ?? 0) : null);
       section[status]++;
       if (status !== "new") book.started++;
+      if (cards.some((card) => (card?.wrong ?? 0) > 0)) book.hard = (book.hard ?? 0) + 1;
       else if (book.met !== undefined && row.term && words.includes(String(row.term))) book.met++;
       for (const card of cards) {
         if (card && card.dueAt <= now) {
@@ -918,7 +950,7 @@ export class VocabStore {
           : purpose === "learn"
             ? await this.entries(inBooks, [])
             : await this.entries(
-                `${inBooks} AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1${purpose === "due" ? " AND due_at <= $2" : ""})`,
+                `${inBooks} AND e.id IN (SELECT entry_id FROM vocab_progress WHERE user_id = $1${purpose === "due" ? " AND due_at <= $2" : purpose === "hard" ? " AND wrong_count > 0" : ""})`,
                 purpose === "due" ? [userId, now] : [userId],
               );
     // Wrong options come from the same lessons; for an alphabetical list, from
@@ -1120,7 +1152,7 @@ export const MAX_SESSION = 60;
 export const MAX_SKIPS = 500;
 /** Books in one shelf session. */
 const MAX_SHELF = 12;
-const PURPOSES: SessionPurpose[] = ["learn", "review", "due"];
+const PURPOSES: SessionPurpose[] = ["learn", "review", "due", "hard"];
 
 export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c: never) => Scope): Hono<AppEnv> {
   const routes = new Hono<AppEnv>();
@@ -1180,6 +1212,16 @@ export function vocabRoutes(store: VocabStore, repository: Repository, scope: (c
     if (await hidden(c, "book", bookId)) return c.json({ error: "unknown book" }, 404);
     const stats = await store.stats(userId, bookId, Date.now(), tz);
     return stats ? c.json(stats) : c.json({ error: "unknown book" }, 404);
+  });
+
+  routes.get("/books/:id/words", async (c) => {
+    const userId = Number(c.req.query("userId"));
+    const bookId = Number(c.req.param("id"));
+    const lang = c.req.query("lang");
+    if (!isId(userId) || !isId(bookId) || (lang !== undefined && !isLang(lang))) return c.json({ error: "invalid query" }, 400);
+    if (!(await allowed(c, userId))) return c.json({ error: "unknown user" }, 404);
+    if (await hidden(c, "book", bookId)) return c.json({ error: "unknown book" }, 404);
+    return c.json(await store.bookWords(userId, bookId, lang as TranslationLang | undefined));
   });
 
   routes.get("/lessons/:id/words", async (c) => {

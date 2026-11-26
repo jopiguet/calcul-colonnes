@@ -1355,3 +1355,6 @@ export interface Question {
   explanation: Draft["explanation"];
   verify: Verify;
 }
+
+/** The test lengths a player can choose. */
+export const QUIZ_COUNTS = [5, 10, 15, 20];

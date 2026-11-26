@@ -17,6 +17,7 @@ import type {
   VocabCard,
   VocabLessonInfo,
   VocabLessonWords,
+  VocabLevelWord,
   VocabProgress,
   VocabStats,
 } from "../shared/types";
@@ -175,8 +176,8 @@ export const vocab = {
     userId: number,
     /** For "all", id is the book's; "books": several books of a shelf. */
     target:
-      | { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due" }
-      | { kind: "books"; ids: number[]; purpose: "learn" | "review" | "due" },
+      | { kind: "section" | "lesson" | "all"; id: number; purpose: "learn" | "review" | "due" | "hard" }
+      | { kind: "books"; ids: number[]; purpose: "learn" | "review" | "due" | "hard" },
     size: number,
     mode: "mixed" | "choice" | "written",
     order: "book" | "random" = "book",
@@ -190,6 +191,9 @@ export const vocab = {
         (lang ? `&lang=${lang}` : ""),
     ),
   /** A lesson's words, with how far each is learnt and whether it is skipped. */
+  /** The words started in a book, with their boxes and wrong answers (the statistics' lists). */
+  bookWords: (userId: number, bookId: number, lang?: string): Promise<VocabLevelWord[]> =>
+    call(`/vocab/books/${bookId}/words?userId=${userId}${lang ? `&lang=${lang}` : ""}`),
   lessonWords: (userId: number, lessonId: number, lang?: string): Promise<VocabLessonWords> =>
     call(`/vocab/lessons/${lessonId}/words?userId=${userId}${lang ? `&lang=${lang}` : ""}`),
   /** Skips a word, or puts it back. */

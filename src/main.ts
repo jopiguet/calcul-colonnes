@@ -24,49 +24,35 @@ import "@fontsource/atkinson-hyperlegible-next/latin-600.css";
 import "@fontsource/atkinson-hyperlegible-next/latin-800.css";
 import "@fontsource/atkinson-hyperlegible-mono/latin-400.css";
 import "@fontsource/atkinson-hyperlegible-mono/latin-600.css";
-// Cuneiform and hieroglyphs: fetched only when a page shows one (unicode-range).
 // Transliteration letters (ꜣ ꜥ ḥ ḫ ṯ ḏ …) Atkinson lacks, from Noto Sans by unicode-range.
 import "./fonts-translit.css";
-import "@fontsource/noto-sans/cyrillic-400.css";
-import "@fontsource/noto-sans/cyrillic-600.css";
-import "@fontsource/noto-sans-georgian/georgian-400.css";
-import "@fontsource/noto-sans-georgian/georgian-600.css";
-import "@fontsource/noto-sans/greek-400.css";
-import "@fontsource/noto-sans/greek-ext-400.css";
-import "@fontsource/noto-sans/greek-600.css";
-import "@fontsource/noto-sans/greek-ext-600.css";
-import "@fontsource/vazirmatn/arabic-400.css";
-import "@fontsource/vazirmatn/arabic-600.css";
-import "@fontsource/amiri/arabic-400.css";
-import "@fontsource/amiri/arabic-700.css";
-import "@fontsource/noto-sans-hebrew/hebrew-400.css";
-import "@fontsource/noto-sans-hebrew/hebrew-600.css";
-import "@fontsource/noto-sans-malayalam/malayalam-400.css";
-import "@fontsource/noto-sans-malayalam/malayalam-600.css";
-import "@fontsource/noto-sans-canadian-aboriginal/canadian-aboriginal-400.css";
-import "@fontsource/noto-sans-canadian-aboriginal/canadian-aboriginal-600.css";
-import "@fontsource/noto-serif-tibetan/tibetan-400.css";
-import "@fontsource/noto-sans-imperial-aramaic/imperial-aramaic-400.css";
-import "@fontsource/noto-serif-tibetan/tibetan-600.css";
-import "@fontsource/noto-sans-runic/runic-400.css";
+// Cuneiform and hieroglyphs: fetched only when a page shows one (unicode-range).
+// The other scripts' fonts are in fonts-scripts.css, each with its range.
 import "@fontsource/noto-sans-cuneiform/400.css";
 import "@fontsource/noto-sans-egyptian-hieroglyphs/400.css";
+import "./fonts-scripts.css"; // after the two above: its icon faces must come last
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
-import { loadBank, quizView, replayTest } from "./quiz";
+import { loadBank } from "./bank-load";
 import { privacyView } from "./privacy";
-import { subjectOf } from "../shared/quiz";
+import { subjectOf } from "../shared/quiz/types";
 import { activityBar, activityId, forgetBooks, homeView, vocabBooks, type Activity } from "./home";
 import { shelvesOf, showVocabStats, stopSound, vocabBusy, vocabView } from "./vocab";
 import { qt } from "./quiz-i18n";
-import { quizBusy } from "./quiz";
 import { applyPendingUpdate, watchForUpdates } from "./update";
-import { ASTRONOMY_LABS, BIO_LABS, MATH_LABS, PHYSICS_LABS, discoverBusy, discoverView } from "./discover/index";
-import { pt } from "./discover/physics-i18n";
-import { at as astroText } from "./discover/astro-i18n";
-import { bt as bioText } from "./discover/bio-i18n";
-import { mt as mathText } from "./discover/math-i18n";
-import { dt } from "./discover/i18n";
+import { ASTRONOMY_LABS, BIO_LABS, MATH_LABS, PHYSICS_LABS } from "./discover/activities";
+import { labName } from "./discover/names";
+
+/**
+ * The tests and the experiments are loaded when first opened: their question
+ * generators and simulations are most of the code, and the home page needs none.
+ */
+let quizModule: typeof import("./quiz") | null = null;
+let discoverModule: typeof import("./discover/index") | null = null;
+const loadQuiz = async (): Promise<typeof import("./quiz")> => (quizModule ??= await import("./quiz"));
+const loadDiscover = async (): Promise<typeof import("./discover/index")> => (discoverModule ??= await import("./discover/index"));
+const quizBusy = (): boolean => quizModule?.quizBusy() ?? false;
+const discoverBusy = (): boolean => discoverModule?.discoverBusy() ?? false;
 import { progressView, type ProgressScope } from "./progress";
 import { workbookView } from "./workbook";
 import { lessonsView } from "./lessons";
@@ -303,8 +289,8 @@ async function render(): Promise<void> {
             : undefined,
           // A past test taken again: the same questions, on the test's page.
           onReplay: mine
-            ? (spec, mode) => {
-                replayTest(spec, mode);
+            ? async (spec, mode) => {
+                (await loadQuiz()).replayTest(spec, mode);
                 updateSettings({ mode: "quiz", quizSubject: subjectOf(spec.level) });
                 show("play");
               }
@@ -408,12 +394,14 @@ async function render(): Promise<void> {
       const astronomy = ASTRONOMY_LABS.includes(state.settings.discoverActivity);
       const biology = BIO_LABS.includes(state.settings.discoverActivity);
       const curiosity = MATH_LABS.includes(state.settings.discoverActivity);
-      paint(topBar(), activityBar(curiosity ? mathText("group") : biology ? bioText("group") : astronomy ? astroText("group") : physics ? pt("group") : dt("group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
+      const { discoverView } = await loadDiscover();
+      paint(topBar(), activityBar(curiosity ? labName("math", "group") : biology ? labName("bio", "group") : astronomy ? labName("astro", "group") : physics ? labName("physics", "group") : labName("discover", "group"), goHome), discoverView(state.settings.discoverActivity, { user: state.user }));
     } else if (state.settings.mode === "quiz") {
       const user = state.user;
       const subject = state.settings.quizSubject;
       // Physical chemistry: the written questions are part of the tests, on both sides.
       if (subject === "chemistry" || subject === "econ" || subject === "calc") await loadBank();
+      const { quizView } = await loadQuiz();
       paint(
         topBar(),
         activityBar(qt(subject === "chemistry" ? "modeChemistry" : subject === "linux" ? "modeLinux" : subject === "chembio" ? "modeChemBio" : subject === "sql" ? "modeSql" : subject === "rust" ? "modeRust" : subject === "ts" ? "modeTs" : subject === "react" ? "modeReact" : subject === "gcp" ? "modeGcp" : subject === "cf" ? "modeCf" : subject === "github" ? "modeGithub" : subject === "deploy" ? "modeDeploy" : subject === "node" ? "modeNode" : subject === "marx" ? "modeMarx" : subject === "econ" ? "modeEcon" : subject === "calc" ? "modeCalc" : "modeQuiz"), goHome),

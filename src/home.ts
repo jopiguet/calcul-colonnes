@@ -17,14 +17,10 @@ import { wt } from "./workbook-i18n";
 import type { ExerciseBookInfo } from "../shared/exercises/api";
 import { bookTitle, shelfApart, shelvesOf, soundsCredit } from "./vocab";
 import { langName, vt } from "./vocab-i18n";
-import { dt } from "./discover/i18n";
-import { pt } from "./discover/physics-i18n";
-import { at } from "./discover/astro-i18n";
-import { bt } from "./discover/bio-i18n";
-import { mt } from "./discover/math-i18n";
 import { prt } from "./progress-i18n";
 import type { DiscoverActivity } from "./discover/activities";
-import { CALC_TOPICS, CF_TOPICS, GITHUB_TOPICS, DEPLOY_TOPICS, NODE_TOPICS, MARX_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz";
+import { labName } from "./discover/names";
+import { CALC_TOPICS, CF_TOPICS, GITHUB_TOPICS, DEPLOY_TOPICS, NODE_TOPICS, MARX_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, ECON_TOPICS, LINUX_TOPICS, GCP_TOPICS, REACT_TOPICS, RUST_TOPICS, SQL_TOPICS, TS_TOPICS, type Subject } from "../shared/quiz/types";
 
 const texts = {
   fr: {
@@ -254,49 +250,49 @@ export function activityCatalog(books: VocabBookInfo[], exerciseBooks: ExerciseB
     { group: lt("group"), activities: courses.map((c) => ({ id: `lessons-${c.id}`, title: `${c.icon} ${c.title}` })) },
     { group: wt("home"), activities: exerciseBooks.map((b) => ({ id: `workbook-${b.id}`, title: `✏️ ${b.source}` })) },
     {
-      group: dt("group"),
+      group: labName("discover", "group"),
       activities: [
-        { id: "discover-dice", title: dt("diceTitle") },
-        { id: "discover-coins", title: dt("coinsTitle") },
-        { id: "discover-puzzles", title: dt("puzzlesTitle") },
+        { id: "discover-dice", title: labName("discover", "diceTitle") },
+        { id: "discover-coins", title: labName("discover", "coinsTitle") },
+        { id: "discover-puzzles", title: labName("discover", "puzzlesTitle") },
       ],
     },
     {
-      group: pt("group"),
+      group: labName("physics", "group"),
       activities: [
-        { id: "discover-throw", title: pt("throwTitle") },
-        { id: "discover-pendulum", title: pt("pendulumTitle") },
-        { id: "discover-lenses", title: pt("lensesTitle") },
-        { id: "discover-circuits", title: pt("circuitsTitle") },
+        { id: "discover-throw", title: labName("physics", "throwTitle") },
+        { id: "discover-pendulum", title: labName("physics", "pendulumTitle") },
+        { id: "discover-lenses", title: labName("physics", "lensesTitle") },
+        { id: "discover-circuits", title: labName("physics", "circuitsTitle") },
       ],
     },
     {
-      group: at("group"),
+      group: labName("astro", "group"),
       activities: [
-        { id: "discover-moon", title: at("moonTitle") },
-        { id: "discover-seasons", title: at("seasonsTitle") },
-        { id: "discover-eclipses", title: at("eclipsesTitle") },
-        { id: "discover-planets", title: at("planetsTitle") },
+        { id: "discover-moon", title: labName("astro", "moonTitle") },
+        { id: "discover-seasons", title: labName("astro", "seasonsTitle") },
+        { id: "discover-eclipses", title: labName("astro", "eclipsesTitle") },
+        { id: "discover-planets", title: labName("astro", "planetsTitle") },
       ],
     },
     {
-      group: mt("group"),
+      group: labName("math", "group"),
       activities: [
-        { id: "discover-koch", title: mt("kochTitle") },
-        { id: "discover-mandelbrot", title: mt("mandelbrotTitle") },
-        { id: "discover-chaosgame", title: mt("chaosTitle") },
-        { id: "discover-lorenz", title: mt("lorenzTitle") },
-        { id: "discover-logistic", title: mt("logisticTitle") },
+        { id: "discover-koch", title: labName("math", "kochTitle") },
+        { id: "discover-mandelbrot", title: labName("math", "mandelbrotTitle") },
+        { id: "discover-chaosgame", title: labName("math", "chaosTitle") },
+        { id: "discover-lorenz", title: labName("math", "lorenzTitle") },
+        { id: "discover-logistic", title: labName("math", "logisticTitle") },
       ],
     },
     {
       group: ht("chembio"),
       activities: [
         { id: "chembio", title: qt("modeChemBio") },
-        { id: "discover-molecules", title: bt("moleculesTitle") },
-        { id: "discover-genetics", title: bt("geneticsTitle") },
-        { id: "discover-cells", title: bt("cellsTitle") },
-        { id: "discover-ecology", title: bt("ecologyTitle") },
+        { id: "discover-molecules", title: labName("bio", "moleculesTitle") },
+        { id: "discover-genetics", title: labName("bio", "geneticsTitle") },
+        { id: "discover-cells", title: labName("bio", "cellsTitle") },
+        { id: "discover-ecology", title: labName("bio", "ecologyTitle") },
       ],
     },
   ];
@@ -413,23 +409,23 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
   const bench = el("div", "activity-grid");
   bench.append(
     card("chembio", qt("modeChemBio"), ht("chembioText"), reviewStatus(toReview("chembio")), () => ctx.open({ mode: "quiz", subject: "chembio" })),
-    card("discover-molecules", bt("moleculesTitle"), bt("moleculesText"), null, () => ctx.open({ mode: "discover", activity: "molecules" })),
-    card("discover-genetics", bt("geneticsTitle"), bt("geneticsText"), null, () => ctx.open({ mode: "discover", activity: "genetics" })),
-    card("discover-cells", bt("cellsTitle"), bt("cellsText"), null, () => ctx.open({ mode: "discover", activity: "cells" })),
-    card("discover-ecology", bt("ecologyTitle"), bt("ecologyText"), null, () => ctx.open({ mode: "discover", activity: "ecology" })),
+    card("discover-molecules", labName("bio", "moleculesTitle"), labName("bio", "moleculesText"), null, () => ctx.open({ mode: "discover", activity: "molecules" })),
+    card("discover-genetics", labName("bio", "geneticsTitle"), labName("bio", "geneticsText"), null, () => ctx.open({ mode: "discover", activity: "genetics" })),
+    card("discover-cells", labName("bio", "cellsTitle"), labName("bio", "cellsText"), null, () => ctx.open({ mode: "discover", activity: "cells" })),
+    card("discover-ecology", labName("bio", "ecologyTitle"), labName("bio", "ecologyText"), null, () => ctx.open({ mode: "discover", activity: "ecology" })),
   );
   chembio.append(bench);
 
   // Mathematical curiosities: fractals and chaos (docs/discover.md#mathematical-curiosities).
   const curiosities = el("div", "activity-group");
-  curiosities.append(el("h2", "activity-group-title", mt("group")));
+  curiosities.append(el("h2", "activity-group-title", labName("math", "group")));
   const oddities = el("div", "activity-grid");
   oddities.append(
-    card("discover-koch", mt("kochTitle"), mt("kochText"), null, () => ctx.open({ mode: "discover", activity: "koch" })),
-    card("discover-mandelbrot", mt("mandelbrotTitle"), mt("mandelbrotText"), null, () => ctx.open({ mode: "discover", activity: "mandelbrot" })),
-    card("discover-chaosgame", mt("chaosTitle"), mt("chaosText"), null, () => ctx.open({ mode: "discover", activity: "chaosgame" })),
-    card("discover-lorenz", mt("lorenzTitle"), mt("lorenzText"), null, () => ctx.open({ mode: "discover", activity: "lorenz" })),
-    card("discover-logistic", mt("logisticTitle"), mt("logisticText"), null, () => ctx.open({ mode: "discover", activity: "logistic" })),
+    card("discover-koch", labName("math", "kochTitle"), labName("math", "kochText"), null, () => ctx.open({ mode: "discover", activity: "koch" })),
+    card("discover-mandelbrot", labName("math", "mandelbrotTitle"), labName("math", "mandelbrotText"), null, () => ctx.open({ mode: "discover", activity: "mandelbrot" })),
+    card("discover-chaosgame", labName("math", "chaosTitle"), labName("math", "chaosText"), null, () => ctx.open({ mode: "discover", activity: "chaosgame" })),
+    card("discover-lorenz", labName("math", "lorenzTitle"), labName("math", "lorenzText"), null, () => ctx.open({ mode: "discover", activity: "lorenz" })),
+    card("discover-logistic", labName("math", "logisticTitle"), labName("math", "logisticText"), null, () => ctx.open({ mode: "discover", activity: "logistic" })),
   );
   curiosities.append(oddities);
 
@@ -549,36 +545,36 @@ export async function homeView(ctx: HomeContext): Promise<HTMLElement> {
 
   // Discover: experiments rather than exercises (docs/discover.md).
   const discover = el("div", "activity-group");
-  discover.append(el("h2", "activity-group-title", dt("group")));
+  discover.append(el("h2", "activity-group-title", labName("discover", "group")));
   const lab = el("div", "activity-grid");
   lab.append(
-    card("discover-dice", dt("diceTitle"), dt("diceText"), null, () => ctx.open({ mode: "discover", activity: "dice" })),
-    card("discover-coins", dt("coinsTitle"), dt("coinsText"), null, () => ctx.open({ mode: "discover", activity: "coins" })),
-    card("discover-puzzles", dt("puzzlesTitle"), dt("puzzlesText"), null, () => ctx.open({ mode: "discover", activity: "puzzles" })),
+    card("discover-dice", labName("discover", "diceTitle"), labName("discover", "diceText"), null, () => ctx.open({ mode: "discover", activity: "dice" })),
+    card("discover-coins", labName("discover", "coinsTitle"), labName("discover", "coinsText"), null, () => ctx.open({ mode: "discover", activity: "coins" })),
+    card("discover-puzzles", labName("discover", "puzzlesTitle"), labName("discover", "puzzlesText"), null, () => ctx.open({ mode: "discover", activity: "puzzles" })),
   );
   discover.append(lab);
 
   // The physics playground: the same pattern, with simulations (docs/discover.md).
   const physics = el("div", "activity-group");
-  physics.append(el("h2", "activity-group-title", pt("group")));
+  physics.append(el("h2", "activity-group-title", labName("physics", "group")));
   const playground = el("div", "activity-grid");
   playground.append(
-    card("discover-throw", pt("throwTitle"), pt("throwText"), null, () => ctx.open({ mode: "discover", activity: "throw" })),
-    card("discover-pendulum", pt("pendulumTitle"), pt("pendulumText"), null, () => ctx.open({ mode: "discover", activity: "pendulum" })),
-    card("discover-lenses", pt("lensesTitle"), pt("lensesText"), null, () => ctx.open({ mode: "discover", activity: "lenses" })),
-    card("discover-circuits", pt("circuitsTitle"), pt("circuitsText"), null, () => ctx.open({ mode: "discover", activity: "circuits" })),
+    card("discover-throw", labName("physics", "throwTitle"), labName("physics", "throwText"), null, () => ctx.open({ mode: "discover", activity: "throw" })),
+    card("discover-pendulum", labName("physics", "pendulumTitle"), labName("physics", "pendulumText"), null, () => ctx.open({ mode: "discover", activity: "pendulum" })),
+    card("discover-lenses", labName("physics", "lensesTitle"), labName("physics", "lensesText"), null, () => ctx.open({ mode: "discover", activity: "lenses" })),
+    card("discover-circuits", labName("physics", "circuitsTitle"), labName("physics", "circuitsText"), null, () => ctx.open({ mode: "discover", activity: "circuits" })),
   );
   physics.append(playground);
 
   // Astronomy: geometric models of the sky, the same pattern again.
   const astronomy = el("div", "activity-group");
-  astronomy.append(el("h2", "activity-group-title", at("group")));
+  astronomy.append(el("h2", "activity-group-title", labName("astro", "group")));
   const sky = el("div", "activity-grid");
   sky.append(
-    card("discover-moon", at("moonTitle"), at("moonText"), null, () => ctx.open({ mode: "discover", activity: "moon" })),
-    card("discover-seasons", at("seasonsTitle"), at("seasonsText"), null, () => ctx.open({ mode: "discover", activity: "seasons" })),
-    card("discover-eclipses", at("eclipsesTitle"), at("eclipsesText"), null, () => ctx.open({ mode: "discover", activity: "eclipses" })),
-    card("discover-planets", at("planetsTitle"), at("planetsText"), null, () => ctx.open({ mode: "discover", activity: "planets" })),
+    card("discover-moon", labName("astro", "moonTitle"), labName("astro", "moonText"), null, () => ctx.open({ mode: "discover", activity: "moon" })),
+    card("discover-seasons", labName("astro", "seasonsTitle"), labName("astro", "seasonsText"), null, () => ctx.open({ mode: "discover", activity: "seasons" })),
+    card("discover-eclipses", labName("astro", "eclipsesTitle"), labName("astro", "eclipsesText"), null, () => ctx.open({ mode: "discover", activity: "eclipses" })),
+    card("discover-planets", labName("astro", "planetsTitle"), labName("astro", "planetsText"), null, () => ctx.open({ mode: "discover", activity: "planets" })),
   );
   astronomy.append(sky);
 

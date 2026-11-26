@@ -110,6 +110,29 @@ browser. The PDF worksheet is written by hand (`src/worksheet.ts`, under 200
 lines, standard PDF fonts only), so it needs no library and is produced
 instantly.
 
+### What the first page loads
+
+The home page needs a small part of the code, so the rest comes when first opened
+(`import()` in `src/main.ts`):
+
+| Chunk | Loaded | Size (Brotli) |
+|---|---|---|
+| `index` (home, vocabulary, lessons, settings, progress) | at once | ~150 KB |
+| `quiz` (every generator and written question, `src/quiz.ts`, the prompts and explanations of `src/quiz-i18n-questions.ts`) | the first test opened | ~930 KB |
+| `discover` (the experiments and their texts) | the first experiment opened | ~100 KB |
+| `katex` | the first formula shown (`src/tex.ts`: until then the TeX) | ~63 KB |
+
+Rules that keep it so: the home page and the progress page import from `shared/quiz/types`,
+`bank` and `progress`, never from `shared/quiz` (its index builds every generator); the names of the
+experiments the home page shows are in `src/discover/names.ts`, apart from their texts; the
+question bank is fetched by `src/bank-load.ts`. The server is unaffected: it imports everything.
+
+Fonts: every script font is declared with the range of its script (`src/fonts-scripts.css`), so
+a page fetches only the fonts of the scripts it shows; without a range, a browser fetched them
+all (2 MB) for any character the main font lacks. The courses' icons 𒀭 𒀝 𓋹 come from
+three-glyph cuts of their fonts (`src/fonts/LumaIcons*.woff2`, 3 KB each, OFL), so the home page
+does not fetch 870 KB of cuneiform and hieroglyphs for its titles.
+
 ## Data flow
 
 ### Checking an arithmetic answer

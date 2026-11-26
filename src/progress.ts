@@ -1,11 +1,11 @@
-import { CALC_TOPICS, CF_TOPICS, GITHUB_TOPICS, DEPLOY_TOPICS, NODE_TOPICS, MARX_TOPICS, ECON_TOPICS, GCP_TOPICS, REACT_TOPICS, TS_TOPICS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type AnswerMode, type Level, type QuizSpec, type SkillStatus, type Subject, type Topic } from "../shared/quiz";
+import { CALC_TOPICS, CF_TOPICS, GITHUB_TOPICS, DEPLOY_TOPICS, NODE_TOPICS, MARX_TOPICS, ECON_TOPICS, GCP_TOPICS, REACT_TOPICS, TS_TOPICS, RUST_TOPICS, SQL_TOPICS, CHEMBIO_TOPICS, CHEMISTRY_TOPICS, LINUX_TOPICS, TOPICS, type Level, type Subject, type Topic } from "../shared/quiz/types";
+import type { AnswerMode, QuizSpec, SkillStatus } from "../shared/quiz";
 import type { Profile, SkillProgress } from "../shared/types";
 import { button, el } from "./dom";
 import { bookTitle, statusBar } from "./vocab";
 import { vocabBooks } from "./home";
 import { prt } from "./progress-i18n";
-import { pastTestView, testDate } from "./quiz";
-import { levelName, mistakeName, qt, skillName, statusName, topicName } from "./quiz-i18n";
+import { levelName, mistakeName, qt, skillName, statusName, testDate, topicName } from "./quiz-i18n";
 import { store, vocab, type PastTest, type User, type VocabBookInfo, type VocabProgress } from "./store";
 
 /**
@@ -345,6 +345,7 @@ export async function progressView(ctx: ProgressContext): Promise<HTMLElement> {
   if (openTest && (openTest.userId !== ctx.user.id || openTest.subject !== ctx.scope)) openTest = null;
   if (openTest) {
     const replay = ctx.onReplay;
+    const { pastTestView } = await import("./quiz");
     return pastTestView({
       viewer: ctx.user,
       test: openTest.test,

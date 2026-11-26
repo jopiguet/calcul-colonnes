@@ -438,6 +438,11 @@ a proxy:
 | Other files (icons) | `public, max-age=86400` | |
 | `/api/*` | `no-store` | Per account, changes with every answer |
 
+**Compression.** `npm run build` also writes every text file of `dist/` compressed, as `.br`
+(Brotli) and `.gz` (vite.config.ts), and the server sends the one the browser accepts
+(`serveStatic`'s `precompressed`, with `Vary: Accept-Encoding`): no work per request, nothing to set
+at a proxy. The home page's code goes over the wire at about 150 KB.
+
 Before 5.3, `index.html` had no `Cache-Control`: browsers could keep it for
 hours from its date alone, which is why an installed desktop app showed an old
 version. Cloudflare's own rules (*Cache Rules*, *Cache Everything*) override

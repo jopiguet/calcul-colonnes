@@ -1,6 +1,16 @@
 import { currentLang, type Lang } from "./i18n";
 
 const fr = {
+  hardWords: "🎯 Mots difficiles ({count})",
+  hardLabel: "Mots difficiles",
+  hardHint: "Les {size} mots les plus souvent manqués, d'abord ceux qui l'ont été le plus.",
+  levelWords: "{name} : {count} mots",
+  levelWordsBox: "{direction}, boîte {box} : {count} cartes",
+  levelShow: "Voir les mots",
+  levelHide: "Masquer",
+  levelEmpty: "Aucun mot ici pour l'instant.",
+  levelWrong: "{wrong} × manqué",
+  levelPick: "Touche une couleur ou une boîte pour voir ses mots.",
   infoReadings: "Lectures",
   infoGenitive: "Génitif",
   infoPrincipalParts: "Temps primitifs",
@@ -213,6 +223,16 @@ const fr = {
 type Key = keyof typeof fr;
 
 const es: Record<Key, string> = {
+  hardWords: "🎯 Palabras difíciles ({count})",
+  hardLabel: "Palabras difíciles",
+  hardHint: "Las {size} palabras falladas más a menudo, primero las que más.",
+  levelWords: "{name}: {count} palabras",
+  levelWordsBox: "{direction}, caja {box}: {count} tarjetas",
+  levelShow: "Ver las palabras",
+  levelHide: "Ocultar",
+  levelEmpty: "Todavía no hay ninguna palabra aquí.",
+  levelWrong: "{wrong} × fallada",
+  levelPick: "Toca un color o una caja para ver sus palabras.",
   infoReadings: "Lecturas",
   infoGenitive: "Genitivo",
   infoPrincipalParts: "Enunciado",
@@ -423,6 +443,16 @@ const es: Record<Key, string> = {
 };
 
 const en: Record<Key, string> = {
+  hardWords: "🎯 Difficult words ({count})",
+  hardLabel: "Difficult words",
+  hardHint: "The {size} words missed most often, the most missed first.",
+  levelWords: "{name}: {count} words",
+  levelWordsBox: "{direction}, box {box}: {count} cards",
+  levelShow: "Show the words",
+  levelHide: "Hide",
+  levelEmpty: "No word here yet.",
+  levelWrong: "missed {wrong} ×",
+  levelPick: "Tap a colour or a box to see its words.",
   infoReadings: "Readings",
   infoGenitive: "Genitive",
   infoPrincipalParts: "Principal parts",

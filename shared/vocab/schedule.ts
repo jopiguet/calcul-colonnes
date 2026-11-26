@@ -52,6 +52,8 @@ export interface CardState {
   dueAt: number;
   /** Last answer, for ordering reviews; absent when unknown. */
   lastAt?: number;
+  /** Wrong answers given on this card so far (the difficult words); absent when unknown. */
+  wrong?: number;
 }
 
 export function nextState(previous: CardState | null, correct: boolean, now: number): CardState {

@@ -455,6 +455,53 @@ test("statistics: words seen, the last 30 days, what comes back, the hardest wor
   expect((await page.request.get(`/api/vocab/stats?userId=${user.id}&book=1&tz=9999`)).status()).toBe(400);
 });
 
+test("difficult words: the most missed in a session of their own; a level's and a box's words listed", async ({ page }) => {
+  const name = await newPlayer(page, "Dif");
+  const user = await userByName(page.request, name);
+  const book = await englishBookId(page);
+  // Four new words: three answered wrong (one of them twice), one right.
+  const cards = (await (await page.request.get(`/api/vocab/session?userId=${user.id}&kind=all&id=${book}&purpose=learn&size=4&mode=written`)).json()) as { entryId: number; prompt: string }[];
+  expect(cards.length).toBe(4);
+  const answer = (entryId: number, given: string) =>
+    page.request.post("/api/vocab/answers", { data: { userId: user.id, entryId, direction: "recognise", mode: "written", given, lang: "fr" } });
+  for (const card of cards.slice(0, 3)) await answer(card.entryId, "zzzz");
+  await answer(cards[0]!.entryId, "zzzz");
+  const right = (await (await answer(cards[3]!.entryId, "zzzz")).json()) as { expected: string };
+  await answer(cards[3]!.entryId, right.expected); // its first answer was wrong too: right now, still missed once
+
+  // The session: only the missed cards, the most missed first; never a new word.
+  const hard = (await (await page.request.get(`/api/vocab/session?userId=${user.id}&kind=all&id=${book}&purpose=hard&size=2&mode=choice`)).json()) as { entryId: number }[];
+  expect(hard.map((c) => c.entryId)).toContain(cards[0]!.entryId);
+  expect(hard).toHaveLength(2);
+  const all = (await (await page.request.get(`/api/vocab/session?userId=${user.id}&kind=all&id=${book}&purpose=hard&size=30&mode=choice`)).json()) as { entryId: number }[];
+  expect(all.map((c) => c.entryId).sort()).toEqual(cards.map((c) => c.entryId).sort());
+
+  // The book's page: the button counts them and starts the session.
+  await openActivity(page, "vocab-test-english");
+  await expect(page.locator(".vocab-hard")).toHaveText("🎯 Mots difficiles (4)");
+  await page.click(".vocab-hard");
+  await expect(page.locator(".vocab-card")).toBeVisible();
+  await page.click("text=Arrêter");
+  await page.locator(".vocab-done, .vocab-home").first().waitFor();
+  if (await page.locator("text=Retour aux leçons").count()) await page.click("text=Retour aux leçons");
+
+  // The statistics: a level lists its words, the most missed first; a box its cards; again hides them.
+  await page.click(".vocab-stats-link");
+  await page.locator(".stats-tiles").waitFor();
+  const learning = page.locator("button.stats-legend-item", { hasText: "en cours" });
+  await learning.click();
+  await expect(page.locator(".stats-words-title")).toHaveText("en cours : 4 mots");
+  await expect(page.locator(".stats-words .stats-hard")).toHaveCount(4);
+  await expect(page.locator(".stats-words .stats-hard").first().locator(".stats-hard-count")).toHaveText("2 × manqué");
+  await learning.click();
+  await expect(page.locator(".stats-words")).toBeHidden();
+  await page.locator(".stats-box-row").first().locator("button.stats-col").first().click();
+  await expect(page.locator(".stats-words-title")).toHaveText("Reconnaître, boîte 1 : 4 cartes");
+  // The words of the book, by the API; an unknown book is refused.
+  expect((await page.request.get(`/api/vocab/books/${book}/words?userId=${user.id}`)).status()).toBe(200);
+  expect((await page.request.get(`/api/vocab/books/999999/words?userId=${user.id}`)).status()).toBe(404);
+});
+
 async function englishBookId(page: Page): Promise<number> {
   const books = (await (await page.request.get("/api/vocab/books")).json()) as { id: number; slug: string }[];
   return books.find((b) => b.slug === "test-english")!.id;
@@ -558,7 +605,8 @@ test("cuneiform: the sign large, its reading under it, answered by its reading; 
   await expect(page.locator(".vocab-reading")).toHaveText(reading);
   // Large enough to read the wedges, drawn with the cuneiform font.
   expect(await prompt.evaluate((el) => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(64);
-  await expect.poll(() => page.evaluate(() => document.fonts.check("64px 'Noto Sans Cuneiform'", "𒊕"))).toBe(true);
+  // The whole font (470 KB) comes with the first sign shown: the home page has only its icons' cut.
+  await expect.poll(() => page.evaluate(() => document.fonts.check("64px 'Noto Sans Cuneiform'", "𒊕")), { timeout: 20_000 }).toBe(true);
   await page.screenshot({ path: "test-results/cuneiform.png" });
   const options = await page.locator(".choice-text").allInnerTexts();
   await page.keyboard.press(String(options.indexOf(meaning) + 1));

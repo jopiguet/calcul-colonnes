@@ -302,6 +302,19 @@ export interface VocabWord {
   skipped: boolean;
 }
 
+/** A word started in a book, with where each of its cards stands (GET /api/vocab/books/:id/words). */
+export interface VocabLevelWord {
+  id: number;
+  term: string;
+  reading: string;
+  meaning: string;
+  status: "learning" | "known" | "mastered";
+  /** The Leitner box of each card started (a kanji also has "read"). */
+  boxes: Partial<Record<"recognise" | "recall" | "read", number>>;
+  /** Wrong answers, all cards together. */
+  wrong: number;
+}
+
 /** A lesson's words, section by section. */
 export interface VocabLessonWords {
   lesson: { id: number; title: string; subtitle: string };
@@ -310,8 +323,11 @@ export interface VocabLessonWords {
 
 export interface VocabProgress {
   sections: Record<number, VocabSectionProgress>;
-  /** Per book: cards due, entries started; for a Characters book, characters met in the player's words and not started. */
-  books: Record<number, { due: number; started: number; met?: number }>;
+  /**
+   * Per book: cards due, entries started; for a Characters book, characters met in the player's words and not started;
+   * the difficult words (answered wrong at least once), when there are any.
+   */
+  books: Record<number, { due: number; started: number; met?: number; hard?: number }>;
   due: number;
   /** Answers since the `since` given. */
   today: { answers: number; right: number };

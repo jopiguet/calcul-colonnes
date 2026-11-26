@@ -6,7 +6,7 @@
  * Charts are plain HTML: bars sized in %, a tooltip on each (title), and an
  * aria-label giving the figures, so they read without colour or a mouse.
  */
-import type { VocabStats } from "../shared/types";
+import type { VocabLevelWord, VocabStats } from "../shared/types";
 import { TOP_BOX } from "../shared/vocab/schedule";
 import { button, el } from "./dom";
 import { currentLang } from "./i18n";
@@ -56,14 +56,17 @@ function columns(
   values: { parts: { cls: string; value: number }[]; tip: string; label?: string; top?: string }[],
   aria: string,
   cls = "",
+  /** Each column a button that shows what it holds. */
+  pick?: (index: number, col: HTMLElement) => void,
 ): HTMLElement {
   const chart = el("div", `stats-columns ${cls}`);
-  chart.setAttribute("role", "img");
+  chart.setAttribute("role", pick ? "group" : "img");
   chart.setAttribute("aria-label", aria);
   const max = Math.max(1, ...values.map((v) => v.parts.reduce((s, p) => s + p.value, 0)));
-  for (const v of values) {
-    const col = el("div", "stats-col");
+  values.forEach((v, index) => {
+    const col = pick ? button("stats-col is-pick", "", () => pick(index, col)) : el("div", "stats-col");
     col.title = v.tip;
+    if (pick) col.setAttribute("aria-label", v.tip);
     const stack = el("div", "stats-stack");
     const total = v.parts.reduce((s, p) => s + p.value, 0);
     stack.style.height = `${(100 * total) / max}%`;
@@ -78,8 +81,67 @@ function columns(
     area.append(stack);
     col.append(area, el("span", "stats-col-label", v.label ?? ""));
     chart.append(col);
-  }
+  });
   return chart;
+}
+
+/** A word in a list: the word (its reading), its meaning, and a figure on the right. */
+function wordRow(book: VocabBookInfo, term: string, reading: string, meaning: string, figure: string): HTMLElement {
+  const item = el("li", "stats-hard");
+  const t = el("span", "stats-hard-term", term);
+  t.lang = book.term;
+  if (reading) {
+    const r = el("span", "stats-hard-reading", reading);
+    r.lang = `${book.term}-Latn`;
+    t.append(" ", r);
+  }
+  const m = el("span", "stats-hard-meaning", meaning);
+  m.lang = book.meaning;
+  item.append(t, m, el("span", "stats-hard-count", figure));
+  return item;
+}
+
+/**
+ * The words behind a level or a box, shown under the chart that was touched: fetched once
+ * (GET /api/vocab/books/:id/words), the most missed first. Touching the same thing again hides them.
+ */
+function levelLister(ctx: StatsContext): { area: HTMLElement; show(key: string, title: (count: number) => string, keep: (w: VocabLevelWord) => boolean, from: HTMLElement): void } {
+  const area = el("div", "stats-words");
+  area.hidden = true;
+  let words: Promise<VocabLevelWord[]> | null = null;
+  let shown = "";
+  let pressed: HTMLElement | null = null;
+  return {
+    area,
+    show(key, title, keep, from) {
+      pressed?.setAttribute("aria-pressed", "false");
+      if (shown === key) {
+        shown = "";
+        area.hidden = true;
+        return;
+      }
+      shown = key;
+      pressed = from;
+      from.setAttribute("aria-pressed", "true");
+      from.parentElement?.closest(".stats-panel")?.append(area);
+      area.hidden = false;
+      area.replaceChildren(el("p", "stats-hint", "…"));
+      words ??= vocab.bookWords(ctx.user.id, ctx.book.id, currentLang());
+      words.then(
+        (all) => {
+          if (shown !== key) return;
+          const picked = all.filter(keep).sort((a, b) => b.wrong - a.wrong || a.term.localeCompare(b.term, currentLang()));
+          const list = el("ol", "stats-hardest");
+          for (const w of picked) list.append(wordRow(ctx.book, w.term, w.reading, w.meaning, w.wrong ? vt("levelWrong", { wrong: w.wrong }) : ""));
+          area.replaceChildren(el("h3", "stats-words-title", title(picked.length)), picked.length ? list : el("p", "stats-hint", vt("levelEmpty")));
+        },
+        () => {
+          words = null;
+          area.replaceChildren(el("p", "stats-hint", vt("levelEmpty")));
+        },
+      );
+    },
+  };
 }
 
 export async function statsView(ctx: StatsContext): Promise<HTMLElement> {
@@ -131,15 +193,20 @@ export async function statsView(ctx: StatsContext): Promise<HTMLElement> {
   const levels = panel(vt("levelsTitle"));
   const big = statusBar(s.words);
   big.classList.add("is-large");
-  levels.append(
-    big,
-    legend([
-      ["vocab-bar-mastered", `${vt("statusMastered")} ${s.words.mastered}`],
-      ["vocab-bar-known", `${vt("statusKnown")} ${s.words.known}`],
-      ["vocab-bar-learning", `${vt("statusLearning")} ${s.words.learning}`],
-      ["is-new", `${vt("statusNew")} ${s.words.new}`],
-    ]),
-  );
+  const lister = levelLister(ctx);
+  const picks = el("p", "stats-legend");
+  for (const [status, key] of [["mastered", "statusMastered"], ["known", "statusKnown"], ["learning", "statusLearning"]] as const) {
+    const b = button("stats-legend-item is-pick", "", () =>
+      lister.show(status, (count) => vt("levelWords", { name: vt(key), count }), (w) => w.status === status, b),
+    );
+    b.setAttribute("aria-pressed", "false");
+    b.append(el("span", `stats-swatch vocab-bar-${status}`), `${vt(key)} ${s.words[status]}`);
+    picks.append(b);
+  }
+  const fresh = el("span", "stats-legend-item");
+  fresh.append(el("span", "stats-swatch is-new"), `${vt("statusNew")} ${s.words.new}`);
+  picks.append(fresh);
+  levels.append(big, picks, el("p", "stats-hint", vt("levelPick")));
   wrap.append(levels);
 
   // What comes back: today (overdue included) and the next 13 days.
@@ -182,6 +249,13 @@ export async function statsView(ctx: StatsContext): Promise<HTMLElement> {
         })),
         `${vt(key)} : ${counts.map((count, i) => vt("boxTip", { box: i + 1, count })).join(", ")}`,
         "is-boxes",
+        (i, col) =>
+          lister.show(
+            `${direction}-${i + 1}`,
+            (count) => vt("levelWordsBox", { direction: vt(key), box: i + 1, count }),
+            (w) => w.boxes[direction] === i + 1,
+            col,
+          ),
       ),
     );
     grid.append(row);
@@ -245,20 +319,7 @@ export async function statsView(ctx: StatsContext): Promise<HTMLElement> {
   if (s.hardest.length === 0) hardest.append(el("p", "stats-hint", vt("hardestEmpty")));
   else {
     const rows = el("ol", "stats-hardest");
-    for (const h of s.hardest) {
-      const item = el("li", "stats-hard");
-      const term = el("span", "stats-hard-term", h.term);
-      term.lang = book.term;
-      if (h.reading) {
-        const r = el("span", "stats-hard-reading", h.reading);
-        r.lang = `${book.term}-Latn`;
-        term.append(" ", r);
-      }
-      const meaning = el("span", "stats-hard-meaning", h.meaning);
-      meaning.lang = book.meaning;
-      item.append(term, meaning, el("span", "stats-hard-count", vt("wrongOf", h)));
-      rows.append(item);
-    }
+    for (const h of s.hardest) rows.append(wordRow(book, h.term, h.reading, h.meaning, vt("wrongOf", h)));
     hardest.append(rows);
   }
   wrap.append(hardest);
