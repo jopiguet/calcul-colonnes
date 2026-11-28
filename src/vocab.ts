@@ -1103,9 +1103,10 @@ function cardView(ctx: VocabContext, s: Session): HTMLElement {
     }
     label.append(input);
     form.append(label);
-    const letterKeys = LETTERS[answerLang];
-    if (letterKeys && !s.result) {
-      // Letters missing from most keyboards outside Spain.
+    // The language's own letters, then those of its book's answers that a keyboard lacks (ł, š, ḥ, ʿ…).
+    const own = LETTERS[answerLang] ?? [];
+    const letterKeys = [...own, ...(card.letters ?? []).filter((l) => !own.includes(l))];
+    if (letterKeys.length && !s.result) {
       const letters = el("div", "vocab-letters");
       letters.setAttribute("aria-label", vt("accents"));
       for (const letter of letterKeys) {

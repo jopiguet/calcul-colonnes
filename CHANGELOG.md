@@ -1,5 +1,10 @@
 # Changelog
 
+## 9.3.0
+
+- **Letters to type, for every language:** a written card shows, under the field, the Latin letters its book's answers use that a French, Swiss, Spanish or German keyboard lacks (ł in Inuktitut, š ž č in Bulgarian and Georgian, ā ḥ ṣ ʿ in Arabic and Aramaic, ṁ ṟ in Malayalam, þ in the runes…), after the language's own row. Taken from the whole book and direction, never from the word asked; at most 24 (`shared/vocab/letters.ts`, `letters` on the session's cards, cached ten minutes per book, emptied by an import).
+- `check:vocab`: which letters are offered; e2e: an invented book with ł and ŋ (`tests/e2e/fixtures/vocab-letters.json`).
+
 ## 9.2.0
 
 - **The home page loads about ten times less.** The code it fetches drops from 4.7 MB (1.6 MB gzip) to 560 KB, sent as 146 KB:

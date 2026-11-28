@@ -237,6 +237,8 @@ export interface VocabCard {
    * (the scientific name) is shown only with the answer.
    */
   audio?: string;
+  /** A typed answer: the letters its book's answers use that a usual keyboard lacks (ł, š, ḥ, ʿ…), as buttons. */
+  letters?: string[];
 }
 
 export interface VocabSectionInfo {

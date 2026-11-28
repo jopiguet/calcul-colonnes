@@ -5,6 +5,7 @@
  * checks every entry: its own text is accepted in both directions, and no
  * entry is unaskable.
  */
+import { missingLetters } from "../shared/vocab/letters.ts";
 import { readFileSync } from "node:fs";
 import { acceptedForms, answerLangOf, grade, writable, type AnswerLang, type Verdict } from "../shared/vocab/grade.ts";
 import { askMode, entryStatus, nextState, DAY, MINUTE, TOP_BOX } from "../shared/vocab/schedule.ts";
@@ -842,4 +843,10 @@ if (failures > 0) {
   console.error(`${failures} failure(s)`);
   process.exit(1);
 }
+// The letters off the keyboard: Latin or modifier letters only, never one a French, Spanish or German keyboard types.
+expect("letters: Inuktitut", missingLetters(["ła", "łi", "ki", "naaŋ"]), ["ł", "ŋ"]);
+expect("letters: none in English or French", missingLetters(["the café", "à côté", "naïve", "über", "niño"]), []);
+expect("letters: transliterations, by base letter", missingLetters(["šapiru", "Ṣābu", "rꜥ", "ʿayin", "diĝir"]), ["ā", "ĝ", "š", "ṣ", "ʿ", "ꜥ"]);
+expect("letters: no script letter", missingLetters(["𒀭", "ᐃᓄᒃᑎᑐᑦ", "добър", "ქართული"]), []);
+expect("letters: at most 24, the most used", missingLetters([..."āăąćĉċčďđēĕėęěĝğġģĥħĩīĭįĳĵķĸ"].map((c, i) => c.repeat(i + 1))).length, 24);
 console.log(`vocabulary checks passed (${cases.length + japanese.length + arabic.length} grading cases)`);

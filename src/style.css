@@ -2040,7 +2040,8 @@ button.choice.is-wrong {
 button.vocab-letter {
   min-width: 2.4rem;
   padding: 0.35rem 0.5rem;
-  font-family: var(--digits);
+  /* Mono for the alignment, then the app's fonts for ł ḥ ꜣ ʿ, which it lacks. */
+  font-family: "Atkinson Hyperlegible Mono", var(--font);
   color: var(--ink);
 }
 

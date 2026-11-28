@@ -606,6 +606,24 @@ back the week they are. A skipped word:
 Skips are stored per player in `vocab_skips` and deleted with the player, or
 with the entry when an import removes it.
 
+## Letters to type
+
+Under a written answer's field, buttons type the letters a keyboard lacks where the cursor is:
+
+- **The language's own:** *á ñ ¿* in Spanish, *ä ß* in German, *é œ* in French, the Arabic,
+  Hebrew, Persian or Greek alphabet, *ꜣ ꜥ ḥ* in Egyptian, *ĝ ₂* in Sumerian (`LETTERS` in
+  `src/vocab.ts`).
+- **Those of the book's answers** (since 9.3.0): every Latin or modifier letter the book's
+  answers in that direction use that a French, Swiss, Spanish or German keyboard does not type,
+  directly or with a dead key: *ł* in Inuktitut, *š ž č* in Bulgarian or Georgian, *ā ṣ ʿ* in
+  Arabic or Aramaic, *ṁ ṟ* in Malayalam, *þ* in the runes. Taken from the whole book, never from
+  the word asked, so they give nothing away; at most 24, the most used. The server sends them
+  with each written card (`letters`, `shared/vocab/letters.ts`), kept ten minutes per book and
+  direction, and emptied by an import.
+
+A letter typed plainly is still accepted in most of these languages (*l* for *ł*: "accent",
+counted right, with the spelling shown); the buttons are for typing it exactly.
+
 ## How answers are graded
 
 The grading is in `shared/vocab/grade.ts`. The server's verdict is what is

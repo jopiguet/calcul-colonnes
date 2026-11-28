@@ -588,6 +588,33 @@ test("the Arabic book: right to left, transliteration under the word, answers in
   expect(await post(entryOf("أخضَر"), "akhdar")).toMatchObject({ verdict: "right" });
 });
 
+test("a typed answer: the letters off the keyboard that its book's answers use, as buttons", async ({ page }) => {
+  const name = await newPlayer(page, "Lettres");
+  const user = await userByName(page.request, name);
+  const books = (await (await page.request.get("/api/vocab/books")).json()) as { id: number; slug: string }[];
+  const invented = books.find((b) => b.slug === "test-letters")!.id;
+  const english = books.find((b) => b.slug === "test-english")!.id;
+  type Card = { direction: string; mode: string; letters?: string[] };
+  const cards = async (book: number) =>
+    (await (await page.request.get(`/api/vocab/session?userId=${user.id}&kind=all&id=${book}&size=10&mode=written`)).json()) as Card[];
+  // Answers in an invented language with ł and ŋ: both on every written card, "momo" included
+  // (the whole book's letters, so no hint of the word).
+  const written = (await cards(invented)).filter((c) => c.mode === "written");
+  expect(written).toHaveLength(4);
+  for (const card of written) expect(card.letters).toEqual(["ł", "ŋ"]);
+  // English answers: nothing a keyboard lacks, no buttons.
+  for (const card of await cards(english)) expect(card.letters).toBeUndefined();
+  // On the card: the buttons type the letter where the cursor is.
+  await openActivity(page, "vocab-test-letters");
+  await page.click(".vocab-how >> text=Écrit");
+  await page.click("text=Apprendre dans tout le livre");
+  await page.locator(".vocab-card").waitFor();
+  await expect(page.locator(".vocab-letter")).toHaveText(["ł", "ŋ"]);
+  await page.fill(".vocab-input", "ts");
+  await page.locator(".vocab-letter", { hasText: "ŋ" }).click();
+  await expect(page.locator(".vocab-input")).toHaveValue("tsŋ");
+});
+
 test("cuneiform: the sign large, its reading under it, answered by its reading; either meaning of a pair", async ({ page }) => {
   const name = await newPlayer(page, "Sux");
   const user = await userByName(page.request, name);

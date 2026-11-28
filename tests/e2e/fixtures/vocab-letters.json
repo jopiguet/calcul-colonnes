@@ -1,0 +1,26 @@
+{
+ "format": 2,
+ "book": {
+  "id": "test-letters",
+  "title": "Test invented letters",
+  "kind": "translation",
+  "term": "it",
+  "meaning": "sw"
+ },
+ "lessons": [
+  {
+   "title": "Invented words",
+   "sections": [
+    {
+     "title": "One",
+     "entries": [
+      { "term": "lanterna", "meaning": "łaki" },
+      { "term": "fiume", "meaning": "ŋuru" },
+      { "term": "pietra", "meaning": "tsaŋa" },
+      { "term": "pane", "meaning": "momo" }
+     ]
+    }
+   ]
+  }
+ ]
+}

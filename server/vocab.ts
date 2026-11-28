@@ -11,6 +11,7 @@ import type { AppEnv } from "./auth/middleware.ts";
 import type { Repository, Scope } from "./repository.ts";
 import { answerLangOf, COUNTS_AS_RIGHT, display, grade, normalise } from "../shared/vocab/grade.ts";
 import { kanaToRomaji } from "../shared/vocab/kana.ts";
+import { missingLetters } from "../shared/vocab/letters.ts";
 import { infoOf, storedInfo, TRANSLATION_LANGS, type BookKind, type TranslationLang, type VocabFile } from "../shared/vocab/format.ts";
 import { DIRECTIONS, entryStatus, nextState, type CardState, type Direction, type ModePreference } from "../shared/vocab/schedule.ts";
 import {
@@ -243,6 +244,9 @@ export function matchEntries(stored: StoredEntry[], placed: PlacedEntry[]): { ma
 export class VocabStore {
   constructor(private readonly db: Database) {}
 
+  /** A book's letters off the keyboard, per direction and language (missingLetters); emptied by an import. */
+  private letterCache = new Map<string, { at: number; letters: string[] }>();
+
   async isEmpty(): Promise<boolean> {
     const rows = await this.db.query("SELECT COUNT(*) AS n FROM vocab_entries");
     return n(rows[0]?.n) === 0;
@@ -261,6 +265,7 @@ export class VocabStore {
    * entries removed while players have progress on some of them.
    */
   async import(file: VocabFile, options: { replace?: boolean; images?: VocabImage[]; sounds?: VocabImage[] } = {}): Promise<ImportReport> {
+    this.letterCache.clear();
     if (!options.replace) await this.checkImport(file);
     return this.db.transaction(async (tx) => {
       const { book } = file;
@@ -1009,7 +1014,32 @@ export class VocabStore {
         if (id) card.sourceBook = id;
       }
     }
+    // A typed answer: the letters its book's answers use that a keyboard lacks, as buttons.
+    for (const card of cards) {
+      if (card.mode !== "written") continue;
+      const entry = entries.find((e) => e.id === card.entryId);
+      const bookId = entry?.book.id;
+      if (!bookId) continue;
+      const letters = await this.lettersOf(bookId, card.direction, lang);
+      if (letters.length) card.letters = letters;
+    }
     return cards;
+  }
+
+  /** The letters off the keyboard in a book's answers in one direction (shared/vocab/letters.ts), kept ten minutes. */
+  private async lettersOf(bookId: number, direction: Direction, lang?: TranslationLang): Promise<string[]> {
+    const key = `${bookId}:${direction}:${lang ?? ""}`;
+    const cached = this.letterCache.get(key);
+    if (cached && Date.now() - cached.at < 10 * 60_000) return cached.letters;
+    const answers: string[] = [];
+    for (const e of (await this.entries("l.book_id = $1", [bookId])).map((x) => localise(x, lang))) {
+      if (!directionsOf(e).includes(direction)) continue;
+      answers.push(sides(e, direction).answer);
+      if (direction === "recall" && e.reading) answers.push(e.reading);
+    }
+    const letters = missingLetters(answers);
+    this.letterCache.set(key, { at: Date.now(), letters });
+    return letters;
   }
 
   async answer(answer: VocabAnswer, now: number): Promise<VocabAnswerResult | null> {

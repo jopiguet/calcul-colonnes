@@ -23,6 +23,12 @@ interface News {
 /** Newest first. A release with nothing a user would notice has no entry. */
 export const NEWS: News[] = [
   {
+    version: "9.3.0",
+    fr: ["⌨️ Sous une réponse à écrire, des boutons pour les lettres absentes du clavier dans chaque langue : ł en inuktitut, š en bulgare, ḥ en égyptien, ʿ en araméen…"],
+    es: ["⌨️ Bajo una respuesta escrita, botones para las letras que faltan en el teclado en cada idioma: ł en inuktitut, š en búlgaro, ḥ en egipcio, ʿ en arameo…"],
+    en: ["⌨️ Under a written answer, buttons for the letters missing from the keyboard in every language: ł in Inuktitut, š in Bulgarian, ḥ in Egyptian, ʿ in Aramaic…"],
+  },
+  {
     version: "9.2.0",
     fr: [
       "⚡ L'application s'ouvre bien plus vite : la page d'accueil charge environ dix fois moins, les QCM et les expériences arrivent quand on les ouvre.",

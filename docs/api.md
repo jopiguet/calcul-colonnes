@@ -616,6 +616,9 @@ Errors: `invalid query` (400), `unknown user`, `unknown book` (404).
 ]
 ```
 
+A written card whose book's answers use letters a usual keyboard lacks carries them as `letters`
+(`["ł", "ŋ"]`): the same for every card of that book and direction ([Vocabulary › Letters to type](vocabulary.md#letters-to-type)).
+
 `options` is present for `choice` cards only. With `kind=books` and more than
 one book, each card has `source`, the title of its word's book, and its wrong
 options come from that book (see [Vocabulary › Shelves](vocabulary.md#shelves)). `feminine: true` marks a
