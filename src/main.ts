@@ -30,7 +30,7 @@ import "./fonts-translit.css";
 // The other scripts' fonts are in fonts-scripts.css, each with its range.
 import "@fontsource/noto-sans-cuneiform/400.css";
 import "@fontsource/noto-sans-egyptian-hieroglyphs/400.css";
-import "./fonts-scripts.css"; // after the two above: its icon faces must come last
+import "./fonts-scripts.css";
 import { DuplicateNameError, SignedOutError, auth, store, type AuthOptions, type AuthState, type User } from "./store";
 import { openWorksheet, WORKSHEET_COUNT } from "./worksheet";
 import { loadBank } from "./bank-load";

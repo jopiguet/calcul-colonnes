@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.3.1
+
+- **The cuneiform test failed in CI** (`document.fonts.check` false for 20 s). The three-glyph icon cuts shared the names of the whole fonts (*Noto Sans Cuneiform*, *Noto Sans Egyptian Hieroglyphs*), with a narrower range: a family split that way left Chromium, at times, reporting the whole font as not loaded. They are now a family of their own, *Luma Icons*, placed before those two in `--font`; the home page still fetches only the cuts (6 KB). The test loads the font as the page would (`document.fonts.load`), then checks it, as the lesson tests do.
+
 ## 9.3.0
 
 - **Letters to type, for every language:** a written card shows, under the field, the Latin letters its book's answers use that a French, Swiss, Spanish or German keyboard lacks (ł in Inuktitut, š ž č in Bulgarian and Georgian, ā ḥ ṣ ʿ in Arabic and Aramaic, ṁ ṟ in Malayalam, þ in the runes…), after the language's own row. Taken from the whole book and direction, never from the word asked; at most 24 (`shared/vocab/letters.ts`, `letters` on the session's cards, cached ten minutes per book, emptied by an import).

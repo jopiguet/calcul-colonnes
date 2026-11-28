@@ -632,8 +632,9 @@ test("cuneiform: the sign large, its reading under it, answered by its reading; 
   await expect(page.locator(".vocab-reading")).toHaveText(reading);
   // Large enough to read the wedges, drawn with the cuneiform font.
   expect(await prompt.evaluate((el) => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(64);
-  // The whole font (470 KB) comes with the first sign shown: the home page has only its icons' cut.
-  await expect.poll(() => page.evaluate(() => document.fonts.check("64px 'Noto Sans Cuneiform'", "𒊕")), { timeout: 20_000 }).toBe(true);
+  // The whole font (470 KB) comes with the first sign shown (the home page has only its icons' cut):
+  // loaded here as the page would, then checked.
+  expect(await page.evaluate(async () => { await document.fonts.load("64px 'Noto Sans Cuneiform'", "𒊕"); return document.fonts.check("64px 'Noto Sans Cuneiform'", "𒊕"); })).toBe(true);
   await page.screenshot({ path: "test-results/cuneiform.png" });
   const options = await page.locator(".choice-text").allInnerTexts();
   await page.keyboard.press(String(options.indexOf(meaning) + 1));

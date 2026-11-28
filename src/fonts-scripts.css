@@ -183,11 +183,12 @@
 
 /* The courses' icons in these scripts (𒀭 𒀝 𓋹), on the home page and the shelves: the
    three glyphs alone, cut from Noto Sans Cuneiform and Noto Sans Egyptian Hieroglyphs
-   (SIL Open Font License 1.1, fonts/OFL.txt). Declared after the whole fonts, so they are
-   tried first for these three characters: the home page fetches 6 KB instead of 870 KB,
-   and a lesson's text still brings the whole font. */
+   (SIL Open Font License 1.1, fonts/OFL.txt), under a family of their own placed before
+   those two in --font (style.css). The home page fetches 6 KB instead of 870 KB. Not under
+   the whole fonts' names: a family split that way left Chromium unsure, at times, whether
+   the whole font was loaded once a lesson showed other signs. */
 @font-face {
-  font-family: "Noto Sans Cuneiform";
+  font-family: "Luma Icons";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
@@ -195,7 +196,7 @@
   unicode-range: U+1201D, U+1202D;
 }
 @font-face {
-  font-family: "Noto Sans Egyptian Hieroglyphs";
+  font-family: "Luma Icons";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
